@@ -1,0 +1,8 @@
+[build]
+  base = "./"
+  command = "hugo"
+  publish = "./public/"
+
+  [build.environment]
+    HUGO_ENV = "production"
+    HUGO_VERSION = "0.40"

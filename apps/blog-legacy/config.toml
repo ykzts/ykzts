@@ -1,0 +1,16 @@
+baseURL = "https://ykzts.blog/"
+languageCode = "ja"
+pygmentsCodefences = true
+pygmentsUseClasses = true
+theme = "kiss"
+title = "ykzts.blog"
+
+[permalinks]
+  posts = "/:year/:month/:day/:filename/"
+
+[params.assets]
+  customCSS = ["/css/syntax.css"]
+
+[params.info]
+  enableSocial = true
+  homeTitle = "ykzts.blog"
