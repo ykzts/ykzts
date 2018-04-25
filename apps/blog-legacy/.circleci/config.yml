@@ -1,0 +1,86 @@
+version: 2
+
+aliases:
+  - &defaults
+    docker:
+      - image: circleci/golang:1.10.1-stretch
+    environment:
+      HUGO_VERSION: "0.40"
+      NETLIFYCTL_VERSION: "0.3.3"
+    working_directory: ~/projects/ykzts.blog/
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: git submodule
+          command: |
+            git submodule sync
+            git submodule update --init
+      - run:
+          name: Set Hugo version
+          command: echo $HUGO_VERSION > /tmp/hugo_version
+      - restore_cache:
+          keys:
+            - v1-hugo-binary-{{ checksum "/tmp/hugo_version" }}
+      - run:
+          name: Install Hugo
+          command: |
+            mkdir -p ./bin/
+            if [ ! -x ./bin/hugo ]; then
+              curl -sSL https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_Linux-64bit.tar.gz | tar xzf - -C ./bin/
+            fi
+            ./bin/hugo version
+      - save_cache:
+          key: v1-hugo-binary-{{ checksum "/tmp/hugo_version" }}
+          paths:
+            - ./bin
+      - run: ./bin/hugo
+      - persist_to_workspace:
+          root: ~/projects/ykzts.blog/
+          paths:
+            - ./bin/hugo
+            - ./public/
+
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/projects/ykzts.blog/
+      - run:
+          name: Set netlifyctl version
+          command: echo $NETLIFYCTL_VERSION > /tmp/netlifyctl_version
+      - restore_cache:
+          keys:
+            - v1-netlifyctl-binary-{{ checksum "/tmp/netlifyctl_version" }}
+      - run:
+          name: Install netlifyctl
+          command: |
+            mkdir -p ./bin/
+            if [ ! -x ./bin/netlifyctl ]; then
+              curl -sSL https://github.com/netlify/netlifyctl/releases/download/v${NETLIFYCTL_VERSION}/netlifyctl-linux-amd64-${NETLIFYCTL_VERSION}.tar.gz | tar xzf - -C ./bin/
+            fi
+            ./bin/netlifyctl version
+      - run: ./bin/netlifyctl deploy -A $NETLIFY_ACCESS_TOKEN -b ./public/ -s $NETLIFY_SITE_ID
+
+workflows:
+  version: 2
+  nightly:
+    triggers:
+      - schedule:
+          cron: 0,15,30,45 * * * *
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
