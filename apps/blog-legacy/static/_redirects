@@ -1,4 +1,6 @@
+https://blog.desire.sh/feed/ https://ykzts.blog/index.xml 301!
 https://blog.desire.sh/* https://ykzts.blog/:splat 301!
+http://blog.desire.sh/feed/ https://ykzts.blog/index.xml 301!
 http://blog.desire.sh/* https://ykzts.blog/:splat 301!
 https://ykzts-blog.netlify.com/* https://ykzts.blog/:splat 301!
 http://ykzts-blog.netlify.com/* https://ykzts.blog/:splat 301!
