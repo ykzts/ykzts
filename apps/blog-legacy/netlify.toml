@@ -8,4 +8,4 @@
     HUGO_VERSION = "0.40"
 
 [context.deploy-preview]
-  command = "hugo --baseURL / --buildDrafts --buildFuture"
+  command = "hugo --baseURL $DEPLOY_PRIME_URL --buildDrafts --buildFuture"
