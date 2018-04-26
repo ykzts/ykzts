@@ -41,7 +41,6 @@ jobs:
       - persist_to_workspace:
           root: ~/projects/ykzts.blog/
           paths:
-            - ./bin/hugo
             - ./public/
 
   deploy:
