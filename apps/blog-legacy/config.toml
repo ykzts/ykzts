@@ -5,12 +5,12 @@ pygmentsUseClasses = true
 theme = "kiss"
 title = "ykzts.blog"
 
-[permalinks]
-  post = "/:year/:month/:day/:filename/"
-
 [params.assets]
   customCSS = ["/css/syntax.css"]
 
 [params.info]
   enableSocial = true
   homeTitle = "ykzts.blog"
+
+[permalinks]
+  post = "/:year/:month/:day/:filename/"
