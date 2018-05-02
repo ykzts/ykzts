@@ -5,7 +5,7 @@ aliases:
     docker:
       - image: circleci/buildpack-deps:stretch-curl
     environment:
-      HUGO_VERSION: "0.40"
+      HUGO_VERSION: "0.40.2"
       NETLIFYCTL_VERSION: "0.3.3"
     working_directory: ~/projects/ykzts.blog/
 
