@@ -12,5 +12,9 @@ title = "ykzts.blog"
   enableSocial = true
   homeTitle = "ykzts.blog"
 
+[params.sections]
+  "/" = "Home"
+  "/about/" = "About"
+
 [permalinks]
   post = "/:year/:month/:day/:filename/"
