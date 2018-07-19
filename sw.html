@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<title>Installing Service Worker</title>
+<script>
+(async () => {
+  if (typeof navigator.serviceWorker === 'undefined') {
+    return;
+  }
+
+  try {
+    const registration = await navigator.serviceWorker.register('/sw.js')
+    console.info(`ServiceWorker registration successfull with scope: ${registration.scope}`);
+  } catch (error) {
+    console.error('ServiceWorker registration failed: ', error);
+  }
+
+})();
+</script>
