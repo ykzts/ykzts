@@ -143,6 +143,7 @@ header .social-accounts a:hover {
 section {
   align-content: center;
   background-color: #eee;
+  background-repeat: no-repeat;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -156,7 +157,6 @@ section {
   background-image: -webkit-image-set(url("https://www.gravatar.com/avatar/b9025074d487cd0328f1dc816e5ac50a?s=128") 1x, url("https://www.gravatar.com/avatar/b9025074d487cd0328f1dc816e5ac50a?s=256") 2x, url("https://www.gravatar.com/avatar/b9025074d487cd0328f1dc816e5ac50a?s=384") 3x); /* for Google Chrome */
   background-image: image-set(url("https://www.gravatar.com/avatar/b9025074d487cd0328f1dc816e5ac50a?s=128") 1x, url("https://www.gravatar.com/avatar/b9025074d487cd0328f1dc816e5ac50a?s=256") 2x, url("https://www.gravatar.com/avatar/b9025074d487cd0328f1dc816e5ac50a?s=384") 3x);
   background-position: center bottom 40px;
-  background-repeat: no-repeat;
   padding-bottom: 200px;
 }
 
@@ -165,8 +165,15 @@ section {
   background-image: -webkit-image-set(url("/images/mastodon-elephant-friend.png") 1x, url("/images/mastodon-elephant-friend@2x.png") 2x, url("/images/mastodon-elephant-friend@3x.png") 3x); /* for Google Chrome */
   background-image: image-set(url("/images/mastodon-elephant-friend.png") 1x, url("/images/mastodon-elephant-friend@2x.png") 2x, url("/images/mastodon-elephant-friend@3x.png") 3x);
   background-position: center bottom 25px;
-  background-repeat: no-repeat;
   padding-bottom: 300px;
+}
+
+#manael {
+  background-image: url("/images/manael.png"); /* for Firefox */
+  background-image: -webkit-image-set(url("/images/manael.png") 1x, url("/images/manael@2x.png") 2x, url("/images/manael@3x.png") 3x); /* for Google Chrome */
+  background-image: image-set(url("/images/manael.png") 1x, url("/images/manael@2x.png") 2x, url("/images/manael@3x.png") 3x);
+  background-position: center bottom 25px;
+  padding-bottom: 270px;
 }
 
 @media (min-width: 650px) {
@@ -175,16 +182,22 @@ section {
     padding-right: 5rem;
   }
 
-  section#about {
+  #about {
     background-position: right 20px center;
     padding-bottom: 2rem;
     padding-right: 200px;
   }
 
-  section#mastodon {
+  #mastodon {
     background-position: 20px center;
     padding-bottom: 2rem;
     padding-left: 250px;
+  }
+
+  #manael {
+    background-position: right 20px center;
+    padding-bottom: 2rem;
+    padding-right: 300px;
   }
 }
 
@@ -267,6 +280,12 @@ section a:hover {
     <p>山岸和利は2017年7月から<a href=https://joinmastodon.org/ hreflang=ja lang=en rel=noopener target=_blank translate=no>Mastodon</a>のコミッターを務めています。</p>
     <p><dfn lang=en translate=no>Mastodon</dfn>はオープンソースのソーシャルネットワークサーバーです。<span lang=en translate=no>Mastodon</span>の特徴として<a href=https://www.w3.org/TR/activitypub hreflang=en lang=en rel=noopener target=_blank translate=no>ActivityPub</a>と<a href=https://www.w3.org/community/ostatus/wiki/Main_Page hreflang=en lang=en rel=noopener target=_blank translate=no>OStatus</a>の二つのプロトコルをサポートしている点が挙げられるでしょう。これにより<span lang=en translate=no>Mastodon</span>だけではなく同じく<span lang=en translate=no>ActivityPub</span>や<span lang=en translate=no>OStatus</span>をサポートしているアプリケーションと相互に接続することができ、脱中央集権を目論むウェブアプリケーションとなっています。</p>
     <p>山岸和利は主にバグの修正やソースコードのリファクタリング、<abbr title="User Interface">UI</abbr>の日本語翻訳などの地域化といったことを行っています。またコミッターとしては世界中の開発者から送られてきたPull Requestのコードレビューを行い、その中でも簡単なバグの修正や翻訳の追加などの軽微な変更については自身でmergeしています。</p>
+  </section>
+  <section id=manael>
+    <h2 lang=en translate=no>Manael</h2>
+    <p>山岸和利は2017年11月からオープンソースのリバースプロキシアプリケーションである<a href=https://manael.org/ hreflang=en lang=en rel=noopener target=_blank translate=no>Manael</a>の開発を行っています。</p>
+    <p><dfn lang=en translate=no>Manael</dfn>は画像の変換に主眼を置いたリバースプロキシです。<span lang=en translate=no>PNG</span>や<span lang=en translate=no>JPEG</span>形式の画像を<span lang=en translate=no>WebP</span>形式へと動的に変換する機能を有しています。Manael自体の機能は最小限に留められていて、NginxやVarnishといったキャッシュ機能を有するリバースプロキシを利用して変換済みのファイルをキャッシュすることを前提としています。</p>
+    <p>またManaelはGoで書かれています。これにより平易な書き方でありながらも高速な処理が実現されています。</p>
   </section>
 </main>
 <amp-install-serviceworker data-iframe-src=https://ykzts.com/sw.html layout=nodisplay src=/sw.js></amp-install-serviceworker>
