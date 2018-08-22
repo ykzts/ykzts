@@ -3,7 +3,7 @@ categories:
   - technology
 lastmod: 2018-09-01T00:00:00+09:00
 publishdate: 2018-09-01T00:00:00+09:00
-title: 転職しました
+title: 転職します
 ---
 
 - from: 六本木、Fintech (2017-01-01 ～ 2018-08-31)
