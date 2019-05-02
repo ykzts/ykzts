@@ -1,0 +1,16 @@
+{
+  "alias": ["ykzts.com"],
+  "builds": [
+    {
+      "src": "next.config.js",
+      "use": "@now/next"
+    }
+  ],
+  "github": {
+    "silent": true
+  },
+  "name": "ykzts.com",
+  "regions": ["hnd1"],
+  "scope": "ykzts",
+  "version": 2
+}
