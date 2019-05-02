@@ -89,7 +89,7 @@ const IndexPage: NextFC = (): ReactElement => (
       <meta content="male" property="profile:gender" />
       <meta content="Yamagishi" property="profile:last_name" />
       <meta content="ykzts" property="profile:username" />
-      <meta content="summary_large_card" name="twitter:card" />
+      <meta content="summary_large_image" name="twitter:card" />
       <meta content="@ykzts" name="twitter:creator" />
       <Me />
     </Head>
