@@ -19,11 +19,15 @@ const Header = styled.header`
 `
 
 const Title = styled.h1`
-  font-size: 4rem;
+  font-size: 2rem;
   font-weight: 700;
   letter-spacing: 0.2em;
   margin: 0;
   padding: 0.5em 0 1em;
+
+  @media (min-width: 650px) {
+    font-size: 4rem;
+  }
 `
 
 const Section = styled.section`
@@ -49,6 +53,12 @@ const SectionHeadline = styled.h2`
   margin: 0 0 1.5rem;
   letter-spacing: 0.2em;
   padding: 0;
+  text-align: center;
+
+  @media (min-width: 650px) {
+    font-size: 4rem;
+    text-align: left;
+  }
 `
 
 const SectionParagraph = styled.p`
