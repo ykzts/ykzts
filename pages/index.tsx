@@ -65,6 +65,7 @@ const SectionParagraph = styled.p`
   line-height: 2;
   margin: 0;
   padding: 0;
+  text-align: justify;
 
   & + & {
     margin-top: 1rem;
