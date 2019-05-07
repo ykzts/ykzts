@@ -11,6 +11,20 @@
   },
   "name": "ykzts.com",
   "regions": ["hnd1"],
+  "routes": [
+    {
+      "headers": {
+        "cache-control": "max-age=31536000"
+      },
+      "src": "/_next/.+"
+    },
+    {
+      "headers": {
+        "cache-control": "max-age=600, s-maxage=60"
+      },
+      "src": "/.*"
+    }
+  ],
   "scope": "ykzts",
   "version": 2
 }
