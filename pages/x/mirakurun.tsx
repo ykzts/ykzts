@@ -1,7 +1,8 @@
+import { NextPage } from 'next'
 import Head from 'next/head'
-import React, { FC } from 'react'
+import React from 'react'
 
-const Mirakurun: FC = () => (
+const Mirakurun: NextPage = () => (
   <Head>
     <meta
       content="ykzts.com/x/mirakurun git https://github.com/ykzts/go-mirakurun.git"
