@@ -9,7 +9,7 @@
   "description": "Yamagishi Kazutoshi's Website!",
   "devDependencies": {
     "@types/node": "^12.6.2",
-    "@types/react": "^16.8.15",
+    "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
     "prettier": "^1.17.0",
     "typescript": "^3.5.3"
