@@ -2,7 +2,7 @@
 categories:
   - technology
 cover: /images/2017/qiitadon-pull-40.png
-lastmod: 2017-06-03T16:15:00Z
+lastmod: 2019-07-13T15:00:00Z
 publishdate: 2017-06-03T15:30:00Z
 tags:
   - Mastodon
@@ -10,7 +10,7 @@ tags:
 title: QiitadonをMastodon v1.4.1にアップグレードした話
 ---
 
-こんにちは[@ykzts@omanko.porn](https://omanko.porn/@ykzts)です。気付けば[Mastodonへのコミットの数が100を超えていました](https://github.com/tootsuite/mastodon/pulls?q=is%3Apr+is%3Amerged+author%3Aykzts+created%3A%22%3C2017-06-03T23%3A00%3A00%2B09%3A00%22)。公式にもPull Requestのレビュワーにも任命されて、Mastodon関連で少し忙しくなっています。
+こんにちは[@ykzts@ykzts.technology](https://ykzts.technology/@ykzts)です。気付けば[Mastodonへのコミットの数が100を超えていました](https://github.com/tootsuite/mastodon/pulls?q=is%3Apr+is%3Amerged+author%3Aykzts+created%3A%22%3C2017-06-03T23%3A00%3A00%2B09%3A00%22)。公式にもPull Requestのレビュワーにも任命されて、Mastodon関連で少し忙しくなっています。
 
 さて、技術情報共有サービス「[Qiita](https://qiita.com/)」を運営する[Increments株式会社](https://increments.co.jp/)が先日[Mastodon インスタンス「Qiitadon」を公開しました](http://blog.qiita.com/post/161193715974/qiitadon)。
 
