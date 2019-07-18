@@ -4,7 +4,6 @@ import { ReactElement } from 'react'
 
 export default class extends App {
   render(): ReactElement {
-    console.log(this.props)
     const { Component, pageProps } = this.props
 
     return (
@@ -15,11 +14,11 @@ export default class extends App {
             rel="icon"
           />
           <link
-            href="https://fonts.googleapis.com/css?family=Roboto:400,700"
+            href="https://fonts.googleapis.com/css?display=swap&family=Roboto:400,700"
             rel="stylesheet"
           />
           <link
-            href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,700"
+            href="https://fonts.googleapis.com/css?display=swap&family=Noto+Sans+JP:400,700"
             rel="stylesheet"
           />
           <script
