@@ -2,8 +2,8 @@
 categories:
   - technology
 cover: /images/2017/qiitadon-pull-40.png
-lastmod: 2019-07-13T15:00:00Z
-publishdate: 2017-06-03T15:30:00Z
+lastmod: 2019-07-14T00:00:00+09:00
+publishdate: 2017-06-04T00:30:00+09:00
 tags:
   - Mastodon
   - Qiitadon
