@@ -1,7 +1,7 @@
 ---
 categories:
   - technology
-publishdate: 2017-03-12T23:30:00Z
+publishdate: 2017-03-13T08:30:00+09:00
 tags:
   - poem
 title: 優秀なエンジニア
