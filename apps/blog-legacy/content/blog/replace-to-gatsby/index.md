@@ -7,4 +7,4 @@ title: ブログのシステムをHugoからGatsbyに変更しました
 
 ここ数年はReactを使う機会が多いのでReactを採用しているGatsbyを選びました。文書はHugo用に整形したものをちょっとした書き換えだけで流用しています。Markdown形式にしておくとこうした変更が容易にできて便利ですね。
 
-[Gatsby's blog starter](https://github.com/gatsbyjs/gatsby-starter-blog)を参考にしつつ、一から実装を行っています。実装に関しては速度を優先して見た目に関して手を抜いてしまっているので追い追い整えていきます。
+[Gatsby's blog starter](https://github.com/gatsbyjs/gatsby-starter-blog)を参考にしつつ、一から実装を行っています。速度を優先した実装を行い、見た目に関して手を抜いてしまっています。見た目については追い追い整えていきます。
