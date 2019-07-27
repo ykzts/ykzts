@@ -89,11 +89,7 @@ const BlogList: FC<Props> = ({ data, pageContext }): ReactElement => {
     <Layout>
       <SEO
         path={isFirst ? '/' : `/page/${pageContext.currentPage}/`}
-        title={
-          isFirst
-            ? undefined
-            : `Page: ${pageContext.currentPage}`
-        }
+        title={isFirst ? undefined : `Page: ${pageContext.currentPage}`}
       />
 
       {posts.map(
