@@ -1,0 +1,114 @@
+{
+  "author": "Yamagishi Kazutoshi <ykzts@desire.sh>",
+  "bugs": {
+    "email": "ykzts@desire.sh",
+    "url": "https://github.com/ykzts/ykzts.blog/issues"
+  },
+  "dependencies": {
+    "@emotion/core": "^10.0.14",
+    "@emotion/styled": "^10.0.14",
+    "date-fns": "^2.0.0-beta.3",
+    "date-fns-tz": "^1.0.7",
+    "gatsby": "^2.13.40",
+    "gatsby-plugin-emotion": "^4.1.2",
+    "gatsby-plugin-feed": "^2.3.5",
+    "gatsby-plugin-google-analytics": "^2.1.4",
+    "gatsby-plugin-manifest": "^2.2.4",
+    "gatsby-plugin-react-helmet": "^3.1.2",
+    "gatsby-plugin-sharp": "^2.2.9",
+    "gatsby-plugin-typescript": "^2.1.2",
+    "gatsby-remark-external-links": "^0.0.4",
+    "gatsby-remark-images": "^3.1.7",
+    "gatsby-remark-prismjs": "^3.3.3",
+    "gatsby-source-filesystem": "^2.1.6",
+    "gatsby-transformer-remark": "^2.6.9",
+    "gatsby-transformer-sharp": "^2.2.4",
+    "prismjs": "^1.17.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-helmet": "^5.2.1"
+  },
+  "description": "The source code of ykzts.blog",
+  "devDependencies": {
+    "@types/node": "^12.6.8",
+    "@types/react": "^16.8.23",
+    "@types/react-dom": "^16.8.5",
+    "@types/react-helmet": "^5.0.8",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "prettier": "^1.18.2",
+    "typescript": "^3.5.3"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:react/recommended",
+      "plugin:jsx-a11y/recommended",
+      "prettier/react"
+    ],
+    "overrides": [
+      {
+        "extends": [
+          "plugin:@typescript-eslint/recommended",
+          "prettier/@typescript-eslint"
+        ],
+        "files": [
+          "*.ts",
+          "*.tsx"
+        ]
+      },
+      {
+        "files": [
+          "*.tsx"
+        ],
+        "rules": {
+          "react/prop-types": "off"
+        }
+      }
+    ],
+    "parserOptions": {
+      "ecmaVersion": 9,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "react-hooks"
+    ],
+    "rules": {
+      "react-hooks/exhaustive-deps": "error",
+      "react-hooks/rules-of-hooks": "error"
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    }
+  },
+  "homepage": "https://ykzts.blog/",
+  "keywords": [
+    "Yamagishi Kazutoshi",
+    "ykzts"
+  ],
+  "license": "MIT",
+  "main": "n/a",
+  "name": "@ykzts/ykzts.blog",
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.blog.git"
+  },
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.{js,ts,tsx}\"",
+    "lint": "eslint --ext .js,.ts,.tsx --ignore-path .gitignore ."
+  },
+  "version": "1.0.0"
+}

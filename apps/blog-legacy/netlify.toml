@@ -1,11 +1,4 @@
 [build]
   base = "./"
-  command = "hugo"
-  publish = "./public/"
-
-  [build.environment]
-    HUGO_ENV = "production"
-    HUGO_VERSION = "0.45.1"
-
-[context.deploy-preview]
-  command = "hugo --baseURL $DEPLOY_PRIME_URL --buildDrafts --buildFuture"
+  command = "yarn build"
+  publish = "public"
