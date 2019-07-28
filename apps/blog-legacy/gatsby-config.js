@@ -53,6 +53,7 @@ module.exports = {
       },
       resolve: 'gatsby-plugin-manifest'
     },
+    'gatsby-plugin-netlify',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-sharp',
     'gatsby-plugin-typescript',

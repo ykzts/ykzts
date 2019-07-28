@@ -4,7 +4,7 @@ const { createFilePath } = require('gatsby-source-filesystem')
 const path = require('path')
 
 exports.createPages = async ({ actions, graphql }) => {
-  const { createPage } = actions
+  const { createPage, createRedirect } = actions
 
   const blogList = path.resolve(__dirname, 'src', 'templates', 'blog-list.tsx')
   const blogPost = path.resolve(__dirname, 'src', 'templates', 'blog-post.tsx')
@@ -18,6 +18,7 @@ exports.createPages = async ({ actions, graphql }) => {
                 slug
               }
               frontmatter {
+                redirect_from
                 title
               }
             }
@@ -62,6 +63,15 @@ exports.createPages = async ({ actions, graphql }) => {
       },
       path: post.node.fields.slug
     })
+
+    if (post.node.frontmatter.redirect_from) {
+      createRedirect({
+        fromPath: post.node.frontmatter.redirect_from,
+        isPermanent: true,
+        redirectInBrowser: true,
+        toPath: post.node.fields.slug
+      })
+    }
   })
 }
 
