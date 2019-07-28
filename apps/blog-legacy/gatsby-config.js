@@ -2,6 +2,7 @@ const path = require('path')
 
 module.exports = {
   plugins: [
+    'gatsby-plugin-catch-links',
     {
       options: {
         feeds: [
