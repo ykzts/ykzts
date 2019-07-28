@@ -56,6 +56,7 @@ module.exports = {
     'gatsby-plugin-netlify',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-sharp',
+    'gatsby-plugin-sitemap',
     'gatsby-plugin-typescript',
     {
       options: {
