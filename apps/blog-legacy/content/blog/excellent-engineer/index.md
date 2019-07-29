@@ -1,5 +1,6 @@
 ---
 date: 2017-03-13T08:30:00+09:00
+permalink: /2017/03/13/excellent-engineer/
 title: 優秀なエンジニア
 ---
 
