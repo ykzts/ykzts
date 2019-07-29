@@ -1,6 +1,7 @@
 ---
 date: 2017-06-04T00:30:00+09:00
 lastmod: 2019-07-14T00:00:00+09:00
+permalink: /2017/06/04/qiitadon-upgrade/
 title: QiitadonをMastodon v1.4.1にアップグレードした話
 ---
 
