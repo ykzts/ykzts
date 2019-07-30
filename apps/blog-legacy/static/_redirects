@@ -15,3 +15,6 @@ http://blog.desire.sh/* https://ykzts.blog/:splat 301!
 
 https://ykzts-blog.netlify.com/* https://ykzts.blog/:splat 301!
 http://ykzts-blog.netlify.com/* https://ykzts.blog/:splat 301!
+
+/author https://ykzts.com/ 301
+/about/ https://ykzts.com/ 301
