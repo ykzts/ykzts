@@ -1,4 +1,6 @@
 import styled from '@emotion/styled'
+import { parseISO } from 'date-fns'
+import { format } from 'date-fns-tz'
 import { Link, graphql } from 'gatsby'
 import React, { FC, ReactElement } from 'react'
 import Icon from '../components/icon'
@@ -6,9 +8,23 @@ import Layout from '../components/layout'
 import SEO from '../components/seo'
 import { BlogContent } from '../types/blog'
 
+const Header = styled.header`
+  display: flex;
+  flex-direction: column-reverse;
+  margin: 1rem 0 4rem;
+`
+
 const Title = styled.h1`
   font-size: 2rem;
-  margin: 1rem 0 2rem;
+  margin: 0.5rem 0 0;
+  text-align: center;
+`
+
+const PublishedTime = styled.time`
+  color: var(--secondary-text-color);
+  display: block;
+  font-size: 1rem;
+  text-align: center;
 `
 
 const Content = styled.div`
@@ -31,7 +47,7 @@ const Content = styled.div`
 `
 
 const Pagination = styled.nav`
-  margin: 2rem 0;
+  margin: 4rem 0 2rem;
 `
 
 const PaginationList = styled.ol`
@@ -75,16 +91,15 @@ interface Props {
     next: BlogContent
     previous: BlogContent
   }
-  path: string
 }
 
 const BlogPostTemplate: FC<Props> = ({
   data,
   pageContext,
-  path
 }): ReactElement => {
   const { markdownRemark: post } = data
   const { next, previous } = pageContext
+  const publishedTime = parseISO(post.frontmatter.date)
 
   return (
     <Layout>
@@ -96,7 +111,11 @@ const BlogPostTemplate: FC<Props> = ({
       />
 
       <main>
-        <Title>{post.frontmatter.title}</Title>
+        <Header>
+          <Title>{post.frontmatter.title}</Title>
+
+          <PublishedTime dateTime={publishedTime.toISOString()}>{format(publishedTime, 'yyyy/MM/dd hh:mm', { timeZone: 'Asia/Tokyo' })}</PublishedTime>
+        </Header>
 
         <Content dangerouslySetInnerHTML={{ __html: post.html }} />
 

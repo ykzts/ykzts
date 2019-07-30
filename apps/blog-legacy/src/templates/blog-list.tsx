@@ -59,7 +59,7 @@ const ReadMore = styled.div`
 `
 
 const Pagination = styled.div`
-  margin-bottom: 1rem;
+  margin: 1rem 0 3rem;
 `
 
 const PaginationLink = styled(Link)`
@@ -105,7 +105,7 @@ const BlogList: FC<Props> = ({ data, pageContext }): ReactElement => {
                   </HeadlineLink>
                 </Headline>
 
-                <PublishedTime>
+                <PublishedTime dateTime={publishedTime.toISOString()}>
                   {format(publishedTime, 'yyyy/MM/dd', {
                     timeZone: 'Asia/Tokyo'
                   })}
