@@ -19,4 +19,6 @@ const Mirakurun: NextPage = () => (
   </Head>
 )
 
+Mirakurun.getInitialProps = async () => ({})
+
 export default Mirakurun
