@@ -1,0 +1,35 @@
+---
+date: 2012-06-23T16:56:00+09:00
+redirect_from: /post/25705564207
+title: node-xmlhttprequestをnpmに登録しました
+---
+
+[node-xmlhttprequest](https://github.com/ykzts/node-xmlhttprequest)を[npm](http://npmjs.org/)に登録しました。
+
+```console
+$ npm install -g w3c-xmlhttprequest
+```
+
+のようなコマンドをターミナル等から入力する事によってインストールが可能です。
+
+```javascript
+(function() {
+  'use strict';
+
+  var XMLHttpRequest = require('w3c-xmlhttprequest').XMLHttpRequest;
+
+  var req = function req(uri) {
+    var client = new XMLHttpRequest();
+    client.open('GET', uri);
+    client.responseType = 'json'
+    client.addEventListener('load', function(event) {
+      console.log(client.response);
+    }, false);
+    client.send(null);
+  };
+
+  req('http://example.com/sample.json');
+})();
+```
+
+のようにNodeでもウェッブブラウザ上のXMLHttpRequestとそう変らない動作をさせられます。
