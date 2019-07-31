@@ -83,6 +83,22 @@ const Container = styled.div`
   }
 `
 
+const Footer = styled.footer`
+  margin-top: 2rem;
+`
+
+const FooterContainer = styled.div`
+  font-size: 0.8rem;
+  margin: 0 auto;
+  padding: 1rem 0 2rem;
+  text-align: right;
+
+  @media (min-width: 500px) {
+    max-width: 1024px;
+    width: 100%;
+  }
+`
+
 const Layout: FC = ({ children }): ReactElement => {
   const { site } = useStaticQuery<{ site: Site }>(
     graphql`
@@ -116,6 +132,12 @@ const Layout: FC = ({ children }): ReactElement => {
       </Header>
 
       <Container>{children}</Container>
+
+      <Footer>
+        <FooterContainer>
+          <Link to="/privacy/">プライバシーポリシー</Link>
+        </FooterContainer>
+      </Footer>
     </>
   )
 }

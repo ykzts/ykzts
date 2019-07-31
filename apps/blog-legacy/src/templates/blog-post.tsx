@@ -93,10 +93,7 @@ interface Props {
   }
 }
 
-const BlogPostTemplate: FC<Props> = ({
-  data,
-  pageContext,
-}): ReactElement => {
+const BlogPostTemplate: FC<Props> = ({ data, pageContext }): ReactElement => {
   const { markdownRemark: post } = data
   const { next, previous } = pageContext
   const publishedTime = parseISO(post.frontmatter.date)
@@ -114,7 +111,11 @@ const BlogPostTemplate: FC<Props> = ({
         <Header>
           <Title>{post.frontmatter.title}</Title>
 
-          <PublishedTime dateTime={publishedTime.toISOString()}>{format(publishedTime, 'yyyy/MM/dd hh:mm', { timeZone: 'Asia/Tokyo' })}</PublishedTime>
+          <PublishedTime dateTime={publishedTime.toISOString()}>
+            {format(publishedTime, 'yyyy/MM/dd hh:mm', {
+              timeZone: 'Asia/Tokyo'
+            })}
+          </PublishedTime>
         </Header>
 
         <Content dangerouslySetInnerHTML={{ __html: post.html }} />
