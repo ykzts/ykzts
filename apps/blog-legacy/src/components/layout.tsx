@@ -90,11 +90,12 @@ const Footer = styled.footer`
 const FooterContainer = styled.div`
   font-size: 0.8rem;
   margin: 0 auto;
-  padding: 1rem 0 2rem;
+  padding: 1rem 0.5rem 2rem;
   text-align: right;
 
   @media (min-width: 500px) {
     max-width: 1024px;
+    padding: 1rem 0 2rem;
     width: 100%;
   }
 `
