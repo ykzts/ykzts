@@ -122,7 +122,9 @@ const Layout: FC = ({ children }): ReactElement => {
           lang: 'ja'
         }}
         titleTemplate={`%s | ${site.siteMetadata.title}`}
-      />
+      >
+        <meta content="nocomment" name="Hatena::Bookmark" />
+      </Helmet>
 
       <Global styles={globalStyles} />
 
