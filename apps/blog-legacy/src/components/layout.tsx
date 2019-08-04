@@ -1,6 +1,6 @@
 import { Global, css } from '@emotion/core'
 import styled from '@emotion/styled'
-import { Link, graphql, useStaticQuery, withPrefix } from 'gatsby'
+import { Link, graphql, useStaticQuery } from 'gatsby'
 import React, { FC, ReactElement } from 'react'
 import { Helmet } from 'react-helmet'
 import Site from '../types/site'
@@ -98,6 +98,10 @@ const FooterContainer = styled.div`
     padding: 1rem 0 2rem;
     width: 100%;
   }
+
+  a {
+    margin-left: 1em;
+  }
 `
 
 const Layout: FC = ({ children }): ReactElement => {
@@ -138,6 +142,13 @@ const Layout: FC = ({ children }): ReactElement => {
 
       <Footer>
         <FooterContainer>
+          <a
+            href="https://ykzts.com/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            運営者情報
+          </a>
           <Link to="/privacy/">プライバシーポリシー</Link>
         </FooterContainer>
       </Footer>
