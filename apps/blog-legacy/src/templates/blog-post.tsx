@@ -3,11 +3,11 @@ import { parseISO } from 'date-fns'
 import { format } from 'date-fns-tz'
 import { Link, graphql } from 'gatsby'
 import React, { FC, ReactElement } from 'react'
+import GoogleAdSense from '../components/google-adsense'
 import Icon from '../components/icon'
 import Layout from '../components/layout'
 import SEO from '../components/seo'
 import { BlogContent } from '../types/blog'
-import GoogleAdSense from '../components/google-adsense'
 
 const Header = styled.header`
   display: flex;
@@ -122,6 +122,8 @@ const BlogPostTemplate: FC<Props> = ({ data, pageContext }): ReactElement => {
         <Content dangerouslySetInnerHTML={{ __html: post.html }} />
       </main>
 
+      <GoogleAdSense client="ca-pub-4541453500124137" slot="7687621473" />
+
       {(next || previous) && (
         <Pagination>
           <PaginationList>
@@ -144,8 +146,6 @@ const BlogPostTemplate: FC<Props> = ({ data, pageContext }): ReactElement => {
           </PaginationList>
         </Pagination>
       )}
-
-      <GoogleAdSense client="ca-pub-4541453500124137" slot="7687621473" />
     </Layout>
   )
 }

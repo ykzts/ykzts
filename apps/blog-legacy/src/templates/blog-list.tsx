@@ -3,6 +3,7 @@ import { parseISO } from 'date-fns'
 import { format } from 'date-fns-tz'
 import { Link, graphql } from 'gatsby'
 import React, { FC, ReactElement } from 'react'
+import GoogleAdSense from '../components/google-adsense'
 import Icon from '../components/icon'
 import Layout from '../components/layout'
 import SEO from '../components/seo'
@@ -93,7 +94,7 @@ const BlogList: FC<Props> = ({ data, pageContext }): ReactElement => {
       />
 
       {posts.map(
-        ({ node }): ReactElement => {
+        ({ node }, i): ReactElement => {
           const publishedTime = parseISO(node.frontmatter.date)
 
           return (
@@ -123,6 +124,8 @@ const BlogList: FC<Props> = ({ data, pageContext }): ReactElement => {
           )
         }
       )}
+
+      <GoogleAdSense client="ca-pub-4541453500124137" slot="7687621473" />
 
       {pageContext.currentPage < pageContext.numPages && (
         <Pagination>
