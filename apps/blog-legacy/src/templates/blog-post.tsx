@@ -7,6 +7,7 @@ import Icon from '../components/icon'
 import Layout from '../components/layout'
 import SEO from '../components/seo'
 import { BlogContent } from '../types/blog'
+import GoogleAdSense from '../components/google-adsense'
 
 const Header = styled.header`
   display: flex;
@@ -119,30 +120,32 @@ const BlogPostTemplate: FC<Props> = ({ data, pageContext }): ReactElement => {
         </Header>
 
         <Content dangerouslySetInnerHTML={{ __html: post.html }} />
-
-        {(next || previous) && (
-          <Pagination>
-            <PaginationList>
-              <PaginationItem>
-                {next && (
-                  <PaginationLink rel="next" to={next.fields.slug}>
-                    <Icon name="keyboard_arrow_left" />
-                    {next.frontmatter.title}
-                  </PaginationLink>
-                )}
-              </PaginationItem>
-              <PaginationItem>
-                {previous && (
-                  <PaginationLink rel="prev" to={previous.fields.slug}>
-                    {previous.frontmatter.title}
-                    <Icon name="keyboard_arrow_right" />
-                  </PaginationLink>
-                )}
-              </PaginationItem>
-            </PaginationList>
-          </Pagination>
-        )}
       </main>
+
+      {(next || previous) && (
+        <Pagination>
+          <PaginationList>
+            <PaginationItem>
+              {next && (
+                <PaginationLink rel="next" to={next.fields.slug}>
+                  <Icon name="keyboard_arrow_left" />
+                  {next.frontmatter.title}
+                </PaginationLink>
+              )}
+            </PaginationItem>
+            <PaginationItem>
+              {previous && (
+                <PaginationLink rel="prev" to={previous.fields.slug}>
+                  {previous.frontmatter.title}
+                  <Icon name="keyboard_arrow_right" />
+                </PaginationLink>
+              )}
+            </PaginationItem>
+          </PaginationList>
+        </Pagination>
+      )}
+
+      <GoogleAdSense client="ca-pub-4541453500124137" slot="7687621473" />
     </Layout>
   )
 }
