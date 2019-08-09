@@ -28,7 +28,7 @@
     "gatsby-transformer-sharp": "^2.2.6",
     "prismjs": "^1.17.1",
     "react": "^16.9.0",
-    "react-dom": "^16.8.6",
+    "react-dom": "^16.9.0",
     "react-helmet": "^5.2.1"
   },
   "description": "This repository contains a source files for ykzts.blog.",
