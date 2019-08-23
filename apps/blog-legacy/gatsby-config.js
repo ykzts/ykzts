@@ -1,5 +1,7 @@
 const path = require('path')
 
+const title = 'ykzts.blog'
+
 module.exports = {
   plugins: [
     'gatsby-plugin-catch-links',
@@ -29,7 +31,8 @@ module.exports = {
                   }
                 }
               }
-            `
+            `,
+            title
           }
         ]
       },
@@ -94,6 +97,6 @@ module.exports = {
     description: 'ソフトウェア開発者 山岸和利のブログ',
     image: '/images/main-visual.png',
     siteUrl: 'https://ykzts.blog/',
-    title: 'ykzts.blog'
+    title
   }
 }
