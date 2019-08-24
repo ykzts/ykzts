@@ -86,6 +86,7 @@ module.exports = {
     'gatsby-plugin-sharp',
     'gatsby-plugin-sitemap',
     'gatsby-plugin-typescript',
+    'gatsby-remark-images',
     {
       options: {
         name: 'assets',
@@ -99,12 +100,6 @@ module.exports = {
         path: path.resolve(__dirname, 'content', 'blog')
       },
       resolve: 'gatsby-source-filesystem'
-    },
-    {
-      options: {
-        plugins: ['gatsby-remark-images']
-      },
-      resolve: 'gatsby-transformer-remark'
     },
     'gatsby-transformer-sharp'
   ],
