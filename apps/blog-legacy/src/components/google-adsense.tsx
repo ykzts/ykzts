@@ -1,12 +1,13 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, ReactElement, useEffect } from 'react'
 
 interface Props {
   client: string
   slot: string
 }
 
-const GoogleAdSense: FC<Props> = ({ client, slot }) => {
-  useEffect(() => {
+const GoogleAdSense: FC<Props> = ({ client, slot }): ReactElement => {
+  useEffect((): void => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({})
   }, [])
 

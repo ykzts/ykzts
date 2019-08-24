@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { parseISO } from 'date-fns'
 import { format } from 'date-fns-tz'
 import { Link, graphql } from 'gatsby'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
 import React, { FC, ReactElement } from 'react'
 import GoogleAdSense from '../components/google-adsense'
 import Icon from '../components/icon'
@@ -86,7 +87,7 @@ const PaginationLink = styled(Link)`
 
 interface Props {
   data: {
-    markdownRemark: BlogContent
+    mdx: BlogContent
   }
   pageContext: {
     next: BlogContent
@@ -95,7 +96,7 @@ interface Props {
 }
 
 const BlogPostTemplate: FC<Props> = ({ data, pageContext }): ReactElement => {
-  const { markdownRemark: post } = data
+  const { mdx: post } = data
   const { next, previous } = pageContext
   const publishedTime = parseISO(post.frontmatter.date)
 
@@ -119,7 +120,9 @@ const BlogPostTemplate: FC<Props> = ({ data, pageContext }): ReactElement => {
           </PublishedTime>
         </Header>
 
-        <Content dangerouslySetInnerHTML={{ __html: post.html }} />
+        <Content>
+          <MDXRenderer>{post.body}</MDXRenderer>
+        </Content>
       </main>
 
       <GoogleAdSense client="ca-pub-4541453500124137" slot="7687621473" />
@@ -154,7 +157,8 @@ export default BlogPostTemplate
 
 export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {
-    markdownRemark(fields: { slug: { eq: $slug } }) {
+    mdx(fields: { slug: { eq: $slug } }) {
+      body
       excerpt
       fields {
         slug
@@ -163,7 +167,6 @@ export const pageQuery = graphql`
         date
         title
       }
-      html
     }
   }
 `

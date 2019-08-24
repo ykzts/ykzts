@@ -1,4 +1,5 @@
 export interface BlogContent {
+  body: string
   excerpt: string
   fields: {
     slug: string

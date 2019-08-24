@@ -11,7 +11,7 @@ exports.createPages = async ({ actions, graphql }) => {
   const results = await graphql(
     `
       {
-        allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+        allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
           edges {
             node {
               fields {
@@ -30,7 +30,7 @@ exports.createPages = async ({ actions, graphql }) => {
 
   if (results.errors) throw results.errors
 
-  const { edges: posts } = results.data.allMarkdownRemark
+  const { edges: posts } = results.data.allMdx
 
   const postsPerPage = 5
   const numPages = Math.ceil(posts.length / postsPerPage)
@@ -78,7 +78,7 @@ exports.createPages = async ({ actions, graphql }) => {
 exports.onCreateNode = ({ actions, getNode, node }) => {
   const { createNodeField } = actions
 
-  if (node.internal.type === 'MarkdownRemark') {
+  if (node.internal.type === 'Mdx') {
     let path = node.frontmatter.permalink
 
     if (!path) {

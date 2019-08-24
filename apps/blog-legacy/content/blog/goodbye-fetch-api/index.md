@@ -7,7 +7,7 @@ title: fetch API から XMLHttpRequest への置き換えを決意した話
 
 最近 [fetch API](https://fetch.spec.whatwg.org/) をヘビーに使うようになっていて、いろいろと勘所もわかってきていて、`Promise` ベースなのはやっぱりすごく便利なんだけれども、現状だと機能が全然足りないなあ、と。
 
-`XMLHttpRequestUpload` 相当がないのは知っていたし、困ったなあと思っていたんだけれども、`XMLHttpRequestUpload` 自体がだいぶレア目のヤツで使うような機会もまあめったにないので実害としてはそこまで大きくなかった。</p>
+`XMLHttpRequestUpload` 相当がないのは知っていたし、困ったなあと思っていたんだけれども、`XMLHttpRequestUpload` 自体がだいぶレア目のヤツで使うような機会もまあめったにないので実害としてはそこまで大きくなかった。
 
 んで、だ、`XMLHttpRequestUpload` 相当がないのは良いとしても、`ReadableStream` で `XMLHttpRequest` で言う `progress` イベント相当のことをしようとしたときに、発火時にトータルの容量がわからんつう問題が発生した。
 

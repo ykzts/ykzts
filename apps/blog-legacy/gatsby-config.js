@@ -12,7 +12,7 @@ module.exports = {
             output: '/index.xml',
             query: `
               {
-                allMarkdownRemark(
+                allMdx(
                   limit: 5
                   sort: { fields: [frontmatter___date] order: DESC }
                 ) {
@@ -32,6 +32,14 @@ module.exports = {
                 }
               }
             `,
+            serialize: ({ query: { allMdx, site } }) =>
+              allMdx.edges.map(({ node }) => ({
+                title: node.frontmatter.title,
+                description: node.excerpt,
+                url: site.siteMetadata.siteUrl + node.fields.slug,
+                guid: site.siteMetadata.siteUrl + node.fields.slug,
+                custom_elements: [{ 'content:encoded': node.html }]
+              })),
             title
           }
         ]
@@ -43,6 +51,22 @@ module.exports = {
         trackingId: 'UA-97395750-2'
       },
       resolve: 'gatsby-plugin-google-analytics'
+    },
+    {
+      options: {
+        extensions: ['.md', '.mdx'],
+        gatsbyRemarkPlugins: [
+          {
+            options: {
+              rel: 'noopener noreferrer'
+            },
+            resolve: 'gatsby-remark-external-links'
+          },
+          'gatsby-remark-images',
+          'gatsby-remark-prismjs'
+        ]
+      },
+      resolve: 'gatsby-plugin-mdx'
     },
     {
       options: {
@@ -78,16 +102,7 @@ module.exports = {
     },
     {
       options: {
-        plugins: [
-          {
-            options: {
-              rel: 'noopener noreferrer'
-            },
-            resolve: 'gatsby-remark-external-links'
-          },
-          'gatsby-remark-images',
-          'gatsby-remark-prismjs'
-        ]
+        plugins: ['gatsby-remark-images']
       },
       resolve: 'gatsby-transformer-remark'
     },

@@ -48,7 +48,7 @@ Mastodonはまだ生まれたばかりです。最初のコミットがされて
 
 この記事を書いている時点で、[32個のPull Requests](https://github.com/tootsuite/mastodon/pulls?q=is%3Apr%20author%3Aykzts%20created%3A%22%3C2017-04-30T20%3A00%3A00%2B09%3A00%22%20)を送り、ありがたいことにその内 29個をmergeしていただいています。日本語への翻訳や細かいバグの修正が主ですが、少しでも貢献ができているのであればうれしく思っています。
 
-Mastodonの原作者 (一番初めにコミットをした人) である[Gargron氏](https://mastodon.social/@Gargron)は現在 Patreonで寄付者を募り、フルタイムでMastodoonの開発を行っています。日本からでも「[Gargron is creating open-source software | Patreon](https://www.patreon.com/user?u=619786)」</a>から簡単にGargron氏のパトロンになることができるので、比較的貢献はしやすいかと思います。
+Mastodonの原作者 (一番初めにコミットをした人) である[Gargron氏](https://mastodon.social/@Gargron)は現在 Patreonで寄付者を募り、フルタイムでMastodoonの開発を行っています。日本からでも「[Gargron is creating open-source software | Patreon](https://www.patreon.com/user?u=619786)」から簡単にGargron氏のパトロンになることができるので、比較的貢献はしやすいかと思います。
 
 ここ数箇月で大きなお金を使う事情が何度かあったため、わたしは残念ながらGargron氏に対して月に10USDの貢献しかできていません。その分、開発での貢献ができれば……と考えています。
 

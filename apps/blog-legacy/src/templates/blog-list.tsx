@@ -70,7 +70,7 @@ const PaginationLink = styled(Link)`
 
 interface Props {
   data: {
-    allMarkdownRemark: {
+    allMdx: {
       edges: {
         node: BlogContent
       }[]
@@ -83,7 +83,7 @@ interface Props {
 }
 
 const BlogList: FC<Props> = ({ data, pageContext }): ReactElement => {
-  const { edges: posts } = data.allMarkdownRemark
+  const { edges: posts } = data.allMdx
   const isFirst = pageContext.currentPage < 2
 
   return (
@@ -94,7 +94,7 @@ const BlogList: FC<Props> = ({ data, pageContext }): ReactElement => {
       />
 
       {posts.map(
-        ({ node }, i): ReactElement => {
+        ({ node }): ReactElement => {
           const publishedTime = parseISO(node.frontmatter.date)
 
           return (
@@ -146,14 +146,14 @@ export default BlogList
 
 export const blogListQuery = graphql`
   query blogListQuery($limit: Int!, $skip: Int!) {
-    allMarkdownRemark(
+    allMdx(
       limit: $limit
       skip: $skip
       sort: { fields: [frontmatter___date], order: DESC }
     ) {
       edges {
         node {
-          excerpt(truncate: true)
+          excerpt
           fields {
             slug
           }
