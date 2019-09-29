@@ -2,7 +2,7 @@
   "dependencies": {
     "next": "^9.0.7",
     "react": "^16.10.1",
-    "react-dom": "^16.10.0",
+    "react-dom": "^16.10.1",
     "react-schemaorg": "^1.0.0",
     "schema-dts": "^0.4.2"
   },
