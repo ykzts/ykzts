@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "next": "^9.0.7",
+    "next": "^9.0.8",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-schemaorg": "^1.0.0",
