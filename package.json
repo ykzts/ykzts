@@ -4,7 +4,7 @@
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-schemaorg": "^1.0.0",
-    "schema-dts": "^0.4.3"
+    "schema-dts": "^0.4.4"
   },
   "description": "Yamagishi Kazutoshi's Website!",
   "devDependencies": {
