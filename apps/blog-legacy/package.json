@@ -38,7 +38,7 @@
     "@types/node": "^12.12.24",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
-    "@types/react-helmet": "^5.0.14",
+    "@types/react-helmet": "^5.0.15",
     "@typescript-eslint/eslint-plugin": "^2.14.0",
     "@typescript-eslint/parser": "^2.14.0",
     "eslint": "^6.8.0",
