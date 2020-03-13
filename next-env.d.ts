@@ -1,13 +1,10 @@
 /// <reference types="next" />
 /// <reference types="next/types/global" />
 
-declare namespace JSX {
-  interface AmpAnalytics {
-    children: Element
-    type: string
-  }
+declare module '*.svg'
 
-  interface IntrinsicElements {
-    'amp-analytics': AmpAnalytics
-  }
+declare module '*.mdx' {
+  const MDXComponent: (props: Props) => JSX.Element
+
+  export default MDXComponent
 }

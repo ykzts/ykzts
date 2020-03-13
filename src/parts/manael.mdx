@@ -1,0 +1,10 @@
+import Part from '../components/Part'
+
+山岸和利は2017年11月からオープンソースのリバースプロキシアプリケーションである<a href="https://manael.org/" rel="noopener noreferrer" target="_blank">Manael</a>の開発を行っています。
+
+Manaelは画像の変換に主眼を置いたリバースプロキシです。PNGやJPEG形式の画像をWebP形式へと動的に変換する機能を有しています。Manael自体の機能は最小限に留められていて、NginxやVarnishといったキャッシュ機能を有するリバースプロキシを利用して変換済みのファイルをキャッシュすることを前提としています。
+
+またManaelはGoで書かれています。これにより平易な書き方でありながらも高速な処理が実現されています。
+
+export const title = 'Manael'
+export default Part
