@@ -2,6 +2,7 @@ import { NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 import React from 'react'
 import AboutPart from '../parts/about.mdx'
+import DonationPart from '../parts/donation.mdx'
 import ManaelPart from '../parts/manael.mdx'
 import MastodonPart from '../parts/mastodon.mdx'
 
@@ -24,6 +25,7 @@ const Home: NextPage = () => (
     <AboutPart />
     <MastodonPart />
     <ManaelPart />
+    <DonationPart />
   </>
 )
 
