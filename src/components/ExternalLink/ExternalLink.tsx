@@ -1,17 +1,12 @@
-import React, { FC } from 'react'
+import React, { DetailedHTMLProps, FC, AnchorHTMLAttributes } from 'react'
 
-type Props = {
-  className?: string
-  href: string
-}
+type Props = DetailedHTMLProps<
+  AnchorHTMLAttributes<HTMLAnchorElement>,
+  HTMLAnchorElement
+>
 
-const ExternalLink: FC<Props> = ({ children, className, href }) => (
-  <a
-    className={className}
-    href={href}
-    rel="noopener noreferrer"
-    target="_blank"
-  >
+const ExternalLink: FC<Props> = ({ children, href, ...props }) => (
+  <a href={href} rel="noopener noreferrer" target="_blank" {...props}>
     {children}
   </a>
 )
