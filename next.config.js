@@ -5,7 +5,7 @@ const nextConfig = {
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   webpack(config, { defaultLoaders, dev }) {
     config.module.rules.push({
-      test: /\.svg/,
+      test: /\.(?:jpg|svg)$/,
       use: [
         defaultLoaders.babel,
         {
