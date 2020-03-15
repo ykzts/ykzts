@@ -5,6 +5,8 @@ import { FaArrowDown } from 'react-icons/fa'
 import { useInView } from 'react-intersection-observer'
 import { Link as ScrollLink } from 'react-scroll'
 import css from 'styled-jsx/css'
+import keyVisual from '../../assets/key-visual.jpg'
+import lqipKeyVisual from '../../assets/key-visual-lqip.jpg'
 import paradigm from '../../assets/paradigm.svg'
 import Footer from '../Footer'
 import Image from '../Image'
@@ -81,8 +83,8 @@ const Layout: FC = ({ children }) => {
               alt=""
               className={fillClassName}
               height={1024}
-              placeholder="https://www.gravatar.com/avatar/b9025074d487cd0328f1dc816e5ac50a?s=10"
-              src="https://www.gravatar.com/avatar/b9025074d487cd0328f1dc816e5ac50a?s=1024"
+              placeholder={lqipKeyVisual}
+              src={keyVisual}
               width={1024}
             />
           </SectionContent>
