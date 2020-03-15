@@ -14,7 +14,7 @@ const SectionFooter: FC = ({ children }) => (
       @media (max-width: 1152px) {
         .footer {
           padding: 0 4rem 4rem 4rem;
-	   			text-align: left;
+          text-align: left;
         }
       }
 

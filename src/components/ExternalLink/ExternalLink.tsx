@@ -9,7 +9,7 @@ const ExternalLink: FC<Props> = ({ children, className, href }) => (
   <a
     className={className}
     href={href}
-    rel="noopenner noreferrer"
+    rel="noopener noreferrer"
     target="_blank"
   >
     {children}
