@@ -108,6 +108,19 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
           text-decoration: none;
         }
 
+        strong {
+          font-weight: 600;
+          color: #000;
+        }
+
+        em {
+          font-style: italic;
+        }
+
+        p {
+          margin: 0 0 2rem 0;
+        }
+
         h1,
         h2,
         h3,
