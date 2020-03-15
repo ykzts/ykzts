@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import React, { FC } from 'react'
-import paradigm from '../../assets/paradigm.svg'
+import paradigm from '../../assets/paradigm-solid.svg'
 import { useSectionContext } from './context'
 
 const SectionHeader: FC = ({ children }) => {
