@@ -12,11 +12,13 @@ import Section, {
 
 const { className: iconClassName, styles: iconStyles } = css.resolve`
   a {
+    align-items: center;
     border-bottom: 0;
     border-radius: 2.25rem;
-    display: inline-block;
+    display: inline-flex;
     font-size: 1.25rem;
     height: 2.25rem;
+    justify-content: center;
     line-height: 2.25rem;
     position: relative;
     text-align: center;

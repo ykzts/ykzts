@@ -1,7 +1,9 @@
 import clsx from 'clsx'
 import Head from 'next/head'
 import React, { FC } from 'react'
+import { FaArrowDown } from 'react-icons/fa'
 import { useInView } from 'react-intersection-observer'
+import { Link as ScrollLink } from 'react-scroll'
 import css from 'styled-jsx/css'
 import paradigm from '../../assets/paradigm.svg'
 import Footer from '../Footer'
@@ -20,6 +22,17 @@ const { className: fillClassName, styles: fillStyles } = css.resolve`
     position: absolute;
     top: 0;
     width: 100%;
+  }
+`
+
+const { className: arrowClassName, styles: arrowStyles } = css.resolve`
+  a {
+    border-bottom: 0;
+    display: inline-block;
+    font-size: 4rem;
+    height: 4rem;
+    position: relative;
+    width: 6rem;
   }
 `
 
@@ -45,6 +58,22 @@ const Layout: FC = ({ children }) => {
               <br />
               ポートフォリオ
             </SectionTagline>
+
+            <ul className="actions">
+              <li className="actions__item">
+                <ScrollLink
+                  aria-label="コンテンツまでスクロール"
+                  className={arrowClassName}
+                  href="#content"
+                  offset={-100}
+                  role="button"
+                  smooth
+                  to="content"
+                >
+                  <FaArrowDown />
+                </ScrollLink>
+              </li>
+            </ul>
           </SectionHeader>
 
           <SectionContent>
@@ -59,7 +88,9 @@ const Layout: FC = ({ children }) => {
           </SectionContent>
         </Section>
 
-        <main>{children}</main>
+        <main className="content" id="content">
+          {children}
+        </main>
 
         <Footer />
       </div>
@@ -111,9 +142,46 @@ const Layout: FC = ({ children }) => {
         .wrapper--active::before {
           opacity: 1;
         }
+
+        .actions {
+          cursor: default;
+          display: flex;
+          justify-content: flex-end;
+          list-style: none;
+          margin-left: auto;
+          margin-top: -1rem;
+          padding-left: 0;
+          width: 20rem;
+        }
+
+        @media (max-width: 1152px) {
+          .actions {
+            display: none;
+          }
+        }
+
+        .actions__item {
+          padding: 0 0 0 1rem;
+          vertical-align: middle;
+        }
+
+        .actions__item:first-child {
+          padding-left: 0;
+        }
+
+        @media (max-width: 480px) {
+          .actions__item {
+            flex-grow: 1;
+            flex-shrink: 1;
+            padding: 1rem 0 0 0;
+            text-align: center;
+            width: 100%;
+          }
+        }
       `}</style>
 
       {fillStyles}
+      {arrowStyles}
     </>
   )
 }
