@@ -1,24 +1,32 @@
+import { MDXProviderComponentsProp, MDXProvider } from '@mdx-js/react'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { DefaultSeo } from 'next-seo'
 import React, { FC } from 'react'
+import ExternalLink from '../components/ExternalLink'
 import Layout from '../components/Layout'
+
+const mdxComponents: MDXProviderComponentsProp = {
+  a: ExternalLink
+}
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
-      <DefaultSeo titleTemplate="%s | ykzts.com" />
+      <MDXProvider components={mdxComponents}>
+        <DefaultSeo titleTemplate="%s | ykzts.com" />
 
-      <Head>
-        <link
-          href="https://www.gravatar.com/avatar/b9025074d487cd0328f1dc816e5ac50a?s=256"
-          rel="icon"
-        />
-      </Head>
+        <Head>
+          <link
+            href="https://www.gravatar.com/avatar/b9025074d487cd0328f1dc816e5ac50a?s=256"
+            rel="icon"
+          />
+        </Head>
 
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </MDXProvider>
 
       <style global jsx>{`
         * {

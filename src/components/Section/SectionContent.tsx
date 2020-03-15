@@ -27,8 +27,8 @@ const SectionContent: FC = ({ children }) => {
         @media (max-width: 1152px) {
           .section__content {
             padding: 4rem 4rem;
-						width: 100%;
-						overflow-x: hidden;
+            width: 100%;
+            overflow-x: hidden;
           }
         }
 
