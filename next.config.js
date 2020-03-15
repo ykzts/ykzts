@@ -2,6 +2,7 @@ const withMDX = require('@next/mdx')()
 
 const nextConfig = {
   pageExtensions: ['mdx', 'tsx'],
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   webpack(config, { defaultLoaders, dev }) {
     config.module.rules.push({
       test: /\.svg/,
