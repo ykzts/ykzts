@@ -1,5 +1,11 @@
 import React, { FC } from 'react'
-import { FaFacebookF, FaGithub, FaPatreon, FaTwitter } from 'react-icons/fa'
+import {
+  FaFacebookF,
+  FaGithub,
+  FaMastodon,
+  FaPatreon,
+  FaTwitter
+} from 'react-icons/fa'
 import css from 'styled-jsx/css'
 import ExternalLink from '../ExternalLink'
 import List, { ListItem, ListTitle } from '../List'
@@ -61,6 +67,15 @@ const Footer: FC = () => (
             <ListTitle>Elsewhere</ListTitle>
 
             <ul className="icons">
+              <li className="icons__item">
+                <ExternalLink
+                  aria-label="Mastodon"
+                  className={iconClassName}
+                  href="https://ykzts.technology/@ykzts"
+                >
+                  <FaMastodon />
+                </ExternalLink>
+              </li>
               <li className="icons__item">
                 <ExternalLink
                   aria-label="Twitter"
