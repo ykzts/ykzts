@@ -29,8 +29,8 @@
     "gatsby-source-filesystem": "^2.1.57",
     "gatsby-transformer-sharp": "^2.3.19",
     "prismjs": "^1.19.0",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-helmet": "^5.2.1"
   },
   "description": "This repository contains a source files for ykzts.blog.",
@@ -45,7 +45,7 @@
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-react-hooks": "^2.5.0",
+    "eslint-plugin-react-hooks": "^2.5.1",
     "prettier": "^1.19.1",
     "typescript": "^3.8.3"
   },
