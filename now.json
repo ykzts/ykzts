@@ -1,14 +1,4 @@
 {
-  "name": "ykzts.com",
   "regions": ["hnd1"],
-  "routes": [
-    {
-      "continue": true,
-      "headers": {
-        "cache-control": "max-age=600, s-maxage=60"
-      },
-      "src": "/.*"
-    }
-  ],
   "version": 2
 }
