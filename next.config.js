@@ -1,6 +1,19 @@
 const withMDX = require('@next/mdx')()
 
 const nextConfig = {
+  experimental: {
+    headers: () => [
+      {
+        headers: [
+          {
+            key: 'cache-control',
+            value: 'max-age=600, s-maxage=60'
+          }
+        ],
+        source: '/((?!_next).*)'
+      }
+    ]
+  },
   pageExtensions: ['mdx', 'tsx'],
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   webpack(config, { defaultLoaders, dev }) {
