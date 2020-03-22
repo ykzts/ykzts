@@ -72,6 +72,7 @@ const Footer: FC = () => (
                   aria-label="Mastodon"
                   className={iconClassName}
                   href="https://ykzts.technology/@ykzts"
+                  rel="me"
                 >
                   <FaMastodon />
                 </ExternalLink>
@@ -81,6 +82,7 @@ const Footer: FC = () => (
                   aria-label="Twitter"
                   className={iconClassName}
                   href="https://twitter.com/ykzts"
+                  rel="me"
                 >
                   <FaTwitter />
                 </ExternalLink>
@@ -90,6 +92,7 @@ const Footer: FC = () => (
                   aria-label="Facebook"
                   className={iconClassName}
                   href="https://www.facebook.com/ykzts"
+                  rel="me"
                 >
                   <FaFacebookF />
                 </ExternalLink>
@@ -99,6 +102,7 @@ const Footer: FC = () => (
                   aria-label="GitHub"
                   className={iconClassName}
                   href="https://github.com/ykzts"
+                  rel="me"
                 >
                   <FaGithub />
                 </ExternalLink>
@@ -108,6 +112,7 @@ const Footer: FC = () => (
                   aria-label="Patreon"
                   className={iconClassName}
                   href="https://www.patreon.com/ykzts"
+                  rel="me"
                 >
                   <FaPatreon />
                 </ExternalLink>
