@@ -109,9 +109,6 @@
     "type": "git",
     "url": "https://github.com/ykzts/ykzts.blog.git"
   },
-  "resolutions": {
-    "sharp": "^0.24.1"
-  },
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",
