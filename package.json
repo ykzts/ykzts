@@ -12,7 +12,7 @@
   },
   "description": "Yamagishi Kazutoshi's Website!",
   "devDependencies": {
-    "@inabagumi/eslint-config-react": "^5.1.0",
+    "@inabagumi/eslint-config-react": "^5.1.1",
     "@inabagumi/prettier-config": "^1.1.2",
     "@mdx-js/loader": "^1.5.7",
     "@types/mdx-js__react": "^1.5.1",
