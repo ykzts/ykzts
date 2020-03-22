@@ -8,7 +8,6 @@ import css from 'styled-jsx/css'
 import keyVisual from '../../assets/key-visual.jpg'
 import lqipKeyVisual from '../../assets/key-visual-lqip.jpg'
 import paradigm from '../../assets/paradigm.svg'
-import Footer from '../Footer'
 import Image from '../Image'
 import Section, {
   SectionContent,
@@ -16,6 +15,7 @@ import Section, {
   SectionTagline,
   SectionTitle
 } from '../Section'
+import LayoutFooter from './LayoutFooter'
 
 const { className: fillClassName, styles: fillStyles } = css.resolve`
   .image {
@@ -94,7 +94,7 @@ const Layout: FC = ({ children }) => {
           {children}
         </main>
 
-        <Footer />
+        <LayoutFooter />
       </div>
 
       <style jsx>{`
