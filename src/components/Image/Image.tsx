@@ -17,57 +17,57 @@ const Image: FC<Props> = ({
   placeholder,
   src,
   width
-}) => {
-  const ratio = height && width ? `${(height / width) * 100}%` : '100%'
-
-  return (
-    <>
-      <div
-        className={clsx('image', className)}
-        style={{ paddingBottom: ratio }}
-      >
-        {placeholder ? (
-          <img alt="" className="image__placeholder" src={placeholder} />
-        ) : (
-          <div className="image__placeholder" />
-        )}
-
+}) => (
+  <>
+    <div className={clsx('image', className)}>
+      {placeholder ? (
         <img
-          alt={alt}
+          alt=""
+          className="image__placeholder"
+          src={placeholder}
           height={height}
-          className="image__actual-image"
-          loading="lazy"
-          src={src}
           width={width}
         />
-      </div>
+      ) : (
+        <div className="image__placeholder" />
+      )}
 
-      <style jsx>{`
-        .image {
-          background-color: #fff;
-          display: inline-block;
-          overflow: hidden;
-          padding-bottom: 100%;
-          position: relative;
-          width: 100%;
-        }
+      <img
+        alt={alt}
+        height={height}
+        className="image__actual-image"
+        loading="lazy"
+        src={src}
+        width={width}
+      />
+    </div>
 
-        .image__placeholder,
-        .image__actual-image {
-          display: block;
-          height: 100%;
-          object-fit: cover;
-          position: absolute;
-          width: 100%;
-        }
+    <style jsx>{`
+      .image {
+        background-color: #fff;
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: inline-block;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+      }
 
-        .image__placeholder {
-          background-color: #fff;
-          filter: blur(50px);
-        }
-      `}</style>
-    </>
-  )
-}
+      .image__placeholder,
+      .image__actual-image {
+        display: block;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        width: 100%;
+      }
+
+      .image__placeholder {
+        background-color: #fff;
+        filter: blur(50px);
+      }
+    `}</style>
+  </>
+)
 
 export default Image
