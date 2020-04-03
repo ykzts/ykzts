@@ -5,15 +5,14 @@ import { SectionProvider } from './context'
 
 type Props = {
   intro?: boolean
-  last?: boolean
 }
 
-const Section: FC<Props> = ({ children, intro = false, last = false }) => {
+const Section: FC<Props> = ({ children, intro = false }) => {
   const [ref, inView] = useInView({ triggerOnce: true })
 
   return (
     <>
-      <SectionProvider value={{ active: inView, intro, last }}>
+      <SectionProvider value={{ active: inView, intro }}>
         <section
           className={clsx('section', {
             'section--active': inView,

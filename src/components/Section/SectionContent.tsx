@@ -2,13 +2,17 @@ import clsx from 'clsx'
 import React, { FC } from 'react'
 import { useSectionContext } from './context'
 
-const SectionContent: FC = ({ children }) => {
+type Props = {
+  className?: string
+}
+
+const SectionContent: FC<Props> = ({ children, className }) => {
   const { active, intro } = useSectionContext()
 
   return (
     <>
       <div
-        className={clsx('section__content', {
+        className={clsx('section__content', className, {
           intro__content: intro,
           'intro__content--active': intro && active
         })}

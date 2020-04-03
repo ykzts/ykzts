@@ -4,13 +4,12 @@ import paradigm from '../../assets/paradigm-solid.svg'
 import { useSectionContext } from './context'
 
 const SectionHeader: FC = ({ children }) => {
-  const { active, intro, last } = useSectionContext()
+  const { active, intro } = useSectionContext()
 
   return (
     <>
       <header
         className={clsx('section__header', {
-          'section__header--last': last,
           intro__header: intro,
           'intro__header--active': intro && active
         })}
@@ -84,11 +83,11 @@ const SectionHeader: FC = ({ children }) => {
           }
         }
 
-        .section__header--last::before {
+        :global(.content .section:last-of-type) .section__header::before {
           height: 100%;
         }
 
-        .section__header--last::after {
+        :global(.content .section:last-of-type) .section__header::after {
           background-color: #43d9b8;
           border-radius: 0.5rem;
           bottom: -1.5rem;
@@ -102,7 +101,7 @@ const SectionHeader: FC = ({ children }) => {
         }
 
         @media (max-width: 1152px) {
-          .section__header--last::after {
+          :global(.content .section:last-of-type) .section__header::after {
             display: none;
           }
         }

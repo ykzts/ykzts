@@ -2,11 +2,18 @@ import { NextPage } from 'next'
 import Link from 'next/link'
 import { NextSeo } from 'next-seo'
 import React from 'react'
+import css from 'styled-jsx/css'
 import Section, {
   SectionContent,
   SectionHeader,
   SectionTitle
 } from '../components/Section'
+
+const { className: contentClassName, styles: contentStyles } = css.resolve`
+  .section__content {
+    min-height: 50vh;
+  }
+`
 
 const NotFound: NextPage = () => (
   <>
@@ -17,8 +24,8 @@ const NotFound: NextPage = () => (
         <SectionTitle>404 Not Found</SectionTitle>
       </SectionHeader>
 
-      <SectionContent>
-        <p>このページは見つかりませんでした。</p>
+      <SectionContent className={contentClassName}>
+        <p className="message">お探しのページを見つけられませんでした。</p>
 
         <p>
           <Link href="/">
@@ -27,6 +34,14 @@ const NotFound: NextPage = () => (
         </p>
       </SectionContent>
     </Section>
+
+    <style jsx>{`
+      .message {
+        margin-bottom: 10rem;
+      }
+    `}</style>
+
+    {contentStyles}
   </>
 )
 
