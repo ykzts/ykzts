@@ -10,8 +10,8 @@ type Props = {
   title?: string
 }
 
-const Part: FC<Props> = ({ children, last = false, title }) => (
-  <Section last={last}>
+const Part: FC<Props> = ({ children, title }) => (
+  <Section>
     <SectionHeader>
       <SectionTitle>{title}</SectionTitle>
     </SectionHeader>
