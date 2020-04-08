@@ -22,6 +22,13 @@ const Footer: FC = () => (
         >
           HTML5 UP
         </ExternalLink>
+        . Artwork by{' '}
+        <ExternalLink
+          className={footerLinkClassName}
+          href="https://twitter.com/diru_k1005"
+        >
+          Kannazuki Diru
+        </ExternalLink>
         .
       </div>
     </footer>
