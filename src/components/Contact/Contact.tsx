@@ -55,6 +55,11 @@ const Contact: FC = () => (
             <a href="mailto:ykzts@desire.sh">ykzts@desire.sh</a>
           </ListItem>
           <ListItem>
+            <ListTitle>Blog</ListTitle>
+
+            <ExternalLink href="https://ykzts.blog/">ykzts.blog</a>
+          </ListItem>
+          <ListItem>
             <ListTitle>Elsewhere</ListTitle>
 
             <ul className="icons">
