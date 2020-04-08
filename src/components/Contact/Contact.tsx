@@ -57,7 +57,7 @@ const Contact: FC = () => (
           <ListItem>
             <ListTitle>Blog</ListTitle>
 
-            <ExternalLink href="https://ykzts.blog/">ykzts.blog</a>
+            <ExternalLink href="https://ykzts.blog/">ykzts.blog</ExternalLink>
           </ListItem>
           <ListItem>
             <ListTitle>Elsewhere</ListTitle>
