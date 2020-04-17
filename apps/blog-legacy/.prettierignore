@@ -1,5 +1,5 @@
 /.docusaurus/
 /.now/
+/blog/
 /build/
 /node_modules/
-/yarn-error.log

@@ -5,115 +5,43 @@
     "url": "https://github.com/ykzts/ykzts.blog/issues"
   },
   "dependencies": {
-    "@emotion/core": "^10.0.28",
-    "@emotion/styled": "^10.0.27",
-    "@mdx-js/mdx": "^1.5.8",
-    "@mdx-js/react": "^1.5.8",
-    "date-fns": "^2.12.0",
-    "date-fns-tz": "^1.0.10",
-    "gatsby": "^2.20.23",
-    "gatsby-plugin-catch-links": "^2.2.2",
-    "gatsby-plugin-emotion": "^4.2.1",
-    "gatsby-plugin-feed": "^2.4.2",
-    "gatsby-plugin-google-analytics": "^2.2.3",
-    "gatsby-plugin-manifest": "^2.3.4",
-    "gatsby-plugin-mdx": "^1.1.8",
-    "gatsby-plugin-netlify": "^2.2.2",
-    "gatsby-plugin-react-helmet": "^3.2.3",
-    "gatsby-plugin-sharp": "^2.5.5",
-    "gatsby-plugin-sitemap": "^2.3.3",
-    "gatsby-plugin-typescript": "^2.3.2",
-    "gatsby-remark-external-links": "^0.0.4",
-    "gatsby-remark-images": "^3.2.3",
-    "gatsby-remark-prismjs": "^3.4.2",
-    "gatsby-source-filesystem": "^2.2.3",
-    "gatsby-transformer-sharp": "^2.4.5",
-    "prismjs": "^1.20.0",
+    "@docusaurus/core": "^2.0.0-alpha.50",
+    "@docusaurus/preset-classic": "^2.0.0-alpha.50",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-helmet": "^6.0.0"
+    "react-dom": "^16.13.1"
   },
   "description": "This repository contains a source files for ykzts.blog.",
   "devDependencies": {
-    "@types/node": "^12.12.35",
+    "@inabagumi/eslint-config-react": "^5.1.1",
+    "@inabagumi/prettier-config": "^1.1.2",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
-    "@types/react-helmet": "^5.0.15",
-    "@typescript-eslint/eslint-plugin": "^2.28.0",
-    "@typescript-eslint/parser": "^2.28.0",
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-react-hooks": "^3.0.0",
     "prettier": "^2.0.4",
     "typescript": "^3.8.3"
   },
   "eslintConfig": {
     "extends": [
-      "plugin:react/recommended",
-      "plugin:jsx-a11y/recommended",
-      "prettier/react"
+      "@inabagumi/react"
     ],
-    "overrides": [
-      {
-        "extends": [
-          "plugin:@typescript-eslint/recommended",
-          "prettier/@typescript-eslint"
-        ],
-        "files": [
-          "*.ts",
-          "*.tsx"
-        ]
-      },
-      {
-        "files": [
-          "*.tsx"
-        ],
-        "rules": {
-          "react/prop-types": "off"
-        }
-      }
-    ],
-    "parserOptions": {
-      "ecmaVersion": 9,
-      "sourceType": "module"
-    },
-    "plugins": [
-      "react-hooks"
-    ],
-    "rules": {
-      "react-hooks/exhaustive-deps": "error",
-      "react-hooks/rules-of-hooks": "error"
-    },
-    "settings": {
-      "react": {
-        "version": "detect"
-      }
-    }
+    "root": true
   },
   "homepage": "https://ykzts.blog/",
-  "keywords": [
-    "Yamagishi Kazutoshi",
-    "ykzts"
-  ],
+  "keywords": [],
   "license": "MIT",
   "main": "n/a",
   "name": "@ykzts/ykzts.blog",
-  "prettier": {
-    "semi": false,
-    "singleQuote": true
-  },
+  "prettier": "@inabagumi/prettier-config",
   "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/ykzts/ykzts.blog.git"
   },
   "scripts": {
-    "build": "gatsby build",
-    "develop": "gatsby develop",
-    "format": "prettier --ignore-path .gitignore --write \"**/*.{js,ts,tsx}\"",
-    "lint": "eslint --ext .js,.ts,.tsx --ignore-path .gitignore ."
+    "build": "docusaurus build",
+    "format": "prettier --write .",
+    "lint": "eslint --ext .js,.ts,.tsx --ignore-path .gitignore .",
+    "start": "docusaurus start"
   },
   "version": "1.0.0"
 }
