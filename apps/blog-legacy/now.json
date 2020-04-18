@@ -9,6 +9,11 @@
       "statusCode": 301
     },
     {
+      "destination": "https://ykzts.com/",
+      "source": "/([Aa]uthor|about)",
+      "statusCode": 301
+    },
+    {
       "destination": "/2012/04/01/custom-http-header-on-nginx",
       "source": "/post/20308520977",
       "statusCode": 301
