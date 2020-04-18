@@ -40,6 +40,7 @@
   "scripts": {
     "build": "docusaurus build",
     "format": "prettier --write .",
+    "format-check": "prettier -c .",
     "lint": "eslint --ext .js,.ts,.tsx --ignore-path .gitignore .",
     "start": "docusaurus start"
   },
