@@ -5,8 +5,8 @@
     "url": "https://github.com/ykzts/ykzts.blog/issues"
   },
   "dependencies": {
-    "@docusaurus/core": "^2.0.0-alpha.50",
-    "@docusaurus/preset-classic": "^2.0.0-alpha.50",
+    "@docusaurus/core": "^2.0.0-alpha.53",
+    "@docusaurus/preset-classic": "^2.0.0-alpha.53",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
