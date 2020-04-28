@@ -4,7 +4,7 @@
   },
   "redirects": [
     {
-      "destination": "/feed.xml",
+      "destination": "/atom.xml",
       "source": "/(feed/?|index.xml|rss)",
       "statusCode": 301
     },
