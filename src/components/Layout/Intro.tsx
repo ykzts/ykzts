@@ -3,7 +3,6 @@ import { FaArrowDown } from 'react-icons/fa'
 import { Link as ScrollLink } from 'react-scroll'
 import css from 'styled-jsx/css'
 import keyVisual from '../../assets/key-visual.jpg'
-import lqipKeyVisual from '../../assets/key-visual-lqip.jpg'
 import Image from '../Image'
 import Section, {
   SectionContent,
@@ -67,8 +66,8 @@ const Intro: FC = () => (
           alt=""
           className={fillClassName}
           height={1024}
-          placeholder={lqipKeyVisual}
-          src={keyVisual}
+          placeholder={keyVisual.preSrc}
+          src={keyVisual.src}
           width={1024}
         />
       </SectionContent>
