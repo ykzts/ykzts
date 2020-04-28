@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@docusaurus/lqip-loader": "^2.0.0-alpha.51",
+    "@docusaurus/lqip-loader": "^2.0.0-alpha.54",
     "@mdx-js/loader": "^1.6.0",
     "@next/mdx": "^9.3.6",
     "clsx": "^1.1.0",
