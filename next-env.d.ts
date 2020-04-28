@@ -1,7 +1,12 @@
 /// <reference types="next" />
 /// <reference types="next/types/global" />
 
-declare module '*.jpg'
+declare module '*.jpg' {
+  export const palette: string[]
+  export const preSrc: string
+  export const src: string
+}
+
 declare module '*.svg'
 
 declare module '*.mdx' {
