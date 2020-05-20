@@ -1215,10 +1215,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.21.tgz#c00e9603399126925806bed2d9a1e37da506965e"
   integrity sha512-PQKsydPxYxF1DsAFWmunaxd3sOi3iMt6Zmx/tgaagHYmwJ/9cRH91hQkeJZaUGWbvn0K5HlSVEXkn5U/llWPpQ==
 
-"@types/node@^13.13.7":
-  version "13.13.7"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.7.tgz#e4546d907eae3a6fd8458bbb53418f53fcea64da"
-  integrity sha512-xCsVNsyYQHmXNDCHOhKdhAugWHZtRrTuNJkQfsOcvinaUugs/K/AHS2SH71k+u/y2wkKE0mBfKin/D4CMo/WmA==
+"@types/node@^13.13.8":
+  version "13.13.8"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.8.tgz#39fa1c8563bce1077507fea05699437f112ecbcc"
+  integrity sha512-WJoiKALUF5exZo0G3T5coauJR2Tmc6rdE9/kgppZVnV6rlUB2dl3gTu2GTNBKhKF6SZ/WFfpEUIGNC/0qvdMWA==
 
 "@types/prop-types@*":
   version "15.7.3"
