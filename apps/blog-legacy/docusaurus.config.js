@@ -25,7 +25,11 @@ module.exports = {
   ],
   tagline: description,
   themeConfig: {
-    disableDarkMode: true,
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: true,
+      respectPrefersColorScheme: false
+    },
     footer: {
       copyright: 'Copyright © 2012-2020 Yamagishi Kazutoshi',
       links: [
