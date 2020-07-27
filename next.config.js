@@ -3,19 +3,17 @@
 const withMDX = require('@next/mdx')()
 
 const nextConfig = {
-  experimental: {
-    headers: () => [
-      {
-        headers: [
-          {
-            key: 'cache-control',
-            value: 'max-age=600, s-maxage=60'
-          }
-        ],
-        source: '/((?!_next).*)'
-      }
-    ]
-  },
+  headers: () => [
+    {
+      headers: [
+        {
+          key: 'cache-control',
+          value: 'max-age=600, s-maxage=60'
+        }
+      ],
+      source: '/((?!_next).*)'
+    }
+  ],
   pageExtensions: ['mdx', 'tsx'],
   webpack(config, { defaultLoaders, dev }) {
     const urlLoader = {
