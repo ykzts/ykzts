@@ -3,3 +3,5 @@
 /blog/
 /build/
 /node_modules/
+
+/src/pages/*.mdx
