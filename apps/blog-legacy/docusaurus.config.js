@@ -45,6 +45,15 @@ module.exports = {
             }
           ],
           title: 'Information'
+        },
+        {
+          items: [
+            {
+              href: 'https://www.patreon.com/ykzts',
+              label: 'Patreon'
+            }
+          ],
+          title: 'Donation'
         }
       ],
       style: 'dark'
