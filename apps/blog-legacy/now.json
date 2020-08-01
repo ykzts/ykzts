@@ -19,6 +19,16 @@
       "statusCode": 301
     },
     {
+      "destination": "/2012/06/14/nodex-xmlhttprequest",
+      "source": "/post/25108537330",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2012/06/18/xmlhttprequest-response-type",
+      "source": "/post/25378068289",
+      "statusCode": 301
+    },
+    {
       "destination": "/2012/06/23/register-node-xmlhttprequest-to-npm",
       "source": "/post/25705564207",
       "statusCode": 301
@@ -46,6 +56,11 @@
     {
       "destination": "/2013/08/06/javascript-is-not-slow",
       "source": "/post/57553849556",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2013/08/11/w3c-xmlhttprequest",
+      "source": "/post/58006314813",
       "statusCode": 301
     },
     {
