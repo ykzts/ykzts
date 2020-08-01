@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { FC } from 'react'
 import Layout from '@theme/Layout'
 
-const NotFound = () => (
+const NotFound: FC = () => (
   <Layout title="404 Not Found">
     <div className="container margin-vert--xl">
       <div className="row">
