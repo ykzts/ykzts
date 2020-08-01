@@ -37,10 +37,10 @@ module.exports = {
           items: [
             {
               href: 'https://ykzts.com/',
-              label: '運営者情報'
+              label: 'Yamagishi Kazutoshi'
             },
             {
-              label: 'プライバシーポリシー',
+              label: 'Privacy Policy',
               to: 'privacy'
             }
           ],
