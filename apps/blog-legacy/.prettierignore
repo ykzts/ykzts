@@ -1,5 +1,5 @@
 /.docusaurus/
-/.now/
+/.vercel/
 /blog/
 /build/
 /node_modules/
