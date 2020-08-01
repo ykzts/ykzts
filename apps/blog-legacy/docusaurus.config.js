@@ -49,6 +49,27 @@ module.exports = {
         {
           items: [
             {
+              href: 'https://github.com/ykzts',
+              label: 'GitHub'
+            },
+            {
+              href: 'https://ykzts.technology/@ykzts',
+              label: 'Mastodon'
+            },
+            {
+              href: 'https://twitter.com/ykzts',
+              label: 'Twitter'
+            },
+            {
+              href: 'https://www.facebook.com/ykzts',
+              label: 'Facebook'
+            }
+          ],
+          title: 'Social'
+        },
+        {
+          items: [
+            {
               href: 'https://www.patreon.com/ykzts',
               label: 'Patreon'
             }
