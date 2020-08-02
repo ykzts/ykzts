@@ -91,6 +91,10 @@ module.exports = {
     image: 'img/main-visual.png',
     navbar: {
       hideOnScroll: true,
+      logo: {
+        src: 'img/pencil.svg',
+        srcDark: 'img/pencil_dark.svg'
+      },
       title
     },
     prism: {
