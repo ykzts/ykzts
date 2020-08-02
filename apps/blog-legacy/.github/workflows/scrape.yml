@@ -2,7 +2,7 @@ name: DocSearch Scraper
 
 on:
   schedule:
-    - cron: '14 3-21/6 * * *'
+    - cron: '28 3-21/6 * * *'
 
 jobs:
   scrape:
@@ -16,7 +16,7 @@ jobs:
       - name: Run DocSearch Scraper
         run: |
           docker pull algolia/docsearch-scraper:latest
-          docker run -it -e TZ -e API_KEY -e APPLICATION_ID -e CONFIG algolia/docsearch-scraper:latest
+          docker run -e TZ -e API_KEY -e APPLICATION_ID -e CONFIG algolia/docsearch-scraper:latest
         env:
           TZ: UTC
           API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
