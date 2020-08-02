@@ -25,6 +25,11 @@ module.exports = {
   ],
   tagline: description,
   themeConfig: {
+    algolia: {
+      appId: 'DTXYNURL2W',
+      apiKey: 'ce19efe9049e80eabf802d921a314fc9',
+      indexName: 'posts'
+    },
     colorMode: {
       defaultMode: 'light',
       disableSwitch: true,
