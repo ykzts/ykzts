@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: ''
+      - name: Get DocSearch configuration
         id: docsearch-config
         run: echo "::set-output name=json::$(cat docsearch.json | jq -r tostring)"
       - uses: docker://algolia/docsearch-scraper:latest
