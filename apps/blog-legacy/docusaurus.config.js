@@ -32,8 +32,8 @@ module.exports = {
     },
     colorMode: {
       defaultMode: 'light',
-      disableSwitch: true,
-      respectPrefersColorScheme: false
+      disableSwitch: false,
+      respectPrefersColorScheme: true
     },
     footer: {
       copyright: 'Copyright © 2012-2020 Yamagishi Kazutoshi',
