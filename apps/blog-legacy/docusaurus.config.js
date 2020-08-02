@@ -11,6 +11,7 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         blog: {
+          showReadingTime: false,
           path: 'blog',
           feedOptions: {
             description,
