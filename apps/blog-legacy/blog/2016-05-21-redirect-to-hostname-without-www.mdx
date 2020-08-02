@@ -1,4 +1,8 @@
 ---
+author: Yamagishi Kazutoshi
+author_image_url: https://github.com/ykzts.png
+author_title: Software Developer
+author_url: https://ykzts.com/
 date: 2016-05-21T20:27:25+09:00
 redirect_from: /post/144696559108
 title: nginx の設定ファイルで正規表現を使って www. なしのドメイン名にリダイレクトさせる
@@ -9,6 +13,8 @@ title: nginx の設定ファイルで正規表現を使って www. なしのド�
 ただ `www.` つきでアクセスされた際に、`www.` なしのドメイン名へのリダイレクトをさせる処理をドメイン名単位で一つ一つ書いていくのは無駄です。
 
 nginx の `server_name` ディレクティブでは正規表現を使えます。nginx が正規表現エンジンとして使っている PCRE では名前付きキャプチャに対応しているので次のように書けます。
+
+<!--truncate-->
 
 ```
 server {

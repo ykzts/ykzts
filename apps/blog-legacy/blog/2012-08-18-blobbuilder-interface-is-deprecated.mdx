@@ -1,10 +1,16 @@
 ---
+author: Yamagishi Kazutoshi
+author_image_url: https://github.com/ykzts.png
+author_title: Software Developer
+author_url: https://ykzts.com/
 date: 2012-08-18T11:10:00+09:00
 redirect_from: /post/29666019536
 title: BlobBuilderインターフェースが非推奨となっていた
 ---
 
 最近になって気がついたが[BlobBuilderインターフェースが非推奨となっていた](http://www.w3.org/TR/2012/WD-file-writer-api-20120417/#the-blobbuilder-interface)。Chronium 21.0.1180.75にて`new WebKitBlobBuilder()`といった記述のあるスクリプトを実行すると「BlobBuilder is deprecated. Use &ldquo;Blob&rdquo; constructor instead.」といった表示がコンソールに出力されるようになっている。まだ現時点では使えはするようだがいつ使えないようになってしまうのかわからない。なのでつかうようにと表示されているよう`Blob`はどういった仕様でどのようにつかえるものなのかを簡単に調べてみた。
+
+<!--truncate-->
 
 File APIの仕様中にある[Blobインターフェースの項](http://www.w3.org/TR/2012/WD-FileAPI-20120712/#blob)を見てみたところ
 
