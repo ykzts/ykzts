@@ -1,5 +1,6 @@
 const title = 'ykzts.blog'
 const description = 'ソフトウェア開発者 山岸和利のブログ'
+const copyright = 'Copyright © 2012-2020 Yamagishi Kazutoshi'
 
 /**
  * @type {import('@docusaurus/types').DocusaurusConfig}
@@ -12,9 +13,11 @@ module.exports = {
       {
         blog: {
           blogDescription: description,
+          editUrl: 'https://github.com/ykzts/ykzts.blog/edit/main/',
           showReadingTime: false,
           path: 'blog',
           feedOptions: {
+            copyright,
             description,
             type: 'atom'
           },
@@ -38,7 +41,7 @@ module.exports = {
       respectPrefersColorScheme: true
     },
     footer: {
-      copyright: 'Copyright © 2012-2020 Yamagishi Kazutoshi',
+      copyright,
       links: [
         {
           items: [
