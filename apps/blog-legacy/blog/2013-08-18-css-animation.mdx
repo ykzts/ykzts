@@ -70,7 +70,7 @@ title: JavaScriptでアニメーションを書く場合にはCSSも活用する
       }
       target.classList.add('disappear');
     }
-    
+
     target.addEventListener('webkitTransitionEnd', disappear, false);
     target.addEventListener('oTransitionEnd', disappear, false);
     target.addEventListener('transitionend', disappear, false);
@@ -82,4 +82,4 @@ title: JavaScriptでアニメーションを書く場合にはCSSも活用する
 
 前記のコードのようにCSSとJavaScriptを組み合わせた記述をした方が通常多くのウェブブラウザーでは安定した動作をしてくれます。`classList`やCSSの`transition`プロパティーを使用しており、あまりにも古いウェブブラウザーでは動作してくれなくなります。しかしながら、元の記事では`transition`プロパティーと同様にあまりにも古いウェブブラウザーでは動作することがない`Date.now()`を使用しており、こちらもあまりにも古いウェブブラウザーでの動作は考慮に入れていないと判断しました。
 
-以前、[JavaScriptは決して遅くない](/2013/08/06/javascript-is-not-slow/)という記事を書き、遅いのは適切に書かれていないDOM操作のことであるという主張をいたしました。その考えは今でも変わっておりません。適切な記述さえすれば、遅くなるということはないのです。JavaScriptやDOMだけではなくCSSやそのほかの技術を適切に組み合わせて使うことによってウェブブラウザーはその真価を発揮するのです。多くの技術を楽しんで調べて、知識としてその身に取り込んでいくことが、ウェブブラウザーと仲良くして、ウェブページを作るにあたっては肝要となるのです。
+以前、[JavaScriptは決して遅くない](./2013-08-06-javascript-is-not-slow.mdx)という記事を書き、遅いのは適切に書かれていないDOM操作のことであるという主張をいたしました。その考えは今でも変わっておりません。適切な記述さえすれば、遅くなるということはないのです。JavaScriptやDOMだけではなくCSSやそのほかの技術を適切に組み合わせて使うことによってウェブブラウザーはその真価を発揮するのです。多くの技術を楽しんで調べて、知識としてその身に取り込んでいくことが、ウェブブラウザーと仲良くして、ウェブページを作るにあたっては肝要となるのです。
