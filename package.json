@@ -27,7 +27,7 @@
     "@types/styled-jsx": "^2.2.8",
     "eslint": "^7.7.0",
     "prettier": "^2.0.5",
-    "typescript": "^3.9.7"
+    "typescript": "^4.0.2"
   },
   "engines": {
     "node": "12.x"
