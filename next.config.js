@@ -3,6 +3,10 @@
 const withMDX = require('@next/mdx')()
 
 const nextConfig = {
+  experimental: {
+    optimizeFonts: true,
+    optimizeImages: true
+  },
   headers: () => [
     {
       headers: [
