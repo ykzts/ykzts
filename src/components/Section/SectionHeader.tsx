@@ -37,14 +37,14 @@ const SectionHeader: FC = ({ children }) => {
           .section__header {
             background-attachment: fixed;
             background-color: #49fcd4;
-            background-image: url("${paradigm}");
+            background-image: url('${paradigm}');
             background-position: 25% 50%;
-						background-repeat: repeat-y;
-						background-size: 40rem auto;
+            background-repeat: repeat-y;
+            background-size: 40rem auto;
             justify-self: start;
             padding: 4rem 4rem;
-						text-align: left;
-						width: 100%;
+            text-align: left;
+            width: 100%;
           }
         }
 

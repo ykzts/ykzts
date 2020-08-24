@@ -50,11 +50,11 @@ const Layout: FC = ({ children }) => {
         .wrapper::before {
           background-attachment: fixed;
           background-color: #49fcd4;
-          background-image: url("${paradigm}");
+          background-image: url('${paradigm}');
           background-position: -50% 10%;
           background-repeat: no-repeat;
           background-size: 75% auto;
-          content: "";
+          content: '';
           display: block;
           height: 100%;
           left: 0;
