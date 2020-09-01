@@ -7,7 +7,11 @@ declare module '*.jpg' {
   export const src: string
 }
 
-declare module '*.svg'
+declare module '*.svg' {
+  const url: string
+
+  export default url
+}
 
 declare module '*.mdx' {
   const MDXComponent: (props: Props) => JSX.Element
