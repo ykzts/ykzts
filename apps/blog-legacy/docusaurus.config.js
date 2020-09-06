@@ -24,6 +24,7 @@ module.exports = {
           postsPerPage: 5,
           routeBasePath: '/'
         },
+        docs: false,
         sitemap: {}
       }
     ]
