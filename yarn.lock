@@ -5516,12 +5516,10 @@ react-icons@^3.11.0:
   dependencies:
     camelcase "^5.0.0"
 
-react-intersection-observer@^8.27.1:
-  version "8.27.1"
-  resolved "https://registry.yarnpkg.com/react-intersection-observer/-/react-intersection-observer-8.27.1.tgz#c641bf7594a0c06c1947ef1368812cb870c4bcfd"
-  integrity sha512-s70LKz+hm8wQY/4pvGVWs/gAfiLPlivyZiiUU1JdWDZj7vN8jbHYzJ8H1HWGvWpcudRg7g7kBWUUbcRjlloD0Q==
-  dependencies:
-    tiny-invariant "^1.1.0"
+react-intersection-observer@^8.28.0:
+  version "8.28.0"
+  resolved "https://registry.yarnpkg.com/react-intersection-observer/-/react-intersection-observer-8.28.0.tgz#000ba74e99b1627c26cfc0c37467c92283581511"
+  integrity sha512-hZpM1mLDsgU2Qu/2m8IkL0njDdn4FZgjyNokBMa88wiPuqzY6oVf5TOeSY57xNLubtDEp8YsTXkSJx8zNX/Cag==
 
 react-is@16.13.1, react-is@^16.8.1:
   version "16.13.1"
@@ -6471,11 +6469,6 @@ timm@^1.6.1:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/timm/-/timm-1.7.0.tgz#c538100a58d066a53cb6cadeb8fb6b0dfd66e270"
   integrity sha512-oVYHPG5KiUJ3KrbBTmW2kTauIO9E1lDEUM6K92HVuwnPfTt7W8UXZG3vqOo4tVaHRI9AHToVHqhzIUUFkDN6rA==
-
-tiny-invariant@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.1.0.tgz#634c5f8efdc27714b7f386c35e6760991d230875"
-  integrity sha512-ytxQvrb1cPc9WBEI/HSeYYoGD0kWnGEOR8RY6KomWLBVhqz0RgTwVO9dLrGz7dC+nN9llyI7OKAgRq8Vq4ZBSw==
 
 tinycolor2@^1.4.1:
   version "1.4.1"
