@@ -16,7 +16,6 @@ const Layout: FC<Props> = ({ children, ...props }) => (
   <OriginalLayout {...props}>
     <Head>
       <html lang="ja" />
-      <meta content="nocomment" name="Hatena::Bookmark" />
     </Head>
 
     {children}

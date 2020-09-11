@@ -94,6 +94,12 @@ module.exports = {
       trackingID: 'UA-97395750-2'
     },
     image: 'img/main-visual.png',
+    metadatas: [
+      {
+        content: 'nocomment',
+        name: 'Hatena::Bookmark'
+      }
+    ],
     navbar: {
       hideOnScroll: true,
       logo: {
