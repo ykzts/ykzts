@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import Head from '@docusaurus/Head'
-import OriginalLayout from '@theme-original/Layout'
+import Layout from '@theme-original/Layout'
 
 type Props = {
   description?: string
@@ -12,14 +12,14 @@ type Props = {
   version?: string
 }
 
-const Layout: FC<Props> = ({ children, ...props }) => (
-  <OriginalLayout {...props}>
+const MyLayout: FC<Props> = ({ children, ...props }) => (
+  <Layout {...props}>
     <Head>
       <html lang="ja" />
     </Head>
 
     {children}
-  </OriginalLayout>
+  </Layout>
 )
 
-export default Layout
+export default MyLayout
