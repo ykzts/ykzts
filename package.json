@@ -2,10 +2,10 @@
   "dependencies": {
     "@docusaurus/lqip-loader": "^2.0.0-alpha.65",
     "@mdx-js/loader": "^1.6.18",
-    "@next/mdx": "^9.5.4",
+    "@next/mdx": "^9.5.5",
     "clsx": "^1.1.1",
     "file-loader": "^6.1.1",
-    "next": "^9.5.4",
+    "next": "^9.5.5",
     "next-seo": "^4.11.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
