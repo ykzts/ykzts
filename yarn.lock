@@ -1388,10 +1388,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-scroll@^1.8.1":
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/@types/react-scroll/-/react-scroll-1.8.1.tgz#b1ab6da288a66badfa1767f09d0ccb37bcb97c23"
-  integrity sha512-Ock34nSp4zOj/L0aAqZxi17GnCvm1ZC+yUvWGAVdcTH0ayZyEoEhBH3kteqiS76b7Ts6GNAGsPVlevgysgDHOA==
+"@types/react-scroll@^1.8.2":
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/@types/react-scroll/-/react-scroll-1.8.2.tgz#44bbbadabb9014517eb865d6fa47937535a2234a"
+  integrity sha512-oavV6BZLfaIghX4JSmrm6mJkeVayQlmsFx1Rz8ffGjMngHAI/juZkRZM/zV/H5D0pGqjzACvBmKYUU4YBecwLg==
   dependencies:
     "@types/react" "*"
 
