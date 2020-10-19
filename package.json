@@ -10,7 +10,7 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-icons": "^3.11.0",
-    "react-intersection-observer": "^8.29.0",
+    "react-intersection-observer": "^8.29.1",
     "react-scroll": "^1.8.1",
     "sharp": "^0.26.2",
     "url-loader": "^4.1.1"
