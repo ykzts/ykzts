@@ -66,7 +66,7 @@ const Intro: FC = () => (
           alt=""
           className={fillClassName}
           height={1024}
-          placeholder={keyVisual.preSrc}
+          placeholder={keyVisual.placeholder}
           src={keyVisual.src}
           width={1024}
         />

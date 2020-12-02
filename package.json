@@ -1,10 +1,6 @@
 {
   "dependencies": {
-    "@docusaurus/lqip-loader": "^2.0.0-alpha.bd62be93d",
-    "@mdx-js/loader": "^1.6.22",
-    "@next/mdx": "^10.0.3",
     "clsx": "^1.1.1",
-    "file-loader": "^6.2.0",
     "next": "^10.0.3",
     "next-seo": "^4.17.0",
     "react": "^17.0.1",
@@ -12,13 +8,14 @@
     "react-icons": "^4.1.0",
     "react-intersection-observer": "^8.31.0",
     "react-scroll": "^1.8.1",
-    "sharp": "^0.26.3",
-    "url-loader": "^4.1.1"
+    "sharp": "^0.26.3"
   },
   "description": "Yamagishi Kazutoshi's Website!",
   "devDependencies": {
     "@inabagumi/eslint-config-react": "^7.0.0",
     "@inabagumi/prettier-config": "^1.1.2",
+    "@mdx-js/loader": "^1.6.22",
+    "@next/mdx": "^10.0.3",
     "@types/mdx-js__react": "^1.5.3",
     "@types/node": "^13.13.12",
     "@types/react": "^17.0.0",
@@ -26,8 +23,11 @@
     "@types/react-scroll": "^1.8.2",
     "@types/styled-jsx": "^2.2.8",
     "eslint": "^7.14.0",
+    "file-loader": "^6.2.0",
     "prettier": "^2.2.1",
-    "typescript": "^4.1.2"
+    "responsive-loader": "^2.2.1",
+    "typescript": "^4.1.2",
+    "url-loader": "^4.1.1"
   },
   "engines": {
     "node": "12.x"

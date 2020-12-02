@@ -7,50 +7,45 @@ const nextConfig = {
     optimizeFonts: true,
     optimizeImages: true
   },
-  headers: () => [
-    {
-      headers: [
-        {
-          key: 'cache-control',
-          value: 'max-age=600, s-maxage=60'
-        }
-      ],
-      source: '/((?!_next).*)'
-    }
-  ],
   pageExtensions: ['mdx', 'tsx'],
   webpack(config, { defaultLoaders, dev }) {
-    const urlLoader = {
-      loader: 'url-loader',
-      options: {
-        esModule: false,
-        limit: 8192,
-        name: dev
-          ? '[name].[ext]?[contenthash:8]'
-          : '[name].[contenthash:8].[ext]',
-        outputPath: 'static/media',
-        publicPath: '/_next/static/media'
-      }
-    }
-
     config.module.rules.push({
       test: /\.jpe?g$/,
       use: [
         defaultLoaders.babel,
         {
-          loader: '@docusaurus/lqip-loader',
+          loader: 'responsive-loader',
           options: {
-            base64: true,
-            pallete: false
+            adapter: require('responsive-loader/sharp'),
+            esModule: true,
+            name: dev
+              ? '[name].[ext]?[contenthash:8]'
+              : '[name].[contenthash:8].[ext]',
+            outputPath: 'static/media',
+            placeholder: true,
+            publicPath: '/_next/static/media'
           }
-        },
-        urlLoader
+        }
       ]
     })
 
     config.module.rules.push({
       test: /\.svg$/,
-      use: [defaultLoaders.babel, urlLoader]
+      use: [
+        defaultLoaders.babel,
+        {
+          loader: 'url-loader',
+          options: {
+            esModule: true,
+            limit: 8192,
+            name: dev
+              ? '[name].[ext]?[contenthash:8]'
+              : '[name].[contenthash:8].[ext]',
+            outputPath: 'static/media',
+            publicPath: '/_next/static/media'
+          }
+        }
+      ]
     })
 
     return config
