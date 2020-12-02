@@ -1,10 +1,32 @@
 /// <reference types="next" />
 /// <reference types="next/types/global" />
 
+type ResponsiveLoaderImage = {
+  height: number
+  path: string
+  width: number
+}
+
+type ResponsiveLoaderOutput = {
+  height: number
+  images: ResponsiveLoaderImage[]
+  placeholder: string
+  src: string
+  srcSet: string
+  toString: () => string
+  width: number
+}
+
 declare module '*.jpg' {
-  export const palette: string[]
-  export const preSrc: string
-  export const src: string
+  const content: ResponsiveLoaderOutput
+
+  export default content
+}
+
+declare module '*.jpeg' {
+  const content: ResponsiveLoaderOutput
+
+  export default content
 }
 
 declare module '*.svg' {
