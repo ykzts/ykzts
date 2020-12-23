@@ -8,7 +8,7 @@
     "react-icons": "^4.1.0",
     "react-intersection-observer": "^8.31.0",
     "react-scroll": "^1.8.1",
-    "sharp": "^0.26.3"
+    "sharp": "^0.27.0"
   },
   "description": "Yamagishi Kazutoshi's Website!",
   "devDependencies": {
