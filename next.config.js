@@ -4,8 +4,7 @@ const withMDX = require('@next/mdx')()
 
 const nextConfig = {
   experimental: {
-    optimizeFonts: true,
-    optimizeImages: true
+    optimizeFonts: true
   },
   pageExtensions: ['mdx', 'tsx'],
   webpack(config, { defaultLoaders, dev }) {
