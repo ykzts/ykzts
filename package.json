@@ -22,7 +22,7 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-scroll": "^1.8.2",
     "@types/styled-jsx": "^2.2.8",
-    "eslint": "^7.18.0",
+    "eslint": "^7.19.0",
     "file-loader": "^6.2.0",
     "prettier": "^2.2.1",
     "responsive-loader": "^2.3.0",
