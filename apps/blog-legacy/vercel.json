@@ -116,6 +116,5 @@
       "statusCode": 301
     }
   ],
-  "regions": ["hnd1"],
   "trailingSlash": false
 }
