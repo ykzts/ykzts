@@ -2,11 +2,23 @@ const title = 'ykzts.blog'
 const description = 'ソフトウェア開発者 山岸和利のブログ'
 const copyright = 'Copyright © 2012-2020 Yamagishi Kazutoshi'
 
+const localeConfigs = {
+  ja: {
+    label: '日本語'
+  }
+}
+
 /**
  * @type {import('@docusaurus/types').DocusaurusConfig}
  */
 module.exports = {
   baseUrl: '/',
+  favicon: 'img/favicon.png',
+  i18n: {
+    defaultLocale: 'ja',
+    localeConfigs,
+    locales: Object.keys(localeConfigs)
+  },
   presets: [
     [
       '@docusaurus/preset-classic',
@@ -114,6 +126,5 @@ module.exports = {
     }
   },
   title,
-  url: 'https://ykzts.blog',
-  favicon: 'img/favicon.png'
+  url: 'https://ykzts.blog'
 }
