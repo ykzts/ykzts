@@ -1,6 +1,6 @@
 const title = 'ykzts.blog'
 const description = 'ソフトウェア開発者 山岸和利のブログ'
-const copyright = 'Copyright © 2012-2020 Yamagishi Kazutoshi'
+const copyright = 'Copyright © 2012-2021 Yamagishi Kazutoshi'
 
 const localeConfigs = {
   ja: {
