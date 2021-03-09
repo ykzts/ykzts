@@ -19,6 +19,9 @@ module.exports = {
     localeConfigs,
     locales: Object.keys(localeConfigs)
   },
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'warn',
+  organizationName: 'ykzts',
   presets: [
     [
       '@docusaurus/preset-classic',
@@ -41,6 +44,7 @@ module.exports = {
       }
     ]
   ],
+  projectName: 'ykzts.blog',
   tagline: description,
   themeConfig: {
     algolia: {
