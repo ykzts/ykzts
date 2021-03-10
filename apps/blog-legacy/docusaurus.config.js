@@ -28,6 +28,8 @@ module.exports = {
       {
         blog: {
           blogDescription: description,
+          blogSidebarCount: 0,
+          blogSidebarTitle: '最近の投稿',
           editUrl: 'https://github.com/ykzts/ykzts.blog/edit/main/',
           showReadingTime: false,
           path: 'blog',
