@@ -39,7 +39,7 @@ module.exports = {
           postsPerPage: 5,
           routeBasePath: '/'
         },
-        docs: {},
+        docs: false,
         sitemap: {}
       }
     ]
