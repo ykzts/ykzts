@@ -99,6 +99,10 @@ module.exports = {
         {
           items: [
             {
+              href: 'https://github.com/sponsors/ykzts',
+              label: 'GitHub Sponsors'
+            },
+            {
               href: 'https://www.patreon.com/ykzts',
               label: 'Patreon'
             }
