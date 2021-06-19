@@ -1,25 +1,15 @@
-import React, { FC } from 'react'
+import Image from 'next/image'
 import { FaArrowDown } from 'react-icons/fa'
 import { Link as ScrollLink } from 'react-scroll'
 import css from 'styled-jsx/css'
 import keyVisual from '../../assets/key-visual.jpg'
-import Image from '../Image'
 import Section, {
   SectionContent,
   SectionHeader,
   SectionTagline,
   SectionTitle
 } from '../Section'
-
-const { className: fillClassName, styles: fillStyles } = css.resolve`
-  .image {
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 100%;
-  }
-`
+import type { VFC } from 'react'
 
 const { className: arrowClassName, styles: arrowStyles } = css.resolve`
   a {
@@ -32,7 +22,7 @@ const { className: arrowClassName, styles: arrowStyles } = css.resolve`
   }
 `
 
-const Intro: FC = () => (
+const Intro: VFC = () => (
   <>
     <Section intro>
       <SectionHeader>
@@ -64,11 +54,11 @@ const Intro: FC = () => (
       <SectionContent>
         <Image
           alt=""
-          className={fillClassName}
-          height={1024}
-          placeholder={keyVisual.placeholder}
-          src={keyVisual.src}
-          width={1024}
+          layout="fill"
+          objectFit="cover"
+          placeholder="blur"
+          sizes="(max-width: 1280px) 50vw,100vw"
+          src={keyVisual}
         />
       </SectionContent>
     </Section>
@@ -111,7 +101,6 @@ const Intro: FC = () => (
       }
     `}</style>
 
-    {fillStyles}
     {arrowStyles}
   </>
 )
