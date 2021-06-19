@@ -29,7 +29,7 @@ const NotFound: NextPage = () => (
 
         <p>
           <Link href="/">
-            <a href="/">トップページに戻る</a>
+            <a>トップページに戻る</a>
           </Link>
         </p>
       </SectionContent>

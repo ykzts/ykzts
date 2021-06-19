@@ -1,9 +1,13 @@
 import clsx from 'clsx'
-import React, { FC } from 'react'
 import paradigm from '../../assets/paradigm-solid.svg'
 import { useSectionContext } from './context'
+import type { ReactNode, VFC } from 'react'
 
-const SectionHeader: FC = ({ children }) => {
+type Props = {
+  children: ReactNode
+}
+
+const SectionHeader: VFC<Props> = ({ children }) => {
   const { active, intro } = useSectionContext()
 
   return (
@@ -37,7 +41,7 @@ const SectionHeader: FC = ({ children }) => {
           .section__header {
             background-attachment: fixed;
             background-color: #49fcd4;
-            background-image: url('${paradigm}');
+            background-image: url('${paradigm.src}');
             background-position: 25% 50%;
             background-repeat: repeat-y;
             background-size: 40rem auto;
