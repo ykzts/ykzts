@@ -1,0 +1,31 @@
+---
+authors: [ykzts]
+date: 2012-10-14T01:30:00+09:00
+redirect_from: /post/33501908970
+tags: [tech]
+title: iOS 6.0にアップデートしてSafariのデバッグコンソールが使えなくなってしまったので代替方法を考えた
+---
+
+iPhoneとiPadのシステムソフトウェアをiOS 6.0にアップデートしたところ、Safariのデバッグコンソールを表示する方法を見付けられなくなってしまった。Webインスペクタというのが追加され、Mac OS X上で動作するSafariがあれば効率良くデバッグ出来るようになったようなのだが、非常に残念な事に現在の私の手許にはMac OS Xの環境が存在しない。なのでiOSのSafariでのデバッグが出来ないようになってしまった。探せば既存のデバッグコンソールを表示する方法があるのかも知れないが、しばらく探しても見付ける事が出来なかったので、非常にその場凌ぎの解決法で済ませた。
+
+<!--truncate-->
+
+```html
+<script type="text/javascript">
+window.addEventListener('error', function(error) {
+  var result = document.getElementById('result') || (function() {
+    var result = document.createElement('pre');
+    result.setAttribute('id', 'result');
+    document.getElementsByTagName('body')[0].appendChild(result);
+    return result;
+  })();
+  var message = [error.filename, '@', error.lineno, ': ', error.message].join('');
+  result.textContent += '\n' + message;
+  return false;
+});
+</script>
+```
+
+このような記述をHTML文書に出現する全ての`script`要素よりも前に加える事で、エラーが発生した際にエラーの表示がページの最下部にされるようになる。
+
+ただWebインスペクタは非常に便利そうである。調べれば調べる程に羨しくなる。早急にMac OS X環境を得たい。しかし、だが、しかし……。

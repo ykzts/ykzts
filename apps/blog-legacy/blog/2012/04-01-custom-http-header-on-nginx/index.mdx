@@ -1,0 +1,15 @@
+---
+authors: [ykzts]
+date: 2012-04-02T06:15:00+09:00
+redirect_from: /post/20308520977
+tags: [tech]
+title: nginxで既存のHTTPヘッダーを上書きして送出する方法
+---
+
+nginxで任意のHTTPヘッダーを追加したい場合には[`add_header`ディレクティブ](http://wiki.nginx.org/HttpHeadersModule#add_header)を用いますが、`add_header`ディレクティブは追加しようとしたフィールド名が重複するHTTPヘッダーが既に用意されていた場合には既にある物に「,」区切りで連結してしまいます。たとえば強制的に出力するContent-Typeを変更するために`add_header Content-Type text/css;`のようにしても`Content-Type: text/html, text/css`といった形の不正なHTTPヘッダーが出力されてしまいます。
+
+<!--truncate-->
+
+解決方法は簡単で[HTTP Headers More Moduleのmore_set_headersディレクティブ](http://wiki.nginx.org/HttpHeadersMoreModule#more_set_headers)をつかえばすぐです。使い方も簡単で`add_header`ディレクティブをつかっている箇所をそのまま`more_set_headers "Content-Type: text/css";`と置きかえれば良いだけです。`add_header`ディレクティブとはちがい単一の引数にコロン区切りフィールド名とその中身のどちらも入れることになるので、その点は注意が必要です。
+
+HTTP Headers More Moduleは通常のインストールでは多くの場合いっしょに入れられないので、[nginxの公式Wikiにある記載](http://wiki.nginx.org/HttpHeadersMoreModule#Installation)を参考にしてコンパイル時のオプションを適切に変更すれば良いでしょう。またDebian GNU/Linuxであればもっと簡単にaptitudeでのインストール時にnginx-fullではなく[nginx-extras](http://packages.debian.org/nginx-extras)を指定することによりHTTP Headers More Moduleがつかえるようにコンパイルされたnginxをインストールすることが可能です。
