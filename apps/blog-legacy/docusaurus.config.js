@@ -8,9 +8,7 @@ const localeConfigs = {
   }
 }
 
-/**
- * @type {import('@docusaurus/types').DocusaurusConfig}
- */
+/** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   baseUrl: '/',
   favicon: 'img/favicon.png',
@@ -25,7 +23,8 @@ module.exports = {
   presets: [
     [
       '@docusaurus/preset-classic',
-      {
+      /** @type {import('@docusaurus/preset-classic').Options} */
+      ({
         blog: {
           blogDescription: description,
           blogSidebarCount: 0,
@@ -43,98 +42,100 @@ module.exports = {
         },
         docs: false,
         sitemap: {}
-      }
+      })
     ]
   ],
   projectName: 'ykzts.blog',
   tagline: description,
-  themeConfig: {
-    algolia: {
-      appId: 'DTXYNURL2W',
-      apiKey: 'ce19efe9049e80eabf802d921a314fc9',
-      indexName: 'posts'
-    },
-    colorMode: {
-      defaultMode: 'light',
-      disableSwitch: false,
-      respectPrefersColorScheme: true
-    },
-    footer: {
-      copyright,
-      links: [
+  themeConfig:
+    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    ({
+      algolia: {
+        appId: 'DTXYNURL2W',
+        apiKey: 'ce19efe9049e80eabf802d921a314fc9',
+        indexName: 'posts'
+      },
+      colorMode: {
+        defaultMode: 'light',
+        disableSwitch: false,
+        respectPrefersColorScheme: true
+      },
+      footer: {
+        copyright,
+        links: [
+          {
+            items: [
+              {
+                href: 'https://ykzts.com/',
+                label: 'Author'
+              },
+              {
+                label: 'Privacy Policy',
+                to: 'privacy'
+              }
+            ],
+            title: 'Information'
+          },
+          {
+            items: [
+              {
+                href: 'https://github.com/ykzts',
+                label: 'GitHub'
+              },
+              {
+                href: 'https://ykzts.technology/@ykzts',
+                label: 'Mastodon'
+              },
+              {
+                href: 'https://twitter.com/ykzts',
+                label: 'Twitter'
+              },
+              {
+                href: 'https://www.facebook.com/ykzts',
+                label: 'Facebook'
+              }
+            ],
+            title: 'Social'
+          },
+          {
+            items: [
+              {
+                href: 'https://github.com/sponsors/ykzts',
+                label: 'GitHub Sponsors'
+              },
+              {
+                href: 'https://www.patreon.com/ykzts',
+                label: 'Patreon'
+              }
+            ],
+            title: 'Donation'
+          }
+        ],
+        style: 'dark'
+      },
+      gtag: {
+        trackingID: 'UA-97395750-2'
+      },
+      image: 'img/main-visual.png',
+      metadatas: [
         {
-          items: [
-            {
-              href: 'https://ykzts.com/',
-              label: 'Author'
-            },
-            {
-              label: 'Privacy Policy',
-              to: 'privacy'
-            }
-          ],
-          title: 'Information'
-        },
-        {
-          items: [
-            {
-              href: 'https://github.com/ykzts',
-              label: 'GitHub'
-            },
-            {
-              href: 'https://ykzts.technology/@ykzts',
-              label: 'Mastodon'
-            },
-            {
-              href: 'https://twitter.com/ykzts',
-              label: 'Twitter'
-            },
-            {
-              href: 'https://www.facebook.com/ykzts',
-              label: 'Facebook'
-            }
-          ],
-          title: 'Social'
-        },
-        {
-          items: [
-            {
-              href: 'https://github.com/sponsors/ykzts',
-              label: 'GitHub Sponsors'
-            },
-            {
-              href: 'https://www.patreon.com/ykzts',
-              label: 'Patreon'
-            }
-          ],
-          title: 'Donation'
+          content: 'nocomment',
+          name: 'Hatena::Bookmark'
         }
       ],
-      style: 'dark'
-    },
-    gtag: {
-      trackingID: 'UA-97395750-2'
-    },
-    image: 'img/main-visual.png',
-    metadatas: [
-      {
-        content: 'nocomment',
-        name: 'Hatena::Bookmark'
-      }
-    ],
-    navbar: {
-      hideOnScroll: true,
-      logo: {
-        src: 'img/pencil.svg',
-        srcDark: 'img/pencil_dark.svg'
+      navbar: {
+        hideOnScroll: true,
+        logo: {
+          src: 'img/pencil.svg',
+          srcDark: 'img/pencil_dark.svg'
+        },
+        title
       },
-      title
-    },
-    prism: {
-      darkTheme: require('prism-react-renderer/themes/dracula'),
-      theme: require('prism-react-renderer/themes/github')
-    }
-  },
+      prism: {
+        darkTheme: require('prism-react-renderer/themes/dracula'),
+        theme: require('prism-react-renderer/themes/github')
+      }
+    }),
   title,
   url: 'https://ykzts.blog'
 }
