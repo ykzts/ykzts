@@ -1,3 +1,9 @@
+// @ts-check
+// Note: type annotations allow type checking and IDEs autocompletion
+
+const lightCodeTheme = require('prism-react-renderer/themes/github')
+const darkCodeTheme = require('prism-react-renderer/themes/dracula')
+
 const title = 'ykzts.blog'
 const description = 'ソフトウェア開発者 山岸和利のブログ'
 const copyright = 'Copyright © 2012-2021 Yamagishi Kazutoshi'
@@ -125,6 +131,13 @@ module.exports = {
       ],
       navbar: {
         hideOnScroll: true,
+        items: [
+          {
+            label: 'Archive',
+            position: 'right',
+            to: 'archive'
+          }
+        ],
         logo: {
           src: 'img/pencil.svg',
           srcDark: 'img/pencil_dark.svg'
@@ -132,8 +145,8 @@ module.exports = {
         title
       },
       prism: {
-        darkTheme: require('prism-react-renderer/themes/dracula'),
-        theme: require('prism-react-renderer/themes/github')
+        darkTheme: darkCodeTheme,
+        theme: lightCodeTheme
       }
     }),
   title,
