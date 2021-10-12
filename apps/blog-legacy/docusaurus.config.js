@@ -1,8 +1,8 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github')
 const darkCodeTheme = require('prism-react-renderer/themes/dracula')
+const lightCodeTheme = require('prism-react-renderer/themes/github')
 
 const title = 'ykzts.blog'
 const description = 'ソフトウェア開発者 山岸和利のブログ'
@@ -36,15 +36,15 @@ module.exports = {
           blogSidebarCount: 0,
           blogSidebarTitle: '最近の投稿',
           editUrl: 'https://github.com/ykzts/ykzts.blog/edit/main/',
-          showReadingTime: false,
-          path: 'blog',
           feedOptions: {
             copyright,
             description,
             type: 'atom'
           },
+          path: 'blog',
           postsPerPage: 5,
-          routeBasePath: '/'
+          routeBasePath: '/',
+          showReadingTime: false
         },
         docs: false,
         sitemap: {}
@@ -57,8 +57,8 @@ module.exports = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       algolia: {
-        appId: 'DTXYNURL2W',
         apiKey: 'ce19efe9049e80eabf802d921a314fc9',
+        appId: 'DTXYNURL2W',
         indexName: 'posts'
       },
       colorMode: {

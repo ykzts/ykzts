@@ -1,7 +1,1 @@
-/.docusaurus/
-/.vercel/
-/blog/
-/build/
-/node_modules/
-
-/src/pages/*.mdx
+.eslintignore
