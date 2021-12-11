@@ -123,7 +123,7 @@ module.exports = {
         trackingID: 'UA-97395750-2'
       },
       image: 'img/main-visual.png',
-      metadatas: [
+      metadata: [
         {
           content: 'nocomment',
           name: 'Hatena::Bookmark'
