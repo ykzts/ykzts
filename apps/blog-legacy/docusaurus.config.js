@@ -47,6 +47,9 @@ module.exports = {
           showReadingTime: false
         },
         docs: false,
+        gtag: {
+          trackingID: 'UA-97395750-2'
+        },
         sitemap: {}
       })
     ]
@@ -118,9 +121,6 @@ module.exports = {
           }
         ],
         style: 'dark'
-      },
-      gtag: {
-        trackingID: 'UA-97395750-2'
       },
       image: 'img/main-visual.png',
       metadata: [
