@@ -1,4 +1,8 @@
-import React, { DetailedHTMLProps, FC, AnchorHTMLAttributes } from 'react'
+import {
+  type AnchorHTMLAttributes,
+  type DetailedHTMLProps,
+  type FC
+} from 'react'
 
 const DEFAULT_ANCHOR_TARGET = '_blank'
 const DEFAULT_LINK_TYPES = ['noopener', 'noreferrer']

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { type FC, type ReactNode } from 'react'
 import Section, {
   SectionContent,
   SectionHeader,
@@ -6,6 +6,7 @@ import Section, {
 } from '../Section'
 
 type Props = {
+  children: ReactNode
   last?: boolean
   title?: string
 }
