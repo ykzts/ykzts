@@ -1,15 +1,15 @@
 import clsx from 'clsx'
+import { type FC, type ReactNode } from 'react'
 import { useInView } from 'react-intersection-observer'
 import paradigm from '../../assets/paradigm.svg'
 import Intro from './Intro'
 import LayoutFooter from './LayoutFooter'
-import type { ReactNode, VFC } from 'react'
 
 type Props = {
   children: ReactNode
 }
 
-const Layout: VFC<Props> = ({ children }) => {
+const Layout: FC<Props> = ({ children }) => {
   const [ref, inView] = useInView({ triggerOnce: true })
 
   return (

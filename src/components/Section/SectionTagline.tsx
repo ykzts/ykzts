@@ -1,8 +1,12 @@
 import clsx from 'clsx'
-import React, { FC } from 'react'
+import { type FC, type ReactNode } from 'react'
 import { useSectionContext } from './context'
 
-const SectionTagline: FC = ({ children }) => {
+type Props = {
+  children: ReactNode
+}
+
+const SectionTagline: FC<Props> = ({ children }) => {
   const { active, intro } = useSectionContext()
 
   return (

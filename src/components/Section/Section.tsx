@@ -1,9 +1,10 @@
 import clsx from 'clsx'
-import React, { FC } from 'react'
+import { type FC, type ReactNode } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { SectionProvider } from './context'
 
 type Props = {
+  children: ReactNode
   intro?: boolean
 }
 

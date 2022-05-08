@@ -1,13 +1,13 @@
 import clsx from 'clsx'
+import { type FC, type ReactNode } from 'react'
 import paradigm from '../../assets/paradigm-solid.svg'
 import { useSectionContext } from './context'
-import type { ReactNode, VFC } from 'react'
 
 type Props = {
   children: ReactNode
 }
 
-const SectionHeader: VFC<Props> = ({ children }) => {
+const SectionHeader: FC<Props> = ({ children }) => {
   const { active, intro } = useSectionContext()
 
   return (

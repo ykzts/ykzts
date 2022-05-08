@@ -1,8 +1,9 @@
 import clsx from 'clsx'
-import React, { FC } from 'react'
+import { type FC, type ReactNode } from 'react'
 import { useSectionContext } from './context'
 
 type Props = {
+  children: ReactNode
   className?: string
 }
 

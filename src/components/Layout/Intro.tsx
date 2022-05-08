@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { type FC } from 'react'
 import { FaArrowDown } from 'react-icons/fa'
 import { Link as ScrollLink } from 'react-scroll'
 import css from 'styled-jsx/css'
@@ -9,7 +10,6 @@ import Section, {
   SectionTagline,
   SectionTitle
 } from '../Section'
-import type { VFC } from 'react'
 
 const { className: arrowClassName, styles: arrowStyles } = css.resolve`
   a {
@@ -22,7 +22,7 @@ const { className: arrowClassName, styles: arrowStyles } = css.resolve`
   }
 `
 
-const Intro: VFC = () => (
+const Intro: FC = () => (
   <>
     <Section intro>
       <SectionHeader>

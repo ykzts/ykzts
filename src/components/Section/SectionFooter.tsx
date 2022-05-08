@@ -1,6 +1,10 @@
-import React, { FC } from 'react'
+import { type FC, type ReactNode } from 'react'
 
-const SectionFooter: FC = ({ children }) => (
+type Props = {
+  children: ReactNode
+}
+
+const SectionFooter: FC<Props> = ({ children }) => (
   <>
     <footer className="footer">{children}</footer>
 

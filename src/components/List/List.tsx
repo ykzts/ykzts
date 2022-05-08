@@ -1,6 +1,10 @@
-import React, { FC } from 'react'
+import { type FC, type ReactNode } from 'react'
 
-const List: FC = ({ children }) => (
+type Props = {
+  children: ReactNode
+}
+
+const List: FC<Props> = ({ children }) => (
   <>
     <ul className="list">{children}</ul>
 
