@@ -19,13 +19,10 @@
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.3",
     "@types/react-scroll": "^1.8.3",
-    "@types/styled-jsx": "^2.2.9",
     "@typescript-eslint/eslint-plugin": "^5.22.0",
-    "@typescript-eslint/parser": "^5.22.0",
     "eslint": "^8.15.0",
     "eslint-config-next": "^12.1.6",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.6.2",
     "typescript": "^4.6.4"
   },
@@ -34,8 +31,8 @@
   "scripts": {
     "build": "next build",
     "dev": "next",
-    "format": "prettier --write './**/*.{json,md,mdx,yml}'",
-    "format-check": "prettier -c './**/*.{json,md,mdx,yml}'",
+    "format": "prettier -w .",
+    "format-check": "prettier -c .",
     "lint": "next lint -d .",
     "start": "next start"
   },
