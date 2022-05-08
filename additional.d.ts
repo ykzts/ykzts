@@ -5,7 +5,7 @@ declare module '*.mdx' {
 }
 
 declare module '*.svg' {
-  const content: StaticImageData
+  const content: import('next/image').StaticImageData
 
   export default content
 }

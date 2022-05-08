@@ -4,6 +4,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "incremental": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "lib": ["dom", "es2017"],
@@ -21,5 +22,5 @@
     "target": "esnext"
   },
   "exclude": ["node_modules"],
-  "include": ["global.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": ["additional.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }
