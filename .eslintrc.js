@@ -4,11 +4,7 @@ module.exports = {
     browser: true,
     node: true
   },
-  extends: [
-    'eslint:recommended',
-    'next/core-web-vitals',
-    'plugin:prettier/recommended'
-  ],
+  extends: ['eslint:recommended', 'next/core-web-vitals', 'prettier'],
   overrides: [
     {
       files: ['**/*.ts?(x)'],
@@ -25,7 +21,7 @@ module.exports = {
       env: {
         commonjs: true
       },
-      files: ['.eslintrc.js', 'next.config.js', 'prettier.config.js'],
+      files: ['.eslintrc.js', '*.config.js'],
       parserOptions: {
         sourceType: 'script'
       }
