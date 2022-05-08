@@ -1,19 +1,14 @@
-import { MDXProviderComponentsProp, MDXProvider } from '@mdx-js/react'
-import { AppProps } from 'next/app'
+import { MDXProvider } from '@mdx-js/react'
+import { type AppProps } from 'next/app'
 import Head from 'next/head'
 import { DefaultSeo } from 'next-seo'
-import React, { FC } from 'react'
-import ExternalLink from '../components/ExternalLink'
+import React, { type FC } from 'react'
 import Layout from '../components/Layout'
-
-const mdxComponents: MDXProviderComponentsProp = {
-  a: ExternalLink
-}
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
-      <MDXProvider components={mdxComponents}>
+      <MDXProvider>
         <DefaultSeo titleTemplate="%s | ykzts.com" />
 
         <Head>
