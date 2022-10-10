@@ -15,7 +15,7 @@
     "@mdx-js/loader": "^2.1.4",
     "@types/eslint": "^8.4.6",
     "@types/mdx": "^2.0.2",
-    "@types/node": "^16.11.64",
+    "@types/node": "^16.11.65",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "@types/react-scroll": "^1.8.4",
