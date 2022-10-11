@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@mdx-js/react": "^2.1.4",
+    "@mdx-js/react": "^2.1.5",
     "clsx": "^1.2.1",
     "next": "^12.3.1",
     "next-seo": "^5.5.0",
@@ -12,7 +12,7 @@
   },
   "description": "Yamagishi Kazutoshi's Website!",
   "devDependencies": {
-    "@mdx-js/loader": "^2.1.4",
+    "@mdx-js/loader": "^2.1.5",
     "@types/eslint": "^8.4.6",
     "@types/mdx": "^2.0.2",
     "@types/node": "^16.11.65",
