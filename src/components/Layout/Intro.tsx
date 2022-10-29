@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import { type FC } from 'react'
 import { FaArrowDown } from 'react-icons/fa'
 import { Link as ScrollLink } from 'react-scroll'
