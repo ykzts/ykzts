@@ -13,7 +13,7 @@
   "description": "Yamagishi Kazutoshi's Website!",
   "devDependencies": {
     "@mdx-js/loader": "^2.2.1",
-    "@types/eslint": "^8.4.10",
+    "@types/eslint": "^8.21.0",
     "@types/mdx": "^2.0.3",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.27",
