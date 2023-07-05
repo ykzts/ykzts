@@ -83,7 +83,9 @@ const SectionTitle: FC<Props> = ({ children }) => {
           .intro__title {
             opacity: 0;
             transform: translate(-0.5rem);
-            transition: transform 1s ease, opacity 1s ease;
+            transition:
+              transform 1s ease,
+              opacity 1s ease;
           }
         }
 

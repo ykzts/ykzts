@@ -22,7 +22,11 @@ const SectionTagline: FC<Props> = ({ children }) => {
 
       <style jsx>{`
         .intro__tagline {
-          font-family: Raleway, Helvetica, Noto Sans JP, sans-serif;
+          font-family:
+            Raleway,
+            Helvetica,
+            Noto Sans JP,
+            sans-serif;
           font-size: 0.8rem;
           letter-spacing: 0.175rem;
           line-height: 2.5;
@@ -41,7 +45,9 @@ const SectionTagline: FC<Props> = ({ children }) => {
           .intro__tagline {
             opacity: 0;
             transform: translate(-0.5rem);
-            transition: transform 1s ease, opacity 1s ease;
+            transition:
+              transform 1s ease,
+              opacity 1s ease;
           }
         }
 
