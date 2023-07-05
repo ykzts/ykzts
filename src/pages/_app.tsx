@@ -75,7 +75,11 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
         body {
           background-color: #fff;
           color: #000;
-          font-family: Source Sans Pro, Helvetica, Noto Sans JP, sans-serif;
+          font-family:
+            Source Sans Pro,
+            Helvetica,
+            Noto Sans JP,
+            sans-serif;
           font-size: 1rem;
           font-weight: 300;
           letter-spacing: 0.0375rem;
@@ -123,7 +127,11 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
         h5,
         h6 {
           color: #000;
-          font-family: Raleway, Helvetica, Noto Sans JP, sans-serif;
+          font-family:
+            Raleway,
+            Helvetica,
+            Noto Sans JP,
+            sans-serif;
           font-weight: 600;
           letter-spacing: 0.175em;
           line-height: 1.75;
@@ -142,7 +150,10 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
         }
 
         h1 {
-          font-family: Source Sans Pro, Helvetica, sans-serif;
+          font-family:
+            Source Sans Pro,
+            Helvetica,
+            sans-serif;
           font-size: 5rem;
           font-weight: 700;
           letter-spacing: -0.05em;
