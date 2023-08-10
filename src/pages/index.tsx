@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 import React from 'react'
-import mainVisual from '../../public/static/images/main-visual.png'
+import mainVisual from '../assets/main-visual.png'
 import About from '../components/About'
 import Contact from '../components/Contact'
 import Donation from '../components/Donation'
