@@ -30,7 +30,7 @@ const SectionHeader: FC<Props> = ({ children }) => {
           width: 35rem;
         }
 
-        @media (max-width: 1280px) {
+        @media (max-width: 1152px) {
           .section__header {
             padding: 0 8rem 0 4rem;
             width: 33rem;
