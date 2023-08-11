@@ -28,9 +28,7 @@ const NotFound: NextPage = () => (
         <p className="message">お探しのページを見つけられませんでした。</p>
 
         <p>
-          <Link href="/">
-            <a>トップページに戻る</a>
-          </Link>
+          <Link href="/">トップページに戻る</Link>
         </p>
       </SectionContent>
     </Section>
