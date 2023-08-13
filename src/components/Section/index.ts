@@ -1,6 +1,0 @@
-export { default } from './Section'
-export { default as SectionContent } from './SectionContent'
-export { default as SectionFooter } from './SectionFooter'
-export { default as SectionHeader } from './SectionHeader'
-export { default as SectionTagline } from './SectionTagline'
-export { default as SectionTitle } from './SectionTitle'

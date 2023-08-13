@@ -37,6 +37,9 @@ devDependencies:
   '@mdx-js/loader':
     specifier: ^2.3.0
     version: 2.3.0(webpack@5.88.2)
+  '@next/mdx':
+    specifier: ^13.4.13
+    version: 13.4.13(@mdx-js/loader@2.3.0)(@mdx-js/react@2.3.0)
   '@types/eslint':
     specifier: ^8.44.2
     version: 8.44.2
@@ -232,7 +235,6 @@ packages:
       '@types/mdx': 2.0.6
       '@types/react': 18.2.20
       react: 18.2.0
-    dev: false
 
   /@next/env@13.4.13:
     resolution: {integrity: sha512-fwz2QgVg08v7ZL7KmbQBLF2PubR/6zQdKBgmHEl3BCyWTEDsAQEijjw2gbFhI1tcKfLdOOJUXntz5vZ4S0Polg==}
@@ -242,6 +244,22 @@ packages:
     resolution: {integrity: sha512-RpZeXlPxQ9FLeYN84XHDqRN20XxmVNclYCraLYdifRsmibtcWUWdwE/ANp2C8kgesFRsvwfsw6eOkYNl9sLJ3A==}
     dependencies:
       glob: 7.1.7
+    dev: true
+
+  /@next/mdx@13.4.13(@mdx-js/loader@2.3.0)(@mdx-js/react@2.3.0):
+    resolution: {integrity: sha512-rQHfeyPO6WC+mEqFCNibV8CWXBJ95uRfPv05Xb8ZMUr284grCIAaSfSRDDrwcoknizyfREDp33oV/isIujS4pA==}
+    peerDependencies:
+      '@mdx-js/loader': '>=0.15.0'
+      '@mdx-js/react': '>=0.15.0'
+    peerDependenciesMeta:
+      '@mdx-js/loader':
+        optional: true
+      '@mdx-js/react':
+        optional: true
+    dependencies:
+      '@mdx-js/loader': 2.3.0(webpack@5.88.2)
+      '@mdx-js/react': 2.3.0(react@18.2.0)
+      source-map: 0.7.4
     dev: true
 
   /@next/swc-darwin-arm64@13.4.13:
@@ -3006,7 +3024,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /regenerator-runtime@0.14.0:
     resolution: {integrity: sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==}

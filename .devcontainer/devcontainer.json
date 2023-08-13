@@ -10,6 +10,6 @@
   },
   "forwardPorts": [3000],
   "image": "mcr.microsoft.com/vscode/devcontainers/typescript-node:1-18-buster",
-  "name": "Node.js & TypeScript",
+  "name": "ykzts.com",
   "postCreateCommand": "pnpm install"
 }
