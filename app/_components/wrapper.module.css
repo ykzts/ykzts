@@ -1,0 +1,46 @@
+.wrapper {
+  padding: 0 0 10rem 0;
+  position: relative;
+  width: 100vw;
+}
+
+@media (max-width: 1280px) {
+  .wrapper {
+    padding: 0 0 8rem 0;
+  }
+}
+
+@media (max-width: 1152px) {
+  .wrapper {
+    padding: 0;
+  }
+}
+
+.wrapper::before {
+  background-attachment: fixed;
+  background-color: #49fcd4;
+  background-image: url('../../assets/paradigm.svg');
+  background-position: -50% 10%;
+  background-repeat: no-repeat;
+  background-size: 75% auto;
+  content: '';
+  display: block;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  transition: opacity 1s ease;
+  width: 50vw;
+  z-index: -1;
+}
+
+@media (max-width: 1152px) {
+  .wrapper:before {
+    display: none;
+  }
+}
+
+.wrapper--active::before {
+  opacity: 1;
+}

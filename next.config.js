@@ -1,40 +1,19 @@
+import createMDX from '@next/mdx'
 import rehypeExternalLinks from 'rehype-external-links'
 import remarkGfm from 'remark-gfm'
 
+const withMDX = createMDX({
+  options: {
+    rehypePlugins: [rehypeExternalLinks],
+    remarkPlugins: [remarkGfm]
+  }
+})
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  i18n: {
-    defaultLocale: 'ja',
-    locales: ['ja']
-  },
-  webpack(config, { defaultLoaders }) {
-    config.module.rules.push({
-      test: /\.mdx?/,
-      use: [
-        defaultLoaders.babel,
-        {
-          loader: '@mdx-js/loader',
-          /** @type {import('@mdx-js/loader').Options} */
-          options: {
-            jsx: true,
-            providerImportSource: '@mdx-js/react',
-            rehypePlugins: [
-              [
-                rehypeExternalLinks,
-                {
-                  rel: ['noopener', 'noreferrer'],
-                  target: '_blank'
-                }
-              ]
-            ],
-            remarkPlugins: [remarkGfm]
-          }
-        }
-      ]
-    })
-
-    return config
+  experimental: {
+    mdxRs: true
   }
 }
 
-export default nextConfig
+export default withMDX(nextConfig)

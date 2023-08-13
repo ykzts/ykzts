@@ -13,11 +13,22 @@
     "paths": {
       "@/*": ["./*"]
     },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022"
   },
   "exclude": ["node_modules"],
-  "include": ["additional.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": [
+    "additional.d.ts",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ]
 }
