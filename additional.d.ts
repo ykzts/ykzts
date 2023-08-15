@@ -1,8 +1,4 @@
-declare module '*.mdx' {
-  const MDXComponent: (props: Props) => JSX.Element
-
-  export default MDXComponent
-}
+/// <reference types="mdx" />
 
 declare module '*.svg' {
   const content: import('next/image').StaticImageData
