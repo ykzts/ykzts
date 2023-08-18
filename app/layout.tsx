@@ -86,6 +86,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 layout="fill"
                 objectFit="cover"
                 placeholder="blur"
+                priority
                 sizes="(max-width: 1280px) 50vw,100vw"
                 src={keyVisual}
               />
