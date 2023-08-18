@@ -73,7 +73,7 @@
   .section__header {
     background-attachment: fixed;
     background-color: #49fcd4;
-    background-image: url('../assets/paradigm.svg');
+    background-image: url('../_assets/paradigm.svg');
     background-position: 25% 50%;
     background-repeat: repeat-y;
     background-size: 40rem auto;

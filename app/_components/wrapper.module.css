@@ -19,7 +19,7 @@
 .wrapper::before {
   background-attachment: fixed;
   background-color: #49fcd4;
-  background-image: url('../../assets/paradigm.svg');
+  background-image: url('../_assets/paradigm.svg');
   background-position: -50% 10%;
   background-repeat: no-repeat;
   background-size: 75% auto;

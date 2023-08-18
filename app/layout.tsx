@@ -1,16 +1,17 @@
 import './globals.css'
+import clsx from 'clsx'
 import { type Metadata } from 'next'
 import { Noto_Sans_JP, Raleway, Source_Sans_3 } from 'next/font/google'
 import Image from 'next/image'
 import { type ReactNode } from 'react'
 import { FaArrowDown } from 'react-icons/fa'
+import keyVisual from './_assets/key-visual.jpg'
 import Section, {
   SectionContent,
   SectionHeader,
   SectionTagline,
   SectionTitle
-} from '@/components/section'
-import keyVisual from './_assets/key-visual.jpg'
+} from './_components/section'
 import LayoutWrapper from './_components/wrapper'
 import styles from './layout.module.css'
 
@@ -45,7 +46,11 @@ const sourceSans3 = Source_Sans_3({
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
-      className={`${notoSansJp.variable} ${raleway.variable} ${sourceSans3.variable}`}
+      className={clsx(
+        notoSansJp.variable,
+        raleway.variable,
+        sourceSans3.variable
+      )}
       lang="ja"
     >
       <head />

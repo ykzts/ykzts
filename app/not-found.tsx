@@ -1,11 +1,10 @@
 import { type Metadata } from 'next'
 import Link from 'next/link'
-import React from 'react'
 import Section, {
   SectionContent,
   SectionHeader,
   SectionTitle
-} from '@/components/section'
+} from './_components/section'
 import styles from './not-found.module.css'
 
 export const metadata: Metadata = {
