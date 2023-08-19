@@ -2,7 +2,7 @@
   "dependencies": {
     "@mdx-js/react": "^2.3.0",
     "clsx": "^2.0.0",
-    "next": "^13.4.18",
+    "next": "^13.4.19",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
@@ -11,7 +11,7 @@
   "description": "Yamagishi Kazutoshi's Website!",
   "devDependencies": {
     "@mdx-js/loader": "^2.3.0",
-    "@next/mdx": "^13.4.18",
+    "@next/mdx": "^13.4.19",
     "@types/eslint": "^8.44.2",
     "@types/mdx": "^2.0.6",
     "@types/node": "^18.17.6",
@@ -19,7 +19,7 @@
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "eslint": "^8.47.0",
-    "eslint-config-next": "^13.4.18",
+    "eslint-config-next": "^13.4.19",
     "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.0.2",
     "rehype-external-links": "^2.1.0",
