@@ -83,8 +83,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <SectionContent>
               <Image
                 alt=""
-                layout="fill"
-                objectFit="cover"
+                className={styles['key-visual']}
                 placeholder="blur"
                 priority
                 sizes="(max-width: 1280px) 50vw,100vw"
