@@ -22,6 +22,8 @@ import styles from './page.module.css'
 const description =
   'JavaScriptやRubyといったプログラミング言語を用いたウェブアプリケーションの開発を得意とするソフトウェア開発者 山岸和利のポートフォリオです。山岸和利による過去の実績や作品の掲載、各種ソーシャルネットワーキングサービスのアカウントへのリンクなどの連絡先への参照があります。'
 
+export const runtime = 'edge'
+
 export const metadata: Metadata = {
   description,
   openGraph: {
