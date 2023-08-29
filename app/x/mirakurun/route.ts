@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 
+export const runtime = 'edge'
+
 export function GET() {
   const body = `<!doctype html>
 <meta charset="UTF-8">
