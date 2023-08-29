@@ -21,7 +21,7 @@
     "eslint": "^8.48.0",
     "eslint-config-next": "^13.4.19",
     "eslint-config-prettier": "^9.0.0",
-    "prettier": "^3.0.2",
+    "prettier": "^3.0.3",
     "rehype-external-links": "^2.1.0",
     "remark-gfm": "^3.0.1",
     "typescript": "^5.2.2"
