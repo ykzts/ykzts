@@ -1,4 +1,5 @@
 import './globals.css'
+import { Analytics } from '@vercel/analytics/react'
 import clsx from 'clsx'
 import { type Metadata } from 'next'
 import { Noto_Sans_JP, Raleway, Source_Sans_3 } from 'next/font/google'
@@ -118,6 +119,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </div>
           </footer>
         </LayoutWrapper>
+
+        <Analytics />
       </body>
     </html>
   )
