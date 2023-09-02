@@ -26,10 +26,15 @@ const description =
 export const runtime = 'edge'
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: '/'
+  },
   description,
   openGraph: {
     description,
-    type: 'website'
+    title: 'ykzts.com',
+    type: 'website',
+    url: '/'
   },
   twitter: {
     card: 'summary_large_image'
