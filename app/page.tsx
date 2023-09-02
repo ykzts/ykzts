@@ -15,6 +15,7 @@ import Section, {
 import AboutDoc from './_docs/about.mdx'
 import ContactDoc from './_docs/contact.mdx'
 import DonationDoc from './_docs/donation.mdx'
+import HaneruDoc from './_docs/haneru.mdx'
 import ManaelDoc from './_docs/manael.mdx'
 import MastodonDoc from './_docs/mastodon.mdx'
 import styles from './page.module.css'
@@ -159,6 +160,20 @@ function Donation() {
   )
 }
 
+function Haneru() {
+  return (
+    <Section>
+      <SectionHeader>
+        <SectionTitle>Haneru Developers</SectionTitle>
+      </SectionHeader>
+
+      <SectionContent>
+        <HaneruDoc />
+      </SectionContent>
+    </Section>
+  )
+}
+
 function Manael() {
   return (
     <Section>
@@ -191,6 +206,7 @@ export default function HomePage() {
   return (
     <>
       <About />
+      <Haneru />
       <Mastodon />
       <Manael />
       <Donation />
