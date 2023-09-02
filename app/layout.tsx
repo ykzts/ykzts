@@ -18,6 +18,7 @@ import styles from './layout.module.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com/'),
+  themeColor: '#49fcd4',
   title: {
     default: 'ykzts.com - ソフトウェア開発者 山岸和利のポートフォリオ',
     template: '%s | ykzts.com'
