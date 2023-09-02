@@ -36,6 +36,9 @@ export const metadata: Metadata = {
     type: 'website',
     url: '/'
   },
+  title: {
+    absolute: 'ykzts.com - ソフトウェア開発者 山岸和利のポートフォリオ'
+  },
   twitter: {
     card: 'summary_large_image'
   }

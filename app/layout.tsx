@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com/'),
   themeColor: '#49fcd4',
   title: {
-    default: 'ykzts.com - ソフトウェア開発者 山岸和利のポートフォリオ',
+    default: 'ykzts.com',
     template: '%s | ykzts.com'
   }
 }
