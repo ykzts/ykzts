@@ -98,7 +98,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
           <footer className={styles.footer}>
             <div className={styles.copyright}>
-              © Yamagishi Kazutosh. Design{' '}
+              © Yamagishi Kazutoshi. Design{' '}
               <a
                 className={styles.footer__link}
                 href="https://html5up.net/"
