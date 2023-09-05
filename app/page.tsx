@@ -1,11 +1,5 @@
 import { type Metadata } from 'next'
-import {
-  FaFacebookF,
-  FaGithub,
-  FaMastodon,
-  FaPatreon,
-  FaTwitter
-} from 'react-icons/fa'
+import { FaFacebookF, FaGithub, FaMastodon, FaPatreon } from 'react-icons/fa'
 import Section, {
   SectionContent,
   SectionFooter,
@@ -93,7 +87,7 @@ function Contact() {
             <ul className={styles.icons}>
               <li className={styles.icons__item}>
                 <a
-                  aria-label="Mastodon"
+                  aria-label="山岸和利のMastodonアカウント"
                   className={styles['icon-link']}
                   href="https://ykzts.technology/@ykzts"
                   rel="noopener noreferrer me"
@@ -104,18 +98,20 @@ function Contact() {
               </li>
               <li className={styles.icons__item}>
                 <a
-                  aria-label="Twitter"
+                  aria-label="山岸和利のXアカウント"
                   className={styles['icon-link']}
                   href="https://twitter.com/ykzts"
                   rel="noopener noreferrer me"
                   target="_blank"
                 >
-                  <FaTwitter />
+                  <svg height="1em" width="1em">
+                    <use xlinkHref="#x-logo" />
+                  </svg>
                 </a>
               </li>
               <li className={styles.icons__item}>
                 <a
-                  aria-label="Facebook"
+                  aria-label="山岸和利のFacebookアカウント"
                   className={styles['icon-link']}
                   href="https://www.facebook.com/ykzts"
                   rel="noopener noreferrer me"
@@ -126,7 +122,7 @@ function Contact() {
               </li>
               <li className={styles.icons__item}>
                 <a
-                  aria-label="GitHub"
+                  aria-label="山岸和利のGitHubアカウント"
                   className={styles['icon-link']}
                   href="https://github.com/ykzts"
                   rel="noopener noreferrer me"
@@ -137,7 +133,7 @@ function Contact() {
               </li>
               <li className={styles.icons__item}>
                 <a
-                  aria-label="Patreon"
+                  aria-label="山岸和利のPatreonアカウント"
                   className={styles['icon-link']}
                   href="https://www.patreon.com/ykzts"
                   rel="noopener noreferrer me"
