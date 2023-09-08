@@ -1,5 +1,4 @@
 import { type Metadata } from 'next'
-import { FaFacebookF, FaGithub, FaMastodon, FaPatreon } from 'react-icons/fa'
 import Section, {
   SectionContent,
   SectionFooter,
@@ -87,37 +86,15 @@ function Contact() {
             <ul className={styles.icons}>
               <li className={styles.icons__item}>
                 <a
-                  aria-label="山岸和利のMastodonアカウント"
-                  className={styles['icon-link']}
-                  href="https://ykzts.technology/@ykzts"
-                  rel="noopener noreferrer me"
-                  target="_blank"
-                >
-                  <FaMastodon />
-                </a>
-              </li>
-              <li className={styles.icons__item}>
-                <a
-                  aria-label="山岸和利のXアカウント"
-                  className={styles['icon-link']}
-                  href="https://twitter.com/ykzts"
-                  rel="noopener noreferrer me"
-                  target="_blank"
-                >
-                  <svg height="1em" width="1em">
-                    <use xlinkHref="#x-logo" />
-                  </svg>
-                </a>
-              </li>
-              <li className={styles.icons__item}>
-                <a
                   aria-label="山岸和利のFacebookアカウント"
                   className={styles['icon-link']}
                   href="https://www.facebook.com/ykzts"
                   rel="noopener noreferrer me"
                   target="_blank"
                 >
-                  <FaFacebookF />
+                  <svg className={styles['icon-logo']}>
+                    <use xlinkHref="#facebook-logo" />
+                  </svg>
                 </a>
               </li>
               <li className={styles.icons__item}>
@@ -128,18 +105,48 @@ function Contact() {
                   rel="noopener noreferrer me"
                   target="_blank"
                 >
-                  <FaGithub />
+                  <svg className={styles['icon-logo']}>
+                    <use xlinkHref="#github-logo" />
+                  </svg>
                 </a>
               </li>
               <li className={styles.icons__item}>
                 <a
-                  aria-label="山岸和利のPatreonアカウント"
+                  aria-label="山岸和利のMastodonアカウント"
                   className={styles['icon-link']}
-                  href="https://www.patreon.com/ykzts"
+                  href="https://ykzts.technology/@ykzts"
                   rel="noopener noreferrer me"
                   target="_blank"
                 >
-                  <FaPatreon />
+                  <svg className={styles['icon-logo']}>
+                    <use xlinkHref="#mastodon-logo" />
+                  </svg>
+                </a>
+              </li>
+              <li className={styles.icons__item}>
+                <a
+                  aria-label="山岸和利のThreadsアカウント"
+                  className={styles['icon-link']}
+                  href="https://www.threads.net/@ykzts"
+                  rel="noopener noreferrer me"
+                  target="_blank"
+                >
+                  <svg className={styles['icon-logo']}>
+                    <use xlinkHref="#threads-logo" />
+                  </svg>
+                </a>
+              </li>
+              <li className={styles.icons__item}>
+                <a
+                  aria-label="山岸和利のXアカウント"
+                  className={styles['icon-link']}
+                  href="https://twitter.com/ykzts"
+                  rel="noopener noreferrer me"
+                  target="_blank"
+                >
+                  <svg className={styles['icon-logo']}>
+                    <use xlinkHref="#x-logo" />
+                  </svg>
                 </a>
               </li>
             </ul>

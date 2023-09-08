@@ -59,3 +59,8 @@
 .icon-link:hover {
   background-color: rgba(144, 144, 144, 0.1);
 }
+
+.icon-logo {
+  height: 1em;
+  width: 1em;
+}
