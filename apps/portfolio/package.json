@@ -1,0 +1,51 @@
+{
+  "author": "Yamagishi Kazutoshi",
+  "dependencies": {
+    "@mdx-js/react": "^2.3.0",
+    "@vercel/analytics": "^1.0.2",
+    "clsx": "^2.0.0",
+    "next": "^13.4.19",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.11.0",
+    "react-intersection-observer": "^9.5.2"
+  },
+  "description": "Yamagishi Kazutoshi's Website!",
+  "devDependencies": {
+    "@mdx-js/loader": "^2.3.0",
+    "@next/mdx": "^13.4.19",
+    "@types/eslint": "^8.44.2",
+    "@types/mdx": "^2.0.7",
+    "@types/node": "^18.17.15",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@ykzts/prettier-config": "workspace:*",
+    "@ykzts/tsconfig": "workspace:*",
+    "eslint": "^8.49.0",
+    "eslint-config-next": "^13.4.19",
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "^3.0.3",
+    "rehype-external-links": "^3.0.0",
+    "remark-gfm": "^3.0.1",
+    "typescript": "^5.2.2"
+  },
+  "license": "MIT",
+  "name": "@ykzts/portfolio",
+  "private": true,
+  "repository": {
+    "directory": "apps/portfolio",
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.git"
+  },
+  "scripts": {
+    "build": "next build",
+    "dev": "next",
+    "format": "prettier -w .",
+    "format-check": "prettier -c .",
+    "lint": "next lint -d .",
+    "start": "next start"
+  },
+  "type": "module",
+  "version": "1.0.0"
+}
