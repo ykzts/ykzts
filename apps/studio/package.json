@@ -1,0 +1,50 @@
+{
+  "author": "Yamagishi Kazutoshi",
+  "dependencies": {
+    "@sanity/client": "^6.4.11",
+    "@sanity/icons": "^2.4.1",
+    "@sanity/types": "^3.16.4",
+    "@sanity/ui": "^1.8.2",
+    "@sanity/vision": "^3.16.4",
+    "@ykzts/schemas": "workspace:*",
+    "next": "^13.4.19",
+    "next-sanity": "^5.4.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sanity": "^3.16.4",
+    "styled-components": "^6.0.7"
+  },
+  "description": "Yamagishi Kazutoshi's Website!",
+  "devDependencies": {
+    "@types/eslint": "^8.44.2",
+    "@types/node": "^18.17.15",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@ykzts/prettier-config": "workspace:*",
+    "@ykzts/tsconfig": "workspace:*",
+    "eslint": "^8.49.0",
+    "eslint-config-next": "^13.4.19",
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  },
+  "license": "MIT",
+  "name": "@ykzts/studio",
+  "private": true,
+  "repository": {
+    "directory": "apps/studio",
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.git"
+  },
+  "scripts": {
+    "build": "next build",
+    "dev": "next -p 10000",
+    "format": "prettier -w .",
+    "format-check": "prettier -c .",
+    "lint": "next lint -d .",
+    "start": "next start -p 10000"
+  },
+  "type": "module",
+  "version": "1.0.0"
+}

@@ -6,13 +6,13 @@
         "esbenp.prettier-vscode",
         "unifiedjs.vscode-mdx"
       ],
-       "settings": {
-         "eslint.workingDirectories": [
-           {
-             "mode": "auto"
-           }
-         ]
-       }
+      "settings": {
+        "eslint.workingDirectories": [
+          {
+            "mode": "auto"
+          }
+        ]
+      }
     }
   },
   "forwardPorts": [3000],

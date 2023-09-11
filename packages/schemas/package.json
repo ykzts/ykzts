@@ -1,0 +1,32 @@
+{
+  "author": "Yamagishi Kazutoshi",
+  "dependencies": {
+    "sanity": "^3.16.4"
+  },
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^18.17.15",
+    "@ykzts/prettier-config": "workspace:*",
+    "@ykzts/tsconfig": "workspace:*",
+    "prettier": "^3.0.3",
+    "tsup": "^7.2.0"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@ykzts/schemas",
+  "private": true,
+  "repository": {
+    "directory": "packages/schemas",
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.git"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "format": "prettier -w .",
+    "format-check": "prettier -c ."
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
+}
