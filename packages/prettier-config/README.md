@@ -1,0 +1,1 @@
+# @ykzts/prettier-config
