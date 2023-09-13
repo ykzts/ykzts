@@ -16,7 +16,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       return (
         <a
           href={href}
-          rel={[...relList].join(' ')}
+          rel={relList.size > 0 ? [...relList].join(' ') : undefined}
           target={target ?? isExternal ? '_blank' : undefined}
           {...props}
         />
