@@ -390,3 +390,44 @@
     padding: 0 1.5rem 2.25rem 1.5rem;
   }
 }
+
+.textSkeleton {
+  --skeleton-background-color: rgba(221, 221, 221, 0.7);
+
+  background-color: var(--skeleton-background-color);
+  border-radius: 0.25em;
+  display: inline-block;
+  height: 1em;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 10em;
+}
+
+@keyframes wave {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translate(100%);
+  }
+}
+
+.textSkeleton::after {
+  animation: wave 1.5s linear 0.3s infinite;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    var(--skeleton-background-color),
+    transparent
+  );
+  bottom: 0;
+  content: '';
+  display: block;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translateX(-100%);
+}
