@@ -6,6 +6,7 @@ import { Noto_Sans_JP, Raleway, Source_Sans_3 } from 'next/font/google'
 import Image from 'next/image'
 import { type ReactNode } from 'react'
 import { FaArrowDown } from 'react-icons/fa'
+import Link from '@/components/link'
 import keyVisual from './_assets/key-visual.jpg'
 import Section, {
   SectionContent,
@@ -151,23 +152,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <footer className={styles.footer}>
             <div className={styles.copyright}>
               © Yamagishi Kazutoshi. Design{' '}
-              <a
+              <Link
                 className={styles.footer__link}
                 href="https://html5up.net/"
-                rel="noopener noreferrer"
                 target="_blank"
               >
                 HTML5 UP
-              </a>
+              </Link>
               . Artwork by{' '}
-              <a
+              <Link
                 className={styles.footer__link}
                 href="https://twitter.com/diru_k1005"
-                rel="noopener noreferrer"
                 target="_blank"
               >
                 Kannazuki Diru
-              </a>
+              </Link>
               .
             </div>
           </footer>
