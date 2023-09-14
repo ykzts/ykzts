@@ -4,7 +4,7 @@
     "@sanity/icons": "^2.4.1",
     "@sanity/types": "^3.16.4",
     "@sanity/ui": "^1.8.2",
-    "@sanity/vision": "^3.16.4",
+    "@sanity/vision": "^3.16.5",
     "@ykzts/schemas": "workspace:*",
     "next": "^13.4.19",
     "next-sanity": "^5.5.3",

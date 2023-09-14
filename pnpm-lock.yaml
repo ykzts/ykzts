@@ -112,8 +112,8 @@ importers:
         specifier: ^1.8.2
         version: 1.8.2(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.8)
       '@sanity/vision':
-        specifier: ^3.16.4
-        version: 3.16.4(@babel/runtime@7.22.15)(@codemirror/lint@6.4.1)(@codemirror/state@6.2.1)(@codemirror/theme-one-dark@6.1.2)(@lezer/common@1.0.4)(codemirror@6.0.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.8)
+        specifier: ^3.16.5
+        version: 3.16.5(@babel/runtime@7.22.15)(@codemirror/lint@6.4.1)(@codemirror/state@6.2.1)(@codemirror/theme-one-dark@6.1.2)(@lezer/common@1.0.4)(codemirror@6.0.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.8)
       '@ykzts/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
@@ -2809,8 +2809,8 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /@sanity/vision@3.16.4(@babel/runtime@7.22.15)(@codemirror/lint@6.4.1)(@codemirror/state@6.2.1)(@codemirror/theme-one-dark@6.1.2)(@lezer/common@1.0.4)(codemirror@6.0.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.8):
-    resolution: {integrity: sha512-3iV9TyhIeZUoiWMckFYotJBAsFFn7tuHoQMz3nZP+YZRdY1C5hC5h8yFQp22KHSW6tivhOza0g9Z2pfhsfWQtw==}
+  /@sanity/vision@3.16.5(@babel/runtime@7.22.15)(@codemirror/lint@6.4.1)(@codemirror/state@6.2.1)(@codemirror/theme-one-dark@6.1.2)(@lezer/common@1.0.4)(codemirror@6.0.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.0.8):
+    resolution: {integrity: sha512-rY+UhdDsoG2ujtScD2EUHgyEJq5kzhJMeErt09/xE8DGmhNXfOjcl6DqytfXxIgL/R4aeLv3K8kjb8SImF8hmg==}
     peerDependencies:
       react: ^18
       styled-components: ^5.2
