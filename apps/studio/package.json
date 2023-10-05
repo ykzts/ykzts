@@ -7,7 +7,7 @@
     "@sanity/vision": "^3.17.0",
     "@ykzts/schemas": "workspace:*",
     "next": "^13.5.4",
-    "next-sanity": "^5.5.4",
+    "next-sanity": "^5.5.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sanity": "^3.17.0",
