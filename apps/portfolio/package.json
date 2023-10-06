@@ -4,7 +4,7 @@
     "@mdx-js/react": "^2.3.0",
     "@portabletext/react": "^3.0.9",
     "@sanity/client": "^6.4.12",
-    "@vercel/analytics": "^1.0.2",
+    "@vercel/analytics": "^1.1.0",
     "clsx": "^2.0.0",
     "next": "^13.5.4",
     "react": "^18.2.0",
