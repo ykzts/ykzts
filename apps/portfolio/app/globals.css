@@ -68,10 +68,6 @@ body {
   }
 }
 
-body > svg[aria-hidden] {
-  display: none;
-}
-
 a {
   color: #000;
   border-bottom: dotted 1px;

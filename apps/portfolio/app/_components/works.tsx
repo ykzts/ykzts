@@ -41,7 +41,7 @@ export default async function Works() {
   return (
     <div id="works">
       {works.map((work) => (
-        <Section key={work.slug}>
+        <Section id={work.slug} key={work.slug}>
           <SectionHeader>
             <SectionTitle>{work.title}</SectionTitle>
           </SectionHeader>
