@@ -16,7 +16,7 @@
   "description": "Yamagishi Kazutoshi's Website!",
   "devDependencies": {
     "@mdx-js/loader": "^2.3.0",
-    "@next/mdx": "^13.5.4",
+    "@next/mdx": "^13.5.5",
     "@types/eslint": "^8.44.4",
     "@types/mdx": "^2.0.8",
     "@types/node": "^18.18.5",
@@ -26,7 +26,7 @@
     "@ykzts/prettier-config": "workspace:*",
     "@ykzts/tsconfig": "workspace:*",
     "eslint": "^8.51.0",
-    "eslint-config-next": "^13.5.4",
+    "eslint-config-next": "^13.5.5",
     "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.0.3",
     "rehype-external-links": "^3.0.0",
