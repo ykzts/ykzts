@@ -1,5 +1,6 @@
 import { type Metadata } from 'next'
-import Link from 'next/link'
+import SubLayout from './(docs)/layout'
+import Title from './(docs)/@title/layout'
 import styles from './not-found.module.css'
 
 export const metadata: Metadata = {
@@ -8,18 +9,8 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>404 Not Found</h1>
-
-        <p className={styles.message}>
-          お探しのページを見つけられませんでした。
-        </p>
-
-        <p>
-          <Link href="/">トップページに戻る</Link>
-        </p>
-      </main>
-    </div>
+    <SubLayout title={<Title>404 Not Found</Title>}>
+      <p className={styles.message}>お探しのページを見つけられませんでした。</p>
+    </SubLayout>
   )
 }
