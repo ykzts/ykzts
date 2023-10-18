@@ -21,7 +21,7 @@
     "@types/mdx": "^2.0.8",
     "@types/node": "^18.18.6",
     "@types/react": "^18.2.29",
-    "@types/react-dom": "^18.2.13",
+    "@types/react-dom": "^18.2.14",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@ykzts/prettier-config": "workspace:*",
     "@ykzts/tsconfig": "workspace:*",
