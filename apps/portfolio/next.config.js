@@ -14,6 +14,27 @@ const nextConfig = {
   experimental: {
     mdxRs: true
   },
+  async headers() {
+    return [
+      {
+        headers: [
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), geolocation=(), microphone=()'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'no-referrer'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          }
+        ],
+        source: '/:path*'
+      }
+    ]
+  },
   pageExtensions: ['tsx', 'ts', 'mdx']
 }
 
