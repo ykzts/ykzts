@@ -61,8 +61,8 @@ importers:
         specifier: ^2.0.8
         version: 2.0.8
       '@types/node':
-        specifier: ^18.18.5
-        version: 18.18.5
+        specifier: ^18.18.6
+        version: 18.18.6
       '@types/react':
         specifier: ^18.2.28
         version: 18.2.28
@@ -131,7 +131,7 @@ importers:
         version: 18.2.0(react@18.2.0)
       sanity:
         specifier: ^3.18.1
-        version: 3.18.1(@types/node@18.18.5)(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.0)
+        version: 3.18.1(@types/node@18.18.6)(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.0)
       styled-components:
         specifier: ^6.1.0
         version: 6.1.0(react-dom@18.2.0)(react@18.2.0)
@@ -140,8 +140,8 @@ importers:
         specifier: ^8.44.5
         version: 8.44.5
       '@types/node':
-        specifier: ^18.18.5
-        version: 18.18.5
+        specifier: ^18.18.6
+        version: 18.18.6
       '@types/react':
         specifier: ^18.2.28
         version: 18.2.28
@@ -183,11 +183,11 @@ importers:
     dependencies:
       sanity:
         specifier: ^3.18.1
-        version: 3.18.1(@types/node@18.18.5)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+        version: 3.18.1(@types/node@18.18.6)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
     devDependencies:
       '@types/node':
-        specifier: ^18.18.5
-        version: 18.18.5
+        specifier: ^18.18.6
+        version: 18.18.6
       '@ykzts/prettier-config':
         specifier: workspace:*
         version: link:../prettier-config
@@ -1821,7 +1821,7 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 18.18.5
+      '@types/node': 18.18.6
     dev: false
 
   /@types/hast@2.3.6:
@@ -1874,8 +1874,8 @@ packages:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: true
 
-  /@types/node@18.18.5:
-    resolution: {integrity: sha512-4slmbtwV59ZxitY4ixUZdy1uRLf9eSIvBWPQxNjhHYWEtn0FryfKpyS2cvADYXTayWdKEIsJengncrVvkI4I6A==}
+  /@types/node@18.18.6:
+    resolution: {integrity: sha512-wf3Vz+jCmOQ2HV1YUJuCWdL64adYxumkrxtc+H1VUQlnQI04+5HtH+qZCOE21lBE7gIrt+CwX2Wv8Acrw5Ak6w==}
 
   /@types/normalize-package-data@2.4.2:
     resolution: {integrity: sha512-lqa4UEhhv/2sjjIQgjX8B+RBjj47eo0mzGasklVJ78UKGQY1r0VpB9XHDaZZO9qzEFDdy4MrXLuEaSmPrPSe/A==}
@@ -2187,7 +2187,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.22.5(@babel/core@7.22.20)
       '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.22.20)
       react-refresh: 0.14.0
-      vite: 4.4.9(@types/node@18.18.5)
+      vite: 4.4.9(@types/node@18.18.6)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -4749,7 +4749,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 18.18.5
+      '@types/node': 18.18.6
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
@@ -5940,7 +5940,7 @@ packages:
       groq: 3.16.7
       next: 13.5.5(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
-      sanity: 3.18.1(@types/node@18.18.5)(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.0)
+      sanity: 3.18.1(@types/node@18.18.6)(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.0)
       styled-components: 6.1.0(react-dom@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - supports-color
@@ -6861,7 +6861,7 @@ packages:
       '@sanity/diff-match-patch': 3.1.1
     dev: false
 
-  /sanity@3.18.1(@types/node@18.18.5)(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.0):
+  /sanity@3.18.1(@types/node@18.18.6)(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.0):
     resolution: {integrity: sha512-/e+1o2K9ufM4UXZxME6gXpa7hmCfEsnRIj41Z0HqABj1j6lk8aFzwfQ3dj/n2pU0ZCG0tjLdgJIhAPbSCdlJhQ==}
     engines: {node: '>=18'}
     hasBin: true
@@ -6972,7 +6972,7 @@ packages:
       use-device-pixel-ratio: 1.1.2(react@18.2.0)
       use-hot-module-reload: 1.0.3(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
-      vite: 4.4.9(@types/node@18.18.5)
+      vite: 4.4.9(@types/node@18.18.6)
       yargs: 17.7.2
     transitivePeerDependencies:
       - '@types/node'
@@ -6989,7 +6989,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  /sanity@3.18.1(@types/node@18.18.5)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11):
+  /sanity@3.18.1(@types/node@18.18.6)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11):
     resolution: {integrity: sha512-/e+1o2K9ufM4UXZxME6gXpa7hmCfEsnRIj41Z0HqABj1j6lk8aFzwfQ3dj/n2pU0ZCG0tjLdgJIhAPbSCdlJhQ==}
     engines: {node: '>=18'}
     hasBin: true
@@ -7100,7 +7100,7 @@ packages:
       use-device-pixel-ratio: 1.1.2(react@18.2.0)
       use-hot-module-reload: 1.0.3(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
-      vite: 4.4.9(@types/node@18.18.5)
+      vite: 4.4.9(@types/node@18.18.6)
       yargs: 17.7.2
     transitivePeerDependencies:
       - '@types/node'
@@ -8200,7 +8200,7 @@ packages:
       vfile-message: 4.0.2
     dev: true
 
-  /vite@4.4.9(@types/node@18.18.5):
+  /vite@4.4.9(@types/node@18.18.6):
     resolution: {integrity: sha512-2mbUn2LlUmNASWwSCNSJ/EG2HuSRTnVNaydp6vMCm5VIqJsjMfbIWtbH2kDuwUVW5mMUKKZvGPX/rqeqVvv1XA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -8228,7 +8228,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 18.18.5
+      '@types/node': 18.18.6
       esbuild: 0.18.20
       postcss: 8.4.31
       rollup: 3.29.3
