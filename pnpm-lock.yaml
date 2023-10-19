@@ -21,8 +21,8 @@ importers:
         specifier: ^3.0.11
         version: 3.0.11(react@18.2.0)
       '@sanity/client':
-        specifier: ^6.6.0
-        version: 6.6.0
+        specifier: ^6.7.0
+        version: 6.7.0
       '@vercel/analytics':
         specifier: ^1.1.1
         version: 1.1.1
@@ -122,7 +122,7 @@ importers:
         version: 13.5.6(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
         specifier: ^5.5.8
-        version: 5.5.8(@sanity/client@6.6.0)(@sanity/icons@2.6.0)(@sanity/types@3.18.1)(@sanity/ui@1.8.2)(next@13.5.6)(react@18.2.0)(sanity@3.18.1)(styled-components@6.1.0)
+        version: 5.5.8(@sanity/client@6.7.0)(@sanity/icons@2.6.0)(@sanity/types@3.18.1)(@sanity/ui@1.8.2)(next@13.5.6)(react@18.2.0)(sanity@3.18.1)(styled-components@6.1.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1412,8 +1412,8 @@ packages:
       - supports-color
     dev: false
 
-  /@sanity/client@6.6.0:
-    resolution: {integrity: sha512-AZNtl1/BSRNOsjy5k/1q1feIHPuExugWsG0ZuNj4/etOddFMaXfUvCHHuv89pHb6l/3CWv+UPysvMNU0+qS2Ig==}
+  /@sanity/client@6.7.0:
+    resolution: {integrity: sha512-nQGIuXXhdtP5FDsdBjuPRpeV6jOHU6Eq5xr52KyUUi29SgC5h5XUzRIu7d1sF8N+ONqTngYueFuB8JDsdSo1Ng==}
     engines: {node: '>=14.18'}
     dependencies:
       '@sanity/eventsource': 5.0.0
@@ -1597,7 +1597,7 @@ packages:
       - supports-color
     dev: false
 
-  /@sanity/preview-kit@3.2.0(@sanity/client@6.6.0)(react@18.2.0):
+  /@sanity/preview-kit@3.2.0(@sanity/client@6.7.0)(react@18.2.0):
     resolution: {integrity: sha512-yp7TAYibScZpUIne67TFQGgx/M/iqEXMJWnQOVqy0iKXCcz4iOXgPEOvCWjc/dLdpVPCjsHya2cIlcenPyRhWw==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -1607,7 +1607,7 @@ packages:
       react:
         optional: true
     dependencies:
-      '@sanity/client': 6.6.0
+      '@sanity/client': 6.7.0
       '@sanity/eventsource': 5.0.0
       '@sanity/groq-store': 4.1.2
       '@vercel/stega': 0.1.0
@@ -1639,7 +1639,7 @@ packages:
   /@sanity/types@3.18.1:
     resolution: {integrity: sha512-EKtWxRiCsgCy1QDhBAbwHNt15wL0l+XYJc5VeQzdxb7RJnq0ZzfqV5uhtzqr1G5nDyhSHdgLO4UhysUn63SfuA==}
     dependencies:
-      '@sanity/client': 6.6.0
+      '@sanity/client': 6.7.0
       '@types/react': 18.2.29
     transitivePeerDependencies:
       - supports-color
@@ -5918,7 +5918,7 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
 
-  /next-sanity@5.5.8(@sanity/client@6.6.0)(@sanity/icons@2.6.0)(@sanity/types@3.18.1)(@sanity/ui@1.8.2)(next@13.5.6)(react@18.2.0)(sanity@3.18.1)(styled-components@6.1.0):
+  /next-sanity@5.5.8(@sanity/client@6.7.0)(@sanity/icons@2.6.0)(@sanity/types@3.18.1)(@sanity/ui@1.8.2)(next@13.5.6)(react@18.2.0)(sanity@3.18.1)(styled-components@6.1.0):
     resolution: {integrity: sha512-RXblju8LqkHOOBsGrO7z0Psotog08paopR82N6/zqpGXq+4qIYla5kzEOGtRGUYbA/T2+gpnxijmLATxnSVNNw==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -5931,9 +5931,9 @@ packages:
       sanity: ^3.0.0
       styled-components: ^5.2.0 || ^6.0.0
     dependencies:
-      '@sanity/client': 6.6.0
+      '@sanity/client': 6.7.0
       '@sanity/icons': 2.6.0(react@18.2.0)
-      '@sanity/preview-kit': 3.2.0(@sanity/client@6.6.0)(react@18.2.0)
+      '@sanity/preview-kit': 3.2.0(@sanity/client@6.7.0)(react@18.2.0)
       '@sanity/types': 3.18.1
       '@sanity/ui': 1.8.2(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.1.0)
       '@sanity/webhook': 3.0.1
@@ -6880,7 +6880,7 @@ packages:
       '@sanity/bifur-client': 0.3.1
       '@sanity/block-tools': 3.18.1
       '@sanity/cli': 3.18.1
-      '@sanity/client': 6.6.0
+      '@sanity/client': 6.7.0
       '@sanity/color': 2.2.5
       '@sanity/diff': 3.18.1
       '@sanity/diff-match-patch': 3.1.1
@@ -7008,7 +7008,7 @@ packages:
       '@sanity/bifur-client': 0.3.1
       '@sanity/block-tools': 3.18.1
       '@sanity/cli': 3.18.1
-      '@sanity/client': 6.6.0
+      '@sanity/client': 6.7.0
       '@sanity/color': 2.2.5
       '@sanity/diff': 3.18.1
       '@sanity/diff-match-patch': 3.1.1
