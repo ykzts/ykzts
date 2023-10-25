@@ -1,7 +1,7 @@
 {
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
-    "@mdx-js/react": "^2.3.0",
+    "@mdx-js/react": "^3.0.0",
     "@portabletext/react": "^3.0.11",
     "@sanity/client": "^6.7.0",
     "@vercel/analytics": "^1.1.1",
@@ -15,7 +15,7 @@
   },
   "description": "Yamagishi Kazutoshi's Website!",
   "devDependencies": {
-    "@mdx-js/loader": "^2.3.0",
+    "@mdx-js/loader": "^3.0.0",
     "@next/mdx": "^13.5.6",
     "@types/eslint": "^8.44.6",
     "@types/mdx": "^2.0.9",
