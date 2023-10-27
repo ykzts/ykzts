@@ -1,18 +1,21 @@
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
 import clsx from 'clsx'
-import { type Metadata } from 'next'
+import { type Metadata, type Viewport } from 'next'
 import { Noto_Sans_JP, Raleway, Source_Sans_3 } from 'next/font/google'
 import { type ReactNode } from 'react'
 import SVGSymbols from './_components/svg-symbols'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com/'),
-  themeColor: '#49fcd4',
   title: {
     default: 'ykzts.com',
     template: '%s | ykzts.com'
   }
+}
+
+export const viewport: Viewport = {
+  themeColor: '#49fcd4'
 }
 
 const notoSansJp = Noto_Sans_JP({
