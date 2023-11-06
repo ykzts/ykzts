@@ -19,7 +19,7 @@
     "@types/node": "^18.18.8",
     "@types/react": "^18.2.36",
     "@types/react-dom": "^18.2.14",
-    "@typescript-eslint/eslint-plugin": "^6.9.1",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@ykzts/prettier-config": "workspace:*",
     "@ykzts/tsconfig": "workspace:*",
     "eslint": "^8.53.0",
