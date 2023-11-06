@@ -15,7 +15,7 @@
     "@docusaurus/module-type-aliases": "^2.4.3",
     "@tsconfig/docusaurus": "^2.0.2",
     "@types/eslint": "^8.44.6",
-    "@types/react": "^18.2.35",
+    "@types/react": "^18.2.36",
     "@types/react-dom": "^18.2.14",
     "@types/react-helmet": "^6.1.8",
     "@types/react-router-dom": "^5.3.3",
