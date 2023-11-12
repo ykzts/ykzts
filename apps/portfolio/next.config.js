@@ -12,7 +12,8 @@ const withMDX = createMDX({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    mdxRs: true
+    mdxRs: true,
+    ppr: true
   },
   async headers() {
     return [
