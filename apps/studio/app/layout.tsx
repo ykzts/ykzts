@@ -10,12 +10,8 @@ export const metadata: Metadata = {
     index: false
   },
   title: {
-    absolute: 'studio.ykzts.com'
-  },
-  viewport: {
-    initialScale: 1,
-    viewportFit: 'cover',
-    width: 'device-width'
+    default: 'studio.ykzts.com',
+    template: '%s - studio.ykzts.com'
   }
 }
 
