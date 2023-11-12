@@ -29,17 +29,19 @@ export function middleware(request: Request) {
 
   const requestHeaders = new Headers(request.headers)
   const cspDirectives = createCSPDirectives()
+  const cspHeaderValue = cspDirectives.join('; ')
 
-  requestHeaders.set('Content-Security-Policy', cspDirectives.join('; '))
+  requestHeaders.set('Content-Security-Policy', cspHeaderValue)
 
-  return NextResponse.next({
-    headers: new Headers({
-      'Content-Security-Policy': cspDirectives.join('; ')
-    }),
+  const response = NextResponse.next({
     request: {
       headers: requestHeaders
     }
   })
+
+  response.headers.set('Content-Security-Policy', cspHeaderValue)
+
+  return response
 }
 
 export const config = {
