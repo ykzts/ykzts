@@ -5,15 +5,17 @@
     "url": "https://github.com/ykzts/ykzts.blog/issues"
   },
   "dependencies": {
-    "@docusaurus/core": "^2.4.3",
-    "@docusaurus/preset-classic": "^2.4.3",
+    "@docusaurus/core": "^3.0.0",
+    "@docusaurus/preset-classic": "^3.0.0",
+    "prism-react-renderer": "^2.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "description": "This repository contains a source files for ykzts.blog.",
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^2.4.3",
-    "@tsconfig/docusaurus": "^2.0.2",
+    "@docusaurus/module-type-aliases": "^3.0.0",
+    "@docusaurus/tsconfig": "^3.0.0",
+    "@docusaurus/types": "^3.0.0",
     "@types/eslint": "^8.44.7",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
@@ -23,6 +25,7 @@
     "@typescript-eslint/parser": "^6.10.0",
     "eslint": "^8.53.0",
     "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
