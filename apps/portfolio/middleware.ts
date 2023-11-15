@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server'
+import { uint8ArrayToBase64 } from 'uint8array-extras'
 
 function getNonce(): string {
   const randomValues = crypto.getRandomValues(new Uint8Array(18))
 
-  return Buffer.from(randomValues).toString('base64')
+  return uint8ArrayToBase64(randomValues)
 }
 
 function createCSPDirectives(): string[] {
@@ -23,10 +24,6 @@ function createCSPDirectives(): string[] {
 }
 
 export function middleware(request: Request) {
-  if (process.env.NODE_ENV !== 'production') {
-    return NextResponse.next()
-  }
-
   const requestHeaders = new Headers(request.headers)
   const cspDirectives = createCSPDirectives()
   const cspHeaderValue = cspDirectives.join('; ')
@@ -39,7 +36,12 @@ export function middleware(request: Request) {
     }
   })
 
-  response.headers.set('Content-Security-Policy', cspHeaderValue)
+  response.headers.set(
+    process.env.NODE_ENV !== 'production'
+      ? 'Content-Security-Policy-Report-Only'
+      : 'Content-Security-Policy',
+    cspHeaderValue
+  )
 
   return response
 }

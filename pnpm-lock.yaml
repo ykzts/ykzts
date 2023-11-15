@@ -44,6 +44,9 @@ importers:
       react-intersection-observer:
         specifier: ^9.5.3
         version: 9.5.3(react@18.2.0)
+      uint8array-extras:
+        specifier: ^0.5.1
+        version: 0.5.1
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -7681,6 +7684,11 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
     dev: true
+
+  /uint8array-extras@0.5.1:
+    resolution: {integrity: sha512-dlgj8+9+Rak3JzT1Rg77nIccp0a5kBKjQ7tworiwKxkXIhqgdd+oZLkK8rcDb+Fq5tq+oUVjPbq4V/dMD6cnlA==}
+    engines: {node: '>=18'}
+    dev: false
 
   /unbox-primitive@1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
