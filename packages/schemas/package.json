@@ -9,7 +9,7 @@
     "@ykzts/prettier-config": "workspace:*",
     "@ykzts/tsconfig": "workspace:*",
     "prettier": "^3.1.0",
-    "tsup": "^8.0.0"
+    "tsup": "^8.0.1"
   },
   "license": "MIT",
   "main": "dist/index.js",
