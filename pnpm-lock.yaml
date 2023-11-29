@@ -21,7 +21,7 @@ importers:
         specifier: ^3.0.11
         version: 3.0.11(react@18.2.0)
       '@sanity/client':
-        specifier: ^6.8.6
+        specifier: ^6.9.1
         version: 6.9.1
       '@vercel/analytics':
         specifier: ^1.1.1
