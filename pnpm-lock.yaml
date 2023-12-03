@@ -61,8 +61,8 @@ importers:
         specifier: ^2.0.10
         version: 2.0.10
       '@types/node':
-        specifier: ^20.10.2
-        version: 20.10.2
+        specifier: ^20.10.3
+        version: 20.10.3
       '@types/react':
         specifier: ^18.2.41
         version: 18.2.41
@@ -131,7 +131,7 @@ importers:
         version: 18.2.0(react@18.2.0)
       sanity:
         specifier: ^3.20.2
-        version: 3.20.2(@types/node@20.10.2)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.1)
+        version: 3.20.2(@types/node@20.10.3)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.1)
       styled-components:
         specifier: ^6.1.1
         version: 6.1.1(react-dom@18.2.0)(react@18.2.0)
@@ -140,8 +140,8 @@ importers:
         specifier: ^8.44.8
         version: 8.44.8
       '@types/node':
-        specifier: ^20.10.2
-        version: 20.10.2
+        specifier: ^20.10.3
+        version: 20.10.3
       '@types/react':
         specifier: ^18.2.41
         version: 18.2.41
@@ -183,11 +183,11 @@ importers:
     dependencies:
       sanity:
         specifier: ^3.20.2
-        version: 3.20.2(@types/node@20.10.2)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.1)
+        version: 3.20.2(@types/node@20.10.3)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.1)
     devDependencies:
       '@types/node':
-        specifier: ^20.10.2
-        version: 20.10.2
+        specifier: ^20.10.3
+        version: 20.10.3
       '@ykzts/prettier-config':
         specifier: workspace:*
         version: link:../prettier-config
@@ -1666,7 +1666,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       rxjs: 7.8.1
-      sanity: 3.20.2(@types/node@20.10.2)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.1)
+      sanity: 3.20.2(@types/node@20.10.3)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.1)
       styled-components: 6.1.1(react-dom@18.2.0)(react@18.2.0)
       suspend-react: 0.1.3(react@18.2.0)
     transitivePeerDependencies:
@@ -1720,7 +1720,7 @@ packages:
       '@sanity/client': 6.9.1
       '@sanity/icons': 2.7.0(react@18.2.0)
       '@sanity/uuid': 3.0.2
-      sanity: 3.20.2(@types/node@20.10.2)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.1)
+      sanity: 3.20.2(@types/node@20.10.3)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.1)
     dev: false
 
   /@sanity/schema@3.20.2:
@@ -1928,7 +1928,7 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 20.10.2
+      '@types/node': 20.10.3
     dev: false
 
   /@types/hast@2.3.8:
@@ -1982,8 +1982,8 @@ packages:
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
     dev: true
 
-  /@types/node@20.10.2:
-    resolution: {integrity: sha512-37MXfxkb0vuIlRKHNxwCkb60PNBpR94u4efQuN4JgIAm66zfCDXGSAFCef9XUWFovX2R1ok6Z7MHhtdVXXkkIw==}
+  /@types/node@20.10.3:
+    resolution: {integrity: sha512-XJavIpZqiXID5Yxnxv3RUDKTN5b81ddNC3ecsA0SoFXz/QU8OGBwZGMomiq0zw+uuqbL/krztv/DINAQ/EV4gg==}
     dependencies:
       undici-types: 5.26.5
 
@@ -2256,7 +2256,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.5)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 4.5.0(@types/node@20.10.2)
+      vite: 4.5.0(@types/node@20.10.3)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -4814,7 +4814,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 20.10.2
+      '@types/node': 20.10.3
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
@@ -5777,7 +5777,7 @@ packages:
       groq: 3.20.2
       next: 14.0.3(@babel/core@7.23.5)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
-      sanity: 3.20.2(@types/node@20.10.2)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.1)
+      sanity: 3.20.2(@types/node@20.10.3)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.1)
       styled-components: 6.1.1(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
@@ -6714,7 +6714,7 @@ packages:
       '@sanity/diff-match-patch': 3.1.1
     dev: false
 
-  /sanity@3.20.2(@types/node@20.10.2)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.1):
+  /sanity@3.20.2(@types/node@20.10.3)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.1):
     resolution: {integrity: sha512-wfvRc6Or1tXJdUIk9AqvO/zyWzzH2XXFCeMC8aFDXEcR98cbV+cfXikG82Jt31JvkUmFHVsAvALmAbb0hbWDuQ==}
     engines: {node: '>=18'}
     hasBin: true
@@ -6827,7 +6827,7 @@ packages:
       use-device-pixel-ratio: 1.1.2(react@18.2.0)
       use-hot-module-reload: 1.0.3(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
-      vite: 4.5.0(@types/node@20.10.2)
+      vite: 4.5.0(@types/node@20.10.3)
       yargs: 17.7.2
     transitivePeerDependencies:
       - '@types/node'
@@ -7835,7 +7835,7 @@ packages:
       vfile-message: 4.0.2
     dev: true
 
-  /vite@4.5.0(@types/node@20.10.2):
+  /vite@4.5.0(@types/node@20.10.3):
     resolution: {integrity: sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -7863,7 +7863,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.10.2
+      '@types/node': 20.10.3
       esbuild: 0.18.20
       postcss: 8.4.32
       rollup: 3.29.4
