@@ -64,7 +64,7 @@ importers:
         specifier: ^20.10.4
         version: 20.10.4
       '@types/react':
-        specifier: ^18.2.44
+        specifier: ^18.2.45
         version: 18.2.45
       '@types/react-dom':
         specifier: ^18.2.17
@@ -143,7 +143,7 @@ importers:
         specifier: ^20.10.4
         version: 20.10.4
       '@types/react':
-        specifier: ^18.2.44
+        specifier: ^18.2.45
         version: 18.2.45
       '@types/react-dom':
         specifier: ^18.2.17
