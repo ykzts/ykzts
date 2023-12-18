@@ -1,5 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["github>inabagumi/renovate-config"],
+  "packageRules": [
+    {
+      "extend": "group:nextjsMonorepo",
+      "followTag": "canary"
+    }
+  ],
   "reviewers": ["ykzts"]
 }
