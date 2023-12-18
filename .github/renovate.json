@@ -3,7 +3,7 @@
   "extends": ["github>inabagumi/renovate-config"],
   "packageRules": [
     {
-      "extend": "group:nextjsMonorepo",
+      "extends": "group:nextjsMonorepo",
       "followTag": "canary"
     }
   ],
