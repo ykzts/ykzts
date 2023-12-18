@@ -21,7 +21,8 @@ const description = [
   '山岸和利による過去の実績や作品の掲載、各種ソーシャルネットワーキングサービスのアカウントへのリンクなどの連絡先への参照があります。'
 ].join('')
 
-export const runtime = 'edge'
+// TODO: 静的にビルドするために`edge`ではなく`nodejs`に
+export const runtime = 'nodejs'
 export const revalidate = 600
 
 export const metadata: Metadata = {
