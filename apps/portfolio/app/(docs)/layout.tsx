@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { type ReactNode } from 'react'
 import styles from './layout.module.css'
 
+export const runtime = 'edge'
+
 export default function DocsLayout({
   children,
   title
