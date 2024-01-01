@@ -5,18 +5,11 @@
         "EditorConfig.EditorConfig",
         "esbenp.prettier-vscode",
         "unifiedjs.vscode-mdx"
-      ],
-      "settings": {
-        "eslint.workingDirectories": [
-          {
-            "mode": "auto"
-          }
-        ]
-      }
+      ]
     }
   },
   "forwardPorts": [3000],
-  "image": "mcr.microsoft.com/vscode/devcontainers/typescript-node:1-20-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bookworm",
   "name": "ykzts.com",
-  "postCreateCommand": "sudo npm uninstall -g pnpm && sudo corepack enable && pnpm install"
+  "postCreateCommand": "./.devcontainer/post-create.sh"
 }
