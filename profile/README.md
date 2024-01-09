@@ -1,6 +1,6 @@
-## <span lang="ja">こんにちは</span>
+## Hi there
 
-<p lang="ja">山岸和利は日本で働くソフトウェアエンジニアです。TypeScriptを用いたフロントエンド領域の開発を得意としています。またわたしはフロントエンド領域だけではなくバックエンド領域やインフラ領域に対しても造詣が深く、ウェブアプリケーションの開発において幅広い経験を有しています。</p>
+Yamagishi Kazutoshi is a software engineer working in Japan, specializing in front-end development using TypeScript. I also have a broad range of experience in web application development, not only in the front-end area but also in the back-end and infrastructure areas.
 
 <div align="right">
 
