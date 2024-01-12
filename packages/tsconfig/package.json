@@ -4,7 +4,7 @@
   "description": "",
   "devDependencies": {
     "@ykzts/prettier-config": "workspace:*",
-    "prettier": "^3.2.0"
+    "prettier": "^3.2.1"
   },
   "license": "MIT",
   "name": "@ykzts/tsconfig",
