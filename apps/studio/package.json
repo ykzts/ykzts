@@ -25,7 +25,7 @@
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.0.5-canary.60",
     "eslint-config-prettier": "^9.1.0",
-    "prettier": "^3.2.3",
+    "prettier": "^3.2.4",
     "typescript": "^5.3.3"
   },
   "license": "MIT",
