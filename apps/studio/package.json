@@ -3,7 +3,7 @@
   "dependencies": {
     "@sanity/icons": "^2.8.0",
     "@sanity/types": "^3.25.0",
-    "@sanity/ui": "^2.0.0",
+    "@sanity/ui": "^2.0.1",
     "@sanity/vision": "^3.25.0",
     "@ykzts/schemas": "workspace:*",
     "next": "^14.0.5-canary.65",
