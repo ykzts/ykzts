@@ -6,7 +6,7 @@
     "@sanity/ui": "^2.0.1",
     "@sanity/vision": "^3.25.0",
     "@ykzts/schemas": "workspace:*",
-    "next": "^14.0.5-canary.65",
+    "next": "^14.0.5-canary.67",
     "next-sanity": "^7.0.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -23,7 +23,7 @@
     "@ykzts/prettier-config": "workspace:*",
     "@ykzts/tsconfig": "workspace:*",
     "eslint": "^8.56.0",
-    "eslint-config-next": "^14.0.5-canary.65",
+    "eslint-config-next": "^14.0.5-canary.67",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.2.4",
     "typescript": "^5.3.3"
