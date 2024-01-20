@@ -52,7 +52,7 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0(webpack@5.89.0)
       '@next/mdx':
-        specifier: ^14.1.1-canary.2
+        specifier: ^14.1.1-canary.3
         version: 14.1.1-canary.3(@mdx-js/loader@3.0.0)(@mdx-js/react@3.0.0)
       '@types/eslint':
         specifier: ^8.56.2
