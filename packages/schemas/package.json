@@ -1,7 +1,7 @@
 {
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
-    "sanity": "^3.25.0"
+    "sanity": "^3.26.0"
   },
   "description": "",
   "devDependencies": {
