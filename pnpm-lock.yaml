@@ -61,8 +61,8 @@ importers:
         specifier: ^2.0.10
         version: 2.0.10
       '@types/node':
-        specifier: ^20.11.6
-        version: 20.11.6
+        specifier: ^20.11.7
+        version: 20.11.7
       '@types/react':
         specifier: ^18.2.48
         version: 18.2.48
@@ -131,7 +131,7 @@ importers:
         version: 18.2.0(react@18.2.0)
       sanity:
         specifier: ^3.26.0
-        version: 3.26.0(@types/node@20.11.6)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.8)
+        version: 3.26.0(@types/node@20.11.7)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.8)
       styled-components:
         specifier: ^6.1.8
         version: 6.1.8(react-dom@18.2.0)(react@18.2.0)
@@ -140,8 +140,8 @@ importers:
         specifier: ^8.56.2
         version: 8.56.2
       '@types/node':
-        specifier: ^20.11.6
-        version: 20.11.6
+        specifier: ^20.11.7
+        version: 20.11.7
       '@types/react':
         specifier: ^18.2.48
         version: 18.2.48
@@ -183,11 +183,11 @@ importers:
     dependencies:
       sanity:
         specifier: ^3.26.0
-        version: 3.26.0(@types/node@20.11.6)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.8)
+        version: 3.26.0(@types/node@20.11.7)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.8)
     devDependencies:
       '@types/node':
-        specifier: ^20.11.6
-        version: 20.11.6
+        specifier: ^20.11.7
+        version: 20.11.7
       '@ykzts/prettier-config':
         specifier: workspace:*
         version: link:../prettier-config
@@ -1965,7 +1965,7 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 20.11.6
+      '@types/node': 20.11.7
     dev: false
 
   /@types/hast@2.3.9:
@@ -2019,8 +2019,8 @@ packages:
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
     dev: true
 
-  /@types/node@20.11.6:
-    resolution: {integrity: sha512-+EOokTnksGVgip2PbYbr3xnR7kZigh4LbybAfBAw5BpnQ+FqBYUsvCEjYd70IXKlbohQ64mzEYmMtlWUY8q//Q==}
+  /@types/node@20.11.7:
+    resolution: {integrity: sha512-GPmeN1C3XAyV5uybAf4cMLWT9fDWcmQhZVtMFu7OR32WjrqGG+Wnk2V1d0bmtUyE/Zy1QJ9BxyiTih9z8Oks8A==}
     dependencies:
       undici-types: 5.26.5
 
@@ -2337,7 +2337,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.7)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 4.5.2(@types/node@20.11.6)
+      vite: 4.5.2(@types/node@20.11.7)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -4894,7 +4894,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 20.11.6
+      '@types/node': 20.11.7
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
@@ -5868,7 +5868,7 @@ packages:
       groq: 3.25.0
       next: 14.1.1-canary.10(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
-      sanity: 3.26.0(@types/node@20.11.6)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.8)
+      sanity: 3.26.0(@types/node@20.11.7)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.8)
       styled-components: 6.1.8(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
@@ -6851,7 +6851,7 @@ packages:
       '@sanity/diff-match-patch': 3.1.1
     dev: false
 
-  /sanity@3.26.0(@types/node@20.11.6)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.8):
+  /sanity@3.26.0(@types/node@20.11.7)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.8):
     resolution: {integrity: sha512-762EYLoqP2ktc9fMzDJJTiWFFYngH6bApmJMRPJM/YlbUbs3rXee6AFzEiyVxY5wZg0iHEXqRIs3zeLosJJ50w==}
     engines: {node: '>=18'}
     hasBin: true
@@ -6969,7 +6969,7 @@ packages:
       use-device-pixel-ratio: 1.1.2(react@18.2.0)
       use-hot-module-reload: 1.0.3(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
-      vite: 4.5.2(@types/node@20.11.6)
+      vite: 4.5.2(@types/node@20.11.7)
       yargs: 17.7.2
     transitivePeerDependencies:
       - '@types/node'
@@ -8015,7 +8015,7 @@ packages:
       vfile-message: 4.0.2
     dev: true
 
-  /vite@4.5.2(@types/node@20.11.6):
+  /vite@4.5.2(@types/node@20.11.7):
     resolution: {integrity: sha512-tBCZBNSBbHQkaGyhGCDUGqeo2ph8Fstyp6FMSvTtsXeZSPpSMGlviAOav2hxVTqFcx8Hj/twtWKsMJXNY0xI8w==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -8043,7 +8043,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.11.6
+      '@types/node': 20.11.7
       esbuild: 0.18.20
       postcss: 8.4.33
       rollup: 3.29.4
