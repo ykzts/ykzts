@@ -103,8 +103,8 @@ importers:
   apps/studio:
     dependencies:
       '@sanity/icons':
-        specifier: ^2.8.0
-        version: 2.8.0(react@18.2.0)
+        specifier: ^2.10.0
+        version: 2.10.0(react@18.2.0)
       '@sanity/types':
         specifier: ^3.26.1
         version: 3.26.1
@@ -122,7 +122,7 @@ importers:
         version: 14.1.1-canary.16(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
         specifier: ^7.0.15
-        version: 7.0.15(@sanity/client@6.12.1)(@sanity/icons@2.8.0)(@sanity/types@3.26.1)(@sanity/ui@2.0.1)(next@14.1.1-canary.16)(react@18.2.0)(sanity@3.26.1)(styled-components@6.1.8)
+        version: 7.0.15(@sanity/client@6.12.1)(@sanity/icons@2.10.0)(@sanity/types@3.26.1)(@sanity/ui@2.0.1)(next@14.1.1-canary.16)(react@18.2.0)(sanity@3.26.1)(styled-components@6.1.8)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1603,8 +1603,8 @@ packages:
     resolution: {integrity: sha512-wtMYcV5GIDIhVyF/jjmdwq1GdlK07dRL40XMns73VbrFI7FteRltxv48bhYVZPcLkRXb0SHjpDS/icj9/yzbVA==}
     dev: false
 
-  /@sanity/icons@2.8.0(react@18.2.0):
-    resolution: {integrity: sha512-Q8aKg+KPJPDLDR+beYZhtB3gYdq7zIyZQZ6HjaB/63KuidHzkIFuhVv8JS/rJNwWOn5lTuzmd+L/+U/Pv3klWw==}
+  /@sanity/icons@2.10.0(react@18.2.0):
+    resolution: {integrity: sha512-aroxPAPxjuIViRqd7ZVy6Trr8iEV+N9S+dw94HwEWVBk+F8XTaWUcDifDEPvUQr0LhwZqylzzEW9kVIJJpNngg==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       react: ^18
@@ -1697,7 +1697,7 @@ packages:
       '@sanity/client': ^6.11.1
     dependencies:
       '@sanity/client': 6.12.1
-      '@sanity/icons': 2.8.0(react@18.2.0)
+      '@sanity/icons': 2.10.0(react@18.2.0)
       '@sanity/preview-url-secret': 1.5.3(@sanity/client@6.12.1)
       '@sanity/uuid': 3.0.2
       '@types/lodash.isequal': 4.5.8
@@ -1799,7 +1799,7 @@ packages:
     dependencies:
       '@floating-ui/react-dom': 2.0.6(react-dom@18.2.0)(react@18.2.0)
       '@sanity/color': 3.0.0
-      '@sanity/icons': 2.8.0(react@18.2.0)
+      '@sanity/icons': 2.10.0(react@18.2.0)
       csstype: 3.1.3
       framer-motion: 10.18.0(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
@@ -1844,7 +1844,7 @@ packages:
       '@rexxars/react-json-inspector': 8.0.1(react@18.2.0)
       '@rexxars/react-split-pane': 0.1.93(react-dom@18.2.0)(react@18.2.0)
       '@sanity/color': 3.0.0
-      '@sanity/icons': 2.8.0(react@18.2.0)
+      '@sanity/icons': 2.10.0(react@18.2.0)
       '@sanity/ui': 2.0.1(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.1.8)
       '@uiw/react-codemirror': 4.21.21(@babel/runtime@7.23.8)(@codemirror/autocomplete@6.12.0)(@codemirror/language@6.10.0)(@codemirror/lint@6.4.2)(@codemirror/search@6.5.5)(@codemirror/state@6.4.0)(@codemirror/theme-one-dark@6.1.2)(@codemirror/view@6.23.0)(codemirror@6.0.1)(react-dom@18.2.0)(react@18.2.0)
       hashlru: 2.3.0
@@ -5851,7 +5851,7 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
 
-  /next-sanity@7.0.15(@sanity/client@6.12.1)(@sanity/icons@2.8.0)(@sanity/types@3.26.1)(@sanity/ui@2.0.1)(next@14.1.1-canary.16)(react@18.2.0)(sanity@3.26.1)(styled-components@6.1.8):
+  /next-sanity@7.0.15(@sanity/client@6.12.1)(@sanity/icons@2.10.0)(@sanity/types@3.26.1)(@sanity/ui@2.0.1)(next@14.1.1-canary.16)(react@18.2.0)(sanity@3.26.1)(styled-components@6.1.8):
     resolution: {integrity: sha512-ywgVlLcE7HwMIVfW3qnL+j3xQMJvXHSGkAGxcXBL6dP2hC5ChTnmClbjBhd3GHucf3tUd/FLy1hH4SLTlujkwQ==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -5865,7 +5865,7 @@ packages:
       styled-components: ^5.2 || ^6.0
     dependencies:
       '@sanity/client': 6.12.1
-      '@sanity/icons': 2.8.0(react@18.2.0)
+      '@sanity/icons': 2.10.0(react@18.2.0)
       '@sanity/preview-kit': 5.0.17(@sanity/client@6.12.1)(react@18.2.0)
       '@sanity/types': 3.26.1
       '@sanity/ui': 2.0.1(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.1.8)
@@ -6883,7 +6883,7 @@ packages:
       '@sanity/eventsource': 5.0.1
       '@sanity/export': 3.26.1
       '@sanity/generate-help-url': 3.0.0
-      '@sanity/icons': 2.8.0(react@18.2.0)
+      '@sanity/icons': 2.10.0(react@18.2.0)
       '@sanity/image-url': 1.0.2
       '@sanity/import': 3.26.1
       '@sanity/logos': 2.1.4(@sanity/color@3.0.0)(react@18.2.0)
