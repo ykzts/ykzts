@@ -36,6 +36,11 @@ const nextConfig = {
       }
     ]
   },
+  logging: {
+    fetches: {
+      fullUrl: true
+    }
+  },
   pageExtensions: ['tsx', 'ts', 'mdx']
 }
 
