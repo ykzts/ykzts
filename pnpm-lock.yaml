@@ -121,8 +121,8 @@ importers:
         specifier: ^14.1.1-canary.20
         version: 14.1.1-canary.20(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
-        specifier: ^7.0.15
-        version: 7.0.15(@sanity/client@6.12.3)(@sanity/icons@2.10.0)(@sanity/types@3.26.1)(@sanity/ui@2.0.1)(next@14.1.1-canary.20)(react@18.2.0)(sanity@3.26.1)(styled-components@6.1.8)
+        specifier: ^7.0.16
+        version: 7.0.16(@sanity/client@6.12.3)(@sanity/icons@2.10.0)(@sanity/types@3.26.1)(@sanity/ui@2.0.1)(next@14.1.1-canary.20)(react@18.2.0)(sanity@3.26.1)(styled-components@6.1.8)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1724,11 +1724,11 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@sanity/preview-kit@5.0.17(@sanity/client@6.12.3)(react@18.2.0):
-    resolution: {integrity: sha512-A9Lb1idH/cJ/5C9kIOHQye0gxXG6SBXHdXeU4GT/vcPnARZ8hZLTW3OXt713UtrIB06cT9CaV7mp6n25TxYmzA==}
+  /@sanity/preview-kit@5.0.18(@sanity/client@6.12.3)(react@18.2.0):
+    resolution: {integrity: sha512-8iuQSWIgOsJQCgtvZiY42fQZB2lqyHOZyuKhuyo0pi4Rf1fhHRmmc9wtKcdStxfvtcE3u1PwofqmdmYghyqWGA==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@sanity/client': ^6.12.1
+      '@sanity/client': ^6.12.3
       react: ^18.0.0
     peerDependenciesMeta:
       react:
@@ -1864,9 +1864,9 @@ packages:
       - react-is
     dev: false
 
-  /@sanity/webhook@4.0.1:
-    resolution: {integrity: sha512-hswDXWD6Ru2qz0oMlEOathKspEyoc/jNFgAGvQVWQ4sbQDjVveMkLimQO+4FNWwi1AMYdcEmj+XmCzrPKIuvWA==}
-    engines: {node: '>=20.0.0'}
+  /@sanity/webhook@4.0.0:
+    resolution: {integrity: sha512-IRjtj17tHSmxHWZvgRnLZbWj8J8G4jqOWOYC25eV4EcfVn1yZCs0x+km6+PSiJgOphSX6Nm1+X6UJOT+GnWIFw==}
+    engines: {node: '>=18.0.0'}
     dev: false
 
   /@swc/helpers@0.5.2:
@@ -5851,14 +5851,14 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
 
-  /next-sanity@7.0.15(@sanity/client@6.12.3)(@sanity/icons@2.10.0)(@sanity/types@3.26.1)(@sanity/ui@2.0.1)(next@14.1.1-canary.20)(react@18.2.0)(sanity@3.26.1)(styled-components@6.1.8):
-    resolution: {integrity: sha512-ywgVlLcE7HwMIVfW3qnL+j3xQMJvXHSGkAGxcXBL6dP2hC5ChTnmClbjBhd3GHucf3tUd/FLy1hH4SLTlujkwQ==}
+  /next-sanity@7.0.16(@sanity/client@6.12.3)(@sanity/icons@2.10.0)(@sanity/types@3.26.1)(@sanity/ui@2.0.1)(next@14.1.1-canary.20)(react@18.2.0)(sanity@3.26.1)(styled-components@6.1.8):
+    resolution: {integrity: sha512-1pClS/qJOL+xLGQlhu6bHXBMkJOtaDGBEUuc9vOwFqcajLmaDcLLqy+BuUkY2GWKik89dNrP1JjTDUgsmmW/Wg==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@sanity/client': ^6.12.1
+      '@sanity/client': ^6.12.3
       '@sanity/icons': ^2.8
       '@sanity/types': ^3.25
-      '@sanity/ui': ^2.0.0-beta || ^2.0
+      '@sanity/ui': ^1.8 || ^2.0.0-beta || ^2.0
       next: ^14.1
       react: ^18.2
       sanity: ^3.25
@@ -5866,10 +5866,10 @@ packages:
     dependencies:
       '@sanity/client': 6.12.3
       '@sanity/icons': 2.10.0(react@18.2.0)
-      '@sanity/preview-kit': 5.0.17(@sanity/client@6.12.3)(react@18.2.0)
+      '@sanity/preview-kit': 5.0.18(@sanity/client@6.12.3)(react@18.2.0)
       '@sanity/types': 3.26.1
       '@sanity/ui': 2.0.1(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.1.8)
-      '@sanity/webhook': 4.0.1
+      '@sanity/webhook': 4.0.0
       groq: 3.26.1
       next: 14.1.1-canary.20(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
