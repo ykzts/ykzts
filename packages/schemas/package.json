@@ -5,7 +5,7 @@
   },
   "description": "",
   "devDependencies": {
-    "@types/node": "^20.11.14",
+    "@types/node": "^20.11.16",
     "@ykzts/prettier-config": "workspace:*",
     "@ykzts/tsconfig": "workspace:*",
     "prettier": "^3.2.4",
