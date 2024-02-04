@@ -8,7 +8,7 @@
     "@types/node": "^20.11.16",
     "@ykzts/prettier-config": "workspace:*",
     "@ykzts/tsconfig": "workspace:*",
-    "prettier": "^3.2.4",
+    "prettier": "^3.2.5",
     "tsup": "^8.0.1"
   },
   "license": "MIT",
