@@ -52,8 +52,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0(webpack@5.90.1)
       '@next/mdx':
-        specifier: ^14.1.1-canary.33
-        version: 14.1.1-canary.33(@mdx-js/loader@3.0.0)(@mdx-js/react@3.0.0)
+        specifier: ^14.1.1-canary.34
+        version: 14.1.1-canary.34(@mdx-js/loader@3.0.0)(@mdx-js/react@3.0.0)
       '@types/eslint':
         specifier: ^8.56.2
         version: 8.56.2
@@ -82,8 +82,8 @@ importers:
         specifier: ^8.56.0
         version: 8.56.0
       eslint-config-next:
-        specifier: ^14.1.1-canary.33
-        version: 14.1.1-canary.33(eslint@8.56.0)(typescript@5.3.3)
+        specifier: ^14.1.1-canary.34
+        version: 14.1.1-canary.34(eslint@8.56.0)(typescript@5.3.3)
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.0(eslint@8.56.0)
@@ -161,8 +161,8 @@ importers:
         specifier: ^8.56.0
         version: 8.56.0
       eslint-config-next:
-        specifier: ^14.1.1-canary.33
-        version: 14.1.1-canary.33(eslint@8.56.0)(typescript@5.3.3)
+        specifier: ^14.1.1-canary.34
+        version: 14.1.1-canary.34(eslint@8.56.0)(typescript@5.3.3)
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.0(eslint@8.56.0)
@@ -1234,14 +1234,14 @@ packages:
     resolution: {integrity: sha512-v6FRSD3aZ1lf9sLAaGBlvGccffSRx3NhbANdFO2yrj6TVdFkAOvemhwL6GBZ2V+2MlAbTqWtVW7oJie+GgQWoA==}
     dev: false
 
-  /@next/eslint-plugin-next@14.1.1-canary.33:
-    resolution: {integrity: sha512-4QK+os44eYkm5iEdFbsB3jo8f8wTbQX9gFdqTQgPf3Bg/eO6AnqyOMEg3774O0vuIfj4VtvPQhHHYKp+tC0afg==}
+  /@next/eslint-plugin-next@14.1.1-canary.34:
+    resolution: {integrity: sha512-9rlR8Kp9dswF5KVRfvr4++crUm3qmWP34uerr0U3+n6Bj5pyD7vsSXzgu2hik3IAkEazQOW5dbazM9omiuDDJQ==}
     dependencies:
       glob: 10.3.10
     dev: true
 
-  /@next/mdx@14.1.1-canary.33(@mdx-js/loader@3.0.0)(@mdx-js/react@3.0.0):
-    resolution: {integrity: sha512-nxOO6cydzwG3vYVVfem3ToknwdL4O3haEuUFLL2acx3EArMJA261NCiHcdp3XIUGYQKC8EUce1nkg8Or3SbKIQ==}
+  /@next/mdx@14.1.1-canary.34(@mdx-js/loader@3.0.0)(@mdx-js/react@3.0.0):
+    resolution: {integrity: sha512-ddDmlzxU9tKK6rxjpMu3F2QCC7nVhDE+AJ91jds9G+SndFqucbHQhi50/Loc/mublRLb0r+WBSeD9p4tHXI7Jw==}
     peerDependencies:
       '@mdx-js/loader': '>=0.15.0'
       '@mdx-js/react': '>=0.15.0'
@@ -3551,8 +3551,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /eslint-config-next@14.1.1-canary.33(eslint@8.56.0)(typescript@5.3.3):
-    resolution: {integrity: sha512-9sdtpI7ootgFjkNANoOfJti1epxxB8ddw6US1OEFeZdKUhpekByNaeFfco2g9BUUSuqWhogxafkupgX6AcB3YA==}
+  /eslint-config-next@14.1.1-canary.34(eslint@8.56.0)(typescript@5.3.3):
+    resolution: {integrity: sha512-V5qGvX7FqXW0YAmmWpKy4kTEuT1uiCPOGBoCkmLw1jZkf4EO2Jo26XyXNCS8rXbE+nz4a2Zc7oS+8TzIL5FxZw==}
     peerDependencies:
       eslint: ^7.23.0 || ^8.0.0
       typescript: '>=3.3.1'
@@ -3560,7 +3560,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@next/eslint-plugin-next': 14.1.1-canary.33
+      '@next/eslint-plugin-next': 14.1.1-canary.34
       '@rushstack/eslint-patch': 1.7.2
       '@typescript-eslint/parser': 6.20.0(eslint@8.56.0)(typescript@5.3.3)
       eslint: 8.56.0
