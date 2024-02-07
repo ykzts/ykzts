@@ -30,7 +30,7 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0
       next:
-        specifier: ^14.1.1-canary.41
+        specifier: ^14.1.1-canary.42
         version: 14.1.1-canary.42(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
@@ -52,7 +52,7 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0(webpack@5.90.1)
       '@next/mdx':
-        specifier: ^14.1.1-canary.41
+        specifier: ^14.1.1-canary.42
         version: 14.1.1-canary.42(@mdx-js/loader@3.0.0)(@mdx-js/react@3.0.0)
       '@types/eslint':
         specifier: ^8.56.2
@@ -118,7 +118,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/schemas
       next:
-        specifier: ^14.1.1-canary.41
+        specifier: ^14.1.1-canary.42
         version: 14.1.1-canary.42(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
         specifier: ^7.1.0
