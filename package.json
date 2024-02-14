@@ -3,7 +3,7 @@
   "dependencies": {},
   "description": "",
   "devDependencies": {
-    "turbo": "^1.12.3"
+    "turbo": "^1.12.4"
   },
   "license": "MIT",
   "name": "@ykzts/monorepo",
