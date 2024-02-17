@@ -52,8 +52,8 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1(webpack@5.90.1)
       '@next/mdx':
-        specifier: ^14.1.1-canary.57
-        version: 14.1.1-canary.57(@mdx-js/loader@3.0.1)(@mdx-js/react@3.0.1)
+        specifier: ^14.1.1-canary.58
+        version: 14.1.1-canary.58(@mdx-js/loader@3.0.1)(@mdx-js/react@3.0.1)
       '@types/eslint':
         specifier: ^8.56.2
         version: 8.56.2
@@ -1240,8 +1240,8 @@ packages:
       glob: 10.3.10
     dev: true
 
-  /@next/mdx@14.1.1-canary.57(@mdx-js/loader@3.0.1)(@mdx-js/react@3.0.1):
-    resolution: {integrity: sha512-mmBCIgROBsmlVFly7abHFnPLHtbQ0/DnK7kvV2KlsI+joh4lxNyrbiJA9ozDbrjwgRUIpFzb4OCiztf11Yq5YA==}
+  /@next/mdx@14.1.1-canary.58(@mdx-js/loader@3.0.1)(@mdx-js/react@3.0.1):
+    resolution: {integrity: sha512-16kaMurFxbaaPWde3uY3q/GqzufYGVwQ3NirPyHDLJAikbVq8BXIkKXm4H5wseb54F488zrjI3DEFm3ILTIKdg==}
     peerDependencies:
       '@mdx-js/loader': '>=0.15.0'
       '@mdx-js/react': '>=0.15.0'
