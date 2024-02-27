@@ -17,7 +17,7 @@
   "devDependencies": {
     "@mdx-js/loader": "^3.0.1",
     "@next/mdx": "^14.1.1-canary.75",
-    "@types/eslint": "^8.56.3",
+    "@types/eslint": "^8.56.4",
     "@types/mdx": "^2.0.11",
     "@types/node": "^20.11.20",
     "@types/react": "^18.2.60",

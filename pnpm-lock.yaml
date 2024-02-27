@@ -55,8 +55,8 @@ importers:
         specifier: ^14.1.1-canary.75
         version: 14.1.1-canary.75(@mdx-js/loader@3.0.1)(@mdx-js/react@3.0.1)
       '@types/eslint':
-        specifier: ^8.56.3
-        version: 8.56.3
+        specifier: ^8.56.4
+        version: 8.56.4
       '@types/mdx':
         specifier: ^2.0.11
         version: 2.0.11
@@ -137,8 +137,8 @@ importers:
         version: 6.1.8(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
       '@types/eslint':
-        specifier: ^8.56.3
-        version: 8.56.3
+        specifier: ^8.56.4
+        version: 8.56.4
       '@types/node':
         specifier: ^20.11.20
         version: 20.11.20
@@ -1993,12 +1993,12 @@ packages:
   /@types/eslint-scope@3.7.7:
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
     dependencies:
-      '@types/eslint': 8.56.3
+      '@types/eslint': 8.56.4
       '@types/estree': 1.0.5
     dev: true
 
-  /@types/eslint@8.56.3:
-    resolution: {integrity: sha512-PvSf1wfv2wJpVIFUMSb+i4PvqNYkB9Rkp9ZDO3oaWzq4SKhsQk4mrMBr3ZH06I0hKrVGLBacmgl8JM4WVjb9dg==}
+  /@types/eslint@8.56.4:
+    resolution: {integrity: sha512-lG1GLUnL5vuRBGb3MgWUWLdGMH2Hps+pERuyQXCfWozuGKdnhf9Pbg4pkcrVUHjKrU7Rl+GCZ/299ObBXZFAxg==}
     dependencies:
       '@types/estree': 1.0.5
       '@types/json-schema': 7.0.15
