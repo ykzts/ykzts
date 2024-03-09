@@ -1,7 +1,11 @@
 import { visionTool } from '@sanity/vision'
-import * as schemaTypes from '@ykzts/schemas'
+import {
+  post as postSchema,
+  profile as profileSchema,
+  work as workSchema
+} from '@ykzts/schemas'
 import { defineConfig } from 'sanity'
-import { deskTool } from 'sanity/desk'
+import { structureTool } from 'sanity/structure'
 
 if (
   !process.env.NEXT_PUBLIC_SANITY_DATASET ||
@@ -11,10 +15,11 @@ if (
 }
 
 export default defineConfig({
+  basePath: '/',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  plugins: [deskTool(), visionTool()],
+  plugins: [structureTool(), visionTool()],
   schema: {
-    types: Object.values(schemaTypes)
+    types: [postSchema, profileSchema, workSchema]
   }
 })
