@@ -8,6 +8,12 @@ importers:
 
   .:
     devDependencies:
+      '@ykzts/prettier-config':
+        specifier: workspace:*
+        version: link:packages/prettier-config
+      prettier:
+        specifier: ^3.2.5
+        version: 3.2.5
       turbo:
         specifier: ^1.12.5
         version: 1.12.5
@@ -72,9 +78,6 @@ importers:
       '@typescript-eslint/eslint-plugin':
         specifier: ^7.1.1
         version: 7.1.1(@typescript-eslint/parser@7.1.0)(eslint@8.57.0)(typescript@5.3.3)
-      '@ykzts/prettier-config':
-        specifier: workspace:*
-        version: link:../../packages/prettier-config
       '@ykzts/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -87,9 +90,6 @@ importers:
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.0(eslint@8.57.0)
-      prettier:
-        specifier: ^3.2.5
-        version: 3.2.5
       rehype-external-links:
         specifier: ^3.0.0
         version: 3.0.0
@@ -151,9 +151,6 @@ importers:
       '@typescript-eslint/eslint-plugin':
         specifier: ^7.1.1
         version: 7.1.1(@typescript-eslint/parser@7.1.0)(eslint@8.57.0)(typescript@5.3.3)
-      '@ykzts/prettier-config':
-        specifier: workspace:*
-        version: link:../../packages/prettier-config
       '@ykzts/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -166,18 +163,11 @@ importers:
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.0(eslint@8.57.0)
-      prettier:
-        specifier: ^3.2.5
-        version: 3.2.5
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
 
-  packages/prettier-config:
-    devDependencies:
-      prettier:
-        specifier: ^3.2.5
-        version: 3.2.5
+  packages/prettier-config: {}
 
   packages/schemas:
     dependencies:
@@ -188,27 +178,14 @@ importers:
       '@types/node':
         specifier: ^20.11.25
         version: 20.11.25
-      '@ykzts/prettier-config':
-        specifier: workspace:*
-        version: link:../prettier-config
       '@ykzts/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
-      prettier:
-        specifier: ^3.2.5
-        version: 3.2.5
       tsup:
         specifier: ^8.0.2
         version: 8.0.2
 
-  packages/tsconfig:
-    devDependencies:
-      '@ykzts/prettier-config':
-        specifier: workspace:*
-        version: link:../prettier-config
-      prettier:
-        specifier: ^3.2.5
-        version: 3.2.5
+  packages/tsconfig: {}
 
   profile:
     devDependencies:
