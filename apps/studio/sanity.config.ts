@@ -1,3 +1,5 @@
+'use client'
+
 import { visionTool } from '@sanity/vision'
 import {
   post as postSchema,
