@@ -5,7 +5,7 @@
   },
   "description": "",
   "devDependencies": {
-    "@types/node": "^20.11.25",
+    "@types/node": "^20.11.26",
     "@ykzts/tsconfig": "workspace:*",
     "tsup": "^8.0.2"
   },
