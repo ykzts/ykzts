@@ -85,8 +85,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       eslint-config-next:
-        specifier: ^14.2.0-canary.28
-        version: 14.2.0-canary.28(eslint@8.57.0)(typescript@5.4.2)
+        specifier: ^14.2.0-canary.29
+        version: 14.2.0-canary.29(eslint@8.57.0)(typescript@5.4.2)
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.0(eslint@8.57.0)
@@ -155,8 +155,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       eslint-config-next:
-        specifier: ^14.2.0-canary.28
-        version: 14.2.0-canary.28(eslint@8.57.0)(typescript@5.4.2)
+        specifier: ^14.2.0-canary.29
+        version: 14.2.0-canary.29(eslint@8.57.0)(typescript@5.4.2)
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.0(eslint@8.57.0)
@@ -1207,8 +1207,8 @@ packages:
     resolution: {integrity: sha512-ZVianSDnQxnEM0WGKfSzHN5ge7vaxxtMCiOKwxd47yLl+GnMwn1gWN0dMYcoAXMN3bFJ1+vFoB2RO92JFl/tFg==}
     dev: false
 
-  /@next/eslint-plugin-next@14.2.0-canary.28:
-    resolution: {integrity: sha512-zTprsn1uTbDjquPiwd0EasHESfoekJn+mn7CH07IZrawyNfWYbXbj1OsawhiumwVcyJiL40PL/siRkhljnJz/w==}
+  /@next/eslint-plugin-next@14.2.0-canary.29:
+    resolution: {integrity: sha512-bv7n4ZTvP4iKPX3G59VKwRGZQJnYjiY/ajQU8t/FM7NC9Xg3k8K6jZYdH5sHGXPSLVI9U0sDn/2zmuidMG/B7A==}
     dependencies:
       glob: 10.3.10
     dev: true
@@ -3840,8 +3840,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /eslint-config-next@14.2.0-canary.28(eslint@8.57.0)(typescript@5.4.2):
-    resolution: {integrity: sha512-zMcUxGvLrujtVA5UAW3rNMLkgMBqbUWMg2WOlWdQlhZ/ZUMqrdq+dt3Lu7P6SyNeUkH21yGkpanZ/mRNIw82tw==}
+  /eslint-config-next@14.2.0-canary.29(eslint@8.57.0)(typescript@5.4.2):
+    resolution: {integrity: sha512-LTUkeEmQBtzxb8JhkGytypdxAJ075k+PIRzlFyJ7L+IkT8Stjhk+WZtGSrHSaPiiTPYbM2OCmjVvztAHXO2f4A==}
     peerDependencies:
       eslint: ^7.23.0 || ^8.0.0
       typescript: '>=3.3.1'
@@ -3849,7 +3849,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@next/eslint-plugin-next': 14.2.0-canary.28
+      '@next/eslint-plugin-next': 14.2.0-canary.29
       '@rushstack/eslint-patch': 1.7.2
       '@typescript-eslint/parser': 7.2.0(eslint@8.57.0)(typescript@5.4.2)
       eslint: 8.57.0
