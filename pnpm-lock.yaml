@@ -184,14 +184,7 @@ importers:
 
   packages/tsconfig: {}
 
-  profile:
-    devDependencies:
-      '@ykzts/prettier-config':
-        specifier: workspace:*
-        version: link:../packages/prettier-config
-      prettier:
-        specifier: ^3.2.5
-        version: 3.2.5
+  profile: {}
 
 packages:
 
