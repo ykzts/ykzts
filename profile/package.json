@@ -2,10 +2,7 @@
   "author": "Yamagishi Kazutoshi",
   "dependencies": {},
   "description": "",
-  "devDependencies": {
-    "@ykzts/prettier-config": "workspace:*",
-    "prettier": "^3.2.5"
-  },
+  "devDependencies": {},
   "license": "MIT",
   "name": "@ykzts/profile",
   "private": true,
@@ -14,10 +11,7 @@
     "type": "git",
     "url": "https://github.com/ykzts/ykzts.git"
   },
-  "scripts": {
-    "format": "prettier -w .",
-    "format-check": "prettier -c ."
-  },
+  "scripts": {},
   "type": "module",
   "version": "1.0.0"
 }
