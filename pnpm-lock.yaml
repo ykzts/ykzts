@@ -121,8 +121,8 @@ importers:
         specifier: ^14.2.0-canary.33
         version: 14.2.0-canary.33(@babel/core@7.24.0)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
-        specifier: ^8.4.4
-        version: 8.4.4(@sanity/client@6.15.7)(@sanity/icons@2.11.4)(@sanity/types@3.35.1)(@sanity/ui@2.0.12)(next@14.2.0-canary.33)(react@18.2.0)(sanity@3.35.1)(styled-components@6.1.8)
+        specifier: ^8.4.5
+        version: 8.4.5(@sanity/client@6.15.7)(@sanity/icons@2.11.4)(@sanity/types@3.35.1)(@sanity/ui@2.0.12)(next@14.2.0-canary.33)(react@18.2.0)(sanity@3.35.1)(styled-components@6.1.8)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -3028,7 +3028,7 @@ packages:
     dependencies:
       '@sanity/client': 6.15.7
       '@sanity/icons': 2.11.4(react@18.2.0)
-      '@sanity/preview-url-secret': 1.6.4(@sanity/client@6.15.7)
+      '@sanity/preview-url-secret': 1.6.5(@sanity/client@6.15.7)
       '@sanity/ui': 2.0.12(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.1.8)
       '@sanity/uuid': 3.0.2
       '@types/lodash.isequal': 4.5.8
@@ -3077,11 +3077,11 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  /@sanity/preview-url-secret@1.6.4(@sanity/client@6.15.7):
-    resolution: {integrity: sha512-iOu6n5Zt7kuWoOYRliS2o/MDDBWcWkrnwwss2tglIBl744RPRkz0yi9qulnpAqMnWrZyIU8fV1yPCdg0RY+olw==}
+  /@sanity/preview-url-secret@1.6.5(@sanity/client@6.15.7):
+    resolution: {integrity: sha512-zY57ZSKHIgiI/naW18Y7XvLwR1cPra2VIrcZQn2nBuL294fRpZkwBF+M62j6oroU5nKXGQt5P82VM1sXdqXdmw==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@sanity/client': ^6.14.4
+      '@sanity/client': ^6.15.7
     dependencies:
       '@sanity/client': 6.15.7
       '@sanity/uuid': 3.0.2
@@ -3200,12 +3200,12 @@ packages:
       - react-is
     dev: false
 
-  /@sanity/visual-editing@1.8.2(@sanity/client@6.15.7)(next@14.2.0-canary.33):
-    resolution: {integrity: sha512-/ODNkE/dFywP2UbIofJy4ZW9uPneNEIxRiibI+H8IgB9as6FNqlaiDzBvbLIr8TZlWY++as0aoAU1PZkPvyp1w==}
+  /@sanity/visual-editing@1.8.3(@sanity/client@6.15.7)(next@14.2.0-canary.33):
+    resolution: {integrity: sha512-/f3UAUcGlCMh5V6KDa4GqL1Rfxol+QrEjaZGpmyH4FFwvGi1RZRI7pgsuBSh/f9Bl3MdM6oHFhsw2Tx4Pwiujw==}
     engines: {node: '>=18'}
     peerDependencies:
       '@remix-run/react': '>= 2'
-      '@sanity/client': ^6.15.5
+      '@sanity/client': ^6.15.7
       '@sveltejs/kit': '>= 2'
       next: '>= 13'
       svelte: '>= 4'
@@ -3222,7 +3222,7 @@ packages:
         optional: true
     dependencies:
       '@sanity/client': 6.15.7
-      '@sanity/preview-url-secret': 1.6.4(@sanity/client@6.15.7)
+      '@sanity/preview-url-secret': 1.6.5(@sanity/client@6.15.7)
       '@vercel/stega': 0.1.0
       next: 14.2.0-canary.33(@babel/core@7.24.0)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
@@ -7689,8 +7689,8 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
 
-  /next-sanity@8.4.4(@sanity/client@6.15.7)(@sanity/icons@2.11.4)(@sanity/types@3.35.1)(@sanity/ui@2.0.12)(next@14.2.0-canary.33)(react@18.2.0)(sanity@3.35.1)(styled-components@6.1.8):
-    resolution: {integrity: sha512-G56J32mR3AQ7qxVZO2sugYcfw8y5y6/nn5pm8qUB6f1ttu1QQ+xKXABeKgzWC/E+gLn4YIfv3MlIcsGAzmAJAA==}
+  /next-sanity@8.4.5(@sanity/client@6.15.7)(@sanity/icons@2.11.4)(@sanity/types@3.35.1)(@sanity/ui@2.0.12)(next@14.2.0-canary.33)(react@18.2.0)(sanity@3.35.1)(styled-components@6.1.8):
+    resolution: {integrity: sha512-+HOXzmIMj0hLttoth26eDSj4UH9GxdUD0a7P7nDMQmlQS5YxoYFQp64DK4oR0lQefrIJ0sI5ETdRmdq+lpPMNA==}
     engines: {node: '>=18.17'}
     peerDependencies:
       '@sanity/client': ^6.15.7
@@ -7708,7 +7708,7 @@ packages:
       '@sanity/preview-kit': 5.0.35(@sanity/client@6.15.7)(react@18.2.0)
       '@sanity/types': 3.35.1
       '@sanity/ui': 2.0.12(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.1.8)
-      '@sanity/visual-editing': 1.8.2(@sanity/client@6.15.7)(next@14.2.0-canary.33)
+      '@sanity/visual-editing': 1.8.3(@sanity/client@6.15.7)(next@14.2.0-canary.33)
       '@sanity/webhook': 4.0.2-bc
       groq: 3.34.0
       next: 14.2.0-canary.33(@babel/core@7.24.0)(react-dom@18.2.0)(react@18.2.0)
