@@ -121,8 +121,8 @@ importers:
         specifier: ^14.2.0-canary.38
         version: 14.2.0-canary.38(@babel/core@7.24.0)(react-dom@18.2.0)(react@18.2.0)
       next-sanity:
-        specifier: ^8.4.6
-        version: 8.4.6(@sanity/client@6.15.7)(@sanity/icons@2.11.4)(@sanity/types@3.35.2)(@sanity/ui@2.0.12)(next@14.2.0-canary.38)(react@18.2.0)(sanity@3.35.2)(styled-components@6.1.8)
+        specifier: ^8.5.0
+        version: 8.5.0(@sanity/client@6.15.7)(@sanity/icons@2.11.4)(@sanity/types@3.35.2)(@sanity/ui@2.0.12)(next@14.2.0-canary.38)(react@18.2.0)(sanity@3.35.2)(styled-components@6.1.8)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -3200,8 +3200,8 @@ packages:
       - react-is
     dev: false
 
-  /@sanity/visual-editing@1.8.3(@sanity/client@6.15.7)(next@14.2.0-canary.38):
-    resolution: {integrity: sha512-/f3UAUcGlCMh5V6KDa4GqL1Rfxol+QrEjaZGpmyH4FFwvGi1RZRI7pgsuBSh/f9Bl3MdM6oHFhsw2Tx4Pwiujw==}
+  /@sanity/visual-editing@1.8.4(@sanity/client@6.15.7)(next@14.2.0-canary.38):
+    resolution: {integrity: sha512-wqvm26KDFB/Ww0J9XT8caPDWTHhemOWySlF9w3TtDTg5iWVoT6iYjKxi0yVoA7xAEtB0SmDUek6wSZhRhXG1LA==}
     engines: {node: '>=18'}
     peerDependencies:
       '@remix-run/react': '>= 2'
@@ -7642,8 +7642,8 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
 
-  /next-sanity@8.4.6(@sanity/client@6.15.7)(@sanity/icons@2.11.4)(@sanity/types@3.35.2)(@sanity/ui@2.0.12)(next@14.2.0-canary.38)(react@18.2.0)(sanity@3.35.2)(styled-components@6.1.8):
-    resolution: {integrity: sha512-ZxmdAUeabBWzsEkixk2ds90dZSPtPkP4i1xXRErCSA7wrB0Uvu69GazDjwH904Fuqol08iBy0I+E5LL7HMuwjg==}
+  /next-sanity@8.5.0(@sanity/client@6.15.7)(@sanity/icons@2.11.4)(@sanity/types@3.35.2)(@sanity/ui@2.0.12)(next@14.2.0-canary.38)(react@18.2.0)(sanity@3.35.2)(styled-components@6.1.8):
+    resolution: {integrity: sha512-hGH4ODDURSJv8uYE+HVRh35oOQ21n+e0v62kZWx+c7gczct0ohqlmcx621QESoQ5uxoF3QBboC/SVyWw7q+jGw==}
     engines: {node: '>=18.17'}
     peerDependencies:
       '@sanity/client': ^6.15.7
@@ -7661,9 +7661,10 @@ packages:
       '@sanity/preview-kit': 5.0.36(@sanity/client@6.15.7)(react@18.2.0)
       '@sanity/types': 3.35.2
       '@sanity/ui': 2.0.12(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(styled-components@6.1.8)
-      '@sanity/visual-editing': 1.8.3(@sanity/client@6.15.7)(next@14.2.0-canary.38)
+      '@sanity/visual-editing': 1.8.4(@sanity/client@6.15.7)(next@14.2.0-canary.38)
       '@sanity/webhook': 4.0.2-bc
       groq: 3.34.0
+      history: 5.3.0
       next: 14.2.0-canary.38(@babel/core@7.24.0)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       sanity: 3.35.2(@types/node@20.11.30)(@types/react@18.2.67)(react-dom@18.2.0)(react@18.2.0)(styled-components@6.1.8)
