@@ -1,7 +1,7 @@
 {
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
-    "@sanity/icons": "^2.11.4",
+    "@sanity/icons": "^2.11.5",
     "@sanity/types": "^3.36.2",
     "@sanity/ui": "^2.0.12",
     "@sanity/vision": "^3.36.2",
