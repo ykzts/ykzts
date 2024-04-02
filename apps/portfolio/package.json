@@ -3,7 +3,7 @@
   "dependencies": {
     "@mdx-js/react": "^3.0.1",
     "@portabletext/react": "^3.0.15",
-    "@sanity/client": "^6.15.7",
+    "@sanity/client": "^6.15.9",
     "@vercel/analytics": "^1.2.2",
     "clsx": "^2.1.0",
     "next": "^14.2.0-canary.52",
