@@ -2,7 +2,7 @@
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
     "@mdx-js/react": "^3.0.1",
-    "@portabletext/react": "^3.0.15",
+    "@portabletext/react": "^3.0.17",
     "@sanity/client": "^6.15.9",
     "@vercel/analytics": "^1.2.2",
     "clsx": "^2.1.0",
