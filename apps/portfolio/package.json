@@ -29,7 +29,7 @@
     "eslint-config-prettier": "^9.1.0",
     "rehype-external-links": "^3.0.0",
     "remark-gfm": "^4.0.0",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.5"
   },
   "license": "MIT",
   "name": "@ykzts/portfolio",
