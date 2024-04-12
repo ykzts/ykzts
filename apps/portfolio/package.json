@@ -16,7 +16,7 @@
   "description": "Yamagishi Kazutoshi's Website!",
   "devDependencies": {
     "@mdx-js/loader": "^3.0.1",
-    "@next/mdx": "^14.2.1-canary.0",
+    "@next/mdx": "^14.2.1-canary.1",
     "@types/eslint": "^8.56.9",
     "@types/mdx": "^2.0.13",
     "@types/node": "^20.12.7",
@@ -25,7 +25,7 @@
     "@typescript-eslint/eslint-plugin": "^7.6.0",
     "@ykzts/tsconfig": "workspace:*",
     "eslint": "^8.57.0",
-    "eslint-config-next": "^14.2.1-canary.0",
+    "eslint-config-next": "^14.2.1-canary.1",
     "eslint-config-prettier": "^9.1.0",
     "rehype-external-links": "^3.0.0",
     "remark-gfm": "^4.0.0",
