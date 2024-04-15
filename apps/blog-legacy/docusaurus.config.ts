@@ -116,7 +116,7 @@ const config: Config = {
       ],
       style: 'dark'
     },
-    image: 'img/main-visual.png',
+    // image: 'img/main-visual.png',
     metadata: [
       {
         content: 'nocomment',
