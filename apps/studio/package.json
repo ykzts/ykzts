@@ -2,15 +2,15 @@
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
     "@sanity/icons": "^2.11.8",
-    "@sanity/types": "^3.39.1",
+    "@sanity/types": "^3.40.0",
     "@sanity/ui": "^2.1.4",
-    "@sanity/vision": "^3.39.1",
+    "@sanity/vision": "^3.40.0",
     "@ykzts/schemas": "workspace:*",
     "next": "^14.3.0-canary.32",
     "next-sanity": "^9.0.12",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "sanity": "^3.39.1"
+    "sanity": "^3.40.0"
   },
   "description": "Yamagishi Kazutoshi's Website!",
   "devDependencies": {
