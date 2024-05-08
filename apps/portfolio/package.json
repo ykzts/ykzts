@@ -16,7 +16,7 @@
   "description": "Yamagishi Kazutoshi's Website!",
   "devDependencies": {
     "@mdx-js/loader": "^3.0.1",
-    "@next/mdx": "^14.3.0-canary.48",
+    "@next/mdx": "^14.3.0-canary.49",
     "@types/eslint": "^8.56.10",
     "@types/mdx": "^2.0.13",
     "@types/node": "^20.12.10",
