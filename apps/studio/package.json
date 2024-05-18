@@ -8,8 +8,8 @@
     "@ykzts/schemas": "workspace:*",
     "next": "^14.3.0-canary.70",
     "next-sanity": "^9.0.20",
-    "react": "^19.0.0-rc-3f1436cca1-20240516",
-    "react-dom": "^19.0.0-rc-3f1436cca1-20240516",
+    "react": "^19.0.0-rc-915b914b3a-20240515",
+    "react-dom": "^19.0.0-rc-915b914b3a-20240515",
     "sanity": "^3.42.1"
   },
   "description": "Yamagishi Kazutoshi's Website!",
