@@ -39,10 +39,10 @@ importers:
         specifier: ^14.3.0-canary.70
         version: 14.3.0-canary.70(@babel/core@7.24.5)(react-dom@19.0.0-rc-915b914b3a-20240515(react@19.0.0-rc-915b914b3a-20240515))(react@19.0.0-rc-915b914b3a-20240515)
       react:
-        specifier: ^19.0.0-rc-3f1436cca1-20240516
+        specifier: ^19.0.0-rc-915b914b3a-20240515
         version: 19.0.0-rc-915b914b3a-20240515
       react-dom:
-        specifier: ^19.0.0-rc-3f1436cca1-20240516
+        specifier: ^19.0.0-rc-915b914b3a-20240515
         version: 19.0.0-rc-915b914b3a-20240515(react@19.0.0-rc-915b914b3a-20240515)
       react-icons:
         specifier: ^5.2.1
@@ -124,10 +124,10 @@ importers:
         specifier: ^9.0.20
         version: 9.0.20(@sanity/client@6.18.2(debug@4.3.4))(@sanity/icons@2.11.8(react@19.0.0-rc-915b914b3a-20240515))(@sanity/types@3.42.1)(@sanity/ui@2.1.10(@emotion/is-prop-valid@1.2.2)(react-dom@19.0.0-rc-915b914b3a-20240515(react@19.0.0-rc-915b914b3a-20240515))(react-is@18.3.1)(react@19.0.0-rc-915b914b3a-20240515)(styled-components@6.1.11(react-dom@19.0.0-rc-915b914b3a-20240515(react@19.0.0-rc-915b914b3a-20240515))(react@19.0.0-rc-915b914b3a-20240515)))(next@14.3.0-canary.70(@babel/core@7.24.5)(react-dom@19.0.0-rc-915b914b3a-20240515(react@19.0.0-rc-915b914b3a-20240515))(react@19.0.0-rc-915b914b3a-20240515))(react@19.0.0-rc-915b914b3a-20240515)(sanity@3.42.1(@emotion/is-prop-valid@1.2.2)(@types/node@20.12.12)(@types/react@18.3.2)(react-dom@19.0.0-rc-915b914b3a-20240515(react@19.0.0-rc-915b914b3a-20240515))(react@19.0.0-rc-915b914b3a-20240515)(styled-components@6.1.11(react-dom@19.0.0-rc-915b914b3a-20240515(react@19.0.0-rc-915b914b3a-20240515))(react@19.0.0-rc-915b914b3a-20240515))(terser@5.31.0))(styled-components@6.1.11(react-dom@19.0.0-rc-915b914b3a-20240515(react@19.0.0-rc-915b914b3a-20240515))(react@19.0.0-rc-915b914b3a-20240515))
       react:
-        specifier: ^19.0.0-rc-3f1436cca1-20240516
+        specifier: ^19.0.0-rc-915b914b3a-20240515
         version: 19.0.0-rc-915b914b3a-20240515
       react-dom:
-        specifier: ^19.0.0-rc-3f1436cca1-20240516
+        specifier: ^19.0.0-rc-915b914b3a-20240515
         version: 19.0.0-rc-915b914b3a-20240515(react@19.0.0-rc-915b914b3a-20240515)
       sanity:
         specifier: ^3.42.1
