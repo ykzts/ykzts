@@ -121,7 +121,7 @@ export default function HomePage() {
             Artwork:{' '}
             <Link
               className={styles.footer__link}
-              href="https://twitter.com/diru_k1005"
+              href="https://x.com/diru_k1005"
               target="_blank"
             >
               Kannazuki Diru

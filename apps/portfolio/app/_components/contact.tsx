@@ -58,7 +58,7 @@ const socialLinks: SocialLink[] = [
         <use xlinkHref="#x-logo" />
       </svg>
     ),
-    url: 'https://twitter.com/ykzts'
+    url: 'https://x.com/ykzts'
   }
 ]
 

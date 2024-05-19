@@ -4,6 +4,6 @@ Yamagishi Kazutoshi is a software engineer working in Japan, specializing in fro
 
 <div align="right">
 
-Artwork by [Kannazuki Diru](https://twitter.com/diru_k1005)
+Artwork by [Kannazuki Diru](https://x.com/diru_k1005)
 
 </div>
