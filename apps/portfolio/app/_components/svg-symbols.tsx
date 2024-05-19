@@ -71,7 +71,7 @@ c51-2.7,117.4-22.6,128.6-154.6C552.6,516,521.7,512.9,488.5,512.9z"
   )
 }
 
-/** @see https://about.twitter.com/en/who-we-are/brand-toolkit */
+/** @see https://about.x.com/en/who-we-are/brand-toolkit */
 function XLogo({ as = 'svg', ...props }: SVGRootProps) {
   return (
     <SVGRoot as={as} fill="currentColor" viewBox="0 0 1200 1227" {...props}>
