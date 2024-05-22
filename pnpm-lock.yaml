@@ -121,8 +121,8 @@ importers:
         specifier: ^14.3.0-canary.76
         version: 14.3.0-canary.76(@babel/core@7.24.5)(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520)
       next-sanity:
-        specifier: ^9.1.0
-        version: 9.1.0(@sanity/client@6.18.2(debug@4.3.4))(@sanity/icons@2.11.8(react@19.0.0-rc-d3ce0d3ea9-20240520))(@sanity/types@3.42.1)(@sanity/ui@2.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react-is@18.3.1)(react@19.0.0-rc-d3ce0d3ea9-20240520)(styled-components@6.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520)))(next@14.3.0-canary.76(@babel/core@7.24.5)(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520)(sanity@3.42.1(@types/node@20.12.12)(@types/react@18.3.2)(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520)(styled-components@6.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520))(terser@5.31.0))(styled-components@6.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520))
+        specifier: ^9.1.1
+        version: 9.1.1(@sanity/client@6.18.2(debug@4.3.4))(@sanity/icons@2.11.8(react@19.0.0-rc-d3ce0d3ea9-20240520))(@sanity/types@3.42.1)(@sanity/ui@2.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react-is@18.3.1)(react@19.0.0-rc-d3ce0d3ea9-20240520)(styled-components@6.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520)))(next@14.3.0-canary.76(@babel/core@7.24.5)(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520)(sanity@3.42.1(@types/node@20.12.12)(@types/react@18.3.2)(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520)(styled-components@6.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520))(terser@5.31.0))(styled-components@6.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520))
       react:
         specifier: ^19.0.0-rc-d3ce0d3ea9-20240520
         version: 19.0.0-rc-d3ce0d3ea9-20240520
@@ -4240,8 +4240,8 @@ packages:
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  next-sanity@9.1.0:
-    resolution: {integrity: sha512-3LVq0gerc1pzV8XIC0fyqYdTSBL3dMhAAUsG5YByKHW85qJFIjqwoPlsUb8ypSb7L5hfT7vg+zlUY9XDEkrzDQ==}
+  next-sanity@9.1.1:
+    resolution: {integrity: sha512-2oy8Kt7JvDVQUyjMcC64lZ/sNu7P7RSxqpAn9EV+1Uh3FtiJb3a5aGqul94+Hi1/04PUcBtzg3fupEzO8Ruthg==}
     engines: {node: '>=18.17'}
     peerDependencies:
       '@sanity/client': ^6.18.2
@@ -4249,7 +4249,7 @@ packages:
       '@sanity/types': ^3.37.1
       '@sanity/ui': ^2.0.11
       next: ^14.1 || >=14.3.0-canary.0 <14.3.0
-      react: ^18.2
+      react: ^18.3 || >=19.0.0-beta
       sanity: ^3.37.1
       styled-components: ^6.1
 
@@ -10736,7 +10736,7 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  ? next-sanity@9.1.0(@sanity/client@6.18.2(debug@4.3.4))(@sanity/icons@2.11.8(react@19.0.0-rc-d3ce0d3ea9-20240520))(@sanity/types@3.42.1)(@sanity/ui@2.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react-is@18.3.1)(react@19.0.0-rc-d3ce0d3ea9-20240520)(styled-components@6.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520)))(next@14.3.0-canary.76(@babel/core@7.24.5)(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520)(sanity@3.42.1(@types/node@20.12.12)(@types/react@18.3.2)(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520)(styled-components@6.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520))(terser@5.31.0))(styled-components@6.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520))
+  ? next-sanity@9.1.1(@sanity/client@6.18.2(debug@4.3.4))(@sanity/icons@2.11.8(react@19.0.0-rc-d3ce0d3ea9-20240520))(@sanity/types@3.42.1)(@sanity/ui@2.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react-is@18.3.1)(react@19.0.0-rc-d3ce0d3ea9-20240520)(styled-components@6.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520)))(next@14.3.0-canary.76(@babel/core@7.24.5)(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520)(sanity@3.42.1(@types/node@20.12.12)(@types/react@18.3.2)(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520)(styled-components@6.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520))(terser@5.31.0))(styled-components@6.1.11(react-dom@19.0.0-rc-d3ce0d3ea9-20240520(react@19.0.0-rc-d3ce0d3ea9-20240520))(react@19.0.0-rc-d3ce0d3ea9-20240520))
   : dependencies:
       '@portabletext/react': 3.0.18(react@19.0.0-rc-d3ce0d3ea9-20240520)
       '@sanity/client': 6.18.2
