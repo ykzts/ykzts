@@ -5,6 +5,10 @@
     {
       "extends": "monorepo:nextjs",
       "followTag": "canary"
+    },
+    {
+      "extends": "monorepo:nextjs",
+      "followTag": "rc"
     }
   ],
   "reviewers": ["ykzts"]
