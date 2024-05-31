@@ -12,6 +12,9 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com/'),
+  other: {
+    'fediverse:creator': 'ykzts@ykzts.technology'
+  },
   title: {
     default: 'ykzts.com',
     template: '%s | ykzts.com'
