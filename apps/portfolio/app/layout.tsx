@@ -6,6 +6,10 @@ import { Noto_Sans_JP, Raleway, Source_Sans_3 } from 'next/font/google'
 import { type ReactNode } from 'react'
 import SVGSymbols from './_components/svg-symbols'
 
+// CSPでnonceを足すために`force-dynamic`に
+// キャッシュのことを考えると良くないので再考の余地あり
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com/'),
   other: {
