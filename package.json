@@ -5,7 +5,7 @@
   "devDependencies": {
     "@ykzts/prettier-config": "workspace:*",
     "prettier": "^3.3.2",
-    "turbo": "^2.0.4"
+    "turbo": "^2.0.5"
   },
   "license": "MIT",
   "name": "@ykzts/monorepo",
