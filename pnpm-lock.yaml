@@ -48,8 +48,8 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1(react@19.0.0-rc-fb9a90fa48-20240614)
       react-intersection-observer:
-        specifier: ^9.10.3
-        version: 9.10.3(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)
+        specifier: ^9.12.0
+        version: 9.12.0(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -4666,8 +4666,8 @@ packages:
     peerDependencies:
       react: '*'
 
-  react-intersection-observer@9.10.3:
-    resolution: {integrity: sha512-9NYfKwPZRovB6QJee7fDg0zz/SyYrqXtn5xTZU0vwLtLVBtfu9aZt1pVmr825REE49VPDZ7Lm5SNHjJBOTZHpA==}
+  react-intersection-observer@9.12.0:
+    resolution: {integrity: sha512-KmczTRfcIg5hcmqFbb1fKPprT7AkOjj0ohUCs1iOwWe9BJPnC5nQ7dRX44z2W1jHiRt1uQST0AxGqWL6X8pN2A==}
     peerDependencies:
       react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -11130,7 +11130,7 @@ snapshots:
     dependencies:
       react: 19.0.0-rc-fb9a90fa48-20240614
 
-  react-intersection-observer@9.10.3(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614):
+  react-intersection-observer@9.12.0(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614):
     dependencies:
       react: 19.0.0-rc-fb9a90fa48-20240614
     optionalDependencies:
