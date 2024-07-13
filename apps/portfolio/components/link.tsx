@@ -18,7 +18,7 @@ export default forwardRef<
       href={href}
       ref={ref}
       rel={relList.size > 0 ? [...relList].join(' ') : undefined}
-      target={target ?? isExternal ? '_blank' : undefined}
+      target={target ?? (isExternal ? '_blank' : undefined)}
       {...props}
     />
   )
