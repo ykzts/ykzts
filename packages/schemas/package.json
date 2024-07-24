@@ -7,7 +7,7 @@
   "devDependencies": {
     "@types/node": "^20.14.12",
     "@ykzts/tsconfig": "workspace:*",
-    "tsup": "^8.2.2"
+    "tsup": "^8.2.3"
   },
   "license": "MIT",
   "main": "dist/index.js",
