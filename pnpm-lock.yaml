@@ -45,8 +45,8 @@ importers:
         specifier: ^19.0.0-rc-fb9a90fa48-20240614
         version: 19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614)
       react-icons:
-        specifier: ^5.2.1
-        version: 5.2.1(react@19.0.0-rc-fb9a90fa48-20240614)
+        specifier: ^5.3.0
+        version: 5.3.0(react@19.0.0-rc-fb9a90fa48-20240614)
       react-intersection-observer:
         specifier: ^9.13.0
         version: 9.13.0(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)
@@ -4803,8 +4803,8 @@ packages:
       react-native:
         optional: true
 
-  react-icons@5.2.1:
-    resolution: {integrity: sha512-zdbW5GstTzXaVKvGSyTaBalt7HSfuK5ovrzlpyiWHAFXndXTdd/1hdDHI4xBM1Mn7YriT6aqESucFl9kEXzrdw==}
+  react-icons@5.3.0:
+    resolution: {integrity: sha512-DnUk8aFbTyQPSkCfF8dbX6kQjXA9DktMeJqfjrg6cK9vwQVMxmcA3BfP4QoiztVmEHtwlTgLFsPuH2NskKT6eg==}
     peerDependencies:
       react: '*'
 
@@ -11370,7 +11370,7 @@ snapshots:
     optionalDependencies:
       react-dom: 19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614)
 
-  react-icons@5.2.1(react@19.0.0-rc-fb9a90fa48-20240614):
+  react-icons@5.3.0(react@19.0.0-rc-fb9a90fa48-20240614):
     dependencies:
       react: 19.0.0-rc-fb9a90fa48-20240614
 
