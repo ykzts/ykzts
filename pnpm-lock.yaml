@@ -121,8 +121,8 @@ importers:
         specifier: ^15.0.0-rc.0
         version: 15.0.0-rc.0(@babel/core@7.25.2)(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)
       next-sanity:
-        specifier: ^9.4.5
-        version: 9.4.5(kr2grozqbauabpbbsep2pvvqdq)
+        specifier: ^9.4.7
+        version: 9.4.7(kr2grozqbauabpbbsep2pvvqdq)
       react:
         specifier: ^19.0.0-rc-fb9a90fa48-20240614
         version: 19.0.0-rc-fb9a90fa48-20240614
@@ -4353,8 +4353,8 @@ packages:
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  next-sanity@9.4.5:
-    resolution: {integrity: sha512-fth+9I/Gmmy0wYLHSdY/4Be+v/rl6R9X5st05MaPvVQhqzJAP445nN7WsmhE2HVBHjPDZEHeDbf59jee95PgrQ==}
+  next-sanity@9.4.7:
+    resolution: {integrity: sha512-4p/crgc9bLD9kNJ/2OdC9ow3nbCI3okAwx6otN3aNAUd7Z7AGOINJQ9tUfrbLNEfHNNgSTQZnckjrh2B+kdawA==}
     engines: {node: '>=18.17'}
     peerDependencies:
       '@sanity/client': ^6.21.2
@@ -10921,7 +10921,7 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next-sanity@9.4.5(kr2grozqbauabpbbsep2pvvqdq):
+  next-sanity@9.4.7(kr2grozqbauabpbbsep2pvvqdq):
     dependencies:
       '@portabletext/react': 3.1.0(react@19.0.0-rc-fb9a90fa48-20240614)
       '@sanity/client': 6.21.3(debug@4.3.6)
