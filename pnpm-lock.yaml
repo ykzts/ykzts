@@ -61,8 +61,8 @@ importers:
         specifier: ^15.0.0-rc.0
         version: 15.0.0-rc.0(@mdx-js/loader@3.0.1(webpack@5.94.0))(@mdx-js/react@3.0.1(@types/react@18.3.4)(react@19.0.0-rc-fb9a90fa48-20240614))
       '@types/eslint':
-        specifier: ^8.56.11
-        version: 8.56.11
+        specifier: ^8.56.12
+        version: 8.56.12
       '@types/mdx':
         specifier: ^2.0.13
         version: 2.0.13
@@ -134,8 +134,8 @@ importers:
         version: 3.55.0(@types/node@20.16.1)(@types/react@18.3.4)(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)(styled-components@6.1.12(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614))(terser@5.31.6)
     devDependencies:
       '@types/eslint':
-        specifier: ^8.56.11
-        version: 8.56.11
+        specifier: ^8.56.12
+        version: 8.56.12
       '@types/node':
         specifier: ^20.16.1
         version: 20.16.1
@@ -2011,8 +2011,8 @@ packages:
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
 
-  '@types/eslint@8.56.11':
-    resolution: {integrity: sha512-sVBpJMf7UPo/wGecYOpk2aQya2VUGeHhe38WG7/mN5FufNSubf5VT9Uh9Uyp8/eLJpu1/tuhJ/qTo4mhSB4V4Q==}
+  '@types/eslint@8.56.12':
+    resolution: {integrity: sha512-03ruubjWyOHlmljCVoxSuNDdmfZDzsrrz0P2LeJsOXr+ZwFQ+0yQIwNCwt/GYhV7Z31fgtXJTAEs+FYlEL851g==}
 
   '@types/estree-jsx@1.0.5':
     resolution: {integrity: sha512-52CcUVNFyfb1A2ALocQw/Dd1BQFNmSdkuC3BkZ6iqhdMfQz7JWOFRuJFloOzjk+6WijU56m9oKXFAXc7o3Towg==}
@@ -4774,6 +4774,7 @@ packages:
 
   react-focus-lock@2.13.0:
     resolution: {integrity: sha512-w7aIcTwZwNzUp2fYQDMICy+khFwVmKmOrLF8kNsPS+dz4Oi/oxoVJ2wCMVvX6rWGriM/+mYaTyp1MRmkcs2amw==}
+    deprecated: incorrect typescript definition
     peerDependencies:
       '@types/react': ^16.8.0 || ^17.0.0 || ^18.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -7925,7 +7926,7 @@ snapshots:
     dependencies:
       '@types/ms': 0.7.34
 
-  '@types/eslint@8.56.11':
+  '@types/eslint@8.56.12':
     dependencies:
       '@types/estree': 1.0.5
       '@types/json-schema': 7.0.15
