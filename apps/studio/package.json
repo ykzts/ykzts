@@ -15,7 +15,7 @@
   "description": "Yamagishi Kazutoshi's Website!",
   "devDependencies": {
     "@types/eslint": "^9.6.1",
-    "@types/node": "^20.16.8",
+    "@types/node": "^20.16.9",
     "@types/react": "^18.3.9",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^8.7.0",
