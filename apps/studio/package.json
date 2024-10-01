@@ -2,7 +2,7 @@
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
     "@sanity/icons": "^3.4.0",
-    "@sanity/types": "^3.58.0",
+    "@sanity/types": "^3.59.0",
     "@sanity/ui": "^2.8.9",
     "@sanity/vision": "^3.59.0",
     "@ykzts/schemas": "workspace:*",
