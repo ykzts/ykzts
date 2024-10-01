@@ -106,7 +106,7 @@ importers:
         specifier: ^3.4.0
         version: 3.4.0(react@19.0.0-rc-fb9a90fa48-20240614)
       '@sanity/types':
-        specifier: ^3.58.0
+        specifier: ^3.59.0
         version: 3.59.0(debug@4.3.7)
       '@sanity/ui':
         specifier: ^2.8.9
