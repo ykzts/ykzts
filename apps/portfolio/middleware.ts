@@ -1,14 +1,6 @@
 import { NextResponse } from 'next/server'
 
-function getNonce(): string {
-  const randomValues = crypto.getRandomValues(new Uint8Array(18))
-
-  return Buffer.from(randomValues).toString('base64')
-}
-
 function createCSPDirectives(): string[] {
-  const nonce = getNonce()
-
   return [
     "base-uri 'none'",
     "connect-src 'self' https://vitals.vercel-insights.com",
@@ -17,7 +9,7 @@ function createCSPDirectives(): string[] {
     "form-action 'none'",
     "frame-ancestors 'none'",
     "img-src 'self' data:",
-    `script-src 'nonce-${nonce}' 'strict-dynamic'`,
+    "script-src 'self' 'unsafe-inline'",
     "style-src 'self' 'unsafe-inline'"
   ]
 }
