@@ -6,7 +6,9 @@ const withMDX = createMDX()
 const nextConfig: NextConfig = {
   experimental: {
     dynamicIO: true,
-    mdxRs: true,
+    mdxRs: {
+      mdxType: 'gfm'
+    },
     ppr: true
   },
   reactStrictMode: true,
