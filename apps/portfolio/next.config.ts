@@ -1,22 +1,17 @@
 import createMDX from '@next/mdx'
-import rehypeExternalLinks from 'rehype-external-links'
-import remarkGfm from 'remark-gfm'
+import type { NextConfig } from 'next'
 
-const withMDX = createMDX({
-  options: {
-    rehypePlugins: [rehypeExternalLinks],
-    remarkPlugins: [remarkGfm]
-  }
-})
+const withMDX = createMDX()
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   experimental: {
+    dynamicIO: true,
     mdxRs: true,
     ppr: true
   },
-  async headers() {
-    return [
+  reactStrictMode: true,
+  headers() {
+    return Promise.resolve([
       {
         headers: [
           {
@@ -34,7 +29,7 @@ const nextConfig = {
         ],
         source: '/:path*'
       }
-    ]
+    ])
   },
   logging: {
     fetches: {

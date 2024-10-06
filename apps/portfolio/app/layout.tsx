@@ -1,14 +1,10 @@
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
 import clsx from 'clsx'
-import { type Metadata, type Viewport } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Noto_Sans_JP, Raleway, Source_Sans_3 } from 'next/font/google'
-import { type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import SVGSymbols from './_components/svg-symbols'
-
-// CSPでnonceを足すために`force-dynamic`に
-// キャッシュのことを考えると良くないので再考の余地あり
-export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com/'),
@@ -45,7 +41,11 @@ const sourceSans3 = Source_Sans_3({
   weight: ['300', '600', '700']
 })
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({
+  children
+}: Readonly<{
+  children: ReactNode
+}>) {
   return (
     <html
       className={clsx(

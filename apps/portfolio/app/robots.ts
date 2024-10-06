@@ -10,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
       }
     ],
     sitemap: metadata.metadataBase
-      ? new URL('/sitemap', metadata.metadataBase).toString()
+      ? new URL('/sitemap.xml', metadata.metadataBase).toString()
       : undefined
   }
 }
