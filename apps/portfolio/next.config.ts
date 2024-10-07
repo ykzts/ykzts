@@ -17,6 +17,20 @@ const nextConfig: NextConfig = {
       {
         headers: [
           {
+            key: 'Content-Security-Policy',
+            value: [
+              "base-uri 'none'",
+              "connect-src 'self' https://vitals.vercel-insights.com",
+              "default-src 'none'",
+              "font-src 'self'",
+              "form-action 'none'",
+              "frame-ancestors 'none'",
+              "img-src 'self' data:",
+              "script-src 'self' 'unsafe-inline'",
+              "style-src 'self' 'unsafe-inline'"
+            ].join('; ')
+          },
+          {
             key: 'Permissions-Policy',
             value: 'camera=(), geolocation=(), microphone=()'
           },
