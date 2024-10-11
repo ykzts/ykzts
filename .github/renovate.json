@@ -3,6 +3,7 @@
   "extends": ["github>inabagumi/renovate-config"],
   "packageRules": [
     {
+      "automerge": false,
       "extends": "monorepo:nextjs",
       "followTag": "canary"
     },
