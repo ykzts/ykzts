@@ -21,7 +21,7 @@
     "@types/mdx": "^2.0.13",
     "@types/node": "^20.16.11",
     "@types/react": "^18.3.11",
-    "@types/react-dom": "^18.3.0",
+    "@types/react-dom": "^18.3.1",
     "@typescript-eslint/eslint-plugin": "^8.8.1",
     "@ykzts/tsconfig": "workspace:*",
     "eslint": "^8.57.1",
