@@ -9,8 +9,7 @@ const nextConfig: NextConfig = {
     mdxRs: {
       mdxType: 'gfm'
     },
-    ppr: true,
-    pprFallbacks: true
+    ppr: true
   },
   reactStrictMode: true,
   headers() {
