@@ -1,7 +1,3 @@
-import { type NextRequest } from 'next/server'
-
-export const runtime = 'edge'
-
 function Html({
   githubBaseURL,
   packageName,
@@ -44,19 +40,16 @@ function Html({
   )
 }
 
-export async function GET(req: NextRequest) {
-  const { renderToReadableStream } = await import('react-dom/server')
-  const stream = await renderToReadableStream(
+export async function GET() {
+  const { renderToStaticMarkup } = await import('react-dom/server')
+  const html = renderToStaticMarkup(
     <Html
       githubBaseURL="https://github.com/ykzts/go-mirakurun"
       packageName="ykzts.com/x/mirakurun"
-    />,
-    {
-      signal: req.signal
-    }
+    />
   )
 
-  return new Response(stream, {
+  return new Response(html, {
     headers: {
       'Cache-Control': 'max-age=3600',
       'Content-Type': 'text/html; charset=utf-8'
