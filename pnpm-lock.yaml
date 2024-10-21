@@ -58,8 +58,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0(acorn@8.13.0)
       '@next/mdx':
-        specifier: 15.0.0-canary.202
-        version: 15.0.0-canary.202(@mdx-js/loader@3.1.0(acorn@8.13.0))(@mdx-js/react@3.1.0(@types/react@18.3.11)(react@19.0.0-rc-fb9a90fa48-20240614))
+        specifier: 15.0.0-canary.203
+        version: 15.0.0-canary.203(@mdx-js/loader@3.1.0(acorn@8.13.0))(@mdx-js/react@3.1.0(@types/react@18.3.11)(react@19.0.0-rc-fb9a90fa48-20240614))
       '@types/eslint':
         specifier: ^9.6.1
         version: 9.6.1
@@ -1478,8 +1478,8 @@ packages:
   '@next/eslint-plugin-next@15.0.0-canary.203':
     resolution: {integrity: sha512-9WoolVk6RDBbe4UKRhY4SkdqmU4rs81V7YTGwxBXEGRNU88/6iZo7NnWApPybCpMGuvubNC7QQpH1kRYhgHssA==}
 
-  '@next/mdx@15.0.0-canary.202':
-    resolution: {integrity: sha512-2JhmEkfSGrKAcpVxzX3YI6hX0j3+5cnKOxqg4J9oAKNbRioQLT2U8wsy8YJRi+dND2mCr+k7Ykqq62AxGyejQw==}
+  '@next/mdx@15.0.0-canary.203':
+    resolution: {integrity: sha512-DeHWAUaJy90DV1qSJnzisQbG4mttnmAhHYzkSnSdoOuW6aqgdno3fPZ88RvHXtHV+7uG5ekUNveMNq+/eacMrA==}
     peerDependencies:
       '@mdx-js/loader': '>=0.15.0'
       '@mdx-js/react': '>=0.15.0'
@@ -6955,7 +6955,7 @@ snapshots:
     dependencies:
       fast-glob: 3.3.1
 
-  '@next/mdx@15.0.0-canary.202(@mdx-js/loader@3.1.0(acorn@8.13.0))(@mdx-js/react@3.1.0(@types/react@18.3.11)(react@19.0.0-rc-fb9a90fa48-20240614))':
+  '@next/mdx@15.0.0-canary.203(@mdx-js/loader@3.1.0(acorn@8.13.0))(@mdx-js/react@3.1.0(@types/react@18.3.11)(react@19.0.0-rc-fb9a90fa48-20240614))':
     dependencies:
       source-map: 0.7.4
     optionalDependencies:
