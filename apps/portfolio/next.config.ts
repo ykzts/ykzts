@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
     },
     ppr: true
   },
+  images: {
+    formats: ['image/avif', 'image/webp']
+  },
   reactStrictMode: true,
   headers() {
     return Promise.resolve([
