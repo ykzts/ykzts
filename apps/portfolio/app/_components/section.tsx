@@ -26,13 +26,17 @@ export default function Section({
   className,
   id,
   intro = false
-}: {
+}: Readonly<{
   children: ReactNode
   className?: string
   id?: string
   intro?: boolean
-}) {
-  const [ref, inView] = useInView({ triggerOnce: true })
+}>) {
+  const [ref, inView] = useInView({
+    initialInView: intro,
+    skip: !intro,
+    triggerOnce: true
+  })
 
   return (
     <SectionProvider value={{ active: inView, intro }}>
@@ -55,7 +59,7 @@ export default function Section({
   )
 }
 
-export function SectionHeader({ children }: { children: ReactNode }) {
+export function SectionHeader({ children }: Readonly<{ children: ReactNode }>) {
   const { active, intro } = useContext(SectionContext)
 
   return (
@@ -73,10 +77,10 @@ export function SectionHeader({ children }: { children: ReactNode }) {
 export function SectionTitle({
   children,
   className
-}: {
+}: Readonly<{
   children: ReactNode
   className?: string
-}) {
+}>) {
   const { active, intro } = useContext(SectionContext)
   const Title = intro ? 'h1' : 'h2'
 
@@ -99,10 +103,10 @@ export function SectionTitle({
 export function SectionTagline({
   children,
   className
-}: {
+}: Readonly<{
   children: ReactNode
   className?: string
-}) {
+}>) {
   const { active, intro } = useContext(SectionContext)
 
   return (
@@ -123,10 +127,10 @@ export function SectionTagline({
 export function SectionContent({
   children,
   className
-}: {
+}: Readonly<{
   children: ReactNode
   className?: string
-}) {
+}>) {
   const { active, intro } = useContext(SectionContext)
 
   return (
@@ -144,10 +148,10 @@ export function SectionContent({
 export function SectionFooter({
   children,
   className
-}: {
+}: Readonly<{
   children: ReactNode
   className?: string
-}) {
+}>) {
   return <footer className={clsx(styles.footer, className)}>{children}</footer>
 }
 
