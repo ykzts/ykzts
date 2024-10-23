@@ -115,8 +115,8 @@ importers:
         specifier: 15.0.1-canary.3
         version: 15.0.1-canary.3(@babel/core@7.25.8)(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)
       next-sanity:
-        specifier: ^9.8.0
-        version: 9.8.0(vle42zjunl3mlmya2pt5ov2o6e)
+        specifier: ^9.8.1
+        version: 9.8.1(vle42zjunl3mlmya2pt5ov2o6e)
       react:
         specifier: ^19.0.0-rc-fb9a90fa48-20240614
         version: 19.0.0-rc-fb9a90fa48-20240614
@@ -1783,8 +1783,8 @@ packages:
   '@sanity/mutator@3.62.0':
     resolution: {integrity: sha512-SM2Lm1ViqUElcxEIu1NoasyqufNXiKYo12kLPuYvpJcx1+TqZHaE7kclbwr7j/4qATxsuxihEYwJR/kgbTRQBw==}
 
-  '@sanity/next-loader@1.0.5':
-    resolution: {integrity: sha512-pIhPbtrRGS1oiyIbnA67VFo81uGfbjQ5iRxPq1nUc+WmbBoY+qtM5BkNz1UDRjsuHyQJqYp2i8rW1VgLA+BeKg==}
+  '@sanity/next-loader@1.0.6':
+    resolution: {integrity: sha512-VcLs/GSqcxQ9MCVtr5/QP9KJg/fuv8NqCp9jqRHvxRhhKlB67zvJzBiDGQ5U0+Sh0Q6HqHtbMNwnG7ohHCecrQ==}
     engines: {node: '>=18.18'}
     peerDependencies:
       '@sanity/client': ^6.22.2
@@ -4164,8 +4164,8 @@ packages:
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
-  next-sanity@9.8.0:
-    resolution: {integrity: sha512-SQNTeVNN8/dC2XV+w96GpZaDPa0ZP46H2f7E368+blmca22FuM7H31Heomyu/glNH7MldLeNUfuZ6/R4hhELUw==}
+  next-sanity@9.8.1:
+    resolution: {integrity: sha512-mGtEFQytBGtYM+NQK/BGnpqhhb4oZeGYHAvHJZTo+ujFruJBOg5rV2OBLw5KdxFQaQ3mR/1tXbZPojRrhTqA+g==}
     engines: {node: '>=18.18'}
     peerDependencies:
       '@sanity/client': ^6.22.2
@@ -7358,7 +7358,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sanity/next-loader@1.0.5(@sanity/client@6.22.2)(next@15.0.1-canary.3(@babel/core@7.25.8)(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)':
+  '@sanity/next-loader@1.0.6(@sanity/client@6.22.2)(next@15.0.1-canary.3(@babel/core@7.25.8)(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)':
     dependencies:
       '@sanity/client': 6.22.2(debug@4.3.7)
       '@sanity/comlink': 1.0.0
@@ -10384,12 +10384,12 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  next-sanity@9.8.0(vle42zjunl3mlmya2pt5ov2o6e):
+  next-sanity@9.8.1(vle42zjunl3mlmya2pt5ov2o6e):
     dependencies:
       '@portabletext/react': 3.1.0(react@19.0.0-rc-fb9a90fa48-20240614)
       '@sanity/client': 6.22.2(debug@4.3.7)
       '@sanity/icons': 3.4.0(react@19.0.0-rc-fb9a90fa48-20240614)
-      '@sanity/next-loader': 1.0.5(@sanity/client@6.22.2)(next@15.0.1-canary.3(@babel/core@7.25.8)(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)
+      '@sanity/next-loader': 1.0.6(@sanity/client@6.22.2)(next@15.0.1-canary.3(@babel/core@7.25.8)(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)
       '@sanity/preview-kit': 5.1.7(@sanity/client@6.22.2)(react@19.0.0-rc-fb9a90fa48-20240614)
       '@sanity/preview-url-secret': 2.0.0(@sanity/client@6.22.2(debug@4.3.7))
       '@sanity/types': 3.62.0(debug@4.3.7)
