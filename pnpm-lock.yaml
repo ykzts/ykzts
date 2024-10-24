@@ -115,8 +115,8 @@ importers:
         specifier: 15.0.2-canary.2
         version: 15.0.2-canary.2(@babel/core@7.25.8)(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)
       next-sanity:
-        specifier: ^9.8.5
-        version: 9.8.5(c2acqkpwp4tjdt5pwgljhfeoda)
+        specifier: ^9.8.6
+        version: 9.8.6(c2acqkpwp4tjdt5pwgljhfeoda)
       react:
         specifier: ^19.0.0-rc-fb9a90fa48-20240614
         version: 19.0.0-rc-fb9a90fa48-20240614
@@ -1861,8 +1861,8 @@ packages:
       react: ^18
       styled-components: ^6.1
 
-  '@sanity/visual-editing@2.3.1':
-    resolution: {integrity: sha512-ijRaoV6N6pby+DoL/P0enQqNQd5n7UNjx0yfI9O7XVMePf4APtvpTJgyeLZl9+z0BgYLLTHyHlxvm7QwjPXLhw==}
+  '@sanity/visual-editing@2.3.2':
+    resolution: {integrity: sha512-oj5xyhGT2kjNOsGEQJ2G9CoptEwAFKvRMdoBKsTJGpsRCp71eReLC84JYzD6uIwzxZAodiF0G5HpozltbF/j+Q==}
     engines: {node: '>=18'}
     peerDependencies:
       '@remix-run/react': '>= 2'
@@ -4164,8 +4164,8 @@ packages:
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
-  next-sanity@9.8.5:
-    resolution: {integrity: sha512-l2EJFMTY6DOPiQqUtr1BSDkljjQwfK6427K1w1ne135UaPqofuqBay0UZVAyBCeDcGs5B7ZQuCr8m/ssbOiUfA==}
+  next-sanity@9.8.6:
+    resolution: {integrity: sha512-82yUjXXUm4eJDO3w3bB/oETZVSrvT/6TyapNrVubw3jC0Ur8HE6xYBobDMzHOl215drgfTqZgdH8dRA/7LdXJA==}
     engines: {node: '>=18.18'}
     peerDependencies:
       '@sanity/client': ^6.22.2
@@ -7519,7 +7519,7 @@ snapshots:
       - react-dom
       - react-is
 
-  '@sanity/visual-editing@2.3.1(@sanity/client@6.22.2)(next@15.0.2-canary.2(@babel/core@7.25.8)(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614))(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)':
+  '@sanity/visual-editing@2.3.2(@sanity/client@6.22.2)(next@15.0.2-canary.2(@babel/core@7.25.8)(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614))(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)':
     dependencies:
       '@sanity/comlink': 1.0.0
       '@sanity/mutate': 0.10.1-canary.5(xstate@5.18.2)
@@ -10384,7 +10384,7 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  next-sanity@9.8.5(c2acqkpwp4tjdt5pwgljhfeoda):
+  next-sanity@9.8.6(c2acqkpwp4tjdt5pwgljhfeoda):
     dependencies:
       '@portabletext/react': 3.1.0(react@19.0.0-rc-fb9a90fa48-20240614)
       '@sanity/client': 6.22.2(debug@4.3.7)
@@ -10394,7 +10394,7 @@ snapshots:
       '@sanity/preview-url-secret': 2.0.0(@sanity/client@6.22.2(debug@4.3.7))
       '@sanity/types': 3.62.1(debug@4.3.7)
       '@sanity/ui': 2.8.10(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react-is@18.3.1)(react@19.0.0-rc-fb9a90fa48-20240614)(styled-components@6.1.13(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614))
-      '@sanity/visual-editing': 2.3.1(@sanity/client@6.22.2)(next@15.0.2-canary.2(@babel/core@7.25.8)(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614))(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)
+      '@sanity/visual-editing': 2.3.2(@sanity/client@6.22.2)(next@15.0.2-canary.2(@babel/core@7.25.8)(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614))(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)
       groq: 3.62.1
       history: 5.3.0
       next: 15.0.2-canary.2(@babel/core@7.25.8)(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)
