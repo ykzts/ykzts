@@ -8,6 +8,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       ref: _ref,
       ...props
-    }) => <Link {...props} />
+    }) => (
+      // @ts-expect-error mdx/typesがReact v19に対応していないので無視させる。
+      <Link {...props} />
+    )
   }
 }
