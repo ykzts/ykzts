@@ -17,7 +17,7 @@
     "@types/eslint": "^9.6.1",
     "@types/node": "^20.17.0",
     "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0",
     "@typescript-eslint/eslint-plugin": "^8.11.0",
     "@ykzts/tsconfig": "workspace:*",
     "eslint": "^9.13.0",
