@@ -10,6 +10,13 @@
     {
       "extends": "monorepo:react",
       "followTag": "rc"
+    },
+    {
+      "followTag": "rc",
+      "group-name": "type-react monorepo",
+      "ignoreUnstable": false,
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["types-react", "types-react-dom"]
     }
   ],
   "reviewers": ["ykzts"]

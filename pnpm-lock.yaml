@@ -5,8 +5,8 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@types/react': npm:types-react@19.0.0-rc.1
-  '@types/react-dom': npm:types-react-dom@19.0.0-rc.1
+  '@types/react': npm:types-react@rc
+  '@types/react-dom': npm:types-react-dom@rc
   react: ^19.0.0-rc-fb9a90fa48-20240614
   react-dom: ^19.0.0-rc-fb9a90fa48-20240614
 
@@ -76,10 +76,10 @@ importers:
         specifier: ^20.17.0
         version: 20.17.0
       '@types/react':
-        specifier: npm:types-react@19.0.0-rc.1
+        specifier: npm:types-react@rc
         version: types-react@19.0.0-rc.1
       '@types/react-dom':
-        specifier: npm:types-react-dom@19.0.0-rc.1
+        specifier: npm:types-react-dom@rc
         version: types-react-dom@19.0.0-rc.1
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.11.0
@@ -140,10 +140,10 @@ importers:
         specifier: ^20.17.0
         version: 20.17.0
       '@types/react':
-        specifier: npm:types-react@19.0.0-rc.1
+        specifier: npm:types-react@rc
         version: types-react@19.0.0-rc.1
       '@types/react-dom':
-        specifier: npm:types-react-dom@19.0.0-rc.1
+        specifier: npm:types-react-dom@rc
         version: types-react-dom@19.0.0-rc.1
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.11.0
@@ -1475,7 +1475,7 @@ packages:
   '@mdx-js/react@3.1.0':
     resolution: {integrity: sha512-QjHtSaoameoalGnKDT3FoIl4+9RwyTmo9ZJGBdLOks/YOiWHoRDI3PUwEzOE7kEmGcV3AFcp9K6dYu9rEuKLAQ==}
     peerDependencies:
-      '@types/react': npm:types-react@19.0.0-rc.1
+      '@types/react': npm:types-react@rc
       react: ^19.0.0-rc-fb9a90fa48-20240614
 
   '@next/env@15.0.2-canary.3':
@@ -2042,17 +2042,11 @@ packages:
   '@types/progress-stream@2.0.5':
     resolution: {integrity: sha512-5YNriuEZkHlFHHepLIaxzq3atGeav1qCTGzB74HKWpo66qjfostF+rHc785YYYHeBytve8ZG3ejg42jEIfXNiQ==}
 
-  '@types/prop-types@15.7.13':
-    resolution: {integrity: sha512-hCZTSvwbzWGvhqxp/RqVqwU999pBf2vp7hzIjiYOsl8wqOmUxkQ6ddw1cV3l8811+kdUFus/q4d1Y3E3SyEifA==}
-
   '@types/react-copy-to-clipboard@5.0.7':
     resolution: {integrity: sha512-Gft19D+as4M+9Whq1oglhmK49vqPhcLzk8WfvfLvaYMIPYanyfLy0+CwFucMJfdKoSFyySPmkkWn8/E6voQXjQ==}
 
   '@types/react-is@18.3.0':
     resolution: {integrity: sha512-KZJpHUkAdzyKj/kUHJDc6N7KyidftICufJfOFpiG6haL/BDQNQt5i4n1XDUL/nDZAtGLHDSWRYpLzKTAKSvX6w==}
-
-  '@types/react@18.3.12':
-    resolution: {integrity: sha512-D2wOSq/d6Agt28q7rSI3jhU7G6aiuzljDGZ2hTZHIkrTLUI+AF3WMeKkEZ9nN2fkBAlcktT6vcZjDFiIhMYEQw==}
 
   '@types/shallow-equals@1.0.3':
     resolution: {integrity: sha512-xZx/hZsf1p9J5lGN/nGTsuW/chJCdlyGxilwg1TS78rygBCU5bpY50zZiFcIimlnl0p41kAyaASsy0bqU7WyBA==}
@@ -4596,7 +4590,7 @@ packages:
   react-focus-lock@2.13.2:
     resolution: {integrity: sha512-T/7bsofxYqnod2xadvuwjGKHOoL5GH7/EIPI5UyEvaU/c2CcphvGI371opFtuY/SYdbMsNiuF4HsHQ50nA/TKQ==}
     peerDependencies:
-      '@types/react': npm:types-react@19.0.0-rc.1
+      '@types/react': npm:types-react@rc
       react: ^19.0.0-rc-fb9a90fa48-20240614
     peerDependenciesMeta:
       '@types/react':
@@ -5447,7 +5441,7 @@ packages:
     resolution: {integrity: sha512-elOQwe6Q8gqZgDA8mrh44qRTQqpIHDcZ3hXTLjBe1i4ph8XpNJnO+aQf3NaG+lriLopI4HMx9VjQLfPQ6vhnoA==}
     engines: {node: '>=10'}
     peerDependencies:
-      '@types/react': npm:types-react@19.0.0-rc.1
+      '@types/react': npm:types-react@rc
       react: ^19.0.0-rc-fb9a90fa48-20240614
     peerDependenciesMeta:
       '@types/react':
@@ -5472,7 +5466,7 @@ packages:
     resolution: {integrity: sha512-epTbsLuzZ7lPClpz2TyryBfztm7m+28DlEv2ZCQ3MDr5ssiwyOwGH/e5F9CkfWjJ1t4clvI58yF822/GUkjjhw==}
     engines: {node: '>=10'}
     peerDependencies:
-      '@types/react': npm:types-react@19.0.0-rc.1
+      '@types/react': npm:types-react@rc
       react: ^19.0.0-rc-fb9a90fa48-20240614
     peerDependenciesMeta:
       '@types/react':
@@ -7180,7 +7174,7 @@ snapshots:
   '@sanity/block-tools@3.62.2(debug@4.3.7)':
     dependencies:
       '@sanity/types': 3.62.2(debug@4.3.7)
-      '@types/react': 18.3.12
+      '@types/react': types-react@19.0.0-rc.1
       get-random-values-esm: 1.0.2
       lodash: 4.17.21
     transitivePeerDependencies:
@@ -7465,14 +7459,14 @@ snapshots:
   '@sanity/types@3.37.2(debug@4.3.7)':
     dependencies:
       '@sanity/client': 6.22.2(debug@4.3.7)
-      '@types/react': 18.3.12
+      '@types/react': types-react@19.0.0-rc.1
     transitivePeerDependencies:
       - debug
 
   '@sanity/types@3.62.2(debug@4.3.7)':
     dependencies:
       '@sanity/client': 6.22.2(debug@4.3.7)
-      '@types/react': 18.3.12
+      '@types/react': types-react@19.0.0-rc.1
     transitivePeerDependencies:
       - debug
 
@@ -7737,20 +7731,13 @@ snapshots:
     dependencies:
       '@types/node': 20.17.0
 
-  '@types/prop-types@15.7.13': {}
-
   '@types/react-copy-to-clipboard@5.0.7':
     dependencies:
-      '@types/react': 18.3.12
+      '@types/react': types-react@19.0.0-rc.1
 
   '@types/react-is@18.3.0':
     dependencies:
-      '@types/react': 18.3.12
-
-  '@types/react@18.3.12':
-    dependencies:
-      '@types/prop-types': 15.7.13
-      csstype: 3.1.3
+      '@types/react': types-react@19.0.0-rc.1
 
   '@types/shallow-equals@1.0.3': {}
 
@@ -11877,7 +11864,7 @@ snapshots:
 
   types-react-dom@19.0.0-rc.1:
     dependencies:
-      '@types/react': 18.3.12
+      '@types/react': types-react@19.0.0-rc.1
 
   types-react@19.0.0-rc.1:
     dependencies:
