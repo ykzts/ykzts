@@ -19,7 +19,7 @@
     "@next/mdx": "15.0.2-canary.6",
     "@types/eslint": "^9.6.1",
     "@types/mdx": "^2.0.13",
-    "@types/node": "^20.17.0",
+    "@types/node": "^20.17.1",
     "@types/react": "npm:types-react@rc",
     "@types/react-dom": "npm:types-react-dom@rc",
     "@typescript-eslint/eslint-plugin": "^8.11.0",
