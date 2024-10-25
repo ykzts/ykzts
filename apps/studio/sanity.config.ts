@@ -7,6 +7,7 @@ import {
   work as workSchema
 } from '@ykzts/schemas'
 import { defineConfig } from 'sanity'
+import { structureTool } from 'sanity/structure'
 
 if (
   !process.env.NEXT_PUBLIC_SANITY_DATASET ||
@@ -19,7 +20,12 @@ export default defineConfig({
   basePath: '/',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  plugins: [visionTool()],
+  plugins: [
+    structureTool(),
+    visionTool({
+      defaultDataset: 'production'
+    })
+  ],
   schema: {
     types: [postSchema, profileSchema, workSchema]
   }
