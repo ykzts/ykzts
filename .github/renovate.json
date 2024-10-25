@@ -13,7 +13,7 @@
     },
     {
       "followTag": "rc",
-      "group-name": "type-react monorepo",
+      "groupName": "type-react monorepo",
       "ignoreUnstable": false,
       "matchManagers": ["npm"],
       "matchPackageNames": ["types-react", "types-react-dom"]
