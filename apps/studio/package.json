@@ -18,7 +18,7 @@
     "@types/node": "^20.17.1",
     "@types/react": "npm:types-react@rc",
     "@types/react-dom": "npm:types-react-dom@rc",
-    "@typescript-eslint/eslint-plugin": "^8.12.0",
+    "@typescript-eslint/eslint-plugin": "^8.12.1",
     "@ykzts/tsconfig": "workspace:*",
     "eslint": "^9.13.0",
     "eslint-config-next": "15.0.2-canary.8",
