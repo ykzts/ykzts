@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "name": "@ykzts/monorepo",
-  "packageManager": "pnpm@9.13.0",
+  "packageManager": "pnpm@9.13.1",
   "pnpm": {
     "overrides": {
       "@types/react": "npm:types-react@rc",
