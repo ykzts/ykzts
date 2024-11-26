@@ -4,7 +4,7 @@
   "description": "",
   "devDependencies": {
     "@ykzts/prettier-config": "workspace:*",
-    "prettier": "^3.3.3",
+    "prettier": "^3.4.0",
     "turbo": "^2.3.2"
   },
   "license": "MIT",
