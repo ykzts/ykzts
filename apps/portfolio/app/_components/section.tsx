@@ -19,8 +19,6 @@ const SectionContext = createContext<{
   intro: false
 })
 
-export const SectionProvider = SectionContext.Provider
-
 export default function Section({
   children,
   className,
@@ -39,7 +37,7 @@ export default function Section({
   })
 
   return (
-    <SectionProvider value={{ active: inView, intro }}>
+    <SectionContext value={{ active: inView, intro }}>
       <section
         className={clsx(
           styles.section,
@@ -55,7 +53,7 @@ export default function Section({
       >
         {children}
       </section>
-    </SectionProvider>
+    </SectionContext>
   )
 }
 
