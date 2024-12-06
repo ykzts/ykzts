@@ -43,6 +43,7 @@ const config: Config = {
           path: 'blog',
           postsPerPage: 5,
           routeBasePath: '/',
+          showLastUpdateTime: true,
           showReadingTime: false
         },
         docs: false,
