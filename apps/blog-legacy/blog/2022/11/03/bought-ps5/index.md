@@ -1,7 +1,9 @@
 ---
 authors: [ykzts]
 date: 2022-11-03T21:45:00+09:00
-lastmod: 2022-11-03T21:45:00+09:00
+last_update:
+  author: ykzts
+  date: 2022-11-03T21:45:00+09:00
 tags: [game]
 title: PlayStation 5を購入しました
 ---
