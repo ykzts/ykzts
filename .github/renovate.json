@@ -6,17 +6,6 @@
       "automerge": false,
       "extends": "monorepo:nextjs",
       "followTag": "canary"
-    },
-    {
-      "extends": "monorepo:react",
-      "followTag": "rc"
-    },
-    {
-      "followTag": "rc",
-      "groupName": "type-react monorepo",
-      "ignoreUnstable": false,
-      "matchManagers": ["npm"],
-      "matchPackageNames": ["types-react", "types-react-dom"]
     }
   ],
   "reviewers": ["ykzts"]
