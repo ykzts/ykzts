@@ -1,9 +1,12 @@
-import { type AnchorHTMLAttributes, forwardRef } from 'react'
+import type { ComponentProps } from 'react'
 
-export default forwardRef<
-  HTMLAnchorElement,
-  AnchorHTMLAttributes<HTMLAnchorElement>
->(function Link({ href, rel, target, ...props }, ref) {
+export default function Link({
+  href,
+  ref,
+  rel,
+  target,
+  ...props
+}: ComponentProps<'a'>) {
   const isExternal =
     !!href && (href.startsWith('https://') || href.startsWith('http://'))
   const relList = new Set(rel ? rel.split(/\s+/) : [])
@@ -22,4 +25,4 @@ export default forwardRef<
       {...props}
     />
   )
-})
+}
