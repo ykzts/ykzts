@@ -10,7 +10,7 @@ title: w3c-xmlhttprequest v3.0.0をリリースしました
 
 表題の通り[w3c-xmlhttprequest](https://www.npmjs.com/package/w3c-xmlhttprequest) v3.0.0をリリースしました。細かなバグの修正や[最新の`XMLHttpRequest`の仕様](https://xhr.spec.whatwg.org/)に追従させたりと様々な変更が含まれていますが一番大きな変更としてはECMAScript 2015からTypeScriptへの移行でしょう。
 
-<!--truncate-->
+{/* truncate */}
 
 [v1.0.0をリリース](../../../../2012/06/23/register-node-xmlhttprequest-to-npm/index.mdx)したのが2012年なので当初はECMAScript 5を前提としていました。`Object.keys`や`Object.defineProperty`、`JSON.parse`といった当時としては新しい機能を使っていましたがどうしても古さは否めず2016年に[ECMAScript 2015に書き換えたv2.0.0](https://github.com/ykzts/node-xmlhttprequest/releases/tag/v2.0.0)をリリースしていました。とはいえ`var`文を`let`文と`const`文に置き換えたり、`prototype`プロパティーを`class`構文に置き換えたりといった基本的なところの書き換えしかしておらず根本の部分は2012年にリリースされたv1.0.0のままでした。
 

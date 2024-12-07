@@ -3,7 +3,7 @@ authors: [ykzts]
 date: 2016-07-21T02:13:03+09:00
 last_update:
   author: ykzts
-  date: 2016-07-21T20:30:00+09:00
+  date: 2024-12-07T12:00:00+09:00
 redirect_from: /post/147704551073
 tags: [tech]
 title: fetch API から XMLHttpRequest への置き換えを決意した話
@@ -11,7 +11,7 @@ title: fetch API から XMLHttpRequest への置き換えを決意した話
 
 最近 [fetch API](https://fetch.spec.whatwg.org/) をヘビーに使うようになっていて、いろいろと勘所もわかってきていて、`Promise` ベースなのはやっぱりすごく便利なんだけれども、現状だと機能が全然足りないなあ、と。
 
-<!--truncate-->
+{/* truncate */}
 
 `XMLHttpRequestUpload` 相当がないのは知っていたし、困ったなあと思っていたんだけれども、`XMLHttpRequestUpload` 自体がだいぶレア目のヤツで使うような機会もまあめったにないので実害としてはそこまで大きくなかった。
 
@@ -21,21 +21,21 @@ fetch API で `ReadableStream` を使って `progress` の状況を取るとき�
 
 ```javascript
 function consume(reader) {
-  var total = 0;
+  var total = 0
   return (function pump() {
-    return reader.read().then(function(args) {
+    return reader.read().then(function (args) {
       if (!args.done) {
-        total += args.value.byteLength;
-        return pump();
+        total += args.value.byteLength
+        return pump()
       }
-    });
-  })();
-};
+    })
+  })()
+}
 
-fetch('/path/to').then(function(response) {
-  var reader = response.body.getReader();
-  return consume(reader);
-});
+fetch('/path/to').then(function (response) {
+  var reader = response.body.getReader()
+  return consume(reader)
+})
 ```
 
 といったコードを使う。データを受信するごとに `total` 変数に、受信したデータのバイト数を追加していくことしかできない。
@@ -45,9 +45,9 @@ forbidden headers の中に `Content-Length` があるからしゃあないち�
 トータルの容量がわからんとなにが困るって、進捗の表示ができないんだよ。
 
 ```javascript
-xhr.onprogress = function(e) {
-  result.textContent = e.loaded / e.total;
-};
+xhr.onprogress = function (e) {
+  result.textContent = e.loaded / e.total
+}
 ```
 
 ていうので `XMLHttpRequest` だったら一瞬で進捗状況を表示させられていたけど、fetch API だとできない。いや仕様的には `[[totalQueuedBytes]]` つうのがあるんだけれども internal slot 扱いで JavaScript から取ることはできない。
@@ -78,50 +78,59 @@ fetch API は Living Standard です。今後も改良が続けられていき�
 
 ```javascript
 function open(blob) {
-  return new Promise(function(resolve, reject) {
-    var fileReader = new FileReader();
-    fileReader.addEventListener('load', function() {
-      resolve(this.result);
-    });
-    fileReader.addEventListener('error', function() {
-      reject(this.error);
-    });
-    fileReader.readAsText(blob);
-  });
+  return new Promise(function (resolve, reject) {
+    var fileReader = new FileReader()
+    fileReader.addEventListener('load', function () {
+      resolve(this.result)
+    })
+    fileReader.addEventListener('error', function () {
+      reject(this.error)
+    })
+    fileReader.readAsText(blob)
+  })
 }
 
-fetch('/object.json').then(function(response) {
-  var reader = response.body.getReader();
-  var type = response.headers.get('content-type') || 'text/plain';
-  var total = +(response.headers.get('content-length') || 0);
-  var loaded = 0;
-  var body = new Uint8Array(total);
-  return (function pump() {
-    return reader.read().then(function(args) {
-      var newBody;
-      if (args.done) {
-        return new Blob([body], { type: type });
-      }
-      if (total < 0) {
-        body.set(args.value, loaded);
-      } else {
-        newBody = new Uint8Array(body.byteLength + args.value.byteLength);
-        newBody.set(body);
-        newBody.set(args.value, body.byteLength);
-        body = newBody;
-      }
-      loaded += args.value.byteLength;
-      console.log('loaded: ' + loaded + (total < 0 ? ' (' + Math.floor(loaded / total * 1000) / 10 + '%)' : ''));
-      return pump();
-    });
-  })();
-}).then(function(blob) {
-  return open(blob).then(function(text) {
-    return JSON.parse(text);
-  });
-}).then(function(object) {
-  console.log(object);
-});
+fetch('/object.json')
+  .then(function (response) {
+    var reader = response.body.getReader()
+    var type = response.headers.get('content-type') || 'text/plain'
+    var total = +(response.headers.get('content-length') || 0)
+    var loaded = 0
+    var body = new Uint8Array(total)
+    return (function pump() {
+      return reader.read().then(function (args) {
+        var newBody
+        if (args.done) {
+          return new Blob([body], { type: type })
+        }
+        if (total < 0) {
+          body.set(args.value, loaded)
+        } else {
+          newBody = new Uint8Array(body.byteLength + args.value.byteLength)
+          newBody.set(body)
+          newBody.set(args.value, body.byteLength)
+          body = newBody
+        }
+        loaded += args.value.byteLength
+        console.log(
+          'loaded: ' +
+            loaded +
+            (total < 0
+              ? ' (' + Math.floor((loaded / total) * 1000) / 10 + '%)'
+              : '')
+        )
+        return pump()
+      })
+    })()
+  })
+  .then(function (blob) {
+    return open(blob).then(function (text) {
+      return JSON.parse(text)
+    })
+  })
+  .then(function (object) {
+    console.log(object)
+  })
 ```
 
 といった記述になります。
