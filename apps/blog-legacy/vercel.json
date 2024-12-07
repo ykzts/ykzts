@@ -1,0 +1,120 @@
+{
+  "redirects": [
+    {
+      "destination": "/atom.xml",
+      "source": "/(feed/?|index.xml|rss)",
+      "statusCode": 301
+    },
+    {
+      "destination": "https://ykzts.com/",
+      "source": "/([Aa]uthor|about)",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2012/04/01/custom-http-header-on-nginx",
+      "source": "/post/20308520977",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2012/06/14/nodex-xmlhttprequest",
+      "source": "/post/25108537330",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2012/06/18/xmlhttprequest-response-type",
+      "source": "/post/25378068289",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2012/06/23/register-node-xmlhttprequest-to-npm",
+      "source": "/post/25705564207",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2012/08/18/blobbuilder-interface-is-deprecated",
+      "source": "/post/29666019536",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2012/10/03/relationship-between-html5-and-americans",
+      "source": "/post/32797731246",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2012/10/13/debug-console-for-ios-safari",
+      "source": "/post/33501908970",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2013/02/02/spdy-is-not-silver-bullet",
+      "source": "/post/42110686577",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2013/08/06/javascript-is-not-slow",
+      "source": "/post/57553849556",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2013/08/11/w3c-xmlhttprequest",
+      "source": "/post/58006314813",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2013/08/14/do-not-use-html-js",
+      "source": "/post/58263403686",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2013/08/18/css-animation",
+      "source": "/post/58555491127",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2013/09/10/thoughts-on-javascript",
+      "source": "/post/60856466146",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2013/10/18/get-along-with-oss",
+      "source": "/post/64423815085",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2013/12/16/function-of-coffeescript",
+      "source": "/post/70207582523",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2014/10/16/goodbye-heartrails",
+      "source": "/post/100149511913",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2015/05/14/join-to-pixiv",
+      "source": "/post/118946779168",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2015/11/01/join-to-animatelab",
+      "source": "/post/132335401043",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2016/05/01/github-account-for-recruitment",
+      "source": "/post/143689622893",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2016/05/21/redirect-to-hostname-without-www",
+      "source": "/post/144696559108",
+      "statusCode": 301
+    },
+    {
+      "destination": "/2016/07/20/goodbye-fetch-api",
+      "source": "/post/147704551073",
+      "statusCode": 301
+    }
+  ],
+  "trailingSlash": false
+}

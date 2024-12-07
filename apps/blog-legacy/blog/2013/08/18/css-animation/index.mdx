@@ -1,0 +1,90 @@
+---
+authors: [ykzts]
+date: 2013-08-18T10:27:00+09:00
+last_update:
+  author: ykzts
+  date: 2024-12-07T12:00:00+09:00
+redirect_from: /post/58555491127
+tags: [tech]
+title: JavaScriptでアニメーションを書く場合にはCSSも活用するべき
+---
+
+はてなブックマークの人気エントリーをながめていたところ[JavaScriptでアニメーションを書く初歩の初歩](http://nmi.jp/archives/510)のような記事が目にはいりました。初歩であればこそ、この記事で省かれている`requestAnimationFrame`の話をするべきではないのかとも思いますが、それよりもわたしは元の記事に掲載されているコードがJavaScriptを用いて十ミリ秒の間隔を開けて複数の処理を何度もウェブブラウザーにさせてしまっていることが気になりました。また、いくつかの処理を完了させてから、`setTimeout`を用いて任意の時間が経過するのを待ち、同様の処理を行うというかたちになっていますので、処理に時間がかかってしまえば、なめらかな描写は到底実現されないものとなってしまっています。
+
+{/* truncate */}
+
+昨今ではウェブブラウザーの動作させる少なくない端末が高速な処理をなせるようになってきているとはいえ、依然全てがそうなっているという状況ではありません。加えてここ数年で携帯電話に搭載されているウェブブラウザーの水準も非常に高いものとなっており、その使用者も日に日に増加しております。携帯電話はその用途のため、携帯することが前提として設計されており、小さく、そして長時間稼働させられるようにバッテリーのことを考え、処理能力は比較的に乏しくなっている傾向にあります。当然のように、そちらでの動作も勘案しなければなりません。
+
+ウェブという媒体は多くの人が見ることになるものです。であればこそ、自身が想定しない環境にある対象に対しても一定の配慮は必要なのではないでしょうか。自身の持てる限りの全ての知識を、できる限り全て動員させ、処理の高速化や安定化につとめるべきです。
+
+```html
+<!doctype html>
+<meta charset="UTF-8" />
+<style>
+  #target {
+    -webkit-transition-property: top, left, opacity;
+    -moz-transition-property: top, left, opacity;
+    -ms-transition-property: top, left, opacity;
+    -o-transition-property: top, left, opacity;
+    transition-property: top, left, opacity;
+    -webkit-transition-duration: 3s;
+    -moz-transition-duration: 3s;
+    -ms-transition-duration: 3s;
+    -o-transition-duration: 3s;
+    transition-duration: 3s;
+    -webkit-transition-timing-function: linear;
+    -moz-transition-timing-function: linear;
+    -ms-transition-timing-function: linear;
+    -o-transition-timing-function: linear;
+    transition-timing-function: linear;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: red;
+    width: 50px;
+    height: 50px;
+  }
+
+  #target.move {
+    top: 100px;
+    left: 100px;
+  }
+
+  #target.disappear {
+    opacity: 0;
+  }
+</style>
+<title>sample</title>
+<div id="target"></div>
+<script>
+  document.addEventListener(
+    'DOMContentLoaded',
+    function () {
+      var target = document.getElementById('target')
+
+      function disappear(event) {
+        var target = event.target
+        target.removeEventListener('webkitTransitionEnd', disappear, false)
+        target.removeEventListener('oTransitionEnd', disappear, false)
+        target.removeEventListener('transitionend', disappear, false)
+
+        if (target.classList.contains('disappear')) {
+          return
+        }
+        target.classList.add('disappear')
+      }
+
+      target.addEventListener('webkitTransitionEnd', disappear, false)
+      target.addEventListener('oTransitionEnd', disappear, false)
+      target.addEventListener('transitionend', disappear, false)
+
+      target.classList.add('move')
+    },
+    false
+  )
+</script>
+```
+
+前記のコードのようにCSSとJavaScriptを組み合わせた記述をした方が通常多くのウェブブラウザーでは安定した動作をしてくれます。`classList`やCSSの`transition`プロパティーを使用しており、あまりにも古いウェブブラウザーでは動作してくれなくなります。しかしながら、元の記事では`transition`プロパティーと同様にあまりにも古いウェブブラウザーでは動作することがない`Date.now()`を使用しており、こちらもあまりにも古いウェブブラウザーでの動作は考慮に入れていないと判断しました。
+
+以前、[JavaScriptは決して遅くない](../../../08/06/javascript-is-not-slow/index.mdx)という記事を書き、遅いのは適切に書かれていないDOM操作のことであるという主張をいたしました。その考えは今でも変わっておりません。適切な記述さえすれば、遅くなるということはないのです。JavaScriptやDOMだけではなくCSSやそのほかの技術を適切に組み合わせて使うことによってウェブブラウザーはその真価を発揮するのです。多くの技術を楽しんで調べて、知識としてその身に取り込んでいくことが、ウェブブラウザーと仲良くして、ウェブページを作るにあたっては肝要となるのです。

@@ -1,0 +1,8 @@
+---
+authors: [ykzts]
+date: 2012-06-15T05:06:00+09:00
+tags: [tech]
+title: W3Cによる仕様に沿わせてNodeで動作するXMLHttpRequestを作成してみました
+---
+
+[W3Cによる仕様](http://www.w3.org/TR/2012/WD-XMLHttpRequest-20120117/)に沿わせて[Nodeで動作するXMLHttpRequest](https://github.com/ykzts/node-xmlhttprequest)を作成してみました。HTTPによる情報のやり取りを行い情報の授受を行う際には多くの場合はNodeに標準で備わっている`http`モジュールだけで事足りてしまいます。また XMLHttpRequestを模倣したNode向けライブラリは他者によって作られた物がnpm上へと既に用意されております。そのため、車輪の再開発も甚しいのですが、私自身のXMLHttpRequestへの理解度を確認するためにあえて作ってみました。途中で妥協してしまっている箇所が幾つか有るのですがそこはつまり私が理解出来ていない部分という事になります。そうした点を重点的に学習して行けば今後の助けになるのでは無いかと期待しています。

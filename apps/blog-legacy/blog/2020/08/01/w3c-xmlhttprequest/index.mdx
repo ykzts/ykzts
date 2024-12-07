@@ -1,0 +1,27 @@
+---
+authors: [ykzts]
+date: 2020-08-01T14:00:00+09:00
+last_update:
+  author: ykzts
+  date: 2020-08-04T08:00:00+09:00
+tags: [tech]
+title: w3c-xmlhttprequest v3.0.0をリリースしました
+---
+
+表題の通り[w3c-xmlhttprequest](https://www.npmjs.com/package/w3c-xmlhttprequest) v3.0.0をリリースしました。細かなバグの修正や[最新の`XMLHttpRequest`の仕様](https://xhr.spec.whatwg.org/)に追従させたりと様々な変更が含まれていますが一番大きな変更としてはECMAScript 2015からTypeScriptへの移行でしょう。
+
+{/* truncate */}
+
+[v1.0.0をリリース](../../../../2012/06/23/register-node-xmlhttprequest-to-npm/index.mdx)したのが2012年なので当初はECMAScript 5を前提としていました。`Object.keys`や`Object.defineProperty`、`JSON.parse`といった当時としては新しい機能を使っていましたがどうしても古さは否めず2016年に[ECMAScript 2015に書き換えたv2.0.0](https://github.com/ykzts/node-xmlhttprequest/releases/tag/v2.0.0)をリリースしていました。とはいえ`var`文を`let`文と`const`文に置き換えたり、`prototype`プロパティーを`class`構文に置き換えたりといった基本的なところの書き換えしかしておらず根本の部分は2012年にリリースされたv1.0.0のままでした。
+
+今回はTypeScriptへの移行に伴い根本の部分から書き換えました。プライベートフィールドを使って容易に属性を外から書き換えられないようにしたり、`Set`を使って`EventListener`のハンドリングを平易な記述でできるようにしています。ほかにもTypeScriptに置き換えたおかげで簡便な記述ができるようになり、ECMAScript 2015からの移行もさして苦ではありませんでした。
+
+またTravis CIから[GitHub Actions](https://github.com/features/actions)に[移行](https://github.com/ykzts/node-xmlhttprequest/pull/60)したり、Mochaから[Jest](https://jestjs.io/)に[移行](https://github.com/ykzts/node-xmlhttprequest/pull/85)したり、[Dependabot](https://dependabot.com/)を[導入](https://github.com/ykzts/node-xmlhttprequest/pull/65)したりもしています。長らく放置していたプロダクトをある程度近代化できたのではないかという自負があります。
+
+### 余談
+
+v1.1.0を公開した2013年にも[同様の発言](../../../../2013/08/11/w3c-xmlhttprequest/index.mdx)をしていますがv1.0.0をリリースした2012年当時はNode.jsとウェブブラウザーで同じコードを動かすモチベーションがわたしにはありませんでした。あくまで`XMLHttpRequest`の仕様理解のために作って自身で使うつもりもありませんでした。
+
+当時と比べるとReactなどのフレームワークを用いたサーバーサイドレンダリングのために現在はNode.jsとウェブブラウザーで同一のコードを動かすモチベーションも高まっていますが`Promsise`ベースの非同期処理が主流となっていてイベントベースの`XMLHttpRequest`ではなく`fetch`を使う人の方が多いのではないでしょうか。そう思っていたのですがnpmでのダウンロード数を見るとありがたいことに少なくない方々に使っていただいているようで驚いています。
+
+次の大きな変更はまた4年後……もしくはそれ以降になるとは思いますが簡単なメンテナンスくらいはしていきたいと思います。

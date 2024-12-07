@@ -1,0 +1,150 @@
+---
+authors: [ykzts]
+date: 2016-07-21T02:13:03+09:00
+last_update:
+  author: ykzts
+  date: 2024-12-07T12:00:00+09:00
+redirect_from: /post/147704551073
+tags: [tech]
+title: fetch API から XMLHttpRequest への置き換えを決意した話
+---
+
+最近 [fetch API](https://fetch.spec.whatwg.org/) をヘビーに使うようになっていて、いろいろと勘所もわかってきていて、`Promise` ベースなのはやっぱりすごく便利なんだけれども、現状だと機能が全然足りないなあ、と。
+
+{/* truncate */}
+
+`XMLHttpRequestUpload` 相当がないのは知っていたし、困ったなあと思っていたんだけれども、`XMLHttpRequestUpload` 自体がだいぶレア目のヤツで使うような機会もまあめったにないので実害としてはそこまで大きくなかった。
+
+んで、だ、`XMLHttpRequestUpload` 相当がないのは良いとしても、`ReadableStream` で `XMLHttpRequest` で言う `progress` イベント相当のことをしようとしたときに、発火時にトータルの容量がわからんつう問題が発生した。
+
+fetch API で `ReadableStream` を使って `progress` の状況を取るときは
+
+```javascript
+function consume(reader) {
+  var total = 0
+  return (function pump() {
+    return reader.read().then(function (args) {
+      if (!args.done) {
+        total += args.value.byteLength
+        return pump()
+      }
+    })
+  })()
+}
+
+fetch('/path/to').then(function (response) {
+  var reader = response.body.getReader()
+  return consume(reader)
+})
+```
+
+といったコードを使う。データを受信するごとに `total` 変数に、受信したデータのバイト数を追加していくことしかできない。
+
+forbidden headers の中に `Content-Length` があるからしゃあないちゃしゃあないような気もするんだけれども、どうしたもんかまじでわからん。
+
+トータルの容量がわからんとなにが困るって、進捗の表示ができないんだよ。
+
+```javascript
+xhr.onprogress = function (e) {
+  result.textContent = e.loaded / e.total
+}
+```
+
+ていうので `XMLHttpRequest` だったら一瞬で進捗状況を表示させられていたけど、fetch API だとできない。いや仕様的には `[[totalQueuedBytes]]` つうのがあるんだけれども internal slot 扱いで JavaScript から取ることはできない。
+
+これ、誰も困っていないのかな。困るよなあ。困るよなあ。どうすんのまじでコレ。
+
+っていうのと今日実装している最中であーってなったのは `XMLHttpRequest.abort()` 相当のものがないってこと。まじでどうすんだよこれ!!! 今週の土日で今書いているプロダクトで fetch API を使っている箇所を `XMLHttpRequest` に置き換えるわ。やっぱり世界に fetch API は早かった。`XMLHttpRequest` ですよ、やっぱり。
+
+`XMLHttpRequest` 最高!!!
+
+……
+
+という話でおわるのも酷いので補足をしますが、ちゃんと要所を抑えて使うと fetch API は非常に便利です。
+
+`Promise` ベースというのはイベントベースの API よりもはるかに記述が単純で済みます。コードが煩雑になってしまうのを防ぎますし、この記事を書いている 2016 年 7 月時点では stage 3 の [Async Functions](https://tc39.github.io/ecmascript-asyncawait/) (ES 2017 にはいるとうれしいですね) といっしょに使うことによって、コールバックファンクションばかりになってしまうということも避けられます。
+
+今後も `Promise` ベースの流れが続くのが幸いだと思いつつも、現状の fetch API は「つらいなあ」というお話です。そもそも fetch API は `XMLHttpRequest` の代替というわけではないので、お門違いも甚しいんですけどね。
+
+fetch API は Living Standard です。今後も改良が続けられていきます。この記事で上げている `XMLHttpRequest` との差異もいづれ埋められて行くでしょう。わたしはこの記事が陳腐化してしまうことを切に祈っています。
+
+世界がもっと平和になりますように。
+
+### 2016 年 7 月 21 日 20 時 30 分 追記
+
+[Jxck さんのご指摘](https://twitter.com/Jxck_/status/755971184840192000)を受けて再調査したところ、`Content-Length` ヘッダーの取得が行えました。forbidden headers というのはあくまで HTTP リクエスト送信時のみで、HTTP レスポンスを受ける際には関係ありませんでした。
+
+通信の進捗状況を得つつ、かつレスポンスの値を得る場合には
+
+```javascript
+function open(blob) {
+  return new Promise(function (resolve, reject) {
+    var fileReader = new FileReader()
+    fileReader.addEventListener('load', function () {
+      resolve(this.result)
+    })
+    fileReader.addEventListener('error', function () {
+      reject(this.error)
+    })
+    fileReader.readAsText(blob)
+  })
+}
+
+fetch('/object.json')
+  .then(function (response) {
+    var reader = response.body.getReader()
+    var type = response.headers.get('content-type') || 'text/plain'
+    var total = +(response.headers.get('content-length') || 0)
+    var loaded = 0
+    var body = new Uint8Array(total)
+    return (function pump() {
+      return reader.read().then(function (args) {
+        var newBody
+        if (args.done) {
+          return new Blob([body], { type: type })
+        }
+        if (total < 0) {
+          body.set(args.value, loaded)
+        } else {
+          newBody = new Uint8Array(body.byteLength + args.value.byteLength)
+          newBody.set(body)
+          newBody.set(args.value, body.byteLength)
+          body = newBody
+        }
+        loaded += args.value.byteLength
+        console.log(
+          'loaded: ' +
+            loaded +
+            (total < 0
+              ? ' (' + Math.floor((loaded / total) * 1000) / 10 + '%)'
+              : '')
+        )
+        return pump()
+      })
+    })()
+  })
+  .then(function (blob) {
+    return open(blob).then(function (text) {
+      return JSON.parse(text)
+    })
+  })
+  .then(function (object) {
+    console.log(object)
+  })
+```
+
+といった記述になります。
+
+[Streams の仕様](https://streams.spec.whatwg.org/)についてまだ理解が浅いため、もう少しスマートな書きかたはあるかとは思いますが、わたしが目的としていたことは実現できました。
+
+また `XMLHttpRequest.prototype.abort` に関しても、`ReadableStream.prototype.cancel` で実現できそうです。[仕様としてはストリームのキャンセルとともに HTTP リクエスト自体も止めると規定されている](https://twitter.com/Jxck_/status/755997612126244864)ため、`XMLHttpRequest.prototype.abort` 相当のことはできそうです。
+
+ただし実際に Google Chrome 52 で試してみたところストリームの読み取り自体は止まっているものの、HTTP リクエスト自体は止まっていないのではないか? という疑念があるのでもう少し調査する必要がありそうです。
+
+なお `response.body.getReader()` は現状 Google Chrome 以外では実装されていない (MS Edge では使えるかも。未確認) ため、実用に耐えるかと言われたら疑問が残るかもしれません。
+
+しかし、Fetch API も Streams もどちらも今なお活発に仕様の策定が進んでいます。それにともなって実装も広く進められていくことでしょう。
+
+世界の平和は近い。
+
+また、この追記は Jxck さんのお力によるものが大きいです。仕様に対して曖昧な理解のままでいたわたしに対して、正しい情報の教示をしてくださいました。非常に助かりました。ありがとうございます!
