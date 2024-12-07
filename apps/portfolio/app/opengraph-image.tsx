@@ -2,8 +2,8 @@ import { ImageResponse } from 'next/og'
 
 export const alt = 'ykzts.com'
 export const size = {
-  width: 1200,
-  height: 630
+  height: 630,
+  width: 1200
 }
 export const contentType = 'image/png'
 

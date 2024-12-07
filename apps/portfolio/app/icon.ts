@@ -2,8 +2,8 @@ import { notFound } from 'next/navigation'
 import { NextResponse } from 'next/server'
 
 export const size = {
-  width: 256,
-  height: 256
+  height: 256,
+  width: 256
 }
 export const contentType = 'image/png'
 

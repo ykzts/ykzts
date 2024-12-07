@@ -7,8 +7,8 @@ import { getWorks } from '@/lib/sanity'
 import Section, {
   SectionContent,
   SectionHeader,
-  SectionTitle,
-  SectionSkeleton
+  SectionSkeleton,
+  SectionTitle
 } from './section'
 
 const portableTextComponents = {
