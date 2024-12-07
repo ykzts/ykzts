@@ -1,0 +1,36 @@
+---
+authors: [ykzts]
+date: 2012-08-18T11:10:00+09:00
+redirect_from: /post/29666019536
+tags: [tech]
+title: BlobBuilderインターフェースが非推奨となっていた
+---
+
+最近になって気がついたが[BlobBuilderインターフェースが非推奨となっていた](http://www.w3.org/TR/2012/WD-file-writer-api-20120417/#the-blobbuilder-interface)。Chronium 21.0.1180.75にて`new WebKitBlobBuilder()`といった記述のあるスクリプトを実行すると「BlobBuilder is deprecated. Use &ldquo;Blob&rdquo; constructor instead.」といった表示がコンソールに出力されるようになっている。まだ現時点では使えはするようだがいつ使えないようになってしまうのかわからない。なのでつかうようにと表示されているよう`Blob`はどういった仕様でどのようにつかえるものなのかを簡単に調べてみた。
+
+<!--truncate-->
+
+File APIの仕様中にある[Blobインターフェースの項](http://www.w3.org/TR/2012/WD-FileAPI-20120712/#blob)を見てみたところ
+
+```javascript
+var blob = (function(blobBuilder) {
+  blobBuilder.append('<!doctype html>\n');
+  blobBuilder.append('<title>HTML DOCUMENT</title>\n');
+  blobBuilder.append('<p>HTML HTML HTML!</p>\n');
+  return blobBuilder.getBlob('text/html');
+})(new WebKitBlobBuilder());
+```
+
+といったコードは
+
+```javascript
+var blob = new Blob([
+  '<!doctype html>\n',
+  '<title>HTML DOCUMENT</title>\n',
+  '<p>HTML HTML HTML!</p>\n'
+], { type: 'text/html' });
+```
+
+とおきかえられるようになっている。これまでの仕様と比べて簡素で簡潔とした直感的な記述ができるようになったのではないかとわたしの目には見える。
+
+ただ変更された仕様もまだワーキングドラフトであるので今後どうなって行くのか判らない。BlobBuilderインターフェースの仕様は四月に、Blobインターフェースの仕様は七月にと変更になってからしばらく経てから気付いたのはあまりにも遅きに失してしまったように感じてしまう。少し前までは仕様の変更は密に追っていたというのに今はこのような体たらくではずかしい。万全の態勢で情報を得られるような仕組み作りを用意していきたい。

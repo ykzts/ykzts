@@ -1,0 +1,30 @@
+---
+authors: [ykzts]
+date: 2017-06-04T00:30:00+09:00
+last_update:
+  author: ykzts
+  date: 2019-07-14T00:00:00+09:00
+permalink: /2017/06/04/qiitadon-upgrade/
+tags: [tech]
+title: QiitadonをMastodon v1.4.1にアップグレードした話
+---
+
+こんにちは[@ykzts@ykzts.technology](https://ykzts.technology/@ykzts)です。気付けば[Mastodonへのコミットの数が100を超えていました](https://github.com/tootsuite/mastodon/pulls?q=is%3Apr+is%3Amerged+author%3Aykzts+created%3A%22%3C2017-06-03T23%3A00%3A00%2B09%3A00%22)。公式にもPull Requestのレビュワーにも任命されて、Mastodon関連で少し忙しくなっています。
+
+さて、技術情報共有サービス「[Qiita](https://qiita.com/)」を運営する[Increments株式会社](https://increments.co.jp/)が先日[Mastodon インスタンス「Qiitadon」を公開しました](http://blog.qiita.com/post/161193715974/qiitadon)。
+
+<!--truncate-->
+
+わたしはQiitaをそこまで活用しているユーザーではありません。ですが、Qiitadonでは投稿に含まれるコードにシンタックスハイライトを施す機能をMastodonに追加しているとのことで少し興味が惹かれました。MastodonはAGPLで提供されているOSSであるため、そのカスタマイズ版であるQiitadonも[ソースコードがGitHub上で公開されています](https://github.com/increments/mastodon)。
+
+コードを確認してみたところ、[Mastodon v1.3.3](https://github.com/tootsuite/mastodon/releases/tag/v1.3.3)がベースになっているようでした。現時点のMastodonの最新バージョンである[v1.4.1](https://github.com/tootsuite/mastodon/releases/tag/v1.4.1)がリリースされたのが5月29日であり、Qiitadonの公開日と同じでした。そのため、しょうがないことなのでしょう。
+
+というわけでOSSとして公開されている利点を活かし、[QiitadonをMastodon v1.4.1にアップグレードするPull Requestを作成しました](https://github.com/increments/mastodon/pull/40)。
+
+基本的にしたことはコンフリクト解消だけです。v1.3.3とv1.4.1の間にあるコミットはある程度把握していたため、そこまで苦労はしませんでした。所要時間としては2時間もかかっていません。差分を眺めながら編集していくだけです。
+
+ただしv1.3.3とv1.4.1の間には多くのコミットが含まれているため、地道な作業を何度も繰り返すことになります。こうした作業が必要となることから多くのカスタマイズを加えているインスタンスのv1.4.1へのアップグレードが遅くなってしまっているのでしょう。QiitadonではMastodonからの変更はそこまで多くありません。そのため、もっと多くの変更を加えているインスタンスではより多くの苦労が要ることでしょう。
+
+v1.4.1では多くの変更が加えられています。新しい機能の追加だけではなく、速度改善の変更も多く含まれています。サーバーに対する負荷の軽減が図られているだけではなく、ユーザーの満足感向上にも繋がるものであろうと期待できます。
+
+多くのインスタンスがv1.4.1になることを陰ながら応援しています。

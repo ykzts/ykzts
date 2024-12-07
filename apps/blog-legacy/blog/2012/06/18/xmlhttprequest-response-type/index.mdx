@@ -1,0 +1,15 @@
+---
+authors: [ykzts]
+date: 2012-06-19T04:11:00+09:00
+last_update:
+  author: ykzts
+  date: 2012-06-19T13:30:00+09:00
+tags: [tech]
+title: XMLHttpRequestをもっと便利につかえるようになるであろうresponseType属性について
+---
+
+[XMLHttpRequest Level 2のWorking Draft](http://www.w3.org/TR/2012/WD-XMLHttpRequest-20120117/)には`responseType`という属性があります。この属性に`'json'`という値を代入することにより、`req.send()`を実行したのちに、`response`属性にあたかも`JSON.parse(req.responseText)`としたかのようなobjectがいれられるようになります。`readyState`属性の値が`XMLHttpRequest.DONE` (4) になった段階で`responseText`をパースするようなコードを書けば良い話ではあるのですが、コードの短縮化簡潔化をはかれて多くの人はしあわせになれるのではないでしょうか。この記事を執筆している段階では当該仕様はWorking Draftであり、実装もまだFirefoxでしかおこなわれていないようです<ins datetime="2012-06-19T13:30:00+09:00"> ([Opera 12.00以降でも対応している](http://syoichi.tumblr.com/post/25413263431)そうです) </ins>が、とても便利につかえそうなものなので今後 多くの環境で実装されることをねがいたいものですね。
+
+<!--truncate-->
+
+手前みそではありますが[わたしの書いたNode向けのXMLHttpRequest互換のモジュール](https://github.com/ykzts/node-xmlhttprequest)では不完全なものではありますが実装してあります。NodeでXMLHttpRequestをつかう需要があるのかはわかりませんが、ほかのかたが書かれた同様にNode向けに記述されたXMLHttpRequest互換のモジュールよりも便利につかえるのではないでしょうか。

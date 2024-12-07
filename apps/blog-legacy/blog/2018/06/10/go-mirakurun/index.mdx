@@ -1,0 +1,56 @@
+---
+authors: [ykzts]
+date: 2018-06-10T17:00:00+09:00
+last_update:
+  author: ykzts
+  date: 2018-06-10T17:00:00+09:00
+tags: [tech]
+title: GoのMirakurunクライアントパッケージを公開しました
+---
+
+[Go](https://golang.org/)で[Mirakurun](https://github.com/Chinachu/Mirakurun)のWeb APIを利用するためのクライアントパッケージ [go-mirakurun](https://github.com/ykzts/go-mirakurun)を公開しました。
+
+<!--truncate-->
+
+```go
+import "ykzts.com/x/mirakurun"
+```
+
+このようにインポートパス「`ykzts.com/x/mirakurun`」を`import`することによって使えるようになっています。実体は[GitHub](https://github.com/ykzts/go-mirakurun)にありますが、将来的になんらかの事情でGitHubを利用するのを止めたときのためにインポートパスをGitHubと紐付かないものにしています。
+
+### Mirakurunとは
+
+Mirakurunは[れいささん](https://re1s.px.mw/)が公開されているRESTfulなWeb APIを備えたデジタルテレビ放送のチューナーサーバーです。Mirakurunには[Node.js](https://nodejs.org/ja/)から利用することのできるクライアントライブラリーが付属していて柔軟な利用が可能になっています。
+
+go-mirakurunは[TypeScript](https://www.typescriptlang.org/)で書かれた[クライアントライブラリー](https://github.com/Chinachu/Mirakurun/blob/v2.0.0/src/client.ts)をGoに移植したものになっています。Node.js向けではあるものの元から型の宣言がなされているため、大きな苦労をすることなく移植できました。
+
+### 使い方
+
+任意のプログラムID (変数 `pId`) に紐付く特定の番組を録画する場合は[`Client.GetProgramStream`](https://godoc.org/ykzts.com/x/mirakurun#Client.GetProgramStream)を使います。[`context`パッケージ](https://golang.org/pkg/context/)を使って実行中のキャンセルやタイムアウトができるようになっています。
+
+```go
+filename := fmt.Sprintf("/tmp/stream-%d.ts", pId)
+
+file, err := os.Create(filename)
+if err != nil {
+    log.Fatal(err)
+}
+
+c := mirakurun.NewClient()
+
+ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+defer cancel()
+
+stream, _, err := c.GetProgramStream(ctx, pId, true)
+if err != nil {
+    log.Fatal(err)
+}
+defer stream.Close()
+
+fmt.Println("output: ", filename)
+io.Copy(file, stream)
+```
+
+Goに付属しているパッケージを参考にして、できる限りGoらしく実装したつもりです。ですがわたしがGoを書くようになってからまだ日が浅いのでおかしな点があるかもしれません。もしなにかご指摘やご要望がございましたら[Issue](https://github.com/ykzts/go-mirakurun/issues)の作成をしていただければと存じます。
+
+APIは基本的にTypeScriptで書かれたオリジナルのものを踏襲しています。詳しくは[GoDoc](https://godoc.org/ykzts.com/x/mirakurun)にある[Examples](https://godoc.org/ykzts.com/x/mirakurun#pkg-examples)を参照してください。
