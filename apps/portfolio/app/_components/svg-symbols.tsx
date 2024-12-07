@@ -1,5 +1,5 @@
-import type { ComponentProps } from 'react'
 import styles from './svg-symbols.module.css'
+import type { ComponentProps } from 'react'
 
 type SVGRootProps = ComponentProps<'svg'> & { as?: 'svg' | 'symbol' }
 

@@ -11,10 +11,6 @@ const nextConfig: NextConfig = {
     },
     ppr: true
   },
-  images: {
-    formats: ['image/avif', 'image/webp']
-  },
-  reactStrictMode: true,
   headers() {
     return Promise.resolve([
       {
@@ -50,12 +46,16 @@ const nextConfig: NextConfig = {
       }
     ])
   },
+  images: {
+    formats: ['image/avif', 'image/webp']
+  },
   logging: {
     fetches: {
       fullUrl: true
     }
   },
-  pageExtensions: ['tsx', 'ts', 'mdx']
+  pageExtensions: ['tsx', 'ts', 'mdx'],
+  reactStrictMode: true
 }
 
 export default withMDX(nextConfig)

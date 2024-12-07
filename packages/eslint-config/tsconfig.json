@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "include": [
+    "./deps.d.ts",
+    "./eslint.config.js",
+    "./src/**/*.ts",
+    "./tsup.config.ts"
+  ],
+  "extends": "@ykzts/tsconfig/basic.json"
+}

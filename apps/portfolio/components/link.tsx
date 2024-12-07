@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
 export default function Link({
+  children,
   href,
   ref,
   rel,
@@ -23,6 +24,8 @@ export default function Link({
       rel={relList.size > 0 ? [...relList].join(' ') : undefined}
       target={target ?? (isExternal ? '_blank' : undefined)}
       {...props}
-    />
+    >
+      {children}
+    </a>
   )
 }

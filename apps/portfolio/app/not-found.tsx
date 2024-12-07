@@ -1,6 +1,6 @@
 import { type Metadata } from 'next'
-import SubLayout from './(docs)/layout'
 import Title from './(docs)/@title/layout'
+import SubLayout from './(docs)/layout'
 import styles from './not-found.module.css'
 
 export const metadata: Metadata = {
