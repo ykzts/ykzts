@@ -35,8 +35,7 @@ const config: Config = {
           blogDescription: description,
           blogSidebarCount: 0,
           blogSidebarTitle: '最近の投稿',
-          editUrl:
-            'https://github.com/ykzts/ykzts/edit/main/apps/blog-legacy/',
+          editUrl: 'https://github.com/ykzts/ykzts/edit/main/apps/blog-legacy/',
           feedOptions: {
             copyright,
             description,
