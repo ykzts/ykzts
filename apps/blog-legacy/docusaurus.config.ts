@@ -26,6 +26,7 @@ const config: Config = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   organizationName: 'ykzts',
+  plugins: ['vercel-analytics'],
   presets: [
     [
       '@docusaurus/preset-classic',
