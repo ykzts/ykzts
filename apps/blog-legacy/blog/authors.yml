@@ -1,5 +1,9 @@
 ykzts:
   image_url: https://github.com/ykzts.png
   name: Yamagishi Kazutoshi
+  page: true
+  socials:
+    github: ykzts
+    x: ykzts
   title: Software Engineer
   url: https://ykzts.com/
