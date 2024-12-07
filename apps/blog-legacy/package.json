@@ -17,7 +17,6 @@
     "@docusaurus/module-type-aliases": "^3.6.3",
     "@docusaurus/tsconfig": "^3.6.3",
     "@docusaurus/types": "^3.6.3",
-    "@types/eslint": "^8.56.12",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
     "@ykzts/eslint-config": "workspace:*",
@@ -32,7 +31,7 @@
   "name": "@ykzts/blog-legacy",
   "private": true,
   "repository": {
-    "directory": "./apps/blog-legacy",
+    "directory": "apps/blog-legacy",
     "type": "git",
     "url": "https://github.com/ykzts/ykzts.git"
   },

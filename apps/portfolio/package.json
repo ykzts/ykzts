@@ -17,18 +17,17 @@
   "devDependencies": {
     "@mdx-js/loader": "^3.1.0",
     "@next/mdx": "15.0.4-canary.46",
-    "@types/eslint": "^9.6.1",
     "@types/mdx": "^2.0.13",
     "@types/node": "^22.10.1",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
-    "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@ykzts/eslint-config": "workspace:*",
     "@ykzts/tsconfig": "workspace:*",
     "eslint": "^9.16.0",
     "eslint-config-next": "15.0.4-canary.46",
     "eslint-config-prettier": "^9.1.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.17.0"
   },
   "license": "MIT",
   "name": "@ykzts/portfolio",
