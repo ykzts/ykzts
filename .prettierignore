@@ -1,3 +1,5 @@
+.cache-loader
+.docusaurus
 .next
 .turbo
 .vercel

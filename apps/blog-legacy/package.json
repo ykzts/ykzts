@@ -2,7 +2,7 @@
   "author": "Yamagishi Kazutoshi <ykzts@desire.sh>",
   "bugs": {
     "email": "ykzts@desire.sh",
-    "url": "https://github.com/ykzts/ykzts.blog/issues"
+    "url": "https://github.com/ykzts/ykzts/issues"
   },
   "dependencies": {
     "@docusaurus/core": "^3.6.3",
@@ -37,18 +37,17 @@
   "keywords": [],
   "license": "MIT",
   "main": "n/a",
-  "name": "@ykzts/ykzts.blog",
+  "name": "@ykzts/blog-legacy",
   "private": true,
   "repository": {
+    "directory": "./apps/blog-legacy",
     "type": "git",
-    "url": "https://github.com/ykzts/ykzts.blog.git"
+    "url": "https://github.com/ykzts/ykzts.git"
   },
   "scripts": {
     "build": "docusaurus build",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
-    "format": "prettier --write .",
-    "format-check": "prettier -c .",
     "lint": "eslint .",
     "serve": "docusaurus serve",
     "start": "docusaurus start",
