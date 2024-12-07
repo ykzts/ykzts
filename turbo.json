@@ -5,7 +5,13 @@
     "build": {
       "dependsOn": ["^build"],
       "env": ["NEXT_PUBLIC_SANITY_DATASET", "NEXT_PUBLIC_SANITY_PROJECT_ID"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "outputs": [
+        ".docusaurus/**",
+        ".next/**",
+        "!.next/cache/**",
+        "build/**",
+        "dist/**"
+      ]
     },
     "dev": {
       "cache": false,
