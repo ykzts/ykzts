@@ -9,7 +9,7 @@
     }
   },
   "forwardPorts": [3000],
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
   "name": "ykzts.com",
   "postCreateCommand": "./.devcontainer/post-create.sh"
 }
