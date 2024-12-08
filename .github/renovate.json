@@ -26,7 +26,7 @@
   "packageRules": [
     {
       "automerge": false,
-      "extends": "monorepo:nextjs",
+      "extends": ["monorepo:nextjs"],
       "followTag": "canary"
     }
   ],
