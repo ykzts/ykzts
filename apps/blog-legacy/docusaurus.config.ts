@@ -39,6 +39,7 @@ const config: Config = {
           feedOptions: {
             copyright,
             description,
+            title,
             type: 'atom',
             xslt: true
           },
@@ -73,51 +74,16 @@ const config: Config = {
       copyright,
       links: [
         {
-          items: [
-            {
-              href: 'https://ykzts.com/',
-              label: 'Author'
-            },
-            {
-              label: 'Privacy Policy',
-              to: 'privacy'
-            }
-          ],
-          title: 'Information'
+          label: 'Privacy Policy',
+          to: 'privacy'
         },
         {
-          items: [
-            {
-              href: 'https://github.com/ykzts',
-              label: 'GitHub'
-            },
-            {
-              href: 'https://ykzts.technology/@ykzts',
-              label: 'Mastodon'
-            },
-            {
-              href: 'https://twitter.com/ykzts',
-              label: 'Twitter'
-            },
-            {
-              href: 'https://www.facebook.com/ykzts',
-              label: 'Facebook'
-            }
-          ],
-          title: 'Social'
+          href: 'https://github.com/sponsors/ykzts',
+          label: 'GitHub Sponsors'
         },
         {
-          items: [
-            {
-              href: 'https://github.com/sponsors/ykzts',
-              label: 'GitHub Sponsors'
-            },
-            {
-              href: 'https://www.patreon.com/ykzts',
-              label: 'Patreon'
-            }
-          ],
-          title: 'Donation'
+          href: 'https://www.patreon.com/ykzts',
+          label: 'Patreon'
         }
       ],
       style: 'dark'
