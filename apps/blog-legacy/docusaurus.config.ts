@@ -39,7 +39,8 @@ const config: Config = {
           feedOptions: {
             copyright,
             description,
-            type: 'atom'
+            type: 'atom',
+            xslt: true
           },
           path: 'blog',
           postsPerPage: 5,
