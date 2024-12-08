@@ -12,6 +12,7 @@
     ":label(dependencies)",
     ":maintainLockFilesWeekly",
     ":prImmediately",
+    ":preserveSemverRanges",
     ":reviewer(ykzts)",
     ":renovatePrefix",
     ":semanticCommitTypeAll(build)",
@@ -37,6 +38,5 @@
     "pnpmDedupe",
     "yarnDedupeHighest"
   ],
-  "rangeStrategy": "bump",
   "rebaseWhen": "conflicted"
 }
