@@ -32,11 +32,6 @@
     }
   ],
   "platformAutomerge": true,
-  "postUpdateOptions": [
-    "gomodTidy",
-    "gomodUpdateImportPaths",
-    "pnpmDedupe",
-    "yarnDedupeHighest"
-  ],
+  "postUpdateOptions": ["pnpmDedupe"],
   "rebaseWhen": "conflicted"
 }
