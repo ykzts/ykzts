@@ -93,6 +93,10 @@ const config: Config = {
       {
         content: 'nocomment',
         name: 'Hatena::Bookmark'
+      },
+      {
+        content: 'ykzts@ykzts.technology',
+        name: 'fediverse:creator'
       }
     ],
     navbar: {
