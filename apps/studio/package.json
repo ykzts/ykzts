@@ -6,7 +6,7 @@
     "@sanity/ui": "^2.10.1",
     "@sanity/vision": "^3.66.1",
     "@ykzts/schemas": "workspace:*",
-    "next": "15.2.0-canary.8",
+    "next": "15.2.0-canary.11",
     "next-sanity": "^9.8.25",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
