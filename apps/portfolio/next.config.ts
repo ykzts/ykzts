@@ -5,11 +5,11 @@ const withMDX = createMDX()
 
 const nextConfig: NextConfig = {
   experimental: {
-    dynamicIO: true,
     mdxRs: {
       mdxType: 'gfm'
     },
-    ppr: true
+    ppr: true,
+    useCache: true
   },
   headers() {
     return Promise.resolve([
