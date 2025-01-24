@@ -41,7 +41,6 @@ export default function Image() {
         >
           <div style={{ display: 'flex', padding: 32 }}>
             <div style={{ display: 'flex', paddingRight: 32 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 alt=""
                 height={128}
