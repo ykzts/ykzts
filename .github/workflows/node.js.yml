@@ -10,6 +10,8 @@ on:
     branches: [main]
 
 env:
+  # renovate: datasource=npm depName=corepack
+  COREPACK_VERSION: 0.31.0
   # renovate: datasource=node-version depName=node
   NODE_VERSION: 22.13.1
 
@@ -18,7 +20,10 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - run: corepack enable
+      - name: Enable corepack
+        run: |
+          npm install -g corepack@${COREPACK_VERSION}
+          corepack enable
       - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4
         with:
           cache: pnpm
