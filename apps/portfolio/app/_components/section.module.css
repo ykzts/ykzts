@@ -281,8 +281,8 @@
 }
 
 .intro__tagline {
-  font-family: var(--font-raleway), Helvetica, var(--font-noto-sans-jp),
-    sans-serif;
+  font-family:
+    var(--font-raleway), Helvetica, var(--font-noto-sans-jp), sans-serif;
   font-size: 0.8rem;
   letter-spacing: 0.175rem;
   line-height: 2.5;
