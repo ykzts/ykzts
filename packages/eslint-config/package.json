@@ -17,7 +17,7 @@
   "devDependencies": {
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/eslint-plugin-jsx-a11y": "^6.10.0",
-    "@types/eslint__eslintrc": "^2.1.2",
+    "@types/eslint__eslintrc": "^3.0.0",
     "@types/node": "^22.10.1",
     "@ykzts/tsconfig": "workspace:*",
     "eslint": "^9.16.0",
