@@ -3,7 +3,7 @@
     "@docusaurus/eslint-plugin": "^3.7.0",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.16.0",
-    "@next/eslint-plugin-next": "15.3.1-canary.8",
+    "@next/eslint-plugin-next": "15.3.1-canary.13",
     "eslint-config-prettier": "^10.0.0",
     "eslint-import-resolver-node": "^0.3.9",
     "eslint-import-resolver-typescript": "^4.0.0",
