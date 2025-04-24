@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true
   },
+  experimental: {
+    reactCompiler: true
+  },
   reactStrictMode: true
 }
 
