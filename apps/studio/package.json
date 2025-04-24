@@ -19,6 +19,7 @@
     "@types/react-dom": "^19.0.1",
     "@ykzts/eslint-config": "workspace:*",
     "@ykzts/tsconfig": "workspace:*",
+    "babel-plugin-react-compiler": "19.1.0-rc.1",
     "eslint": "^9.16.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.17.0"
@@ -32,8 +33,8 @@
     "url": "https://github.com/ykzts/ykzts.git"
   },
   "scripts": {
-    "build": "next build",
-    "dev": "next -p 10000",
+    "build": "next build --turbopack",
+    "dev": "next -p 10000 --turbopack",
     "lint": "next lint -d .",
     "start": "next start -p 10000"
   },
