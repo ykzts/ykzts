@@ -16,7 +16,8 @@ const config: Config = {
   baseUrl: '/',
   favicon: 'img/favicon.png',
   future: {
-    experimental_faster: true
+    experimental_faster: true,
+    v4: true
   },
   i18n: {
     defaultLocale: 'ja',
