@@ -33,7 +33,7 @@
     "url": "https://github.com/ykzts/ykzts.git"
   },
   "scripts": {
-    "build": "next build --turbopack",
+    "build": "next build",
     "dev": "next -p 10000 --turbopack",
     "lint": "next lint -d .",
     "start": "next start -p 10000"
