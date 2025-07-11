@@ -6,7 +6,7 @@
     "@sanity/ui": "^2.10.1",
     "@sanity/vision": "^3.66.1",
     "@ykzts/schemas": "workspace:*",
-    "next": "15.4.0-canary.99",
+    "next": "15.4.0-canary.126",
     "next-sanity": "^9.8.25",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -33,7 +33,7 @@
     "url": "https://github.com/ykzts/ykzts.git"
   },
   "scripts": {
-    "build": "next build --turbopack",
+    "build": "next build",
     "dev": "next -p 10000 --turbopack",
     "lint": "next lint -d .",
     "start": "next start -p 10000"
