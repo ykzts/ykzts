@@ -13,7 +13,7 @@ env:
   # renovate: datasource=npm depName=corepack
   COREPACK_VERSION: 0.34.0
   # renovate: datasource=node-version depName=node
-  NODE_VERSION: 22.17.1
+  NODE_VERSION: 22.18.0
 
 jobs:
   build:
