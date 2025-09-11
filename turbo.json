@@ -19,6 +19,17 @@
     },
     "lint": {
       "dependsOn": ["^build"]
+    },
+    "typegen": {
+      "dependsOn": ["^build"],
+      "env": ["NEXT_PUBLIC_SANITY_DATASET", "NEXT_PUBLIC_SANITY_PROJECT_ID"],
+      "outputs": [
+        ".docusaurus/**",
+        ".next/**",
+        "!.next/cache/**",
+        "build/**",
+        "dist/**"
+      ]
     }
   }
 }

@@ -6,7 +6,7 @@
     "@sanity/ui": "^3.0.0",
     "@sanity/vision": "^4.0.0",
     "@ykzts/schemas": "workspace:*",
-    "next": "15.4.2-canary.14",
+    "next": "15.5.1-canary.39",
     "next-sanity": "^11.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -36,7 +36,8 @@
     "build": "next build",
     "dev": "next -p 10000 --turbopack",
     "lint": "next lint -d .",
-    "start": "next start -p 10000"
+    "start": "next start -p 10000",
+    "typegen": "next typegen"
   },
   "type": "module",
   "version": "1.0.0"
