@@ -20,7 +20,8 @@
     "dev": "turbo run dev",
     "format": "prettier -w .",
     "format-check": "prettier -c .",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "typegen": "turbo run typegen"
   },
   "type": "module",
   "version": "1.0.0"

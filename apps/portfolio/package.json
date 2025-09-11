@@ -40,7 +40,8 @@
     "build": "next build --turbopack",
     "dev": "next --turbopack",
     "lint": "next lint -d .",
-    "start": "next start"
+    "start": "next start",
+    "typegen": "next typegen"
   },
   "type": "module",
   "version": "1.0.0"

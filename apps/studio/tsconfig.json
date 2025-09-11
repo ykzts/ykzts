@@ -8,7 +8,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "jsx": "react-jsx"
   },
   "exclude": ["node_modules"],
   "extends": "@ykzts/tsconfig/next.json",

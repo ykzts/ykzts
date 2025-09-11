@@ -36,7 +36,8 @@
     "build": "next build",
     "dev": "next -p 10000 --turbopack",
     "lint": "next lint -d .",
-    "start": "next start -p 10000"
+    "start": "next start -p 10000",
+    "typegen": "next typegen"
   },
   "type": "module",
   "version": "1.0.0"

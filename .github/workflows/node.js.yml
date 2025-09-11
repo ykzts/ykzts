@@ -29,6 +29,6 @@ jobs:
           cache: pnpm
           node-version: ${{ env.NODE_VERSION }}
       - run: pnpm install
-      - run: pnpm build --filter './packages/*'
+      - run: pnpm typegen
       - run: pnpm format-check
       - run: pnpm lint
