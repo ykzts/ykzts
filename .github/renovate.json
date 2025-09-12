@@ -4,8 +4,6 @@
     "config:best-practices",
     "customManagers:githubActionsVersions",
     "helpers:disableTypesNodeMajor",
-    ":automergeMinor",
-    ":automergeRequireAllStatusChecks",
     ":combinePatchMinorReleases",
     ":disableRateLimiting",
     ":enableVulnerabilityAlertsWithLabel(security)",
@@ -26,12 +24,10 @@
   },
   "packageRules": [
     {
-      "automerge": false,
       "extends": ["monorepo:nextjs"],
       "followTag": "canary"
     }
   ],
-  "platformAutomerge": true,
   "postUpdateOptions": ["pnpmDedupe"],
   "rebaseWhen": "conflicted"
 }
