@@ -111,15 +111,43 @@ This is a pnpm workspace monorepo with the following structure:
 - **Content**: Sanity headless CMS
 - **Domains**: ykzts.com (portfolio), ykzts.blog (blog)
 
+## Commit Message Standards
+
+This repository strictly follows the **Conventional Commits** specification. All commit messages must adhere to the `type(scope): subject` format.
+
+### Commit Types
+- **feat**: New features
+- **fix**: Bug fixes
+- **docs**: Documentation changes (user-facing documentation)
+- **chore**: Internal workflow, configuration, or maintenance tasks
+- **refactor**: Code changes that neither fix bugs nor add features
+- **test**: Adding or updating tests
+- **style**: Code style changes (formatting, missing semicolons, etc.)
+- **perf**: Performance improvements
+- **ci**: Changes to CI/CD configuration
+
+### Examples
+- `feat(portfolio): add new project showcase component`
+- `fix(blog): resolve RSS feed generation issue`
+- `chore: set up Copilot instructions for repository`
+- `docs: update README with installation instructions`
+- `refactor(studio): simplify Sanity schema definitions`
+
+### Scope Guidelines
+- Use app names for application-specific changes: `portfolio`, `blog-legacy`, `studio`
+- Use package names for shared packages: `schemas`, `tsconfig`
+- Omit scope for repository-wide changes
+
 ## Best Practices for Contributors
 
-1. **Formatting**: Run `pnpm check` before committing
-2. **Dependencies**: Add new dependencies to the appropriate workspace
-3. **TypeScript**: Ensure type safety, use proper imports
-4. **React**: Follow React 19 and Next.js 15 patterns
-5. **Performance**: Consider image optimization, bundle size
-6. **Accessibility**: Maintain semantic HTML and ARIA labels
-7. **Internationalization**: Respect Japanese content and formatting
+1. **Commit Messages**: Follow Conventional Commits specification strictly
+2. **Formatting**: Run `pnpm check` before committing
+3. **Dependencies**: Add new dependencies to the appropriate workspace
+4. **TypeScript**: Ensure type safety, use proper imports
+5. **React**: Follow React 19 and Next.js 15 patterns
+6. **Performance**: Consider image optimization, bundle size
+7. **Accessibility**: Maintain semantic HTML and ARIA labels
+8. **Internationalization**: Respect Japanese content and formatting
 
 ## File Naming Conventions
 
