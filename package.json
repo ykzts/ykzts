@@ -21,7 +21,8 @@
     "format": "prettier -w .",
     "format-check": "prettier -c .",
     "lint": "turbo run lint",
-    "typegen": "turbo run typegen"
+    "typegen": "turbo run typegen",
+    "validate": "turbo run validate"
   },
   "type": "module",
   "version": "1.0.0"
