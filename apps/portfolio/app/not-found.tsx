@@ -1,4 +1,4 @@
-import { type Metadata } from 'next'
+import type { Metadata } from 'next'
 import Title from './(docs)/@title/layout'
 import SubLayout from './(docs)/layout'
 import styles from './not-found.module.css'

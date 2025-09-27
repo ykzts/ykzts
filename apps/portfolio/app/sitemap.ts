@@ -1,4 +1,4 @@
-import { type MetadataRoute } from 'next'
+import type { MetadataRoute } from 'next'
 import { metadata } from '@/app/layout'
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -30,6 +30,5 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       - run: pnpm install
       - run: pnpm typegen
-      - run: pnpm format-check
-      - run: pnpm lint
+      - run: pnpm check
       - run: pnpm validate

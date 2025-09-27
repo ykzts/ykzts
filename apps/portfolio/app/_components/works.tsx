@@ -29,6 +29,7 @@ export function WorksSkeleton() {
       {Array(3)
         .fill(undefined)
         .map((_, i) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: using index as key is acceptable for skeletons
           <SectionSkeleton key={`skeleton-section-${i}`} />
         ))}
     </div>

@@ -1,6 +1,5 @@
 {
   "custom_settings": {
-    "separatorsToIndex": "_",
     "attributesForFaceting": ["language", "version", "type", "docusaurus_tag"],
     "attributesToRetrieve": [
       "hierarchy",
@@ -9,15 +8,16 @@
       "url",
       "url_without_anchor",
       "type"
-    ]
+    ],
+    "separatorsToIndex": "_"
   },
   "index_name": "posts",
   "selectors": {
     "lvl0": {
-      "selector": "(//ul[contains(@class,'menu__list')]//a[contains(@class, 'menu__link menu__link--sublist menu__link--active')]/text() | //nav[contains(@class, 'navbar')]//a[contains(@class, 'navbar__link--active')]/text())[last()]",
-      "type": "xpath",
+      "default_value": "Blog",
       "global": true,
-      "default_value": "Blog"
+      "selector": "(//ul[contains(@class,'menu__list')]//a[contains(@class, 'menu__link menu__link--sublist menu__link--active')]/text() | //nav[contains(@class, 'navbar')]//a[contains(@class, 'navbar__link--active')]/text())[last()]",
+      "type": "xpath"
     },
     "lvl1": "header h1",
     "lvl2": "article h2",
@@ -30,6 +30,6 @@
   "sitemap_alternate_links": true,
   "sitemap_urls": ["https://ykzts.blog/sitemap.xml"],
   "start_urls": ["https://ykzts.blog/"],
-  "strip_chars": " .,;:#",
-  "stop_urls": []
+  "stop_urls": [],
+  "strip_chars": " .,;:#"
 }

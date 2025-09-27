@@ -1,5 +1,5 @@
-import { type Metadata } from 'next'
-import { type ReactNode } from 'react'
+import type { Metadata } from 'next'
+import type { ReactNode } from 'react'
 import styles from './layout.module.css'
 
 export const metadata: Metadata = {

@@ -3,8 +3,7 @@
   "dependencies": {},
   "description": "",
   "devDependencies": {
-    "@ykzts/prettier-config": "workspace:*",
-    "prettier": "^3.5.1",
+    "@biomejs/biome": "^2.2.4",
     "turbo": "^2.3.3"
   },
   "license": "MIT",
@@ -17,10 +16,8 @@
   },
   "scripts": {
     "build": "turbo run build",
+    "check": "biome check",
     "dev": "turbo run dev",
-    "format": "prettier -w .",
-    "format-check": "prettier -c .",
-    "lint": "turbo run lint",
     "typegen": "turbo run typegen",
     "validate": "turbo run validate"
   },

@@ -1,11 +1,11 @@
 .list {
-  list-style: none;
   padding-left: 0;
+  list-style: none;
 }
 
 .list__item {
-  margin: 0 0 3rem 0;
   padding-left: 0;
+  margin: 0 0 3rem 0;
 }
 
 @media (max-width: 736px) {
@@ -27,9 +27,9 @@
 }
 
 .icons {
+  padding-left: 0;
   cursor: default;
   list-style: none;
-  padding-left: 0;
 }
 
 .icons__item {
@@ -41,19 +41,19 @@
 }
 
 .icon-link {
-  align-items: center;
-  border-bottom: 0;
-  border-radius: 2.25rem;
-  display: inline-flex;
-  font-size: 1.25rem;
-  height: 2.25rem;
-  justify-content: center;
-  line-height: 2.25rem;
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  font-size: 1.25rem;
+  line-height: 2.25rem;
   text-align: center;
   text-decoration: none;
+  border-bottom: 0;
+  border-radius: 2.25rem;
   transition: background-color 0.25s ease-in-out;
-  width: 2.25rem;
 }
 
 .icon-link:hover {
@@ -61,6 +61,6 @@
 }
 
 .icon-logo {
-  height: 1em;
   width: 1em;
+  height: 1em;
 }

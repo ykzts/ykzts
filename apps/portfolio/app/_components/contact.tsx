@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import Link from '@/components/link'
 import styles from './contact.module.css'
 import Section, {
@@ -18,7 +18,7 @@ const socialLinks: SocialLink[] = [
   {
     label: '山岸和利のFacebookアカウント',
     logo: (
-      <svg className={styles['icon-logo']}>
+      <svg aria-label="Facebook" className={styles['icon-logo']} role="img">
         <use xlinkHref="#facebook-logo" />
       </svg>
     ),
@@ -27,7 +27,7 @@ const socialLinks: SocialLink[] = [
   {
     label: '山岸和利のGitHubアカウント',
     logo: (
-      <svg className={styles['icon-logo']}>
+      <svg aria-label="GitHub" className={styles['icon-logo']} role="img">
         <use xlinkHref="#github-logo" />
       </svg>
     ),
@@ -36,7 +36,7 @@ const socialLinks: SocialLink[] = [
   {
     label: '山岸和利のMastodonアカウント',
     logo: (
-      <svg className={styles['icon-logo']}>
+      <svg aria-label="Mastodon" className={styles['icon-logo']} role="img">
         <use xlinkHref="#mastodon-logo" />
       </svg>
     ),
@@ -45,7 +45,7 @@ const socialLinks: SocialLink[] = [
   {
     label: '山岸和利のThreadsアカウント',
     logo: (
-      <svg className={styles['icon-logo']}>
+      <svg aria-label="Threads" className={styles['icon-logo']} role="img">
         <use xlinkHref="#threads-logo" />
       </svg>
     ),
@@ -54,7 +54,7 @@ const socialLinks: SocialLink[] = [
   {
     label: '山岸和利のXアカウント',
     logo: (
-      <svg className={styles['icon-logo']}>
+      <svg aria-label="X" className={styles['icon-logo']} role="img">
         <use xlinkHref="#x-logo" />
       </svg>
     ),

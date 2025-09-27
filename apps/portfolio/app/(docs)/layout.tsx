@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import styles from './layout.module.css'
 
 export default function DocsLayout({
