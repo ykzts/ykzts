@@ -12,7 +12,7 @@
     "url": "https://github.com/ykzts/ykzts.git"
   },
   "scripts": {
-    "validate": "pnpm --package=renovate dlx renovate-config-validator --strict default.json5"
+    "validate": "pnpm --package=renovate dlx renovate-config-validator --strict *.json5"
   },
   "type": "module",
   "version": "1.0.0"
