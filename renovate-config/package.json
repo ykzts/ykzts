@@ -1,7 +1,7 @@
 {
   "author": "Yamagishi Kazutoshi",
   "dependencies": {},
-  "description": "",
+  "description": "Shared Renovate configuration for repository maintenance and dependency updates",
   "devDependencies": {},
   "license": "MIT",
   "name": "@ykzts/renovate-config",
