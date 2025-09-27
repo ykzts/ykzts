@@ -1,10 +1,10 @@
 * {
-  border: 0;
+  padding: 0;
+  margin: 0;
   font: inherit;
   font-size: 100%;
-  margin: 0;
-  padding: 0;
   vertical-align: baseline;
+  border: 0;
 }
 
 *,
@@ -20,8 +20,8 @@ html {
 }
 
 html {
-  font-size: 18pt;
   overflow-x: hidden;
+  font-size: 18pt;
 }
 
 @media (max-width: 1920px) {
@@ -70,14 +70,14 @@ body {
 
 a {
   color: #000;
-  border-bottom: dotted 1px;
   text-decoration: none;
+  border-bottom: dotted 1px;
   transition: border-bottom-color 0.25s ease-in-out;
 }
 
 a:hover {
-  border-bottom-color: transparent;
   text-decoration: none;
+  border-bottom-color: transparent;
 }
 
 strong {
@@ -99,14 +99,14 @@ h3,
 h4,
 h5,
 h6 {
-  color: #000;
+  margin: 0 0 1.5rem 0;
   font-family:
     var(--font-raleway), Helvetica, var(--font-noto-sans-jp), sans-serif;
   font-weight: 600;
-  letter-spacing: 0.175em;
   line-height: 1.75;
-  margin: 0 0 1.5rem 0;
+  color: #000;
   text-transform: uppercase;
+  letter-spacing: 0.175em;
 }
 
 h1 a,
@@ -120,13 +120,13 @@ h6 a {
 }
 
 h1 {
+  margin: 0 0 1.5rem 0;
   font-family: var(--font-source-sans-3), Helvetica, sans-serif;
   font-size: 5rem;
   font-weight: 700;
-  letter-spacing: -0.05em;
   line-height: 1.1;
-  margin: 0 0 1.5rem 0;
   text-transform: none;
+  letter-spacing: -0.05em;
 }
 
 h2 {
@@ -197,9 +197,9 @@ h6 {
 }
 
 ul {
-  list-style: disc;
-  margin: 0 0 2rem 0;
   padding-left: 1rem;
+  margin: 0 0 2rem 0;
+  list-style: disc;
 }
 
 ul li {

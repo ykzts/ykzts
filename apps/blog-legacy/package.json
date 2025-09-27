@@ -20,10 +20,7 @@
     "@docusaurus/types": "^3.8.1",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
-    "@ykzts/eslint-config": "workspace:*",
-    "eslint": "^9.16.0",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.17.0"
+    "typescript": "^5.7.2"
   },
   "homepage": "https://ykzts.blog/",
   "keywords": [],
@@ -40,7 +37,6 @@
     "build": "docusaurus build",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
-    "lint": "eslint .",
     "serve": "docusaurus serve",
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",

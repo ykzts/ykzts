@@ -1,21 +1,21 @@
 .arrow-link {
-  border-bottom: 0;
-  display: inline-block;
-  font-size: 4rem;
-  height: 4rem;
   position: relative;
+  display: inline-block;
   width: 6rem;
+  height: 4rem;
+  font-size: 4rem;
+  border-bottom: 0;
 }
 
 .actions {
-  cursor: default;
   display: flex;
   justify-content: flex-end;
-  list-style: none;
-  margin-left: auto;
-  margin-top: -1rem;
-  padding-left: 0;
   width: 20rem;
+  padding-left: 0;
+  margin-top: -1rem;
+  margin-left: auto;
+  cursor: default;
+  list-style: none;
 }
 
 @media (max-width: 1152px) {
@@ -37,27 +37,27 @@
   .actions__item {
     flex-grow: 1;
     flex-shrink: 1;
+    width: 100%;
     padding: 1rem 0 0 0;
     text-align: center;
-    width: 100%;
   }
 }
 
 .key-visual {
-  height: 100%;
-  inset: 0;
-  object-fit: cover;
   position: absolute;
+  inset: 0;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .footer {
-  color: rgba(0, 0, 0, 0.25);
-  font-size: 1rem;
-  left: 50vw;
-  padding: 0 5rem;
   position: relative;
+  left: 50vw;
   width: 50vw;
+  padding: 0 5rem;
+  font-size: 1rem;
+  color: rgba(0, 0, 0, 0.25);
 }
 
 @media (max-width: 1280px) {
@@ -69,8 +69,8 @@
 @media (max-width: 1152px) {
   .footer {
     left: 0;
-    padding: 0 4rem 4rem 4rem;
     width: 100%;
+    padding: 0 4rem 4rem 4rem;
   }
 }
 

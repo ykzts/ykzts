@@ -17,12 +17,9 @@
     "@types/node": "^22.10.1",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
-    "@ykzts/eslint-config": "workspace:*",
     "@ykzts/tsconfig": "workspace:*",
     "babel-plugin-react-compiler": "19.1.0-rc.3",
-    "eslint": "^9.16.0",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.17.0"
+    "typescript": "^5.7.2"
   },
   "license": "MIT",
   "name": "@ykzts/studio",

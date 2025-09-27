@@ -3,7 +3,7 @@
     "vscode": {
       "extensions": [
         "EditorConfig.EditorConfig",
-        "esbenp.prettier-vscode",
+        "biomejs.biome",
         "unifiedjs.vscode-mdx"
       ]
     }

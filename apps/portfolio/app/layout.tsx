@@ -1,10 +1,10 @@
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
 import clsx from 'clsx'
-import { Noto_Sans_JP, Raleway, Source_Sans_3 } from 'next/font/google'
-import SVGSymbols from './_components/svg-symbols'
 import type { Metadata, Viewport } from 'next'
+import { Noto_Sans_JP, Raleway, Source_Sans_3 } from 'next/font/google'
 import type { ReactNode } from 'react'
+import SVGSymbols from './_components/svg-symbols'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com/'),

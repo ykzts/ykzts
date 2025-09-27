@@ -1,18 +1,23 @@
 .container {
-  background-color: #49fcd4;
   height: 100%;
-  height: 100dvh;
   padding: 4rem 1rem 1rem;
+  background-color: #49fcd4;
+}
+
+@supports (height: 100dvh) {
+  .container {
+    height: 100dvh;
+  }
 }
 
 .main {
-  backdrop-filter: blur(4px);
+  max-width: 45rem;
+  padding: 1rem;
+  margin: 0 auto;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 1rem;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
-  margin: 0 auto;
-  max-width: 45rem;
-  padding: 1rem;
+  backdrop-filter: blur(4px);
 }
 
 .backToTop {

@@ -1,6 +1,6 @@
-import { themes as prismThemes } from 'prism-react-renderer'
 import type * as Preset from '@docusaurus/preset-classic'
 import type { Config } from '@docusaurus/types'
+import { themes as prismThemes } from 'prism-react-renderer'
 
 const title = 'ykzts.blog'
 const description = 'ソフトウェア開発者 山岸和利のブログ'

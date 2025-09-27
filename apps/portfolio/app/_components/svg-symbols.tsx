@@ -1,5 +1,5 @@
-import styles from './svg-symbols.module.css'
 import type { ComponentProps } from 'react'
+import styles from './svg-symbols.module.css'
 
 type SVGRootProps = ComponentProps<'svg'> & { as?: 'svg' | 'symbol' }
 
@@ -104,6 +104,7 @@ function XLogo({ as = 'svg', ref, ...props }: SVGRootProps) {
 
 export default function SVGSymbols() {
   return (
+    // biome-ignore lint/a11y/noSvgWithoutTitle: this svg is decorative.
     <svg aria-hidden className={styles.root}>
       <defs>
         <FacebookLogo as="symbol" id="facebook-logo" />

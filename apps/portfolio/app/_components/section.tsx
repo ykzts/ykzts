@@ -1,7 +1,7 @@
 'use client'
 
 import clsx from 'clsx'
-import { type ReactNode, createContext, useContext } from 'react'
+import { createContext, type ReactNode, useContext } from 'react'
 import { useInView } from 'react-intersection-observer'
 import styles from './section.module.css'
 

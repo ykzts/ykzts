@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import { Suspense } from 'react'
 import { FaArrowDown } from 'react-icons/fa'
@@ -14,7 +15,6 @@ import Works, { WorksSkeleton } from './_components/works'
 import LayoutWrapper from './_components/wrapper'
 import AboutDoc from './_docs/about.mdx'
 import styles from './page.module.css'
-import type { Metadata } from 'next'
 
 const description = [
   'JavaScriptやRubyといったプログラミング言語を用いたウェブアプリケーションの開発を得意とするソフトウェア開発者 山岸和利のポートフォリオです。',
@@ -73,7 +73,6 @@ export default function HomePage() {
                 aria-label="コンテンツまでスクロール"
                 className={styles['arrow-link']}
                 href="#content"
-                role="button"
               >
                 <FaArrowDown />
               </a>
