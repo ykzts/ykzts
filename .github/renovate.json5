@@ -7,7 +7,8 @@
   packageRules: [
     {
       extends: ['monorepo:nextjs'],
-      followTag: 'canary'
+      followTag: 'canary',
+      minimumReleaseAge: '12 hours'
     }
   ]
 }
