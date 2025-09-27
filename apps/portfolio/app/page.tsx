@@ -104,6 +104,12 @@ export default function HomePage(_props: PageProps<'/'>) {
         <div className={styles.copyright}>
           <span>© Yamagishi Kazutoshi.</span>{' '}
           <span>
+            <Link className={styles.footer__link} href="/privacy">
+              プライバシーポリシー
+            </Link>
+            .
+          </span>{' '}
+          <span>
             Design:{' '}
             <Link
               className={styles.footer__link}
