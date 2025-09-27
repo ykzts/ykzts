@@ -32,3 +32,4 @@ jobs:
       - run: pnpm typegen
       - run: pnpm format-check
       - run: pnpm lint
+      - run: pnpm validate

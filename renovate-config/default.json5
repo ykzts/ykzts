@@ -1,0 +1,55 @@
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  customDatasources: {
+    goreleaser: {
+      defaultRegistryUrlTemplate: 'https://goreleaser.com/static/releases.json',
+      transformTemplates: [
+        '{"releases":$.{"sourceUrl":"https://github.com/goreleaser/goreleaser","version":$.tag_name},"sourceUrl":"https://github.com/goreleaser/goreleaser","homepage":"https://goreleaser.com/"}'
+      ]
+    }
+  },
+  extends: [
+    'config:best-practices',
+    'customManagers:githubActionsVersions',
+    'customManagers:dockerfileVersions',
+    'helpers:disableTypesNodeMajor',
+    'preview:dockerCompose',
+    'preview:dockerVersions',
+    ':combinePatchMinorReleases',
+    ':disableRateLimiting',
+    ':enableVulnerabilityAlertsWithLabel(security)',
+    ':label(dependencies)',
+    ':maintainLockFilesWeekly',
+    ':prImmediately',
+    ':preserveSemverRanges',
+    ':renovatePrefix',
+    ':semanticCommitTypeAll(build)',
+    ':separateMultipleMajorReleases',
+    ':widenPeerDependencies'
+  ],
+  dependencyDashboardLabels: ['dependencies'],
+  lockFileMaintenance: {
+    extends: [':semanticCommitType(build)']
+  },
+  packageRules: [
+    {
+      groupName: 'mastodon docker containers',
+      groupSlug: 'mastodon',
+      matchDatasources: ['docker'],
+      matchPackageNames: ['ghcr.io/mastodon/**']
+    },
+    {
+      groupName: 'google terraform providers',
+      matchDatasources: ['terraform-provider'],
+      matchDepNames: ['google', 'google-beta']
+    },
+    {
+      groupName: 'skaffold',
+      groupSlug: 'skaffold',
+      matchDatasources: ['docker'],
+      matchDepNames: ['gcr.io/k8s-skaffold/skaffold']
+    }
+  ],
+  postUpdateOptions: ['gomodTidyE', 'pnpmDedupe'],
+  rebaseWhen: 'conflicted'
+}

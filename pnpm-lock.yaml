@@ -287,6 +287,8 @@ importers:
 
   profile: {}
 
+  renovate-config: {}
+
 packages:
 
   '@actions/core@1.11.1':
