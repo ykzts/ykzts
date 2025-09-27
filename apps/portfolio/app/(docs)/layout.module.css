@@ -14,10 +14,28 @@
   max-width: 45rem;
   padding: 1rem;
   margin: 0 auto;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 1rem;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(4px);
+}
+
+.main table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.main table th,
+.main table td {
+  padding: 0.5rem;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.main table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
 }
 
 .backToTop {
