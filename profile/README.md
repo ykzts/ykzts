@@ -1,9 +1,24 @@
-## Hi there
+**Yamagishi Kazutoshi** is a highly skilled **Software Developer** based in Japan.
 
-Yamagishi Kazutoshi is a software engineer working in Japan, specializing in front-end development using TypeScript. I also have a broad range of experience in web application development, not only in the front-end area but also in the back-end and infrastructure areas.
+He specializes in full-stack web application development, mastering multiple languages including JavaScript (TypeScript), Ruby, and Go, with deep expertise in **[React]** and **[Ruby on Rails]**. He is also proficient in cloud infrastructure (**[AWS]** and **[Google Cloud]**).
+
+Yamagishi is an active contributor to the open-source community, holding committer roles in notable projects:
+
+- He has served as a **Committer for [Mastodon]** since 2017, contributing to bug fixes and Japanese localization.
+- He is the developer of **[Manael]**, an open-source, Go-based reverse proxy application focused on image conversion.
+- He also leads the non-profit group **[Haneru Developers]**, developing and operating web services using modern architecture.
 
 <div align="right">
 
-Artwork by [Kannazuki Diru](https://x.com/diru_k1005)
+Artwork by [Kannazuki Diru].
 
 </div>
+
+[AWS]: https://aws.amazon.com/
+[Google Cloud]: https://cloud.google.com/
+[Haneru Developers]: https://haneru.dev/
+[Kannazuki Diru]: https://x.com/diru_k1005
+[Manael]: https://manael.org/
+[Mastodon]: https://joinmastodon.org/
+[React]: https://react.dev/
+[Ruby on Rails]: https://rubyonrails.org/
