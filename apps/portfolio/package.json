@@ -42,7 +42,7 @@
     "build": "next build --turbopack",
     "dev": "next --turbopack",
     "start": "next start",
-    "test": "vitest",
+    "test": "vitest --run",
     "typegen": "next typegen"
   },
   "type": "module",

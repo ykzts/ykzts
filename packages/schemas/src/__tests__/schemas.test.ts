@@ -12,8 +12,8 @@ describe('Sanity Schemas', () => {
     it('should have required fields', () => {
       expect(post.fields).toBeDefined()
       expect(post.fields.length).toBeGreaterThan(0)
-      
-      const titleField = post.fields.find(field => field.name === 'title')
+
+      const titleField = post.fields.find((field) => field.name === 'title')
       expect(titleField).toBeDefined()
       expect(titleField?.type).toBe('string')
     })
@@ -29,21 +29,23 @@ describe('Sanity Schemas', () => {
     it('should have required fields', () => {
       expect(work.fields).toBeDefined()
       expect(work.fields.length).toBeGreaterThan(0)
-      
-      const titleField = work.fields.find(field => field.name === 'title')
-      const contentField = work.fields.find(field => field.name === 'content')
-      const slugField = work.fields.find(field => field.name === 'slug')
-      const startsAtField = work.fields.find(field => field.name === 'startsAt')
+
+      const titleField = work.fields.find((field) => field.name === 'title')
+      const contentField = work.fields.find((field) => field.name === 'content')
+      const slugField = work.fields.find((field) => field.name === 'slug')
+      const startsAtField = work.fields.find(
+        (field) => field.name === 'startsAt'
+      )
 
       expect(titleField).toBeDefined()
       expect(titleField?.type).toBe('string')
-      
+
       expect(contentField).toBeDefined()
       expect(contentField?.type).toBe('array')
-      
+
       expect(slugField).toBeDefined()
       expect(slugField?.type).toBe('slug')
-      
+
       expect(startsAtField).toBeDefined()
       expect(startsAtField?.type).toBe('date')
     })
@@ -51,8 +53,10 @@ describe('Sanity Schemas', () => {
     it('should have ordering configuration', () => {
       expect(work.orderings).toBeDefined()
       expect(work.orderings.length).toBeGreaterThan(0)
-      
-      const startsAtOrdering = work.orderings.find(ordering => ordering.name === 'startsAt')
+
+      const startsAtOrdering = work.orderings.find(
+        (ordering) => ordering.name === 'startsAt'
+      )
       expect(startsAtOrdering).toBeDefined()
       expect(startsAtOrdering?.by[0].field).toBe('startsAt')
       expect(startsAtOrdering?.by[0].direction).toBe('desc')

@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock environment variables first
 vi.stubEnv('NEXT_PUBLIC_SANITY_DATASET', 'test-dataset')
@@ -8,8 +8,8 @@ vi.stubEnv('NEXT_PUBLIC_SANITY_PROJECT_ID', 'test-project-id')
 const mockFetch = vi.fn()
 vi.mock('@sanity/client', () => ({
   createClient: vi.fn(() => ({
-    fetch: mockFetch,
-  })),
+    fetch: mockFetch
+  }))
 }))
 
 describe('Sanity utilities', () => {
@@ -26,7 +26,7 @@ describe('Sanity utilities', () => {
           title: 'Test Work'
         }
       ]
-      
+
       mockFetch.mockResolvedValue(mockData)
 
       // Import after mocking
@@ -43,11 +43,11 @@ describe('Sanity utilities', () => {
       const invalidData = [
         {
           content: [{ _type: 'block', children: [{ text: 'Test content' }] }],
-          slug: 'test-work',
+          slug: 'test-work'
           // Missing required title field
         }
       ]
-      
+
       mockFetch.mockResolvedValue(invalidData)
 
       const { getWorks } = await import('../../lib/sanity')
@@ -56,10 +56,10 @@ describe('Sanity utilities', () => {
 
     it('should handle empty array response', async () => {
       mockFetch.mockResolvedValue([])
-      
+
       const { getWorks } = await import('../../lib/sanity')
       const result = await getWorks()
-      
+
       expect(result).toEqual([])
     })
   })

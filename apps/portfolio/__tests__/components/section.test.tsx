@@ -1,10 +1,14 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import Section, { SectionContent, SectionHeader, SectionTitle } from '../../app/_components/section'
+import Section, {
+  SectionContent,
+  SectionHeader,
+  SectionTitle
+} from '../../app/_components/section'
 
 // Mock the intersection observer hook
 vi.mock('react-intersection-observer', () => ({
-  useInView: vi.fn(() => [vi.fn(), false]),
+  useInView: vi.fn(() => [vi.fn(), false])
 }))
 
 describe('Section Components', () => {
@@ -15,7 +19,7 @@ describe('Section Components', () => {
           <div>Test content</div>
         </Section>
       )
-      
+
       expect(screen.getByText('Test content')).toBeInTheDocument()
     })
 
@@ -25,7 +29,7 @@ describe('Section Components', () => {
           <div>Intro section</div>
         </Section>
       )
-      
+
       const section = document.querySelector('section')
       expect(section?.className).toContain('intro')
     })
@@ -36,7 +40,7 @@ describe('Section Components', () => {
           <div>Section with ID</div>
         </Section>
       )
-      
+
       const section = document.querySelector('section')
       expect(section).toHaveAttribute('id', 'test-section')
     })
@@ -47,7 +51,7 @@ describe('Section Components', () => {
           <div>Custom section</div>
         </Section>
       )
-      
+
       const section = document.querySelector('section')
       expect(section).toHaveClass('custom-class')
     })
@@ -62,7 +66,7 @@ describe('Section Components', () => {
           </SectionHeader>
         </Section>
       )
-      
+
       expect(screen.getByText('Header content')).toBeInTheDocument()
     })
   })
@@ -76,7 +80,7 @@ describe('Section Components', () => {
           </SectionHeader>
         </Section>
       )
-      
+
       const title = screen.getByRole('heading', { level: 2 })
       expect(title).toBeInTheDocument()
       expect(title).toHaveTextContent('Test Title')
@@ -90,7 +94,7 @@ describe('Section Components', () => {
           </SectionHeader>
         </Section>
       )
-      
+
       const title = screen.getByRole('heading', { level: 1 })
       expect(title).toBeInTheDocument()
       expect(title).toHaveTextContent('Intro Title')
@@ -100,11 +104,13 @@ describe('Section Components', () => {
       render(
         <Section>
           <SectionHeader>
-            <SectionTitle className="custom-title">Title with class</SectionTitle>
+            <SectionTitle className="custom-title">
+              Title with class
+            </SectionTitle>
           </SectionHeader>
         </Section>
       )
-      
+
       const title = screen.getByRole('heading', { level: 2 })
       expect(title).toHaveClass('custom-title')
     })
@@ -119,7 +125,7 @@ describe('Section Components', () => {
           </SectionContent>
         </Section>
       )
-      
+
       expect(screen.getByText('Content text')).toBeInTheDocument()
     })
 
@@ -131,9 +137,10 @@ describe('Section Components', () => {
           </SectionContent>
         </Section>
       )
-      
+
       // Find the element by its content and check if it has the custom class
-      const contentElement = screen.getByText('Content with class').parentElement
+      const contentElement =
+        screen.getByText('Content with class').parentElement
       expect(contentElement).toHaveClass('custom-content')
     })
   })
