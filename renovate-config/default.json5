@@ -33,6 +33,12 @@
   },
   packageRules: [
     {
+      groupName: 'immich docker containers',
+      groupSlug: 'immich',
+      matchDatasources: ['docker'],
+      matchPackageNames: ['ghcr.io/immich-app/**'],
+    },
+    {
       groupName: 'mastodon docker containers',
       groupSlug: 'mastodon',
       matchDatasources: ['docker'],
