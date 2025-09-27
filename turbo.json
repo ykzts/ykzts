@@ -17,6 +17,10 @@
       "cache": false,
       "persistent": true
     },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
     "typegen": {
       "dependsOn": ["^build"],
       "env": ["NEXT_PUBLIC_SANITY_DATASET", "NEXT_PUBLIC_SANITY_PROJECT_ID"],

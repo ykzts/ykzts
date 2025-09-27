@@ -17,13 +17,18 @@
   "devDependencies": {
     "@mdx-js/loader": "^3.1.0",
     "@next/mdx": "15.6.0-canary.32",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
     "@types/mdx": "^2.0.13",
     "@types/node": "^22.10.1",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
+    "@vitejs/plugin-react": "^4.3.4",
     "@ykzts/tsconfig": "workspace:*",
     "babel-plugin-react-compiler": "19.1.0-rc.3",
-    "typescript": "^5.7.2"
+    "jsdom": "^25.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
   },
   "license": "MIT",
   "name": "@ykzts/portfolio",
@@ -37,6 +42,7 @@
     "build": "next build --turbopack",
     "dev": "next --turbopack",
     "start": "next start",
+    "test": "vitest",
     "typegen": "next typegen"
   },
   "type": "module",

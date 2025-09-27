@@ -20,7 +20,8 @@
   },
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "test": "vitest"
   },
   "type": "module",
   "types": "dist/index.d.ts",

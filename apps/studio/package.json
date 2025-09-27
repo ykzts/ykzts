@@ -33,6 +33,7 @@
     "build": "next build --turbopack",
     "dev": "next -p 10000 --turbopack",
     "start": "next start -p 10000",
+    "test": "echo \"No tests configured for studio app\"",
     "typegen": "next typegen"
   },
   "type": "module",
