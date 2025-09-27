@@ -5,7 +5,7 @@ const withMDX = createMDX()
 
 const nextConfig: NextConfig = {
   experimental: {
-    dynamicIO: true,
+    cacheComponents: true,
     mdxRs: {
       mdxType: 'gfm'
     },
@@ -56,7 +56,8 @@ const nextConfig: NextConfig = {
     }
   },
   pageExtensions: ['tsx', 'ts', 'mdx'],
-  reactStrictMode: true
+  reactStrictMode: true,
+  typedRoutes: true
 }
 
 export default withMDX(nextConfig)

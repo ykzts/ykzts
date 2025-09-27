@@ -36,7 +36,6 @@
   "scripts": {
     "build": "next build --turbopack",
     "dev": "next --turbopack",
-    "lint": "next lint -d .",
     "start": "next start",
     "typegen": "next typegen"
   },

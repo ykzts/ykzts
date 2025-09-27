@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import type { ReactNode } from 'react'
 import styles from './layout.module.css'
 
 export const metadata: Metadata = {
@@ -14,7 +13,7 @@ export const metadata: Metadata = {
   }
 }
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en">
       <body className={styles.body}>{children}</body>

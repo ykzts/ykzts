@@ -3,7 +3,6 @@ import { Analytics } from '@vercel/analytics/react'
 import clsx from 'clsx'
 import type { Metadata, Viewport } from 'next'
 import { Noto_Sans_JP, Raleway, Source_Sans_3 } from 'next/font/google'
-import type { ReactNode } from 'react'
 import SVGSymbols from './_components/svg-symbols'
 
 export const metadata: Metadata = {
@@ -41,11 +40,7 @@ const sourceSans3 = Source_Sans_3({
   weight: ['300', '600', '700']
 })
 
-export default function RootLayout({
-  children
-}: Readonly<{
-  children: ReactNode
-}>) {
+export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html
       className={clsx(

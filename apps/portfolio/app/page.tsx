@@ -54,7 +54,7 @@ function About() {
   )
 }
 
-export default function HomePage() {
+export default function HomePage(_props: PageProps<'/'>) {
   return (
     <LayoutWrapper>
       <Section intro>
