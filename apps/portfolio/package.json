@@ -13,7 +13,7 @@
     "react-intersection-observer": "^9.13.1",
     "zod": "^4.0.0"
   },
-  "description": "Yamagishi Kazutoshi's Website!",
+  "description": "Next.js portfolio website showcasing projects, skills, and professional experience",
   "devDependencies": {
     "@mdx-js/loader": "^3.1.0",
     "@next/mdx": "15.6.0-canary.32",

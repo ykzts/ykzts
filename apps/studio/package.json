@@ -12,7 +12,7 @@
     "react-dom": "^19.0.0",
     "sanity": "^4.0.0"
   },
-  "description": "Yamagishi Kazutoshi's Website!",
+  "description": "Sanity CMS studio application for content management of portfolio and blog entries",
   "devDependencies": {
     "@types/node": "^22.10.1",
     "@types/react": "^19.0.1",
