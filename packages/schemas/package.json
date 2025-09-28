@@ -3,7 +3,7 @@
   "dependencies": {
     "sanity": "^4.0.0"
   },
-  "description": "",
+  "description": "Sanity CMS schema definitions for blog posts, profiles, and work portfolio content",
   "devDependencies": {
     "@types/node": "^22.10.1",
     "@ykzts/tsconfig": "workspace:*",
