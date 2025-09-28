@@ -31,4 +31,5 @@ jobs:
       - run: pnpm install
       - run: pnpm typegen
       - run: pnpm exec biome ci
+      - run: pnpm test
       - run: pnpm validate
