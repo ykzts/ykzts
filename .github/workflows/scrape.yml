@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: '28 3-21/6 * * *'
 
+permissions:
+  contents: read
+
 jobs:
   scrape:
     runs-on: ubuntu-24.04
