@@ -1,7 +1,7 @@
 {
   "author": "Yamagishi Kazutoshi",
   "dependencies": {},
-  "description": "",
+  "description": "Shared TypeScript configuration presets for Node.js and Next.js projects",
   "devDependencies": {},
   "license": "MIT",
   "name": "@ykzts/tsconfig",
