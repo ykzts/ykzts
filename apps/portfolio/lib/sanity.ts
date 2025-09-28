@@ -1,5 +1,5 @@
 import { createClient } from '@sanity/client'
-import { z } from 'zod'
+import { z, ZodError } from 'zod'
 
 const workSchema = z.object({
   content: z.array(z.any()),
@@ -27,6 +27,10 @@ export async function getWorks(): Promise<z.infer<typeof worksSchema>> {
 
     return worksSchema.parse(data)
   } catch (error) {
+    // Only catch fetch/network errors, not validation errors
+    if (error instanceof ZodError) {
+      throw error
+    }
     // Return empty array if Sanity is not properly configured
     console.warn('Failed to fetch works from Sanity:', error)
     return []
