@@ -1,5 +1,5 @@
 import { createClient } from '@sanity/client'
-import { z } from 'zod'
+import { ZodError, z } from 'zod'
 
 const workSchema = z.object({
   content: z.array(z.any()),
@@ -16,13 +16,23 @@ const client = createClient({
 })
 
 export async function getWorks(): Promise<z.infer<typeof worksSchema>> {
-  const data = await client.fetch<unknown>(`
-    *[_type == "work"] | order(startsAt desc){
-      content,
-      "slug": slug.current,
-      title
-    }
-  `)
+  try {
+    const data = await client.fetch<unknown>(`
+      *[_type == "work"] | order(startsAt desc){
+        content,
+        "slug": slug.current,
+        title
+      }
+    `)
 
-  return worksSchema.parse(data)
+    return worksSchema.parse(data)
+  } catch (error) {
+    // Only catch fetch/network errors, not validation errors
+    if (error instanceof ZodError) {
+      throw error
+    }
+    // Return empty array if Sanity is not properly configured
+    console.warn('Failed to fetch works from Sanity:', error)
+    return []
+  }
 }
