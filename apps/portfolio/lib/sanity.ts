@@ -1,5 +1,5 @@
 import { createClient } from '@sanity/client'
-import { z, ZodError } from 'zod'
+import { ZodError, z } from 'zod'
 
 const workSchema = z.object({
   content: z.array(z.any()),
