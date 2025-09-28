@@ -4,15 +4,7 @@
   "description": "",
   "devDependencies": {
     "@biomejs/biome": "^2.2.4",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.1.0",
-    "@types/react": "^19.0.1",
-    "@types/react-dom": "^19.0.1",
-    "jsdom": "^27.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "turbo": "^2.3.3",
-    "vitest": "^3.0.0"
+    "turbo": "^2.3.3"
   },
   "license": "MIT",
   "name": "@ykzts/monorepo",
