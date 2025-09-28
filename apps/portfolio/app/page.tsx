@@ -100,12 +100,12 @@ export default function HomePage(_props: PageProps<'/'>) {
         <Contact />
       </main>
 
-      <footer className={styles.footer}>
+      <footer className={styles.footer} lang="en">
         <div className={styles.copyright}>
           <span>© Yamagishi Kazutoshi.</span>{' '}
           <span>
             <Link className={styles.footer__link} href="/privacy">
-              プライバシーポリシー
+              Privacy Policy
             </Link>
             .
           </span>{' '}
