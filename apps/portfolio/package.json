@@ -23,7 +23,7 @@
     "@types/node": "^22.10.1",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^5.0.0",
     "@ykzts/tsconfig": "workspace:*",
     "babel-plugin-react-compiler": "19.1.0-rc.3",
     "jsdom": "^25.0.1",
