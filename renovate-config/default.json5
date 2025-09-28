@@ -1,6 +1,5 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
-  minimumReleaseAge: '3 days',
   customDatasources: {
     goreleaser: {
       defaultRegistryUrlTemplate: 'https://goreleaser.com/static/releases.json',
@@ -9,6 +8,7 @@
       ]
     }
   },
+  dependencyDashboardLabels: ['dependencies'],
   extends: [
     'config:best-practices',
     'customManagers:githubActionsVersions',
@@ -28,10 +28,10 @@
     ':separateMultipleMajorReleases',
     ':widenPeerDependencies'
   ],
-  dependencyDashboardLabels: ['dependencies'],
   lockFileMaintenance: {
     extends: [':semanticCommitType(build)']
   },
+  minimumReleaseAge: '3 days',
   packageRules: [
     {
       groupName: 'immich docker containers',
