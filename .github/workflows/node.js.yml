@@ -30,6 +30,6 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       - run: pnpm install
       - run: pnpm typegen
-      - run: pnpm check
+      - run: pnpm exec biome ci
       - run: pnpm test
       - run: pnpm validate
