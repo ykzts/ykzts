@@ -8,6 +8,7 @@
       ]
     }
   },
+  dependencyDashboardLabels: ['dependencies'],
   extends: [
     'config:best-practices',
     'customManagers:githubActionsVersions',
@@ -27,10 +28,10 @@
     ':separateMultipleMajorReleases',
     ':widenPeerDependencies'
   ],
-  dependencyDashboardLabels: ['dependencies'],
   lockFileMaintenance: {
     extends: [':semanticCommitType(build)']
   },
+  minimumReleaseAge: '3 days',
   packageRules: [
     {
       groupName: 'immich docker containers',
