@@ -9,8 +9,7 @@ const nextConfig: NextConfig = {
     mdxRs: {
       mdxType: 'gfm'
     },
-    ppr: true,
-    reactCompiler: true
+    ppr: true
   },
   headers() {
     return Promise.resolve([
@@ -56,6 +55,7 @@ const nextConfig: NextConfig = {
     }
   },
   pageExtensions: ['tsx', 'ts', 'mdx'],
+  reactCompiler: true,
   reactStrictMode: true,
   typedRoutes: true
 }
