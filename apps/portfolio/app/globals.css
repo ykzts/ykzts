@@ -80,6 +80,21 @@ a:hover {
   border-bottom-color: transparent;
 }
 
+/* Focus styles for better keyboard navigation */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 3px solid #49fcd4;
+  outline-offset: 2px;
+}
+
+/* Ensure focus is visible even with existing styles */
+a:focus {
+  border-bottom-color: #43d9b8;
+}
+
 strong {
   font-weight: 600;
   color: #000;
