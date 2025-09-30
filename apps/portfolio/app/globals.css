@@ -1,222 +1,45 @@
-* {
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  font-size: 100%;
-  vertical-align: baseline;
-  border: 0;
-}
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-}
-
-html {
-  box-sizing: border-box;
-  scroll-behavior: smooth;
-  scroll-padding-top: 1rem;
-}
-
-html {
-  overflow-x: hidden;
-  font-size: 18pt;
-}
-
-@media (max-width: 1920px) {
-  html {
-    font-size: 13pt;
-  }
-}
-
-@media (max-width: 1152px) {
-  html {
-    font-size: 14pt;
-  }
-}
-
-@media (max-width: 736px) {
-  html {
-    font-size: 12pt;
-  }
-}
-
-@media (max-width: 480px) {
-  html {
-    font-size: 11pt;
-  }
-}
-
-body {
-  background-color: #fff;
-  color: #000;
-  font-family:
+@theme {
+  --font-sans:
     var(--font-source-sans-3), Helvetica, var(--font-noto-sans-jp), sans-serif;
-  font-size: 1rem;
-  font-weight: 300;
-  letter-spacing: 0.0375rem;
-  line-height: 2;
-  overflow-x: hidden;
-  -webkit-text-size-adjust: none;
-}
-
-@media (max-width: 480px) {
-  html,
-  body {
-    min-width: 320px;
-  }
-}
-
-a {
-  color: #000;
-  text-decoration: none;
-  border-bottom: dotted 1px;
-  transition: border-bottom-color 0.25s ease-in-out;
-}
-
-a:hover {
-  text-decoration: none;
-  border-bottom-color: transparent;
-}
-
-/* Focus styles for better keyboard navigation */
-a:focus,
-button:focus,
-input:focus,
-textarea:focus,
-select:focus {
-  outline: 3px solid #49fcd4;
-  outline-offset: 2px;
-}
-
-/* Ensure focus is visible even with existing styles */
-a:focus {
-  border-bottom-color: #43d9b8;
-}
-
-strong {
-  font-weight: 600;
-  color: #000;
-}
-
-em {
-  font-style: italic;
-}
-
-p {
-  margin: 0 0 2rem 0;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0 0 1.5rem 0;
-  font-family:
+  --font-main-title: var(--font-source-sans-3), Helvetica, sans-serif;
+  --font-heading:
     var(--font-raleway), Helvetica, var(--font-noto-sans-jp), sans-serif;
-  font-weight: 600;
-  line-height: 1.75;
-  color: #000;
-  text-transform: uppercase;
-  letter-spacing: 0.175em;
-}
 
-h1 a,
-h2 a,
-h3 a,
-h4 a,
-h5 a,
-h6 a {
-  color: inherit;
-  text-decoration: none;
-}
+  --color-brand: #49fcd4;
+  --color-brand-dark: #43d9b8;
 
-h1 {
-  margin: 0 0 1.5rem 0;
-  font-family: var(--font-source-sans-3), Helvetica, sans-serif;
-  font-size: 5rem;
-  font-weight: 700;
-  line-height: 1.1;
-  text-transform: none;
-  letter-spacing: -0.05em;
-}
+  --paradigm: url('./_assets/paradigm.svg');
 
-h2 {
-  font-size: 1.25rem;
-  font-weight: 800;
-}
-
-h3 {
-  font-size: 0.875rem;
-}
-
-h4 {
-  font-size: 0.875rem;
-}
-
-h5 {
-  font-size: 0.75rem;
-}
-
-h6 {
-  font-size: 0.625rem;
-}
-
-@media (max-width: 736px) {
-  h1 {
-    font-size: 4.5rem;
-    line-height: 1.1;
-  }
-
-  h2 {
-    font-size: 1.25rem;
-    line-height: 1.7;
-  }
-
-  h3 {
-    font-size: 0.9rem;
-  }
-
-  h4 {
-    font-size: 0.75rem;
-  }
-
-  h5 {
-    font-size: 0.675rem;
+  @keyframes wave {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translate(100%);
+    }
   }
 }
 
-@media (max-width: 360px) {
-  h1 {
-    font-size: 3.75rem;
-  }
-
-  h2 {
-    font-size: 1.125rem;
-  }
-
-  h3 {
-    font-size: 0.8rem;
-  }
-
-  h4 {
-    font-size: 0.675rem;
-  }
-
-  h5 {
-    font-size: 0.675rem;
+@layer base {
+  a:not([class]):not(:is(.prose *)) {
+    @apply text-inherit border-b border-dotted transition-[border-bottom-color] duration-250 ease-in-out hover:border-transparent focus:outline-3 focus:outline-offset-2 focus:outline-brand;
   }
 }
 
-ul {
-  padding-left: 1rem;
-  margin: 0 0 2rem 0;
-  list-style: disc;
+@utility section-grid {
+  @variant lg {
+    grid-template-areas:
+      'header content'
+      'footer content';
+    @apply grid grid-cols-2 grid-rows-1 gap-y-20;
+  }
 }
 
-ul li {
-  padding-left: 0.325rem;
+@utility section-* {
+  @variant lg {
+    grid-area: --value('content', 'footer', 'header');
+  }
 }

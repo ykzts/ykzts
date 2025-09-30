@@ -3,8 +3,8 @@ import { Analytics } from '@vercel/analytics/react'
 import clsx from 'clsx'
 import type { Metadata, Viewport } from 'next'
 import { Noto_Sans_JP, Raleway, Source_Sans_3 } from 'next/font/google'
+import { twMerge } from 'tailwind-merge'
 import SVGSymbols from './_components/svg-symbols'
-import styles from './layout.module.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com/'),
@@ -44,16 +44,22 @@ const sourceSans3 = Source_Sans_3({
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html
-      className={clsx(
-        notoSansJp.variable,
-        raleway.variable,
-        sourceSans3.variable
+      className={twMerge(
+        clsx(
+          'scroll-smooth antialiased',
+          notoSansJp.variable,
+          raleway.variable,
+          sourceSans3.variable
+        )
       )}
       lang="ja"
     >
       <head />
-      <body>
-        <a className={styles['skip-link']} href="#content">
+      <body className="bg-brand bg-(image:--paradigm) bg-fixed bg-repeat-y bg-size-[75%_auto] bg-position-[-50%_10%]">
+        <a
+          className="absolute -top-20 left-2 z-1000 rounded bg-black px-4 py-2 text-white no-underline transition-[top] duration-300 focus:top-2"
+          href="#content"
+        >
           メインコンテンツにスキップ
         </a>
 

@@ -1,22 +1,12 @@
 import Link from 'next/link'
-import type { ReactNode } from 'react'
-import styles from './layout.module.css'
 
-export default function DocsLayout({
-  children,
-  title
-}: Readonly<{
-  children: ReactNode
-  title: ReactNode
-}>) {
+export default function DocsLayout({ children }: LayoutProps<'/'>) {
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        {title}
-
+    <div className="min-h-screen px-4 pb-4 pt-16 supports-[height:100dvh]:min-h-dvh">
+      <main className="prose prose-slate mx-auto max-w-3xl rounded-2xl bg-white/80 p-4 shadow-md backdrop-blur">
         {children}
 
-        <p className={styles.backToTop}>
+        <p className="mt-40">
           <Link href="/">トップページに戻る</Link>
         </p>
       </main>
