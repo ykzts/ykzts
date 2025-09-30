@@ -36,3 +36,5 @@ jobs:
       - run: pnpm exec biome ci
       - run: pnpm test
       - run: pnpm validate
+      - name: Run accessibility audit
+        run: ./scripts/check-accessibility.sh
