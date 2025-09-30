@@ -52,10 +52,10 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     >
       <head />
       <body>
-        <a href="#content" className="skip-link">
+        <a className="skip-link" href="#content">
           メインコンテンツにスキップ
         </a>
-        
+
         <SVGSymbols />
 
         {children}

@@ -61,9 +61,9 @@
 }
 
 .icon-link:focus {
-  background-color: rgba(73, 252, 212, 0.2);
   outline: 3px solid #49fcd4;
   outline-offset: 2px;
+  background-color: rgba(73, 252, 212, 0.2);
 }
 
 .icon-logo {
