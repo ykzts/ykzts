@@ -18,3 +18,10 @@ minimumReleaseAgeExclude:
   - next
   - '@next/*'
   - eslint-config-next
+
+onlyBuiltDependencies:
+  - '@swc/core'
+  - core-js
+  - core-js-pure
+  - esbuild
+  - sharp
