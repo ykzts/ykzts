@@ -1,5 +1,6 @@
 import {
   PortableText,
+  type PortableTextMarkComponentProps,
   type PortableTextReactComponents
 } from '@portabletext/react'
 import Link from '@/components/link'
@@ -11,12 +12,15 @@ import Section, {
   SectionTitle
 } from './section'
 
+type LinkValue = {
+  _type: string
+  href: string
+}
+
 const portableTextComponents = {
   marks: {
-    link({ children, value }) {
-      const { href } = value as {
-        href: string
-      }
+    link({ children, value }: PortableTextMarkComponentProps<LinkValue>) {
+      const { href } = value as LinkValue
 
       return <Link href={href}>{children}</Link>
     }
