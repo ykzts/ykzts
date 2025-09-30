@@ -33,6 +33,10 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'pnpm dev',
+    env: {
+      NEXT_PUBLIC_SANITY_DATASET: 'production',
+      NEXT_PUBLIC_SANITY_PROJECT_ID: 'mock-project-id'
+    },
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
     url: 'http://localhost:3000'
