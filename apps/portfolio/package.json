@@ -15,6 +15,7 @@
   },
   "description": "Next.js portfolio website showcasing projects, skills, and professional experience",
   "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
     "@mdx-js/loader": "^3.1.0",
     "@next/mdx": "15.6.0-canary.35",
     "@testing-library/jest-dom": "^6.6.3",
@@ -25,8 +26,10 @@
     "@types/react-dom": "^19.0.1",
     "@vitejs/plugin-react": "^5.0.0",
     "@ykzts/tsconfig": "workspace:*",
+    "axe-core": "^4.10.3",
     "babel-plugin-react-compiler": "19.1.0-rc.3",
     "jsdom": "^27.0.0",
+    "playwright": "^1.55.1",
     "typescript": "^5.7.2",
     "vite": "^7.0.0",
     "vite-tsconfig-paths": "^5.1.4",
@@ -45,6 +48,7 @@
     "dev": "next --turbopack",
     "start": "next start",
     "test": "vitest --run",
+    "test:a11y": "playwright test",
     "typegen": "next typegen"
   },
   "type": "module",

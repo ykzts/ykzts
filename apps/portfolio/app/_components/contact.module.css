@@ -60,6 +60,12 @@
   background-color: rgba(144, 144, 144, 0.1);
 }
 
+.icon-link:focus {
+  background-color: rgba(73, 252, 212, 0.2);
+  outline: 3px solid #49fcd4;
+  outline-offset: 2px;
+}
+
 .icon-logo {
   width: 1em;
   height: 1em;
