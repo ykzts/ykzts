@@ -34,6 +34,7 @@ export default defineConfig({
   webServer: {
     command: 'pnpm dev',
     reuseExistingServer: !process.env.CI,
+    timeout: 120000,
     url: 'http://localhost:3001'
   },
   /* Opt out of parallel tests on CI. */
