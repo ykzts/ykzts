@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 env:
   # renovate: datasource=npm depName=corepack
@@ -44,6 +45,6 @@ jobs:
       - name: Run Lighthouse CI
         run: pnpm --filter @ykzts/portfolio lighthouse
         env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEXT_PUBLIC_SANITY_DATASET: production
           NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID || 'mock-project-id' }}
