@@ -72,6 +72,24 @@ This project uses **Biome** for linting and formatting with the following standa
 - **Trailing Commas**: None
 - **Import Sorting**: Enabled with sorted attributes/keys/properties
 
+### Dependency Management
+
+When adding or updating dependencies:
+
+1. **Check package age**: Run `pnpm check:package-age` before committing
+   - This validates that new packages are at least 24 hours old
+   - Helps avoid packages with critical bugs or security issues
+   - See `scripts/README.md` for more details
+
+2. **Use pnpm commands**:
+   ```bash
+   pnpm add <package>        # Add a dependency
+   pnpm add -D <package>     # Add a dev dependency
+   pnpm update <package>     # Update a specific package
+   ```
+
+3. **Let Renovate handle routine updates**: The repository uses Renovate with a 3-day minimum release age for automated updates
+
 ### TypeScript Guidelines
 
 - Use strict TypeScript configuration

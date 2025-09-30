@@ -17,6 +17,7 @@
   "scripts": {
     "build": "turbo run build",
     "check": "biome check",
+    "check:package-age": "node scripts/check-package-age.cjs",
     "dev": "turbo run dev",
     "test": "turbo run test",
     "test:a11y": "turbo run test:a11y",
