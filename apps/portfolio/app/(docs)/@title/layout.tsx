@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
-import styles from './layout.module.css'
 
 export default function Title({ children }: { children: ReactNode }) {
-  return <h1 className={styles.title}>{children}</h1>
+  return <h1 className="text-[2rem] leading-none">{children}</h1>
 }

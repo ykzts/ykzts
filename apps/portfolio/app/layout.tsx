@@ -4,7 +4,6 @@ import clsx from 'clsx'
 import type { Metadata, Viewport } from 'next'
 import { Noto_Sans_JP, Raleway, Source_Sans_3 } from 'next/font/google'
 import SVGSymbols from './_components/svg-symbols'
-import styles from './layout.module.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com/'),
@@ -53,7 +52,10 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     >
       <head />
       <body>
-        <a className={styles['skip-link']} href="#content">
+        <a
+          className="absolute -top-20 left-2 z-[1000] rounded bg-black px-4 py-2 text-white no-underline transition-[top] duration-300 focus:top-2 focus:outline focus:outline-[3px] focus:outline-offset-2 focus:outline-[--color-brand]"
+          href="#content"
+        >
           メインコンテンツにスキップ
         </a>
 
