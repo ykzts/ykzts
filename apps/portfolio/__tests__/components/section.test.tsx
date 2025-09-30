@@ -31,7 +31,8 @@ describe('Section Components', () => {
       )
 
       const section = document.querySelector('section')
-      expect(section?.className).toContain('intro')
+      expect(section?.className).toContain('items-center')
+      expect(section?.className).toContain('opacity-0')
     })
 
     it('renders with custom id when provided', () => {
