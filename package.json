@@ -19,7 +19,7 @@
     "check": "biome check",
     "dev": "turbo run dev",
     "test": "turbo run test",
-    "test:a11y": "./e2e/check-accessibility.sh",
+    "test:a11y": "pnpm --filter @ykzts/portfolio test:a11y",
     "typegen": "turbo run typegen",
     "validate": "turbo run validate"
   },

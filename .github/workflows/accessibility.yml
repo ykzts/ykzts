@@ -38,5 +38,7 @@ jobs:
           cache: pnpm
           node-version: ${{ env.NODE_VERSION }}
       - run: pnpm install
-      - name: Run accessibility audit
-        run: ./e2e/check-accessibility.sh
+      - name: Install Playwright browsers
+        run: pnpm --filter @ykzts/portfolio exec playwright install --with-deps chromium
+      - name: Run accessibility tests
+        run: pnpm --filter @ykzts/portfolio test:a11y
