@@ -74,21 +74,13 @@ This project uses **Biome** for linting and formatting with the following standa
 
 ### Dependency Management
 
-When adding or updating dependencies:
+This repository uses pnpm's built-in `minimum-release-age` setting (configured in `.npmrc`) to prevent installing packages that were published too recently:
 
-1. **Check package age**: Run `pnpm check:package-age` before committing
-   - This validates that new packages are at least 24 hours old
-   - Helps avoid packages with critical bugs or security issues
-   - See `scripts/README.md` for more details
+- **Setting**: `minimum-release-age=24` (24 hours)
+- **Purpose**: Provides a safety layer against packages with critical bugs or security issues
+- **Comparison**: Renovate uses 3 days; this uses 24 hours for faster manual updates while still ensuring safety
 
-2. **Use pnpm commands**:
-   ```bash
-   pnpm add <package>        # Add a dependency
-   pnpm add -D <package>     # Add a dev dependency
-   pnpm update <package>     # Update a specific package
-   ```
-
-3. **Let Renovate handle routine updates**: The repository uses Renovate with a 3-day minimum release age for automated updates
+pnpm will automatically enforce this when installing or updating packages.
 
 ### TypeScript Guidelines
 
