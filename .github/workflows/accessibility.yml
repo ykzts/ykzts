@@ -1,13 +1,19 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-name: Node.js CI
+# Accessibility testing workflow for Portfolio app
+name: Accessibility Testing
 
 on:
   pull_request:
+    paths:
+      - 'apps/portfolio/**'
+      - 'e2e/**'
+      - '.github/workflows/accessibility.yml'
     types: [opened, synchronize]
   push:
     branches: [main]
+    paths:
+      - 'apps/portfolio/**'
+      - 'e2e/**'
+      - '.github/workflows/accessibility.yml'
 
 permissions:
   contents: read
@@ -19,7 +25,7 @@ env:
   NODE_VERSION: 22.20.0
 
 jobs:
-  build:
+  accessibility:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
@@ -32,7 +38,5 @@ jobs:
           cache: pnpm
           node-version: ${{ env.NODE_VERSION }}
       - run: pnpm install
-      - run: pnpm typegen
-      - run: pnpm exec biome ci
-      - run: pnpm test
-      - run: pnpm validate
+      - name: Run accessibility audit
+        run: ./e2e/check-accessibility.sh
