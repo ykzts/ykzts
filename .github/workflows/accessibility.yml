@@ -40,5 +40,4 @@ jobs:
       - run: pnpm install
       - name: Install Playwright browsers
         run: pnpm --filter @ykzts/portfolio exec playwright install --with-deps chromium
-      - name: Run accessibility tests
-        run: pnpm exec turbo run test:a11y
+      - run: pnpm test:a11y
