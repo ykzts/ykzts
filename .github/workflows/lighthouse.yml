@@ -1,0 +1,44 @@
+# Lighthouse CI workflow for Portfolio app
+name: Lighthouse CI
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portfolio/**'
+      - '.github/workflows/lighthouse.yml'
+    types: [opened, synchronize]
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portfolio/**'
+      - '.github/workflows/lighthouse.yml'
+
+permissions:
+  contents: read
+
+env:
+  # renovate: datasource=npm depName=corepack
+  COREPACK_VERSION: 0.34.0
+  # renovate: datasource=node-version depName=node
+  NODE_VERSION: 22.20.0
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - name: Enable corepack
+        run: |
+          npm install -g corepack@${COREPACK_VERSION}
+          corepack enable
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          cache: pnpm
+          node-version: ${{ env.NODE_VERSION }}
+      - run: pnpm install
+      - name: Build portfolio app
+        run: pnpm --filter @ykzts/portfolio build
+      - name: Run Lighthouse CI
+        run: pnpm --filter @ykzts/portfolio lighthouse
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
