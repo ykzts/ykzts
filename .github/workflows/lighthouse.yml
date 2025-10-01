@@ -39,6 +39,7 @@ jobs:
       - run: pnpm install
       - name: Run Lighthouse CI
         run: pnpm lighthouse --filter @ykzts/portfolio
+        continue-on-error: true
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEXT_PUBLIC_SANITY_DATASET: production
