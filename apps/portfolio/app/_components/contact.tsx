@@ -79,22 +79,29 @@ export default function Contact() {
 
       <SectionFooter>
         <ul className="list-none pl-0">
-          <li className="mb-12 pl-0 last:mb-0 max-md:mb-8 [&>:last-child]:mb-0">
+          <li className="mb-12 pl-0 last:mb-0 max-md:mb-8">
             <h3 className="mb-4">Email</h3>
 
-            <a href="mailto:ykzts@desire.sh">ykzts@desire.sh</a>
+            <a className="mb-0" href="mailto:ykzts@desire.sh">
+              ykzts@desire.sh
+            </a>
           </li>
-          <li className="mb-12 pl-0 last:mb-0 max-md:mb-8 [&>:last-child]:mb-0">
+          <li className="mb-12 pl-0 last:mb-0 max-md:mb-8">
             <h3 className="mb-4">Blog</h3>
 
-            <Link href="https://ykzts.blog/" rel="me" target="_blank">
+            <Link
+              className="mb-0"
+              href="https://ykzts.blog/"
+              rel="me"
+              target="_blank"
+            >
               ykzts.blog
             </Link>
           </li>
-          <li className="mb-12 pl-0 last:mb-0 max-md:mb-8 [&>:last-child]:mb-0">
+          <li className="mb-12 pl-0 last:mb-0 max-md:mb-8">
             <h3 className="mb-4">Elsewhere</h3>
 
-            <ul className="cursor-default list-none pl-0">
+            <ul className="mb-0 cursor-default list-none pl-0">
               {socialLinks.map((socialLink) => (
                 <li className="inline-block last:pr-0" key={socialLink.url}>
                   <Link
