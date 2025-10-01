@@ -18,6 +18,7 @@
     "build": "turbo run build",
     "check": "biome check",
     "dev": "turbo run dev",
+    "lighthouse": "turbo run lighthouse",
     "test": "turbo run test",
     "test:a11y": "turbo run test:a11y",
     "typegen": "turbo run typegen",
