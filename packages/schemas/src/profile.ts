@@ -1,42 +1,87 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 
-export default defineType({
+const supportedLanguages = [
+  { id: 'en', title: 'English' },
+  { id: 'ja', title: 'Japanese' }
+]
+
+const localeString = defineType({
+  fields: supportedLanguages.map((lang) =>
+    defineField({
+      name: lang.id,
+      title: lang.title,
+      type: 'string'
+    })
+  ),
+  name: 'localeString',
+  title: 'Localized string',
+  type: 'object'
+})
+
+const localeText = defineType({
+  fields: supportedLanguages.map((lang) =>
+    defineField({
+      name: lang.id,
+      title: lang.title,
+      type: 'text'
+    })
+  ),
+  name: 'localeText',
+  title: 'Localized text',
+  type: 'object'
+})
+
+const profile = defineType({
   fields: [
     defineField({
       name: 'name',
       title: 'Name',
-      type: 'string',
-      validation: (Rule) => Rule.required().min(1).max(256)
-    }),
-    defineField({
-      name: 'nameJa',
-      title: 'Name (Japanese)',
-      type: 'string',
-      validation: (Rule) => Rule.max(256)
+      type: 'localeString',
+      validation: (Rule) =>
+        Rule.required().custom(
+          (value: { en?: string; ja?: string } | undefined) => {
+            if (!value?.en) {
+              return 'English name is required'
+            }
+            if (value.en.length > 256) {
+              return 'Name must be 256 characters or less'
+            }
+            if (value.ja && value.ja.length > 256) {
+              return 'Japanese name must be 256 characters or less'
+            }
+            return true
+          }
+        )
     }),
     defineField({
       name: 'tagline',
       title: 'Tagline',
-      type: 'text',
-      validation: (Rule) => Rule.max(500)
-    }),
-    defineField({
-      name: 'taglineJa',
-      title: 'Tagline (Japanese)',
-      type: 'text',
-      validation: (Rule) => Rule.max(500)
+      type: 'localeText',
+      validation: (Rule) =>
+        Rule.custom((value: { en?: string; ja?: string } | undefined) => {
+          if (value?.en && value.en.length > 500) {
+            return 'Tagline must be 500 characters or less'
+          }
+          if (value?.ja && value.ja.length > 500) {
+            return 'Japanese tagline must be 500 characters or less'
+          }
+          return true
+        })
     }),
     defineField({
       name: 'bio',
       title: 'Bio',
-      type: 'text',
-      validation: (Rule) => Rule.max(2000)
-    }),
-    defineField({
-      name: 'bioJa',
-      title: 'Bio (Japanese)',
-      type: 'text',
-      validation: (Rule) => Rule.max(2000)
+      type: 'localeText',
+      validation: (Rule) =>
+        Rule.custom((value: { en?: string; ja?: string } | undefined) => {
+          if (value?.en && value.en.length > 2000) {
+            return 'Bio must be 2000 characters or less'
+          }
+          if (value?.ja && value.ja.length > 2000) {
+            return 'Japanese bio must be 2000 characters or less'
+          }
+          return true
+        })
     }),
     defineField({
       name: 'email',
@@ -64,12 +109,7 @@ export default defineType({
             defineField({
               name: 'label',
               title: 'Label',
-              type: 'string'
-            }),
-            defineField({
-              name: 'labelJa',
-              title: 'Label (Japanese)',
-              type: 'string'
+              type: 'localeString'
             })
           ],
           name: 'socialLink',
@@ -95,10 +135,16 @@ export default defineType({
   ],
   name: 'profile',
   preview: {
-    prepare({ name, email }) {
+    prepare({
+      name,
+      email
+    }: {
+      name?: { en?: string; ja?: string }
+      email?: string
+    }) {
       return {
         subtitle: email,
-        title: name
+        title: name?.en || name?.ja || 'Untitled'
       }
     },
     select: {
@@ -109,3 +155,6 @@ export default defineType({
   title: 'Profile',
   type: 'document'
 })
+
+export default profile
+export { localeString, localeText }

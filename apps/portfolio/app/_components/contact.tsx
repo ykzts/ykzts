@@ -80,14 +80,14 @@ const fallbackSocialLinks: SocialLink[] = [
 export default async function Contact() {
   const profile = await getProfile()
 
-  const bioJa = profile?.bioJa
-    ? profile.bioJa.split('\n\n').filter((p) => p.trim())
+  const bioJa = profile?.bio?.ja
+    ? profile.bio.ja.split('\n\n').filter((p) => p.trim())
     : fallbackBioJa
   const email = profile?.email ?? fallbackEmail
 
   const socialLinks: SocialLink[] =
     profile?.socialLinks?.map((link) => ({
-      label: link.labelJa ?? link.label ?? link.platform,
+      label: link.label?.ja ?? link.label?.en ?? link.platform,
       logo: platformLogos[link.platform] ?? platformLogos.X,
       url: link.url as `https://${string}`
     })) ?? fallbackSocialLinks

@@ -10,7 +10,7 @@ export const contentType = 'image/png'
 
 export default async function Image() {
   const profile = await getProfile()
-  const name = profile?.name ?? 'Yamagishi Kazutoshi'
+  const name = profile?.name?.en ?? 'Yamagishi Kazutoshi'
   const email = profile?.email ?? 'ykzts@desire.sh'
 
   return new ImageResponse(

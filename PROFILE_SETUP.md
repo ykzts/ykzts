@@ -9,20 +9,23 @@ This guide explains how to set up the profile information in Sanity Studio for t
 
 ## Profile Schema Fields
 
-The profile schema includes the following fields:
+The profile schema uses Sanity's localization feature with `localeString` and `localeText` types for internationalization.
 
 ### Required Fields
 
-- **Name**: Full name in English (e.g., "Yamagishi Kazutoshi")
+- **Name**: Localized string with:
+  - **English** (required): Full name in English (e.g., "Yamagishi Kazutoshi")
+  - **Japanese**: Full name in Japanese (e.g., "山岸和利")
 - **Email**: Contact email address (e.g., "ykzts@desire.sh")
 
 ### Optional Fields (Recommended)
 
-- **Name (Japanese)**: Full name in Japanese (e.g., "山岸和利")
-- **Tagline**: Professional tagline or subtitle in English
-- **Tagline (Japanese)**: Professional tagline in Japanese (e.g., "ソフトウェア開発者")
-- **Bio**: Full biography or introduction text in English
-- **Bio (Japanese)**: Full biography in Japanese (e.g., professional introduction and contact policies)
+- **Tagline**: Localized text with:
+  - **English**: Professional tagline or subtitle
+  - **Japanese**: Professional tagline in Japanese (e.g., "ソフトウェア開発者")
+- **Bio**: Localized text with:
+  - **English**: Full biography or introduction text
+  - **Japanese**: Full biography in Japanese (e.g., professional introduction and contact policies)
 - **Social Links**: Array of social media accounts and links
 
 ### Social Links Structure
@@ -30,8 +33,9 @@ The profile schema includes the following fields:
 Each social link includes:
 - **Platform** (required): Platform name (e.g., "GitHub", "X", "Mastodon", "Facebook", "Threads")
 - **URL** (required): Full HTTPS URL to the profile
-- **Label**: Accessibility label in English
-- **Label (Japanese)**: Accessibility label in Japanese (e.g., "山岸和利のGitHubアカウント")
+- **Label**: Localized string with:
+  - **English**: Accessibility label in English
+  - **Japanese**: Accessibility label in Japanese (e.g., "山岸和利のGitHubアカウント")
 
 ## Setting Up Your Profile
 
@@ -63,25 +67,35 @@ Here's an example of a complete profile document:
 
 ```json
 {
-  "name": "Yamagishi Kazutoshi",
-  "nameJa": "山岸和利",
+  "name": {
+    "en": "Yamagishi Kazutoshi",
+    "ja": "山岸和利"
+  },
   "email": "ykzts@desire.sh",
-  "tagline": "Software Developer",
-  "taglineJa": "ソフトウェア開発者",
-  "bio": "Full-stack developer specializing in web applications...",
-  "bioJa": "山岸和利に対するお問い合わせやご依頼はメールからお願いします...",
+  "tagline": {
+    "en": "Software Developer",
+    "ja": "ソフトウェア開発者"
+  },
+  "bio": {
+    "en": "Full-stack developer specializing in web applications...",
+    "ja": "山岸和利に対するお問い合わせやご依頼はメールからお願いします..."
+  },
   "socialLinks": [
     {
       "platform": "GitHub",
       "url": "https://github.com/ykzts",
-      "label": "GitHub Account",
-      "labelJa": "山岸和利のGitHubアカウント"
+      "label": {
+        "en": "GitHub Account",
+        "ja": "山岸和利のGitHubアカウント"
+      }
     },
     {
       "platform": "X",
       "url": "https://x.com/ykzts",
-      "label": "X Account",
-      "labelJa": "山岸和利のXアカウント"
+      "label": {
+        "en": "X Account",
+        "ja": "山岸和利のXアカウント"
+      }
     }
   ]
 }
@@ -123,4 +137,5 @@ After setting up your profile in Sanity Studio:
 
 - **Profile not appearing**: Check that the profile document is published (not in draft state)
 - **Old data still showing**: The website uses CDN caching; changes may take a few minutes to appear
-- **Missing fields**: Only Name and Email are required; all other fields will gracefully fall back to default values if not provided
+- **Missing fields**: Only Name (English) and Email are required; all other fields will gracefully fall back to default values if not provided
+- **Localization**: The profile uses Sanity's localization feature with separate `en` and `ja` fields for multilingual support

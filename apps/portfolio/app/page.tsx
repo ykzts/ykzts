@@ -26,8 +26,8 @@ const fallbackName = '山岸和利'
 
 export async function generateMetadata(): Promise<Metadata> {
   const profile = await getProfile()
-  const description = profile?.bioJa ?? fallbackDescription
-  const nameJa = profile?.nameJa ?? fallbackName
+  const description = profile?.bio?.ja ?? fallbackDescription
+  const nameJa = profile?.name?.ja ?? fallbackName
 
   return {
     alternates: {
@@ -65,7 +65,7 @@ function About() {
 
 export default async function HomePage(_props: PageProps<'/'>) {
   const profile = await getProfile()
-  const nameJa = profile?.nameJa ?? fallbackName
+  const nameJa = profile?.name?.ja ?? fallbackName
 
   return (
     <LayoutWrapper>
@@ -116,7 +116,7 @@ export default async function HomePage(_props: PageProps<'/'>) {
 
       <footer className={styles.footer} lang="en">
         <div className={styles.copyright}>
-          <span>© {profile?.name ?? 'Yamagishi Kazutoshi'}.</span>{' '}
+          <span>© {profile?.name?.en ?? 'Yamagishi Kazutoshi'}.</span>{' '}
           <span>
             <Link className={styles.footer__link} href="/privacy">
               Privacy Policy

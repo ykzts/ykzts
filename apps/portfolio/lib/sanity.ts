@@ -8,22 +8,28 @@ const workSchema = z.object({
 })
 const worksSchema = z.array(workSchema)
 
+const localeStringSchema = z.object({
+  en: z.string().optional(),
+  ja: z.string().optional()
+})
+
+const localeTextSchema = z.object({
+  en: z.string().optional(),
+  ja: z.string().optional()
+})
+
 const socialLinkSchema = z.object({
-  label: z.string().optional(),
-  labelJa: z.string().optional(),
+  label: localeStringSchema.optional(),
   platform: z.string(),
   url: z.string().url()
 })
 
 const profileSchema = z.object({
-  bio: z.string().optional(),
-  bioJa: z.string().optional(),
+  bio: localeTextSchema.optional(),
   email: z.string().email(),
-  name: z.string(),
-  nameJa: z.string().optional(),
+  name: localeStringSchema,
   socialLinks: z.array(socialLinkSchema).optional(),
-  tagline: z.string().optional(),
-  taglineJa: z.string().optional()
+  tagline: localeTextSchema.optional()
 })
 
 const client = createClient({
@@ -62,18 +68,14 @@ export async function getProfile(): Promise<z.infer<
     const data = await client.fetch<unknown>(`
       *[_type == "profile"] | order(_createdAt asc) [0]{
         bio,
-        bioJa,
         email,
         name,
-        nameJa,
         socialLinks[]{
           label,
-          labelJa,
           platform,
           url
         },
-        tagline,
-        taglineJa
+        tagline
       }
     `)
 

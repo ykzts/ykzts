@@ -67,21 +67,29 @@ describe('Sanity utilities', () => {
   describe('getProfile', () => {
     it('should return parsed profile data when valid data is returned', async () => {
       const mockData = {
-        bio: 'Test bio',
-        bioJa: 'テストバイオ',
+        bio: {
+          en: 'Test bio',
+          ja: 'テストバイオ'
+        },
         email: 'test@example.com',
-        name: 'Test User',
-        nameJa: 'テストユーザー',
+        name: {
+          en: 'Test User',
+          ja: 'テストユーザー'
+        },
         socialLinks: [
           {
-            label: 'GitHub Account',
-            labelJa: 'GitHubアカウント',
+            label: {
+              en: 'GitHub Account',
+              ja: 'GitHubアカウント'
+            },
             platform: 'GitHub',
             url: 'https://github.com/test'
           }
         ],
-        tagline: 'Test tagline',
-        taglineJa: 'テストタグライン'
+        tagline: {
+          en: 'Test tagline',
+          ja: 'テストタグライン'
+        }
       }
 
       mockFetch.mockResolvedValue(mockData)
@@ -107,7 +115,7 @@ describe('Sanity utilities', () => {
     it('should throw an error when invalid email is returned', async () => {
       const invalidData = {
         email: 'invalid-email',
-        name: 'Test User'
+        name: { en: 'Test User' }
       }
 
       mockFetch.mockResolvedValue(invalidData)
@@ -119,7 +127,7 @@ describe('Sanity utilities', () => {
     it('should handle optional fields', async () => {
       const minimalData = {
         email: 'test@example.com',
-        name: 'Test User'
+        name: { en: 'Test User' }
       }
 
       mockFetch.mockResolvedValue(minimalData)
