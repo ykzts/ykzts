@@ -14,7 +14,7 @@
     "collect": {
       "numberOfRuns": 3,
       "startServerCommand": "pnpm start",
-      "startServerReadyPattern": "Ready",
+      "startServerReadyPattern": "started server on",
       "url": ["http://localhost:3000/"]
     },
     "upload": {
