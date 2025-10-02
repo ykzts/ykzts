@@ -18,7 +18,8 @@
       "persistent": true
     },
     "lighthouse": {
-      "dependsOn": ["build"],
+      "cache": false,
+      "dependsOn": ["^build", "build"],
       "env": ["NEXT_PUBLIC_SANITY_DATASET", "NEXT_PUBLIC_SANITY_PROJECT_ID"],
       "outputs": [".lighthouseci/**"]
     },
