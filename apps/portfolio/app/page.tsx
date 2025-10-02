@@ -70,7 +70,7 @@ export default function HomePage(_props: PageProps<'/'>) {
             <li className="pl-4 align-middle first:pl-0 max-sm:w-full max-sm:grow max-sm:shrink max-sm:pt-4 max-sm:text-center">
               <a
                 aria-label="コンテンツまでスクロール"
-                className="relative inline-block h-16 w-24 rounded border-b-0 text-[4rem] transition-transform duration-[0.25s] ease-in-out hover:translate-y-1 focus:translate-y-1 focus:outline focus:outline-[3px] focus:outline-offset-2 focus:outline-[--color-brand]"
+                className="relative inline-block h-16 w-24 rounded border-b-0 text-[4rem] transition-transform duration-[0.25s] ease-in-out hover:translate-y-1 focus:translate-y-1 focus:outline focus:outline-[3px] focus:outline-offset-2 focus:outline-(--color-brand)"
                 href="#content"
               >
                 <FaArrowDown />

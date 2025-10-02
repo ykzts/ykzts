@@ -53,7 +53,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
       <head />
       <body>
         <a
-          className="absolute -top-20 left-2 z-[1000] rounded bg-black px-4 py-2 text-white no-underline transition-[top] duration-300 focus:top-2 focus:outline focus:outline-[3px] focus:outline-offset-2 focus:outline-[--color-brand]"
+          className="absolute -top-20 left-2 z-[1000] rounded bg-black px-4 py-2 text-white no-underline transition-[top] duration-300 focus:top-2 focus:outline focus:outline-[3px] focus:outline-offset-2 focus:outline-(--color-brand)"
           href="#content"
         >
           メインコンテンツにスキップ
