@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Suspense } from 'react'
 import { FaArrowDown } from 'react-icons/fa'
 import Link from '@/components/link'
+import { getProfile } from '@/lib/sanity'
 import keyVisual from './_assets/key-visual.jpg'
 import Contact from './_components/contact'
 import Section, {
@@ -16,27 +17,35 @@ import LayoutWrapper from './_components/wrapper'
 import AboutDoc from './_docs/about.mdx'
 import styles from './page.module.css'
 
-const description = [
+const fallbackDescription = [
   'JavaScriptやRubyといったプログラミング言語を用いたウェブアプリケーションの開発を得意とするソフトウェア開発者 山岸和利のポートフォリオです。',
   '山岸和利による過去の実績や作品の掲載、各種ソーシャルネットワーキングサービスのアカウントへのリンクなどの連絡先への参照があります。'
 ].join('')
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: '/'
-  },
-  description,
-  openGraph: {
+const fallbackName = '山岸和利'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const profile = await getProfile()
+  const description = profile?.bioJa ?? fallbackDescription
+  const nameJa = profile?.nameJa ?? fallbackName
+
+  return {
+    alternates: {
+      canonical: '/'
+    },
     description,
-    title: 'ykzts.com',
-    type: 'website',
-    url: '/'
-  },
-  title: {
-    absolute: 'ykzts.com - ソフトウェア開発者 山岸和利のポートフォリオ'
-  },
-  twitter: {
-    card: 'summary_large_image'
+    openGraph: {
+      description,
+      title: 'ykzts.com',
+      type: 'website',
+      url: '/'
+    },
+    title: {
+      absolute: `ykzts.com - ソフトウェア開発者 ${nameJa}のポートフォリオ`
+    },
+    twitter: {
+      card: 'summary_large_image'
+    }
   }
 }
 
@@ -54,7 +63,10 @@ function About() {
   )
 }
 
-export default function HomePage(_props: PageProps<'/'>) {
+export default async function HomePage(_props: PageProps<'/'>) {
+  const profile = await getProfile()
+  const nameJa = profile?.nameJa ?? fallbackName
+
   return (
     <LayoutWrapper>
       <Section intro>
@@ -62,7 +74,7 @@ export default function HomePage(_props: PageProps<'/'>) {
           <SectionTitle>{'ykzts\u200b.com'}</SectionTitle>
 
           <SectionTagline>
-            ソフトウェア開発者 山岸和利の
+            ソフトウェア開発者 {nameJa}の
             <br />
             ポートフォリオ
           </SectionTagline>
@@ -97,12 +109,14 @@ export default function HomePage(_props: PageProps<'/'>) {
         <Suspense fallback={<WorksSkeleton />}>
           <Works />
         </Suspense>
-        <Contact />
+        <Suspense>
+          <Contact />
+        </Suspense>
       </main>
 
       <footer className={styles.footer} lang="en">
         <div className={styles.copyright}>
-          <span>© Yamagishi Kazutoshi.</span>{' '}
+          <span>© {profile?.name ?? 'Yamagishi Kazutoshi'}.</span>{' '}
           <span>
             <Link className={styles.footer__link} href="/privacy">
               Privacy Policy

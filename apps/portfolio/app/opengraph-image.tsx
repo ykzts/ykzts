@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import { getProfile } from '@/lib/sanity'
 
 export const alt = 'ykzts.com'
 export const size = {
@@ -7,7 +8,11 @@ export const size = {
 }
 export const contentType = 'image/png'
 
-export default function Image() {
+export default async function Image() {
+  const profile = await getProfile()
+  const name = profile?.name ?? 'Yamagishi Kazutoshi'
+  const email = profile?.email ?? 'ykzts@desire.sh'
+
   return new ImageResponse(
     <div
       style={{
@@ -56,10 +61,8 @@ export default function Image() {
               justifyContent: 'center'
             }}
           >
-            <div style={{ fontSize: 32, fontWeight: 700 }}>
-              Yamagishi Kazutoshi
-            </div>
-            <div style={{ fontSize: 24 }}>ykzts@desire.sh</div>
+            <div style={{ fontSize: 32, fontWeight: 700 }}>{name}</div>
+            <div style={{ fontSize: 24 }}>{email}</div>
           </div>
         </div>
       </div>
