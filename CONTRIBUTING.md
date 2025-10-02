@@ -72,6 +72,17 @@ This project uses **Biome** for linting and formatting with the following standa
 - **Trailing Commas**: None
 - **Import Sorting**: Enabled with sorted attributes/keys/properties
 
+### Dependency Management
+
+This repository uses pnpm's built-in `minimumReleaseAge` setting (configured in `pnpm-workspace.yaml`) to prevent installing packages that were published too recently:
+
+- **Setting**: `minimumReleaseAge: 1440` (1440 minutes = 24 hours)
+- **Purpose**: Provides a safety layer against packages with critical bugs or security issues
+- **Exceptions**: Next.js and related packages are excluded via `minimumReleaseAgeExclude` since we track canary releases
+- **Comparison**: Renovate uses 3 days; this uses 24 hours for faster manual updates while still ensuring safety
+
+pnpm will automatically enforce this when installing or updating packages.
+
 ### TypeScript Guidelines
 
 - Use strict TypeScript configuration
