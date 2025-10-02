@@ -16,6 +16,7 @@
   "description": "Next.js portfolio website showcasing projects, skills, and professional experience",
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
+    "@lhci/cli": "^0.15.1",
     "@mdx-js/loader": "^3.1.0",
     "@next/mdx": "15.6.0-canary.39",
     "@playwright/test": "^1.55.1",
@@ -46,6 +47,7 @@
   "scripts": {
     "build": "next build --turbopack",
     "dev": "next --turbopack",
+    "lighthouse": "lhci autorun",
     "start": "next start",
     "test": "vitest --run",
     "test:a11y": "playwright test",
