@@ -27,7 +27,15 @@ export default defineConfig({
 ### Available Schemas
 
 - **`post`**: Blog post content with title field
-- **`profile`**: User profile information with name field  
+- **`profile`**: User profile information including:
+  - **name** (required): Full name in English
+  - **nameJa**: Full name in Japanese
+  - **email** (required): Contact email address
+  - **tagline**: Professional tagline/subtitle
+  - **taglineJa**: Professional tagline in Japanese
+  - **bio**: Full biography text
+  - **bioJa**: Full biography text in Japanese
+  - **socialLinks**: Array of social media links with platform, URL, and labels
 - **`work`**: Portfolio work entries with title, content, slug, and start date
 
 ## Dependencies
