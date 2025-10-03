@@ -71,8 +71,13 @@ pnpm lighthouse # Run Lighthouse CI performance audit
 - `vitest`: Fast unit testing framework
 - `tailwindcss`: Utility-first CSS framework (v4)
 - `@tailwindcss/postcss`: PostCSS plugin for Tailwind v4
+- `@tailwindcss/typography`: Typography plugin for Tailwind CSS
 - `postcss`: CSS transformation tool
 - `autoprefixer`: PostCSS plugin for vendor prefixes
+- `@lhci/cli`: Lighthouse CI for automated performance auditing
+- `@playwright/test`: End-to-end and accessibility testing
+- `@axe-core/playwright`: Accessibility testing integration
+- `vitest`: Fast unit testing framework
 
 ## Architecture
 
