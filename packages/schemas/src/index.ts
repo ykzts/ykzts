@@ -1,3 +1,5 @@
+export { default as localeString } from './locale-string.js'
+export { default as localeText } from './locale-text.js'
 export { default as post } from './post.js'
-export { default as profile, localeString, localeText } from './profile.js'
+export { default as profile } from './profile.js'
 export { default as work } from './work.js'

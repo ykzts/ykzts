@@ -28,8 +28,13 @@ export default defineConfig({
 
 ### Available Schemas
 
-- **`localeString`**: Localized string type with `en` and `ja` fields for internationalization
-- **`localeText`**: Localized text type with `en` and `ja` fields for internationalization
+#### Localization Types
+
+- **`localeString`**: Reusable localized string type with `en` (English) and `ja` (Japanese) fields for internationalization. Can be used across multiple schemas.
+- **`localeText`**: Reusable localized text type with `en` (English) and `ja` (Japanese) fields for internationalization. Can be used across multiple schemas.
+
+#### Document Schemas
+
 - **`post`**: Blog post content with title field
 - **`profile`**: User profile information including:
   - **name** (required): Localized string with English (`en`) and Japanese (`ja`) fields

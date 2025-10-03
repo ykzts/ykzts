@@ -1,37 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 
-const supportedLanguages = [
-  { id: 'en', title: 'English' },
-  { id: 'ja', title: 'Japanese' }
-]
-
-const localeString = defineType({
-  fields: supportedLanguages.map((lang) =>
-    defineField({
-      name: lang.id,
-      title: lang.title,
-      type: 'string'
-    })
-  ),
-  name: 'localeString',
-  title: 'Localized string',
-  type: 'object'
-})
-
-const localeText = defineType({
-  fields: supportedLanguages.map((lang) =>
-    defineField({
-      name: lang.id,
-      title: lang.title,
-      type: 'text'
-    })
-  ),
-  name: 'localeText',
-  title: 'Localized text',
-  type: 'object'
-})
-
-const profile = defineType({
+export default defineType({
   fields: [
     defineField({
       name: 'name',
@@ -155,6 +124,3 @@ const profile = defineType({
   title: 'Profile',
   type: 'document'
 })
-
-export default profile
-export { localeString, localeText }
