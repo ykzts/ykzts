@@ -14,7 +14,6 @@ import Section, {
 import Works, { WorksSkeleton } from './_components/works'
 import LayoutWrapper from './_components/wrapper'
 import AboutDoc from './_docs/about.mdx'
-import styles from './page.module.css'
 
 const description = [
   'JavaScriptやRubyといったプログラミング言語を用いたウェブアプリケーションの開発を得意とするソフトウェア開発者 山岸和利のポートフォリオです。',
@@ -67,11 +66,11 @@ export default function HomePage(_props: PageProps<'/'>) {
             ポートフォリオ
           </SectionTagline>
 
-          <ul className={styles.actions}>
-            <li className={styles.actions__item}>
+          <ul className="ml-auto -mt-4 flex w-80 cursor-default list-none justify-end pl-0 max-[1152px]:hidden">
+            <li className="pl-4 align-middle first:pl-0 max-sm:w-full max-sm:grow max-sm:shrink max-sm:pt-4 max-sm:text-center">
               <a
                 aria-label="コンテンツまでスクロール"
-                className={styles['arrow-link']}
+                className="relative inline-block h-16 w-24 rounded border-b-0 text-[4rem] transition-transform duration-[0.25s] ease-in-out hover:translate-y-1 focus:translate-y-1 focus:outline focus:outline-[3px] focus:outline-offset-2 focus:outline-(--color-brand)"
                 href="#content"
               >
                 <FaArrowDown />
@@ -83,7 +82,7 @@ export default function HomePage(_props: PageProps<'/'>) {
         <SectionContent>
           <Image
             alt=""
-            className={styles['key-visual']}
+            className="absolute inset-0 h-full w-full object-cover"
             placeholder="blur"
             priority
             sizes="(max-width: 1280px) 50vw,100vw"
@@ -100,11 +99,14 @@ export default function HomePage(_props: PageProps<'/'>) {
         <Contact />
       </main>
 
-      <footer className={styles.footer} lang="en">
-        <div className={styles.copyright}>
+      <footer
+        className="relative left-[50vw] w-[50vw] px-20 text-base text-black/60 max-xl:px-16 max-[1152px]:left-0 max-[1152px]:w-full max-[1152px]:px-16 max-[1152px]:pb-16 max-md:px-8 max-md:pb-8 max-[360px]:px-6 max-[360px]:pb-6"
+        lang="en"
+      >
+        <div>
           <span>© Yamagishi Kazutoshi.</span>{' '}
           <span>
-            <Link className={styles.footer__link} href="/privacy">
+            <Link className="text-inherit" href="/privacy">
               Privacy Policy
             </Link>
             .
@@ -112,7 +114,7 @@ export default function HomePage(_props: PageProps<'/'>) {
           <span>
             Design:{' '}
             <Link
-              className={styles.footer__link}
+              className="text-inherit"
               href="https://html5up.net/"
               target="_blank"
             >
@@ -123,7 +125,7 @@ export default function HomePage(_props: PageProps<'/'>) {
           <span>
             Artwork:{' '}
             <Link
-              className={styles.footer__link}
+              className="text-inherit"
               href="https://x.com/diru_k1005"
               target="_blank"
             >

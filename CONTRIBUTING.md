@@ -23,6 +23,7 @@ This is a pnpm workspace monorepo with the following structure:
 - **Build System**: Turbo (monorepo build orchestration)
 - **Language**: TypeScript (modern/strict configuration)
 - **Frontend Frameworks**: Next.js 15, Docusaurus 3, React 19
+- **Styling**: Tailwind CSS v4 (portfolio), CSS (blog-legacy)
 - **Content Management**: Sanity CMS
 - **Linting/Formatting**: Biome (replaces ESLint + Prettier)
 
@@ -95,7 +96,7 @@ pnpm will automatically enforce this when installing or updating packages.
 - Use React 19 features (modern JSX transform, React Compiler)
 - Prefer function components with hooks
 - Use Next.js App Router conventions
-- CSS Modules for component styling
+- Tailwind CSS for component styling
 
 ## Commit Message Standards
 
@@ -246,7 +247,7 @@ All build tasks are orchestrated through Turbo:
 
 #### Portfolio App (`apps/portfolio/`)
 - Uses Next.js 15 with App Router and React Compiler
-- Styled with CSS Modules
+- Styled with Tailwind CSS
 - Integrated with Sanity CMS
 
 #### Blog Legacy (`apps/blog-legacy/`)
@@ -268,7 +269,7 @@ All build tasks are orchestrated through Turbo:
 
 - **Components**: PascalCase (`MyComponent.tsx`)
 - **Pages**: kebab-case or Next.js conventions
-- **Styles**: `component.module.css` for CSS Modules
+- **Styles**: Tailwind CSS utility classes in JSX/TSX files
 - **Types**: Descriptive names, use `type` imports
 - **Content**: ISO date prefixes for blog posts
 

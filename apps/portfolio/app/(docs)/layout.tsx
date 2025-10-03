@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
-import styles from './layout.module.css'
 
 export default function DocsLayout({
   children,
@@ -10,13 +9,13 @@ export default function DocsLayout({
   title: ReactNode
 }>) {
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
+    <div className="min-h-screen bg-brand px-4 pb-4 pt-16 supports-[height:100dvh]:min-h-dvh">
+      <main className="prose prose-slate mx-auto max-w-3xl rounded-2xl bg-white/80 p-4 shadow-md backdrop-blur">
         {title}
 
         {children}
 
-        <p className={styles.backToTop}>
+        <p className="mt-40">
           <Link href="/">トップページに戻る</Link>
         </p>
       </main>
