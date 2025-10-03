@@ -15,24 +15,76 @@ const mockWorks = [
   }
 ]
 
+// Mock data for Sanity profile
+const mockProfile = {
+  bio: {
+    en: 'Software developer specializing in web applications.',
+    ja: '山岸和利に対するお問い合わせやご依頼はメールからお願いします。スケジュール次第ではありますが有期もしくは案件単位での作業依頼や技術相談でしたら有償で承ります。\n\nただし無償もしくは報酬が不明瞭な依頼に関してはお応えできかねます。また依頼主が不明であるスカウトメールやオファーメールにつきましてはご返答いたしかねますのであらかじめご容赦ください。'
+  },
+  email: 'ykzts@desire.sh',
+  name: {
+    en: 'Yamagishi Kazutoshi',
+    ja: '山岸和利'
+  },
+  socialLinks: [
+    {
+      label: {
+        ja: '山岸和利のGitHubアカウント'
+      },
+      platform: 'GitHub',
+      url: 'https://github.com/ykzts'
+    },
+    {
+      label: {
+        ja: '山岸和利のXアカウント'
+      },
+      platform: 'X',
+      url: 'https://x.com/ykzts'
+    }
+  ],
+  tagline: {
+    en: 'Software Developer',
+    ja: 'ソフトウェア開発者'
+  }
+}
+
 test.describe('Accessibility Tests', () => {
   test.beforeEach(async ({ page }) => {
     // Intercept Sanity API calls and return mock data
     await page.route('**/cdn.sanity.io/**', async (route) => {
-      await route.fulfill({
-        body: JSON.stringify({ result: mockWorks }),
-        contentType: 'application/json',
-        status: 200
-      })
+      const url = route.request().url()
+      // Handle different query types
+      if (url.includes('profile')) {
+        await route.fulfill({
+          body: JSON.stringify({ result: mockProfile }),
+          contentType: 'application/json',
+          status: 200
+        })
+      } else {
+        await route.fulfill({
+          body: JSON.stringify({ result: mockWorks }),
+          contentType: 'application/json',
+          status: 200
+        })
+      }
     })
 
     // Also handle direct API calls
     await page.route('**/*sanity*/**', async (route) => {
-      await route.fulfill({
-        body: JSON.stringify({ result: mockWorks }),
-        contentType: 'application/json',
-        status: 200
-      })
+      const url = route.request().url()
+      if (url.includes('profile')) {
+        await route.fulfill({
+          body: JSON.stringify({ result: mockProfile }),
+          contentType: 'application/json',
+          status: 200
+        })
+      } else {
+        await route.fulfill({
+          body: JSON.stringify({ result: mockWorks }),
+          contentType: 'application/json',
+          status: 200
+        })
+      }
     })
   })
 

@@ -2,6 +2,8 @@
 
 import { visionTool } from '@sanity/vision'
 import {
+  localeString,
+  localeText,
   post as postSchema,
   profile as profileSchema,
   work as workSchema
@@ -27,6 +29,6 @@ export default defineConfig({
   ],
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   schema: {
-    types: [postSchema, profileSchema, workSchema]
+    types: [localeString, localeText, postSchema, profileSchema, workSchema]
   }
 })

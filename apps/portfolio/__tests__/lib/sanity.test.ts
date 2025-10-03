@@ -63,4 +63,79 @@ describe('Sanity utilities', () => {
       expect(result).toEqual([])
     })
   })
+
+  describe('getProfile', () => {
+    it('should return parsed profile data when valid data is returned', async () => {
+      const mockData = {
+        bio: {
+          en: 'Test bio',
+          ja: 'テストバイオ'
+        },
+        email: 'test@example.com',
+        name: {
+          en: 'Test User',
+          ja: 'テストユーザー'
+        },
+        socialLinks: [
+          {
+            label: {
+              en: 'GitHub Account',
+              ja: 'GitHubアカウント'
+            },
+            platform: 'GitHub',
+            url: 'https://github.com/test'
+          }
+        ],
+        tagline: {
+          en: 'Test tagline',
+          ja: 'テストタグライン'
+        }
+      }
+
+      mockFetch.mockResolvedValue(mockData)
+
+      const { getProfile } = await import('../../lib/sanity')
+      const result = await getProfile()
+
+      expect(result).toEqual(mockData)
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('*[_type == "profile"]')
+      )
+    })
+
+    it('should return null when no profile exists', async () => {
+      mockFetch.mockResolvedValue(null)
+
+      const { getProfile } = await import('../../lib/sanity')
+      const result = await getProfile()
+
+      expect(result).toBeNull()
+    })
+
+    it('should throw an error when invalid email is returned', async () => {
+      const invalidData = {
+        email: 'invalid-email',
+        name: { en: 'Test User' }
+      }
+
+      mockFetch.mockResolvedValue(invalidData)
+
+      const { getProfile } = await import('../../lib/sanity')
+      await expect(getProfile()).rejects.toThrow()
+    })
+
+    it('should handle optional fields', async () => {
+      const minimalData = {
+        email: 'test@example.com',
+        name: { en: 'Test User' }
+      }
+
+      mockFetch.mockResolvedValue(minimalData)
+
+      const { getProfile } = await import('../../lib/sanity')
+      const result = await getProfile()
+
+      expect(result).toEqual(minimalData)
+    })
+  })
 })

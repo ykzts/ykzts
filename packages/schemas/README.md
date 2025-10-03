@@ -12,6 +12,8 @@ The schemas are imported and used in the Sanity Studio configuration:
 
 ```typescript
 import {
+  localeString,
+  localeText,
   post as postSchema,
   profile as profileSchema,
   work as workSchema
@@ -19,15 +21,27 @@ import {
 
 export default defineConfig({
   schema: {
-    types: [postSchema, profileSchema, workSchema]
+    types: [localeString, localeText, postSchema, profileSchema, workSchema]
   }
 })
 ```
 
 ### Available Schemas
 
+#### Localization Types
+
+- **`localeString`**: Reusable localized string type with `en` (English) and `ja` (Japanese) fields for internationalization. Can be used across multiple schemas.
+- **`localeText`**: Reusable localized text type with `en` (English) and `ja` (Japanese) fields for internationalization. Can be used across multiple schemas.
+
+#### Document Schemas
+
 - **`post`**: Blog post content with title field
-- **`profile`**: User profile information with name field  
+- **`profile`**: User profile information including:
+  - **name** (required): Localized string with English (`en`) and Japanese (`ja`) fields
+  - **email** (required): Contact email address
+  - **tagline**: Localized text for professional tagline/subtitle
+  - **bio**: Localized text for full biography
+  - **socialLinks**: Array of social media links with platform, URL, and localized labels
 - **`work`**: Portfolio work entries with title, content, slug, and start date
 
 ## Dependencies
