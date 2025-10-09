@@ -8,8 +8,7 @@ const nextConfig: NextConfig = {
     cacheComponents: true,
     mdxRs: {
       mdxType: 'gfm'
-    },
-    ppr: true
+    }
   },
   headers() {
     return Promise.resolve([
