@@ -13,6 +13,7 @@ packages:
 # Renovate uses 3 days; this uses 24 hours (1440 minutes) for faster manual updates
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
+  - renovate
   # Exception: Next.js canary releases
   # We track Next.js canary, so exclude Next.js and related packages
   - next
