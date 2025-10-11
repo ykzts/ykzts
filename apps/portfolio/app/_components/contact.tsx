@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react'
 import Link from '@/components/link'
-import ContactForm from './contact-form'
 import Section, {
   SectionContent,
   SectionFooter,
   SectionHeader,
   SectionTitle
 } from '@/components/section'
+import ContactForm from './contact-form'
 
 type SocialLink = {
   label: string
