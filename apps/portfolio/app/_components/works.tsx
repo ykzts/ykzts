@@ -3,14 +3,16 @@ import {
   type PortableTextMarkComponentProps,
   type PortableTextReactComponents
 } from '@portabletext/react'
+import { Suspense } from 'react'
 import Link from '@/components/link'
-import { getWorks } from '@/lib/sanity'
 import Section, {
   SectionContent,
   SectionHeader,
   SectionSkeleton,
   SectionTitle
-} from './section'
+} from '@/components/section'
+import range from '@/lib/range'
+import { getWorks } from '@/lib/sanity'
 
 const portableTextComponents = {
   marks: {
@@ -25,20 +27,17 @@ const portableTextComponents = {
   }
 } satisfies Partial<PortableTextReactComponents>
 
-export function WorksSkeleton() {
+function WorksSkeleton() {
   return (
     <div id="works">
-      {Array(3)
-        .fill(undefined)
-        .map((_, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: using index as key is acceptable for skeletons
-          <SectionSkeleton key={`skeleton-section-${i}`} />
-        ))}
+      {Array.from(range(0, 3), (i) => (
+        <SectionSkeleton key={`skeleton-section-${i}`} />
+      ))}
     </div>
   )
 }
 
-export default async function Works() {
+async function WorksImpl() {
   const works = await getWorks()
 
   return (
@@ -58,5 +57,13 @@ export default async function Works() {
         </Section>
       ))}
     </div>
+  )
+}
+
+export default function Works() {
+  return (
+    <Suspense fallback={<WorksSkeleton />}>
+      <WorksImpl />
+    </Suspense>
   )
 }

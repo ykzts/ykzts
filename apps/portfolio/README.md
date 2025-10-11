@@ -56,7 +56,6 @@ pnpm lighthouse # Run Lighthouse CI performance audit
 - `@vercel/analytics`: Performance and user analytics
 - `react-icons`: Icon components library
 - `react-intersection-observer`: Viewport-based animations
-- `clsx`: Utility for conditional CSS classes
 - `zod`: Runtime type validation
 
 ### Dev Dependencies

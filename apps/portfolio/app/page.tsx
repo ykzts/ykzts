@@ -1,17 +1,16 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import { Suspense } from 'react'
 import { FaArrowDown } from 'react-icons/fa'
 import Link from '@/components/link'
-import keyVisual from './_assets/key-visual.jpg'
-import Contact from './_components/contact'
 import Section, {
   SectionContent,
   SectionHeader,
   SectionTagline,
   SectionTitle
-} from './_components/section'
-import Works, { WorksSkeleton } from './_components/works'
+} from '@/components/section'
+import keyVisual from './_assets/key-visual.jpg'
+import Contact from './_components/contact'
+import Works from './_components/works'
 import AboutDoc from './_docs/about.mdx'
 
 const description = [
@@ -92,9 +91,7 @@ export default function HomePage(_props: PageProps<'/'>) {
 
       <main id="content">
         <About />
-        <Suspense fallback={<WorksSkeleton />}>
-          <Works />
-        </Suspense>
+        <Works />
         <Contact />
       </main>
 

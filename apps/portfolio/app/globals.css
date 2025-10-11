@@ -12,15 +12,6 @@
   --color-brand-dark: #43d9b8;
 
   --paradigm: url('./_assets/paradigm.svg');
-
-  @keyframes wave {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translate(100%);
-    }
-  }
 }
 
 @layer base {

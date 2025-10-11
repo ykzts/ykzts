@@ -11,6 +11,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
       url: new URL('/', metadata.metadataBase).toString()
+    },
+    {
+      changeFrequency: 'yearly',
+      priority: 0.1,
+      url: new URL('/privacy', metadata.metadataBase).toString()
     }
   ]
 }

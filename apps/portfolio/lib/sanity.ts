@@ -1,5 +1,6 @@
 import { createClient } from '@sanity/client'
-import { ZodError, z } from 'zod'
+import { unstable_cacheTag as cacheTag } from 'next/cache'
+import * as z from 'zod'
 
 const workSchema = z.object({
   content: z.array(z.any()),
@@ -16,6 +17,10 @@ const client = createClient({
 })
 
 export async function getWorks(): Promise<z.infer<typeof worksSchema>> {
+  'use cache'
+
+  cacheTag('works')
+
   try {
     const data = await client.fetch<unknown>(`
       *[_type == "work"] | order(startsAt desc){
@@ -28,7 +33,7 @@ export async function getWorks(): Promise<z.infer<typeof worksSchema>> {
     return worksSchema.parse(data)
   } catch (error) {
     // Only catch fetch/network errors, not validation errors
-    if (error instanceof ZodError) {
+    if (error instanceof z.ZodError) {
       throw error
     }
     // Return empty array if Sanity is not properly configured
