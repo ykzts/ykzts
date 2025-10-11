@@ -1,6 +1,5 @@
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
-import clsx from 'clsx'
 import type { Metadata, Viewport } from 'next'
 import { Noto_Sans_JP, Raleway, Source_Sans_3 } from 'next/font/google'
 import { twMerge } from 'tailwind-merge'
@@ -45,12 +44,10 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html
       className={twMerge(
-        clsx(
-          'scroll-smooth antialiased',
-          notoSansJp.variable,
-          raleway.variable,
-          sourceSans3.variable
-        )
+        'scroll-smooth antialiased',
+        notoSansJp.variable,
+        raleway.variable,
+        sourceSans3.variable
       )}
       lang="ja"
     >

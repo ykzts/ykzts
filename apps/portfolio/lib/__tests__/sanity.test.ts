@@ -12,6 +12,11 @@ vi.mock('@sanity/client', () => ({
   }))
 }))
 
+// Mock next/cache
+vi.mock('next/cache', () => ({
+  unstable_cacheTag: vi.fn()
+}))
+
 describe('Sanity utilities', () => {
   beforeEach(() => {
     vi.clearAllMocks()

@@ -5,7 +5,7 @@ import Section, {
   SectionFooter,
   SectionHeader,
   SectionTitle
-} from './section'
+} from '@/components/section'
 
 type SocialLink = {
   label: string

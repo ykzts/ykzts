@@ -8,7 +8,8 @@ const nextConfig: NextConfig = {
     cacheComponents: true,
     mdxRs: {
       mdxType: 'gfm'
-    }
+    },
+    turbopackFileSystemCacheForDev: true
   },
   headers() {
     return Promise.resolve([
