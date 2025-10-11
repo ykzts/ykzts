@@ -54,11 +54,22 @@ async function verifyTurnstile(token: string): Promise<boolean> {
 }
 
 export async function submitContactForm(
-  formData: ContactFormData
+  _prevState: ContactFormResponse | null,
+  formData: FormData
 ): Promise<ContactFormResponse> {
   try {
+    // Extract form data
+    const data: ContactFormData = {
+      email: formData.get('email') as string,
+      message: formData.get('message') as string,
+      name: formData.get('name') as string,
+      privacyConsent: formData.get('privacyConsent') === 'on',
+      subject: formData.get('subject') as string,
+      turnstileToken: formData.get('turnstileToken') as string
+    }
+
     // Validate form data
-    const validatedData = contactFormSchema.parse(formData)
+    const validatedData = contactFormSchema.parse(data)
 
     // Verify Turnstile token
     const isValidToken = await verifyTurnstile(validatedData.turnstileToken)

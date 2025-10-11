@@ -28,14 +28,15 @@ describe('Contact form action', () => {
     it('should return field errors for invalid data', async () => {
       const { submitContactForm } = await import('../../app/actions/contact')
 
-      const result = await submitContactForm({
-        email: 'invalid-email',
-        message: 'short',
-        name: '',
-        privacyConsent: false,
-        subject: '',
-        turnstileToken: ''
-      })
+      const formData = new FormData()
+      formData.set('email', 'invalid-email')
+      formData.set('message', 'short')
+      formData.set('name', '')
+      formData.set('subject', '')
+      formData.set('turnstileToken', '')
+      // privacyConsent is missing (unchecked)
+
+      const result = await submitContactForm(null, formData)
 
       expect(result.success).toBe(false)
       expect(result.fieldErrors).toBeDefined()
@@ -48,14 +49,15 @@ describe('Contact form action', () => {
     it('should validate privacy consent is true', async () => {
       const { submitContactForm } = await import('../../app/actions/contact')
 
-      const result = await submitContactForm({
-        email: 'test@example.com',
-        message: 'This is a test message that is long enough',
-        name: 'Test User',
-        privacyConsent: false,
-        subject: 'Test Subject',
-        turnstileToken: 'test-token'
-      })
+      const formData = new FormData()
+      formData.set('email', 'test@example.com')
+      formData.set('message', 'This is a test message that is long enough')
+      formData.set('name', 'Test User')
+      formData.set('subject', 'Test Subject')
+      formData.set('turnstileToken', 'test-token')
+      // privacyConsent is missing (unchecked checkbox)
+
+      const result = await submitContactForm(null, formData)
 
       expect(result.success).toBe(false)
       expect(result.fieldErrors?.privacyConsent).toBeDefined()
@@ -75,14 +77,15 @@ describe('Contact form action', () => {
 
       const { submitContactForm } = await import('../../app/actions/contact')
 
-      const result = await submitContactForm({
-        email: 'test@example.com',
-        message: 'This is a test message that is long enough',
-        name: 'Test User',
-        privacyConsent: true,
-        subject: 'Test Subject',
-        turnstileToken: 'test-token'
-      })
+      const formData = new FormData()
+      formData.set('email', 'test@example.com')
+      formData.set('message', 'This is a test message that is long enough')
+      formData.set('name', 'Test User')
+      formData.set('privacyConsent', 'on')
+      formData.set('subject', 'Test Subject')
+      formData.set('turnstileToken', 'test-token')
+
+      const result = await submitContactForm(null, formData)
 
       expect(result.success).toBe(true)
       expect(result.error).toBeUndefined()
@@ -97,14 +100,15 @@ describe('Contact form action', () => {
 
       const { submitContactForm } = await import('../../app/actions/contact')
 
-      const result = await submitContactForm({
-        email: 'test@example.com',
-        message: 'This is a test message that is long enough',
-        name: 'Test User',
-        privacyConsent: true,
-        subject: 'Test Subject',
-        turnstileToken: 'invalid-token'
-      })
+      const formData = new FormData()
+      formData.set('email', 'test@example.com')
+      formData.set('message', 'This is a test message that is long enough')
+      formData.set('name', 'Test User')
+      formData.set('privacyConsent', 'on')
+      formData.set('subject', 'Test Subject')
+      formData.set('turnstileToken', 'invalid-token')
+
+      const result = await submitContactForm(null, formData)
 
       expect(result.success).toBe(false)
       expect(result.error).toContain('スパム対策')
@@ -127,14 +131,15 @@ describe('Contact form action', () => {
 
       const { submitContactForm } = await import('../../app/actions/contact')
 
-      const result = await submitContactForm({
-        email: 'test@example.com',
-        message: 'This is a test message that is long enough',
-        name: 'Test User',
-        privacyConsent: true,
-        subject: 'Test Subject',
-        turnstileToken: 'test-token'
-      })
+      const formData = new FormData()
+      formData.set('email', 'test@example.com')
+      formData.set('message', 'This is a test message that is long enough')
+      formData.set('name', 'Test User')
+      formData.set('privacyConsent', 'on')
+      formData.set('subject', 'Test Subject')
+      formData.set('turnstileToken', 'test-token')
+
+      const result = await submitContactForm(null, formData)
 
       expect(result.success).toBe(false)
       expect(result.error).toContain('メールの送信に失敗')

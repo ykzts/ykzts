@@ -1,59 +1,36 @@
 'use client'
 
-import { type FormEvent, useState } from 'react'
+import { useActionState, useEffect, useRef, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import Turnstile from 'react-turnstile'
-import { type ContactFormData, submitContactForm } from '@/app/actions/contact'
+import { submitContactForm } from '@/app/actions/contact'
 import { Button, Input, Textarea } from '@/components/form'
 
 export default function ContactForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [state, formAction, isPending] = useActionState(submitContactForm, null)
   const [turnstileToken, setTurnstileToken] = useState<string>('')
-  const [errors, setErrors] = useState<
-    Partial<Record<keyof ContactFormData, string>>
-  >({})
+  const formRef = useRef<HTMLFormElement>(null)
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setErrors({})
-
-    const formData = new FormData(e.currentTarget)
-    const data: ContactFormData = {
-      email: formData.get('email') as string,
-      message: formData.get('message') as string,
-      name: formData.get('name') as string,
-      privacyConsent: formData.get('privacyConsent') === 'on',
-      subject: formData.get('subject') as string,
-      turnstileToken
-    }
-
-    const result = await submitContactForm(data)
-
-    if (result.success) {
-      setIsSubmitted(true)
-      setIsSubmitting(false)
+  // Handle success state
+  useEffect(() => {
+    if (state?.success) {
       // Reset form
-      e.currentTarget.reset()
+      formRef.current?.reset()
       setTurnstileToken('')
-    } else {
-      setIsSubmitting(false)
-
-      if (result.fieldErrors) {
-        setErrors(result.fieldErrors)
-      }
-
-      if (result.error) {
-        toast.error(result.error, {
-          duration: 5000,
-          position: 'bottom-center'
-        })
-      }
     }
-  }
+  }, [state?.success])
 
-  if (isSubmitted) {
+  // Show toast for general errors
+  useEffect(() => {
+    if (state?.error) {
+      toast.error(state.error, {
+        duration: 5000,
+        position: 'bottom-center'
+      })
+    }
+  }, [state?.error])
+
+  if (state?.success) {
     return (
       <>
         <Toaster />
@@ -63,7 +40,7 @@ export default function ContactForm() {
             お問い合わせいただきありがとうございます。内容を確認次第、ご返信させていただきます。
           </p>
           <p className="mb-6">通常、2〜3営業日以内にご返信いたします。</p>
-          <Button onClick={() => setIsSubmitted(false)} type="button">
+          <Button onClick={() => window.location.reload()} type="button">
             新しいお問い合わせを送信
           </Button>
         </div>
@@ -71,10 +48,12 @@ export default function ContactForm() {
     )
   }
 
+  const errors = state?.fieldErrors || {}
+
   return (
     <>
       <Toaster />
-      <form className="mx-auto max-w-[600px]" onSubmit={handleSubmit}>
+      <form action={formAction} className="mx-auto max-w-[600px]" ref={formRef}>
         <Input
           error={errors.name}
           id="name"
@@ -143,6 +122,7 @@ export default function ContactForm() {
               '1x00000000000000000000AA'
             }
           />
+          <input name="turnstileToken" type="hidden" value={turnstileToken} />
           {errors.turnstileToken && (
             <p className="mt-2 text-sm text-[#e74c3c]">
               {errors.turnstileToken}
@@ -151,8 +131,8 @@ export default function ContactForm() {
         </div>
 
         <div className="mt-8 text-center">
-          <Button disabled={isSubmitting || !turnstileToken} type="submit">
-            {isSubmitting ? '送信中...' : '送信する'}
+          <Button disabled={isPending || !turnstileToken} type="submit">
+            {isPending ? '送信中...' : '送信する'}
           </Button>
         </div>
       </form>
