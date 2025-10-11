@@ -26,7 +26,7 @@ describe('Contact form action', () => {
 
   describe('submitContactForm', () => {
     it('should return field errors for invalid data', async () => {
-      const { submitContactForm } = await import('../../app/actions/contact')
+      const { submitContactForm } = await import('../contact')
 
       const formData = new FormData()
       formData.set('email', 'invalid-email')
@@ -47,7 +47,7 @@ describe('Contact form action', () => {
     })
 
     it('should validate privacy consent is true', async () => {
-      const { submitContactForm } = await import('../../app/actions/contact')
+      const { submitContactForm } = await import('../contact')
 
       const formData = new FormData()
       formData.set('email', 'test@example.com')
@@ -75,7 +75,7 @@ describe('Contact form action', () => {
         id: 'test-email-id'
       })
 
-      const { submitContactForm } = await import('../../app/actions/contact')
+      const { submitContactForm } = await import('../contact')
 
       const formData = new FormData()
       formData.set('email', 'test@example.com')
@@ -98,7 +98,7 @@ describe('Contact form action', () => {
         json: async () => ({ success: false })
       })
 
-      const { submitContactForm } = await import('../../app/actions/contact')
+      const { submitContactForm } = await import('../contact')
 
       const formData = new FormData()
       formData.set('email', 'test@example.com')
@@ -129,7 +129,7 @@ describe('Contact form action', () => {
         }
       })
 
-      const { submitContactForm } = await import('../../app/actions/contact')
+      const { submitContactForm } = await import('../contact')
 
       const formData = new FormData()
       formData.set('email', 'test@example.com')
