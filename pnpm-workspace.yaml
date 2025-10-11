@@ -4,23 +4,15 @@ packages:
   - profile
   - renovate-config
 
-# pnpm configuration
-# See: https://pnpm.io/pnpm-workspace_yaml
-
-# Minimum release age for packages (in minutes)
-# Prevents installing packages that were published too recently
-# This provides a safety layer similar to Renovate's minimumReleaseAge setting
-# Renovate uses 3 days; this uses 24 hours (1440 minutes) for faster manual updates
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - renovate
-  # Exception: Next.js canary releases
-  # We track Next.js canary, so exclude Next.js and related packages
   - next
   - '@next/*'
   - eslint-config-next
-
 onlyBuiltDependencies:
   - '@swc/core'
+  - '@tailwindcss/oxide'
   - esbuild
   - sharp
+savePrefix: ''

@@ -5,22 +5,22 @@
     "url": "https://github.com/ykzts/ykzts/issues"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.8.1",
-    "@docusaurus/faster": "^3.8.1",
-    "@docusaurus/plugin-vercel-analytics": "^3.8.1",
-    "@docusaurus/preset-classic": "^3.8.1",
-    "prism-react-renderer": "^2.4.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "@docusaurus/core": "3.9.1",
+    "@docusaurus/faster": "3.9.1",
+    "@docusaurus/plugin-vercel-analytics": "3.9.1",
+    "@docusaurus/preset-classic": "3.9.1",
+    "prism-react-renderer": "2.4.1",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
   },
   "description": "Docusaurus-based blog application featuring Japanese technical content and modern web development topics",
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.8.1",
-    "@docusaurus/tsconfig": "^3.8.1",
-    "@docusaurus/types": "^3.8.1",
-    "@types/react": "^19.0.1",
-    "@types/react-dom": "^19.0.1",
-    "typescript": "^5.7.2"
+    "@docusaurus/module-type-aliases": "3.9.1",
+    "@docusaurus/tsconfig": "3.9.1",
+    "@docusaurus/types": "3.9.1",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.1",
+    "typescript": "5.9.3"
   },
   "homepage": "https://ykzts.blog/",
   "keywords": [],
