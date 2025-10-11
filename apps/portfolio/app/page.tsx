@@ -12,9 +12,7 @@ import Section, {
   SectionTitle
 } from './_components/section'
 import Works, { WorksSkeleton } from './_components/works'
-import LayoutWrapper from './_components/wrapper'
 import AboutDoc from './_docs/about.mdx'
-import styles from './page.module.css'
 
 const description = [
   'JavaScriptやRubyといったプログラミング言語を用いたウェブアプリケーションの開発を得意とするソフトウェア開発者 山岸和利のポートフォリオです。',
@@ -47,7 +45,7 @@ function About() {
         <SectionTitle>About</SectionTitle>
       </SectionHeader>
 
-      <SectionContent>
+      <SectionContent className="prose prose-slate max-w-none">
         <AboutDoc />
       </SectionContent>
     </Section>
@@ -56,7 +54,7 @@ function About() {
 
 export default function HomePage(_props: PageProps<'/'>) {
   return (
-    <LayoutWrapper>
+    <div className="overflow-y-hidden">
       <Section intro>
         <SectionHeader>
           <SectionTitle>{'ykzts\u200b.com'}</SectionTitle>
@@ -67,11 +65,11 @@ export default function HomePage(_props: PageProps<'/'>) {
             ポートフォリオ
           </SectionTagline>
 
-          <ul className={styles.actions}>
-            <li className={styles.actions__item}>
+          <ul className="w-80 hidden ml-auto items-center justify-end gap-4 lg:flex">
+            <li className="align-bottom">
               <a
                 aria-label="コンテンツまでスクロール"
-                className={styles['arrow-link']}
+                className="flex justify-end h-16 w-24 rounded text-6xl transition-transform duration-250 ease-in-out hover:translate-y-1 focus:translate-y-1 focus:outline-3 focus:outline-offset-2 focus:outline-brand"
                 href="#content"
               >
                 <FaArrowDown />
@@ -80,10 +78,10 @@ export default function HomePage(_props: PageProps<'/'>) {
           </ul>
         </SectionHeader>
 
-        <SectionContent>
+        <SectionContent className="relative h-dvh">
           <Image
             alt=""
-            className={styles['key-visual']}
+            className="absolute inset-0 size-full object-cover"
             placeholder="blur"
             priority
             sizes="(max-width: 1280px) 50vw,100vw"
@@ -100,39 +98,31 @@ export default function HomePage(_props: PageProps<'/'>) {
         <Contact />
       </main>
 
-      <footer className={styles.footer} lang="en">
-        <div className={styles.copyright}>
+      <footer
+        className="text-base text-black/60 lg:grid lg:grid-cols-2"
+        lang="en"
+      >
+        <div className="bg-white p-6 lg:col-start-2 md:p-8 lg:p-16">
           <span>© Yamagishi Kazutoshi.</span>{' '}
           <span>
-            <Link className={styles.footer__link} href="/privacy">
-              Privacy Policy
-            </Link>
-            .
+            <Link href="/privacy">Privacy Policy</Link>.
           </span>{' '}
           <span>
             Design:{' '}
-            <Link
-              className={styles.footer__link}
-              href="https://html5up.net/"
-              target="_blank"
-            >
+            <Link href="https://html5up.net/" target="_blank">
               HTML5 UP
             </Link>
             .
           </span>{' '}
           <span>
             Artwork:{' '}
-            <Link
-              className={styles.footer__link}
-              href="https://x.com/diru_k1005"
-              target="_blank"
-            >
+            <Link href="https://x.com/diru_k1005" target="_blank">
               Kannazuki Diru
             </Link>
             .
           </span>
         </div>
       </footer>
-    </LayoutWrapper>
+    </div>
   )
 }

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import styles from './layout.module.css'
 
 export const metadata: Metadata = {
   referrer: 'no-referrer',
@@ -16,7 +15,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en">
-      <body className={styles.body}>{children}</body>
+      <body style={{ margin: 0 }}>{children}</body>
     </html>
   )
 }

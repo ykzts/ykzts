@@ -31,7 +31,7 @@ describe('Section Components', () => {
       )
 
       const section = document.querySelector('section')
-      expect(section?.className).toContain('intro')
+      expect(section?.dataset.intro).toContain('')
     })
 
     it('renders with custom id when provided', () => {

@@ -8,8 +8,7 @@ const nextConfig: NextConfig = {
     cacheComponents: true,
     mdxRs: {
       mdxType: 'gfm'
-    },
-    ppr: true
+    }
   },
   headers() {
     return Promise.resolve([
@@ -19,7 +18,7 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "base-uri 'none'",
-              "connect-src 'self'",
+              "connect-src 'self' https://vitals.vercel-insights.com",
               "default-src 'none'",
               "font-src 'self'",
               "form-action 'none'",

@@ -23,6 +23,7 @@ This is a pnpm workspace monorepo with the following structure:
 - **Build System**: Turbo (monorepo build orchestration)
 - **Language**: TypeScript (modern/strict configuration)
 - **Frontend Frameworks**: Next.js 15, Docusaurus 3, React 19
+- **Styling**: Tailwind CSS v4 (portfolio), CSS (blog-legacy)
 - **Content Management**: Sanity CMS
 - **Linting/Formatting**: Biome (replaces ESLint + Prettier)
 
@@ -72,6 +73,17 @@ This project uses **Biome** for linting and formatting with the following standa
 - **Trailing Commas**: None
 - **Import Sorting**: Enabled with sorted attributes/keys/properties
 
+### Dependency Management
+
+This repository uses pnpm's built-in `minimumReleaseAge` setting (configured in `pnpm-workspace.yaml`) to prevent installing packages that were published too recently:
+
+- **Setting**: `minimumReleaseAge: 1440` (1440 minutes = 24 hours)
+- **Purpose**: Provides a safety layer against packages with critical bugs or security issues
+- **Exceptions**: Next.js and related packages are excluded via `minimumReleaseAgeExclude` since we track canary releases
+- **Comparison**: Renovate uses 3 days; this uses 24 hours for faster manual updates while still ensuring safety
+
+pnpm will automatically enforce this when installing or updating packages.
+
 ### TypeScript Guidelines
 
 - Use strict TypeScript configuration
@@ -84,7 +96,7 @@ This project uses **Biome** for linting and formatting with the following standa
 - Use React 19 features (modern JSX transform, React Compiler)
 - Prefer function components with hooks
 - Use Next.js App Router conventions
-- CSS Modules for component styling
+- Tailwind CSS for component styling
 
 ## Commit Message Standards
 
@@ -235,7 +247,7 @@ All build tasks are orchestrated through Turbo:
 
 #### Portfolio App (`apps/portfolio/`)
 - Uses Next.js 15 with App Router and React Compiler
-- Styled with CSS Modules
+- Styled with Tailwind CSS
 - Integrated with Sanity CMS
 
 #### Blog Legacy (`apps/blog-legacy/`)
@@ -257,7 +269,7 @@ All build tasks are orchestrated through Turbo:
 
 - **Components**: PascalCase (`MyComponent.tsx`)
 - **Pages**: kebab-case or Next.js conventions
-- **Styles**: `component.module.css` for CSS Modules
+- **Styles**: Tailwind CSS utility classes in JSX/TSX files
 - **Types**: Descriptive names, use `type` imports
 - **Content**: ISO date prefixes for blog posts
 

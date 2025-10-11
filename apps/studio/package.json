@@ -6,7 +6,7 @@
     "@sanity/ui": "^3.0.0",
     "@sanity/vision": "^4.0.0",
     "@ykzts/schemas": "workspace:*",
-    "next": "15.6.0-canary.35",
+    "next": "16.0.0-canary.0",
     "next-sanity": "^11.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -18,7 +18,7 @@
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
     "@ykzts/tsconfig": "workspace:*",
-    "babel-plugin-react-compiler": "19.1.0-rc.3",
+    "babel-plugin-react-compiler": "1.0.0",
     "typescript": "^5.7.2"
   },
   "license": "MIT",

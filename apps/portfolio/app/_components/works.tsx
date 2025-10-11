@@ -12,15 +12,13 @@ import Section, {
   SectionTitle
 } from './section'
 
-type LinkValue = {
-  _type: string
-  href: string
-}
-
 const portableTextComponents = {
   marks: {
-    link({ children, value }: PortableTextMarkComponentProps<LinkValue>) {
-      const { href } = value as LinkValue
+    link({
+      children,
+      value
+    }: PortableTextMarkComponentProps<{ _type: string; href: string }>) {
+      const href = value?.href
 
       return <Link href={href}>{children}</Link>
     }
@@ -51,7 +49,7 @@ export default async function Works() {
             <SectionTitle>{work.title}</SectionTitle>
           </SectionHeader>
 
-          <SectionContent>
+          <SectionContent className="prose prose-slate max-w-none">
             <PortableText
               components={portableTextComponents}
               value={work.content}
