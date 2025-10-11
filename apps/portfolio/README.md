@@ -33,7 +33,7 @@ pnpm lighthouse # Run Lighthouse CI performance audit
 - **MDX Support**: Rich content authoring with React components
 - **Sanity Integration**: Dynamic content management for portfolio entries
 - **Vercel Analytics**: Performance monitoring and user analytics
-- **Responsive Design**: Mobile-first design with CSS Modules
+- **Responsive Design**: Mobile-first design with Tailwind CSS
 
 ### Content Integration
 
@@ -69,12 +69,21 @@ pnpm lighthouse # Run Lighthouse CI performance audit
 - `@playwright/test`: End-to-end and accessibility testing
 - `@axe-core/playwright`: Accessibility testing integration
 - `vitest`: Fast unit testing framework
+- `tailwindcss`: Utility-first CSS framework (v4)
+- `@tailwindcss/postcss`: PostCSS plugin for Tailwind v4
+- `@tailwindcss/typography`: Typography plugin for Tailwind CSS
+- `postcss`: CSS transformation tool
+- `autoprefixer`: PostCSS plugin for vendor prefixes
+- `@lhci/cli`: Lighthouse CI for automated performance auditing
+- `@playwright/test`: End-to-end and accessibility testing
+- `@axe-core/playwright`: Accessibility testing integration
+- `vitest`: Fast unit testing framework
 
 ## Architecture
 
 - **Static Generation**: Pre-rendered pages for optimal performance
 - **Image Optimization**: Next.js Image component with automatic optimization
-- **CSS Modules**: Scoped styling with modern CSS features
+- **Tailwind CSS**: Utility-first styling with Tailwind v4
 - **TypeScript**: Full type safety throughout the application
 - **Component-Based**: Reusable UI components with proper separation of concerns
 
