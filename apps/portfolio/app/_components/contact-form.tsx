@@ -1,14 +1,13 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { type FormEvent, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import Turnstile from 'react-turnstile'
 import { type ContactFormData, submitContactForm } from '@/app/actions/contact'
 
 export default function ContactForm() {
-  const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
   const [turnstileToken, setTurnstileToken] = useState<string>('')
   const [errors, setErrors] = useState<
     Partial<Record<keyof ContactFormData, string>>
@@ -32,7 +31,11 @@ export default function ContactForm() {
     const result = await submitContactForm(data)
 
     if (result.success) {
-      router.push('/contact/thank-you')
+      setIsSubmitted(true)
+      setIsSubmitting(false)
+      // Reset form
+      e.currentTarget.reset()
+      setTurnstileToken('')
     } else {
       setIsSubmitting(false)
 
@@ -47,6 +50,28 @@ export default function ContactForm() {
         })
       }
     }
+  }
+
+  if (isSubmitted) {
+    return (
+      <>
+        <Toaster />
+        <div className="mx-auto my-8 max-w-[600px] rounded border-2 border-brand bg-[rgba(73,252,212,0.1)] p-8 text-center">
+          <h3 className="mb-4 text-2xl font-semibold text-brand">送信完了</h3>
+          <p className="mb-4">
+            お問い合わせいただきありがとうございます。内容を確認次第、ご返信させていただきます。
+          </p>
+          <p className="mb-6">通常、2〜3営業日以内にご返信いたします。</p>
+          <button
+            className="rounded border-0 bg-brand px-10 py-3.5 text-base font-semibold text-white transition-[background-color] duration-250 ease-in-out hover:bg-brand-dark focus:outline-3 focus:outline-offset-2 focus:outline-brand"
+            onClick={() => setIsSubmitted(false)}
+            type="button"
+          >
+            新しいお問い合わせを送信
+          </button>
+        </div>
+      </>
+    )
   }
 
   return (
