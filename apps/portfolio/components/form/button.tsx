@@ -17,7 +17,7 @@ export default function Button({
     primary:
       'bg-brand text-white hover:enabled:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-60',
     secondary:
-      'bg-transparent border-2 border-brand text-brand hover:enabled:bg-[rgba(73,252,212,0.1)]'
+      'bg-transparent border-2 border-brand text-brand hover:enabled:bg-brand/10'
   }
 
   return (

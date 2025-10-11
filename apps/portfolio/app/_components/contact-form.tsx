@@ -34,7 +34,7 @@ export default function ContactForm() {
     return (
       <>
         <Toaster />
-        <div className="mx-auto my-8 max-w-[600px] rounded border-2 border-brand bg-[rgba(73,252,212,0.1)] p-8 text-center">
+        <div className="mx-auto my-8 max-w-[600px] rounded border-2 border-brand bg-brand/10 p-8 text-center">
           <h3 className="mb-4 text-2xl font-semibold text-brand">送信完了</h3>
           <p className="mb-4">
             お問い合わせいただきありがとうございます。内容を確認次第、ご返信させていただきます。
