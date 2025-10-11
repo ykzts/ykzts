@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   test: {
     environment: 'jsdom',
-    exclude: ['**/node_modules/**', '**/__tests__/accessibility/**'],
+    exclude: ['**/node_modules/**', '**/e2e/**'],
     globals: true,
     setupFiles: ['./vitest.setup.ts']
   }

@@ -4,7 +4,7 @@ import Section, {
   SectionContent,
   SectionHeader,
   SectionTitle
-} from '../../app/_components/section'
+} from '../section'
 
 // Mock the intersection observer hook
 vi.mock('react-intersection-observer', () => ({
