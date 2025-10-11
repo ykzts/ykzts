@@ -30,7 +30,7 @@ describe('Sanity utilities', () => {
       mockFetch.mockResolvedValue(mockData)
 
       // Import after mocking
-      const { getWorks } = await import('../../lib/sanity')
+      const { getWorks } = await import('../sanity')
       const result = await getWorks()
 
       expect(result).toEqual(mockData)
@@ -50,14 +50,14 @@ describe('Sanity utilities', () => {
 
       mockFetch.mockResolvedValue(invalidData)
 
-      const { getWorks } = await import('../../lib/sanity')
+      const { getWorks } = await import('../sanity')
       await expect(getWorks()).rejects.toThrow()
     })
 
     it('should handle empty array response', async () => {
       mockFetch.mockResolvedValue([])
 
-      const { getWorks } = await import('../../lib/sanity')
+      const { getWorks } = await import('../sanity')
       const result = await getWorks()
 
       expect(result).toEqual([])
