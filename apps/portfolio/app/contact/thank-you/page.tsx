@@ -5,7 +5,6 @@ import Section, {
   SectionTitle
 } from '@/app/_components/section'
 import Link from '@/components/link'
-import styles from './page.module.css'
 
 export const metadata: Metadata = {
   description:
@@ -21,15 +20,18 @@ export default function ThankYouPage() {
       </SectionHeader>
 
       <SectionContent>
-        <div className={styles.message}>
+        <div className="mx-auto my-8 max-w-[600px] text-center">
           <p>
             お問い合わせいただきありがとうございます。内容を確認次第、ご返信させていただきます。
           </p>
           <p>通常、2〜3営業日以内にご返信いたします。</p>
         </div>
 
-        <div className={styles.actions}>
-          <Link className={styles.link} href="/">
+        <div className="mt-8 text-center">
+          <Link
+            className="inline-block rounded bg-brand px-10 py-3.5 font-semibold text-white no-underline transition-[background-color] duration-250 ease-in-out hover:bg-brand-dark focus:outline-3 focus:outline-offset-2 focus:outline-brand"
+            href="/"
+          >
             トップページに戻る
           </Link>
         </div>
