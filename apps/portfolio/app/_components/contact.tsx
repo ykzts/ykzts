@@ -76,9 +76,9 @@ export default function Contact() {
         <p>
           ただし無償もしくは報酬が不明瞭な依頼に関してはお応えできかねます。また依頼主が不明であるスカウトメールやオファーメールにつきましてはご返答いたしかねますのであらかじめご容赦ください。
         </p>
-      </SectionContent>
 
-      <ContactForm />
+        <ContactForm />
+      </SectionContent>
 
       <SectionFooter>
         <dl className="space-y-8">
