@@ -12,26 +12,10 @@ export default function ContactForm() {
   const [turnstileToken, setTurnstileToken] = useState<string>('')
   const formRef = useRef<HTMLFormElement>(null)
 
-  // Form field state
-  const [formData, setFormData] = useState({
-    email: '',
-    message: '',
-    name: '',
-    privacyConsent: false,
-    subject: ''
-  })
-
-  // Handle success state
+  // Handle success state - reset form on success
   useEffect(() => {
     if (state?.success) {
-      // Reset form
-      setFormData({
-        email: '',
-        message: '',
-        name: '',
-        privacyConsent: false,
-        subject: ''
-      })
+      formRef.current?.reset()
       setTurnstileToken('')
     }
   }, [state?.success])
@@ -67,57 +51,50 @@ export default function ContactForm() {
   }
 
   const errors = state?.fieldErrors || {}
+  const formData = state?.formData || {}
 
   return (
     <>
       <Toaster />
       <form action={formAction} className="mx-auto max-w-[600px]" ref={formRef}>
         <Input
+          defaultValue={formData.name || ''}
           error={errors.name}
           id="name"
           label="お名前"
           name="name"
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           required
           type="text"
-          value={formData.name}
         />
 
         <Input
+          defaultValue={formData.email || ''}
           error={errors.email}
           id="email"
           label="メールアドレス"
           name="email"
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           required
           type="email"
-          value={formData.email}
         />
 
         <Input
+          defaultValue={formData.subject || ''}
           error={errors.subject}
           id="subject"
           label="件名"
           name="subject"
-          onChange={(e) =>
-            setFormData({ ...formData, subject: e.target.value })
-          }
           required
           type="text"
-          value={formData.subject}
         />
 
         <Textarea
+          defaultValue={formData.message || ''}
           error={errors.message}
           id="message"
           label="メッセージ"
           name="message"
-          onChange={(e) =>
-            setFormData({ ...formData, message: e.target.value })
-          }
           required
           rows={6}
-          value={formData.message}
         />
 
         <div className="mb-6">
@@ -127,12 +104,9 @@ export default function ContactForm() {
                 errors.privacyConsent ? 'privacy-error' : undefined
               }
               aria-invalid={Boolean(errors.privacyConsent)}
-              checked={formData.privacyConsent}
               className="mt-1 cursor-pointer accent-brand"
+              defaultChecked={formData.privacyConsent || false}
               name="privacyConsent"
-              onChange={(e) =>
-                setFormData({ ...formData, privacyConsent: e.target.checked })
-              }
               required
               type="checkbox"
             />

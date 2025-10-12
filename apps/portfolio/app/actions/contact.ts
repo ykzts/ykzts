@@ -24,6 +24,7 @@ export type ContactFormResponse = {
   success: boolean
   error?: string
   fieldErrors?: Partial<Record<keyof ContactFormData, string>>
+  formData?: Partial<ContactFormData>
 }
 
 export async function submitContactForm(
@@ -59,6 +60,7 @@ export async function submitContactForm(
     if (!isValidToken) {
       return {
         error: 'スパム対策の確認に失敗しました。もう一度お試しください。',
+        formData: data,
         success: false
       }
     }
@@ -69,6 +71,7 @@ export async function submitContactForm(
       return {
         error:
           'メール送信の設定が正しくありません。管理者にお問い合わせください。',
+        formData: data,
         success: false
       }
     }
@@ -91,6 +94,7 @@ export async function submitContactForm(
       return {
         error:
           'メールの送信に失敗しました。しばらくしてからもう一度お試しください。',
+        formData: data,
         success: false
       }
     }
@@ -100,6 +104,23 @@ export async function submitContactForm(
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
+      const rawData = {
+        email: formData.get('email'),
+        message: formData.get('message'),
+        name: formData.get('name'),
+        privacyConsent: formData.get('privacyConsent') === 'on',
+        subject: formData.get('subject'),
+        turnstileToken: formData.get('turnstileToken')
+      }
+      
+      const data: Partial<ContactFormData> = {
+        email: typeof rawData.email === 'string' ? rawData.email : '',
+        message: typeof rawData.message === 'string' ? rawData.message : '',
+        name: typeof rawData.name === 'string' ? rawData.name : '',
+        privacyConsent: rawData.privacyConsent,
+        subject: typeof rawData.subject === 'string' ? rawData.subject : ''
+      }
+      
       const fieldErrors: Partial<Record<keyof ContactFormData, string>> = {}
       for (const issue of error.issues) {
         const field = issue.path[0] as keyof ContactFormData
@@ -109,6 +130,7 @@ export async function submitContactForm(
       }
       return {
         fieldErrors,
+        formData: data,
         success: false
       }
     }
