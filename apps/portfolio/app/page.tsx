@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import { FaArrowDown } from 'react-icons/fa'
-import Link from '@/components/link'
+import ExternalLink from '@/components/link'
 import Section, {
   SectionContent,
   SectionHeader,
@@ -106,16 +107,13 @@ export default function HomePage(_props: PageProps<'/'>) {
           </span>{' '}
           <span>
             Design:{' '}
-            <Link href="https://html5up.net/" target="_blank">
-              HTML5 UP
-            </Link>
-            .
+            <ExternalLink href="https://html5up.net/">HTML5 UP</ExternalLink>.
           </span>{' '}
           <span>
             Artwork:{' '}
-            <Link href="https://x.com/diru_k1005" target="_blank">
+            <ExternalLink href="https://x.com/diru_k1005">
               Kannazuki Diru
-            </Link>
+            </ExternalLink>
             .
           </span>
         </div>
