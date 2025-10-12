@@ -37,22 +37,6 @@ export default function PrivacyModal() {
       </div>
       <div className="prose prose-slate max-w-none">
         <PrivacyContent />
-        <p className="mt-4">
-          <button
-            className="text-gray-900 underline hover:text-gray-700"
-            onClick={handleClose}
-            type="button"
-          >
-            閉じる
-          </button>
-          {' '}または{' '}
-          <Link
-            className="text-gray-900 underline hover:text-gray-700"
-            href="/privacy"
-          >
-            完全なページで見る →
-          </Link>
-        </p>
       </div>
     </dialog>
   )
