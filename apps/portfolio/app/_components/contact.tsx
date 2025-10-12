@@ -6,6 +6,7 @@ import Section, {
   SectionHeader,
   SectionTitle
 } from '@/components/section'
+import ContactForm from './contact-form'
 
 type SocialLink = {
   label: string
@@ -70,24 +71,17 @@ export default function Contact() {
 
       <SectionContent className="prose prose-slate max-w-none">
         <p>
-          山岸和利に対するお問い合わせやご依頼はメールからお願いします。スケジュール次第ではありますが有期もしくは案件単位での作業依頼や技術相談でしたら有償で承ります。
+          山岸和利に対するお問い合わせやご依頼は以下のフォームからお願いします。スケジュール次第ではありますが有期もしくは案件単位での作業依頼や技術相談でしたら有償で承ります。
         </p>
         <p>
           ただし無償もしくは報酬が不明瞭な依頼に関してはお応えできかねます。また依頼主が不明であるスカウトメールやオファーメールにつきましてはご返答いたしかねますのであらかじめご容赦ください。
         </p>
+
+        <ContactForm />
       </SectionContent>
 
       <SectionFooter>
         <dl className="space-y-8">
-          <div className="space-y-4">
-            <dt className="font-heading font-semibold text-sm/relaxed uppercase tracking-widest">
-              Email
-            </dt>
-            <dd>
-              <a href="mailto:ykzts@desire.sh">ykzts@desire.sh</a>
-            </dd>
-          </div>
-
           <div className="space-y-4">
             <dt className="font-heading font-semibold text-sm/relaxed uppercase tracking-widest">
               Blog
@@ -107,7 +101,7 @@ export default function Contact() {
                   <li key={socialLink.url}>
                     <Link
                       aria-label={socialLink.label}
-                      className="relative inline-flex size-9 items-center justify-center rounded-4xl border-b-0 text-xl/loose text-center no-underline transition-[background-color] duration-250 ease-in-out hover:bg-[rgba(144,144,144,0.1)] focus:bg-[rgba(73,252,212,0.2)] focus:outline-3 focus:outline-offset-2 focus:outline-brand"
+                      className="relative inline-flex size-9 items-center justify-center rounded-4xl border-b-0 text-xl/loose text-center no-underline transition-[background-color] duration-250 ease-in-out hover:bg-gray-500/10 focus:bg-brand/20 focus:outline-3 focus:outline-offset-2 focus:outline-brand"
                       href={socialLink.url}
                       rel="me"
                       target="_blank"

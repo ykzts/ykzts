@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <SubLayout params={Promise.resolve({})}>
+    <SubLayout modal={null} params={Promise.resolve({})}>
       <h1>404 Not Found</h1>
 
       <p className="leading-8">お探しのページを見つけられませんでした。</p>

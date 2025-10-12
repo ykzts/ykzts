@@ -40,7 +40,7 @@ const sourceSans3 = Source_Sans_3({
   weight: ['300', '600', '700']
 })
 
-export default function RootLayout({ children }: LayoutProps<'/'>) {
+export default function RootLayout({ children, modal }: LayoutProps<'/'>) {
   return (
     <html
       className={twMerge(
@@ -63,6 +63,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         <SVGSymbols />
 
         {children}
+        {modal}
 
         <Analytics />
       </body>

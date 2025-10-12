@@ -32,6 +32,7 @@ pnpm lighthouse # Run Lighthouse CI performance audit
 - **React Compiler**: Enhanced performance with React 19 optimizations
 - **MDX Support**: Rich content authoring with React components
 - **Sanity Integration**: Dynamic content management for portfolio entries
+- **Contact Form**: Secure contact form with Resend email service and Cloudflare Turnstile spam prevention
 - **Vercel Analytics**: Performance monitoring and user analytics
 - **Responsive Design**: Mobile-first design with Tailwind CSS
 
@@ -39,8 +40,28 @@ pnpm lighthouse # Run Lighthouse CI performance audit
 
 - **Portfolio Works**: Dynamic content from Sanity CMS
 - **About Section**: MDX-based content with interactive components
-- **Contact Information**: Social links and professional contact details
+- **Contact Form**: Server-side form processing with email notifications
 - **Go Package Redirects**: Special routing for Go package documentation
+
+## Environment Variables
+
+The application requires the following environment variables:
+
+```bash
+# Resend API Configuration
+RESEND_API_KEY=your_resend_api_key_here
+CONTACT_EMAIL="John Doe <test@example.com>"
+
+# Cloudflare Turnstile Configuration
+NEXT_PUBLIC_TURNSTILE_SITE_KEY=your_turnstile_site_key_here
+TURNSTILE_SECRET_KEY=your_turnstile_secret_key_here
+
+# Sanity CMS Configuration
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_sanity_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+```
+
+See `.env.example` for a complete list of required environment variables.
 
 ## Dependencies
 
@@ -52,10 +73,14 @@ pnpm lighthouse # Run Lighthouse CI performance audit
 - `react`: UI framework (v19.0.0)
 - `@mdx-js/react`: MDX component rendering
 - `@portabletext/react`: Sanity rich text rendering
+- `@react-email/render`: Email template rendering for Resend
 - `@sanity/client`: Headless CMS client
 - `@vercel/analytics`: Performance and user analytics
+- `react-hot-toast`: Toast notifications for form feedback
 - `react-icons`: Icon components library
 - `react-intersection-observer`: Viewport-based animations
+- `react-turnstile`: Cloudflare Turnstile spam prevention
+- `resend`: Email delivery service
 - `zod`: Runtime type validation
 
 ### Dev Dependencies

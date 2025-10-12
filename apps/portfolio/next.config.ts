@@ -19,13 +19,14 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "base-uri 'none'",
-              "connect-src 'self' https://vitals.vercel-insights.com",
+              "connect-src 'self' https://vitals.vercel-insights.com https://challenges.cloudflare.com",
               "default-src 'none'",
               "font-src 'self'",
               "form-action 'none'",
               "frame-ancestors 'none'",
+              'frame-src https://challenges.cloudflare.com',
               "img-src 'self' data:",
-              "script-src 'self' 'unsafe-inline'",
+              "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
               "style-src 'self' 'unsafe-inline'"
             ].join('; ')
           },
