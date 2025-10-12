@@ -124,7 +124,7 @@ export default function ContactForm() {
 
         <div className="mb-6">
           <Turnstile
-            onVerify={(token) => setTurnstileToken(token)}
+            onSuccess={(token) => setTurnstileToken(token)}
             sitekey={
               process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
               '1x00000000000000000000AA'
