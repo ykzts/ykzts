@@ -26,8 +26,8 @@ export default function Input({
         aria-describedby={error ? `${id}-error` : undefined}
         aria-invalid={Boolean(error)}
         className={twMerge(
-          'w-full rounded border-2 bg-gray-500/[0.075] px-3 py-2 font-inherit text-base transition-[border-color,background-color] duration-250 ease-in-out focus:border-brand focus:bg-brand/10 focus:outline-none',
-          error ? 'border-red-600 bg-red-600/10' : 'border-transparent',
+          'w-full rounded border-2 bg-gray-500/[0.075] px-3 py-2 font-inherit text-base transition-[border-color,background-color] duration-250 ease-in-out focus:border-brand focus:bg-brand/10 focus:outline-none aria-invalid:border-red-600 aria-invalid:bg-red-600/10',
+          error ? '' : 'border-transparent',
           className
         )}
         id={id}
