@@ -1,13 +1,14 @@
 import type { ButtonHTMLAttributes } from 'react'
+import { twMerge } from 'tailwind-merge'
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'primary' | 'secondary'
 }
 
 export default function Button({
   children,
   variant = 'primary',
-  className = '',
+  className,
   ...props
 }: ButtonProps) {
   const baseClasses =
@@ -23,7 +24,7 @@ export default function Button({
   return (
     <button
       {...props}
-      className={`${baseClasses} ${variantClasses[variant]} ${className}`}
+      className={twMerge(baseClasses, variantClasses[variant], className)}
     >
       {children}
     </button>

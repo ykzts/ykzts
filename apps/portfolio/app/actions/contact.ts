@@ -1,7 +1,9 @@
 'use server'
 
 import { Resend } from 'resend'
-import { z } from 'zod'
+import * as z from 'zod'
+import { generateContactEmailText } from '@/lib/email-templates/contact'
+import { verifyTurnstile } from '@/lib/turnstile'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -24,48 +26,29 @@ export type ContactFormResponse = {
   fieldErrors?: Partial<Record<keyof ContactFormData, string>>
 }
 
-async function verifyTurnstile(token: string): Promise<boolean> {
-  if (!process.env.TURNSTILE_SECRET_KEY) {
-    console.warn('TURNSTILE_SECRET_KEY is not configured')
-    return true // Allow in development
-  }
-
-  try {
-    const response = await fetch(
-      'https://challenges.cloudflare.com/turnstile/v0/siteverify',
-      {
-        body: JSON.stringify({
-          response: token,
-          secret: process.env.TURNSTILE_SECRET_KEY
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        method: 'POST'
-      }
-    )
-
-    const data = await response.json()
-    return data.success === true
-  } catch (error) {
-    console.error('Turnstile verification error:', error)
-    return false
-  }
-}
-
 export async function submitContactForm(
   _prevState: ContactFormResponse | null,
   formData: FormData
 ): Promise<ContactFormResponse> {
   try {
     // Extract form data
-    const data: ContactFormData = {
-      email: formData.get('email') as string,
-      message: formData.get('message') as string,
-      name: formData.get('name') as string,
+    const rawData = {
+      email: formData.get('email'),
+      message: formData.get('message'),
+      name: formData.get('name'),
       privacyConsent: formData.get('privacyConsent') === 'on',
-      subject: formData.get('subject') as string,
-      turnstileToken: formData.get('turnstileToken') as string
+      subject: formData.get('subject'),
+      turnstileToken: formData.get('turnstileToken')
+    }
+
+    const data: ContactFormData = {
+      email: typeof rawData.email === 'string' ? rawData.email : '',
+      message: typeof rawData.message === 'string' ? rawData.message : '',
+      name: typeof rawData.name === 'string' ? rawData.name : '',
+      privacyConsent: rawData.privacyConsent,
+      subject: typeof rawData.subject === 'string' ? rawData.subject : '',
+      turnstileToken:
+        typeof rawData.turnstileToken === 'string' ? rawData.turnstileToken : ''
     }
 
     // Validate form data
@@ -94,14 +77,12 @@ export async function submitContactForm(
       from: process.env.RESEND_FROM_EMAIL || 'contact@ykzts.com',
       replyTo: validatedData.email,
       subject: `[お問い合わせ] ${validatedData.subject}`,
-      text: `
-お名前: ${validatedData.name}
-メールアドレス: ${validatedData.email}
-件名: ${validatedData.subject}
-
-メッセージ:
-${validatedData.message}
-      `.trim(),
+      text: generateContactEmailText({
+        email: validatedData.email,
+        message: validatedData.message,
+        name: validatedData.name,
+        subject: validatedData.subject
+      }),
       to: process.env.CONTACT_EMAIL || 'ykzts@desire.sh'
     })
 

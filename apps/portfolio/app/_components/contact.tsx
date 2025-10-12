@@ -101,7 +101,7 @@ export default function Contact() {
                   <li key={socialLink.url}>
                     <Link
                       aria-label={socialLink.label}
-                      className="relative inline-flex size-9 items-center justify-center rounded-4xl border-b-0 text-xl/loose text-center no-underline transition-[background-color] duration-250 ease-in-out hover:bg-[rgba(144,144,144,0.1)] focus:bg-brand/20 focus:outline-3 focus:outline-offset-2 focus:outline-brand"
+                      className="relative inline-flex size-9 items-center justify-center rounded-4xl border-b-0 text-xl/loose text-center no-underline transition-[background-color] duration-250 ease-in-out hover:bg-gray-500/10 focus:bg-brand/20 focus:outline-3 focus:outline-offset-2 focus:outline-brand"
                       href={socialLink.url}
                       rel="me"
                       target="_blank"

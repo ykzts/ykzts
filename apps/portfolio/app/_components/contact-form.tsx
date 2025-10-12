@@ -97,18 +97,23 @@ export default function ContactForm() {
                 errors.privacyConsent ? 'privacy-error' : undefined
               }
               aria-invalid={Boolean(errors.privacyConsent)}
-              className="mt-1 cursor-pointer"
+              className="mt-1 cursor-pointer accent-brand"
               name="privacyConsent"
               required
               type="checkbox"
             />
             <span>
-              プライバシーポリシーに同意します{' '}
-              <span className="text-[#e74c3c]">*</span>
+              <a
+                className="text-brand underline hover:text-brand-dark"
+                href="/privacy"
+              >
+                プライバシーポリシー
+              </a>
+              に同意します <span className="text-red-600">*</span>
             </span>
           </label>
           {errors.privacyConsent && (
-            <p className="mt-2 text-sm text-[#e74c3c]" id="privacy-error">
+            <p className="mt-2 text-sm text-red-600" id="privacy-error">
               {errors.privacyConsent}
             </p>
           )}
@@ -124,9 +129,7 @@ export default function ContactForm() {
           />
           <input name="turnstileToken" type="hidden" value={turnstileToken} />
           {errors.turnstileToken && (
-            <p className="mt-2 text-sm text-[#e74c3c]">
-              {errors.turnstileToken}
-            </p>
+            <p className="mt-2 text-sm text-red-600">{errors.turnstileToken}</p>
           )}
         </div>
 
