@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef } from 'react'
-import PrivacyContent from '../../(docs)/privacy/page.mdx'
+import PrivacyContent from '../../../docs/privacy.mdx'
 
 export default function PrivacyModal() {
   const router = useRouter()
