@@ -2,7 +2,6 @@
 
 import { Resend } from 'resend'
 import * as z from 'zod'
-import { generateContactEmailText } from '@/lib/email-templates/contact'
 import { verifyTurnstile } from '@/lib/turnstile'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -31,27 +30,27 @@ export async function submitContactForm(
   _prevState: ContactFormResponse | null,
   formData: FormData
 ): Promise<ContactFormResponse> {
+  // Extract form data
+  const rawData = {
+    email: formData.get('email'),
+    message: formData.get('message'),
+    name: formData.get('name'),
+    privacyConsent: formData.get('privacyConsent') === 'on',
+    subject: formData.get('subject'),
+    turnstileToken: formData.get('turnstileToken')
+  }
+
+  const data: ContactFormData = {
+    email: typeof rawData.email === 'string' ? rawData.email : '',
+    message: typeof rawData.message === 'string' ? rawData.message : '',
+    name: typeof rawData.name === 'string' ? rawData.name : '',
+    privacyConsent: rawData.privacyConsent,
+    subject: typeof rawData.subject === 'string' ? rawData.subject : '',
+    turnstileToken:
+      typeof rawData.turnstileToken === 'string' ? rawData.turnstileToken : ''
+  }
+
   try {
-    // Extract form data
-    const rawData = {
-      email: formData.get('email'),
-      message: formData.get('message'),
-      name: formData.get('name'),
-      privacyConsent: formData.get('privacyConsent') === 'on',
-      subject: formData.get('subject'),
-      turnstileToken: formData.get('turnstileToken')
-    }
-
-    const data: ContactFormData = {
-      email: typeof rawData.email === 'string' ? rawData.email : '',
-      message: typeof rawData.message === 'string' ? rawData.message : '',
-      name: typeof rawData.name === 'string' ? rawData.name : '',
-      privacyConsent: rawData.privacyConsent,
-      subject: typeof rawData.subject === 'string' ? rawData.subject : '',
-      turnstileToken:
-        typeof rawData.turnstileToken === 'string' ? rawData.turnstileToken : ''
-    }
-
     // Validate form data
     const validatedData = contactFormSchema.parse(data)
 
@@ -66,8 +65,15 @@ export async function submitContactForm(
     }
 
     // Send email using Resend
-    if (!process.env.RESEND_API_KEY) {
-      console.error('RESEND_API_KEY is not configured')
+    if (!process.env.RESEND_API_KEY || !process.env.CONTACT_EMAIL) {
+      if (!process.env.RESEND_API_KEY) {
+        console.error('RESEND_API_KEY is not configured.')
+      }
+
+      if (!process.env.CONTACT_EMAIL) {
+        console.error('CONTACT_EMAIL is not configured.')
+      }
+
       return {
         error:
           'メール送信の設定が正しくありません。管理者にお問い合わせください。',
@@ -77,16 +83,11 @@ export async function submitContactForm(
     }
 
     const emailResult = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'contact@ykzts.com',
-      replyTo: validatedData.email,
+      from: `${validatedData.name} <no-reply@ykzts.com>`,
+      replyTo: `${validatedData.name} <${validatedData.email}>`,
       subject: `[お問い合わせ] ${validatedData.subject}`,
-      text: generateContactEmailText({
-        email: validatedData.email,
-        message: validatedData.message,
-        name: validatedData.name,
-        subject: validatedData.subject
-      }),
-      to: process.env.CONTACT_EMAIL || 'ykzts@desire.sh'
+      text: validatedData.message,
+      to: [process.env.CONTACT_EMAIL]
     })
 
     if (emailResult.error) {
@@ -104,23 +105,6 @@ export async function submitContactForm(
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      const rawData = {
-        email: formData.get('email'),
-        message: formData.get('message'),
-        name: formData.get('name'),
-        privacyConsent: formData.get('privacyConsent') === 'on',
-        subject: formData.get('subject'),
-        turnstileToken: formData.get('turnstileToken')
-      }
-      
-      const data: Partial<ContactFormData> = {
-        email: typeof rawData.email === 'string' ? rawData.email : '',
-        message: typeof rawData.message === 'string' ? rawData.message : '',
-        name: typeof rawData.name === 'string' ? rawData.name : '',
-        privacyConsent: rawData.privacyConsent,
-        subject: typeof rawData.subject === 'string' ? rawData.subject : ''
-      }
-      
       const fieldErrors: Partial<Record<keyof ContactFormData, string>> = {}
       for (const issue of error.issues) {
         const field = issue.path[0] as keyof ContactFormData

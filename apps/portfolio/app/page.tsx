@@ -8,10 +8,10 @@ import Section, {
   SectionTagline,
   SectionTitle
 } from '@/components/section'
+import AboutDoc from '@/docs/about.mdx'
 import keyVisual from './_assets/key-visual.jpg'
 import Contact from './_components/contact'
 import Works from './_components/works'
-import AboutDoc from './_docs/about.mdx'
 
 const description = [
   'JavaScriptやRubyといったプログラミング言語を用いたウェブアプリケーションの開発を得意とするソフトウェア開発者 山岸和利のポートフォリオです。',

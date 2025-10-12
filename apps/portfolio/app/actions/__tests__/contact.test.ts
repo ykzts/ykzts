@@ -4,7 +4,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 vi.stubEnv('RESEND_API_KEY', 'test_api_key')
 vi.stubEnv('TURNSTILE_SECRET_KEY', 'test_turnstile_key')
 vi.stubEnv('CONTACT_EMAIL', 'test@example.com')
-vi.stubEnv('RESEND_FROM_EMAIL', 'from@example.com')
 
 // Mock Resend
 const mockSend = vi.fn()

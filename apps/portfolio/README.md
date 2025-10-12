@@ -50,8 +50,7 @@ The application requires the following environment variables:
 ```bash
 # Resend API Configuration
 RESEND_API_KEY=your_resend_api_key_here
-CONTACT_EMAIL=ykzts@desire.sh
-RESEND_FROM_EMAIL=contact@ykzts.com
+CONTACT_EMAIL="John Doe <test@example.com>"
 
 # Cloudflare Turnstile Configuration
 NEXT_PUBLIC_TURNSTILE_SITE_KEY=your_turnstile_site_key_here
