@@ -24,8 +24,7 @@ export default function PrivacyModal() {
       onClose={handleClose}
       ref={dialogRef}
     >
-      <div className="mb-4 flex items-start justify-between">
-        <h2 className="text-2xl font-bold">プライバシーポリシー</h2>
+      <div className="mb-4 flex items-end justify-end">
         <button
           aria-label="閉じる"
           className="text-2xl leading-none text-gray-500 transition-colors hover:text-gray-700"
