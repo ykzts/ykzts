@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useActionState, useEffect, useRef, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
-import Turnstile from 'react-turnstile'
+import { Turnstile } from '@marsidev/react-turnstile'
 import { submitContactForm } from '@/app/actions/contact'
 import { Button, Input, Textarea } from '@/components/form'
 
