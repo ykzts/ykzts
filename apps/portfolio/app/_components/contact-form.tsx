@@ -36,7 +36,7 @@ export default function ContactForm() {
       <>
         <Toaster />
         <div className="mx-auto my-8 max-w-[600px] rounded border-2 border-brand bg-brand/10 p-8 text-center">
-          <h3 className="mb-4 text-2xl font-semibold text-brand-dark">
+          <h3 className="mb-4 text-2xl font-semibold text-gray-900">
             送信完了
           </h3>
           <p className="mb-4">
@@ -107,7 +107,7 @@ export default function ContactForm() {
             />
             <span>
               <Link
-                className="text-brand-dark underline hover:text-brand"
+                className="text-gray-900 underline hover:text-brand"
                 href="/privacy"
               >
                 プライバシーポリシー
