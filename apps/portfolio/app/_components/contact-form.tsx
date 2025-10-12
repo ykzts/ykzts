@@ -12,11 +12,26 @@ export default function ContactForm() {
   const [turnstileToken, setTurnstileToken] = useState<string>('')
   const formRef = useRef<HTMLFormElement>(null)
 
+  // Form field state
+  const [formData, setFormData] = useState({
+    email: '',
+    message: '',
+    name: '',
+    privacyConsent: false,
+    subject: ''
+  })
+
   // Handle success state
   useEffect(() => {
     if (state?.success) {
       // Reset form
-      formRef.current?.reset()
+      setFormData({
+        email: '',
+        message: '',
+        name: '',
+        privacyConsent: false,
+        subject: ''
+      })
       setTurnstileToken('')
     }
   }, [state?.success])
@@ -62,8 +77,10 @@ export default function ContactForm() {
           id="name"
           label="お名前"
           name="name"
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           required
           type="text"
+          value={formData.name}
         />
 
         <Input
@@ -71,8 +88,10 @@ export default function ContactForm() {
           id="email"
           label="メールアドレス"
           name="email"
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           required
           type="email"
+          value={formData.email}
         />
 
         <Input
@@ -80,8 +99,12 @@ export default function ContactForm() {
           id="subject"
           label="件名"
           name="subject"
+          onChange={(e) =>
+            setFormData({ ...formData, subject: e.target.value })
+          }
           required
           type="text"
+          value={formData.subject}
         />
 
         <Textarea
@@ -89,8 +112,12 @@ export default function ContactForm() {
           id="message"
           label="メッセージ"
           name="message"
+          onChange={(e) =>
+            setFormData({ ...formData, message: e.target.value })
+          }
           required
           rows={6}
+          value={formData.message}
         />
 
         <div className="mb-6">
@@ -100,14 +127,18 @@ export default function ContactForm() {
                 errors.privacyConsent ? 'privacy-error' : undefined
               }
               aria-invalid={Boolean(errors.privacyConsent)}
+              checked={formData.privacyConsent}
               className="mt-1 cursor-pointer accent-brand"
               name="privacyConsent"
+              onChange={(e) =>
+                setFormData({ ...formData, privacyConsent: e.target.checked })
+              }
               required
               type="checkbox"
             />
             <span>
               <Link
-                className="text-gray-900 underline hover:text-brand"
+                className="text-gray-900 underline hover:text-gray-700"
                 href="/privacy"
               >
                 プライバシーポリシー
