@@ -1,3 +1,7 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import Handlebars from 'handlebars'
+
 export type ContactEmailData = {
   name: string
   email: string
@@ -5,13 +9,16 @@ export type ContactEmailData = {
   message: string
 }
 
-export function generateContactEmailText(data: ContactEmailData): string {
-  return `
-お名前: ${data.name}
-メールアドレス: ${data.email}
-件名: ${data.subject}
+// Load and compile template at module initialization
+const templatePath = join(
+  process.cwd(),
+  'lib',
+  'email-templates',
+  'contact.hbs'
+)
+const templateSource = readFileSync(templatePath, 'utf-8')
+const template = Handlebars.compile(templateSource)
 
-メッセージ:
-${data.message}
-  `.trim()
+export function generateContactEmailText(data: ContactEmailData): string {
+  return template(data).trim()
 }

@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useActionState, useEffect, useRef, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import Turnstile from 'react-turnstile'
@@ -103,12 +104,12 @@ export default function ContactForm() {
               type="checkbox"
             />
             <span>
-              <a
+              <Link
                 className="text-brand underline hover:text-brand-dark"
                 href="/privacy"
               >
                 プライバシーポリシー
-              </a>
+              </Link>
               に同意します <span className="text-red-600">*</span>
             </span>
           </label>
