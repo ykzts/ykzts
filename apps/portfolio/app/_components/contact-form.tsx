@@ -133,6 +133,7 @@ export default function ContactForm() {
             onSuccess={(token) => {
               setTurnstileToken(token)
             }}
+            options={{ size: 'flexible' }}
             siteKey={
               process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
               '1x00000000000000000000AA'
