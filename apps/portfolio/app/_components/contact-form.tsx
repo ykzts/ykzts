@@ -129,6 +129,7 @@ export default function ContactForm() {
 
         <div className="mb-6">
           <Turnstile
+            className="w-full"
             onSuccess={(token) => {
               setTurnstileToken(token)
             }}
