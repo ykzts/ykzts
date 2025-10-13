@@ -129,9 +129,11 @@ export default function ContactForm() {
 
         <div className="mb-6">
           <Turnstile
+            className="w-full"
             onSuccess={(token) => {
               setTurnstileToken(token)
             }}
+            options={{ size: 'flexible' }}
             siteKey={
               process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
               '1x00000000000000000000AA'
