@@ -83,7 +83,7 @@ export async function submitContactForm(
     }
 
     const emailResult = await resend.emails.send({
-      from: `${validatedData.name} <no-reply@ykzts.com>`,
+      from: `${validatedData.name} via ykzts.com <no-reply@ykzts.com>`,
       replyTo: `${validatedData.name} <${validatedData.email}>`,
       subject: `[お問い合わせ] ${validatedData.subject}`,
       text: validatedData.message,

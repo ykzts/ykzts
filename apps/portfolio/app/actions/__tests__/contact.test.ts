@@ -91,6 +91,38 @@ describe('Contact form action', () => {
       expect(mockSend).toHaveBeenCalled()
     })
 
+    it('should format sender name with "via ykzts.com" suffix', async () => {
+      // Mock successful Turnstile verification
+      ;(global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
+        json: async () => ({ success: true })
+      })
+
+      // Mock successful email send
+      mockSend.mockResolvedValue({
+        error: null,
+        id: 'test-email-id'
+      })
+
+      const { submitContactForm } = await import('../contact')
+
+      const formData = new FormData()
+      formData.set('email', 'test@example.com')
+      formData.set('message', 'This is a test message that is long enough')
+      formData.set('name', 'Test User')
+      formData.set('privacyConsent', 'on')
+      formData.set('subject', 'Test Subject')
+      formData.set('turnstileToken', 'test-token')
+
+      await submitContactForm(null, formData)
+
+      // Verify mockSend was called with the correct format
+      expect(mockSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          from: 'Test User via ykzts.com <no-reply@ykzts.com>'
+        })
+      )
+    })
+
     it('should fail when Turnstile verification fails', async () => {
       // Mock failed Turnstile verification
       ;(global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
