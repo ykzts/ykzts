@@ -64,7 +64,7 @@ const socialLinks: SocialLink[] = [
 
 export default function Contact() {
   return (
-    <Section>
+    <Section id="contact">
       <SectionHeader>
         <SectionTitle>Get in touch</SectionTitle>
       </SectionHeader>
