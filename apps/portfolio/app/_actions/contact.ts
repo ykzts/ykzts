@@ -7,7 +7,7 @@ import { verifyTurnstile } from '@/lib/turnstile'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 const contactFormSchema = z.object({
-  email: z.string().email('有効なメールアドレスを入力してください'),
+  email: z.email('有効なメールアドレスを入力してください'),
   message: z.string().min(10, 'メッセージは10文字以上入力してください'),
   name: z.string().min(1, 'お名前を入力してください'),
   privacyConsent: z
