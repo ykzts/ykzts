@@ -4,8 +4,8 @@ import { Turnstile } from '@marsidev/react-turnstile'
 import Link from 'next/link'
 import { useActionState, useEffect, useRef, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
-import { submitContactForm } from '@/app/actions/contact'
 import { Button, Input, Textarea } from '@/components/form'
+import { submitContactForm } from '../_actions/contact'
 
 export default function ContactForm() {
   const [state, formAction, isPending] = useActionState(submitContactForm, null)
