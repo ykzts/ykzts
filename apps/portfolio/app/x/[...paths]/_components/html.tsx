@@ -1,4 +1,4 @@
-function Html({
+export default function Html({
   githubBaseURL,
   packageName,
   repositoryURL = `${githubBaseURL}.git`
@@ -38,23 +38,4 @@ function Html({
       </body>
     </html>
   )
-}
-
-export async function GET() {
-  const { renderToStaticMarkup } = await import('react-dom/server')
-  const html = renderToStaticMarkup(
-    <Html
-      githubBaseURL="https://github.com/ykzts/go-mirakurun"
-      packageName="ykzts.com/x/mirakurun"
-    />
-  )
-
-  return new Response(html, {
-    headers: {
-      'Cache-Control': 'max-age=3600',
-      'Content-Type': 'text/html; charset=utf-8'
-    },
-    status: 200,
-    statusText: 'OK'
-  })
 }
