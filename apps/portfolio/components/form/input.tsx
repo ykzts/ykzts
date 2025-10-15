@@ -34,7 +34,7 @@ export default function Input({
         required={required}
       />
       {error && (
-        <p className="mt-2 text-sm text-red-600" id={`${id}-error`}>
+        <p className="mt-2 text-red-600 text-sm" id={`${id}-error`}>
           {error}
         </p>
       )}

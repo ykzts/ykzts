@@ -33,7 +33,7 @@ export function SectionHeader({
   return (
     <header
       className={twMerge(
-        "section-header relative space-y-10 py-9 px-6 lg:mt-16 sm:py-12 sm:px-8 md:p-16 lg:py-0 lg:pl-20 lg:pr-40 lg:text-right after:hidden after:absolute after:content-[''] after:h-dvh after:w-0.5 after:bg-brand-dark after:top-0 after:right-22 lg:after:block group-data-intro:lg:mt-60",
+        "section-header relative space-y-10 px-6 py-9 after:absolute after:top-0 after:right-22 after:hidden after:h-dvh after:w-0.5 after:bg-brand-dark after:content-[''] sm:px-8 sm:py-12 md:p-16 lg:mt-16 lg:py-0 lg:pr-40 lg:pl-20 lg:text-right group-data-intro:lg:mt-60 lg:after:block",
         className
       )}
     >
@@ -52,7 +52,7 @@ export function SectionTitle({
   return (
     <SectionTitleImpl
       className={twMerge(
-        "relative ml-auto font-heading font-bold text-xl/loose uppercase tracking-widest before:hidden before:content-[''] before:absolute before:top-[0.5lh] before:-right-7 before:-mt-0.75 before:size-2 before:rounded before:bg-brand-dark after:hidden after:content-[''] after:absolute after:top-[0.5lh] after:-right-18 after:h-0.5 after:w-12 after:bg-brand-dark lg:before:block lg:after:block group-data-intro:font-main-title group-data-intro:text-5xl group-data-intro:tracking-tighter group-data-intro:normal-case group-data-intro:lg:-mt-[0.5lh] group-data-intro:lg:w-80 group-data-intro:sm:text-8xl",
+        "before:-right-7 before:-mt-0.75 after:-right-18 group-data-intro:lg:-mt-[0.5lh] relative ml-auto font-bold font-heading text-xl/loose uppercase tracking-widest before:absolute before:top-[0.5lh] before:hidden before:size-2 before:rounded before:bg-brand-dark before:content-[''] after:absolute after:top-[0.5lh] after:hidden after:h-0.5 after:w-12 after:bg-brand-dark after:content-[''] group-data-intro:font-main-title group-data-intro:text-5xl group-data-intro:normal-case group-data-intro:tracking-tighter group-data-intro:sm:text-8xl group-data-intro:lg:w-80 lg:after:block lg:before:block",
         className
       )}
     >
@@ -71,7 +71,7 @@ export function SectionTagline({
   return (
     <p
       className={twMerge(
-        'ml-auto font-heading text-sm/loose uppercase tracking-widest lg:w-80 group-data-intro:font-semibold',
+        'ml-auto font-heading text-sm/loose uppercase tracking-widest group-data-intro:font-semibold lg:w-80',
         className
       )}
     >
@@ -90,7 +90,7 @@ export function SectionContent({
   return (
     <div
       className={twMerge(
-        'section-content bg-white py-9 px-6 md:py-12 md:px-8 lg:p-16',
+        'section-content bg-white px-6 py-9 md:px-8 md:py-12 lg:p-16',
         className
       )}
     >
@@ -109,7 +109,7 @@ export function SectionFooter({
   return (
     <footer
       className={twMerge(
-        'section-footer relative ml-auto bg-white pt-0 pb-9 px-6 sm:pb-12 sm:px-8 md:pb-16 md:px-16 lg:py-0 lg:px-40 lg:bg-transparent lg:text-right',
+        'section-footer relative ml-auto bg-white px-6 pt-0 pb-9 sm:px-8 sm:pb-12 md:px-16 md:pb-16 lg:bg-transparent lg:px-40 lg:py-0 lg:text-right',
         className
       )}
     >

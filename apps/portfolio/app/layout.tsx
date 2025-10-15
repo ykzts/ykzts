@@ -52,9 +52,9 @@ export default function RootLayout({ children, modal }: LayoutProps<'/'>) {
       lang="ja"
     >
       <head />
-      <body className="bg-brand bg-(image:--paradigm) bg-fixed bg-repeat-y bg-size-[75%_auto] bg-position-[-50%_10%]">
+      <body className="bg-(image:--paradigm) bg-brand bg-position-[-50%_10%] bg-size-[75%_auto] bg-fixed bg-repeat-y">
         <a
-          className="absolute -top-20 left-2 z-1000 rounded bg-black px-4 py-2 text-white no-underline transition-[top] duration-300 focus:top-2"
+          className="-top-20 absolute left-2 z-1000 rounded bg-black px-4 py-2 text-white no-underline transition-[top] duration-300 focus:top-2"
           href="#content"
         >
           メインコンテンツにスキップ

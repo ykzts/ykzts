@@ -35,7 +35,7 @@ export default function ContactForm() {
       <>
         <Toaster />
         <div className="mx-auto my-8 max-w-[600px] rounded border-2 border-brand bg-brand/10 p-8 text-center">
-          <h3 className="mb-4 text-2xl font-semibold text-gray-900">
+          <h3 className="mb-4 font-semibold text-2xl text-gray-900">
             送信完了
           </h3>
           <p className="mb-4">
@@ -121,7 +121,7 @@ export default function ContactForm() {
             </span>
           </label>
           {errors.privacyConsent && (
-            <p className="mt-2 text-sm text-red-600" id="privacy-error">
+            <p className="mt-2 text-red-600 text-sm" id="privacy-error">
               {errors.privacyConsent}
             </p>
           )}
@@ -141,7 +141,7 @@ export default function ContactForm() {
           />
           <input name="turnstileToken" type="hidden" value={turnstileToken} />
           {errors.turnstileToken && (
-            <p className="mt-2 text-sm text-red-600">{errors.turnstileToken}</p>
+            <p className="mt-2 text-red-600 text-sm">{errors.turnstileToken}</p>
           )}
         </div>
 

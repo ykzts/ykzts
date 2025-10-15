@@ -65,11 +65,11 @@ export default function HomePage(_props: PageProps<'/'>) {
             ポートフォリオ
           </SectionTagline>
 
-          <ul className="w-80 hidden ml-auto items-center justify-end gap-4 lg:flex">
+          <ul className="ml-auto hidden w-80 items-center justify-end gap-4 lg:flex">
             <li className="align-bottom">
               <a
                 aria-label="コンテンツまでスクロール"
-                className="flex justify-end h-16 w-24 rounded text-6xl transition-transform duration-250 ease-in-out hover:translate-y-1 focus:translate-y-1 focus:outline-3 focus:outline-offset-2 focus:outline-brand"
+                className="flex h-16 w-24 justify-end rounded text-6xl transition-transform duration-250 ease-in-out hover:translate-y-1 focus:translate-y-1 focus:outline-3 focus:outline-brand focus:outline-offset-2"
                 href="#content"
               >
                 <FaArrowDown />
@@ -100,7 +100,7 @@ export default function HomePage(_props: PageProps<'/'>) {
         className="text-base text-black/60 lg:grid lg:grid-cols-2"
         lang="en"
       >
-        <div className="bg-white p-6 lg:col-start-2 md:p-8 lg:p-16">
+        <div className="bg-white p-6 md:p-8 lg:col-start-2 lg:p-16">
           <span>© Yamagishi Kazutoshi.</span>{' '}
           <span>
             <Link href="/privacy">Privacy Policy</Link>.

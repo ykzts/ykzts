@@ -35,9 +35,25 @@
     }
   },
   "linter": {
+    "domains": {
+      "next": "recommended",
+      "react": "recommended"
+    },
     "rules": {
       "complexity": {
         "useLiteralKeys": "off"
+      },
+      "correctness": {
+        "useUniqueElementIds": "off"
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "level": "warn",
+          "options": {
+            "attributes": ["className"],
+            "functions": ["twMerge"]
+          }
+        }
       },
       "suspicious": {
         "noUnknownAtRules": "off"
@@ -54,15 +70,6 @@
         }
       },
       "includes": ["**/package.json"]
-    },
-    {
-      "includes": ["apps/*/**"],
-      "linter": {
-        "domains": {
-          "next": "recommended",
-          "react": "recommended"
-        }
-      }
     }
   ],
   "vcs": {
