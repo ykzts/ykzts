@@ -26,7 +26,7 @@ export default function PrivacyModal() {
       <div className="mb-4 flex items-end justify-end">
         <button
           aria-label="閉じる"
-          className="text-2xl leading-none text-gray-500 transition-colors hover:text-gray-700"
+          className="text-2xl text-gray-500 leading-none transition-colors hover:text-gray-700"
           onClick={handleClose}
           type="button"
         >
