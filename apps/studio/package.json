@@ -2,15 +2,15 @@
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
     "@sanity/icons": "3.7.4",
-    "@sanity/types": "4.10.2",
-    "@sanity/ui": "3.1.8",
-    "@sanity/vision": "4.10.2",
+    "@sanity/types": "4.10.3",
+    "@sanity/ui": "3.1.10",
+    "@sanity/vision": "4.10.3",
     "@ykzts/schemas": "workspace:*",
     "next": "16.0.0-canary.5",
-    "next-sanity": "11.4.2",
+    "next-sanity": "11.5.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "sanity": "4.10.2"
+    "sanity": "4.10.3"
   },
   "description": "Sanity CMS studio application for content management of portfolio and blog entries",
   "devDependencies": {
@@ -30,7 +30,7 @@
     "url": "https://github.com/ykzts/ykzts.git"
   },
   "scripts": {
-    "build": "next build --webpack",
+    "build": "next build",
     "dev": "next -p 10000",
     "start": "next start -p 10000",
     "test": "echo \"No tests configured for studio app\"",

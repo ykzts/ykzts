@@ -6,10 +6,13 @@ packages:
 
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
-  - renovate
-  - next
   - '@next/*'
+  - '@sanity/*'
   - eslint-config-next
+  - next
+  - next-sanity
+  - renovate
+  - sanity
 onlyBuiltDependencies:
   - '@swc/core'
   - '@tailwindcss/oxide'
