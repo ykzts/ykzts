@@ -1,5 +1,5 @@
 import { createClient } from '@sanity/client'
-import { unstable_cacheTag as cacheTag } from 'next/cache'
+import { cacheTag } from 'next/cache'
 import * as z from 'zod'
 
 const workSchema = z.object({
