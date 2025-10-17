@@ -30,7 +30,7 @@
     "url": "https://github.com/ykzts/ykzts.git"
   },
   "scripts": {
-    "build": "next build",
+    "build": "next build --no-mangling",
     "dev": "next -p 10000",
     "start": "next start -p 10000",
     "test": "echo \"No tests configured for studio app\"",
