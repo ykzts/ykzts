@@ -1,4 +1,4 @@
-# Copilot Instructions
+# AI Agent Instructions
 
 This repository is a monorepo containing the personal website and blog of Yamagishi Kazutoshi (@ykzts), a Japanese software developer specializing in full-stack web applications.
 
