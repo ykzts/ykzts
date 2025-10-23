@@ -260,8 +260,8 @@ importers:
   renovate-config:
     devDependencies:
       renovate:
-        specifier: 41.151.1
-        version: 41.151.1(encoding@0.1.13)(typanion@3.14.0)
+        specifier: 41.152.9
+        version: 41.152.9(encoding@0.1.13)(typanion@3.14.0)
 
 packages:
 
@@ -9838,8 +9838,8 @@ packages:
   renderkid@3.0.0:
     resolution: {integrity: sha512-q/7VIQA8lmM1hF+jn+sFSPWGlMkSAeNYcPLmDQx2zzuiDfaLrOmumR8iaUKlenFgh0XRPIUeSPlH3A+AW3Z5pg==}
 
-  renovate@41.151.1:
-    resolution: {integrity: sha512-taIcCrfWwgdAXsQ3ilDRtOHtFZbY8NgxI012LfntVhy2q2MoYKAriyJfniJm4IAZtDn70ICyXJa2tLJw+jjWHg==}
+  renovate@41.152.9:
+    resolution: {integrity: sha512-meh8UVcA9NoVvOmdeTxd1zcwZTOGP9M68EmMAc2+oUvpsCT8a7FYTdHBEmBzu9phkPU/nNEW7/aau/MuipCbRg==}
     engines: {node: ^22.13.0, pnpm: ^10.0.0}
     hasBin: true
 
@@ -23954,7 +23954,7 @@ snapshots:
       lodash: 4.17.21
       strip-ansi: 6.0.1
 
-  renovate@41.151.1(encoding@0.1.13)(typanion@3.14.0):
+  renovate@41.152.9(encoding@0.1.13)(typanion@3.14.0):
     dependencies:
       '@aws-sdk/client-codecommit': 3.899.0
       '@aws-sdk/client-ec2': 3.899.0
