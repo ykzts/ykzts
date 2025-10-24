@@ -97,8 +97,8 @@ importers:
         specifier: 9.16.0
         version: 9.16.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       resend:
-        specifier: 6.2.1
-        version: 6.2.1(@react-email/render@1.4.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
+        specifier: 6.2.2
+        version: 6.2.2(@react-email/render@1.4.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
       tailwind-merge:
         specifier: 3.3.1
         version: 3.3.1
@@ -9811,8 +9811,8 @@ packages:
   reselect@5.1.1:
     resolution: {integrity: sha512-K/BG6eIky/SBpzfHZv/dd+9JBFiS4SWV7FIujVyJRux6e45+73RaUHXLmIR1f7WOMaQ0U1km6qwklRQxpJJY0w==}
 
-  resend@6.2.1:
-    resolution: {integrity: sha512-tcyzU0MwDSc1r9VhUt1uCLYw6MKf7/0yUvulY+VOKZ43DfIQTJNCCg2I9ogp4cR8fBGQ1/s6zGHazCbAWXnqBQ==}
+  resend@6.2.2:
+    resolution: {integrity: sha512-EF/wUj0y/CHBDqLV9iKrNHxGV/wdJfzfEzhPbd3tXD4wtMssabgVwys7N3dv+s1EsqnXjC0uN6ylpfvWTzF4Aw==}
     engines: {node: '>=18'}
     peerDependencies:
       '@react-email/render': '*'
@@ -24005,7 +24005,7 @@ snapshots:
 
   reselect@5.1.1: {}
 
-  resend@6.2.1(@react-email/render@1.4.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)):
+  resend@6.2.2(@react-email/render@1.4.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)):
     dependencies:
       svix: 1.76.1
     optionalDependencies:
