@@ -2,15 +2,15 @@
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
     "@sanity/icons": "3.7.4",
-    "@sanity/types": "4.10.3",
+    "@sanity/types": "4.11.0",
     "@sanity/ui": "3.1.10",
-    "@sanity/vision": "4.10.3",
+    "@sanity/vision": "4.11.0",
     "@ykzts/schemas": "workspace:*",
     "next": "16.0.1-canary.1",
     "next-sanity": "11.5.5",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "sanity": "4.10.3"
+    "sanity": "4.11.0"
   },
   "description": "Sanity CMS studio application for content management of portfolio and blog entries",
   "devDependencies": {
