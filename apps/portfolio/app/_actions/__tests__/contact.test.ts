@@ -8,11 +8,13 @@ vi.stubEnv('CONTACT_EMAIL', 'test@example.com')
 // Mock Resend
 const mockSend = vi.fn()
 vi.mock('resend', () => ({
-  Resend: vi.fn(() => ({
-    emails: {
-      send: mockSend
+  Resend: vi.fn(
+    class {
+      emails = {
+        send: mockSend
+      }
     }
-  }))
+  )
 }))
 
 // Mock fetch for Turnstile verification
