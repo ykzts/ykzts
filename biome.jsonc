@@ -21,7 +21,7 @@
       "enabled": true
     },
     "parser": {
-      "cssModules": true
+      "tailwindDirectives": true
     }
   },
   "formatter": {
@@ -54,9 +54,6 @@
             "functions": ["twMerge"]
           }
         }
-      },
-      "suspicious": {
-        "noUnknownAtRules": "off"
       }
     }
   },
