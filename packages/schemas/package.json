@@ -5,7 +5,7 @@
   },
   "description": "Sanity CMS schema definitions for blog posts, profiles, and work portfolio content",
   "devDependencies": {
-    "@types/node": "22.18.12",
+    "@types/node": "22.18.13",
     "@ykzts/tsconfig": "workspace:*",
     "tsup": "8.5.0",
     "vitest": "4.0.4"
