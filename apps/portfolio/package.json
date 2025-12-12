@@ -7,7 +7,7 @@
     "@react-email/render": "2.0.0",
     "@sanity/client": "7.12.1",
     "@vercel/analytics": "1.5.0",
-    "next": "16.1.0-canary.15",
+    "next": "16.1.0-canary.19",
     "react": "19.2.1",
     "react-dom": "19.2.1",
     "react-hot-toast": "2.6.0",
