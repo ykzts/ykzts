@@ -7,7 +7,7 @@
   "devDependencies": {
     "@types/node": "22.19.0",
     "@ykzts/tsconfig": "workspace:*",
-    "tsup": "8.5.0",
+    "tsup": "8.5.1",
     "vitest": "4.0.8"
   },
   "license": "MIT",
