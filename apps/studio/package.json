@@ -2,21 +2,21 @@
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
     "@sanity/icons": "3.7.4",
-    "@sanity/types": "4.11.0",
+    "@sanity/types": "4.20.3",
     "@sanity/ui": "3.1.11",
-    "@sanity/vision": "4.11.0",
+    "@sanity/vision": "4.20.3",
     "@ykzts/schemas": "workspace:*",
-    "next": "16.0.1-canary.2",
-    "next-sanity": "11.5.7",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "sanity": "4.11.0"
+    "next": "16.1.0-canary.19",
+    "next-sanity": "11.6.10",
+    "react": "19.2.1",
+    "react-dom": "19.2.1",
+    "sanity": "4.20.3"
   },
   "description": "Sanity CMS studio application for content management of portfolio and blog entries",
   "devDependencies": {
-    "@types/node": "22.18.12",
-    "@types/react": "19.2.2",
-    "@types/react-dom": "19.2.2",
+    "@types/node": "22.19.3",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
     "@ykzts/tsconfig": "workspace:*",
     "babel-plugin-react-compiler": "1.0.0",
     "typescript": "5.9.3"
