@@ -3,7 +3,7 @@
   "dependencies": {
     "@marsidev/react-turnstile": "1.4.0",
     "@mdx-js/react": "3.1.1",
-    "@portabletext/react": "5.0.0",
+    "@portabletext/react": "6.0.0",
     "@react-email/render": "2.0.0",
     "@sanity/client": "7.13.2",
     "@vercel/analytics": "1.6.1",
