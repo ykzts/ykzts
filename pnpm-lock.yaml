@@ -176,8 +176,8 @@ importers:
         specifier: 7.3.0
         version: 7.3.0(@types/node@22.19.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.1)
       vite-tsconfig-paths:
-        specifier: 5.1.4
-        version: 5.1.4(typescript@5.9.3)(vite@7.3.0(@types/node@22.19.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.1))
+        specifier: 6.0.3
+        version: 6.0.3(typescript@5.9.3)(vite@7.3.0(@types/node@22.19.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.1))
       vitest:
         specifier: 4.0.16
         version: 4.0.16(@opentelemetry/api@1.9.0)(@types/node@22.19.3)(jiti@2.6.1)(jsdom@27.3.0)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.1)
@@ -11347,6 +11347,14 @@ packages:
 
   vite-tsconfig-paths@5.1.4:
     resolution: {integrity: sha512-cYj0LRuLV2c2sMqhqhGpaO3LretdtMn/BVX4cPLanIZuwwrkVl+lK84E/miEXkCHWXuq65rhNN4rXsBcOB3S4w==}
+    peerDependencies:
+      vite: '*'
+    peerDependenciesMeta:
+      vite:
+        optional: true
+
+  vite-tsconfig-paths@6.0.3:
+    resolution: {integrity: sha512-7bL7FPX/DSviaZGYUKowWF1AiDVWjMjxNbE8lyaVGDezkedWqfGhlnQ4BZXre0ZN5P4kAgIJfAlgFDVyjrCIyg==}
     peerDependencies:
       vite: '*'
     peerDependenciesMeta:
@@ -26070,6 +26078,17 @@ snapshots:
       vfile-message: 4.0.3
 
   vite-tsconfig-paths@5.1.4(typescript@5.9.3)(vite@7.3.0(@types/node@22.19.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.1)):
+    dependencies:
+      debug: 4.4.3(supports-color@8.1.1)
+      globrex: 0.1.2
+      tsconfck: 3.1.6(typescript@5.9.3)
+    optionalDependencies:
+      vite: 7.3.0(@types/node@22.19.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.1)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
+  vite-tsconfig-paths@6.0.3(typescript@5.9.3)(vite@7.3.0(@types/node@22.19.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.1)):
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
       globrex: 0.1.2
