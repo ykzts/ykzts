@@ -8,8 +8,8 @@
     "@ykzts/schemas": "workspace:*",
     "next": "16.1.1-canary.2",
     "next-sanity": "11.6.12",
-    "react": "19.2.1",
-    "react-dom": "19.2.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
     "sanity": "4.20.3"
   },
   "description": "Sanity CMS studio application for content management of portfolio and blog entries",
