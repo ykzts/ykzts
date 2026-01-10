@@ -155,8 +155,8 @@ importers:
         specifier: 10.4.23
         version: 10.4.23(postcss@8.5.6)
       axe-core:
-        specifier: 4.11.0
-        version: 4.11.0
+        specifier: 4.11.1
+        version: 4.11.1
       babel-plugin-react-compiler:
         specifier: 1.0.0
         version: 1.0.0
@@ -5313,8 +5313,8 @@ packages:
   aws4@1.13.2:
     resolution: {integrity: sha512-lHe62zvbTB5eEABUVi/AwVh0ZKY9rMMDhmm+eeyuuUQbQ3+J+fONVQOZyj+DdrvD4BY33uYniyRJ4UJIaSKAfw==}
 
-  axe-core@4.11.0:
-    resolution: {integrity: sha512-ilYanEU8vxxBexpJd8cWM4ElSQq4QctCLKih0TSfjIfCQTeyH/6zVrmIJfLPrKTKJRbiG+cfnZbQIjAlJmF1jQ==}
+  axe-core@4.11.1:
+    resolution: {integrity: sha512-BASOg+YwO2C+346x3LZOeoovTIoTrRqEsqMa6fmfAV0P+U9mFr9NsyOEpiYvFjbc64NMrSswhV50WdXzdb/Z5A==}
     engines: {node: '>=4'}
 
   azure-devops-node-api@15.1.1:
@@ -12987,7 +12987,7 @@ snapshots:
 
   '@axe-core/playwright@4.11.0(playwright-core@1.57.0)':
     dependencies:
-      axe-core: 4.11.0
+      axe-core: 4.11.1
       playwright-core: 1.57.0
 
   '@babel/code-frame@7.27.1':
@@ -18827,7 +18827,7 @@ snapshots:
 
   aws4@1.13.2: {}
 
-  axe-core@4.11.0: {}
+  axe-core@4.11.1: {}
 
   azure-devops-node-api@15.1.1:
     dependencies:
@@ -21757,7 +21757,7 @@ snapshots:
     dependencies:
       '@paulirish/trace_engine': 0.0.53
       '@sentry/node': 7.120.4
-      axe-core: 4.11.0
+      axe-core: 4.11.1
       chrome-launcher: 1.2.1
       configstore: 5.0.1
       csp_evaluator: 1.1.5
