@@ -24,8 +24,8 @@ const portableTextComponents = {
 
 function WorksSkeleton() {
   return (
-    <section className="mx-auto max-w-4xl py-16" id="works">
-      <h2 className="mb-12 font-semibold text-muted text-sm uppercase tracking-widest">
+    <section className="mx-auto max-w-4xl py-20" id="works">
+      <h2 className="mb-12 font-semibold text-muted text-base uppercase tracking-widest">
         Works
       </h2>
       <div className="space-y-12">
@@ -49,21 +49,21 @@ async function WorksImpl() {
   const works = await getWorks()
 
   return (
-    <section className="mx-auto max-w-4xl py-16" id="works">
-      <h2 className="mb-12 font-semibold text-muted text-sm uppercase tracking-widest">
+    <section className="mx-auto max-w-4xl py-20" id="works">
+      <h2 className="mb-12 font-semibold text-muted text-base uppercase tracking-widest">
         Works
       </h2>
       <div className="space-y-8">
         {works.map((work) => (
           <article
-            className="group rounded-xl border border-border bg-card p-6 transition-all duration-300 hover:border-accent/50 hover:bg-card/80"
+            className="group rounded-xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-accent/50 hover:shadow-md"
             id={work.slug}
             key={work.slug}
           >
-            <h3 className="mb-4 font-semibold text-card-foreground text-xl transition-colors duration-200 group-hover:text-accent">
+            <h3 className="mb-4 font-semibold text-card-foreground text-2xl transition-colors duration-200 group-hover:text-accent">
               {work.title}
             </h3>
-            <div className="prose prose-invert prose-sm max-w-none prose-p:text-muted prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground">
+            <div className="prose prose-base max-w-none prose-p:text-base prose-p:text-muted prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground">
               <PortableText
                 components={portableTextComponents}
                 value={work.content}

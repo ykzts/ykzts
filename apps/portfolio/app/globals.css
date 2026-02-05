@@ -8,14 +8,14 @@
   --font-heading:
     var(--font-inter), var(--font-noto-sans-jp), system-ui, sans-serif;
 
-  --color-background: #0f172a;
-  --color-foreground: #e2e8f0;
-  --color-muted: #94a3b8;
-  --color-accent: #38bdf8;
-  --color-accent-foreground: #0f172a;
-  --color-card: #1e293b;
-  --color-card-foreground: #e2e8f0;
-  --color-border: #334155;
+  --color-background: #fafafa;
+  --color-foreground: #1a1a2e;
+  --color-muted: #5a6270;
+  --color-accent: #2563eb;
+  --color-accent-foreground: #ffffff;
+  --color-card: #ffffff;
+  --color-card-foreground: #1a1a2e;
+  --color-border: #e2e5e9;
 }
 
 @layer base {
@@ -33,5 +33,5 @@
 }
 
 @utility tech-tag {
-  @apply inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent border border-accent/20;
+  @apply inline-flex items-center rounded-full bg-accent/10 px-3 py-1.5 text-sm font-medium text-accent border border-accent/20;
 }

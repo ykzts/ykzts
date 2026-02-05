@@ -6,25 +6,6 @@ function SVGRoot({ as: Component = 'svg', ref, ...props }: SVGRootProps) {
   return <Component {...props} ref={ref} />
 }
 
-/** @see https://about.meta.com/en/brand/resources/facebookapp/ */
-function FacebookLogo({ as = 'svg', ref, ...props }: SVGRootProps) {
-  return (
-    <SVGRoot
-      as={as}
-      fill="currentColor"
-      fillRule="nonzero"
-      ref={ref}
-      viewBox="0 0 1365.333 1365.333"
-      {...props}
-    >
-      <path
-        d="M10240 5120c0 2827.7-2292.3 5120-5120 5120S0 7947.7 0 5120C0 2564.46 1872.31 446.301 4320 62.2V3640H3020v1480h1300v1128c0 1283.2 764.38 1992 1933.9 1992 560.17 0 1146.1-100 1146.1-100V6880h-645.62c-636.03 0-834.38-394.67-834.38-799.57V5120h1420l-227-1480H5920V62.2C8367.69 446.3 10240 2564.46 10240 5120"
-        transform="matrix(.13333 0 0 -.13333 0 1365.333)"
-      />
-    </SVGRoot>
-  )
-}
-
 /** @see https://github.com/logos */
 function GitHubLogo({ as = 'svg', ref, ...props }: SVGRootProps) {
   return (
@@ -106,7 +87,6 @@ export default function SVGSymbols() {
     // biome-ignore lint/a11y/noSvgWithoutTitle: this svg is decorative.
     <svg aria-hidden className="hidden">
       <defs>
-        <FacebookLogo as="symbol" id="facebook-logo" />
         <GitHubLogo as="symbol" id="github-logo" />
         <MastodonLogo as="symbol" id="mastodon-logo" />
         <ThreadsLogo as="symbol" id="threads-logo" />

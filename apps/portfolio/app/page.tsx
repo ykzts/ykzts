@@ -46,15 +46,15 @@ export default function HomePage(_props: PageProps<'/'>) {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <header className="px-6 py-16 md:px-12 lg:px-24 lg:py-24">
+      <header className="px-6 py-20 md:px-12 lg:px-24 lg:py-28">
         <div className="mx-auto max-w-4xl">
-          <h1 className="mb-4 font-bold text-4xl text-foreground tracking-tight md:text-5xl lg:text-6xl">
+          <h1 className="mb-4 font-bold text-5xl text-foreground tracking-tight md:text-6xl lg:text-7xl">
             山岸和利
           </h1>
-          <p className="mb-6 font-medium text-accent text-xl md:text-2xl">
+          <p className="mb-6 font-medium text-accent text-2xl md:text-3xl">
             Software Developer
           </p>
-          <p className="mb-8 max-w-2xl text-lg text-muted leading-relaxed">
+          <p className="mb-8 max-w-2xl text-xl text-muted leading-relaxed">
             JavaScriptやRubyを用いたウェブアプリケーション開発を得意とするソフトウェア開発者です。ReactやRuby
             on Railsに造詣が深く、バックエンドからフロントエンドまで幅広く担当しています。
           </p>
@@ -69,7 +69,7 @@ export default function HomePage(_props: PageProps<'/'>) {
           </div>
 
           {/* Navigation Links */}
-          <nav className="flex flex-wrap gap-6 text-muted">
+          <nav className="flex flex-wrap gap-8 text-lg text-muted">
             <a
               className="transition-colors duration-200 hover:text-accent"
               href="#about"
@@ -94,11 +94,11 @@ export default function HomePage(_props: PageProps<'/'>) {
 
       <main id="content" className="px-6 md:px-12 lg:px-24">
         {/* About Section */}
-        <section className="mx-auto max-w-4xl py-16" id="about">
-          <h2 className="mb-8 font-semibold text-muted text-sm uppercase tracking-widest">
+        <section className="mx-auto max-w-4xl py-20" id="about">
+          <h2 className="mb-10 font-semibold text-muted text-base uppercase tracking-widest">
             About
           </h2>
-          <div className="prose prose-invert prose-lg max-w-none prose-p:text-muted prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground">
+          <div className="prose prose-lg max-w-none prose-p:text-lg prose-p:text-muted prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-headings:text-foreground">
             <AboutDoc />
           </div>
         </section>
@@ -111,7 +111,7 @@ export default function HomePage(_props: PageProps<'/'>) {
       </main>
 
       <footer className="border-t border-border px-6 py-12 md:px-12 lg:px-24">
-        <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-muted text-sm md:flex-row">
+        <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-muted text-base md:flex-row">
           <span>© Yamagishi Kazutoshi</span>
           <div className="flex gap-6">
             <Link

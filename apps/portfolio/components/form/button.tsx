@@ -12,7 +12,7 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const baseClasses =
-    'rounded-lg border-0 px-6 py-3 text-sm font-medium transition-all duration-200 ease-in-out focus:outline-2 focus:outline-offset-2 focus:outline-accent'
+    'rounded-lg border-0 px-6 py-3 text-base font-medium transition-all duration-200 ease-in-out focus:outline-2 focus:outline-offset-2 focus:outline-accent'
 
   const variantClasses = {
     primary:

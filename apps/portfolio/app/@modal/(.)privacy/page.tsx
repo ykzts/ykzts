@@ -19,7 +19,7 @@ export default function PrivacyModal() {
 
   return (
     <dialog
-      className="m-auto max-h-[80vh] w-full max-w-4xl overflow-y-auto rounded-xl border border-border bg-card p-8 backdrop:bg-black/70"
+      className="m-auto max-h-[80vh] w-full max-w-4xl overflow-y-auto rounded-xl border border-border bg-card p-8 shadow-lg backdrop:bg-black/40"
       onClose={handleClose}
       ref={dialogRef}
     >
@@ -33,7 +33,7 @@ export default function PrivacyModal() {
           ×
         </button>
       </div>
-      <div className="prose prose-invert max-w-none prose-p:text-muted prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-headings:text-foreground">
+      <div className="prose prose-base max-w-none prose-p:text-base prose-p:text-muted prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-headings:text-foreground">
         <PrivacyContent />
       </div>
     </dialog>

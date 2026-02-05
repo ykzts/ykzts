@@ -15,10 +15,10 @@ export default function Textarea({
   ...props
 }: TextareaProps) {
   return (
-    <div className="mb-4">
+    <div className="mb-5">
       {label && (
-        <label className="mb-2 block text-muted text-sm" htmlFor={id}>
-          {label} {required && <span className="text-red-400">*</span>}
+        <label className="mb-2 block text-base text-foreground" htmlFor={id}>
+          {label} {required && <span className="text-red-500">*</span>}
         </label>
       )}
       <textarea
@@ -26,14 +26,14 @@ export default function Textarea({
         aria-describedby={error ? `${id}-error` : undefined}
         aria-invalid={Boolean(error)}
         className={twMerge(
-          'min-h-[120px] w-full resize-y rounded-lg border border-border bg-background px-4 py-2.5 text-foreground text-sm transition-all duration-200 placeholder:text-muted/50 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent aria-invalid:border-red-400 aria-invalid:focus:ring-red-400',
+          'min-h-[140px] w-full resize-y rounded-lg border border-border bg-background px-4 py-3 text-base text-foreground transition-all duration-200 placeholder:text-muted/50 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent aria-invalid:border-red-500 aria-invalid:focus:ring-red-500',
           className
         )}
         id={id}
         required={required}
       />
       {error && (
-        <p className="mt-1.5 text-red-400 text-xs" id={`${id}-error`}>
+        <p className="mt-1.5 text-red-500 text-sm" id={`${id}-error`}>
           {error}
         </p>
       )}

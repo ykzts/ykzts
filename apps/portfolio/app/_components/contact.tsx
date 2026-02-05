@@ -49,15 +49,15 @@ const socialLinks: SocialLink[] = [
 
 export default function Contact() {
   return (
-    <section className="mx-auto max-w-4xl py-16" id="contact">
-      <h2 className="mb-8 font-semibold text-muted text-sm uppercase tracking-widest">
+    <section className="mx-auto max-w-4xl py-20" id="contact">
+      <h2 className="mb-10 font-semibold text-muted text-base uppercase tracking-widest">
         Contact
       </h2>
 
       <div className="grid gap-12 lg:grid-cols-2">
         {/* Contact Form */}
-        <div className="rounded-xl border border-border bg-card p-6">
-          <p className="mb-4 text-muted leading-relaxed">
+        <div className="rounded-xl border border-border bg-card p-8 shadow-sm">
+          <p className="mb-4 text-base text-muted leading-relaxed">
             お問い合わせやご依頼は以下のフォームからお願いします。スケジュール次第ではありますが有期もしくは案件単位での作業依頼や技術相談でしたら有償で承ります。
           </p>
           <p className="mb-6 text-muted text-sm">
@@ -69,9 +69,9 @@ export default function Contact() {
         {/* Social Links */}
         <div className="space-y-8">
           <div>
-            <h3 className="mb-4 font-medium text-foreground">Blog</h3>
+            <h3 className="mb-4 text-lg font-medium text-foreground">Blog</h3>
             <a
-              className="inline-flex items-center gap-2 text-accent transition-colors duration-200 hover:text-accent/80"
+              className="inline-flex items-center gap-2 text-base text-accent transition-colors duration-200 hover:text-accent/80"
               href="https://ykzts.blog/"
               rel="noopener noreferrer"
               target="_blank"
@@ -94,7 +94,7 @@ export default function Contact() {
           </div>
 
           <div>
-            <h3 className="mb-4 font-medium text-foreground">Social</h3>
+            <h3 className="mb-4 text-lg font-medium text-foreground">Social</h3>
             <ul className="flex gap-3">
               {socialLinks.map((socialLink) => (
                 <li key={socialLink.url}>

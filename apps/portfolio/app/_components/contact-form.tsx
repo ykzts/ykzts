@@ -35,13 +35,13 @@ export default function ContactForm() {
       <>
         <Toaster />
         <div className="rounded-lg border border-accent/30 bg-accent/10 p-6 text-center">
-          <h3 className="mb-3 font-semibold text-foreground text-lg">
+          <h3 className="mb-3 font-semibold text-foreground text-xl">
             送信完了
           </h3>
-          <p className="mb-3 text-muted text-sm">
+          <p className="mb-3 text-base text-muted">
             お問い合わせいただきありがとうございます。内容を確認次第、ご返信させていただきます。
           </p>
-          <p className="mb-5 text-muted text-sm">
+          <p className="mb-5 text-base text-muted">
             通常、2〜3営業日以内にご返信いたします。
           </p>
           <Button onClick={() => window.location.reload()} type="button">
@@ -99,14 +99,14 @@ export default function ContactForm() {
           rows={6}
         />
 
-        <div className="mb-4">
-          <label className="flex cursor-pointer items-start gap-2 text-muted text-sm">
+        <div className="mb-5">
+          <label className="flex cursor-pointer items-start gap-2.5 text-base text-muted">
             <input
               aria-describedby={
                 errors.privacyConsent ? 'privacy-error' : undefined
               }
               aria-invalid={Boolean(errors.privacyConsent)}
-              className="mt-0.5 cursor-pointer accent-accent"
+              className="mt-1 cursor-pointer accent-accent"
               defaultChecked={formData.privacyConsent || false}
               name="privacyConsent"
               required
@@ -119,11 +119,11 @@ export default function ContactForm() {
               >
                 プライバシーポリシー
               </Link>
-              に同意します <span className="text-red-400">*</span>
+              に同意します <span className="text-red-500">*</span>
             </span>
           </label>
           {errors.privacyConsent && (
-            <p className="mt-1.5 text-red-400 text-xs" id="privacy-error">
+            <p className="mt-1.5 text-red-500 text-sm" id="privacy-error">
               {errors.privacyConsent}
             </p>
           )}
@@ -135,7 +135,7 @@ export default function ContactForm() {
             onSuccess={(token) => {
               setTurnstileToken(token)
             }}
-            options={{ size: 'flexible', theme: 'dark' }}
+            options={{ size: 'flexible', theme: 'light' }}
             siteKey={
               process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
               '1x00000000000000000000AA'
@@ -143,7 +143,7 @@ export default function ContactForm() {
           />
           <input name="turnstileToken" type="hidden" value={turnstileToken} />
           {errors.turnstileToken && (
-            <p className="mt-1.5 text-red-400 text-xs">{errors.turnstileToken}</p>
+            <p className="mt-1.5 text-red-500 text-sm">{errors.turnstileToken}</p>
           )}
         </div>
 
