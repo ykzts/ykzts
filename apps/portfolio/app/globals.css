@@ -3,34 +3,35 @@
 
 @theme {
   --font-sans:
-    var(--font-source-sans-3), Helvetica, var(--font-noto-sans-jp), sans-serif;
-  --font-main-title: var(--font-source-sans-3), Helvetica, sans-serif;
+    var(--font-inter), var(--font-noto-sans-jp), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
   --font-heading:
-    var(--font-raleway), Helvetica, var(--font-noto-sans-jp), sans-serif;
+    var(--font-inter), var(--font-noto-sans-jp), system-ui, sans-serif;
 
-  --color-brand: #49fcd4;
-  --color-brand-dark: #43d9b8;
-
-  --paradigm: url('./_assets/paradigm.svg');
+  --color-background: #0f172a;
+  --color-foreground: #e2e8f0;
+  --color-muted: #94a3b8;
+  --color-accent: #38bdf8;
+  --color-accent-foreground: #0f172a;
+  --color-card: #1e293b;
+  --color-card-foreground: #e2e8f0;
+  --color-border: #334155;
 }
 
 @layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+
   a:not([class]):not(:is(.prose *)) {
-    @apply text-inherit border-b border-dotted transition-[border-bottom-color] duration-250 ease-in-out hover:border-transparent focus:outline-3 focus:outline-offset-2 focus:outline-brand;
+    @apply text-accent border-b border-accent/30 transition-all duration-200 ease-in-out hover:border-accent focus:outline-2 focus:outline-offset-2 focus:outline-accent;
+  }
+
+  ::selection {
+    @apply bg-accent/20 text-foreground;
   }
 }
 
-@utility section-grid {
-  @variant lg {
-    grid-template-areas:
-      'header content'
-      'footer content';
-    @apply grid grid-cols-2 grid-rows-1 gap-y-20;
-  }
-}
-
-@utility section-* {
-  @variant lg {
-    grid-area: --value('content', 'footer', 'header');
-  }
+@utility tech-tag {
+  @apply inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent border border-accent/20;
 }

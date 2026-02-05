@@ -15,10 +15,10 @@ export default function Input({
   ...props
 }: InputProps) {
   return (
-    <div className="mb-6">
+    <div className="mb-4">
       {label && (
-        <label className="mb-2 block font-semibold" htmlFor={id}>
-          {label} {required && <span className="text-red-600">*</span>}
+        <label className="mb-2 block text-muted text-sm" htmlFor={id}>
+          {label} {required && <span className="text-red-400">*</span>}
         </label>
       )}
       <input
@@ -26,15 +26,14 @@ export default function Input({
         aria-describedby={error ? `${id}-error` : undefined}
         aria-invalid={Boolean(error)}
         className={twMerge(
-          'w-full rounded border-2 bg-gray-500/[0.075] px-3 py-2 font-inherit text-base transition-[border-color,background-color] duration-250 ease-in-out focus:border-brand focus:bg-brand/10 focus:outline-none aria-invalid:border-red-600 aria-invalid:bg-red-600/10',
-          error ? '' : 'border-transparent',
+          'w-full rounded-lg border border-border bg-background px-4 py-2.5 text-foreground text-sm transition-all duration-200 placeholder:text-muted/50 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent aria-invalid:border-red-400 aria-invalid:focus:ring-red-400',
           className
         )}
         id={id}
         required={required}
       />
       {error && (
-        <p className="mt-2 text-red-600 text-sm" id={`${id}-error`}>
+        <p className="mt-1.5 text-red-400 text-xs" id={`${id}-error`}>
           {error}
         </p>
       )}

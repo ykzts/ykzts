@@ -6,7 +6,7 @@ export default function Skeleton({
   return (
     <span
       className={twMerge(
-        'inline-flex h-[1lh] w-full max-w-full animate-pulse items-center before:inline-block before:h-[1em] before:w-full before:rounded-md before:bg-gray-200',
+        'inline-flex h-[1lh] w-full max-w-full animate-pulse items-center before:inline-block before:h-[1em] before:w-full before:rounded-md before:bg-border',
         className
       )}
     />
