@@ -1,16 +1,7 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
-import { FaArrowDown } from 'react-icons/fa'
 import ExternalLink from '@/components/link'
-import Section, {
-  SectionContent,
-  SectionHeader,
-  SectionTagline,
-  SectionTitle
-} from '@/components/section'
 import AboutDoc from '@/docs/about.mdx'
-import keyVisual from './_assets/key-visual.jpg'
 import Contact from './_components/contact'
 import Works from './_components/works'
 
@@ -38,84 +29,104 @@ export const metadata: Metadata = {
   }
 }
 
-function About() {
-  return (
-    <Section id="about">
-      <SectionHeader>
-        <SectionTitle>About</SectionTitle>
-      </SectionHeader>
-
-      <SectionContent className="prose prose-slate max-w-none">
-        <AboutDoc />
-      </SectionContent>
-    </Section>
-  )
-}
+const technologies = [
+  'TypeScript',
+  'JavaScript',
+  'React',
+  'Next.js',
+  'Ruby',
+  'Ruby on Rails',
+  'Go',
+  'Python',
+  'AWS',
+  'Google Cloud'
+]
 
 export default function HomePage(_props: PageProps<'/'>) {
   return (
-    <div className="overflow-y-hidden">
-      <Section intro>
-        <SectionHeader>
-          <SectionTitle>{'ykzts\u200b.com'}</SectionTitle>
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <header className="px-6 py-16 md:px-12 lg:px-24 lg:py-24">
+        <div className="mx-auto max-w-4xl">
+          <h1 className="mb-4 font-bold text-4xl text-foreground tracking-tight md:text-5xl lg:text-6xl">
+            山岸和利
+          </h1>
+          <p className="mb-6 font-medium text-accent text-xl md:text-2xl">
+            Software Developer
+          </p>
+          <p className="mb-8 max-w-2xl text-lg text-muted leading-relaxed">
+            JavaScriptやRubyを用いたウェブアプリケーション開発を得意とするソフトウェア開発者です。ReactやRuby
+            on Railsに造詣が深く、バックエンドからフロントエンドまで幅広く担当しています。
+          </p>
 
-          <SectionTagline>
-            ソフトウェア開発者 山岸和利の
-            <br />
-            ポートフォリオ
-          </SectionTagline>
+          {/* Tech Stack Tags */}
+          <div className="mb-12 flex flex-wrap gap-2">
+            {technologies.map((tech) => (
+              <span className="tech-tag" key={tech}>
+                {tech}
+              </span>
+            ))}
+          </div>
 
-          <ul className="ml-auto hidden w-80 items-center justify-end gap-4 lg:flex">
-            <li className="align-bottom">
-              <a
-                aria-label="コンテンツまでスクロール"
-                className="flex h-16 w-24 justify-end rounded text-6xl transition-transform duration-250 ease-in-out hover:translate-y-1 focus:translate-y-1 focus:outline-3 focus:outline-brand focus:outline-offset-2"
-                href="#content"
-              >
-                <FaArrowDown />
-              </a>
-            </li>
-          </ul>
-        </SectionHeader>
+          {/* Navigation Links */}
+          <nav className="flex flex-wrap gap-6 text-muted">
+            <a
+              className="transition-colors duration-200 hover:text-accent"
+              href="#about"
+            >
+              About
+            </a>
+            <a
+              className="transition-colors duration-200 hover:text-accent"
+              href="#works"
+            >
+              Works
+            </a>
+            <a
+              className="transition-colors duration-200 hover:text-accent"
+              href="#contact"
+            >
+              Contact
+            </a>
+          </nav>
+        </div>
+      </header>
 
-        <SectionContent className="relative h-dvh">
-          <Image
-            alt=""
-            className="absolute inset-0 size-full object-cover"
-            placeholder="blur"
-            priority
-            sizes="(max-width: 1280px) 50vw,100vw"
-            src={keyVisual}
-          />
-        </SectionContent>
-      </Section>
+      <main id="content" className="px-6 md:px-12 lg:px-24">
+        {/* About Section */}
+        <section className="mx-auto max-w-4xl py-16" id="about">
+          <h2 className="mb-8 font-semibold text-muted text-sm uppercase tracking-widest">
+            About
+          </h2>
+          <div className="prose prose-invert prose-lg max-w-none prose-p:text-muted prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground">
+            <AboutDoc />
+          </div>
+        </section>
 
-      <main id="content">
-        <About />
+        {/* Works Section */}
         <Works />
+
+        {/* Contact Section */}
         <Contact />
       </main>
 
-      <footer
-        className="text-base text-black/60 lg:grid lg:grid-cols-2"
-        lang="en"
-      >
-        <div className="bg-white p-6 md:p-8 lg:col-start-2 lg:p-16">
-          <span>© Yamagishi Kazutoshi.</span>{' '}
-          <span>
-            <Link href="/privacy">Privacy Policy</Link>.
-          </span>{' '}
-          <span>
-            Design:{' '}
-            <ExternalLink href="https://html5up.net/">HTML5 UP</ExternalLink>.
-          </span>{' '}
-          <span>
-            Artwork:{' '}
-            <ExternalLink href="https://x.com/diru_k1005">
-              Kannazuki Diru
+      <footer className="border-t border-border px-6 py-12 md:px-12 lg:px-24">
+        <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-muted text-sm md:flex-row">
+          <span>© Yamagishi Kazutoshi</span>
+          <div className="flex gap-6">
+            <Link
+              className="transition-colors duration-200 hover:text-accent"
+              href="/privacy"
+            >
+              Privacy Policy
+            </Link>
+            <ExternalLink
+              className="transition-colors duration-200 hover:text-accent"
+              href="https://github.com/ykzts"
+            >
+              GitHub
             </ExternalLink>
-            .
-          </span>
+          </div>
         </div>
       </footer>
     </div>

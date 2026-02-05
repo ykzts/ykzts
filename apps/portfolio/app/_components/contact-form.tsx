@@ -34,14 +34,16 @@ export default function ContactForm() {
     return (
       <>
         <Toaster />
-        <div className="mx-auto my-8 max-w-[600px] rounded border-2 border-brand bg-brand/10 p-8 text-center">
-          <h3 className="mb-4 font-semibold text-2xl text-gray-900">
+        <div className="rounded-lg border border-accent/30 bg-accent/10 p-6 text-center">
+          <h3 className="mb-3 font-semibold text-foreground text-lg">
             送信完了
           </h3>
-          <p className="mb-4">
+          <p className="mb-3 text-muted text-sm">
             お問い合わせいただきありがとうございます。内容を確認次第、ご返信させていただきます。
           </p>
-          <p className="mb-6">通常、2〜3営業日以内にご返信いたします。</p>
+          <p className="mb-5 text-muted text-sm">
+            通常、2〜3営業日以内にご返信いたします。
+          </p>
           <Button onClick={() => window.location.reload()} type="button">
             新しいお問い合わせを送信
           </Button>
@@ -56,7 +58,7 @@ export default function ContactForm() {
   return (
     <>
       <Toaster />
-      <form action={formAction} className="mx-auto max-w-[600px]" ref={formRef}>
+      <form action={formAction} ref={formRef}>
         <Input
           defaultValue={formData.name || ''}
           error={errors.name}
@@ -97,14 +99,14 @@ export default function ContactForm() {
           rows={6}
         />
 
-        <div className="mb-6">
-          <label className="flex cursor-pointer items-start gap-2">
+        <div className="mb-4">
+          <label className="flex cursor-pointer items-start gap-2 text-muted text-sm">
             <input
               aria-describedby={
                 errors.privacyConsent ? 'privacy-error' : undefined
               }
               aria-invalid={Boolean(errors.privacyConsent)}
-              className="mt-1 cursor-pointer accent-brand"
+              className="mt-0.5 cursor-pointer accent-accent"
               defaultChecked={formData.privacyConsent || false}
               name="privacyConsent"
               required
@@ -112,28 +114,28 @@ export default function ContactForm() {
             />
             <span>
               <Link
-                className="text-gray-900 underline hover:text-gray-700"
+                className="text-accent hover:underline"
                 href="/privacy"
               >
                 プライバシーポリシー
               </Link>
-              に同意します <span className="text-red-600">*</span>
+              に同意します <span className="text-red-400">*</span>
             </span>
           </label>
           {errors.privacyConsent && (
-            <p className="mt-2 text-red-600 text-sm" id="privacy-error">
+            <p className="mt-1.5 text-red-400 text-xs" id="privacy-error">
               {errors.privacyConsent}
             </p>
           )}
         </div>
 
-        <div className="mb-6">
+        <div className="mb-4">
           <Turnstile
             className="w-full"
             onSuccess={(token) => {
               setTurnstileToken(token)
             }}
-            options={{ size: 'flexible' }}
+            options={{ size: 'flexible', theme: 'dark' }}
             siteKey={
               process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
               '1x00000000000000000000AA'
@@ -141,11 +143,11 @@ export default function ContactForm() {
           />
           <input name="turnstileToken" type="hidden" value={turnstileToken} />
           {errors.turnstileToken && (
-            <p className="mt-2 text-red-600 text-sm">{errors.turnstileToken}</p>
+            <p className="mt-1.5 text-red-400 text-xs">{errors.turnstileToken}</p>
           )}
         </div>
 
-        <div className="mt-8 text-center">
+        <div className="mt-6">
           <Button disabled={isPending || !turnstileToken} type="submit">
             {isPending ? '送信中...' : '送信する'}
           </Button>
