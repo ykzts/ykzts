@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import ExternalLink from '@/components/link'
 import AboutDoc from '@/docs/about.mdx'
+import keyVisual from './_assets/key-visual.jpg'
 import Contact from './_components/contact'
 import Works from './_components/works'
 
@@ -47,48 +49,62 @@ export default function HomePage(_props: PageProps<'/'>) {
     <div className="min-h-screen">
       {/* Hero Section */}
       <header className="px-6 py-20 md:px-12 lg:px-24 lg:py-28">
-        <div className="mx-auto max-w-4xl">
-          <h1 className="mb-4 font-bold text-5xl text-foreground tracking-tight md:text-6xl lg:text-7xl">
-            山岸和利
-          </h1>
-          <p className="mb-6 font-medium text-accent text-2xl md:text-3xl">
-            Software Developer
-          </p>
-          <p className="mb-8 max-w-2xl text-xl text-muted leading-relaxed">
-            JavaScriptやRubyを用いたウェブアプリケーション開発を得意とするソフトウェア開発者です。ReactやRuby
-            on Railsに造詣が深く、バックエンドからフロントエンドまで幅広く担当しています。
-          </p>
+        <div className="mx-auto flex max-w-4xl flex-col-reverse items-start gap-12 lg:flex-row lg:items-center lg:gap-16">
+          <div className="flex-1">
+            <h1 className="mb-4 font-bold text-5xl text-foreground tracking-tight md:text-6xl lg:text-7xl">
+              山岸和利
+            </h1>
+            <p className="mb-6 font-medium text-accent text-2xl md:text-3xl">
+              Software Developer
+            </p>
+            <p className="mb-8 max-w-2xl text-xl text-muted leading-relaxed">
+              JavaScriptやRubyを用いたウェブアプリケーション開発を得意とするソフトウェア開発者です。ReactやRuby
+              on Railsに造詣が深く、バックエンドからフロントエンドまで幅広く担当しています。
+            </p>
 
-          {/* Tech Stack Tags */}
-          <div className="mb-12 flex flex-wrap gap-2">
-            {technologies.map((tech) => (
-              <span className="tech-tag" key={tech}>
-                {tech}
-              </span>
-            ))}
+            {/* Tech Stack Tags */}
+            <div className="mb-12 flex flex-wrap gap-2">
+              {technologies.map((tech) => (
+                <span className="tech-tag" key={tech}>
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            {/* Navigation Links */}
+            <nav className="flex flex-wrap gap-8 text-lg text-muted">
+              <a
+                className="transition-colors duration-200 hover:text-accent"
+                href="#about"
+              >
+                About
+              </a>
+              <a
+                className="transition-colors duration-200 hover:text-accent"
+                href="#works"
+              >
+                Works
+              </a>
+              <a
+                className="transition-colors duration-200 hover:text-accent"
+                href="#contact"
+              >
+                Contact
+              </a>
+            </nav>
           </div>
 
-          {/* Navigation Links */}
-          <nav className="flex flex-wrap gap-8 text-lg text-muted">
-            <a
-              className="transition-colors duration-200 hover:text-accent"
-              href="#about"
-            >
-              About
-            </a>
-            <a
-              className="transition-colors duration-200 hover:text-accent"
-              href="#works"
-            >
-              Works
-            </a>
-            <a
-              className="transition-colors duration-200 hover:text-accent"
-              href="#contact"
-            >
-              Contact
-            </a>
-          </nav>
+          <div className="shrink-0">
+            <Image
+              alt="山岸和利"
+              className="rounded-2xl shadow-lg"
+              height={320}
+              placeholder="blur"
+              priority
+              src={keyVisual}
+              width={320}
+            />
+          </div>
         </div>
       </header>
 
@@ -98,7 +114,7 @@ export default function HomePage(_props: PageProps<'/'>) {
           <h2 className="mb-10 font-semibold text-muted text-base uppercase tracking-widest">
             About
           </h2>
-          <div className="prose prose-lg max-w-none prose-p:text-lg prose-p:text-muted prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-headings:text-foreground">
+          <div className="prose prose-lg max-w-none prose-p:text-lg prose-p:text-muted prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline prose-a:hover:underline prose-strong:text-foreground prose-headings:text-foreground">
             <AboutDoc />
           </div>
         </section>

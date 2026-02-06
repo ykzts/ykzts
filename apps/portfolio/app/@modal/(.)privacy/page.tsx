@@ -33,7 +33,7 @@ export default function PrivacyModal() {
           ×
         </button>
       </div>
-      <div className="prose prose-base max-w-none prose-p:text-base prose-p:text-muted prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-headings:text-foreground">
+      <div className="prose prose-base max-w-none prose-p:text-base prose-p:text-muted prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline prose-a:hover:underline prose-strong:text-foreground prose-headings:text-foreground">
         <PrivacyContent />
       </div>
     </dialog>

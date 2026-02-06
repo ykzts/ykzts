@@ -3,7 +3,7 @@ import Link from 'next/link'
 export default function DocsLayout({ children }: LayoutProps<'/'>) {
   return (
     <div className="min-h-dvh px-6 py-16 md:px-12 lg:px-24">
-      <main className="prose prose-lg mx-auto max-w-3xl prose-p:text-base prose-p:text-muted prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-headings:text-foreground">
+      <main className="prose prose-lg mx-auto max-w-3xl prose-p:text-base prose-p:text-muted prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline prose-a:hover:underline prose-strong:text-foreground prose-headings:text-foreground">
         {children}
 
         <p className="mt-16">

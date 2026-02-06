@@ -63,7 +63,7 @@ async function WorksImpl() {
             <h3 className="mb-4 font-semibold text-card-foreground text-2xl transition-colors duration-200 group-hover:text-accent">
               {work.title}
             </h3>
-            <div className="prose prose-base max-w-none prose-p:text-base prose-p:text-muted prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground">
+            <div className="prose prose-base max-w-none prose-p:text-base prose-p:text-muted prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline prose-a:hover:underline prose-strong:text-foreground">
               <PortableText
                 components={portableTextComponents}
                 value={work.content}
