@@ -135,7 +135,18 @@ export default function HomePage(_props: PageProps<'/'>) {
 
       <footer className="border-t border-border px-6 py-12 md:px-12 lg:px-24">
         <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-muted text-base md:flex-row">
-          <span>© Yamagishi Kazutoshi</span>
+          <div className="flex flex-col items-center gap-1 md:items-start">
+            <span>© Yamagishi Kazutoshi</span>
+            <span className="text-sm">
+              Artwork by{' '}
+              <ExternalLink
+                className="text-accent transition-colors duration-200 hover:text-accent/80"
+                href="https://x.com/diru_k1005"
+              >
+                Kannazuki Diru
+              </ExternalLink>
+            </span>
+          </div>
           <div className="flex gap-6">
             <Link
               className="transition-colors duration-200 hover:text-accent"
