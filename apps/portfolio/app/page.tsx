@@ -147,20 +147,12 @@ export default function HomePage(_props: PageProps<'/'>) {
               </ExternalLink>
             </span>
           </div>
-          <div className="flex gap-6">
-            <Link
-              className="transition-colors duration-200 hover:text-accent"
-              href="/privacy"
-            >
-              Privacy Policy
-            </Link>
-            <ExternalLink
-              className="transition-colors duration-200 hover:text-accent"
-              href="https://github.com/ykzts"
-            >
-              GitHub
-            </ExternalLink>
-          </div>
+          <Link
+            className="transition-colors duration-200 hover:text-accent"
+            href="/privacy"
+          >
+            Privacy Policy
+          </Link>
         </div>
       </footer>
     </div>
