@@ -1,11 +1,6 @@
 import type { ReactNode } from 'react'
+import { HiOutlineArrowUpRight } from 'react-icons/hi2'
 import Link from '@/components/link'
-import Section, {
-  SectionContent,
-  SectionFooter,
-  SectionHeader,
-  SectionTitle
-} from '@/components/section'
 import ContactForm from './contact-form'
 
 type SocialLink = {
@@ -18,8 +13,8 @@ const socialLinks: SocialLink[] = [
   {
     label: '山岸和利のFacebookアカウント',
     logo: (
-      <svg aria-label="Facebook" className="size-[1em]" role="img">
-        <use xlinkHref="#facebook-logo" />
+      <svg aria-hidden="true" className="size-5">
+        <use href="#facebook-logo" />
       </svg>
     ),
     url: 'https://www.facebook.com/ykzts'
@@ -27,8 +22,8 @@ const socialLinks: SocialLink[] = [
   {
     label: '山岸和利のGitHubアカウント',
     logo: (
-      <svg aria-label="GitHub" className="size-[1em]" role="img">
-        <use xlinkHref="#github-logo" />
+      <svg aria-hidden="true" className="size-5">
+        <use href="#github-logo" />
       </svg>
     ),
     url: 'https://github.com/ykzts'
@@ -36,8 +31,8 @@ const socialLinks: SocialLink[] = [
   {
     label: '山岸和利のMastodonアカウント',
     logo: (
-      <svg aria-label="Mastodon" className="size-[1em]" role="img">
-        <use xlinkHref="#mastodon-logo" />
+      <svg aria-hidden="true" className="size-5">
+        <use href="#mastodon-logo" />
       </svg>
     ),
     url: 'https://ykzts.technology/@ykzts'
@@ -45,8 +40,8 @@ const socialLinks: SocialLink[] = [
   {
     label: '山岸和利のThreadsアカウント',
     logo: (
-      <svg aria-label="Threads" className="size-[1em]" role="img">
-        <use xlinkHref="#threads-logo" />
+      <svg aria-hidden="true" className="size-5">
+        <use href="#threads-logo" />
       </svg>
     ),
     url: 'https://www.threads.net/@ykzts'
@@ -54,8 +49,8 @@ const socialLinks: SocialLink[] = [
   {
     label: '山岸和利のXアカウント',
     logo: (
-      <svg aria-label="X" className="size-[1em]" role="img">
-        <use xlinkHref="#x-logo" />
+      <svg aria-hidden="true" className="size-5">
+        <use href="#x-logo" />
       </svg>
     ),
     url: 'https://x.com/ykzts'
@@ -64,57 +59,54 @@ const socialLinks: SocialLink[] = [
 
 export default function Contact() {
   return (
-    <Section id="contact">
-      <SectionHeader>
-        <SectionTitle>Get in touch</SectionTitle>
-      </SectionHeader>
+    <section className="mx-auto max-w-4xl py-20" id="contact">
+      <h2 className="mb-10 font-semibold text-base text-muted uppercase tracking-widest">
+        Contact
+      </h2>
 
-      <SectionContent className="prose prose-slate max-w-none">
-        <p>
-          山岸和利に対するお問い合わせやご依頼は以下のフォームからお願いします。スケジュール次第ではありますが有期もしくは案件単位での作業依頼や技術相談でしたら有償で承ります。
+      {/* Contact Form */}
+      <div className="rounded-xl border border-border bg-card p-8 shadow-sm">
+        <p className="mb-4 text-base text-muted leading-relaxed">
+          お問い合わせやご依頼は以下のフォームからお願いします。スケジュール次第ではありますが有期もしくは案件単位での作業依頼や技術相談でしたら有償で承ります。
         </p>
-        <p>
-          ただし無償もしくは報酬が不明瞭な依頼に関してはお応えできかねます。また依頼主が不明であるスカウトメールやオファーメールにつきましてはご返答いたしかねますのであらかじめご容赦ください。
+        <p className="mb-6 text-muted text-sm">
+          ※無償もしくは報酬が不明瞭な依頼、依頼主が不明なスカウトメールにはご返答いたしかねます。
         </p>
-
         <ContactForm />
-      </SectionContent>
+      </div>
 
-      <SectionFooter>
-        <dl className="space-y-8">
-          <div className="space-y-4">
-            <dt className="font-heading font-semibold text-sm/relaxed uppercase tracking-widest">
-              Blog
-            </dt>
-            <dd>
-              <a href="https://ykzts.blog/">ykzts.blog</a>
-            </dd>
-          </div>
+      {/* Links */}
+      <div className="mt-12 flex flex-col gap-8 sm:flex-row sm:gap-16">
+        <div>
+          <h3 className="mb-4 font-medium text-foreground text-lg">Blog</h3>
+          <Link
+            className="inline-flex items-center gap-2 text-accent text-base transition-colors duration-200 hover:text-accent/80"
+            href="https://ykzts.blog/"
+          >
+            ykzts.blog
+            <HiOutlineArrowUpRight aria-hidden="true" className="size-4" />
+          </Link>
+        </div>
 
-          <div className="space-y-4">
-            <dt className="font-heading font-semibold text-sm/relaxed uppercase tracking-widest">
-              Elsewhere
-            </dt>
-            <dd>
-              <ul className="flex gap-2 lg:justify-end">
-                {socialLinks.map((socialLink) => (
-                  <li key={socialLink.url}>
-                    <Link
-                      aria-label={socialLink.label}
-                      className="relative inline-flex size-9 items-center justify-center rounded-4xl border-b-0 text-center text-xl/loose no-underline transition-[background-color] duration-250 ease-in-out hover:bg-gray-500/10 focus:bg-brand/20 focus:outline-3 focus:outline-brand focus:outline-offset-2"
-                      href={socialLink.url}
-                      rel="me"
-                      target="_blank"
-                    >
-                      {socialLink.logo}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </dd>
-          </div>
-        </dl>
-      </SectionFooter>
-    </Section>
+        <div>
+          <h3 className="mb-4 font-medium text-foreground text-lg">Social</h3>
+          <ul className="flex gap-3">
+            {socialLinks.map((socialLink) => (
+              <li key={socialLink.url}>
+                <Link
+                  aria-label={socialLink.label}
+                  className="inline-flex size-10 items-center justify-center rounded-lg border border-border text-muted transition-all duration-200 hover:border-accent hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
+                  href={socialLink.url}
+                  rel="me"
+                  target="_blank"
+                >
+                  {socialLink.logo}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
   )
 }

@@ -1,14 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FaArrowDown } from 'react-icons/fa'
 import ExternalLink from '@/components/link'
-import Section, {
-  SectionContent,
-  SectionHeader,
-  SectionTagline,
-  SectionTitle
-} from '@/components/section'
 import AboutDoc from '@/docs/about.mdx'
 import keyVisual from './_assets/key-visual.jpg'
 import Contact from './_components/contact'
@@ -38,84 +31,129 @@ export const metadata: Metadata = {
   }
 }
 
-function About() {
-  return (
-    <Section id="about">
-      <SectionHeader>
-        <SectionTitle>About</SectionTitle>
-      </SectionHeader>
-
-      <SectionContent className="prose prose-slate max-w-none">
-        <AboutDoc />
-      </SectionContent>
-    </Section>
-  )
-}
+const technologies = [
+  'TypeScript',
+  'JavaScript',
+  'React',
+  'Next.js',
+  'Ruby',
+  'Ruby on Rails',
+  'Go',
+  'Python',
+  'AWS',
+  'Google Cloud'
+]
 
 export default function HomePage(_props: PageProps<'/'>) {
   return (
-    <div className="overflow-y-hidden">
-      <Section intro>
-        <SectionHeader>
-          <SectionTitle>{'ykzts\u200b.com'}</SectionTitle>
+    <div className="min-h-screen">
+      {/* Navigation */}
+      <nav className="sticky top-0 z-10 border-border border-b bg-background/90 px-6 backdrop-blur-sm md:px-12 lg:px-24">
+        <div className="mx-auto flex h-14 max-w-4xl items-center justify-between">
+          <Link className="font-semibold text-foreground text-lg" href="/">
+            ykzts.com
+          </Link>
+          <div className="flex gap-8 text-base text-muted">
+            <a
+              className="rounded transition-colors duration-200 hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
+              href="#about"
+            >
+              About
+            </a>
+            <a
+              className="rounded transition-colors duration-200 hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
+              href="#works"
+            >
+              Works
+            </a>
+            <a
+              className="rounded transition-colors duration-200 hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
+              href="#contact"
+            >
+              Contact
+            </a>
+          </div>
+        </div>
+      </nav>
 
-          <SectionTagline>
-            ソフトウェア開発者 山岸和利の
-            <br />
-            ポートフォリオ
-          </SectionTagline>
+      {/* Hero Section */}
+      <header className="px-6 py-20 md:px-12 lg:px-24 lg:py-28">
+        <div className="mx-auto flex max-w-4xl flex-col-reverse items-start gap-12 lg:flex-row lg:items-center lg:gap-16">
+          <div className="flex-1">
+            <h1 className="mb-4 font-bold text-5xl text-foreground tracking-tight md:text-6xl lg:text-7xl">
+              山岸和利
+            </h1>
+            <p className="mb-6 font-medium text-2xl text-accent md:text-3xl">
+              Software Developer
+            </p>
+            <p className="mb-8 max-w-2xl text-muted text-xl leading-relaxed">
+              JavaScriptやRubyを用いたウェブアプリケーション開発を得意とするソフトウェア開発者です。ReactやRuby
+              on
+              Railsに造詣が深く、バックエンドからフロントエンドまで幅広く担当しています。
+            </p>
 
-          <ul className="ml-auto hidden w-80 items-center justify-end gap-4 lg:flex">
-            <li className="align-bottom">
-              <a
-                aria-label="コンテンツまでスクロール"
-                className="flex h-16 w-24 justify-end rounded text-6xl transition-transform duration-250 ease-in-out hover:translate-y-1 focus:translate-y-1 focus:outline-3 focus:outline-brand focus:outline-offset-2"
-                href="#content"
-              >
-                <FaArrowDown />
-              </a>
-            </li>
-          </ul>
-        </SectionHeader>
+            {/* Tech Stack Tags */}
+            <div className="flex flex-wrap gap-2">
+              {technologies.map((tech) => (
+                <span className="tech-tag" key={tech}>
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
 
-        <SectionContent className="relative h-dvh">
-          <Image
-            alt=""
-            className="absolute inset-0 size-full object-cover"
-            placeholder="blur"
-            priority
-            sizes="(max-width: 1280px) 50vw,100vw"
-            src={keyVisual}
-          />
-        </SectionContent>
-      </Section>
+          <div className="shrink-0">
+            <Image
+              alt="山岸和利"
+              className="rounded-2xl shadow-lg"
+              height={320}
+              placeholder="blur"
+              priority
+              src={keyVisual}
+              width={320}
+            />
+          </div>
+        </div>
+      </header>
 
-      <main id="content">
-        <About />
+      <main className="px-6 md:px-12 lg:px-24" id="content">
+        {/* About Section */}
+        <section className="mx-auto max-w-4xl py-20" id="about">
+          <h2 className="mb-10 font-semibold text-base text-muted uppercase tracking-widest">
+            About
+          </h2>
+          <div className="prose prose-lg max-w-none prose-a:text-accent prose-headings:text-foreground prose-p:text-base prose-p:text-muted prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
+            <AboutDoc />
+          </div>
+        </section>
+
+        {/* Works Section */}
         <Works />
+
+        {/* Contact Section */}
         <Contact />
       </main>
 
-      <footer
-        className="text-base text-black/60 lg:grid lg:grid-cols-2"
-        lang="en"
-      >
-        <div className="bg-white p-6 md:p-8 lg:col-start-2 lg:p-16">
-          <span>© Yamagishi Kazutoshi.</span>{' '}
-          <span>
-            <Link href="/privacy">Privacy Policy</Link>.
-          </span>{' '}
-          <span>
-            Design:{' '}
-            <ExternalLink href="https://html5up.net/">HTML5 UP</ExternalLink>.
-          </span>{' '}
-          <span>
-            Artwork:{' '}
-            <ExternalLink href="https://x.com/diru_k1005">
-              Kannazuki Diru
-            </ExternalLink>
-            .
-          </span>
+      <footer className="border-border border-t px-6 py-12 md:px-12 lg:px-24">
+        <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-base text-muted md:flex-row">
+          <div className="flex flex-col items-center gap-1 md:items-start">
+            <span>© Yamagishi Kazutoshi</span>
+            <span className="text-sm">
+              Artwork by{' '}
+              <ExternalLink
+                className="text-accent transition-colors duration-200 hover:text-accent/80"
+                href="https://x.com/diru_k1005"
+              >
+                Kannazuki Diru
+              </ExternalLink>
+            </span>
+          </div>
+          <Link
+            className="transition-colors duration-200 hover:text-accent"
+            href="/privacy"
+          >
+            Privacy Policy
+          </Link>
         </div>
       </footer>
     </div>

@@ -25,6 +25,6 @@ describe('Contact Component', () => {
 
     const heading = container.querySelector('h2')
     expect(heading).toBeInTheDocument()
-    expect(heading).toHaveTextContent('Get in touch')
+    expect(heading).toHaveTextContent('Contact')
   })
 })

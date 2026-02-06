@@ -12,29 +12,46 @@ export default function PrivacyModal() {
     dialogRef.current?.showModal()
   }, [])
 
+  const handleDialogClose = () => {
+    router.back()
+  }
+
   const handleClose = () => {
     dialogRef.current?.close()
-    router.back()
   }
 
   return (
     <dialog
-      className="m-auto max-h-[80vh] w-full max-w-4xl overflow-y-auto rounded-lg border-2 border-brand bg-white p-8 backdrop:bg-black/50"
-      onClose={handleClose}
+      className="m-auto max-h-[80vh] w-full max-w-4xl rounded-xl border border-border bg-card shadow-lg backdrop:bg-black/40"
+      onClose={handleDialogClose}
       ref={dialogRef}
     >
-      <div className="mb-4 flex items-end justify-end">
+      <div className="sticky top-0 z-10 flex items-center justify-between border-border border-b bg-card px-8 py-4">
+        <h2 className="font-semibold text-foreground text-lg">
+          プライバシーポリシー
+        </h2>
         <button
           aria-label="閉じる"
-          className="text-2xl text-gray-500 leading-none transition-colors hover:text-gray-700"
+          className="flex size-8 items-center justify-center rounded-md text-2xl text-muted leading-none transition-colors hover:bg-border/50 hover:text-foreground"
           onClick={handleClose}
           type="button"
         >
           ×
         </button>
       </div>
-      <div className="prose prose-slate max-w-none">
-        <PrivacyContent />
+      <div className="overflow-y-auto px-8 py-6">
+        <div className="prose prose-base max-w-none prose-a:text-accent prose-headings:text-foreground prose-p:text-base prose-p:text-muted prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
+          <PrivacyContent />
+        </div>
+        <div className="mt-8 flex justify-center border-border border-t pt-6">
+          <button
+            className="rounded-lg bg-accent px-8 py-2.5 font-medium text-accent-foreground text-base transition-colors duration-200 hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+            onClick={handleClose}
+            type="button"
+          >
+            閉じる
+          </button>
+        </div>
       </div>
     </dialog>
   )

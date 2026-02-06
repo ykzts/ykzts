@@ -1,7 +1,7 @@
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
 import type { Metadata, Viewport } from 'next'
-import { Noto_Sans_JP, Raleway, Source_Sans_3 } from 'next/font/google'
+import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
 import { twMerge } from 'tailwind-merge'
 import SVGSymbols from './_components/svg-symbols'
 
@@ -17,27 +17,28 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#49fcd4'
+  themeColor: '#fafafa'
 }
+
+const inter = Inter({
+  display: 'swap',
+  subsets: ['latin'],
+  variable: '--font-inter',
+  weight: ['400', '500', '600', '700']
+})
+
+const jetBrainsMono = JetBrains_Mono({
+  display: 'swap',
+  subsets: ['latin'],
+  variable: '--font-jetbrains-mono',
+  weight: ['400', '500']
+})
 
 const notoSansJp = Noto_Sans_JP({
   display: 'swap',
   subsets: ['latin'],
   variable: '--font-noto-sans-jp',
-  weight: ['300', '600', '700', '800']
-})
-const raleway = Raleway({
-  display: 'swap',
-  subsets: ['latin'],
-  variable: '--font-raleway',
-  weight: ['600', '800']
-})
-const sourceSans3 = Source_Sans_3({
-  display: 'swap',
-  style: ['italic', 'normal'],
-  subsets: ['latin'],
-  variable: '--font-source-sans-3',
-  weight: ['300', '600', '700']
+  weight: ['400', '500', '600', '700']
 })
 
 export default function RootLayout({ children, modal }: LayoutProps<'/'>) {
@@ -45,16 +46,16 @@ export default function RootLayout({ children, modal }: LayoutProps<'/'>) {
     <html
       className={twMerge(
         'scroll-smooth antialiased',
-        notoSansJp.variable,
-        raleway.variable,
-        sourceSans3.variable
+        inter.variable,
+        jetBrainsMono.variable,
+        notoSansJp.variable
       )}
       lang="ja"
     >
       <head />
-      <body className="bg-(image:--paradigm) bg-brand bg-position-[-50%_10%] bg-size-[75%_auto] bg-fixed bg-repeat-y">
+      <body>
         <a
-          className="-top-20 absolute left-2 z-1000 rounded bg-black px-4 py-2 text-white no-underline transition-[top] duration-300 focus:top-2"
+          className="absolute -top-20 left-2 z-1000 rounded bg-accent px-4 py-2 text-accent-foreground no-underline transition-[top] duration-300 focus-visible:top-2"
           href="#content"
         >
           メインコンテンツにスキップ
