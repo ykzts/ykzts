@@ -47,6 +47,35 @@ const technologies = [
 export default function HomePage(_props: PageProps<'/'>) {
   return (
     <div className="min-h-screen">
+      {/* Navigation */}
+      <nav className="sticky top-0 z-10 border-b border-border bg-background/90 px-6 backdrop-blur-sm md:px-12 lg:px-24">
+        <div className="mx-auto flex h-14 max-w-4xl items-center justify-between">
+          <a className="font-semibold text-lg text-foreground" href="#">
+            ykzts.com
+          </a>
+          <div className="flex gap-8 text-base text-muted">
+            <a
+              className="transition-colors duration-200 hover:text-accent"
+              href="#about"
+            >
+              About
+            </a>
+            <a
+              className="transition-colors duration-200 hover:text-accent"
+              href="#works"
+            >
+              Works
+            </a>
+            <a
+              className="transition-colors duration-200 hover:text-accent"
+              href="#contact"
+            >
+              Contact
+            </a>
+          </div>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <header className="px-6 py-20 md:px-12 lg:px-24 lg:py-28">
         <div className="mx-auto flex max-w-4xl flex-col-reverse items-start gap-12 lg:flex-row lg:items-center lg:gap-16">
@@ -63,35 +92,13 @@ export default function HomePage(_props: PageProps<'/'>) {
             </p>
 
             {/* Tech Stack Tags */}
-            <div className="mb-12 flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2">
               {technologies.map((tech) => (
                 <span className="tech-tag" key={tech}>
                   {tech}
                 </span>
               ))}
             </div>
-
-            {/* Navigation Links */}
-            <nav className="flex flex-wrap gap-8 text-lg text-muted">
-              <a
-                className="transition-colors duration-200 hover:text-accent"
-                href="#about"
-              >
-                About
-              </a>
-              <a
-                className="transition-colors duration-200 hover:text-accent"
-                href="#works"
-              >
-                Works
-              </a>
-              <a
-                className="transition-colors duration-200 hover:text-accent"
-                href="#contact"
-              >
-                Contact
-              </a>
-            </nav>
           </div>
 
           <div className="shrink-0">

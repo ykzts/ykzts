@@ -10,6 +10,15 @@ type SocialLink = {
 
 const socialLinks: SocialLink[] = [
   {
+    label: '山岸和利のFacebookアカウント',
+    logo: (
+      <svg aria-label="Facebook" className="size-5" role="img">
+        <use xlinkHref="#facebook-logo" />
+      </svg>
+    ),
+    url: 'https://www.facebook.com/ykzts'
+  },
+  {
     label: '山岸和利のGitHubアカウント',
     logo: (
       <svg aria-label="GitHub" className="size-5" role="img">
@@ -54,63 +63,61 @@ export default function Contact() {
         Contact
       </h2>
 
-      <div className="grid gap-12 lg:grid-cols-2">
-        {/* Contact Form */}
-        <div className="rounded-xl border border-border bg-card p-8 shadow-sm">
-          <p className="mb-4 text-base text-muted leading-relaxed">
-            お問い合わせやご依頼は以下のフォームからお願いします。スケジュール次第ではありますが有期もしくは案件単位での作業依頼や技術相談でしたら有償で承ります。
-          </p>
-          <p className="mb-6 text-muted text-sm">
-            ※無償もしくは報酬が不明瞭な依頼、依頼主が不明なスカウトメールにはご返答いたしかねます。
-          </p>
-          <ContactForm />
+      {/* Contact Form */}
+      <div className="rounded-xl border border-border bg-card p-8 shadow-sm">
+        <p className="mb-4 text-base text-muted leading-relaxed">
+          お問い合わせやご依頼は以下のフォームからお願いします。スケジュール次第ではありますが有期もしくは案件単位での作業依頼や技術相談でしたら有償で承ります。
+        </p>
+        <p className="mb-6 text-muted text-sm">
+          ※無償もしくは報酬が不明瞭な依頼、依頼主が不明なスカウトメールにはご返答いたしかねます。
+        </p>
+        <ContactForm />
+      </div>
+
+      {/* Links */}
+      <div className="mt-12 flex flex-col gap-8 sm:flex-row sm:gap-16">
+        <div>
+          <h3 className="mb-4 text-lg font-medium text-foreground">Blog</h3>
+          <a
+            className="inline-flex items-center gap-2 text-base text-accent transition-colors duration-200 hover:text-accent/80"
+            href="https://ykzts.blog/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            ykzts.blog
+            <svg
+              className="size-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M7 17L17 7M17 7H7M17 7V17"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </a>
         </div>
 
-        {/* Social Links */}
-        <div className="space-y-8">
-          <div>
-            <h3 className="mb-4 text-lg font-medium text-foreground">Blog</h3>
-            <a
-              className="inline-flex items-center gap-2 text-base text-accent transition-colors duration-200 hover:text-accent/80"
-              href="https://ykzts.blog/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              ykzts.blog
-              <svg
-                className="size-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M7 17L17 7M17 7H7M17 7V17"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </a>
-          </div>
-
-          <div>
-            <h3 className="mb-4 text-lg font-medium text-foreground">Social</h3>
-            <ul className="flex gap-3">
-              {socialLinks.map((socialLink) => (
-                <li key={socialLink.url}>
-                  <Link
-                    aria-label={socialLink.label}
-                    className="inline-flex size-10 items-center justify-center rounded-lg border border-border text-muted transition-all duration-200 hover:border-accent hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
-                    href={socialLink.url}
-                    rel="me"
-                    target="_blank"
-                  >
-                    {socialLink.logo}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div>
+          <h3 className="mb-4 text-lg font-medium text-foreground">Social</h3>
+          <ul className="flex gap-3">
+            {socialLinks.map((socialLink) => (
+              <li key={socialLink.url}>
+                <Link
+                  aria-label={socialLink.label}
+                  className="inline-flex size-10 items-center justify-center rounded-lg border border-border text-muted transition-all duration-200 hover:border-accent hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
+                  href={socialLink.url}
+                  rel="me"
+                  target="_blank"
+                >
+                  {socialLink.logo}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
