@@ -89,7 +89,7 @@ export default function Contact() {
             href="https://ykzts.blog/"
           >
             ykzts.blog
-            <HiOutlineArrowUpRight className="size-4" />
+            <HiOutlineArrowUpRight aria-hidden="true" className="size-4" />
           </Link>
         </div>
 
