@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { HiOutlineArrowUpRight } from 'react-icons/hi2'
 import Link from '@/components/link'
 import ContactForm from './contact-form'
 
@@ -85,19 +86,7 @@ export default function Contact() {
             target="_blank"
           >
             ykzts.blog
-            <svg
-              className="size-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M7 17L17 7M17 7H7M17 7V17"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <HiOutlineArrowUpRight className="size-4" />
           </a>
         </div>
 
