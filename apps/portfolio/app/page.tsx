@@ -122,7 +122,7 @@ export default function HomePage(_props: PageProps<'/'>) {
           <h2 className="mb-10 font-semibold text-base text-muted uppercase tracking-widest">
             About
           </h2>
-          <div className="prose prose-lg max-w-none prose-a:text-accent prose-headings:text-foreground prose-p:text-lg prose-p:text-muted prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
+          <div className="prose prose-lg max-w-none prose-a:text-accent prose-headings:text-foreground prose-p:text-base prose-p:text-muted prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
             <AboutDoc />
           </div>
         </section>

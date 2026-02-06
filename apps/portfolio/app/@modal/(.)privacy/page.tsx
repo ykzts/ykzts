@@ -32,7 +32,7 @@ export default function PrivacyModal() {
         </h2>
         <button
           aria-label="閉じる"
-          className="flex size-8 items-center justify-center rounded-md text-2xl text-muted leading-none transition-colors hover:bg-border/50 hover:text-foreground"
+          className="flex size-8 items-center justify-center rounded-md text-2xl text-muted leading-none transition-colors hover:bg-border/50 hover:text-foreground focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
           onClick={handleClose}
           type="button"
         >
@@ -45,7 +45,7 @@ export default function PrivacyModal() {
         </div>
         <div className="mt-8 flex justify-center border-border border-t pt-6">
           <button
-            className="rounded-lg bg-accent px-8 py-2.5 font-medium text-accent-foreground text-base transition-colors duration-200 hover:bg-accent/90 focus:outline-2 focus:outline-accent focus:outline-offset-2"
+            className="rounded-lg bg-accent px-8 py-2.5 font-medium text-accent-foreground text-base transition-colors duration-200 hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
             onClick={handleClose}
             type="button"
           >

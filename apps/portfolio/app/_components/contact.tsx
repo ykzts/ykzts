@@ -13,9 +13,8 @@ const socialLinks: SocialLink[] = [
   {
     label: '山岸和利のFacebookアカウント',
     logo: (
-      <svg aria-label="Facebook" className="size-5" role="img">
-        <title>Facebook</title>
-        <use xlinkHref="#facebook-logo" />
+      <svg aria-hidden="true" className="size-5">
+        <use href="#facebook-logo" />
       </svg>
     ),
     url: 'https://www.facebook.com/ykzts'
@@ -23,9 +22,8 @@ const socialLinks: SocialLink[] = [
   {
     label: '山岸和利のGitHubアカウント',
     logo: (
-      <svg aria-label="GitHub" className="size-5" role="img">
-        <title>GitHub</title>
-        <use xlinkHref="#github-logo" />
+      <svg aria-hidden="true" className="size-5">
+        <use href="#github-logo" />
       </svg>
     ),
     url: 'https://github.com/ykzts'
@@ -33,9 +31,8 @@ const socialLinks: SocialLink[] = [
   {
     label: '山岸和利のMastodonアカウント',
     logo: (
-      <svg aria-label="Mastodon" className="size-5" role="img">
-        <title>Mastodon</title>
-        <use xlinkHref="#mastodon-logo" />
+      <svg aria-hidden="true" className="size-5">
+        <use href="#mastodon-logo" />
       </svg>
     ),
     url: 'https://ykzts.technology/@ykzts'
@@ -43,9 +40,8 @@ const socialLinks: SocialLink[] = [
   {
     label: '山岸和利のThreadsアカウント',
     logo: (
-      <svg aria-label="Threads" className="size-5" role="img">
-        <title>Threads</title>
-        <use xlinkHref="#threads-logo" />
+      <svg aria-hidden="true" className="size-5">
+        <use href="#threads-logo" />
       </svg>
     ),
     url: 'https://www.threads.net/@ykzts'
@@ -53,9 +49,8 @@ const socialLinks: SocialLink[] = [
   {
     label: '山岸和利のXアカウント',
     logo: (
-      <svg aria-label="X" className="size-5" role="img">
-        <title>X</title>
-        <use xlinkHref="#x-logo" />
+      <svg aria-hidden="true" className="size-5">
+        <use href="#x-logo" />
       </svg>
     ),
     url: 'https://x.com/ykzts'
