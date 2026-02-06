@@ -14,6 +14,7 @@ const socialLinks: SocialLink[] = [
     label: '山岸和利のFacebookアカウント',
     logo: (
       <svg aria-label="Facebook" className="size-5" role="img">
+        <title>Facebook</title>
         <use xlinkHref="#facebook-logo" />
       </svg>
     ),
@@ -23,6 +24,7 @@ const socialLinks: SocialLink[] = [
     label: '山岸和利のGitHubアカウント',
     logo: (
       <svg aria-label="GitHub" className="size-5" role="img">
+        <title>GitHub</title>
         <use xlinkHref="#github-logo" />
       </svg>
     ),
@@ -32,6 +34,7 @@ const socialLinks: SocialLink[] = [
     label: '山岸和利のMastodonアカウント',
     logo: (
       <svg aria-label="Mastodon" className="size-5" role="img">
+        <title>Mastodon</title>
         <use xlinkHref="#mastodon-logo" />
       </svg>
     ),
@@ -41,6 +44,7 @@ const socialLinks: SocialLink[] = [
     label: '山岸和利のThreadsアカウント',
     logo: (
       <svg aria-label="Threads" className="size-5" role="img">
+        <title>Threads</title>
         <use xlinkHref="#threads-logo" />
       </svg>
     ),
@@ -50,6 +54,7 @@ const socialLinks: SocialLink[] = [
     label: '山岸和利のXアカウント',
     logo: (
       <svg aria-label="X" className="size-5" role="img">
+        <title>X</title>
         <use xlinkHref="#x-logo" />
       </svg>
     ),
