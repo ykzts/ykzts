@@ -3,12 +3,5 @@
   extends: [
     'github>ykzts/ykzts//renovate-config/default.json5',
     ':reviewer(ykzts)'
-  ],
-  packageRules: [
-    {
-      extends: ['monorepo:nextjs'],
-      followTag: 'canary',
-      minimumReleaseAge: '12 hours'
-    }
   ]
 }
