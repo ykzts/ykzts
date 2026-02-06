@@ -73,7 +73,7 @@ test.describe('Accessibility Tests', () => {
     const h1Elements = page.locator('h1')
     await expect(h1Elements).toHaveCount(1)
     const h1Text = await h1Elements.first().textContent()
-    expect(h1Text).toContain('ykzts')
+    expect(h1Text).toContain('山岸和利')
 
     // Should have h2 elements for sections
     const h2Elements = page.locator('h2')
@@ -86,9 +86,9 @@ test.describe('Accessibility Tests', () => {
   }) => {
     await page.goto('/')
 
-    // Check arrow link has proper aria-label
-    const arrowLink = page.locator('[aria-label*="コンテンツ"]')
-    await expect(arrowLink).toBeVisible()
+    // Check navigation skip link
+    const skipLink = page.locator('[href="#content"]')
+    await expect(skipLink).toBeVisible()
 
     // Check social media links have proper aria-labels
     const socialLinks = page.locator('[aria-label*="山岸和利の"]')

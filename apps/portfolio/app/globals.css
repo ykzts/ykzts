@@ -33,5 +33,5 @@
 }
 
 @utility tech-tag {
-  @apply inline-flex items-center rounded-full bg-accent/10 px-3 py-1.5 text-sm font-medium text-accent border border-accent/20;
+  @apply inline-flex items-center rounded-full bg-accent/20 px-3 py-1.5 text-sm font-medium text-foreground border border-accent/30;
 }
