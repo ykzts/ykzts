@@ -55,7 +55,7 @@ export default function RootLayout({ children, modal }: LayoutProps<'/'>) {
       <head />
       <body>
         <a
-          className="-top-20 absolute left-2 z-1000 rounded bg-accent px-4 py-2 text-accent-foreground no-underline transition-[top] duration-300 focus:top-2"
+          className="absolute -top-20 left-2 z-1000 rounded bg-accent px-4 py-2 text-accent-foreground no-underline transition-[top] duration-300 focus:top-2"
           href="#content"
         >
           メインコンテンツにスキップ

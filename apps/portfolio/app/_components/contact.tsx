@@ -60,7 +60,7 @@ const socialLinks: SocialLink[] = [
 export default function Contact() {
   return (
     <section className="mx-auto max-w-4xl py-20" id="contact">
-      <h2 className="mb-10 font-semibold text-muted text-base uppercase tracking-widest">
+      <h2 className="mb-10 font-semibold text-base text-muted uppercase tracking-widest">
         Contact
       </h2>
 
@@ -78,20 +78,18 @@ export default function Contact() {
       {/* Links */}
       <div className="mt-12 flex flex-col gap-8 sm:flex-row sm:gap-16">
         <div>
-          <h3 className="mb-4 text-lg font-medium text-foreground">Blog</h3>
-          <a
-            className="inline-flex items-center gap-2 text-base text-accent transition-colors duration-200 hover:text-accent/80"
+          <h3 className="mb-4 font-medium text-foreground text-lg">Blog</h3>
+          <Link
+            className="inline-flex items-center gap-2 text-accent text-base transition-colors duration-200 hover:text-accent/80"
             href="https://ykzts.blog/"
-            rel="noopener noreferrer"
-            target="_blank"
           >
             ykzts.blog
             <HiOutlineArrowUpRight className="size-4" />
-          </a>
+          </Link>
         </div>
 
         <div>
-          <h3 className="mb-4 text-lg font-medium text-foreground">Social</h3>
+          <h3 className="mb-4 font-medium text-foreground text-lg">Social</h3>
           <ul className="flex gap-3">
             {socialLinks.map((socialLink) => (
               <li key={socialLink.url}>

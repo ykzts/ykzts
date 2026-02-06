@@ -113,10 +113,7 @@ export default function ContactForm() {
               type="checkbox"
             />
             <span>
-              <Link
-                className="text-accent hover:underline"
-                href="/privacy"
-              >
+              <Link className="text-accent hover:underline" href="/privacy">
                 プライバシーポリシー
               </Link>
               に同意します <span className="text-red-500">*</span>
@@ -143,7 +140,9 @@ export default function ContactForm() {
           />
           <input name="turnstileToken" type="hidden" value={turnstileToken} />
           {errors.turnstileToken && (
-            <p className="mt-1.5 text-red-500 text-sm">{errors.turnstileToken}</p>
+            <p className="mt-1.5 text-red-500 text-sm">
+              {errors.turnstileToken}
+            </p>
           )}
         </div>
 

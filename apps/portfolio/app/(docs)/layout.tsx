@@ -4,7 +4,7 @@ import { HiOutlineArrowLeft } from 'react-icons/hi2'
 export default function DocsLayout({ children }: LayoutProps<'/'>) {
   return (
     <div className="min-h-dvh px-6 py-16 md:px-12 lg:px-24">
-      <main className="prose prose-lg mx-auto max-w-3xl prose-p:text-base prose-p:text-muted prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline prose-a:hover:underline prose-strong:text-foreground prose-headings:text-foreground">
+      <main className="prose prose-lg mx-auto max-w-3xl prose-a:text-accent prose-headings:text-foreground prose-p:text-base prose-p:text-muted prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
         {children}
 
         <p className="mt-16">
