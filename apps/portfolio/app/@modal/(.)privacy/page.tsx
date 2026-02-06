@@ -12,15 +12,18 @@ export default function PrivacyModal() {
     dialogRef.current?.showModal()
   }, [])
 
+  const handleDialogClose = () => {
+    router.back()
+  }
+
   const handleClose = () => {
     dialogRef.current?.close()
-    router.back()
   }
 
   return (
     <dialog
       className="m-auto max-h-[80vh] w-full max-w-4xl rounded-xl border border-border bg-card shadow-lg backdrop:bg-black/40"
-      onClose={handleClose}
+      onClose={handleDialogClose}
       ref={dialogRef}
     >
       <div className="sticky top-0 z-10 flex items-center justify-between border-border border-b bg-card px-8 py-4">

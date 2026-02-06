@@ -18,7 +18,7 @@ export default function Button({
     primary:
       'bg-accent text-accent-foreground hover:enabled:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50',
     secondary:
-      'bg-transparent border border-border text-foreground hover:enabled:border-accent hover:enabled:text-accent'
+      'bg-transparent border border-border text-foreground hover:enabled:border-accent hover:enabled:text-accent disabled:cursor-not-allowed disabled:opacity-50'
   }
 
   return (
