@@ -15,7 +15,7 @@
     "url": "https://github.com/ykzts/ykzts.git"
   },
   "scripts": {
-    "typegen": "command -v supabase >/dev/null 2>&1 && { supabase gen types typescript --local > src/database.types.ts.tmp && mv src/database.types.ts.tmp src/database.types.ts; } || echo 'Skipping typegen: Supabase CLI not installed (types are already committed)'"
+    "typegen": "./scripts/typegen.sh"
   },
   "type": "module",
   "types": "./src/database.types.ts",
