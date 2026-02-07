@@ -10,8 +10,10 @@ This is a pnpm workspace monorepo with the following structure:
 ├── apps/
 │   ├── blog-legacy/    # Docusaurus-based blog (ykzts.blog)
 │   ├── portfolio/      # Next.js portfolio site (ykzts.com)  
+│   ├── studio/         # Sanity CMS studio
 │   └── blog/           # (Future blog implementation)
 ├── packages/
+│   ├── schemas/        # Sanity schema definitions
 │   └── tsconfig/       # Shared TypeScript configurations
 ```
 
@@ -21,10 +23,10 @@ This is a pnpm workspace monorepo with the following structure:
 - **Build System**: Turbo (monorepo build orchestration)
 - **Language**: TypeScript (modern/strict configuration)
 - **Frontend Frameworks**: 
-  - Next.js 15 (with Turbopack) for portfolio
+  - Next.js 15 (with Turbopack) for portfolio and studio
   - Docusaurus 3 for blog-legacy
   - React 19 across all applications
-- **Content Management**: Supabase (PostgreSQL database with Dashboard)
+- **Content Management**: Supabase (PostgreSQL database with Dashboard) for portfolio; Sanity CMS for studio
 - **Styling**: CSS Modules, modern CSS features
 - **Linting/Formatting**: Biome (replaces ESLint + Prettier)
 
@@ -85,7 +87,14 @@ This is a pnpm workspace monorepo with the following structure:
 - **Plugins**: Vercel Analytics plugin
 - **Theme**: Custom theme with dark mode support
 
+### Studio (`apps/studio/`)
+- **Framework**: Next.js 15 + Sanity Studio
+- **Purpose**: Content management for portfolio/blog
+- **Port**: Runs on port 10000 in development
+- **Schemas**: References `@ykzts/schemas` package
+
 ### Shared Packages
+- **schemas**: Sanity schema definitions (built with tsup)
 - **tsconfig**: Shared TypeScript configurations
 
 ## Content and Localization
@@ -99,7 +108,7 @@ This is a pnpm workspace monorepo with the following structure:
 
 - **Hosting**: Vercel (inferred from analytics integration)
 - **Analytics**: Vercel Analytics integrated
-- **Content**: Supabase PostgreSQL database with Dashboard for content management
+- **Content**: Supabase PostgreSQL database with Dashboard for portfolio content; Sanity CMS for studio
 - **Domains**: ykzts.com (portfolio), ykzts.blog (blog)
 
 ## Commit Message Standards
@@ -122,11 +131,11 @@ This repository strictly follows the **Conventional Commits** specification. All
 - `fix(blog): resolve RSS feed generation issue`
 - `chore: set up Copilot instructions for repository`
 - `docs: update README with installation instructions`
-- `refactor(portfolio): simplify database schema definitions`
+- `refactor(studio): simplify Sanity schema definitions`
 
 ### Scope Guidelines
-- Use app names for application-specific changes: `portfolio`, `blog-legacy`
-- Use package names for shared packages: `tsconfig`
+- Use app names for application-specific changes: `portfolio`, `blog-legacy`, `studio`
+- Use package names for shared packages: `schemas`, `tsconfig`
 - Omit scope for repository-wide changes
 
 ## Best Practices for Contributors

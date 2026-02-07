@@ -10,8 +10,10 @@ This is a pnpm workspace monorepo with the following structure:
 ├── apps/
 │   ├── blog-legacy/    # Docusaurus-based blog (ykzts.blog)
 │   ├── portfolio/      # Next.js portfolio site (ykzts.com)  
+│   ├── studio/         # Sanity CMS studio
 │   └── blog/           # (Future blog implementation)
 ├── packages/
+│   ├── schemas/        # Sanity schema definitions
 │   └── tsconfig/       # Shared TypeScript configurations
 ```
 
@@ -22,7 +24,7 @@ This is a pnpm workspace monorepo with the following structure:
 - **Language**: TypeScript (modern/strict configuration)
 - **Frontend Frameworks**: Next.js 15, Docusaurus 3, React 19
 - **Styling**: Tailwind CSS v4 (portfolio), CSS (blog-legacy)
-- **Content Management**: Supabase (PostgreSQL database with Dashboard)
+- **Content Management**: Supabase (PostgreSQL database with Dashboard) for portfolio; Sanity CMS for studio
 - **Linting/Formatting**: Biome (replaces ESLint + Prettier)
 
 ## Development Environment Setup
@@ -118,12 +120,12 @@ This repository **strictly follows** the [Conventional Commits](https://www.conv
 - `fix(blog): resolve RSS feed generation issue`
 - `chore: set up Copilot instructions for repository`
 - `docs: update README with installation instructions`
-- `refactor(portfolio): simplify database schema definitions`
+- `refactor(studio): simplify Sanity schema definitions`
 
 ### Scope Guidelines
 
-- Use app names for application-specific changes: `portfolio`, `blog-legacy`
-- Use package names for shared packages: `tsconfig`
+- Use app names for application-specific changes: `portfolio`, `blog-legacy`, `studio`
+- Use package names for shared packages: `schemas`, `tsconfig`
 - Omit scope for repository-wide changes
 
 ## Pull Request Process
@@ -185,7 +187,8 @@ cd apps/portfolio && pnpm test:watch
 ### Current Test Coverage
 
 - **Portfolio**: Component and utility function tests
-- **Blog Legacy**: No tests currently configured
+- **Schemas**: Schema validation tests
+- **Studio**: No tests currently configured
 
 ## CI/CD Checks
 
@@ -251,6 +254,10 @@ All build tasks are orchestrated through Turbo:
 - Docusaurus 3 with MDX content
 - Japanese localization
 - Custom theme with dark mode
+
+#### Studio (`apps/studio/`)
+- Sanity Studio for content management
+- Runs on port 10000 in development
 
 ### Content Guidelines
 

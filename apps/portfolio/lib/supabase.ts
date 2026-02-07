@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 import { cacheTag } from 'next/cache'
 import * as z from 'zod'
+import type { Database } from './database.types'
 
 // Zod schema for work content (Portable Text format)
 const workSchema = z.object({
@@ -19,7 +20,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 // Create client only if environment variables are set
 const supabase =
   supabaseUrl && supabaseAnonKey
-    ? createClient(supabaseUrl, supabaseAnonKey)
+    ? createClient<Database>(supabaseUrl, supabaseAnonKey)
     : null
 
 export async function getWorks(): Promise<z.infer<typeof worksSchema>> {
