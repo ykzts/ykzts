@@ -6,8 +6,8 @@ import * as z from 'zod'
 const workSchema = z.object({
   content: z.array(z.any()),
   slug: z.string(),
-  title: z.string().nonempty(),
-  starts_at: z.string().optional()
+  starts_at: z.string().optional(),
+  title: z.string().nonempty()
 })
 
 const worksSchema = z.array(workSchema)
