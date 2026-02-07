@@ -3,12 +3,12 @@
   "description": "Supabase database type definitions for ykzts applications",
   "exports": {
     ".": {
-      "types": "./src/database.types.ts",
-      "default": "./src/database.types.ts"
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
     }
   },
   "license": "MIT",
-  "main": "./src/database.types.ts",
+  "main": "./src/index.ts",
   "name": "@ykzts/supabase",
   "private": true,
   "repository": {
@@ -17,6 +17,6 @@
     "url": "https://github.com/ykzts/ykzts.git"
   },
   "type": "module",
-  "types": "./src/database.types.ts",
+  "types": "./src/index.ts",
   "version": "1.0.0"
 }
