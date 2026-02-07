@@ -20,10 +20,31 @@ const supabase = createClient<Database>(
 
 ## Type Generation
 
-The types in this package are generated from the Supabase database schema using:
+The types in this package are generated from the Supabase database schema. To regenerate the types:
+
+### Using Local Supabase Instance
+
+If you have Supabase running locally with `supabase start`:
+
+```bash
+cd packages/supabase
+pnpm typegen
+```
+
+This runs: `supabase gen types typescript --local > src/database.types.ts`
+
+### Using Remote Supabase Project
+
+If you want to generate types from a remote Supabase project:
 
 ```bash
 npx supabase gen types typescript --project-id YOUR_PROJECT_ID > packages/supabase/src/database.types.ts
+```
+
+Or using the project reference from your linked project:
+
+```bash
+npx supabase gen types typescript --linked > packages/supabase/src/database.types.ts
 ```
 
 ## Tables
@@ -31,6 +52,13 @@ npx supabase gen types typescript --project-id YOUR_PROJECT_ID > packages/supaba
 - **profiles**: User profile information
 - **works**: Portfolio work entries with Portable Text content
 - **posts**: Blog post entries
+
+## Development Workflow
+
+1. Make schema changes in `supabase/migrations/`
+2. Apply migrations: `supabase db push` (or `supabase migration up` for local)
+3. Regenerate types: `cd packages/supabase && pnpm typegen`
+4. Commit the updated `database.types.ts` file
 
 ## Internal Dependencies
 
