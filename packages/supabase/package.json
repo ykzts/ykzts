@@ -3,12 +3,10 @@
   "description": "Supabase database type definitions for ykzts applications",
   "exports": {
     ".": {
-      "types": "./src/database.types.ts",
-      "default": "./src/database.types.ts"
+      "types": "./src/database.types.ts"
     }
   },
   "license": "MIT",
-  "main": "./src/database.types.ts",
   "name": "@ykzts/supabase",
   "private": true,
   "repository": {
@@ -17,7 +15,7 @@
     "url": "https://github.com/ykzts/ykzts.git"
   },
   "scripts": {
-    "typegen": "command -v supabase >/dev/null 2>&1 && supabase gen types typescript --local > src/database.types.ts || echo 'Skipping typegen: Supabase CLI not installed (types are already committed)'"
+    "typegen": "command -v supabase >/dev/null 2>&1 && { supabase gen types typescript --local > src/database.types.ts.tmp && mv src/database.types.ts.tmp src/database.types.ts; } || echo 'Skipping typegen: Supabase CLI not installed (types are already committed)'"
   },
   "type": "module",
   "types": "./src/database.types.ts",

@@ -34,7 +34,6 @@ CREATE TABLE IF NOT EXISTS posts (
 
 -- Create indexes for better query performance
 CREATE INDEX IF NOT EXISTS works_starts_at_idx ON works(starts_at DESC);
-CREATE INDEX IF NOT EXISTS works_slug_idx ON works(slug);
 
 -- Enable Row Level Security (RLS)
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
