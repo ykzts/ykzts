@@ -20,7 +20,15 @@ const supabase = createClient<Database>(
 
 ## Type Generation
 
-The types in this package are generated from the Supabase database schema. To regenerate the types:
+The types in this package are generated from the Supabase database schema and are committed to the repository. **You only need to regenerate types when the database schema changes.**
+
+### When CI Runs
+
+The `typegen` script is safe to run in CI - it will skip type generation if Supabase CLI is not installed, since the types are already committed to the repository.
+
+### Regenerating Types Locally
+
+To regenerate types after schema changes:
 
 ### Using Local Supabase Instance
 
