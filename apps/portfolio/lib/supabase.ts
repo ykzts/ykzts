@@ -7,7 +7,7 @@ const workSchema = z.object({
   content: z.array(z.any()),
   slug: z.string(),
   starts_at: z.string().optional(),
-  title: z.string().nonempty()
+  title: z.string().min(1)
 })
 
 const worksSchema = z.array(workSchema)

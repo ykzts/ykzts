@@ -64,7 +64,7 @@ BEGIN
   NEW.updated_at = timezone('utc'::text, now());
   RETURN NEW;
 END;
-$$ language 'plpgsql';
+$$ LANGUAGE plpgsql;
 
 -- Create triggers to update updated_at on record changes
 CREATE TRIGGER update_profiles_updated_at BEFORE UPDATE ON profiles

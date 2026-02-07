@@ -81,13 +81,18 @@ The main difference between Sanity and Supabase is how content is stored:
 
 #### Example Migration Script (Node.js):
 
+**Important:** This script uses the Service Role Key which has full database access and should NEVER be committed to version control or exposed in client-side code. Run this script in a secure server environment only.
+
 ```javascript
+// migration-script.js - Run this SERVER-SIDE ONLY
 import { createClient } from '@supabase/supabase-js'
 import sanityExport from './sanity-export.json'
 
+// WARNING: Use Service Role Key (not anon key) for write operations
+// Store this in a .env file and NEVER commit it to version control
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY // Use service role key for admin operations
+  process.env.SUPABASE_SERVICE_ROLE_KEY // Service role key for admin operations
 )
 
 async function migrateWorks() {
