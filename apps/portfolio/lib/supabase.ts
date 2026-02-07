@@ -7,7 +7,7 @@ import * as z from 'zod'
 const workSchema = z.object({
   content: z.array(z.any()),
   slug: z.string(),
-  starts_at: z.string().optional(),
+  starts_at: z.string(),
   title: z.string().min(1)
 })
 
