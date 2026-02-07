@@ -75,30 +75,3 @@ CREATE TRIGGER update_works_updated_at BEFORE UPDATE ON works
 
 CREATE TRIGGER update_posts_updated_at BEFORE UPDATE ON posts
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-
--- Insert sample work data (Portable Text format)
--- This is an example - replace with your actual content
-INSERT INTO works (title, slug, content, starts_at) VALUES
-  (
-    'Sample Work',
-    'sample-work',
-    '[
-      {
-        "_type": "block",
-        "children": [
-          {
-            "_type": "span",
-            "text": "This is a sample work description. You can add your content here."
-          }
-        ],
-        "markDefs": [],
-        "style": "normal"
-      }
-    ]'::jsonb,
-    '2024-01-01'
-  )
-ON CONFLICT (slug) DO NOTHING;
-
--- Generate TypeScript types
--- After running this migration, use Supabase CLI to generate types:
--- npx supabase gen types typescript --project-id YOUR_PROJECT_ID > apps/portfolio/lib/database.types.ts

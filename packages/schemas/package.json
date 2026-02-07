@@ -1,0 +1,30 @@
+{
+  "author": "Yamagishi Kazutoshi",
+  "dependencies": {
+    "sanity": "5.7.0"
+  },
+  "description": "Sanity CMS schema definitions for blog posts, profiles, and work portfolio content",
+  "devDependencies": {
+    "@types/node": "22.19.8",
+    "@ykzts/tsconfig": "workspace:*",
+    "tsup": "8.5.1",
+    "vitest": "4.0.18"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@ykzts/schemas",
+  "private": true,
+  "repository": {
+    "directory": "packages/schemas",
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.git"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest --run"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
+}
