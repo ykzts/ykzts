@@ -14,6 +14,7 @@ This is a pnpm workspace monorepo with the following structure:
 │   └── blog/           # (Future blog implementation)
 ├── packages/
 │   ├── schemas/        # Sanity schema definitions
+│   ├── supabase/       # Supabase database type definitions
 │   └── tsconfig/       # Shared TypeScript configurations
 ```
 
@@ -95,6 +96,7 @@ This is a pnpm workspace monorepo with the following structure:
 
 ### Shared Packages
 - **schemas**: Sanity schema definitions (built with tsup)
+- **supabase**: Supabase database TypeScript type definitions
 - **tsconfig**: Shared TypeScript configurations
 
 ## Content and Localization
@@ -135,7 +137,7 @@ This repository strictly follows the **Conventional Commits** specification. All
 
 ### Scope Guidelines
 - Use app names for application-specific changes: `portfolio`, `blog-legacy`, `studio`
-- Use package names for shared packages: `schemas`, `tsconfig`
+- Use package names for shared packages: `schemas`, `supabase`, `tsconfig`
 - Omit scope for repository-wide changes
 
 ## Best Practices for Contributors

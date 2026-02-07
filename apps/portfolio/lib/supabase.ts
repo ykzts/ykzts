@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
+import type { Database } from '@ykzts/supabase'
 import { cacheTag } from 'next/cache'
 import * as z from 'zod'
-import type { Database } from './database.types'
 
 // Zod schema for work content (Portable Text format)
 const workSchema = z.object({
