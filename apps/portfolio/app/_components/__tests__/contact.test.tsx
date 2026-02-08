@@ -26,8 +26,6 @@ vi.mock('@/lib/supabase', () => ({
     name: 'テストユーザー',
     social_links: [
       {
-        icon: 'github',
-        label: 'テストユーザーのGitHubアカウント',
         url: 'https://github.com/test'
       }
     ],

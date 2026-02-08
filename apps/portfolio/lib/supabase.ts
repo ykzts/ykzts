@@ -17,7 +17,7 @@ export type Profile = {
   tagline: string
   about: any[] // Portable Text content
   email: string | null
-  social_links: Array<{ icon: string; label: string; url: string }>
+  social_links: Array<{ url: string }>
   technologies: Array<{ name: string }>
 }
 
@@ -41,7 +41,7 @@ export async function getProfile(): Promise<Profile> {
       tagline,
       about,
       email,
-      social_links(icon, label, url),
+      social_links(url),
       technologies(name)
     `
     )

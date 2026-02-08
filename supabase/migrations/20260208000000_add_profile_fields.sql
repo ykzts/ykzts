@@ -33,8 +33,6 @@ END $$;
 CREATE TABLE IF NOT EXISTS social_links (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-  icon TEXT NOT NULL,
-  label TEXT NOT NULL,
   url TEXT NOT NULL,
   sort_order INTEGER NOT NULL DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,

@@ -37,8 +37,6 @@ describe('Supabase utilities', () => {
         name: 'Test User',
         social_links: [
           {
-            icon: 'github',
-            label: 'Test User GitHub Account',
             url: 'https://github.com/test'
           }
         ],

@@ -64,8 +64,6 @@ export type Database = {
         Row: {
           id: string
           profile_id: string
-          icon: string
-          label: string
           url: string
           sort_order: number
           created_at: string
@@ -74,8 +72,6 @@ export type Database = {
         Insert: {
           id?: string
           profile_id: string
-          icon: string
-          label: string
           url: string
           sort_order?: number
           created_at?: string
@@ -84,8 +80,6 @@ export type Database = {
         Update: {
           id?: string
           profile_id?: string
-          icon?: string
-          label?: string
           url?: string
           sort_order?: number
           created_at?: string
