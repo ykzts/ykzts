@@ -2,6 +2,7 @@
 
 import { Resend } from 'resend'
 import * as z from 'zod'
+import { getProfile } from '@/lib/supabase'
 import { verifyTurnstile } from '@/lib/turnstile'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -32,7 +33,6 @@ export async function submitContactForm(
 ): Promise<ContactFormResponse> {
   // Extract form data
   const rawData = {
-    contactEmail: formData.get('contactEmail'),
     email: formData.get('email'),
     message: formData.get('message'),
     name: formData.get('name'),
@@ -51,12 +51,15 @@ export async function submitContactForm(
       typeof rawData.turnstileToken === 'string' ? rawData.turnstileToken : ''
   }
 
-  const contactEmail =
-    typeof rawData.contactEmail === 'string' && rawData.contactEmail
-      ? rawData.contactEmail
-      : process.env.CONTACT_EMAIL
-
   try {
+    // Fetch contact email from Supabase profile server-side
+    const profile = await getProfile()
+
+    if (!profile.email) {
+      throw new Error('Contact email is not configured in profile')
+    }
+
+    const contactEmail = profile.email
     // Validate form data
     const validatedData = contactFormSchema.parse(data)
 

@@ -7,7 +7,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { Button, Input, Textarea } from '@/components/form'
 import { submitContactForm } from '../_actions/contact'
 
-export default function ContactForm({ email }: { email: string | null }) {
+export default function ContactForm() {
   const [state, formAction, isPending] = useActionState(submitContactForm, null)
   const [turnstileToken, setTurnstileToken] = useState<string>('')
   const formRef = useRef<HTMLFormElement>(null)
@@ -139,7 +139,6 @@ export default function ContactForm({ email }: { email: string | null }) {
             }
           />
           <input name="turnstileToken" type="hidden" value={turnstileToken} />
-          <input name="contactEmail" type="hidden" value={email || ''} />
           {errors.turnstileToken && (
             <p className="mt-1.5 text-red-500 text-sm">
               {errors.turnstileToken}

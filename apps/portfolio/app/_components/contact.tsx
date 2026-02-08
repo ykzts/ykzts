@@ -9,19 +9,25 @@ function inferSocialInfo(url: string): { icon: string; label: string } {
   const urlLower = url.toLowerCase()
 
   if (urlLower.includes('facebook.com')) {
-    return { icon: 'facebook', label: '山岸和利のFacebookアカウント' }
+    const username = url.split('/').pop() || 'Facebook'
+    return { icon: 'facebook', label: `Facebook - ${username}` }
   }
   if (urlLower.includes('github.com')) {
-    return { icon: 'github', label: '山岸和利のGitHubアカウント' }
+    const username = url.split('/').pop() || 'GitHub'
+    return { icon: 'github', label: `GitHub - ${username}` }
   }
   if (urlLower.includes('mastodon') || urlLower.includes('ykzts.technology')) {
-    return { icon: 'mastodon', label: '山岸和利のMastodonアカウント' }
+    const parts = url.split('@')
+    const username = parts[parts.length - 1] || 'Mastodon'
+    return { icon: 'mastodon', label: `Mastodon - @${username}` }
   }
   if (urlLower.includes('threads.net')) {
-    return { icon: 'threads', label: '山岸和利のThreadsアカウント' }
+    const username = url.split('/').pop() || 'Threads'
+    return { icon: 'threads', label: `Threads - ${username}` }
   }
   if (urlLower.includes('x.com') || urlLower.includes('twitter.com')) {
-    return { icon: 'x', label: '山岸和利のXアカウント' }
+    const username = url.split('/').pop() || 'X'
+    return { icon: 'x', label: `X - ${username}` }
   }
 
   // Fallback to github icon for unrecognized URLs
@@ -53,7 +59,7 @@ export default async function Contact() {
         <p className="mb-6 text-muted text-sm">
           ※無償もしくは報酬が不明瞭な依頼、依頼主が不明なスカウトメールにはご返答いたしかねます。
         </p>
-        <ContactForm email={profile.email} />
+        <ContactForm />
       </div>
 
       {/* Links */}

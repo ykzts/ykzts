@@ -9,9 +9,7 @@ vi.mock('react-intersection-observer', () => ({
 
 // Mock the ContactForm component
 vi.mock('../contact-form', () => ({
-  default: ({ email }: { email: string | null }) => (
-    <div data-testid="contact-form">Contact Form Email: {email || 'none'}</div>
-  )
+  default: () => <div data-testid="contact-form">Contact Form</div>
 }))
 
 // Mock getProfile from lib/supabase
