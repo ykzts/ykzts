@@ -9,6 +9,10 @@ type SocialLinkWithLogo = SocialLink & {
   logo: ReactNode
 }
 
+// Valid social icon types
+const VALID_ICONS = ['facebook', 'github', 'mastodon', 'threads', 'x'] as const
+type ValidIcon = (typeof VALID_ICONS)[number]
+
 const fallbackSocialLinks: SocialLink[] = [
   {
     icon: 'facebook',
@@ -37,10 +41,16 @@ const fallbackSocialLinks: SocialLink[] = [
   }
 ]
 
+function isValidIcon(icon: string): icon is ValidIcon {
+  return VALID_ICONS.includes(icon as ValidIcon)
+}
+
 function getSocialLogo(icon: string): ReactNode {
+  // Use a generic icon for unrecognized icon types
+  const iconId = isValidIcon(icon) ? icon : 'link'
   return (
     <svg aria-hidden="true" className="size-5">
-      <use href={`#${icon}-logo`} />
+      <use href={`#${iconId}-logo`} />
     </svg>
   )
 }

@@ -78,7 +78,15 @@ export async function getProfile(): Promise<Profile | null> {
   } catch (error) {
     // Only catch fetch/network errors, not validation errors
     if (error instanceof z.ZodError) {
-      console.error('Profile validation error:', error)
+      console.error(
+        'Profile validation error: Invalid data structure received from Supabase',
+        {
+          errors: error.errors.map((e) => ({
+            field: e.path.join('.'),
+            message: e.message
+          }))
+        }
+      )
       throw error
     }
     // Return null if Supabase is not properly configured
