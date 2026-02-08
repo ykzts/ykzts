@@ -17,10 +17,12 @@ vi.mock('../contact-form', () => ({
 // Mock getProfile from lib/supabase
 vi.mock('@/lib/supabase', () => ({
   getProfile: vi.fn(async () => ({
-    about: [{
-      _type: 'block',
-      children: [{ _type: 'span', text: 'About text' }]
-    }],
+    about: [
+      {
+        _type: 'block',
+        children: [{ _type: 'span', text: 'About text' }]
+      }
+    ],
     email: 'test@example.com',
     id: 'test-id',
     name: 'テストユーザー',

@@ -5,10 +5,6 @@ vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', 'https://test.supabase.co')
 vi.stubEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY', 'test-anon-key')
 
 // Mock @supabase/supabase-js
-const mockSelect = vi.fn()
-const mockOrder = vi.fn()
-const mockLimit = vi.fn()
-const mockSingle = vi.fn()
 const mockFrom = vi.fn()
 
 vi.mock('@supabase/supabase-js', () => ({
@@ -30,10 +26,12 @@ describe('Supabase utilities', () => {
   describe('getProfile', () => {
     it('should return parsed profile data when valid data is returned', async () => {
       const mockData = {
-        about: [{
-          _type: 'block',
-          children: [{ _type: 'span', text: 'About text' }]
-        }],
+        about: [
+          {
+            _type: 'block',
+            children: [{ _type: 'span', text: 'About text' }]
+          }
+        ],
         email: 'test@example.com',
         id: 'test-id',
         name: 'Test User',
@@ -95,7 +93,9 @@ describe('Supabase utilities', () => {
       })
 
       const { getProfile } = await import('../supabase')
-      await expect(getProfile()).rejects.toThrow('Failed to fetch profile: Database error')
+      await expect(getProfile()).rejects.toThrow(
+        'Failed to fetch profile: Database error'
+      )
     })
   })
 
@@ -141,7 +141,9 @@ describe('Supabase utilities', () => {
       })
 
       const { getWorks } = await import('../supabase')
-      await expect(getWorks()).rejects.toThrow('Failed to fetch works: Database error')
+      await expect(getWorks()).rejects.toThrow(
+        'Failed to fetch works: Database error'
+      )
     })
   })
 })

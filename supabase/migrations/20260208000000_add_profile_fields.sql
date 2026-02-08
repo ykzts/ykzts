@@ -16,10 +16,18 @@ COMMENT ON COLUMN profiles.tagline IS 'Short bio/tagline';
 COMMENT ON COLUMN profiles.email IS 'Contact email address';
 COMMENT ON COLUMN profiles.about IS 'About/bio section content in Portable Text format';
 
--- Add email validation constraint
-ALTER TABLE profiles
-  ADD CONSTRAINT email_format_check
-  CHECK (email IS NULL OR email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$');
+-- Add email validation constraint (idempotent)
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint 
+    WHERE conname = 'email_format_check'
+  ) THEN
+    ALTER TABLE profiles
+      ADD CONSTRAINT email_format_check
+      CHECK (email IS NULL OR email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$');
+  END IF;
+END $$;
 
 -- Create social_links table (simplified - only URL needed)
 CREATE TABLE IF NOT EXISTS social_links (

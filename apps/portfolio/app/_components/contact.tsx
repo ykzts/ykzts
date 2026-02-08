@@ -24,7 +24,8 @@ function inferSocialInfo(url: string): { icon: string; label: string } {
     return { icon: 'x', label: '山岸和利のXアカウント' }
   }
 
-  return { icon: 'link', label: url }
+  // Fallback to github icon for unrecognized URLs
+  return { icon: 'github', label: url }
 }
 
 function getSocialLogo(icon: string): ReactNode {
