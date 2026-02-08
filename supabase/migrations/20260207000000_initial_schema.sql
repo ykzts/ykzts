@@ -1,12 +1,9 @@
 -- Supabase Migration: Create tables for portfolio content management
 -- Run this SQL in Supabase SQL Editor or Dashboard
 
--- Enable UUID extension if not already enabled
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 -- Create profiles table
 CREATE TABLE IF NOT EXISTS profiles (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
@@ -15,7 +12,7 @@ CREATE TABLE IF NOT EXISTS profiles (
 -- Create works table
 -- Content field stores Portable Text format as JSONB for compatibility with @portabletext/react
 CREATE TABLE IF NOT EXISTS works (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title TEXT NOT NULL CHECK (char_length(title) >= 1 AND char_length(title) <= 256),
   slug TEXT NOT NULL UNIQUE,
   content JSONB NOT NULL,
@@ -26,7 +23,7 @@ CREATE TABLE IF NOT EXISTS works (
 
 -- Create posts table
 CREATE TABLE IF NOT EXISTS posts (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
@@ -58,7 +55,9 @@ CREATE POLICY "Enable read access for all users" ON posts
 
 -- Create function to automatically update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+SET search_path = ''
+AS $$
 BEGIN
   NEW.updated_at = timezone('utc'::text, now());
   RETURN NEW;
