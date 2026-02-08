@@ -34,22 +34,101 @@ export type Database = {
         Row: {
           id: string
           name: string | null
+          tagline: string | null
+          about: Json | null
+          email: string | null
           created_at: string
           updated_at: string
         }
         Insert: {
           id?: string
           name?: string | null
+          tagline?: string | null
+          about?: Json | null
+          email?: string | null
           created_at?: string
           updated_at?: string
         }
         Update: {
           id?: string
           name?: string | null
+          tagline?: string | null
+          about?: Json | null
+          email?: string | null
           created_at?: string
           updated_at?: string
         }
         Relationships: []
+      }
+      social_links: {
+        Row: {
+          id: string
+          profile_id: string
+          url: string
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          profile_id: string
+          url: string
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          profile_id?: string
+          url?: string
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'social_links_profile_id_fkey'
+            columns: ['profile_id']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      technologies: {
+        Row: {
+          id: string
+          profile_id: string
+          name: string
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          profile_id: string
+          name: string
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          profile_id?: string
+          name?: string
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'technologies_profile_id_fkey'
+            columns: ['profile_id']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          }
+        ]
       }
       works: {
         Row: {

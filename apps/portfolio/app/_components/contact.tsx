@@ -1,63 +1,53 @@
 import type { ReactNode } from 'react'
 import { HiOutlineArrowUpRight } from 'react-icons/hi2'
 import Link from '@/components/link'
+import { getProfile } from '@/lib/supabase'
 import ContactForm from './contact-form'
 
-type SocialLink = {
+interface SocialInfo {
+  icon: string
   label: string
-  logo: ReactNode
-  url: `https://${string}`
 }
 
-const socialLinks: SocialLink[] = [
-  {
-    label: '山岸和利のFacebookアカウント',
-    logo: (
-      <svg aria-hidden="true" className="size-5">
-        <use href="#facebook-logo" />
-      </svg>
-    ),
-    url: 'https://www.facebook.com/ykzts'
-  },
-  {
-    label: '山岸和利のGitHubアカウント',
-    logo: (
-      <svg aria-hidden="true" className="size-5">
-        <use href="#github-logo" />
-      </svg>
-    ),
-    url: 'https://github.com/ykzts'
-  },
-  {
-    label: '山岸和利のMastodonアカウント',
-    logo: (
-      <svg aria-hidden="true" className="size-5">
-        <use href="#mastodon-logo" />
-      </svg>
-    ),
-    url: 'https://ykzts.technology/@ykzts'
-  },
-  {
-    label: '山岸和利のThreadsアカウント',
-    logo: (
-      <svg aria-hidden="true" className="size-5">
-        <use href="#threads-logo" />
-      </svg>
-    ),
-    url: 'https://www.threads.net/@ykzts'
-  },
-  {
-    label: '山岸和利のXアカウント',
-    logo: (
-      <svg aria-hidden="true" className="size-5">
-        <use href="#x-logo" />
-      </svg>
-    ),
-    url: 'https://x.com/ykzts'
-  }
-]
+function getSocialInfo(url: string): SocialInfo {
+  try {
+    const hostname = new URL(url).hostname.toLowerCase()
 
-export default function Contact() {
+    // Validate against known services
+    if (hostname === 'www.facebook.com' || hostname === 'facebook.com') {
+      return { icon: 'facebook', label: '山岸和利のFacebookアカウント' }
+    }
+    if (hostname === 'github.com') {
+      return { icon: 'github', label: '山岸和利のGitHubアカウント' }
+    }
+    if (hostname === 'ykzts.technology') {
+      return { icon: 'mastodon', label: '山岸和利のMastodonアカウント' }
+    }
+    if (hostname === 'www.threads.net' || hostname === 'threads.net') {
+      return { icon: 'threads', label: '山岸和利のThreadsアカウント' }
+    }
+    if (hostname === 'x.com' || hostname === 'twitter.com') {
+      return { icon: 'x', label: '山岸和利のXアカウント' }
+    }
+
+    // Fallback for unknown services
+    throw new Error(`Unknown social service: ${hostname}`)
+  } catch (error) {
+    throw new Error(`Invalid social link URL: ${url}`)
+  }
+}
+
+function getSocialLogo(icon: string): ReactNode {
+  return (
+    <svg aria-hidden="true" className="size-5">
+      <use href={`#${icon}-logo`} />
+    </svg>
+  )
+}
+
+export default async function Contact() {
+  const profile = await getProfile()
+
   return (
     <section className="mx-auto max-w-4xl py-20" id="contact">
       <h2 className="mb-10 font-semibold text-base text-muted uppercase tracking-widest">
@@ -91,19 +81,22 @@ export default function Contact() {
         <div>
           <h3 className="mb-4 font-medium text-foreground text-lg">Social</h3>
           <ul className="flex gap-3">
-            {socialLinks.map((socialLink) => (
-              <li key={socialLink.url}>
-                <Link
-                  aria-label={socialLink.label}
-                  className="inline-flex size-10 items-center justify-center rounded-lg border border-border text-muted transition-all duration-200 hover:border-accent hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
-                  href={socialLink.url}
-                  rel="me"
-                  target="_blank"
-                >
-                  {socialLink.logo}
-                </Link>
-              </li>
-            ))}
+            {profile.social_links.map((link) => {
+              const { icon, label } = getSocialInfo(link.url)
+              return (
+                <li key={link.url}>
+                  <Link
+                    aria-label={label}
+                    className="inline-flex size-10 items-center justify-center rounded-lg border border-border text-muted transition-all duration-200 hover:border-accent hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
+                    href={link.url}
+                    rel="me"
+                    target="_blank"
+                  >
+                    {getSocialLogo(icon)}
+                  </Link>
+                </li>
+              )
+            })}
           </ul>
         </div>
       </div>
