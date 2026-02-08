@@ -66,7 +66,7 @@ async function WorksImpl() {
             <div className="prose prose-base max-w-none prose-a:text-accent prose-p:text-base prose-p:text-muted prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
               <PortableText
                 components={portableTextComponents}
-                value={work.content}
+                value={work.content as any}
               />
             </div>
           </article>
