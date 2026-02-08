@@ -32,6 +32,7 @@ export async function submitContactForm(
 ): Promise<ContactFormResponse> {
   // Extract form data
   const rawData = {
+    contactEmail: formData.get('contactEmail'),
     email: formData.get('email'),
     message: formData.get('message'),
     name: formData.get('name'),
@@ -50,6 +51,11 @@ export async function submitContactForm(
       typeof rawData.turnstileToken === 'string' ? rawData.turnstileToken : ''
   }
 
+  const contactEmail =
+    typeof rawData.contactEmail === 'string' && rawData.contactEmail
+      ? rawData.contactEmail
+      : process.env.CONTACT_EMAIL
+
   try {
     // Validate form data
     const validatedData = contactFormSchema.parse(data)
@@ -65,12 +71,12 @@ export async function submitContactForm(
     }
 
     // Send email using Resend
-    if (!process.env.RESEND_API_KEY || !process.env.CONTACT_EMAIL) {
+    if (!process.env.RESEND_API_KEY || !contactEmail) {
       if (!process.env.RESEND_API_KEY) {
         console.error('RESEND_API_KEY is not configured.')
       }
 
-      if (!process.env.CONTACT_EMAIL) {
+      if (!contactEmail) {
         console.error('CONTACT_EMAIL is not configured.')
       }
 
@@ -87,7 +93,7 @@ export async function submitContactForm(
       replyTo: `${validatedData.name} <${validatedData.email}>`,
       subject: `[お問い合わせ] ${validatedData.subject}`,
       text: validatedData.message,
-      to: [process.env.CONTACT_EMAIL]
+      to: [contactEmail]
     })
 
     if (emailResult.error) {

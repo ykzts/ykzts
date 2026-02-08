@@ -1,68 +1,42 @@
 import type { ReactNode } from 'react'
 import { HiOutlineArrowUpRight } from 'react-icons/hi2'
 import Link from '@/components/link'
-import type { SocialLink } from '@/lib/supabase'
 import { getProfile } from '@/lib/supabase'
 import ContactForm from './contact-form'
 
-type SocialLinkWithLogo = SocialLink & {
-  logo: ReactNode
-}
+// Infer icon and label from URL
+function inferSocialInfo(url: string): { icon: string; label: string } {
+  const urlLower = url.toLowerCase()
 
-// Valid social icon types
-const VALID_ICONS = ['facebook', 'github', 'mastodon', 'threads', 'x'] as const
-type ValidIcon = (typeof VALID_ICONS)[number]
-
-const fallbackSocialLinks: SocialLink[] = [
-  {
-    icon: 'facebook',
-    label: '山岸和利のFacebookアカウント',
-    url: 'https://www.facebook.com/ykzts'
-  },
-  {
-    icon: 'github',
-    label: '山岸和利のGitHubアカウント',
-    url: 'https://github.com/ykzts'
-  },
-  {
-    icon: 'mastodon',
-    label: '山岸和利のMastodonアカウント',
-    url: 'https://ykzts.technology/@ykzts'
-  },
-  {
-    icon: 'threads',
-    label: '山岸和利のThreadsアカウント',
-    url: 'https://www.threads.net/@ykzts'
-  },
-  {
-    icon: 'x',
-    label: '山岸和利のXアカウント',
-    url: 'https://x.com/ykzts'
+  if (urlLower.includes('facebook.com')) {
+    return { icon: 'facebook', label: '山岸和利のFacebookアカウント' }
   }
-]
+  if (urlLower.includes('github.com')) {
+    return { icon: 'github', label: '山岸和利のGitHubアカウント' }
+  }
+  if (urlLower.includes('mastodon') || urlLower.includes('ykzts.technology')) {
+    return { icon: 'mastodon', label: '山岸和利のMastodonアカウント' }
+  }
+  if (urlLower.includes('threads.net')) {
+    return { icon: 'threads', label: '山岸和利のThreadsアカウント' }
+  }
+  if (urlLower.includes('x.com') || urlLower.includes('twitter.com')) {
+    return { icon: 'x', label: '山岸和利のXアカウント' }
+  }
 
-function isValidIcon(icon: string): icon is ValidIcon {
-  return VALID_ICONS.includes(icon as ValidIcon)
+  return { icon: 'link', label: url }
 }
 
 function getSocialLogo(icon: string): ReactNode {
-  // Use a generic icon for unrecognized icon types
-  const iconId = isValidIcon(icon) ? icon : 'link'
   return (
     <svg aria-hidden="true" className="size-5">
-      <use href={`#${iconId}-logo`} />
+      <use href={`#${icon}-logo`} />
     </svg>
   )
 }
 
 export default async function Contact() {
   const profile = await getProfile()
-  const socialLinks = profile?.social_links || fallbackSocialLinks
-
-  const socialLinksWithLogo: SocialLinkWithLogo[] = socialLinks.map((link) => ({
-    ...link,
-    logo: getSocialLogo(link.icon)
-  }))
 
   return (
     <section className="mx-auto max-w-4xl py-20" id="contact">
@@ -78,7 +52,7 @@ export default async function Contact() {
         <p className="mb-6 text-muted text-sm">
           ※無償もしくは報酬が不明瞭な依頼、依頼主が不明なスカウトメールにはご返答いたしかねます。
         </p>
-        <ContactForm />
+        <ContactForm email={profile.email} />
       </div>
 
       {/* Links */}
@@ -97,19 +71,22 @@ export default async function Contact() {
         <div>
           <h3 className="mb-4 font-medium text-foreground text-lg">Social</h3>
           <ul className="flex gap-3">
-            {socialLinksWithLogo.map((socialLink) => (
-              <li key={socialLink.url}>
-                <Link
-                  aria-label={socialLink.label}
-                  className="inline-flex size-10 items-center justify-center rounded-lg border border-border text-muted transition-all duration-200 hover:border-accent hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
-                  href={socialLink.url}
-                  rel="me"
-                  target="_blank"
-                >
-                  {socialLink.logo}
-                </Link>
-              </li>
-            ))}
+            {profile.social_links.map((link) => {
+              const { icon, label } = inferSocialInfo(link.url)
+              return (
+                <li key={link.url}>
+                  <Link
+                    aria-label={label}
+                    className="inline-flex size-10 items-center justify-center rounded-lg border border-border text-muted transition-all duration-200 hover:border-accent hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
+                    href={link.url}
+                    rel="me"
+                    target="_blank"
+                  >
+                    {getSocialLogo(icon)}
+                  </Link>
+                </li>
+              )
+            })}
           </ul>
         </div>
       </div>

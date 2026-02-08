@@ -9,24 +9,24 @@ vi.mock('react-intersection-observer', () => ({
 
 // Mock the ContactForm component
 vi.mock('../contact-form', () => ({
-  default: () => <div data-testid="contact-form">Contact Form</div>
+  default: ({ email }: { email: string | null }) => (
+    <div data-testid="contact-form">Contact Form Email: {email || 'none'}</div>
+  )
 }))
 
 // Mock getProfile from lib/supabase
 vi.mock('@/lib/supabase', () => ({
   getProfile: vi.fn(async () => ({
-    about: 'About text',
-    email: null,
+    about: [{
+      _type: 'block',
+      children: [{ _type: 'span', text: 'About text' }]
+    }],
+    email: 'test@example.com',
+    id: 'test-id',
     name: 'テストユーザー',
-    social_links: [
-      {
-        icon: 'github',
-        label: 'GitHub',
-        url: 'https://github.com/test'
-      }
-    ],
+    social_links: [{ url: 'https://github.com/test' }],
     tagline: 'ソフトウェア開発者',
-    technologies: ['JavaScript', 'TypeScript']
+    technologies: [{ name: 'JavaScript' }, { name: 'TypeScript' }]
   }))
 }))
 

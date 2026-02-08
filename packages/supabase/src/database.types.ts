@@ -35,7 +35,7 @@ export type Database = {
           id: string
           name: string | null
           tagline: string | null
-          about: string | null
+          about: Json | null
           email: string | null
           created_at: string
           updated_at: string
@@ -44,7 +44,7 @@ export type Database = {
           id?: string
           name?: string | null
           tagline?: string | null
-          about?: string | null
+          about?: Json | null
           email?: string | null
           created_at?: string
           updated_at?: string
@@ -53,7 +53,7 @@ export type Database = {
           id?: string
           name?: string | null
           tagline?: string | null
-          about?: string | null
+          about?: Json | null
           email?: string | null
           created_at?: string
           updated_at?: string
@@ -64,8 +64,6 @@ export type Database = {
         Row: {
           id: string
           profile_id: string
-          icon: string
-          label: string
           url: string
           sort_order: number
           created_at: string
@@ -74,8 +72,6 @@ export type Database = {
         Insert: {
           id?: string
           profile_id: string
-          icon: string
-          label: string
           url: string
           sort_order?: number
           created_at?: string
@@ -84,8 +80,6 @@ export type Database = {
         Update: {
           id?: string
           profile_id?: string
-          icon?: string
-          label?: string
           url?: string
           sort_order?: number
           created_at?: string

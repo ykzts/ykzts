@@ -1,62 +1,20 @@
+import {
+  PortableText,
+  type PortableTextMarkComponentProps,
+  type PortableTextReactComponents
+} from '@portabletext/react'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Suspense } from 'react'
 import ExternalLink from '@/components/link'
+import Skeleton from '@/components/skeleton'
 import AboutDoc from '@/docs/about.mdx'
+import range from '@/lib/range'
 import { getProfile } from '@/lib/supabase'
 import keyVisual from './_assets/key-visual.jpg'
 import Contact from './_components/contact'
 import Works from './_components/works'
-
-// Simple markdown renderer for about section
-function MarkdownContent({ content }: { content: string }) {
-  // Split by double newlines to create paragraphs
-  const paragraphs = content.split('\n\n')
-
-  return (
-    <>
-      {paragraphs.map((para, _index) => {
-        // Check if paragraph contains a markdown link
-        const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g
-        const parts: React.ReactNode[] = []
-        let lastIndex = 0
-        const match: RegExpExecArray | null = linkRegex.exec(para)
-
-        while (match !== null) {
-          // Add text before the link
-          if (match.index > lastIndex) {
-            parts.push(para.slice(lastIndex, match.index))
-          }
-          // Add the link
-          parts.push(
-            <ExternalLink
-              className="text-accent no-underline transition-colors duration-200 hover:text-accent/80 hover:underline"
-              href={match[2]}
-              key={match.index}
-            >
-              {match[1]}
-            </ExternalLink>
-          )
-          lastIndex = match.index + match[0].length
-        }
-
-        // Add remaining text
-        if (lastIndex < para.length) {
-          parts.push(para.slice(lastIndex))
-        }
-
-        return (
-          <p
-            className="text-base text-muted leading-relaxed"
-            key={para.slice(0, 50)}
-          >
-            {parts.length > 0 ? parts : para}
-          </p>
-        )
-      })}
-    </>
-  )
-}
 
 const description = [
   'JavaScriptやRubyといったプログラミング言語を用いたウェブアプリケーションの開発を得意とするソフトウェア開発者 山岸和利のポートフォリオです。',
@@ -82,28 +40,116 @@ export const metadata: Metadata = {
   }
 }
 
-export default async function HomePage(_props: PageProps<'/'>) {
+const portableTextComponents = {
+  marks: {
+    link({
+      children,
+      value
+    }: PortableTextMarkComponentProps<{ _type: string; href: string }>) {
+      const href = value?.href
+
+      return <ExternalLink href={href}>{children}</ExternalLink>
+    }
+  }
+} satisfies Partial<PortableTextReactComponents>
+
+function HeroSkeleton() {
+  return (
+    <header className="px-6 py-20 md:px-12 lg:px-24 lg:py-28">
+      <div className="mx-auto flex max-w-4xl flex-col-reverse items-start gap-12 lg:flex-row lg:items-center lg:gap-16">
+        <div className="flex-1">
+          <Skeleton className="mb-4 h-12 w-48" />
+          <Skeleton className="mb-8 h-6 w-full" />
+          <div className="flex flex-wrap gap-2">
+            {Array.from(range(0, 10), (i) => (
+              <Skeleton className="h-8 w-24" key={`tech-${i}`} />
+            ))}
+          </div>
+        </div>
+        <Skeleton className="size-80 rounded-2xl" />
+      </div>
+    </header>
+  )
+}
+
+async function Hero() {
   const profile = await getProfile()
 
-  // Fallback data if profile is not available
-  const name = profile?.name || '山岸和利'
-  const title =
-    profile?.tagline ||
-    'JavaScriptやRubyを用いたウェブアプリケーション開発を得意とするソフトウェア開発者です。ReactやRuby on Railsに造詣が深く、バックエンドからフロントエンドまで幅広く担当しています。'
-  const about = profile?.about || null
-  const technologies = profile?.technologies || [
-    'TypeScript',
-    'JavaScript',
-    'React',
-    'Next.js',
-    'Ruby',
-    'Ruby on Rails',
-    'Go',
-    'Python',
-    'AWS',
-    'Google Cloud'
-  ]
+  return (
+    <header className="px-6 py-20 md:px-12 lg:px-24 lg:py-28">
+      <div className="mx-auto flex max-w-4xl flex-col-reverse items-start gap-12 lg:flex-row lg:items-center lg:gap-16">
+        <div className="flex-1">
+          <h1 className="mb-4 font-bold text-5xl text-foreground tracking-tight md:text-6xl lg:text-7xl">
+            {profile.name}
+          </h1>
+          <p className="mb-8 max-w-2xl text-muted text-xl leading-relaxed">
+            {profile.tagline}
+          </p>
 
+          {/* Tech Stack Tags */}
+          <div className="flex flex-wrap gap-2">
+            {profile.technologies.map((tech) => (
+              <span className="tech-tag" key={tech.name}>
+                {tech.name}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="shrink-0">
+          <Image
+            alt={profile.name}
+            className="rounded-2xl shadow-lg"
+            height={320}
+            placeholder="blur"
+            priority
+            src={keyVisual}
+            width={320}
+          />
+        </div>
+      </div>
+    </header>
+  )
+}
+
+function AboutSkeleton() {
+  return (
+    <section className="mx-auto max-w-4xl py-20" id="about">
+      <h2 className="mb-10 font-semibold text-base text-muted uppercase tracking-widest">
+        About
+      </h2>
+      <div className="space-y-4">
+        {Array.from(range(0, 3), (i) => (
+          <Skeleton className="h-4 w-full" key={`about-${i}`} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+async function About() {
+  const profile = await getProfile()
+
+  return (
+    <section className="mx-auto max-w-4xl py-20" id="about">
+      <h2 className="mb-10 font-semibold text-base text-muted uppercase tracking-widest">
+        About
+      </h2>
+      <div className="prose prose-lg max-w-none prose-a:text-accent prose-headings:text-foreground prose-p:text-base prose-p:text-muted prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
+        {profile.about ? (
+          <PortableText
+            components={portableTextComponents}
+            value={profile.about}
+          />
+        ) : (
+          <AboutDoc />
+        )}
+      </div>
+    </section>
+  )
+}
+
+export default function HomePage(_props: PageProps<'/'>) {
   return (
     <div className="min-h-screen">
       {/* Navigation */}
@@ -136,50 +182,15 @@ export default async function HomePage(_props: PageProps<'/'>) {
       </nav>
 
       {/* Hero Section */}
-      <header className="px-6 py-20 md:px-12 lg:px-24 lg:py-28">
-        <div className="mx-auto flex max-w-4xl flex-col-reverse items-start gap-12 lg:flex-row lg:items-center lg:gap-16">
-          <div className="flex-1">
-            <h1 className="mb-4 font-bold text-5xl text-foreground tracking-tight md:text-6xl lg:text-7xl">
-              {name}
-            </h1>
-            <p className="mb-8 max-w-2xl text-muted text-xl leading-relaxed">
-              {title}
-            </p>
-
-            {/* Tech Stack Tags */}
-            <div className="flex flex-wrap gap-2">
-              {technologies.map((tech) => (
-                <span className="tech-tag" key={tech}>
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="shrink-0">
-            <Image
-              alt={name}
-              className="rounded-2xl shadow-lg"
-              height={320}
-              placeholder="blur"
-              priority
-              src={keyVisual}
-              width={320}
-            />
-          </div>
-        </div>
-      </header>
+      <Suspense fallback={<HeroSkeleton />}>
+        <Hero />
+      </Suspense>
 
       <main className="px-6 md:px-12 lg:px-24" id="content">
         {/* About Section */}
-        <section className="mx-auto max-w-4xl py-20" id="about">
-          <h2 className="mb-10 font-semibold text-base text-muted uppercase tracking-widest">
-            About
-          </h2>
-          <div className="prose prose-lg max-w-none prose-a:text-accent prose-headings:text-foreground prose-p:text-base prose-p:text-muted prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
-            {about ? <MarkdownContent content={about} /> : <AboutDoc />}
-          </div>
-        </section>
+        <Suspense fallback={<AboutSkeleton />}>
+          <About />
+        </Suspense>
 
         {/* Works Section */}
         <Works />
@@ -188,28 +199,38 @@ export default async function HomePage(_props: PageProps<'/'>) {
         <Contact />
       </main>
 
-      <footer className="border-border border-t px-6 py-12 md:px-12 lg:px-24">
-        <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-base text-muted md:flex-row">
-          <div className="flex flex-col items-center gap-1 md:items-start">
-            <span>© {profile?.name || 'Yamagishi Kazutoshi'}</span>
-            <span className="text-sm">
-              Artwork by{' '}
-              <ExternalLink
-                className="text-accent transition-colors duration-200 hover:text-accent/80"
-                href="https://x.com/diru_k1005"
-              >
-                Kannazuki Diru
-              </ExternalLink>
-            </span>
-          </div>
-          <Link
-            className="transition-colors duration-200 hover:text-accent"
-            href="/privacy"
-          >
-            Privacy Policy
-          </Link>
-        </div>
-      </footer>
+      <Suspense>
+        <Footer />
+      </Suspense>
     </div>
+  )
+}
+
+async function Footer() {
+  const profile = await getProfile()
+
+  return (
+    <footer className="border-border border-t px-6 py-12 md:px-12 lg:px-24">
+      <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-base text-muted md:flex-row">
+        <div className="flex flex-col items-center gap-1 md:items-start">
+          <span>© {profile.name}</span>
+          <span className="text-sm">
+            Artwork by{' '}
+            <ExternalLink
+              className="text-accent transition-colors duration-200 hover:text-accent/80"
+              href="https://x.com/diru_k1005"
+            >
+              Kannazuki Diru
+            </ExternalLink>
+          </span>
+        </div>
+        <Link
+          className="transition-colors duration-200 hover:text-accent"
+          href="/privacy"
+        >
+          Privacy Policy
+        </Link>
+      </div>
+    </footer>
   )
 }

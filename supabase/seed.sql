@@ -14,13 +14,79 @@ INSERT INTO profiles (
   '00000000-0000-0000-0000-000000000001',
   '山岸和利',
   'JavaScriptやRubyを用いたウェブアプリケーション開発を得意とするソフトウェア開発者です。ReactやRuby on Railsに造詣が深く、バックエンドからフロントエンドまで幅広く担当しています。',
-  '山岸和利はJavaScript (TypeScript) やRubyを用いたウェブアプリケーションの開発を得意とするソフトウェア開発者です。ReactやRuby on Railsに造詣が深く、バックエンドからフロントエンドまで幅広く担当しながら多くのウェブアプリケーションの開発を行っています。ウェブ関連の技術を中心とした学習を意欲的にしています。
-
-またJavaScriptやRubyのほかにもGoやPerl、Pythonなどほかのプログラミング言語も扱えてプログラミング言語を問わず様々なソフトウェア開発を行っています。
-
-さらにAmazon Web Services (AWS) やGoogle Cloudといったクラウドサービスを利用したインフラストラクチャーの構築に関しても一定の知見を有していて、ウェブアプリケーションやウェブサービスの開発に関わる多くの領域の作業ができるという自負があります。
-
-詳しくは[山岸和利のGitHubアカウント](https://github.com/ykzts)も併せてご参照ください。',
+  '[
+    {
+      "_type": "block",
+      "_key": "about1",
+      "style": "normal",
+      "children": [
+        {
+          "_type": "span",
+          "_key": "span1",
+          "text": "山岸和利はJavaScript (TypeScript) やRubyを用いたウェブアプリケーションの開発を得意とするソフトウェア開発者です。ReactやRuby on Railsに造詣が深く、バックエンドからフロントエンドまで幅広く担当しながら多くのウェブアプリケーションの開発を行っています。ウェブ関連の技術を中心とした学習を意欲的にしています。",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "_type": "block",
+      "_key": "about2",
+      "style": "normal",
+      "children": [
+        {
+          "_type": "span",
+          "_key": "span2",
+          "text": "またJavaScriptやRubyのほかにもGoやPerl、Pythonなどほかのプログラミング言語も扱えてプログラミング言語を問わず様々なソフトウェア開発を行っています。",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "_type": "block",
+      "_key": "about3",
+      "style": "normal",
+      "children": [
+        {
+          "_type": "span",
+          "_key": "span3",
+          "text": "さらにAmazon Web Services (AWS) やGoogle Cloudといったクラウドサービスを利用したインフラストラクチャーの構築に関しても一定の知見を有していて、ウェブアプリケーションやウェブサービスの開発に関わる多くの領域の作業ができるという自負があります。",
+          "marks": []
+        }
+      ]
+    },
+    {
+      "_type": "block",
+      "_key": "about4",
+      "style": "normal",
+      "children": [
+        {
+          "_type": "span",
+          "_key": "span4",
+          "text": "詳しくは",
+          "marks": []
+        },
+        {
+          "_type": "span",
+          "_key": "span5",
+          "text": "山岸和利のGitHubアカウント",
+          "marks": ["link"]
+        },
+        {
+          "_type": "span",
+          "_key": "span6",
+          "text": "も併せてご参照ください。",
+          "marks": []
+        }
+      ],
+      "markDefs": [
+        {
+          "_type": "link",
+          "_key": "link1",
+          "href": "https://github.com/ykzts"
+        }
+      ]
+    }
+  ]'::jsonb,
   NULL,
   NOW(),
   NOW()
@@ -32,16 +98,14 @@ ON CONFLICT (id) DO UPDATE SET
   email = EXCLUDED.email,
   updated_at = NOW();
 
--- Insert social links for ykzts
-INSERT INTO social_links (id, profile_id, icon, label, url, sort_order, created_at, updated_at) VALUES
-  ('00000000-0000-0000-0000-000000000011', '00000000-0000-0000-0000-000000000001', 'facebook', '山岸和利のFacebookアカウント', 'https://www.facebook.com/ykzts', 1, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000012', '00000000-0000-0000-0000-000000000001', 'github', '山岸和利のGitHubアカウント', 'https://github.com/ykzts', 2, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000013', '00000000-0000-0000-0000-000000000001', 'mastodon', '山岸和利のMastodonアカウント', 'https://ykzts.technology/@ykzts', 3, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000014', '00000000-0000-0000-0000-000000000001', 'threads', '山岸和利のThreadsアカウント', 'https://www.threads.net/@ykzts', 4, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000015', '00000000-0000-0000-0000-000000000001', 'x', '山岸和利のXアカウント', 'https://x.com/ykzts', 5, NOW(), NOW())
+-- Insert social links for ykzts (simplified - only URL)
+INSERT INTO social_links (id, profile_id, url, sort_order, created_at, updated_at) VALUES
+  ('00000000-0000-0000-0000-000000000011', '00000000-0000-0000-0000-000000000001', 'https://www.facebook.com/ykzts', 1, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000012', '00000000-0000-0000-0000-000000000001', 'https://github.com/ykzts', 2, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000013', '00000000-0000-0000-0000-000000000001', 'https://ykzts.technology/@ykzts', 3, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000014', '00000000-0000-0000-0000-000000000001', 'https://www.threads.net/@ykzts', 4, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000015', '00000000-0000-0000-0000-000000000001', 'https://x.com/ykzts', 5, NOW(), NOW())
 ON CONFLICT (id) DO UPDATE SET
-  icon = EXCLUDED.icon,
-  label = EXCLUDED.label,
   url = EXCLUDED.url,
   sort_order = EXCLUDED.sort_order,
   updated_at = NOW();

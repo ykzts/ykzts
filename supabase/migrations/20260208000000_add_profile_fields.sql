@@ -5,7 +5,7 @@
 ALTER TABLE profiles
   ADD COLUMN IF NOT EXISTS tagline TEXT,
   ADD COLUMN IF NOT EXISTS email TEXT,
-  ADD COLUMN IF NOT EXISTS about TEXT;
+  ADD COLUMN IF NOT EXISTS about JSONB;
 
 -- Add comment to describe the table
 COMMENT ON TABLE profiles IS 'User profile information';
@@ -14,19 +14,17 @@ COMMENT ON TABLE profiles IS 'User profile information';
 COMMENT ON COLUMN profiles.name IS 'Full name';
 COMMENT ON COLUMN profiles.tagline IS 'Short bio/tagline';
 COMMENT ON COLUMN profiles.email IS 'Contact email address';
-COMMENT ON COLUMN profiles.about IS 'About/bio section content';
+COMMENT ON COLUMN profiles.about IS 'About/bio section content in Portable Text format';
 
 -- Add email validation constraint
 ALTER TABLE profiles
   ADD CONSTRAINT email_format_check
   CHECK (email IS NULL OR email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$');
 
--- Create social_links table
+-- Create social_links table (simplified - only URL needed)
 CREATE TABLE IF NOT EXISTS social_links (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-  icon TEXT NOT NULL,
-  label TEXT NOT NULL,
   url TEXT NOT NULL,
   sort_order INTEGER NOT NULL DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
