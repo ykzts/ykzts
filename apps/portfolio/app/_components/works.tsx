@@ -7,7 +7,7 @@ import { Suspense } from 'react'
 import Link from '@/components/link'
 import Skeleton from '@/components/skeleton'
 import range from '@/lib/range'
-import { getWorks } from '@/lib/sanity'
+import { getWorks } from '@/lib/supabase'
 
 const portableTextComponents = {
   marks: {

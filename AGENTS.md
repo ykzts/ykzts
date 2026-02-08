@@ -14,6 +14,7 @@ This is a pnpm workspace monorepo with the following structure:
 │   └── blog/           # (Future blog implementation)
 ├── packages/
 │   ├── schemas/        # Sanity schema definitions
+│   ├── supabase/       # Supabase database type definitions
 │   └── tsconfig/       # Shared TypeScript configurations
 ```
 
@@ -26,7 +27,7 @@ This is a pnpm workspace monorepo with the following structure:
   - Next.js 15 (with Turbopack) for portfolio and studio
   - Docusaurus 3 for blog-legacy
   - React 19 across all applications
-- **Content Management**: Sanity CMS
+- **Content Management**: Supabase (PostgreSQL database with Dashboard) for portfolio; Sanity CMS for studio
 - **Styling**: CSS Modules, modern CSS features
 - **Linting/Formatting**: Biome (replaces ESLint + Prettier)
 
@@ -75,7 +76,7 @@ This is a pnpm workspace monorepo with the following structure:
 
 ### Portfolio App (`apps/portfolio/`)
 - **Framework**: Next.js 15 with App Router
-- **Features**: SSG, React Compiler, MDX, Sanity integration
+- **Features**: SSG, React Compiler, MDX, Supabase integration
 - **Styling**: CSS Modules with modern CSS
 - **Performance**: Image optimization, Vercel Analytics
 - **Build**: Uses Turbopack for faster builds
@@ -95,6 +96,7 @@ This is a pnpm workspace monorepo with the following structure:
 
 ### Shared Packages
 - **schemas**: Sanity schema definitions (built with tsup)
+- **supabase**: Supabase database TypeScript type definitions
 - **tsconfig**: Shared TypeScript configurations
 
 ## Content and Localization
@@ -108,7 +110,7 @@ This is a pnpm workspace monorepo with the following structure:
 
 - **Hosting**: Vercel (inferred from analytics integration)
 - **Analytics**: Vercel Analytics integrated
-- **Content**: Sanity headless CMS
+- **Content**: Supabase PostgreSQL database with Dashboard for portfolio content; Sanity CMS for studio
 - **Domains**: ykzts.com (portfolio), ykzts.blog (blog)
 
 ## Commit Message Standards
@@ -135,7 +137,7 @@ This repository strictly follows the **Conventional Commits** specification. All
 
 ### Scope Guidelines
 - Use app names for application-specific changes: `portfolio`, `blog-legacy`, `studio`
-- Use package names for shared packages: `schemas`, `tsconfig`
+- Use package names for shared packages: `schemas`, `supabase`, `tsconfig`
 - Omit scope for repository-wide changes
 
 ## Best Practices for Contributors

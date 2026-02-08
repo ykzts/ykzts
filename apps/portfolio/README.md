@@ -31,14 +31,14 @@ pnpm lighthouse # Run Lighthouse CI performance audit
 - **App Router**: Next.js 15 with modern routing and layouts
 - **React Compiler**: Enhanced performance with React 19 optimizations
 - **MDX Support**: Rich content authoring with React components
-- **Sanity Integration**: Dynamic content management for portfolio entries
+- **Supabase Integration**: PostgreSQL database with dynamic content management for portfolio entries
 - **Contact Form**: Secure contact form with Resend email service and Cloudflare Turnstile spam prevention
 - **Vercel Analytics**: Performance monitoring and user analytics
 - **Responsive Design**: Mobile-first design with Tailwind CSS
 
 ### Content Integration
 
-- **Portfolio Works**: Dynamic content from Sanity CMS
+- **Portfolio Works**: Dynamic content from Supabase PostgreSQL database
 - **About Section**: MDX-based content with interactive components
 - **Contact Form**: Server-side form processing with email notifications
 - **Go Package Redirects**: Special routing for Go package documentation
@@ -56,9 +56,9 @@ CONTACT_EMAIL="John Doe <test@example.com>"
 NEXT_PUBLIC_TURNSTILE_SITE_KEY=your_turnstile_site_key_here
 TURNSTILE_SECRET_KEY=your_turnstile_secret_key_here
 
-# Sanity CMS Configuration
-NEXT_PUBLIC_SANITY_PROJECT_ID=your_sanity_project_id
-NEXT_PUBLIC_SANITY_DATASET=production
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 ```
 
 See `.env.example` for a complete list of required environment variables.
@@ -72,9 +72,9 @@ See `.env.example` for a complete list of required environment variables.
 - `next`: React framework with App Router (v15.6.0)
 - `react`: UI framework (v19.0.0)
 - `@mdx-js/react`: MDX component rendering
-- `@portabletext/react`: Sanity rich text rendering
+- `@portabletext/react`: Portable Text rich text rendering (compatible with Supabase JSONB storage)
 - `@react-email/render`: Email template rendering for Resend
-- `@sanity/client`: Headless CMS client
+- `@supabase/supabase-js`: Supabase PostgreSQL database client
 - `@vercel/analytics`: Performance and user analytics
 - `react-hot-toast`: Toast notifications for form feedback
 - `react-icons`: Icon components library

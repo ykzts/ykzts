@@ -14,6 +14,7 @@ This is a pnpm workspace monorepo with the following structure:
 │   └── blog/           # (Future blog implementation)
 ├── packages/
 │   ├── schemas/        # Sanity schema definitions
+│   ├── supabase/       # Supabase database type definitions
 │   └── tsconfig/       # Shared TypeScript configurations
 ```
 
@@ -24,7 +25,7 @@ This is a pnpm workspace monorepo with the following structure:
 - **Language**: TypeScript (modern/strict configuration)
 - **Frontend Frameworks**: Next.js 15, Docusaurus 3, React 19
 - **Styling**: Tailwind CSS v4 (portfolio), CSS (blog-legacy)
-- **Content Management**: Sanity CMS
+- **Content Management**: Supabase (PostgreSQL database with Dashboard) for portfolio; Sanity CMS for studio
 - **Linting/Formatting**: Biome (replaces ESLint + Prettier)
 
 ## Development Environment Setup
@@ -125,7 +126,7 @@ This repository **strictly follows** the [Conventional Commits](https://www.conv
 ### Scope Guidelines
 
 - Use app names for application-specific changes: `portfolio`, `blog-legacy`, `studio`
-- Use package names for shared packages: `schemas`, `tsconfig`
+- Use package names for shared packages: `schemas`, `supabase`, `tsconfig`
 - Omit scope for repository-wide changes
 
 ## Pull Request Process
@@ -248,7 +249,7 @@ All build tasks are orchestrated through Turbo:
 #### Portfolio App (`apps/portfolio/`)
 - Uses Next.js 15 with App Router and React Compiler
 - Styled with Tailwind CSS
-- Integrated with Sanity CMS
+- Integrated with Supabase for content management
 
 #### Blog Legacy (`apps/blog-legacy/`)
 - Docusaurus 3 with MDX content

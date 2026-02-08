@@ -1,0 +1,23 @@
+{
+  "author": "Yamagishi Kazutoshi",
+  "description": "Supabase database type definitions for ykzts applications",
+  "exports": {
+    ".": {
+      "types": "./src/database.types.ts"
+    }
+  },
+  "license": "MIT",
+  "name": "@ykzts/supabase",
+  "private": true,
+  "repository": {
+    "directory": "packages/supabase",
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.git"
+  },
+  "scripts": {
+    "typegen": "./scripts/typegen.sh"
+  },
+  "type": "module",
+  "types": "./src/database.types.ts",
+  "version": "1.0.0"
+}
