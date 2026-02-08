@@ -24,7 +24,13 @@ vi.mock('@/lib/supabase', () => ({
     email: 'test@example.com',
     id: 'test-id',
     name: 'テストユーザー',
-    social_links: [{ url: 'https://github.com/test' }],
+    social_links: [
+      {
+        icon: 'github',
+        label: 'テストユーザーのGitHubアカウント',
+        url: 'https://github.com/test'
+      }
+    ],
     tagline: 'ソフトウェア開発者',
     technologies: [{ name: 'JavaScript' }, { name: 'TypeScript' }]
   }))

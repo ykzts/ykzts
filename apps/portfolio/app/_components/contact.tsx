@@ -4,36 +4,6 @@ import Link from '@/components/link'
 import { getProfile } from '@/lib/supabase'
 import ContactForm from './contact-form'
 
-// Infer icon and label from URL
-function inferSocialInfo(url: string): { icon: string; label: string } {
-  const urlLower = url.toLowerCase()
-
-  if (urlLower.includes('facebook.com')) {
-    const username = url.split('/').pop() || 'Facebook'
-    return { icon: 'facebook', label: `Facebook - ${username}` }
-  }
-  if (urlLower.includes('github.com')) {
-    const username = url.split('/').pop() || 'GitHub'
-    return { icon: 'github', label: `GitHub - ${username}` }
-  }
-  if (urlLower.includes('mastodon') || urlLower.includes('ykzts.technology')) {
-    const parts = url.split('@')
-    const username = parts[parts.length - 1] || 'Mastodon'
-    return { icon: 'mastodon', label: `Mastodon - @${username}` }
-  }
-  if (urlLower.includes('threads.net')) {
-    const username = url.split('/').pop() || 'Threads'
-    return { icon: 'threads', label: `Threads - ${username}` }
-  }
-  if (urlLower.includes('x.com') || urlLower.includes('twitter.com')) {
-    const username = url.split('/').pop() || 'X'
-    return { icon: 'x', label: `X - ${username}` }
-  }
-
-  // Fallback to github icon for unrecognized URLs
-  return { icon: 'github', label: url }
-}
-
 function getSocialLogo(icon: string): ReactNode {
   return (
     <svg aria-hidden="true" className="size-5">
@@ -78,22 +48,19 @@ export default async function Contact() {
         <div>
           <h3 className="mb-4 font-medium text-foreground text-lg">Social</h3>
           <ul className="flex gap-3">
-            {profile.social_links.map((link) => {
-              const { icon, label } = inferSocialInfo(link.url)
-              return (
-                <li key={link.url}>
-                  <Link
-                    aria-label={label}
-                    className="inline-flex size-10 items-center justify-center rounded-lg border border-border text-muted transition-all duration-200 hover:border-accent hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
-                    href={link.url}
-                    rel="me"
-                    target="_blank"
-                  >
-                    {getSocialLogo(icon)}
-                  </Link>
-                </li>
-              )
-            })}
+            {profile.social_links.map((link) => (
+              <li key={link.url}>
+                <Link
+                  aria-label={link.label}
+                  className="inline-flex size-10 items-center justify-center rounded-lg border border-border text-muted transition-all duration-200 hover:border-accent hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
+                  href={link.url}
+                  rel="me"
+                  target="_blank"
+                >
+                  {getSocialLogo(link.icon)}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

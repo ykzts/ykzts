@@ -98,14 +98,16 @@ ON CONFLICT (id) DO UPDATE SET
   email = EXCLUDED.email,
   updated_at = NOW();
 
--- Insert social links for ykzts (simplified - only URL)
-INSERT INTO social_links (id, profile_id, url, sort_order, created_at, updated_at) VALUES
-  ('00000000-0000-0000-0000-000000000011', '00000000-0000-0000-0000-000000000001', 'https://www.facebook.com/ykzts', 1, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000012', '00000000-0000-0000-0000-000000000001', 'https://github.com/ykzts', 2, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000013', '00000000-0000-0000-0000-000000000001', 'https://ykzts.technology/@ykzts', 3, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000014', '00000000-0000-0000-0000-000000000001', 'https://www.threads.net/@ykzts', 4, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000015', '00000000-0000-0000-0000-000000000001', 'https://x.com/ykzts', 5, NOW(), NOW())
+-- Insert social links for ykzts
+INSERT INTO social_links (id, profile_id, icon, label, url, sort_order, created_at, updated_at) VALUES
+  ('00000000-0000-0000-0000-000000000011', '00000000-0000-0000-0000-000000000001', 'facebook', '山岸和利のFacebookアカウント', 'https://www.facebook.com/ykzts', 1, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000012', '00000000-0000-0000-0000-000000000001', 'github', '山岸和利のGitHubアカウント', 'https://github.com/ykzts', 2, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000013', '00000000-0000-0000-0000-000000000001', 'mastodon', '山岸和利のMastodonアカウント', 'https://ykzts.technology/@ykzts', 3, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000014', '00000000-0000-0000-0000-000000000001', 'threads', '山岸和利のThreadsアカウント', 'https://www.threads.net/@ykzts', 4, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000015', '00000000-0000-0000-0000-000000000001', 'x', '山岸和利のXアカウント', 'https://x.com/ykzts', 5, NOW(), NOW())
 ON CONFLICT (id) DO UPDATE SET
+  icon = EXCLUDED.icon,
+  label = EXCLUDED.label,
   url = EXCLUDED.url,
   sort_order = EXCLUDED.sort_order,
   updated_at = NOW();

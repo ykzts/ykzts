@@ -35,7 +35,13 @@ describe('Supabase utilities', () => {
         email: 'test@example.com',
         id: 'test-id',
         name: 'Test User',
-        social_links: [{ url: 'https://github.com/test' }],
+        social_links: [
+          {
+            icon: 'github',
+            label: 'Test User GitHub Account',
+            url: 'https://github.com/test'
+          }
+        ],
         tagline: 'Software Developer',
         technologies: [{ name: 'JavaScript' }, { name: 'TypeScript' }]
       }
