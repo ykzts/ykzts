@@ -8,11 +8,18 @@ vi.stubEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY', 'test-anon-key')
 const mockSelect = vi.fn()
 const mockOrder = vi.fn()
 const mockLimit = vi.fn()
-const mockSingle = vi.fn()
+const _mockSingle = vi.fn()
+const mockEq = vi.fn()
 const mockFrom = vi.fn((table: string) => {
   if (table === 'profiles') {
     return {
       limit: mockLimit,
+      select: mockSelect
+    }
+  }
+  if (table === 'social_links' || table === 'technologies') {
+    return {
+      eq: mockEq,
       select: mockSelect
     }
   }
@@ -43,57 +50,114 @@ describe('Supabase utilities', () => {
 
   describe('getProfile', () => {
     beforeEach(() => {
-      mockSelect.mockReturnValue({
-        limit: mockLimit,
-        single: mockSingle
-      })
+      vi.clearAllMocks()
     })
 
     it('should return parsed profile data when valid data is returned', async () => {
-      const mockData = {
+      const mockProfileData = {
+        about: 'About text',
         email: 'test@example.com',
-        name_en: 'Test User',
-        name_ja: 'テストユーザー',
-        social_links: [
-          {
-            icon: 'github',
-            label: 'GitHub',
-            url: 'https://github.com/test'
-          }
-        ],
-        tagline_en: 'Software Developer',
-        tagline_ja: 'ソフトウェア開発者',
-        technologies: ['JavaScript', 'TypeScript']
+        name: 'Test User',
+        tagline: 'Software Developer'
       }
 
-      mockLimit.mockReturnValue({
-        single: mockSingle
-      })
-      mockSingle.mockResolvedValue({
-        data: mockData,
-        error: null
+      const mockSocialLinksData = [
+        {
+          icon: 'github',
+          label: 'GitHub',
+          url: 'https://github.com/test'
+        }
+      ]
+
+      const mockTechnologiesData = [
+        { name: 'JavaScript' },
+        { name: 'TypeScript' }
+      ]
+
+      // Mock profiles table
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'profiles') {
+          return {
+            select: vi.fn(() => ({
+              limit: vi.fn(() => ({
+                single: vi.fn(() =>
+                  Promise.resolve({
+                    data: mockProfileData,
+                    error: null
+                  })
+                )
+              }))
+            }))
+          }
+        }
+        if (table === 'social_links') {
+          return {
+            select: vi.fn(() => ({
+              eq: vi.fn(() => ({
+                order: vi.fn(() =>
+                  Promise.resolve({
+                    data: mockSocialLinksData,
+                    error: null
+                  })
+                )
+              }))
+            }))
+          }
+        }
+        if (table === 'technologies') {
+          return {
+            select: vi.fn(() => ({
+              eq: vi.fn(() => ({
+                order: vi.fn(() =>
+                  Promise.resolve({
+                    data: mockTechnologiesData,
+                    error: null
+                  })
+                )
+              }))
+            }))
+          }
+        }
+        return {
+          order: mockOrder,
+          select: mockSelect
+        }
       })
 
       // Import after mocking
       const { getProfile } = await import('../supabase')
       const result = await getProfile()
 
-      expect(result).toEqual(mockData)
+      expect(result).toEqual({
+        ...mockProfileData,
+        social_links: mockSocialLinksData,
+        technologies: ['JavaScript', 'TypeScript']
+      })
       expect(mockFrom).toHaveBeenCalledWith('profiles')
-      expect(mockSelect).toHaveBeenCalledWith(
-        'name_en, name_ja, tagline_en, tagline_ja, email, social_links, technologies'
-      )
-      expect(mockLimit).toHaveBeenCalledWith(1)
-      expect(mockSingle).toHaveBeenCalled()
+      expect(mockFrom).toHaveBeenCalledWith('social_links')
+      expect(mockFrom).toHaveBeenCalledWith('technologies')
     })
 
     it('should return null when no profile data is found', async () => {
-      mockLimit.mockReturnValue({
-        single: mockSingle
-      })
-      mockSingle.mockResolvedValue({
-        data: null,
-        error: null
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'profiles') {
+          return {
+            select: vi.fn(() => ({
+              limit: vi.fn(() => ({
+                single: vi.fn(() =>
+                  Promise.resolve({
+                    data: null,
+                    error: null
+                  })
+                )
+              }))
+            }))
+          }
+        }
+        return {
+          order: mockOrder,
+          select: mockSelect
+        }
       })
 
       const { getProfile } = await import('../supabase')
@@ -103,12 +167,25 @@ describe('Supabase utilities', () => {
     })
 
     it('should handle Supabase errors gracefully', async () => {
-      mockLimit.mockReturnValue({
-        single: mockSingle
-      })
-      mockSingle.mockResolvedValue({
-        data: null,
-        error: { message: 'Database error' }
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'profiles') {
+          return {
+            select: vi.fn(() => ({
+              limit: vi.fn(() => ({
+                single: vi.fn(() =>
+                  Promise.resolve({
+                    data: null,
+                    error: { message: 'Database error' }
+                  })
+                )
+              }))
+            }))
+          }
+        }
+        return {
+          order: mockOrder,
+          select: mockSelect
+        }
       })
 
       const { getProfile } = await import('../supabase')
@@ -119,21 +196,59 @@ describe('Supabase utilities', () => {
 
     it('should throw validation error when invalid data is returned', async () => {
       const invalidData = {
-        email: 'invalid-email', // Invalid email format
-        name_en: 'Test User',
-        name_ja: 'テストユーザー',
-        social_links: [],
-        tagline_en: 'Software Developer',
-        tagline_ja: 'ソフトウェア開発者',
-        technologies: ['JavaScript']
+        about: 'About text',
+        email: 'invalid-email',
+        name: 'Test User',
+        tagline: 'Software Developer'
       }
 
-      mockLimit.mockReturnValue({
-        single: mockSingle
-      })
-      mockSingle.mockResolvedValue({
-        data: invalidData,
-        error: null
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'profiles') {
+          return {
+            select: vi.fn(() => ({
+              limit: vi.fn(() => ({
+                single: vi.fn(() =>
+                  Promise.resolve({
+                    data: invalidData,
+                    error: null
+                  })
+                )
+              }))
+            }))
+          }
+        }
+        if (table === 'social_links') {
+          return {
+            select: vi.fn(() => ({
+              eq: vi.fn(() => ({
+                order: vi.fn(() =>
+                  Promise.resolve({
+                    data: [],
+                    error: null
+                  })
+                )
+              }))
+            }))
+          }
+        }
+        if (table === 'technologies') {
+          return {
+            select: vi.fn(() => ({
+              eq: vi.fn(() => ({
+                order: vi.fn(() =>
+                  Promise.resolve({
+                    data: [],
+                    error: null
+                  })
+                )
+              }))
+            }))
+          }
+        }
+        return {
+          order: mockOrder,
+          select: mockSelect
+        }
       })
 
       const { getProfile } = await import('../supabase')

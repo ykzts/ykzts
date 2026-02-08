@@ -15,9 +15,9 @@ vi.mock('../contact-form', () => ({
 // Mock getProfile from lib/supabase
 vi.mock('@/lib/supabase', () => ({
   getProfile: vi.fn(async () => ({
+    about: 'About text',
     email: null,
-    name_en: 'Test User',
-    name_ja: 'テストユーザー',
+    name: 'テストユーザー',
     social_links: [
       {
         icon: 'github',
@@ -25,8 +25,7 @@ vi.mock('@/lib/supabase', () => ({
         url: 'https://github.com/test'
       }
     ],
-    tagline_en: 'Software Developer',
-    tagline_ja: 'ソフトウェア開発者',
+    tagline: 'ソフトウェア開発者',
     technologies: ['JavaScript', 'TypeScript']
   }))
 }))

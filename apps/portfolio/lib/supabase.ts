@@ -12,12 +12,11 @@ const socialLinkSchema = z.object({
 
 // Zod schema for profile
 const profileSchema = z.object({
+  about: z.string().nullable(),
   email: z.string().email().nullable(),
-  name_en: z.string().nullable(),
-  name_ja: z.string().nullable(),
+  name: z.string().nullable(),
   social_links: z.array(socialLinkSchema),
-  tagline_en: z.string().nullable(),
-  tagline_ja: z.string().nullable(),
+  tagline: z.string().nullable(),
   technologies: z.array(z.string())
 })
 
@@ -57,24 +56,58 @@ export async function getProfile(): Promise<Profile | null> {
       return null
     }
 
-    const { data, error } = await supabase
+    // Fetch profile data
+    const { data: profileData, error: profileError } = await supabase
       .from('profiles')
-      .select(
-        'name_en, name_ja, tagline_en, tagline_ja, email, social_links, technologies'
-      )
+      .select('name, tagline, about, email')
       .limit(1)
       .single()
 
-    if (error) {
-      console.warn('Failed to fetch profile from Supabase:', error)
+    if (profileError) {
+      console.warn('Failed to fetch profile from Supabase:', profileError)
       return null
     }
 
-    if (!data) {
+    if (!profileData) {
       return null
     }
 
-    return profileSchema.parse(data)
+    // Fetch social links
+    const { data: socialLinksData, error: socialLinksError } = await supabase
+      .from('social_links')
+      .select('icon, label, url')
+      .eq('profile_id', '00000000-0000-0000-0000-000000000001')
+      .order('sort_order', { ascending: true })
+
+    if (socialLinksError) {
+      console.warn(
+        'Failed to fetch social links from Supabase:',
+        socialLinksError
+      )
+    }
+
+    // Fetch technologies
+    const { data: technologiesData, error: technologiesError } = await supabase
+      .from('technologies')
+      .select('name')
+      .eq('profile_id', '00000000-0000-0000-0000-000000000001')
+      .order('sort_order', { ascending: true })
+
+    if (technologiesError) {
+      console.warn(
+        'Failed to fetch technologies from Supabase:',
+        technologiesError
+      )
+    }
+
+    // Combine the data
+    const combinedData = {
+      ...profileData,
+      social_links: socialLinksData || [],
+      technologies: (technologiesData || []).map((t) => t.name)
+    }
+
+    return profileSchema.parse(combinedData)
   } catch (error) {
     // Only catch fetch/network errors, not validation errors
     if (error instanceof z.ZodError) {

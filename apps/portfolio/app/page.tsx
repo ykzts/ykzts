@@ -8,6 +8,56 @@ import keyVisual from './_assets/key-visual.jpg'
 import Contact from './_components/contact'
 import Works from './_components/works'
 
+// Simple markdown renderer for about section
+function MarkdownContent({ content }: { content: string }) {
+  // Split by double newlines to create paragraphs
+  const paragraphs = content.split('\n\n')
+
+  return (
+    <>
+      {paragraphs.map((para, _index) => {
+        // Check if paragraph contains a markdown link
+        const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g
+        const parts: React.ReactNode[] = []
+        let lastIndex = 0
+        const match: RegExpExecArray | null = linkRegex.exec(para)
+
+        while (match !== null) {
+          // Add text before the link
+          if (match.index > lastIndex) {
+            parts.push(para.slice(lastIndex, match.index))
+          }
+          // Add the link
+          parts.push(
+            <ExternalLink
+              className="text-accent no-underline transition-colors duration-200 hover:text-accent/80 hover:underline"
+              href={match[2]}
+              key={match.index}
+            >
+              {match[1]}
+            </ExternalLink>
+          )
+          lastIndex = match.index + match[0].length
+        }
+
+        // Add remaining text
+        if (lastIndex < para.length) {
+          parts.push(para.slice(lastIndex))
+        }
+
+        return (
+          <p
+            className="text-base text-muted leading-relaxed"
+            key={para.slice(0, 50)}
+          >
+            {parts.length > 0 ? parts : para}
+          </p>
+        )
+      })}
+    </>
+  )
+}
+
 const description = [
   'JavaScriptやRubyといったプログラミング言語を用いたウェブアプリケーションの開発を得意とするソフトウェア開発者 山岸和利のポートフォリオです。',
   '山岸和利による過去の実績や作品の掲載、各種ソーシャルネットワーキングサービスのアカウントへのリンクなどの連絡先への参照があります。'
@@ -36,11 +86,11 @@ export default async function HomePage(_props: PageProps<'/'>) {
   const profile = await getProfile()
 
   // Fallback data if profile is not available
-  const name = profile?.name_ja || '山岸和利'
-  const title = profile?.tagline_en || 'Software Developer'
-  const bio =
-    profile?.tagline_ja ||
+  const name = profile?.name || '山岸和利'
+  const title =
+    profile?.tagline ||
     'JavaScriptやRubyを用いたウェブアプリケーション開発を得意とするソフトウェア開発者です。ReactやRuby on Railsに造詣が深く、バックエンドからフロントエンドまで幅広く担当しています。'
+  const about = profile?.about || null
   const technologies = profile?.technologies || [
     'TypeScript',
     'JavaScript',
@@ -92,11 +142,8 @@ export default async function HomePage(_props: PageProps<'/'>) {
             <h1 className="mb-4 font-bold text-5xl text-foreground tracking-tight md:text-6xl lg:text-7xl">
               {name}
             </h1>
-            <p className="mb-6 font-medium text-2xl text-accent md:text-3xl">
-              {title}
-            </p>
             <p className="mb-8 max-w-2xl text-muted text-xl leading-relaxed">
-              {bio}
+              {title}
             </p>
 
             {/* Tech Stack Tags */}
@@ -130,7 +177,7 @@ export default async function HomePage(_props: PageProps<'/'>) {
             About
           </h2>
           <div className="prose prose-lg max-w-none prose-a:text-accent prose-headings:text-foreground prose-p:text-base prose-p:text-muted prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
-            <AboutDoc />
+            {about ? <MarkdownContent content={about} /> : <AboutDoc />}
           </div>
         </section>
 
@@ -144,7 +191,7 @@ export default async function HomePage(_props: PageProps<'/'>) {
       <footer className="border-border border-t px-6 py-12 md:px-12 lg:px-24">
         <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-base text-muted md:flex-row">
           <div className="flex flex-col items-center gap-1 md:items-start">
-            <span>© {profile?.name_en || 'Yamagishi Kazutoshi'}</span>
+            <span>© {profile?.name || 'Yamagishi Kazutoshi'}</span>
             <span className="text-sm">
               Artwork by{' '}
               <ExternalLink
