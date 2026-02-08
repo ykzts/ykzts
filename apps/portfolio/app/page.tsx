@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import ExternalLink from '@/components/link'
 import AboutDoc from '@/docs/about.mdx'
+import { getProfile } from '@/lib/supabase'
 import keyVisual from './_assets/key-visual.jpg'
 import Contact from './_components/contact'
 import Works from './_components/works'
@@ -31,20 +32,28 @@ export const metadata: Metadata = {
   }
 }
 
-const technologies = [
-  'TypeScript',
-  'JavaScript',
-  'React',
-  'Next.js',
-  'Ruby',
-  'Ruby on Rails',
-  'Go',
-  'Python',
-  'AWS',
-  'Google Cloud'
-]
+export default async function HomePage(_props: PageProps<'/'>) {
+  const profile = await getProfile()
 
-export default function HomePage(_props: PageProps<'/'>) {
+  // Fallback data if profile is not available
+  const name = profile?.name_ja || '山岸和利'
+  const title = profile?.tagline_en || 'Software Developer'
+  const bio =
+    profile?.tagline_ja ||
+    'JavaScriptやRubyを用いたウェブアプリケーション開発を得意とするソフトウェア開発者です。ReactやRuby on Railsに造詣が深く、バックエンドからフロントエンドまで幅広く担当しています。'
+  const technologies = profile?.technologies || [
+    'TypeScript',
+    'JavaScript',
+    'React',
+    'Next.js',
+    'Ruby',
+    'Ruby on Rails',
+    'Go',
+    'Python',
+    'AWS',
+    'Google Cloud'
+  ]
+
   return (
     <div className="min-h-screen">
       {/* Navigation */}
@@ -81,15 +90,13 @@ export default function HomePage(_props: PageProps<'/'>) {
         <div className="mx-auto flex max-w-4xl flex-col-reverse items-start gap-12 lg:flex-row lg:items-center lg:gap-16">
           <div className="flex-1">
             <h1 className="mb-4 font-bold text-5xl text-foreground tracking-tight md:text-6xl lg:text-7xl">
-              山岸和利
+              {name}
             </h1>
             <p className="mb-6 font-medium text-2xl text-accent md:text-3xl">
-              Software Developer
+              {title}
             </p>
             <p className="mb-8 max-w-2xl text-muted text-xl leading-relaxed">
-              JavaScriptやRubyを用いたウェブアプリケーション開発を得意とするソフトウェア開発者です。ReactやRuby
-              on
-              Railsに造詣が深く、バックエンドからフロントエンドまで幅広く担当しています。
+              {bio}
             </p>
 
             {/* Tech Stack Tags */}
@@ -104,7 +111,7 @@ export default function HomePage(_props: PageProps<'/'>) {
 
           <div className="shrink-0">
             <Image
-              alt="山岸和利"
+              alt={name}
               className="rounded-2xl shadow-lg"
               height={320}
               placeholder="blur"
@@ -137,7 +144,7 @@ export default function HomePage(_props: PageProps<'/'>) {
       <footer className="border-border border-t px-6 py-12 md:px-12 lg:px-24">
         <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-base text-muted md:flex-row">
           <div className="flex flex-col items-center gap-1 md:items-start">
-            <span>© Yamagishi Kazutoshi</span>
+            <span>© {profile?.name_en || 'Yamagishi Kazutoshi'}</span>
             <span className="text-sm">
               Artwork by{' '}
               <ExternalLink

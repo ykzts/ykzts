@@ -1,63 +1,59 @@
 import type { ReactNode } from 'react'
 import { HiOutlineArrowUpRight } from 'react-icons/hi2'
 import Link from '@/components/link'
+import type { SocialLink } from '@/lib/supabase'
+import { getProfile } from '@/lib/supabase'
 import ContactForm from './contact-form'
 
-type SocialLink = {
-  label: string
+type SocialLinkWithLogo = SocialLink & {
   logo: ReactNode
-  url: `https://${string}`
 }
 
-const socialLinks: SocialLink[] = [
+const fallbackSocialLinks: SocialLink[] = [
   {
+    icon: 'facebook',
     label: '山岸和利のFacebookアカウント',
-    logo: (
-      <svg aria-hidden="true" className="size-5">
-        <use href="#facebook-logo" />
-      </svg>
-    ),
     url: 'https://www.facebook.com/ykzts'
   },
   {
+    icon: 'github',
     label: '山岸和利のGitHubアカウント',
-    logo: (
-      <svg aria-hidden="true" className="size-5">
-        <use href="#github-logo" />
-      </svg>
-    ),
     url: 'https://github.com/ykzts'
   },
   {
+    icon: 'mastodon',
     label: '山岸和利のMastodonアカウント',
-    logo: (
-      <svg aria-hidden="true" className="size-5">
-        <use href="#mastodon-logo" />
-      </svg>
-    ),
     url: 'https://ykzts.technology/@ykzts'
   },
   {
+    icon: 'threads',
     label: '山岸和利のThreadsアカウント',
-    logo: (
-      <svg aria-hidden="true" className="size-5">
-        <use href="#threads-logo" />
-      </svg>
-    ),
     url: 'https://www.threads.net/@ykzts'
   },
   {
+    icon: 'x',
     label: '山岸和利のXアカウント',
-    logo: (
-      <svg aria-hidden="true" className="size-5">
-        <use href="#x-logo" />
-      </svg>
-    ),
     url: 'https://x.com/ykzts'
   }
 ]
 
-export default function Contact() {
+function getSocialLogo(icon: string): ReactNode {
+  return (
+    <svg aria-hidden="true" className="size-5">
+      <use href={`#${icon}-logo`} />
+    </svg>
+  )
+}
+
+export default async function Contact() {
+  const profile = await getProfile()
+  const socialLinks = profile?.social_links || fallbackSocialLinks
+
+  const socialLinksWithLogo: SocialLinkWithLogo[] = socialLinks.map((link) => ({
+    ...link,
+    logo: getSocialLogo(link.icon)
+  }))
+
   return (
     <section className="mx-auto max-w-4xl py-20" id="contact">
       <h2 className="mb-10 font-semibold text-base text-muted uppercase tracking-widest">
@@ -91,7 +87,7 @@ export default function Contact() {
         <div>
           <h3 className="mb-4 font-medium text-foreground text-lg">Social</h3>
           <ul className="flex gap-3">
-            {socialLinks.map((socialLink) => (
+            {socialLinksWithLogo.map((socialLink) => (
               <li key={socialLink.url}>
                 <Link
                   aria-label={socialLink.label}

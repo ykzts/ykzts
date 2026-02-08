@@ -34,18 +34,39 @@ export type Database = {
         Row: {
           id: string
           name: string | null
+          name_en: string | null
+          name_ja: string | null
+          tagline_en: string | null
+          tagline_ja: string | null
+          email: string | null
+          social_links: Json
+          technologies: Json
           created_at: string
           updated_at: string
         }
         Insert: {
           id?: string
           name?: string | null
+          name_en?: string | null
+          name_ja?: string | null
+          tagline_en?: string | null
+          tagline_ja?: string | null
+          email?: string | null
+          social_links?: Json
+          technologies?: Json
           created_at?: string
           updated_at?: string
         }
         Update: {
           id?: string
           name?: string | null
+          name_en?: string | null
+          name_ja?: string | null
+          tagline_en?: string | null
+          tagline_ja?: string | null
+          email?: string | null
+          social_links?: Json
+          technologies?: Json
           created_at?: string
           updated_at?: string
         }
