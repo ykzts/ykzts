@@ -1,42 +1,7 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
 
-// Mock data for Sanity works
-const mockWorks = [
-  {
-    content: [
-      {
-        _type: 'block',
-        children: [{ _type: 'span', text: 'Sample work description' }]
-      }
-    ],
-    slug: 'sample-work',
-    title: 'Sample Work'
-  }
-]
-
-test.describe('Accessibility Tests', () => {
-  test.beforeEach(async ({ page }) => {
-    // Intercept Sanity API calls and return mock data
-    await page.route('**/cdn.sanity.io/**', async (route) => {
-      await route.fulfill({
-        body: JSON.stringify({ result: mockWorks }),
-        contentType: 'application/json',
-        status: 200
-      })
-    })
-
-    // Also handle direct API calls
-    await page.route('**/*sanity*/**', async (route) => {
-      await route.fulfill({
-        body: JSON.stringify({ result: mockWorks }),
-        contentType: 'application/json',
-        status: 200
-      })
-    })
-  })
-
-  test('homepage should not have any automatically detectable WCAG A/AA violations', async ({
+test.describe('Accessibility Tests', () => {  test('homepage should not have any automatically detectable WCAG A/AA violations', async ({
     page
   }) => {
     await page.goto('/')
