@@ -72,14 +72,15 @@ ON CONFLICT (id) DO UPDATE SET
   updated_at = NOW();
 
 -- Insert social links for test user
-INSERT INTO social_links (id, profile_id, url, sort_order, created_at, updated_at) VALUES
-  ('00000000-0000-0000-0000-000000000011', '00000000-0000-0000-0000-000000000001', 'https://www.facebook.com/testuser', 1, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000012', '00000000-0000-0000-0000-000000000001', 'https://github.com/testuser', 2, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000013', '00000000-0000-0000-0000-000000000001', 'https://test.example/@testuser', 3, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000014', '00000000-0000-0000-0000-000000000001', 'https://www.threads.net/@testuser', 4, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000015', '00000000-0000-0000-0000-000000000001', 'https://x.com/testuser', 5, NOW(), NOW())
+INSERT INTO social_links (id, profile_id, url, service, sort_order, created_at, updated_at) VALUES
+  ('00000000-0000-0000-0000-000000000011', '00000000-0000-0000-0000-000000000001', 'https://www.facebook.com/testuser', 'facebook', 1, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000012', '00000000-0000-0000-0000-000000000001', 'https://github.com/testuser', 'github', 2, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000013', '00000000-0000-0000-0000-000000000001', 'https://mastodon.social/@testuser', 'mastodon', 3, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000014', '00000000-0000-0000-0000-000000000001', 'https://www.threads.net/@testuser', 'threads', 4, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000015', '00000000-0000-0000-0000-000000000001', 'https://x.com/testuser', 'x', 5, NOW(), NOW())
 ON CONFLICT (id) DO UPDATE SET
   url = EXCLUDED.url,
+  service = EXCLUDED.service,
   sort_order = EXCLUDED.sort_order,
   updated_at = NOW();
 
