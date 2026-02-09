@@ -50,7 +50,9 @@ jobs:
         id: supabase
         run: |
           echo "SUPABASE_URL=http://127.0.0.1:54321" >> $GITHUB_OUTPUT
-          echo "SUPABASE_ANON_KEY=$(supabase status --output json | jq -r '.anon_key')" >> $GITHUB_OUTPUT
+          supabase status -o json
+          ANON_KEY=$(supabase status -o json | jq -r '.ANON_KEY // .anon_key // empty')
+          echo "SUPABASE_ANON_KEY=${ANON_KEY}" >> $GITHUB_OUTPUT
       - name: Install Playwright browsers
         run: pnpm --filter @ykzts/portfolio exec playwright install --with-deps chromium
       - name: Run accessibility tests
