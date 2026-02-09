@@ -23,6 +23,8 @@ env:
   COREPACK_VERSION: 0.34.6
   # renovate: datasource=node-version depName=node
   NODE_VERSION: 24.13.0
+  # renovate: datasource=github-releases depName=supabase/cli
+  SUPABASE_VERSION: v2.11.4
 
 jobs:
   accessibility:
@@ -38,6 +40,23 @@ jobs:
           cache: pnpm
           node-version: ${{ env.NODE_VERSION }}
       - run: pnpm install
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@bb7b7e40348f69ee5a4ff2e4ecbbe452a7c08e2e # v1.2.0
+        with:
+          version: ${{ env.SUPABASE_VERSION }}
+      - name: Start Supabase local server
+        run: |
+          cd supabase
+          supabase start
+      - name: Get Supabase local connection details
+        id: supabase
+        run: |
+          echo "SUPABASE_URL=http://127.0.0.1:54321" >> $GITHUB_OUTPUT
+          echo "SUPABASE_ANON_KEY=$(supabase status --output json | jq -r '.anon_key')" >> $GITHUB_OUTPUT
       - name: Install Playwright browsers
         run: pnpm --filter @ykzts/portfolio exec playwright install --with-deps chromium
-      - run: pnpm test:a11y
+      - name: Run accessibility tests
+        run: pnpm test:a11y
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ steps.supabase.outputs.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ steps.supabase.outputs.SUPABASE_ANON_KEY }}

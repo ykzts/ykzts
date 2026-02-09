@@ -21,6 +21,8 @@ env:
   COREPACK_VERSION: 0.34.6
   # renovate: datasource=node-version depName=node
   NODE_VERSION: 24.13.0
+  # renovate: datasource=github-releases depName=supabase/cli
+  SUPABASE_VERSION: v2.11.4
 
 jobs:
   lighthouse:
@@ -36,12 +38,27 @@ jobs:
           cache: pnpm
           node-version: ${{ env.NODE_VERSION }}
       - run: pnpm install
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@bb7b7e40348f69ee5a4ff2e4ecbbe452a7c08e2e # v1.2.0
+        with:
+          version: ${{ env.SUPABASE_VERSION }}
+      - name: Start Supabase local server
+        run: |
+          cd supabase
+          supabase start
+      - name: Get Supabase local connection details
+        id: supabase
+        run: |
+          echo "SUPABASE_URL=http://127.0.0.1:54321" >> $GITHUB_OUTPUT
+          echo "SUPABASE_ANON_KEY=$(supabase status --output json | jq -r '.anon_key')" >> $GITHUB_OUTPUT
       - name: Run Lighthouse CI
         run: pnpm lighthouse --filter @ykzts/portfolio
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
           NEXT_PUBLIC_SANITY_DATASET: production
           NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID || 'mock-project-id' }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ steps.supabase.outputs.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ steps.supabase.outputs.SUPABASE_ANON_KEY }}
       - name: Upload Lighthouse reports
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
