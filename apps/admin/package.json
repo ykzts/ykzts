@@ -1,0 +1,38 @@
+{
+  "author": "Yamagishi Kazutoshi",
+  "dependencies": {
+    "@supabase/ssr": "0.8.0",
+    "@supabase/supabase-js": "2.95.3",
+    "@ykzts/supabase": "workspace:*",
+    "next": "16.1.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "description": "Admin application for content management",
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.1.18",
+    "@types/node": "22.19.9",
+    "@types/react": "19.2.13",
+    "@types/react-dom": "19.2.3",
+    "@ykzts/tsconfig": "workspace:*",
+    "postcss": "8.5.6",
+    "tailwindcss": "4.1.18",
+    "typescript": "5.9.3"
+  },
+  "license": "MIT",
+  "name": "@ykzts/admin",
+  "private": true,
+  "repository": {
+    "directory": "apps/admin",
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.git"
+  },
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --port 3001",
+    "start": "next start --port 3001",
+    "typegen": "next typegen"
+  },
+  "type": "module",
+  "version": "1.0.0"
+}
