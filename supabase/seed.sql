@@ -12,7 +12,7 @@ INSERT INTO profiles (
   updated_at
 ) VALUES (
   '00000000-0000-0000-0000-000000000001',
-  'Test User',
+  '山岸和利',
   'This is a test profile tagline for development and testing purposes.',
   '[
     {
