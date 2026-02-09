@@ -197,8 +197,8 @@ importers:
   renovate-config:
     devDependencies:
       renovate:
-        specifier: 42.95.3
-        version: 42.95.3(encoding@0.1.13)(typanion@3.14.0)
+        specifier: 42.96.0
+        version: 42.96.0(encoding@0.1.13)(typanion@3.14.0)
 
 packages:
 
@@ -4648,8 +4648,8 @@ packages:
     resolution: {integrity: sha512-p9nwwR4qyT5W996vBZhdvBCnMhicY5ytZkR4D1Xj0wuTDEiMnjwR57Q3RXYY/s0EpX6Ay3vgIcfaR+ewGHsi+g==}
     engines: {node: '>=18.0'}
 
-  cronstrue@3.9.0:
-    resolution: {integrity: sha512-T3S35zmD0Ai2B4ko6+mEM+k9C6tipe2nB9RLiGT6QL2Wn0Vsn2cCZAC8Oeuf4CaE00GZWVdpYitbpWCNlIWqdA==}
+  cronstrue@3.11.0:
+    resolution: {integrity: sha512-nXST7NEkjPF6loOTJtCwbLHB6cOVR5Ofuq/VZ4UGsZw/0HTvxy6mRCrDHOJ4xoLPcuS3ooruBLyUk3INaidKwg==}
     hasBin: true
 
   cross-spawn@7.0.6:
@@ -7922,8 +7922,8 @@ packages:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
     hasBin: true
 
-  re2@1.23.0:
-    resolution: {integrity: sha512-mT7+/Lz+Akjm/C/X6PiaHihcJL92TNNXai/C4c/dfBbhtwMm1uKEEoA2Lz/FF6aBFfQzg5mAyv4BGjM4q44QwQ==}
+  re2@1.23.2:
+    resolution: {integrity: sha512-ds5iwbnfsmyiNDtuljBNAva54O4jhR77jL5bSM73NnsWQHkYoGWuePiZTrt6O3xXAHtrB/fviNQsPGRei6031w==}
 
   react-dom@19.2.4:
     resolution: {integrity: sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ==}
@@ -8112,8 +8112,8 @@ packages:
   renderkid@3.0.0:
     resolution: {integrity: sha512-q/7VIQA8lmM1hF+jn+sFSPWGlMkSAeNYcPLmDQx2zzuiDfaLrOmumR8iaUKlenFgh0XRPIUeSPlH3A+AW3Z5pg==}
 
-  renovate@42.95.3:
-    resolution: {integrity: sha512-HWIc9F4Ua0MbiWG6PK7NjKzPN+ex4719iMKkR7PD7aeWEG28dEP9qecCd14F6cf+edSBewyzItGjVGW5GwvuxQ==}
+  renovate@42.96.0:
+    resolution: {integrity: sha512-lM57hKFGpz4wg/Mz/L1aqbwN5NxkLzgoMYWX5OqUX5fT6QZqo3y/Vu9SwhO408i2ZL4zWwRH2plra9rONNPoFw==}
     engines: {node: ^22.13.0 || ^24.11.0, pnpm: ^10.0.0}
     hasBin: true
 
@@ -15545,7 +15545,7 @@ snapshots:
 
   croner@9.1.0: {}
 
-  cronstrue@3.9.0: {}
+  cronstrue@3.11.0: {}
 
   cross-spawn@7.0.6:
     dependencies:
@@ -19402,7 +19402,7 @@ snapshots:
       minimist: 1.2.8
       strip-json-comments: 2.0.1
 
-  re2@1.23.0:
+  re2@1.23.2:
     dependencies:
       install-artifact-from-github: 1.4.0
       nan: 2.24.0
@@ -19701,7 +19701,7 @@ snapshots:
       lodash: 4.17.21
       strip-ansi: 6.0.1
 
-  renovate@42.95.3(encoding@0.1.13)(typanion@3.14.0):
+  renovate@42.96.0(encoding@0.1.13)(typanion@3.14.0):
     dependencies:
       '@aws-sdk/client-codecommit': 3.958.0
       '@aws-sdk/client-ec2': 3.958.0
@@ -19752,7 +19752,7 @@ snapshots:
       commander: 14.0.2
       conventional-commits-detector: 1.0.3
       croner: 9.1.0
-      cronstrue: 3.9.0
+      cronstrue: 3.11.0
       deepmerge: 4.3.1
       dequal: 2.0.3
       detect-indent: 7.0.2
@@ -19824,7 +19824,7 @@ snapshots:
     optionalDependencies:
       better-sqlite3: 12.6.2
       openpgp: 6.3.0
-      re2: 1.23.0
+      re2: 1.23.2
     transitivePeerDependencies:
       - aws-crt
       - encoding
