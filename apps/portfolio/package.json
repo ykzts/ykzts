@@ -34,7 +34,7 @@
     "@types/node": "22.19.8",
     "@types/react": "19.2.10",
     "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-react": "5.1.2",
+    "@vitejs/plugin-react": "5.1.3",
     "@ykzts/tsconfig": "workspace:*",
     "autoprefixer": "10.4.24",
     "axe-core": "4.11.1",
