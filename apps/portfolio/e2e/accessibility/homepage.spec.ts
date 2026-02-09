@@ -1,7 +1,8 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
 
-test.describe('Accessibility Tests', () => {  test('homepage should not have any automatically detectable WCAG A/AA violations', async ({
+test.describe('Accessibility Tests', () => {
+  test('homepage should not have any automatically detectable WCAG A/AA violations', async ({
     page
   }) => {
     await page.goto('/')
