@@ -46,14 +46,12 @@ describe('Supabase utilities', () => {
 
       mockFrom.mockReturnValue({
         select: vi.fn(() => ({
-          limit: vi.fn(() => ({
-            single: vi.fn(() =>
-              Promise.resolve({
-                data: mockData,
-                error: null
-              })
-            )
-          }))
+          maybeSingle: vi.fn(() =>
+            Promise.resolve({
+              data: mockData,
+              error: null
+            })
+          )
         }))
       })
 
@@ -67,14 +65,12 @@ describe('Supabase utilities', () => {
     it('should throw error when no profile data is found', async () => {
       mockFrom.mockReturnValue({
         select: vi.fn(() => ({
-          limit: vi.fn(() => ({
-            single: vi.fn(() =>
-              Promise.resolve({
-                data: null,
-                error: null
-              })
-            )
-          }))
+          maybeSingle: vi.fn(() =>
+            Promise.resolve({
+              data: null,
+              error: null
+            })
+          )
         }))
       })
 
@@ -85,14 +81,12 @@ describe('Supabase utilities', () => {
     it('should throw error on Supabase errors', async () => {
       mockFrom.mockReturnValue({
         select: vi.fn(() => ({
-          limit: vi.fn(() => ({
-            single: vi.fn(() =>
-              Promise.resolve({
-                data: null,
-                error: { message: 'Database error' }
-              })
-            )
-          }))
+          maybeSingle: vi.fn(() =>
+            Promise.resolve({
+              data: null,
+              error: { message: 'Database error' }
+            })
+          )
         }))
       })
 

@@ -11,7 +11,7 @@ describe('getSocialInfo', () => {
       name
     )
 
-    expect(result.label).toBe('Test User のFacebookアカウント')
+    expect(result.label).toBe('Test UserのFacebookアカウント')
     expect(result.url).toBe('https://www.facebook.com/example')
     expect(result.icon).toBeDefined()
   })
@@ -19,7 +19,7 @@ describe('getSocialInfo', () => {
   it('should return correct info for github', () => {
     const result = getSocialInfo('https://github.com/testuser', 'github', name)
 
-    expect(result.label).toBe('Test User のGitHubアカウント')
+    expect(result.label).toBe('Test UserのGitHubアカウント')
     expect(result.url).toBe('https://github.com/testuser')
     expect(result.icon).toBeDefined()
   })
@@ -31,7 +31,7 @@ describe('getSocialInfo', () => {
       name
     )
 
-    expect(result.label).toBe('Test User のMastodonアカウント')
+    expect(result.label).toBe('Test UserのMastodonアカウント')
     expect(result.url).toBe('https://test.example/@testuser')
     expect(result.icon).toBeDefined()
   })
@@ -43,7 +43,7 @@ describe('getSocialInfo', () => {
       name
     )
 
-    expect(result.label).toBe('Test User のThreadsアカウント')
+    expect(result.label).toBe('Test UserのThreadsアカウント')
     expect(result.url).toBe('https://threads.net/@example')
     expect(result.icon).toBeDefined()
   })
@@ -51,7 +51,7 @@ describe('getSocialInfo', () => {
   it('should return correct info for x', () => {
     const result = getSocialInfo('https://x.com/testuser', 'x', name)
 
-    expect(result.label).toBe('Test User のXアカウント')
+    expect(result.label).toBe('Test UserのXアカウント')
     expect(result.url).toBe('https://x.com/testuser')
     expect(result.icon).toBeDefined()
   })
