@@ -1,26 +1,8 @@
-import {
-  PortableText,
-  type PortableTextMarkComponentProps,
-  type PortableTextReactComponents
-} from '@portabletext/react'
 import { Suspense } from 'react'
-import Link from '@/components/link'
 import Skeleton from '@/components/skeleton'
 import range from '@/lib/range'
 import { getWorks } from '@/lib/supabase'
-
-const portableTextComponents = {
-  marks: {
-    link({
-      children,
-      value
-    }: PortableTextMarkComponentProps<{ _type: string; href: string }>) {
-      const href = value?.href
-
-      return <Link href={href}>{children}</Link>
-    }
-  }
-} satisfies Partial<PortableTextReactComponents>
+import PortableTextBlock from './portable-text'
 
 function WorksSkeleton() {
   return (
@@ -63,12 +45,11 @@ async function WorksImpl() {
             <h3 className="mb-4 font-semibold text-2xl text-card-foreground">
               {work.title}
             </h3>
-            <div className="prose prose-base max-w-none prose-a:text-accent prose-p:text-base prose-p:text-muted prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
-              <PortableText
-                components={portableTextComponents}
-                value={work.content}
-              />
-            </div>
+            {work.content && (
+              <div className="prose prose-base max-w-none prose-a:text-accent prose-p:text-base prose-p:text-muted prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
+                <PortableTextBlock value={work.content} />
+              </div>
+            )}
           </article>
         ))}
       </div>

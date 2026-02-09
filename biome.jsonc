@@ -24,6 +24,9 @@
       "tailwindDirectives": true
     }
   },
+  "files": {
+    "includes": ["**/*", "!packages/supabase/src/database.types.ts"]
+  },
   "formatter": {
     "useEditorconfig": true
   },

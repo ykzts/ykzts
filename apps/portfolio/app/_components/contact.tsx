@@ -1,61 +1,7 @@
-import type { ReactNode } from 'react'
 import { HiOutlineArrowUpRight } from 'react-icons/hi2'
 import Link from '@/components/link'
 import ContactForm from './contact-form'
-
-type SocialLink = {
-  label: string
-  logo: ReactNode
-  url: `https://${string}`
-}
-
-const socialLinks: SocialLink[] = [
-  {
-    label: '山岸和利のFacebookアカウント',
-    logo: (
-      <svg aria-hidden="true" className="size-5">
-        <use href="#facebook-logo" />
-      </svg>
-    ),
-    url: 'https://www.facebook.com/ykzts'
-  },
-  {
-    label: '山岸和利のGitHubアカウント',
-    logo: (
-      <svg aria-hidden="true" className="size-5">
-        <use href="#github-logo" />
-      </svg>
-    ),
-    url: 'https://github.com/ykzts'
-  },
-  {
-    label: '山岸和利のMastodonアカウント',
-    logo: (
-      <svg aria-hidden="true" className="size-5">
-        <use href="#mastodon-logo" />
-      </svg>
-    ),
-    url: 'https://ykzts.technology/@ykzts'
-  },
-  {
-    label: '山岸和利のThreadsアカウント',
-    logo: (
-      <svg aria-hidden="true" className="size-5">
-        <use href="#threads-logo" />
-      </svg>
-    ),
-    url: 'https://www.threads.net/@ykzts'
-  },
-  {
-    label: '山岸和利のXアカウント',
-    logo: (
-      <svg aria-hidden="true" className="size-5">
-        <use href="#x-logo" />
-      </svg>
-    ),
-    url: 'https://x.com/ykzts'
-  }
-]
+import SocialLinks from './social-links'
 
 export default function Contact() {
   return (
@@ -90,21 +36,7 @@ export default function Contact() {
 
         <div>
           <h3 className="mb-4 font-medium text-foreground text-lg">Social</h3>
-          <ul className="flex gap-3">
-            {socialLinks.map((socialLink) => (
-              <li key={socialLink.url}>
-                <Link
-                  aria-label={socialLink.label}
-                  className="inline-flex size-10 items-center justify-center rounded-lg border border-border text-muted transition-all duration-200 hover:border-accent hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
-                  href={socialLink.url}
-                  rel="me"
-                  target="_blank"
-                >
-                  {socialLink.logo}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <SocialLinks />
         </div>
       </div>
     </section>

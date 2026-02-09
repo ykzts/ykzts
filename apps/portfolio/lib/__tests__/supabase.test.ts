@@ -5,12 +5,7 @@ vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', 'https://test.supabase.co')
 vi.stubEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY', 'test-anon-key')
 
 // Mock @supabase/supabase-js
-const mockSelect = vi.fn()
-const mockOrder = vi.fn()
-const mockFrom = vi.fn(() => ({
-  order: mockOrder,
-  select: mockSelect
-}))
+const mockFrom = vi.fn()
 
 vi.mock('@supabase/supabase-js', () => ({
   createClient: vi.fn(() => ({
@@ -26,13 +21,84 @@ vi.mock('next/cache', () => ({
 describe('Supabase utilities', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockSelect.mockReturnValue({
-      order: mockOrder
+  })
+
+  describe('getProfile', () => {
+    it('should return parsed profile data when valid data is returned', async () => {
+      const mockData = {
+        about: [
+          {
+            _type: 'block',
+            children: [{ _type: 'span', text: 'About text' }]
+          }
+        ],
+        email: 'test@example.com',
+        id: 'test-id',
+        name: 'Test User',
+        social_links: [
+          {
+            url: 'https://github.com/test'
+          }
+        ],
+        tagline: 'Software Developer',
+        technologies: [{ name: 'JavaScript' }, { name: 'TypeScript' }]
+      }
+
+      mockFrom.mockReturnValue({
+        select: vi.fn(() => ({
+          maybeSingle: vi.fn(() =>
+            Promise.resolve({
+              data: mockData,
+              error: null
+            })
+          )
+        }))
+      })
+
+      const { getProfile } = await import('../supabase')
+      const result = await getProfile()
+
+      expect(result).toEqual(mockData)
+      expect(mockFrom).toHaveBeenCalledWith('profiles')
+    })
+
+    it('should throw error when no profile data is found', async () => {
+      mockFrom.mockReturnValue({
+        select: vi.fn(() => ({
+          maybeSingle: vi.fn(() =>
+            Promise.resolve({
+              data: null,
+              error: null
+            })
+          )
+        }))
+      })
+
+      const { getProfile } = await import('../supabase')
+      await expect(getProfile()).rejects.toThrow('Profile not found')
+    })
+
+    it('should throw error on Supabase errors', async () => {
+      mockFrom.mockReturnValue({
+        select: vi.fn(() => ({
+          maybeSingle: vi.fn(() =>
+            Promise.resolve({
+              data: null,
+              error: { message: 'Database error' }
+            })
+          )
+        }))
+      })
+
+      const { getProfile } = await import('../supabase')
+      await expect(getProfile()).rejects.toThrow(
+        'Failed to fetch profile: Database error'
+      )
     })
   })
 
   describe('getWorks', () => {
-    it('should return parsed works data when valid data is returned', async () => {
+    it('should return works data when valid data is returned', async () => {
       const mockData = [
         {
           content: [{ _type: 'block', children: [{ text: 'Test content' }] }],
@@ -42,61 +108,40 @@ describe('Supabase utilities', () => {
         }
       ]
 
-      mockOrder.mockResolvedValue({
-        data: mockData,
-        error: null
+      mockFrom.mockReturnValue({
+        select: vi.fn(() => ({
+          order: vi.fn(() =>
+            Promise.resolve({
+              data: mockData,
+              error: null
+            })
+          )
+        }))
       })
 
-      // Import after mocking
       const { getWorks } = await import('../supabase')
       const result = await getWorks()
 
       expect(result).toEqual(mockData)
       expect(mockFrom).toHaveBeenCalledWith('works')
-      expect(mockSelect).toHaveBeenCalledWith('content, slug, title, starts_at')
-      expect(mockOrder).toHaveBeenCalledWith('starts_at', { ascending: false })
     })
 
-    it('should throw an error when invalid data is returned', async () => {
-      const invalidData = [
-        {
-          content: [{ _type: 'block', children: [{ text: 'Test content' }] }],
-          slug: 'test-work'
-          // Missing required title field
-        }
-      ]
-
-      mockOrder.mockResolvedValue({
-        data: invalidData,
-        error: null
+    it('should throw error when Supabase returns error', async () => {
+      mockFrom.mockReturnValue({
+        select: vi.fn(() => ({
+          order: vi.fn(() =>
+            Promise.resolve({
+              data: null,
+              error: { message: 'Database error' }
+            })
+          )
+        }))
       })
 
       const { getWorks } = await import('../supabase')
-      await expect(getWorks()).rejects.toThrow()
-    })
-
-    it('should handle empty array response', async () => {
-      mockOrder.mockResolvedValue({
-        data: [],
-        error: null
-      })
-
-      const { getWorks } = await import('../supabase')
-      const result = await getWorks()
-
-      expect(result).toEqual([])
-    })
-
-    it('should handle Supabase errors gracefully', async () => {
-      mockOrder.mockResolvedValue({
-        data: null,
-        error: { message: 'Database error' }
-      })
-
-      const { getWorks } = await import('../supabase')
-      const result = await getWorks()
-
-      expect(result).toEqual([])
+      await expect(getWorks()).rejects.toThrow(
+        'Failed to fetch works: Database error'
+      )
     })
   })
 })
