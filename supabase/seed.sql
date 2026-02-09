@@ -1,7 +1,7 @@
 -- Supabase Seed Data: Sample data for development and testing
 -- This file provides example data for the portfolio tables
 
--- Insert profile data for ykzts
+-- Insert profile data for test user
 INSERT INTO profiles (
   id,
   name,
@@ -12,8 +12,8 @@ INSERT INTO profiles (
   updated_at
 ) VALUES (
   '00000000-0000-0000-0000-000000000001',
-  '山岸和利',
-  'JavaScriptやRubyを用いたウェブアプリケーション開発を得意とするソフトウェア開発者です。ReactやRuby on Railsに造詣が深く、バックエンドからフロントエンドまで幅広く担当しています。',
+  'Test User',
+  'This is a test profile tagline for development and testing purposes.',
   '[
     {
       "_type": "block",
@@ -23,7 +23,7 @@ INSERT INTO profiles (
         {
           "_type": "span",
           "_key": "span1",
-          "text": "山岸和利はJavaScript (TypeScript) やRubyを用いたウェブアプリケーションの開発を得意とするソフトウェア開発者です。ReactやRuby on Railsに造詣が深く、バックエンドからフロントエンドまで幅広く担当しながら多くのウェブアプリケーションの開発を行っています。ウェブ関連の技術を中心とした学習を意欲的にしています。",
+          "text": "This is a test profile about section. It contains sample Portable Text content for development and testing purposes.",
           "marks": []
         }
       ]
@@ -36,45 +36,18 @@ INSERT INTO profiles (
         {
           "_type": "span",
           "_key": "span2",
-          "text": "またJavaScriptやRubyのほかにもGoやPerl、Pythonなどほかのプログラミング言語も扱えてプログラミング言語を問わず様々なソフトウェア開発を行っています。",
-          "marks": []
-        }
-      ]
-    },
-    {
-      "_type": "block",
-      "_key": "about3",
-      "style": "normal",
-      "children": [
-        {
-          "_type": "span",
-          "_key": "span3",
-          "text": "さらにAmazon Web Services (AWS) やGoogle Cloudといったクラウドサービスを利用したインフラストラクチャーの構築に関しても一定の知見を有していて、ウェブアプリケーションやウェブサービスの開発に関わる多くの領域の作業ができるという自負があります。",
-          "marks": []
-        }
-      ]
-    },
-    {
-      "_type": "block",
-      "_key": "about4",
-      "style": "normal",
-      "children": [
-        {
-          "_type": "span",
-          "_key": "span4",
-          "text": "詳しくは",
-          "marks": []
+          "text": "You can see "
         },
         {
           "_type": "span",
-          "_key": "span5",
-          "text": "山岸和利のGitHubアカウント",
+          "_key": "span3",
+          "text": "formatted text with links",
           "marks": ["link"]
         },
         {
           "_type": "span",
-          "_key": "span6",
-          "text": "も併せてご参照ください。",
+          "_key": "span4",
+          "text": " in this sample content.",
           "marks": []
         }
       ],
@@ -82,7 +55,7 @@ INSERT INTO profiles (
         {
           "_type": "link",
           "_key": "link1",
-          "href": "https://github.com/ykzts"
+          "href": "https://example.com/test"
         }
       ]
     }
@@ -98,30 +71,25 @@ ON CONFLICT (id) DO UPDATE SET
   email = EXCLUDED.email,
   updated_at = NOW();
 
--- Insert social links for ykzts
+-- Insert social links for test user
 INSERT INTO social_links (id, profile_id, url, sort_order, created_at, updated_at) VALUES
-  ('00000000-0000-0000-0000-000000000011', '00000000-0000-0000-0000-000000000001', 'https://www.facebook.com/ykzts', 1, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000012', '00000000-0000-0000-0000-000000000001', 'https://github.com/ykzts', 2, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000013', '00000000-0000-0000-0000-000000000001', 'https://ykzts.technology/@ykzts', 3, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000014', '00000000-0000-0000-0000-000000000001', 'https://www.threads.net/@ykzts', 4, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000015', '00000000-0000-0000-0000-000000000001', 'https://x.com/ykzts', 5, NOW(), NOW())
+  ('00000000-0000-0000-0000-000000000011', '00000000-0000-0000-0000-000000000001', 'https://www.facebook.com/testuser', 1, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000012', '00000000-0000-0000-0000-000000000001', 'https://github.com/testuser', 2, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000013', '00000000-0000-0000-0000-000000000001', 'https://test.example/@testuser', 3, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000014', '00000000-0000-0000-0000-000000000001', 'https://www.threads.net/@testuser', 4, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000015', '00000000-0000-0000-0000-000000000001', 'https://x.com/testuser', 5, NOW(), NOW())
 ON CONFLICT (id) DO UPDATE SET
   url = EXCLUDED.url,
   sort_order = EXCLUDED.sort_order,
   updated_at = NOW();
 
--- Insert technologies for ykzts
+-- Insert technologies for test user
 INSERT INTO technologies (id, profile_id, name, sort_order, created_at, updated_at) VALUES
-  ('00000000-0000-0000-0000-000000000021', '00000000-0000-0000-0000-000000000001', 'TypeScript', 1, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000022', '00000000-0000-0000-0000-000000000001', 'JavaScript', 2, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000023', '00000000-0000-0000-0000-000000000001', 'React', 3, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000024', '00000000-0000-0000-0000-000000000001', 'Next.js', 4, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000025', '00000000-0000-0000-0000-000000000001', 'Ruby', 5, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000026', '00000000-0000-0000-0000-000000000001', 'Ruby on Rails', 6, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000027', '00000000-0000-0000-0000-000000000001', 'Go', 7, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000028', '00000000-0000-0000-0000-000000000001', 'Python', 8, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000029', '00000000-0000-0000-0000-000000000001', 'AWS', 9, NOW(), NOW()),
-  ('00000000-0000-0000-0000-00000000002a', '00000000-0000-0000-0000-000000000001', 'Google Cloud', 10, NOW(), NOW())
+  ('00000000-0000-0000-0000-000000000021', '00000000-0000-0000-0000-000000000001', 'Test Tech 1', 1, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000022', '00000000-0000-0000-0000-000000000001', 'Test Tech 2', 2, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000023', '00000000-0000-0000-0000-000000000001', 'Test Tech 3', 3, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000024', '00000000-0000-0000-0000-000000000001', 'Test Tech 4', 4, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000025', '00000000-0000-0000-0000-000000000001', 'Test Tech 5', 5, NOW(), NOW())
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   sort_order = EXCLUDED.sort_order,

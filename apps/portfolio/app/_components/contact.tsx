@@ -1,53 +1,9 @@
-import type { ReactNode } from 'react'
 import { HiOutlineArrowUpRight } from 'react-icons/hi2'
 import Link from '@/components/link'
-import { getProfile } from '@/lib/supabase'
 import ContactForm from './contact-form'
+import SocialLinks from './social-links'
 
-interface SocialInfo {
-  icon: string
-  label: string
-}
-
-function getSocialInfo(url: string): SocialInfo {
-  try {
-    const hostname = new URL(url).hostname.toLowerCase()
-
-    // Validate against known services
-    if (hostname === 'www.facebook.com' || hostname === 'facebook.com') {
-      return { icon: 'facebook', label: '山岸和利のFacebookアカウント' }
-    }
-    if (hostname === 'github.com') {
-      return { icon: 'github', label: '山岸和利のGitHubアカウント' }
-    }
-    if (hostname === 'ykzts.technology') {
-      return { icon: 'mastodon', label: '山岸和利のMastodonアカウント' }
-    }
-    if (hostname === 'www.threads.net' || hostname === 'threads.net') {
-      return { icon: 'threads', label: '山岸和利のThreadsアカウント' }
-    }
-    if (hostname === 'x.com' || hostname === 'twitter.com') {
-      return { icon: 'x', label: '山岸和利のXアカウント' }
-    }
-
-    // Fallback for unknown services
-    throw new Error(`Unknown social service: ${hostname}`)
-  } catch (error) {
-    throw new Error(`Invalid social link URL: ${url}`)
-  }
-}
-
-function getSocialLogo(icon: string): ReactNode {
-  return (
-    <svg aria-hidden="true" className="size-5">
-      <use href={`#${icon}-logo`} />
-    </svg>
-  )
-}
-
-export default async function Contact() {
-  const profile = await getProfile()
-
+export default function Contact() {
   return (
     <section className="mx-auto max-w-4xl py-20" id="contact">
       <h2 className="mb-10 font-semibold text-base text-muted uppercase tracking-widest">
@@ -80,24 +36,7 @@ export default async function Contact() {
 
         <div>
           <h3 className="mb-4 font-medium text-foreground text-lg">Social</h3>
-          <ul className="flex gap-3">
-            {profile.social_links.map((link) => {
-              const { icon, label } = getSocialInfo(link.url)
-              return (
-                <li key={link.url}>
-                  <Link
-                    aria-label={label}
-                    className="inline-flex size-10 items-center justify-center rounded-lg border border-border text-muted transition-all duration-200 hover:border-accent hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
-                    href={link.url}
-                    rel="me"
-                    target="_blank"
-                  >
-                    {getSocialLogo(icon)}
-                  </Link>
-                </li>
-              )
-            })}
-          </ul>
+          <SocialLinks />
         </div>
       </div>
     </section>

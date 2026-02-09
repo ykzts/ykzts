@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '@ykzts/supabase'
 import { cacheTag } from 'next/cache'
+import { isPortableTextValue } from '@/lib/portable-text'
 
 // Create Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -11,17 +12,7 @@ const supabase =
     ? createClient<Database>(supabaseUrl, supabaseAnonKey)
     : null
 
-export type Profile = {
-  id: string
-  name: string
-  tagline: string
-  about: any[] // Portable Text content
-  email: string | null
-  social_links: Array<{ url: string }>
-  technologies: Array<{ name: string }>
-}
-
-export async function getProfile(): Promise<Profile> {
+export async function getProfile() {
   'use cache'
 
   cacheTag('profile')
@@ -36,17 +27,16 @@ export async function getProfile(): Promise<Profile> {
     .from('profiles')
     .select(
       `
-      id,
-      name,
-      tagline,
-      about,
-      email,
-      social_links(url),
-      technologies(name)
-    `
+        id,
+        name,
+        tagline,
+        about,
+        email,
+        social_links(url, service),
+        technologies(name)
+      `
     )
-    .limit(1)
-    .single()
+    .maybeSingle()
 
   if (profileError) {
     throw new Error(`Failed to fetch profile: ${profileError.message}`)
@@ -56,7 +46,14 @@ export async function getProfile(): Promise<Profile> {
     throw new Error('Profile not found')
   }
 
-  return profileData as Profile
+  const about = isPortableTextValue(profileData.about)
+    ? profileData.about
+    : null
+
+  return {
+    ...profileData,
+    about
+  }
 }
 
 export async function getWorks() {
@@ -79,5 +76,8 @@ export async function getWorks() {
     throw new Error(`Failed to fetch works: ${error.message}`)
   }
 
-  return data
+  return data.map((work) => ({
+    ...work,
+    content: isPortableTextValue(work.content) ? work.content : null
+  }))
 }
