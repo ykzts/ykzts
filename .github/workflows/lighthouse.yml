@@ -43,9 +43,7 @@ jobs:
         with:
           version: ${{ env.SUPABASE_VERSION }}
       - name: Start Supabase local server
-        run: |
-          cd supabase
-          supabase start
+        run: supabase start
       - name: Get Supabase local connection details
         id: supabase
         run: |
