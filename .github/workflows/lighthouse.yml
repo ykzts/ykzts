@@ -48,16 +48,7 @@ jobs:
         id: supabase
         run: |
           echo "SUPABASE_URL=http://127.0.0.1:54321" >> $GITHUB_OUTPUT
-          STATUS_JSON=$(supabase status -o json)
-          echo "Supabase status JSON:"
-          echo "$STATUS_JSON" | jq '.'
-          ANON_KEY=$(echo "$STATUS_JSON" | jq -r 'if type == "object" then (.ANON_KEY // .anon_key // ."ANON KEY" // empty) else empty end')
-          if [ -z "$ANON_KEY" ] || [ "$ANON_KEY" = "null" ]; then
-            echo "Error: Failed to extract anon key from Supabase status"
-            echo "Full status output:"
-            supabase status
-            exit 1
-          fi
+          ANON_KEY=$(supabase status -o json | jq -r '.ANON_KEY')
           echo "SUPABASE_ANON_KEY=${ANON_KEY}" >> $GITHUB_OUTPUT
       - name: Run Lighthouse CI
         run: pnpm lighthouse --filter @ykzts/portfolio
