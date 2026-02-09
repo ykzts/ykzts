@@ -3,6 +3,9 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { logout } from './login/actions'
 
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
+
 async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
   const {
@@ -25,9 +28,9 @@ async function AdminLayout({ children }: { children: React.ReactNode }) {
                   管理画面
                 </Link>
               </div>
-              <div className="ml-6 flex space-x-4 items-center">
-                <Link className="hover:text-accent" href="/admin/profiles">
-                  Profiles
+              <div className="flex items-center ml-6 space-x-4">
+                <Link className="hover:text-accent" href="/admin/profile">
+                  Profile
                 </Link>
                 <Link className="hover:text-accent" href="/admin/works">
                   Works

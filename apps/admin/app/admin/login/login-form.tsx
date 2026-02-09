@@ -7,19 +7,16 @@ export default function LoginForm() {
   const [state, formAction, isPending] = useActionState<
     { error?: string } | null,
     FormData
-  >(
-    async (_prevState, formData) => {
-      try {
-        await login(formData)
-        return null
-      } catch (err) {
-        return {
-          error: err instanceof Error ? err.message : 'ログインに失敗しました'
-        }
+  >(async (_prevState, formData) => {
+    try {
+      await login(formData)
+      return null
+    } catch (err) {
+      return {
+        error: err instanceof Error ? err.message : 'ログインに失敗しました'
       }
-    },
-    null
-  )
+    }
+  }, null)
 
   return (
     <form action={formAction} className="space-y-4">
