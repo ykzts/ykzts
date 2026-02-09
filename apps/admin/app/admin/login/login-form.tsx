@@ -1,72 +1,64 @@
 'use client'
 
-import { useState } from 'react'
+import { useActionState } from 'react'
 import { login } from './actions'
 
 export default function LoginForm() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
-    setLoading(true)
-
-    try {
-      const formData = new FormData()
-      formData.append('email', email)
-      formData.append('password', password)
-
-      await login(formData)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'ログインに失敗しました')
-    } finally {
-      setLoading(false)
-    }
-  }
+  const [state, formAction, isPending] = useActionState<
+    { error?: string } | null,
+    FormData
+  >(
+    async (_prevState, formData) => {
+      try {
+        await login(formData)
+        return null
+      } catch (err) {
+        return {
+          error: err instanceof Error ? err.message : 'ログインに失敗しました'
+        }
+      }
+    },
+    null
+  )
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
-      {error && (
-        <div className="p-3 bg-error/10 border border-error text-error rounded">
-          {error}
+    <form action={formAction} className="space-y-4">
+      {state?.error && (
+        <div className="rounded border border-error bg-error/10 p-3 text-error">
+          {state.error}
         </div>
       )}
 
       <div>
-        <label className="block text-sm font-medium mb-1" htmlFor="email">
+        <label className="mb-1 block font-medium text-sm" htmlFor="email">
           メールアドレス
         </label>
         <input
           className="input w-full"
-          disabled={loading}
+          disabled={isPending}
           id="email"
-          onChange={(e) => setEmail(e.target.value)}
+          name="email"
           required
           type="email"
-          value={email}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1" htmlFor="password">
+        <label className="mb-1 block font-medium text-sm" htmlFor="password">
           パスワード
         </label>
         <input
           className="input w-full"
-          disabled={loading}
+          disabled={isPending}
           id="password"
-          onChange={(e) => setPassword(e.target.value)}
+          name="password"
           required
           type="password"
-          value={password}
         />
       </div>
 
-      <button className="btn w-full" disabled={loading} type="submit">
-        {loading ? 'ログイン中...' : 'ログイン'}
+      <button className="btn w-full" disabled={isPending} type="submit">
+        {isPending ? 'ログイン中...' : 'ログイン'}
       </button>
     </form>
   )

@@ -6,10 +6,14 @@ export const dynamic = 'force-dynamic'
 export default async function PostsPage() {
   const supabase = await createClient()
 
-  const { data: posts } = await supabase
+  const { data: posts, error } = await supabase
     .from('posts')
-    .select('*')
+    .select('id, title, created_at, updated_at')
     .order('created_at', { ascending: false })
+
+  if (error) {
+    throw new Error(`投稿の取得に失敗しました: ${error.message}`)
+  }
 
   return (
     <div>

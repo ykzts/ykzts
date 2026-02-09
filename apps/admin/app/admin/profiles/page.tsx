@@ -6,10 +6,14 @@ export const dynamic = 'force-dynamic'
 export default async function ProfilesPage() {
   const supabase = await createClient()
 
-  const { data: profiles } = await supabase
+  const { data: profiles, error } = await supabase
     .from('profiles')
-    .select('*')
+    .select('id, name, tagline, email, created_at')
     .order('created_at', { ascending: false })
+
+  if (error) {
+    throw new Error(`プロフィールの取得に失敗しました: ${error.message}`)
+  }
 
   return (
     <div>

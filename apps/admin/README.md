@@ -5,12 +5,10 @@ Content management admin application built with Next.js and Supabase.
 ## Features
 
 - Authentication with Supabase Auth
-- CRUD operations for:
+- Admin pages for managing:
   - Profiles
   - Works
   - Posts
-  - Social Links
-  - Technologies
 - Row Level Security (RLS) for data protection
 
 ## Development

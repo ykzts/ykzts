@@ -7,15 +7,28 @@ export default async function AdminDashboard() {
   const supabase = await createClient()
 
   // Get counts
-  const [
-    { count: profilesCount },
-    { count: worksCount },
-    { count: postsCount }
-  ] = await Promise.all([
+  const [profilesResult, worksResult, postsResult] = await Promise.all([
     supabase.from('profiles').select('*', { count: 'exact', head: true }),
     supabase.from('works').select('*', { count: 'exact', head: true }),
     supabase.from('posts').select('*', { count: 'exact', head: true })
   ])
+
+  // Check for errors in any of the queries
+  if (profilesResult.error) {
+    throw new Error(
+      `プロフィール数の取得に失敗しました: ${profilesResult.error.message}`
+    )
+  }
+  if (worksResult.error) {
+    throw new Error(`作品数の取得に失敗しました: ${worksResult.error.message}`)
+  }
+  if (postsResult.error) {
+    throw new Error(`投稿数の取得に失敗しました: ${postsResult.error.message}`)
+  }
+
+  const profilesCount = profilesResult.count
+  const worksCount = worksResult.count
+  const postsCount = postsResult.count
 
   return (
     <div>

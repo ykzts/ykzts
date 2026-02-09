@@ -6,8 +6,17 @@ import { createClient } from '@/lib/supabase/server'
 export async function login(formData: FormData) {
   const supabase = await createClient()
 
-  const email = formData.get('email') as string
-  const password = formData.get('password') as string
+  const email = formData.get('email')
+  const password = formData.get('password')
+
+  // Validate that both fields are present and are strings
+  if (!email || typeof email !== 'string') {
+    throw new Error('メールアドレスを入力してください')
+  }
+
+  if (!password || typeof password !== 'string') {
+    throw new Error('パスワードを入力してください')
+  }
 
   const { error } = await supabase.auth.signInWithPassword({
     email,

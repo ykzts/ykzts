@@ -6,10 +6,14 @@ export const dynamic = 'force-dynamic'
 export default async function WorksPage() {
   const supabase = await createClient()
 
-  const { data: works } = await supabase
+  const { data: works, error } = await supabase
     .from('works')
-    .select('*')
+    .select('id, title, slug, starts_at, created_at')
     .order('starts_at', { ascending: false })
+
+  if (error) {
+    throw new Error(`作品の取得に失敗しました: ${error.message}`)
+  }
 
   return (
     <div>
