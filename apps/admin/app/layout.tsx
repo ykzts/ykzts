@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import './globals.css'
+import './admin/globals.css'
 
 export const metadata: Metadata = {
   description: 'Admin application for content management',

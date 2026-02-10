@@ -30,8 +30,8 @@
   },
   "scripts": {
     "build": "next build",
-    "dev": "next dev --port 3001",
-    "start": "next start --port 3001",
+    "dev": "next dev --port $(microfrontends port)",
+    "start": "next start",
     "typegen": "next typegen"
   },
   "type": "module",

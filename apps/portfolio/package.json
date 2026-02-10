@@ -58,7 +58,7 @@
   },
   "scripts": {
     "build": "next build",
-    "dev": "next",
+    "dev": "next dev --port $(microfrontends port)",
     "lighthouse": "lhci autorun || echo \"LHCI failed!\"",
     "start": "next start",
     "test": "vitest --run",

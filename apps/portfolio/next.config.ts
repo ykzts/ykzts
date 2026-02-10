@@ -1,4 +1,5 @@
 import createMDX from '@next/mdx'
+import { withMicrofrontends } from '@vercel/microfrontends/next/config'
 
 import type { NextConfig } from 'next'
 
@@ -62,4 +63,4 @@ const nextConfig: NextConfig = {
   typedRoutes: true
 }
 
-export default withMDX(nextConfig)
+export default withMicrofrontends(withMDX(nextConfig))

@@ -2,95 +2,191 @@
 -- This migration adds INSERT, UPDATE, and DELETE policies for authenticated users
 -- while maintaining public read access
 --
--- SECURITY NOTE: These policies currently allow ANY authenticated user to write.
--- For production use with multiple users, restrict to admin role:
--- Example: WITH CHECK ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin')
--- Or restrict to specific user ID: WITH CHECK (auth.uid() = '<YOUR_ADMIN_UUID>')
---
--- For single-user admin scenarios, ensure OAuth is configured to only allow
--- your specific GitHub account via Supabase Auth settings.
+-- SECURITY: Users can only modify their own profile data
 
--- Profiles table write policies
-CREATE POLICY "Enable insert access for authenticated users" ON profiles
+-- Add user_id column to profiles table to link with auth.users
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES auth.users(id);
+
+-- Create unique index to ensure one profile per user
+CREATE UNIQUE INDEX IF NOT EXISTS profiles_user_id_key ON profiles(user_id);
+
+-- Profiles table write policies (users can only modify their own profile)
+CREATE POLICY "Users can insert their own profile" ON profiles
   FOR INSERT
   TO authenticated
-  WITH CHECK (true);
+  WITH CHECK (auth.uid() = user_id);
 
-CREATE POLICY "Enable update access for authenticated users" ON profiles
+CREATE POLICY "Users can update their own profile" ON profiles
   FOR UPDATE
   TO authenticated
-  USING (true)
-  WITH CHECK (true);
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
 
-CREATE POLICY "Enable delete access for authenticated users" ON profiles
+CREATE POLICY "Users can delete their own profile" ON profiles
   FOR DELETE
   TO authenticated
-  USING (true);
+  USING (auth.uid() = user_id);
 
--- Works table write policies
-CREATE POLICY "Enable insert access for authenticated users" ON works
+-- Works table write policies (users can only modify their own works)
+CREATE POLICY "Users can insert their own works" ON works
   FOR INSERT
   TO authenticated
-  WITH CHECK (true);
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = works.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
 
-CREATE POLICY "Enable update access for authenticated users" ON works
+CREATE POLICY "Users can update their own works" ON works
   FOR UPDATE
   TO authenticated
-  USING (true)
-  WITH CHECK (true);
+  USING (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = works.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  )
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = works.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
 
-CREATE POLICY "Enable delete access for authenticated users" ON works
+CREATE POLICY "Users can delete their own works" ON works
   FOR DELETE
   TO authenticated
-  USING (true);
+  USING (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = works.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
 
--- Posts table write policies
-CREATE POLICY "Enable insert access for authenticated users" ON posts
+-- Posts table write policies (users can only modify their own posts)
+CREATE POLICY "Users can insert their own posts" ON posts
   FOR INSERT
   TO authenticated
-  WITH CHECK (true);
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = posts.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
 
-CREATE POLICY "Enable update access for authenticated users" ON posts
+CREATE POLICY "Users can update their own posts" ON posts
   FOR UPDATE
   TO authenticated
-  USING (true)
-  WITH CHECK (true);
+  USING (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = posts.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  )
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = posts.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
 
-CREATE POLICY "Enable delete access for authenticated users" ON posts
+CREATE POLICY "Users can delete their own posts" ON posts
   FOR DELETE
   TO authenticated
-  USING (true);
+  USING (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = posts.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
 
--- Social links table write policies
-CREATE POLICY "Enable insert access for authenticated users" ON social_links
+-- Social links table write policies (users can only modify their own social links)
+CREATE POLICY "Users can insert their own social links" ON social_links
   FOR INSERT
   TO authenticated
-  WITH CHECK (true);
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = social_links.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
 
-CREATE POLICY "Enable update access for authenticated users" ON social_links
+CREATE POLICY "Users can update their own social links" ON social_links
   FOR UPDATE
   TO authenticated
-  USING (true)
-  WITH CHECK (true);
+  USING (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = social_links.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  )
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = social_links.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
 
-CREATE POLICY "Enable delete access for authenticated users" ON social_links
+CREATE POLICY "Users can delete their own social links" ON social_links
   FOR DELETE
   TO authenticated
-  USING (true);
+  USING (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = social_links.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
 
--- Technologies table write policies
-CREATE POLICY "Enable insert access for authenticated users" ON technologies
+-- Technologies table write policies (users can only modify their own technologies)
+CREATE POLICY "Users can insert their own technologies" ON technologies
   FOR INSERT
   TO authenticated
-  WITH CHECK (true);
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = technologies.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
 
-CREATE POLICY "Enable update access for authenticated users" ON technologies
+CREATE POLICY "Users can update their own technologies" ON technologies
   FOR UPDATE
   TO authenticated
-  USING (true)
-  WITH CHECK (true);
+  USING (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = technologies.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  )
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = technologies.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
 
-CREATE POLICY "Enable delete access for authenticated users" ON technologies
+CREATE POLICY "Users can delete their own technologies" ON technologies
   FOR DELETE
   TO authenticated
-  USING (true);
+  USING (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = technologies.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );

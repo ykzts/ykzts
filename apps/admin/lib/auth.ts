@@ -11,7 +11,8 @@ export async function getCurrentUser() {
     error
   } = await supabase.auth.getUser()
 
-  if (error) {
+  // Auth session missing is not an error, just means user is not logged in
+  if (error && error.message !== 'Auth session missing!') {
     throw new Error(`Failed to fetch current user: ${error.message}`)
   }
 

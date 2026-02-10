@@ -1,3 +1,5 @@
+import { withMicrofrontends } from '@vercel/microfrontends/next/config'
+
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
@@ -10,4 +12,4 @@ const nextConfig: NextConfig = {
   typedRoutes: true
 }
 
-export default nextConfig
+export default withMicrofrontends(nextConfig)

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { getCurrentUser } from '@/lib/auth'
-import { logout } from '../login/actions'
+import { logout } from '../../login/actions'
 
 function UserInfo({ user }: { user: User }) {
   return (
@@ -27,7 +27,7 @@ async function AuthenticatedLayout({
   const user = await getCurrentUser()
 
   if (!user) {
-    redirect('/login')
+    redirect('/admin/login')
   }
 
   return (
@@ -37,18 +37,18 @@ async function AuthenticatedLayout({
           <div className="flex h-16 justify-between">
             <div className="flex">
               <div className="flex flex-shrink-0 items-center">
-                <Link className="font-bold text-xl" href="/">
+                <Link className="font-bold text-xl" href="/admin">
                   管理画面
                 </Link>
               </div>
               <div className="ml-6 flex items-center space-x-4">
-                <Link className="hover:text-accent" href="/profile">
+                <Link className="hover:text-accent" href="/admin/profile">
                   Profile
                 </Link>
-                <Link className="hover:text-accent" href="/works">
+                <Link className="hover:text-accent" href="/admin/works">
                   Works
                 </Link>
-                <Link className="hover:text-accent" href="/posts">
+                <Link className="hover:text-accent" href="/admin/posts">
                   Posts
                 </Link>
               </div>

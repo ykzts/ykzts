@@ -1,41 +1,41 @@
 import Link from 'next/link'
 import { Suspense } from 'react'
-import { getWorks } from '@/lib/data'
+import { getPosts } from '@/lib/data'
 
-async function WorksContent() {
-  const works = await getWorks()
+async function PostsContent() {
+  const posts = await getPosts()
 
   return (
     <div className="card">
-      {!works || works.length === 0 ? (
-        <p className="text-muted">作品がありません</p>
+      {!posts || posts.length === 0 ? (
+        <p className="text-muted">投稿がありません</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-border border-b">
                 <th className="px-4 py-3 text-left">タイトル</th>
-                <th className="px-4 py-3 text-left">スラッグ</th>
-                <th className="px-4 py-3 text-left">開始日</th>
                 <th className="px-4 py-3 text-left">作成日</th>
+                <th className="px-4 py-3 text-left">更新日</th>
                 <th className="px-4 py-3 text-right">操作</th>
               </tr>
             </thead>
             <tbody>
-              {works.map((work) => (
-                <tr className="border-border border-b" key={work.id}>
-                  <td className="px-4 py-3">{work.title}</td>
-                  <td className="px-4 py-3 text-muted">{work.slug}</td>
-                  <td className="px-4 py-3 text-muted">
-                    {new Date(work.starts_at).toLocaleDateString('ja-JP')}
+              {posts.map((post) => (
+                <tr className="border-border border-b" key={post.id}>
+                  <td className="px-4 py-3">
+                    {post.title || '(タイトルなし)'}
                   </td>
                   <td className="px-4 py-3 text-muted">
-                    {new Date(work.created_at).toLocaleDateString('ja-JP')}
+                    {new Date(post.created_at).toLocaleDateString('ja-JP')}
+                  </td>
+                  <td className="px-4 py-3 text-muted">
+                    {new Date(post.updated_at).toLocaleDateString('ja-JP')}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <Link
                       className="text-accent hover:underline"
-                      href={`/works/${work.id}`}
+                      href={`/posts/${post.id}`}
                     >
                       編集
                     </Link>
@@ -50,18 +50,18 @@ async function WorksContent() {
   )
 }
 
-export default function WorksPage() {
+export default function PostsPage() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="font-bold text-3xl">Works</h1>
-        <Link className="btn" href="/works/new">
+        <h1 className="font-bold text-3xl">Posts</h1>
+        <Link className="btn" href="/admin/posts/new">
           新規作成
         </Link>
       </div>
 
       <Suspense fallback={<div>Loading...</div>}>
-        <WorksContent />
+        <PostsContent />
       </Suspense>
     </div>
   )

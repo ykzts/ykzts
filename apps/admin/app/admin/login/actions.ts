@@ -19,7 +19,7 @@ export async function signInWithGitHub() {
       throw new Error('Unable to determine origin for OAuth redirect')
     }
     const safeOrigin = `${protocol}://${host}`
-    const redirectTo = `${safeOrigin}/auth/callback`
+    const redirectTo = `${safeOrigin}/admin/auth/callback`
 
     const { data, error } = await supabase.auth.signInWithOAuth({
       options: {
@@ -39,7 +39,7 @@ export async function signInWithGitHub() {
     return null
   }
 
-  const redirectTo = `${origin}/auth/callback`
+  const redirectTo = `${origin}/admin/auth/callback`
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     options: {
@@ -65,5 +65,5 @@ export async function logout() {
   const supabase = await createClient()
   await supabase.auth.signOut()
   revalidateTag('auth-user', 'private')
-  redirect('/login')
+  redirect('/admin/login')
 }

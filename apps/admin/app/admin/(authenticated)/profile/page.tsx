@@ -54,7 +54,7 @@ async function ProfileContent() {
       )}
 
       <div className="mt-4 border-border border-t pt-4">
-        <form action="/profile/edit" method="get">
+        <form action="/admin/profile/edit" method="get">
           <button className="btn" type="submit">
             編集
           </button>

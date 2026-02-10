@@ -7,7 +7,7 @@ async function LoginContent() {
   const user = await getCurrentUser()
 
   if (user) {
-    redirect('/')
+    redirect('/admin')
   }
 
   return (
