@@ -35,7 +35,7 @@ async function PostsContent() {
                   <td className="px-4 py-3 text-right">
                     <Link
                       className="text-accent hover:underline"
-                      href={`/posts/${post.id}`}
+                      href={`/admin/posts/${post.id}`}
                     >
                       編集
                     </Link>

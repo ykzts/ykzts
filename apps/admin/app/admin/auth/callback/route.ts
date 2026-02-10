@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     const supabase = await createClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      revalidateTag('auth-user', 'private')
+      revalidateTag('auth-user', 'max')
       return NextResponse.redirect(new URL(safeNext, request.url))
     }
   }

@@ -10,37 +10,17 @@ export async function signInWithGitHub() {
   const headersList = await headers()
   const origin = headersList.get('origin')
 
-  // Prevent invalid redirect URL if origin is missing
-  if (!origin) {
-    // Fallback: construct from protocol and host headers
+  let baseOrigin = origin
+  if (!baseOrigin) {
     const protocol = headersList.get('x-forwarded-proto') ?? 'https'
     const host = headersList.get('host')
     if (!host) {
       throw new Error('Unable to determine origin for OAuth redirect')
     }
-    const safeOrigin = `${protocol}://${host}`
-    const redirectTo = `${safeOrigin}/admin/auth/callback`
-
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      options: {
-        redirectTo
-      },
-      provider: 'github'
-    })
-
-    if (error) {
-      throw new Error(error.message)
-    }
-
-    if (data.url) {
-      return data.url
-    }
-
-    return null
+    baseOrigin = `${protocol}://${host}`
   }
 
-  const redirectTo = `${origin}/admin/auth/callback`
-
+  const redirectTo = `${baseOrigin}/admin/auth/callback`
   const { data, error } = await supabase.auth.signInWithOAuth({
     options: {
       redirectTo
@@ -52,18 +32,12 @@ export async function signInWithGitHub() {
     throw new Error(error.message)
   }
 
-  if (data.url) {
-    // OAuth redirects need to use window.location in client
-    // For server actions, we return the URL for client-side handling
-    return data.url
-  }
-
-  return null
+  return data.url ?? null
 }
 
 export async function logout() {
   const supabase = await createClient()
   await supabase.auth.signOut()
-  revalidateTag('auth-user', 'private')
+  revalidateTag('auth-user', 'max')
   redirect('/admin/login')
 }

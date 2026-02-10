@@ -13,7 +13,7 @@ CREATE INDEX IF NOT EXISTS works_profile_id_idx ON works(profile_id);
 CREATE INDEX IF NOT EXISTS posts_profile_id_idx ON posts(profile_id);
 
 -- Add user_id column to profiles table to link with auth.users
-ALTER TABLE profiles ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES auth.users(id);
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE;
 
 -- Create unique index to ensure one profile per user
 CREATE UNIQUE INDEX IF NOT EXISTS profiles_user_id_key ON profiles(user_id);
@@ -198,3 +198,7 @@ CREATE POLICY "Users can delete their own technologies" ON technologies
       AND profiles.user_id = auth.uid()
     )
   );
+
+-- Add indexes on profile_id for social_links and technologies tables
+CREATE INDEX IF NOT EXISTS social_links_profile_id_idx ON social_links(profile_id);
+CREATE INDEX IF NOT EXISTS technologies_profile_id_idx ON technologies(profile_id);

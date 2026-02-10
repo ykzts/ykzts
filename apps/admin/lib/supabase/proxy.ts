@@ -49,7 +49,7 @@ export async function updateSession(request: NextRequest) {
     )
     // Copy auth cookies from the original response to preserve token refresh
     for (const cookie of response.cookies.getAll()) {
-      redirectResponse.cookies.set(cookie.name, cookie.value)
+      redirectResponse.cookies.set(cookie)
     }
     return redirectResponse
   }
@@ -61,7 +61,7 @@ export async function updateSession(request: NextRequest) {
     )
     // Copy auth cookies from the original response to preserve session
     for (const cookie of response.cookies.getAll()) {
-      redirectResponse.cookies.set(cookie.name, cookie.value)
+      redirectResponse.cookies.set(cookie)
     }
     return redirectResponse
   }

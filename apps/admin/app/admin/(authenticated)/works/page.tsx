@@ -35,7 +35,7 @@ async function WorksContent() {
                   <td className="px-4 py-3 text-right">
                     <Link
                       className="text-accent hover:underline"
-                      href={`/works/${work.id}`}
+                      href={`/admin/works/${work.id}`}
                     >
                       編集
                     </Link>
