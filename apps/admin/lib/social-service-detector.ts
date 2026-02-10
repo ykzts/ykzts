@@ -54,6 +54,27 @@ export async function detectServiceFromURL(
  */
 async function tryNodeInfo(origin: string): Promise<string | null> {
   try {
+    // Only allow HTTPS origins for security
+    const originUrl = new URL(origin)
+    if (originUrl.protocol !== 'https:') {
+      return null
+    }
+
+    // Reject private IP ranges, loopback, and link-local addresses
+    const hostname = originUrl.hostname
+    if (
+      hostname === 'localhost' ||
+      hostname.startsWith('127.') ||
+      hostname.startsWith('10.') ||
+      hostname.startsWith('192.168.') ||
+      hostname.startsWith('169.254.') ||
+      /^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(hostname) ||
+      hostname === '::1' ||
+      hostname.startsWith('fe80:')
+    ) {
+      return null
+    }
+
     // Step 1: Fetch .well-known/nodeinfo
     const wellKnownResponse = await fetch(`${origin}/.well-known/nodeinfo`, {
       headers: { Accept: 'application/json' },

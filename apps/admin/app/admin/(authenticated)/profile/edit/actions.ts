@@ -138,7 +138,11 @@ export async function updateProfile(
     const socialLinksCountStr = formData.get('social_links_count') as string
     const socialLinksCount = Number.parseInt(socialLinksCountStr, 10)
 
-    if (Number.isNaN(socialLinksCount) || socialLinksCount < 0) {
+    if (
+      Number.isNaN(socialLinksCount) ||
+      socialLinksCount < 0 ||
+      socialLinksCount > 50
+    ) {
       return {
         error: 'ソーシャルリンクの件数が不正です。'
       }
@@ -231,7 +235,11 @@ export async function updateProfile(
     const technologiesCountStr = formData.get('technologies_count') as string
     const technologiesCount = Number.parseInt(technologiesCountStr, 10)
 
-    if (Number.isNaN(technologiesCount) || technologiesCount < 0) {
+    if (
+      Number.isNaN(technologiesCount) ||
+      technologiesCount < 0 ||
+      technologiesCount > 50
+    ) {
       return {
         error: '技術タグの件数が不正です。'
       }
