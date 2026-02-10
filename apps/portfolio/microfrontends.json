@@ -1,11 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/microfrontends.json",
   "applications": {
-    "@ykzts/admin": {
+    "admin": {
       "development": {
         "fallback": "ykzts-admin.vercel.app",
         "local": 3001
       },
+      "packageName": "@ykzts/admin",
       "routing": [
         {
           "group": "admin",
@@ -13,11 +14,12 @@
         }
       ]
     },
-    "@ykzts/portfolio": {
+    "portfolio": {
       "development": {
-        "fallback": "ykzts.vercel.app",
+        "fallback": "ykzts.com",
         "local": 3000
-      }
+      },
+      "packageName": "@ykzts/portfolio"
     }
   }
 }

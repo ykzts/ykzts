@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { getCurrentUser } from '@/lib/auth'
-import { logout } from '../../login/actions'
+import { logout } from '../login/actions'
 
 function UserInfo({ user }: { user: User }) {
   return (
