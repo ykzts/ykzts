@@ -4,6 +4,14 @@
 --
 -- SECURITY: Users can only modify their own profile data
 
+-- Add profile_id to works and posts tables to link content to profiles
+ALTER TABLE works ADD COLUMN IF NOT EXISTS profile_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
+ALTER TABLE posts ADD COLUMN IF NOT EXISTS profile_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
+
+-- Create indexes for profile_id foreign keys
+CREATE INDEX IF NOT EXISTS works_profile_id_idx ON works(profile_id);
+CREATE INDEX IF NOT EXISTS posts_profile_id_idx ON posts(profile_id);
+
 -- Add user_id column to profiles table to link with auth.users
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES auth.users(id);
 
