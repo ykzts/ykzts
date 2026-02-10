@@ -1,8 +1,8 @@
 'use server'
 
+import type { Json } from '@ykzts/supabase'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
-import type { Json } from '@ykzts/supabase'
 import { z } from 'zod'
 import { getProfile } from '@/lib/data'
 import { createClient } from '@/lib/supabase/server'
@@ -14,48 +14,33 @@ export type ActionState = {
 
 // Zod schema for work validation
 const workSchema = z.object({
-  content: z
-    .union([z.string(), z.instanceof(File), z.null()])
-    .transform((val) => (typeof val === 'string' ? val.trim() : ''))
-    .pipe(z.string().min(1, 'コンテンツは必須です')),
+  content: z.string().min(1, 'コンテンツは必須です'),
   slug: z
-    .union([z.string(), z.instanceof(File), z.null()])
-    .transform((val) => (typeof val === 'string' ? val.trim() : ''))
-    .pipe(
-      z
-        .string()
-        .min(1, 'スラッグは必須です')
-        .regex(
-          /^[a-z0-9-]+$/,
-          'スラッグは小文字英数字とハイフンのみ使用できます'
-        )
-    ),
+    .string()
+    .min(1, 'スラッグは必須です')
+    .regex(/^[a-z0-9-]+$/, 'スラッグは小文字英数字とハイフンのみ使用できます'),
   starts_at: z
-    .union([z.string(), z.instanceof(File), z.null()])
-    .transform((val) => (typeof val === 'string' ? val.trim() : ''))
-    .pipe(z.string().min(1, '開始日は必須です')),
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, '日付はYYYY-MM-DD形式で入力してください'),
   title: z
-    .union([z.string(), z.instanceof(File), z.null()])
-    .transform((val) => (typeof val === 'string' ? val.trim() : ''))
-    .pipe(
-      z
-        .string()
-        .min(1, 'タイトルは必須です')
-        .max(256, 'タイトルは256文字以内で入力してください')
-    )
+    .string()
+    .min(1, 'タイトルは必須です')
+    .max(256, 'タイトルは256文字以内で入力してください')
 })
 
 export async function createWork(
   _prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
-  // Validate with Zod - pass FormData values directly
-  const validation = workSchema.safeParse({
-    content: formData.get('content'),
-    slug: formData.get('slug'),
-    starts_at: formData.get('starts_at'),
-    title: formData.get('title')
-  })
+  // Extract and validate form data
+  const rawData = {
+    content: formData.get('content') ?? '',
+    slug: formData.get('slug') ?? '',
+    starts_at: formData.get('starts_at') ?? '',
+    title: formData.get('title') ?? ''
+  }
+
+  const validation = workSchema.safeParse(rawData)
 
   if (!validation.success) {
     const firstError = validation.error.issues[0]
@@ -103,8 +88,8 @@ export async function createWork(
       .maybeSingle()
 
     if (error) {
-      // Check for unique constraint violation on slug
-      if (error.code === '23505' && error.message.includes('slug')) {
+      // Check for unique constraint violation (PostgreSQL error code 23505)
+      if (error.code === '23505') {
         return { error: 'このスラッグは既に使用されています' }
       }
       return { error: `作品の作成に失敗しました: ${error.message}` }
