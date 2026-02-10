@@ -42,7 +42,7 @@ export function WorkForm() {
     <div>
       <form action={formAction} className="space-y-6">
         {state?.error && (
-          <div className="rounded bg-error/10 p-4 text-error">
+          <div className="rounded bg-error/10 p-4 text-error" role="alert">
             {state.error}
           </div>
         )}
