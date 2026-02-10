@@ -230,31 +230,29 @@ export default function ProfileForm({
             <div className="space-y-3">
               {socialLinks.map((link, index) => (
                 <SortableItem id={link.id} key={link.id}>
-                  <div className="flex gap-2">
-                    {!link.isNew && (
-                      <input
-                        name={`social_link_id_${index}`}
-                        type="hidden"
-                        value={link.id}
-                      />
-                    )}
+                  {!link.isNew && (
                     <input
-                      className="input flex-1"
-                      name={`social_link_url_${index}`}
-                      onChange={(e) => updateSocialLink(index, e.target.value)}
-                      placeholder="URL (例: https://github.com/username)"
-                      required
-                      type="url"
-                      value={link.url}
+                      name={`social_link_id_${index}`}
+                      type="hidden"
+                      value={link.id}
                     />
-                    <button
-                      className="btn-danger"
-                      onClick={() => removeSocialLink(index)}
-                      type="button"
-                    >
-                      削除
-                    </button>
-                  </div>
+                  )}
+                  <input
+                    className="input flex-1"
+                    name={`social_link_url_${index}`}
+                    onChange={(e) => updateSocialLink(index, e.target.value)}
+                    placeholder="URL (例: https://github.com/username)"
+                    required
+                    type="url"
+                    value={link.url}
+                  />
+                  <button
+                    className="btn-danger"
+                    onClick={() => removeSocialLink(index)}
+                    type="button"
+                  >
+                    削除
+                  </button>
                 </SortableItem>
               ))}
             </div>
@@ -295,30 +293,28 @@ export default function ProfileForm({
             <div className="space-y-3">
               {technologies.map((tech, index) => (
                 <SortableItem id={tech.id} key={tech.id}>
-                  <div className="flex gap-2">
-                    {!tech.isNew && (
-                      <input
-                        name={`technology_id_${index}`}
-                        type="hidden"
-                        value={tech.id}
-                      />
-                    )}
+                  {!tech.isNew && (
                     <input
-                      className="input flex-1"
-                      name={`technology_name_${index}`}
-                      onChange={(e) => updateTechnology(index, e.target.value)}
-                      placeholder="技術名 (例: TypeScript)"
-                      type="text"
-                      value={tech.name}
+                      name={`technology_id_${index}`}
+                      type="hidden"
+                      value={tech.id}
                     />
-                    <button
-                      className="btn-danger"
-                      onClick={() => removeTechnology(index)}
-                      type="button"
-                    >
-                      削除
-                    </button>
-                  </div>
+                  )}
+                  <input
+                    className="input flex-1"
+                    name={`technology_name_${index}`}
+                    onChange={(e) => updateTechnology(index, e.target.value)}
+                    placeholder="技術名 (例: TypeScript)"
+                    type="text"
+                    value={tech.name}
+                  />
+                  <button
+                    className="btn-danger"
+                    onClick={() => removeTechnology(index)}
+                    type="button"
+                  >
+                    削除
+                  </button>
                 </SortableItem>
               ))}
             </div>

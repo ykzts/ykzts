@@ -13,19 +13,41 @@ export function SortableItem({ children, id }: SortableItemProps) {
     isDragging,
     listeners,
     setNodeRef,
+    setActivatorNodeRef,
     transform,
     transition
   } = useSortable({ id })
 
   const style = {
-    cursor: isDragging ? 'grabbing' : 'grab',
     opacity: isDragging ? 0.5 : 1,
     transform: CSS.Transform.toString(transform),
     transition
   }
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div className="flex gap-2" ref={setNodeRef} style={style} {...attributes}>
+      <button
+        className="drag-handle flex-shrink-0 cursor-grab active:cursor-grabbing"
+        ref={setActivatorNodeRef}
+        type="button"
+        {...listeners}
+      >
+        <svg
+          aria-label="ドラッグハンドル"
+          className="h-6 w-6 text-gray-400 hover:text-gray-600"
+          fill="none"
+          role="img"
+          stroke="currentColor"
+          strokeWidth={2}
+          viewBox="0 0 24 24"
+        >
+          <title>ドラッグハンドル</title>
+          <path
+            d="M9 5h2M9 12h2M9 19h2M15 5h2M15 12h2M15 19h2"
+            strokeLinecap="round"
+          />
+        </svg>
+      </button>
       {children}
     </div>
   )
