@@ -82,6 +82,16 @@ async function tryNodeInfo(origin: string): Promise<string | null> {
       return null
     }
 
+    // Validate that NodeInfo endpoint shares the same origin (SSRF protection)
+    try {
+      const nodeInfoUrl = new URL(nodeInfoLink.href)
+      if (nodeInfoUrl.origin !== origin) {
+        return null
+      }
+    } catch {
+      return null
+    }
+
     // Step 3: Fetch NodeInfo
     const nodeInfoResponse = await fetch(nodeInfoLink.href, {
       headers: { Accept: 'application/json' },

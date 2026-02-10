@@ -43,10 +43,10 @@ export async function updateProfile(
 
     // Extract and validate profile data
     const rawProfileData = {
-      about: formData.get('about') as string,
-      email: formData.get('email') as string,
-      name: formData.get('name') as string,
-      tagline: formData.get('tagline') as string
+      about: (formData.get('about') as string | null) ?? undefined,
+      email: (formData.get('email') as string | null) ?? '',
+      name: (formData.get('name') as string | null) ?? '',
+      tagline: (formData.get('tagline') as string | null) ?? undefined
     }
 
     const profileValidation = profileSchema.safeParse(rawProfileData)
@@ -177,6 +177,7 @@ export async function updateProfile(
           .from('social_links')
           .update(linkData)
           .eq('id', id)
+          .eq('profile_id', profileId)
 
         if (updateError) {
           return {
@@ -268,6 +269,7 @@ export async function updateProfile(
           .from('technologies')
           .update(techData)
           .eq('id', id)
+          .eq('profile_id', profileId)
 
         if (updateError) {
           return {

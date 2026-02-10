@@ -17,11 +17,13 @@ type ProfileFormProps = {
     service: string | null
     sort_order: number
     url: string
+    isNew?: boolean
   }>
   initialTechnologies?: Array<{
     id: string
     name: string
     sort_order: number
+    isNew?: boolean
   }>
 }
 
@@ -47,7 +49,10 @@ export default function ProfileForm({
   )
 
   const addSocialLink = () => {
-    setSocialLinks([...socialLinks, { id: '', url: '' }])
+    setSocialLinks([
+      ...socialLinks,
+      { id: crypto.randomUUID(), isNew: true, url: '' }
+    ])
   }
 
   const removeSocialLink = (index: number) => {
@@ -55,13 +60,18 @@ export default function ProfileForm({
   }
 
   const updateSocialLink = (index: number, value: string) => {
-    const updated = [...socialLinks]
-    updated[index].url = value
-    setSocialLinks(updated)
+    setSocialLinks(
+      socialLinks.map((link, i) =>
+        i === index ? { ...link, url: value } : link
+      )
+    )
   }
 
   const addTechnology = () => {
-    setTechnologies([...technologies, { id: '', name: '' }])
+    setTechnologies([
+      ...technologies,
+      { id: crypto.randomUUID(), isNew: true, name: '' }
+    ])
   }
 
   const removeTechnology = (index: number) => {
@@ -69,9 +79,11 @@ export default function ProfileForm({
   }
 
   const updateTechnology = (index: number, value: string) => {
-    const updated = [...technologies]
-    updated[index].name = value
-    setTechnologies(updated)
+    setTechnologies(
+      technologies.map((tech, i) =>
+        i === index ? { ...tech, name: value } : tech
+      )
+    )
   }
 
   return (
@@ -158,12 +170,14 @@ export default function ProfileForm({
         </div>
         <div className="space-y-3">
           {socialLinks.map((link, index) => (
-            <div className="flex gap-2" key={link.id || `new-${index}`}>
-              <input
-                name={`social_link_id_${index}`}
-                type="hidden"
-                value={link.id}
-              />
+            <div className="flex gap-2" key={link.id}>
+              {!link.isNew && (
+                <input
+                  name={`social_link_id_${index}`}
+                  type="hidden"
+                  value={link.id}
+                />
+              )}
               <input
                 className="input flex-1"
                 name={`social_link_url_${index}`}
@@ -208,12 +222,14 @@ export default function ProfileForm({
         </div>
         <div className="space-y-3">
           {technologies.map((tech, index) => (
-            <div className="flex gap-2" key={tech.id || `new-${index}`}>
-              <input
-                name={`technology_id_${index}`}
-                type="hidden"
-                value={tech.id}
-              />
+            <div className="flex gap-2" key={tech.id}>
+              {!tech.isNew && (
+                <input
+                  name={`technology_id_${index}`}
+                  type="hidden"
+                  value={tech.id}
+                />
+              )}
               <input
                 className="input flex-1"
                 name={`technology_name_${index}`}
