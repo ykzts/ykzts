@@ -140,6 +140,37 @@ export async function getPosts() {
   return data
 }
 
+export async function getPost(id: string) {
+  'use cache: private'
+  cacheTag('posts')
+
+  const supabase = await createClient()
+
+  // Get current user's profile to ensure we only fetch their posts
+  const { data: profileData } = await supabase
+    .from('profiles')
+    .select('id')
+    .maybeSingle()
+
+  if (!profileData) {
+    return null
+  }
+
+  // Note: profile_id filtering is handled by RLS policies
+  // We verify the user has a profile, and RLS ensures they can only see their own posts
+  const { data, error } = await supabase
+    .from('posts')
+    .select('id, title, created_at, updated_at')
+    .eq('id', id)
+    .maybeSingle()
+
+  if (error) {
+    throw new Error(`投稿の取得に失敗しました: ${error.message}`)
+  }
+
+  return data
+}
+
 export async function getCounts() {
   'use cache: private'
   cacheTag('counts')

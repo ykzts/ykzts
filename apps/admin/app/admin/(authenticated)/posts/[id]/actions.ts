@@ -1,0 +1,101 @@
+'use server'
+
+import { revalidateTag } from 'next/cache'
+import { redirect } from 'next/navigation'
+import { z } from 'zod'
+import { createClient } from '@/lib/supabase/server'
+
+export type ActionState = {
+  error?: string
+  success?: boolean
+} | null
+
+// Zod schema for post validation
+const postSchema = z.object({
+  id: z.string().uuid('無効なIDです'),
+  title: z
+    .string()
+    .max(256, 'タイトルは256文字以内で入力してください')
+    .optional()
+})
+
+export async function updatePost(
+  _prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
+  // Extract and validate FormData values
+  const id = formData.get('id')
+  const title = formData.get('title')
+
+  // Check types - FormData.get() can return string | File | null
+  if (typeof id !== 'string' || (title !== null && typeof title !== 'string')) {
+    return { error: '無効な入力データです' }
+  }
+
+  // Validate with Zod
+  const validation = postSchema.safeParse({
+    id,
+    title: title?.trim() || undefined
+  })
+
+  if (!validation.success) {
+    const firstError = validation.error.issues[0]
+    return { error: firstError?.message ?? 'バリデーションエラー' }
+  }
+
+  const validatedData = validation.data
+
+  try {
+    const supabase = await createClient()
+
+    // Update and return the updated row to verify success
+    const { data, error } = await supabase
+      .from('posts')
+      .update({
+        title: validatedData.title || null
+      })
+      .eq('id', validatedData.id)
+      .select('id')
+      .maybeSingle()
+
+    if (error) {
+      return { error: `更新に失敗しました: ${error.message}` }
+    }
+
+    // Verify that a row was actually updated
+    if (!data) {
+      return { error: '更新対象が存在しないか、権限がありません' }
+    }
+
+    revalidateTag('posts', 'max')
+  } catch (error) {
+    return {
+      error: `予期しないエラーが発生しました: ${error instanceof Error ? error.message : '不明なエラー'}`
+    }
+  }
+
+  redirect('/admin/posts')
+}
+
+export async function deletePost(id: string): Promise<void> {
+  const supabase = await createClient()
+
+  // Delete and return the deleted row to verify success
+  const { data, error } = await supabase
+    .from('posts')
+    .delete()
+    .eq('id', id)
+    .select('id')
+    .maybeSingle()
+
+  if (error) {
+    throw new Error(`削除に失敗しました: ${error.message}`)
+  }
+
+  if (!data) {
+    throw new Error('削除対象が存在しないか、権限がありません')
+  }
+
+  revalidateTag('posts', 'max')
+  redirect('/admin/posts')
+}
