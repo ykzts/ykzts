@@ -1,4 +1,4 @@
-import { WorkForm } from './work-form'
+import { WorkForm } from './_components/work-form'
 
 export default function NewWorkPage() {
   return (

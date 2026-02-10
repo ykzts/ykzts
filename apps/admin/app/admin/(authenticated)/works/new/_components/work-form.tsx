@@ -1,18 +1,20 @@
 'use client'
 
 import { useActionState, useState } from 'react'
-import type { ActionState } from './actions'
-import { createWork } from './actions'
+import type { ActionState } from '../actions'
+import { createWork } from '../actions'
 
 // Default Portable Text content (empty paragraph)
 const DEFAULT_PORTABLE_TEXT =
   '[{"_type":"block","children":[{"_type":"span","marks":[],"text":""}],"markDefs":[],"style":"normal"}]'
 
+// Note: This function only works with romanized (ASCII) text.
+// For Japanese titles, the slug should be manually edited to use romanized form.
 function generateSlug(title: string): string {
   return title
     .toLowerCase()
     .trim()
-    .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+    .replace(/[^a-z0-9\s-]/g, '') // Remove non-ASCII characters
     .replace(/\s+/g, '-') // Replace spaces with hyphens
     .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
     .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
@@ -88,7 +90,7 @@ export function WorkForm() {
             </button>
           </div>
           <p className="mt-1 text-muted text-sm">
-            必須、URL-safe形式（小文字英数字とハイフン）、一意性制約あり
+            必須、URL-safe形式（小文字英数字とハイフン）、一意性制約あり。自動生成は英数字のみ対応、日本語タイトルの場合は手動でローマ字に変換してください。
           </p>
         </div>
 
