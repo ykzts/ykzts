@@ -17,7 +17,7 @@ import {
 } from '@dnd-kit/sortable'
 import type { Json } from '@ykzts/supabase'
 import { useRouter } from 'next/navigation'
-import { useActionState, useState } from 'react'
+import { useActionState, useCallback, useState } from 'react'
 import { updateProfile } from '../actions'
 import { SortableItem } from './sortable-item'
 
@@ -115,26 +115,43 @@ export default function ProfileForm({
     )
   }
 
-  // Generic drag end handler
-  const createDragEndHandler = <T extends { id: string }>(
-    setter: React.Dispatch<React.SetStateAction<T[]>>
-  ) => {
-    return (event: DragEndEvent) => {
-      const { active, over } = event
+  // Memoized drag handler for social links
+  const handleSocialLinksDragEnd = useCallback((event: DragEndEvent) => {
+    const { active, over } = event
 
-      if (over && active.id !== over.id) {
-        setter((items) => {
-          const oldIndex = items.findIndex((item) => item.id === active.id)
-          const newIndex = items.findIndex((item) => item.id === over.id)
+    if (over && active.id !== over.id) {
+      setSocialLinks((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id)
+        const newIndex = items.findIndex((item) => item.id === over.id)
 
-          return arrayMove(items, oldIndex, newIndex)
-        })
-      }
+        // Defensive check: ensure both indices are valid
+        if (oldIndex === -1 || newIndex === -1) {
+          return items
+        }
+
+        return arrayMove(items, oldIndex, newIndex)
+      })
     }
-  }
+  }, [])
 
-  const handleSocialLinksDragEnd = createDragEndHandler(setSocialLinks)
-  const handleTechnologiesDragEnd = createDragEndHandler(setTechnologies)
+  // Memoized drag handler for technologies
+  const handleTechnologiesDragEnd = useCallback((event: DragEndEvent) => {
+    const { active, over } = event
+
+    if (over && active.id !== over.id) {
+      setTechnologies((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id)
+        const newIndex = items.findIndex((item) => item.id === over.id)
+
+        // Defensive check: ensure both indices are valid
+        if (oldIndex === -1 || newIndex === -1) {
+          return items
+        }
+
+        return arrayMove(items, oldIndex, newIndex)
+      })
+    }
+  }, [])
 
   return (
     <form action={formAction} className="space-y-6">
