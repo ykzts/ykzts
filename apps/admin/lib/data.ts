@@ -1,20 +1,19 @@
 import { cacheTag } from 'next/cache'
+import { getCurrentUser } from './auth'
 import { createClient } from './supabase/server'
 
 export async function getProfile() {
   'use cache: private'
   cacheTag('profile')
 
-  const supabase = await createClient()
-
-  // Get current authenticated user
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
+  // Get current authenticated user (cached)
+  const user = await getCurrentUser()
 
   if (!user) {
     throw new Error('認証されていません')
   }
+
+  const supabase = await createClient()
 
   // Filter by user_id to get the authenticated user's profile
   const { data, error } = await supabase
@@ -28,6 +27,52 @@ export async function getProfile() {
   }
 
   return data
+}
+
+export async function getSocialLinks() {
+  'use cache: private'
+  cacheTag('profile')
+
+  const user = await getCurrentUser()
+  if (!user) {
+    throw new Error('ログインが必要です。')
+  }
+
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('social_links')
+    .select('id, service, url, sort_order, profile_id!inner(user_id)')
+    .eq('profile_id.user_id', user.id)
+    .order('sort_order', { ascending: true })
+
+  if (error) {
+    throw new Error(`ソーシャルリンクの取得に失敗しました: ${error.message}`)
+  }
+
+  return data ?? []
+}
+
+export async function getTechnologies() {
+  'use cache: private'
+  cacheTag('profile')
+
+  const user = await getCurrentUser()
+  if (!user) {
+    throw new Error('ログインが必要です。')
+  }
+
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('technologies')
+    .select('id, name, sort_order, profile_id!inner(user_id)')
+    .eq('profile_id.user_id', user.id)
+    .order('sort_order', { ascending: true })
+
+  if (error) {
+    throw new Error(`技術タグの取得に失敗しました: ${error.message}`)
+  }
+
+  return data ?? []
 }
 
 export async function getWorks() {
