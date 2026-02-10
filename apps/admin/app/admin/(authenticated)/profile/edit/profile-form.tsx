@@ -37,7 +37,6 @@ export default function ProfileForm({
   const [socialLinks, setSocialLinks] = useState(
     initialSocialLinks.map((link) => ({
       id: link.id,
-      service: link.service ?? '',
       url: link.url
     }))
   )
@@ -48,20 +47,16 @@ export default function ProfileForm({
   )
 
   const addSocialLink = () => {
-    setSocialLinks([...socialLinks, { id: '', service: '', url: '' }])
+    setSocialLinks([...socialLinks, { id: '', url: '' }])
   }
 
   const removeSocialLink = (index: number) => {
     setSocialLinks(socialLinks.filter((_, i) => i !== index))
   }
 
-  const updateSocialLink = (
-    index: number,
-    field: 'service' | 'url',
-    value: string
-  ) => {
+  const updateSocialLink = (index: number, value: string) => {
     const updated = [...socialLinks]
-    updated[index][field] = value
+    updated[index].url = value
     setSocialLinks(updated)
   }
 
@@ -171,19 +166,9 @@ export default function ProfileForm({
               />
               <input
                 className="input flex-1"
-                name={`social_link_service_${index}`}
-                onChange={(e) =>
-                  updateSocialLink(index, 'service', e.target.value)
-                }
-                placeholder="サービス名 (例: GitHub)"
-                type="text"
-                value={link.service}
-              />
-              <input
-                className="input flex-[2]"
                 name={`social_link_url_${index}`}
-                onChange={(e) => updateSocialLink(index, 'url', e.target.value)}
-                placeholder="URL"
+                onChange={(e) => updateSocialLink(index, e.target.value)}
+                placeholder="URL (例: https://github.com/username)"
                 required
                 type="url"
                 value={link.url}
@@ -202,6 +187,10 @@ export default function ProfileForm({
             type="hidden"
             value={socialLinks.length}
           />
+          <p className="mt-2 text-muted text-sm">
+            URLから自動的にサービスを検出します (GitHub, X, Facebook, Mastodon
+            など)
+          </p>
         </div>
       </div>
 

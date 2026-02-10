@@ -1,9 +1,15 @@
 import { cacheTag } from 'next/cache'
+import { getCurrentUser } from './auth'
 import { createClient } from './supabase/server'
 
 export async function getProfile() {
   'use cache: private'
   cacheTag('profile')
+
+  const user = await getCurrentUser()
+  if (!user) {
+    return null
+  }
 
   const supabase = await createClient()
 
@@ -34,10 +40,16 @@ export async function getSocialLinks() {
   'use cache: private'
   cacheTag('profile')
 
+  const user = await getCurrentUser()
+  if (!user) {
+    return []
+  }
+
   const supabase = await createClient()
   const { data: profile } = await supabase
     .from('profiles')
     .select('id')
+    .eq('user_id', user.id)
     .maybeSingle()
 
   if (!profile) {
@@ -61,10 +73,16 @@ export async function getTechnologies() {
   'use cache: private'
   cacheTag('profile')
 
+  const user = await getCurrentUser()
+  if (!user) {
+    return []
+  }
+
   const supabase = await createClient()
   const { data: profile } = await supabase
     .from('profiles')
     .select('id')
+    .eq('user_id', user.id)
     .maybeSingle()
 
   if (!profile) {

@@ -2,76 +2,136 @@
 
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { z } from 'zod'
+import { getCurrentUser } from '@/lib/auth'
+import { detectServiceFromURL } from '@/lib/social-service-detector'
 import { createClient } from '@/lib/supabase/server'
+
+// Validation schemas
+const profileSchema = z.object({
+  about: z.string().optional(),
+  email: z
+    .string()
+    .regex(
+      /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
+      'メールアドレスの形式が正しくありません。'
+    )
+    .optional()
+    .or(z.literal('')),
+  name: z.string().min(1, '名前は必須項目です。'),
+  tagline: z.string().optional()
+})
+
+const socialLinkSchema = z.object({
+  id: z.string(),
+  url: z.string().url('URLの形式が正しくありません。')
+})
+
+const technologySchema = z.object({
+  id: z.string(),
+  name: z.string().min(1)
+})
 
 export async function updateProfile(
   _prevState: { error: string } | null,
   formData: FormData
 ) {
-  const name = formData.get('name') as string
-  const tagline = formData.get('tagline') as string
-  const email = formData.get('email') as string
-  const about = formData.get('about') as string
-
-  // Validation
-  if (!name || name.trim() === '') {
-    return {
-      error: '名前は必須項目です。'
-    }
-  }
-
-  if (email && email.trim() !== '') {
-    // Server-side email validation (HTML5 validation is also applied on the client)
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email.trim())) {
+  try {
+    // Get current user
+    const user = await getCurrentUser()
+    if (!user) {
       return {
-        error: 'メールアドレスの形式が正しくありません。'
+        error: 'ログインが必要です。'
       }
     }
-  }
 
-  try {
+    // Extract and validate profile data
+    const rawProfileData = {
+      about: formData.get('about') as string,
+      email: formData.get('email') as string,
+      name: formData.get('name') as string,
+      tagline: formData.get('tagline') as string
+    }
+
+    const profileValidation = profileSchema.safeParse(rawProfileData)
+    if (!profileValidation.success) {
+      const firstError = profileValidation.error.issues[0]
+      return {
+        error: firstError.message
+      }
+    }
+
+    const { name, tagline, email, about } = profileValidation.data
+
+    // Handle about field (JSONB)
+    let aboutValue: string | null = null
+    if (about && about.trim() !== '') {
+      try {
+        // Try to parse as JSON
+        JSON.parse(about.trim())
+        aboutValue = about.trim()
+      } catch {
+        // If it's not valid JSON, treat it as plain text and wrap in simple Portable Text structure
+        aboutValue = JSON.stringify([
+          {
+            _type: 'block',
+            children: [{ _type: 'span', text: about.trim() }],
+            markDefs: [],
+            style: 'normal'
+          }
+        ])
+      }
+    }
+
     const supabase = await createClient()
 
-    // Get current profile to check if it exists
-    const { data: existingProfile } = await supabase
+    // Get or create profile for current user
+    const { data: existingProfile, error: profileFetchError } = await supabase
       .from('profiles')
       .select('id')
+      .eq('user_id', user.id)
       .maybeSingle()
 
+    if (profileFetchError) {
+      return {
+        error: `プロフィールの取得に失敗しました: ${profileFetchError.message}`
+      }
+    }
+
     const profileData = {
-      about: about && about.trim() !== '' ? about : null,
-      email: email && email.trim() !== '' ? email : null,
+      about: aboutValue,
+      email: email && email.trim() !== '' ? email.trim() : null,
       name: name.trim(),
-      tagline: tagline && tagline.trim() !== '' ? tagline : null
+      tagline: tagline && tagline.trim() !== '' ? tagline.trim() : null,
+      user_id: user.id
     }
 
     let profileId: string
 
     if (existingProfile) {
       // Update existing profile
-      const { error } = await supabase
+      const { error: updateError } = await supabase
         .from('profiles')
         .update(profileData)
         .eq('id', existingProfile.id)
 
-      if (error) {
+      if (updateError) {
         return {
-          error: `プロフィールの保存に失敗しました: ${error.message}`
+          error: `プロフィールの保存に失敗しました: ${updateError.message}`
         }
       }
       profileId = existingProfile.id
     } else {
       // Insert new profile
-      const { data: newProfile, error } = await supabase
+      const { data: newProfile, error: insertError } = await supabase
         .from('profiles')
         .insert(profileData)
         .select('id')
         .single()
 
-      if (error) {
+      if (insertError) {
         return {
-          error: `プロフィールの保存に失敗しました: ${error.message}`
+          error: `プロフィールの保存に失敗しました: ${insertError.message}`
         }
       }
       profileId = newProfile.id
@@ -91,15 +151,25 @@ export async function updateProfile(
 
     for (let i = 0; i < socialLinksCount; i++) {
       const id = formData.get(`social_link_id_${i}`) as string
-      const service = formData.get(`social_link_service_${i}`) as string
       const url = formData.get(`social_link_url_${i}`) as string
 
       // Skip empty entries
       if (!url || url.trim() === '') continue
 
+      // Validate social link
+      const linkValidation = socialLinkSchema.safeParse({ id, url: url.trim() })
+      if (!linkValidation.success) {
+        return {
+          error: `ソーシャルリンク #${i + 1}: ${linkValidation.error.issues[0].message}`
+        }
+      }
+
+      // Detect service from URL
+      const service = await detectServiceFromURL(url.trim())
+
       const linkData = {
         profile_id: profileId,
-        service: service && service.trim() !== '' ? service.trim() : null,
+        service,
         sort_order: i,
         url: url.trim()
       }
@@ -107,27 +177,27 @@ export async function updateProfile(
       if (id) {
         // Update existing
         socialLinksToKeep.add(id)
-        const { error } = await supabase
+        const { error: updateError } = await supabase
           .from('social_links')
           .update(linkData)
           .eq('id', id)
 
-        if (error) {
+        if (updateError) {
           return {
-            error: `ソーシャルリンクの更新に失敗しました: ${error.message}`
+            error: `ソーシャルリンクの更新に失敗しました: ${updateError.message}`
           }
         }
       } else {
         // Insert new
-        const { data, error } = await supabase
+        const { data, error: insertError } = await supabase
           .from('social_links')
           .insert(linkData)
           .select('id')
           .single()
 
-        if (error) {
+        if (insertError) {
           return {
-            error: `ソーシャルリンクの追加に失敗しました: ${error.message}`
+            error: `ソーシャルリンクの追加に失敗しました: ${insertError.message}`
           }
         }
         if (data) socialLinksToKeep.add(data.id)
@@ -146,14 +216,14 @@ export async function updateProfile(
         .filter((id) => !socialLinksToKeep.has(id))
 
       if (idsToDelete.length > 0) {
-        const { error } = await supabase
+        const { error: deleteError } = await supabase
           .from('social_links')
           .delete()
           .in('id', idsToDelete)
 
-        if (error) {
+        if (deleteError) {
           return {
-            error: `ソーシャルリンクの削除に失敗しました: ${error.message}`
+            error: `ソーシャルリンクの削除に失敗しました: ${deleteError.message}`
           }
         }
       }
@@ -178,6 +248,17 @@ export async function updateProfile(
       // Skip empty entries
       if (!techName || techName.trim() === '') continue
 
+      // Validate technology
+      const techValidation = technologySchema.safeParse({
+        id,
+        name: techName.trim()
+      })
+      if (!techValidation.success) {
+        return {
+          error: `技術タグ #${i + 1}: ${techValidation.error.issues[0].message}`
+        }
+      }
+
       const techData = {
         name: techName.trim(),
         profile_id: profileId,
@@ -187,27 +268,27 @@ export async function updateProfile(
       if (id) {
         // Update existing
         technologiesToKeep.add(id)
-        const { error } = await supabase
+        const { error: updateError } = await supabase
           .from('technologies')
           .update(techData)
           .eq('id', id)
 
-        if (error) {
+        if (updateError) {
           return {
-            error: `技術タグの更新に失敗しました: ${error.message}`
+            error: `技術タグの更新に失敗しました: ${updateError.message}`
           }
         }
       } else {
         // Insert new
-        const { data, error } = await supabase
+        const { data, error: insertError } = await supabase
           .from('technologies')
           .insert(techData)
           .select('id')
           .single()
 
-        if (error) {
+        if (insertError) {
           return {
-            error: `技術タグの追加に失敗しました: ${error.message}`
+            error: `技術タグの追加に失敗しました: ${insertError.message}`
           }
         }
         if (data) technologiesToKeep.add(data.id)
@@ -226,14 +307,14 @@ export async function updateProfile(
         .filter((id) => !technologiesToKeep.has(id))
 
       if (idsToDelete.length > 0) {
-        const { error } = await supabase
+        const { error: deleteError } = await supabase
           .from('technologies')
           .delete()
           .in('id', idsToDelete)
 
-        if (error) {
+        if (deleteError) {
           return {
-            error: `技術タグの削除に失敗しました: ${error.message}`
+            error: `技術タグの削除に失敗しました: ${deleteError.message}`
           }
         }
       }
