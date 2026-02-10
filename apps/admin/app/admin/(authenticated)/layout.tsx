@@ -18,12 +18,8 @@ function UserInfo({ user }: { user: User }) {
   )
 }
 
-async function AuthenticatedLayout({
-  children
-}: {
-  children: React.ReactNode
-}) {
-  // Auth guard at layout level - runs before children render
+async function AuthGuard({ children }: { children: React.ReactNode }) {
+  // Auth guard wrapped in Suspense - checks auth and redirects if needed
   const user = await getCurrentUser()
 
   if (!user) {
@@ -31,7 +27,7 @@ async function AuthenticatedLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
       <nav className="border-border border-b bg-card">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between">
@@ -53,15 +49,23 @@ async function AuthenticatedLayout({
                 </Link>
               </div>
             </div>
-            <Suspense fallback={<div>Loading...</div>}>
-              <UserInfo user={user} />
-            </Suspense>
+            <UserInfo user={user} />
           </div>
         </div>
       </nav>
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {children}
       </main>
+    </>
+  )
+}
+
+function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="min-h-screen bg-background">
+      <Suspense fallback={<div className="min-h-screen bg-background" />}>
+        <AuthGuard>{children}</AuthGuard>
+      </Suspense>
     </div>
   )
 }
