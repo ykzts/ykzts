@@ -1,18 +1,7 @@
-import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { getProfile } from '@/lib/data'
 
 export default async function ProfilePage() {
-  const supabase = await createClient()
-
-  // Get the single profile (there should only be one)
-  const { data: profile, error } = await supabase
-    .from('profiles')
-    .select('id, name, tagline, email, about, created_at, updated_at')
-    .maybeSingle()
-
-  if (error) {
-    throw new Error(`プロフィールの取得に失敗しました: ${error.message}`)
-  }
+  const profile = await getProfile()
 
   return (
     <div>

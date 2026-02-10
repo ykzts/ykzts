@@ -1,14 +1,11 @@
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { getCurrentUser } from '@/lib/auth'
 import LoginForm from './login-form'
 
 export const dynamic = 'force-dynamic'
 
 export default async function LoginPage() {
-  const supabase = await createClient()
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
+  const user = await getCurrentUser()
 
   // If user is already logged in, redirect to admin dashboard
   if (user) {

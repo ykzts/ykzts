@@ -1,17 +1,8 @@
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { getPosts } from '@/lib/data'
 
 export default async function PostsPage() {
-  const supabase = await createClient()
-
-  const { data: posts, error } = await supabase
-    .from('posts')
-    .select('id, title, created_at, updated_at')
-    .order('created_at', { ascending: false })
-
-  if (error) {
-    throw new Error(`投稿の取得に失敗しました: ${error.message}`)
-  }
+  const posts = await getPosts()
 
   return (
     <div>

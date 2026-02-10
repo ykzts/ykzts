@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { Suspense } from 'react'
+import { getCurrentUser } from '@/lib/auth'
 import { logout } from '../login/actions'
 
 export const dynamic = 'force-dynamic'
@@ -10,15 +10,8 @@ async function AuthenticatedLayout({
 }: {
   children: React.ReactNode
 }) {
-  const supabase = await createClient()
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
-
-  // Redirect to login if not authenticated
-  if (!user) {
-    redirect('/login')
-  }
+  // Auth is enforced by proxy, but we need user info for display
+  const user = await getCurrentUser()
 
   return (
     <div className="bg-background min-h-screen">
@@ -44,7 +37,7 @@ async function AuthenticatedLayout({
               </div>
             </div>
             <div className="flex items-center">
-              <span className="mr-4 text-muted text-sm">{user.email}</span>
+              <span className="mr-4 text-muted text-sm">{user?.email}</span>
               <form action={logout}>
                 <button className="btn-secondary" type="submit">
                   ログアウト
@@ -55,7 +48,7 @@ async function AuthenticatedLayout({
         </div>
       </nav>
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {children}
+        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
       </main>
     </div>
   )

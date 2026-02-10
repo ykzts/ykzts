@@ -1,17 +1,8 @@
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { getWorks } from '@/lib/data'
 
 export default async function WorksPage() {
-  const supabase = await createClient()
-
-  const { data: works, error } = await supabase
-    .from('works')
-    .select('id, title, slug, starts_at, created_at')
-    .order('starts_at', { ascending: false })
-
-  if (error) {
-    throw new Error(`作品の取得に失敗しました: ${error.message}`)
-  }
+  const works = await getWorks()
 
   return (
     <div>
