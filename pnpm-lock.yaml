@@ -15,6 +15,55 @@ importers:
         specifier: 2.8.3
         version: 2.8.3
 
+  apps/admin:
+    dependencies:
+      '@supabase/ssr':
+        specifier: 0.8.0
+        version: 0.8.0(@supabase/supabase-js@2.95.3)
+      '@supabase/supabase-js':
+        specifier: 2.95.3
+        version: 2.95.3
+      '@vercel/microfrontends':
+        specifier: 2.3.0
+        version: 2.3.0(@vercel/analytics@1.6.1(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4))(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vite@7.3.1(@types/node@22.19.9)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
+      '@ykzts/supabase':
+        specifier: workspace:*
+        version: link:../../packages/supabase
+      next:
+        specifier: 16.1.6
+        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: 19.2.4
+        version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@tailwindcss/postcss':
+        specifier: 4.1.18
+        version: 4.1.18
+      '@types/node':
+        specifier: 22.19.9
+        version: 22.19.9
+      '@types/react':
+        specifier: 19.2.13
+        version: 19.2.13
+      '@types/react-dom':
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.13)
+      '@ykzts/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      postcss:
+        specifier: 8.5.6
+        version: 8.5.6
+      tailwindcss:
+        specifier: 4.1.18
+        version: 4.1.18
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+
   apps/blog-legacy:
     dependencies:
       '@docusaurus/core':
@@ -81,6 +130,9 @@ importers:
       '@vercel/analytics':
         specifier: 1.6.1
         version: 1.6.1(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
+      '@vercel/microfrontends':
+        specifier: 2.3.0
+        version: 2.3.0(@vercel/analytics@1.6.1(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4))(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vite@7.3.1(@types/node@22.19.9)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))
       '@ykzts/supabase':
         specifier: workspace:*
         version: link:../../packages/supabase
@@ -2212,6 +2264,9 @@ packages:
   '@napi-rs/wasm-runtime@1.0.7':
     resolution: {integrity: sha512-SeDnOO0Tk7Okiq6DbXmmBODgOAb9dp9gjlphokTUxmt8U3liIP1ZsozBahH69j/RJv+Rfs6IwUKHTgQYJ/HBAw==}
 
+  '@next/env@16.0.10':
+    resolution: {integrity: sha512-8tuaQkyDVgeONQ1MeT9Mkk8pQmZapMKFh5B+OrFUlG3rVmYTXcXlBetBgTurKXGaIZvkoqRT9JL5K3phXcgang==}
+
   '@next/env@16.1.6':
     resolution: {integrity: sha512-N1ySLuZjnAtN3kFnwhAwPvZah8RJxKasD7x1f8shFqhncnWZn4JMfg37diLNuoHsLAlrDfM3g4mawVdtAG8XLQ==}
 
@@ -3139,6 +3194,11 @@ packages:
     resolution: {integrity: sha512-D7EAtfU3w6BEUxDACjowWNJo/ZRo7sDIuhuOGKHIm9FHieGeoJV5R6GKTLtga/5l/6fDr2u+WcW/m8I9SYmaIw==}
     engines: {node: '>=20.0.0'}
 
+  '@supabase/ssr@0.8.0':
+    resolution: {integrity: sha512-/PKk8kNFSs8QvvJ2vOww1mF5/c5W8y42duYtXvkOSe+yZKRgTTZywYG2l41pjhNomqESZCpZtXuWmYjFRMV+dw==}
+    peerDependencies:
+      '@supabase/supabase-js': ^2.76.1
+
   '@supabase/storage-js@2.95.3':
     resolution: {integrity: sha512-4GxkJiXI3HHWjxpC3sDx1BVrV87O0hfX+wvJdqGv67KeCu+g44SPnII8y0LL/Wr677jB7tpjAxKdtVWf+xhc9A==}
     engines: {node: '>=20.0.0'}
@@ -3639,6 +3699,9 @@ packages:
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
 
+  '@types/md5@2.3.6':
+    resolution: {integrity: sha512-WD69gNXtRBnpknfZcb4TRQ0XJQbUPZcai/Qdhmka3sxUR3Et8NrXoeAoknG/LghYHTf4ve795rInVYHBTQdNVA==}
+
   '@types/mdast@4.0.4':
     resolution: {integrity: sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==}
 
@@ -3777,6 +3840,33 @@ packages:
       vue:
         optional: true
       vue-router:
+        optional: true
+
+  '@vercel/microfrontends@2.3.0':
+    resolution: {integrity: sha512-KppjtZDUnnLEEYJkVJYbn8yz5RG4gN69EJO2/egF/brB+sQcWgz4h3Zwd9aN7mELha470c/8BGiztHvttwkJ8w==}
+    hasBin: true
+    peerDependencies:
+      '@sveltejs/kit': '>=1'
+      '@vercel/analytics': '>=1.5.0'
+      '@vercel/speed-insights': '>=1.2.0'
+      next: '>=13'
+      react: '>=17.0.0'
+      react-dom: '>=17.0.0'
+      vite: '>=5'
+    peerDependenciesMeta:
+      '@sveltejs/kit':
+        optional: true
+      '@vercel/analytics':
+        optional: true
+      '@vercel/speed-insights':
+        optional: true
+      next:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+      vite:
         optional: true
 
   '@vercel/oidc@3.0.5':
@@ -4407,6 +4497,9 @@ packages:
   chardet@0.7.0:
     resolution: {integrity: sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==}
 
+  charenc@0.0.2:
+    resolution: {integrity: sha512-yrLQ/yVUFXkzg7EDQsPieE/53+0RlaWTs+wBrvW36cyilJ2SaDWfl4Yj7MtLTXleV9uEKefbAGUPv2/iWSooRA==}
+
   cheerio-select@2.1.0:
     resolution: {integrity: sha512-9v9kG0LvzrlcungtnJtpGNxY+fzECQKhK4EGJX2vByejiMX84MFNQw4UxPJl3bFbTMw+Dfs37XaIkCwTZfLh4g==}
 
@@ -4546,6 +4639,10 @@ packages:
     resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
     engines: {node: '>=14'}
 
+  commander@12.1.0:
+    resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
+    engines: {node: '>=18'}
+
   commander@14.0.2:
     resolution: {integrity: sha512-TywoWNNRbhoD0BXs1P3ZEScW8W5iKrnbithIl0YH+uCmBd0QpPOA8yc82DS3BIE5Ma6FnBVUsJ7wVUDz4dvOWQ==}
     engines: {node: '>=20'}
@@ -4625,6 +4722,14 @@ packages:
     resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
     engines: {node: '>= 0.6'}
 
+  cookie@1.0.2:
+    resolution: {integrity: sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==}
+    engines: {node: '>=18'}
+
+  cookie@1.1.1:
+    resolution: {integrity: sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ==}
+    engines: {node: '>=18'}
+
   copy-webpack-plugin@11.0.0:
     resolution: {integrity: sha512-fX2MWpamkW0hZxMEg0+mYnA40LTosOSa5TqZ9GYIBzyJa9C3QUaMPSE2xAi/buNr8u89SfD9wHSQVBzrRa/SOQ==}
     engines: {node: '>= 14.15.0'}
@@ -4663,6 +4768,9 @@ packages:
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
+
+  crypt@0.0.2:
+    resolution: {integrity: sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==}
 
   crypto-random-string@2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
@@ -5989,6 +6097,9 @@ packages:
     resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==}
     engines: {node: '>=8'}
 
+  is-buffer@1.1.6:
+    resolution: {integrity: sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==}
+
   is-callable@1.2.7:
     resolution: {integrity: sha512-1BC0BVFhS/p0qtw6enp8e+8OD0UrK0oFLztSjNzhcKA3WDuJxxAPXzPuPtKkjEY9UUoEWlX/8fgKeu2S8i9JTA==}
     engines: {node: '>= 0.4'}
@@ -6549,6 +6660,9 @@ packages:
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
     engines: {node: '>= 0.4'}
+
+  md5@2.3.0:
+    resolution: {integrity: sha512-T1GITYmFaKuO91vxyoQMFETst+O71VUPEU3ze5GNzDm0OWdP8v1ziTaAEPUr/3kLsY3Sftgz242A1SetQiDL7g==}
 
   mdast-util-directive@3.1.0:
     resolution: {integrity: sha512-I3fNFt+DHmpWCYAT7quoM6lHf9wuqtI+oCOfvILnoicNIqjh5E3dEJWiXuYME2gNe8vl1iMQwyUHa7bgFmak6Q==}
@@ -7354,6 +7468,9 @@ packages:
 
   path-to-regexp@3.3.0:
     resolution: {integrity: sha512-qyCH421YQPS2WFDxDjftfc1ZR5WKQzVzqsp4n9M2kQhVOo/ByahFoUNJfl58kOcEGfQ//7weFTDhm+ss8Ecxgw==}
+
+  path-to-regexp@6.3.0:
+    resolution: {integrity: sha512-Yhpw4T9C6hPpgPeA28us07OJeqZ5EzQTkbfwuhsUg0c237RomFoETJgmp2sa3F/41gfLE6G5cqcYwznmeEeOlQ==}
 
   path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
@@ -13007,6 +13124,8 @@ snapshots:
       '@tybys/wasm-util': 0.10.1
     optional: true
 
+  '@next/env@16.0.10': {}
+
   '@next/env@16.1.6': {}
 
   '@next/mdx@16.1.6(@mdx-js/loader@3.1.1(webpack@5.104.1))(@mdx-js/react@3.1.1(@types/react@19.2.13)(react@19.2.4))':
@@ -13996,6 +14115,11 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
+  '@supabase/ssr@0.8.0(@supabase/supabase-js@2.95.3)':
+    dependencies:
+      '@supabase/supabase-js': 2.95.3
+      cookie: 1.1.1
+
   '@supabase/storage-js@2.95.3':
     dependencies:
       iceberg-js: 0.8.1
@@ -14494,6 +14618,8 @@ snapshots:
     dependencies:
       '@types/node': 22.19.9
 
+  '@types/md5@2.3.6': {}
+
   '@types/mdast@4.0.4':
     dependencies:
       '@types/unist': 3.0.3
@@ -14619,6 +14745,29 @@ snapshots:
     optionalDependencies:
       next: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react: 19.2.4
+
+  '@vercel/microfrontends@2.3.0(@vercel/analytics@1.6.1(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4))(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vite@7.3.1(@types/node@22.19.9)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2))':
+    dependencies:
+      '@next/env': 16.0.10
+      '@types/md5': 2.3.6
+      ajv: 8.17.1
+      commander: 12.1.0
+      cookie: 1.0.2
+      fast-glob: 3.3.3
+      http-proxy: 1.18.1
+      jsonc-parser: 3.3.1
+      md5: 2.3.0
+      nanoid: 3.3.11
+      path-to-regexp: 6.3.0
+      semver: 7.7.3
+    optionalDependencies:
+      '@vercel/analytics': 1.6.1(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
+      next: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+      vite: 7.3.1(@types/node@22.19.9)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+    transitivePeerDependencies:
+      - debug
 
   '@vercel/oidc@3.0.5': {}
 
@@ -15349,6 +15498,8 @@ snapshots:
 
   chardet@0.7.0: {}
 
+  charenc@0.0.2: {}
+
   cheerio-select@2.1.0:
     dependencies:
       boolbase: 1.0.0
@@ -15500,6 +15651,8 @@ snapshots:
 
   commander@10.0.1: {}
 
+  commander@12.1.0: {}
+
   commander@14.0.2: {}
 
   commander@2.20.3: {}
@@ -15577,6 +15730,10 @@ snapshots:
 
   cookie@0.7.2: {}
 
+  cookie@1.0.2: {}
+
+  cookie@1.1.1: {}
+
   copy-webpack-plugin@11.0.0(webpack@5.104.1(@swc/core@1.15.11(@swc/helpers@0.5.15))):
     dependencies:
       fast-glob: 3.3.3
@@ -15615,6 +15772,8 @@ snapshots:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+
+  crypt@0.0.2: {}
 
   crypto-random-string@2.0.0: {}
 
@@ -17153,6 +17312,8 @@ snapshots:
     dependencies:
       binary-extensions: 2.3.0
 
+  is-buffer@1.1.6: {}
+
   is-callable@1.2.7: {}
 
   is-ci@3.0.1:
@@ -17698,6 +17859,12 @@ snapshots:
       escape-string-regexp: 4.0.0
 
   math-intrinsics@1.1.0: {}
+
+  md5@2.3.0:
+    dependencies:
+      charenc: 0.0.2
+      crypt: 0.0.2
+      is-buffer: 1.1.6
 
   mdast-util-directive@3.1.0:
     dependencies:
@@ -18804,6 +18971,8 @@ snapshots:
       isarray: 0.0.1
 
   path-to-regexp@3.3.0: {}
+
+  path-to-regexp@6.3.0: {}
 
   path-type@4.0.0: {}
 

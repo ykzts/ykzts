@@ -1,0 +1,47 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
+
+  --color-background: #ffffff;
+  --color-foreground: #1a1a2e;
+  --color-muted: #6b7280;
+  --color-accent: #2563eb;
+  --color-accent-foreground: #ffffff;
+  --color-card: #f9fafb;
+  --color-card-foreground: #1a1a2e;
+  --color-border: #e5e7eb;
+  --color-error: #ef4444;
+  --color-success: #10b981;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  a {
+    @apply text-accent hover:underline;
+  }
+}
+
+@utility btn {
+  @apply px-4 py-2 rounded bg-accent text-accent-foreground font-medium hover:bg-accent/90 transition-colors;
+}
+
+@utility btn-secondary {
+  @apply px-4 py-2 rounded bg-card text-card-foreground font-medium border border-border hover:bg-muted/10 transition-colors;
+}
+
+@utility btn-danger {
+  @apply px-4 py-2 rounded bg-error text-white font-medium hover:bg-error/90 transition-colors;
+}
+
+@utility input {
+  @apply px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-accent;
+}
+
+@utility card {
+  @apply bg-card border border-border rounded-lg p-6 shadow-sm;
+}

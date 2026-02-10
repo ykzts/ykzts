@@ -1,9 +1,40 @@
 -- Supabase Seed Data: Sample data for development and testing
 -- This file provides example data for the portfolio tables
 
+-- Insert test user into auth.users
+-- Note: In production, users are created through Supabase Auth API
+-- This is only for local development seeding
+INSERT INTO auth.users (
+  id,
+  instance_id,
+  email,
+  encrypted_password,
+  email_confirmed_at,
+  created_at,
+  updated_at,
+  raw_app_meta_data,
+  raw_user_meta_data,
+  aud,
+  role
+) VALUES (
+  '00000000-0000-0000-0000-000000000001',
+  '00000000-0000-0000-0000-000000000000',
+  'test@example.com',
+  crypt('password123', gen_salt('bf')),
+  NOW(),
+  NOW(),
+  NOW(),
+  '{"provider": "email", "providers": ["email"]}',
+  '{"name": "Test User"}',
+  'authenticated',
+  'authenticated'
+)
+ON CONFLICT (id) DO NOTHING;
+
 -- Insert profile data for test user
 INSERT INTO profiles (
   id,
+  user_id,
   name,
   tagline,
   about,
@@ -11,6 +42,7 @@ INSERT INTO profiles (
   created_at,
   updated_at
 ) VALUES (
+  '00000000-0000-0000-0000-000000000001',
   '00000000-0000-0000-0000-000000000001',
   'Test User',
   'This is a test profile tagline for development and testing purposes.',
@@ -65,6 +97,7 @@ INSERT INTO profiles (
   NOW()
 )
 ON CONFLICT (id) DO UPDATE SET
+  user_id = EXCLUDED.user_id,
   name = EXCLUDED.name,
   tagline = EXCLUDED.tagline,
   about = EXCLUDED.about,
@@ -97,10 +130,9 @@ ON CONFLICT (id) DO UPDATE SET
   updated_at = NOW();
 
 -- Insert sample works with Portable Text content
-INSERT INTO works (id, title, slug, content, starts_at, created_at, updated_at) VALUES
+INSERT INTO works (id, profile_id, title, slug, content, starts_at, created_at, updated_at) VALUES
   (
-    '00000000-0000-0000-0000-000000000002',
-    'Sample Work 1',
+    '00000000-0000-0000-0000-000000000002',    '00000000-0000-0000-0000-000000000001',    'Sample Work 1',
     'sample-work-1',
     '[
       {
@@ -136,6 +168,7 @@ INSERT INTO works (id, title, slug, content, starts_at, created_at, updated_at) 
   ),
   (
     '00000000-0000-0000-0000-000000000003',
+    '00000000-0000-0000-0000-000000000001',
     'Sample Work 2',
     'sample-work-2',
     '[
@@ -160,7 +193,7 @@ INSERT INTO works (id, title, slug, content, starts_at, created_at, updated_at) 
 ON CONFLICT (id) DO NOTHING;
 
 -- Insert sample posts
-INSERT INTO posts (id, title, created_at, updated_at) VALUES
-  ('00000000-0000-0000-0000-000000000004', 'Sample Post 1', NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000005', 'Sample Post 2', NOW(), NOW())
+INSERT INTO posts (id, profile_id, title, created_at, updated_at) VALUES
+  ('00000000-0000-0000-0000-000000000004', '00000000-0000-0000-0000-000000000001', 'Sample Post 1', NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000005', '00000000-0000-0000-0000-000000000001', 'Sample Post 2', NOW(), NOW())
 ON CONFLICT (id) DO NOTHING;

@@ -32,7 +32,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'pnpm dev',
+    command: 'pnpm next dev --port 3000',
     env: {
       NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env
         .NEXT_PUBLIC_SUPABASE_ANON_KEY as string,
