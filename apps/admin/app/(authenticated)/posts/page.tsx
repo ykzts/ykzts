@@ -1,9 +1,56 @@
 import Link from 'next/link'
+import { Suspense } from 'react'
 import { getPosts } from '@/lib/data'
 
-export default async function PostsPage() {
+async function PostsContent() {
   const posts = await getPosts()
 
+  return (
+    <div className="card">
+      {!posts || posts.length === 0 ? (
+        <p className="text-muted">投稿がありません</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-border">
+                <th className="text-left py-3 px-4">タイトル</th>
+                <th className="text-left py-3 px-4">作成日</th>
+                <th className="text-left py-3 px-4">更新日</th>
+                <th className="text-right py-3 px-4">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {posts.map((post) => (
+                <tr className="border-b border-border" key={post.id}>
+                  <td className="py-3 px-4">
+                    {post.title || '(タイトルなし)'}
+                  </td>
+                  <td className="py-3 px-4 text-muted">
+                    {new Date(post.created_at).toLocaleDateString('ja-JP')}
+                  </td>
+                  <td className="py-3 px-4 text-muted">
+                    {new Date(post.updated_at).toLocaleDateString('ja-JP')}
+                  </td>
+                  <td className="py-3 px-4 text-right">
+                    <Link
+                      className="text-accent hover:underline"
+                      href={`/posts/${post.id}`}
+                    >
+                      編集
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default function PostsPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -13,47 +60,9 @@ export default async function PostsPage() {
         </Link>
       </div>
 
-      <div className="card">
-        {!posts || posts.length === 0 ? (
-          <p className="text-muted">投稿がありません</p>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="text-left py-3 px-4">タイトル</th>
-                  <th className="text-left py-3 px-4">作成日</th>
-                  <th className="text-left py-3 px-4">更新日</th>
-                  <th className="text-right py-3 px-4">操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                {posts.map((post) => (
-                  <tr className="border-b border-border" key={post.id}>
-                    <td className="py-3 px-4">
-                      {post.title || '(タイトルなし)'}
-                    </td>
-                    <td className="py-3 px-4 text-muted">
-                      {new Date(post.created_at).toLocaleDateString('ja-JP')}
-                    </td>
-                    <td className="py-3 px-4 text-muted">
-                      {new Date(post.updated_at).toLocaleDateString('ja-JP')}
-                    </td>
-                    <td className="py-3 px-4 text-right">
-                      <Link
-                        className="text-accent hover:underline"
-                        href={`/posts/${post.id}`}
-                      >
-                        編集
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <PostsContent />
+      </Suspense>
     </div>
   )
 }

@@ -1,13 +1,11 @@
 import { redirect } from 'next/navigation'
+import { Suspense } from 'react'
 import { getCurrentUser } from '@/lib/auth'
 import LoginForm from './login-form'
 
-export const dynamic = 'force-dynamic'
-
-export default async function LoginPage() {
+async function LoginContent() {
   const user = await getCurrentUser()
 
-  // If user is already logged in, redirect to admin dashboard
   if (user) {
     redirect('/')
   }
@@ -19,5 +17,13 @@ export default async function LoginPage() {
         <LoginForm />
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginContent />
+    </Suspense>
   )
 }

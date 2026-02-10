@@ -1,3 +1,8 @@
+export function generateStaticParams() {
+  // Return dummy param for build-time validation with Cache Components
+  return [{ id: '_' }]
+}
+
 export default function EditWorkPage() {
   return (
     <div>

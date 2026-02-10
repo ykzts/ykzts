@@ -1,18 +1,29 @@
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { getCurrentUser } from '@/lib/auth'
 import { logout } from '../login/actions'
 
-export const dynamic = 'force-dynamic'
-
-async function AuthenticatedLayout({
-  children
-}: {
-  children: React.ReactNode
-}) {
-  // Auth is enforced by proxy, but we need user info for display
+async function UserInfo() {
   const user = await getCurrentUser()
 
+  if (!user) {
+    redirect('/login')
+  }
+
+  return (
+    <div className="flex items-center">
+      <span className="mr-4 text-muted text-sm">{user.email}</span>
+      <form action={logout}>
+        <button className="btn-secondary" type="submit">
+          ログアウト
+        </button>
+      </form>
+    </div>
+  )
+}
+
+function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-background min-h-screen">
       <nav className="border-b border-border bg-card">
@@ -36,19 +47,14 @@ async function AuthenticatedLayout({
                 </Link>
               </div>
             </div>
-            <div className="flex items-center">
-              <span className="mr-4 text-muted text-sm">{user?.email}</span>
-              <form action={logout}>
-                <button className="btn-secondary" type="submit">
-                  ログアウト
-                </button>
-              </form>
-            </div>
+            <Suspense fallback={<div>Loading...</div>}>
+              <UserInfo />
+            </Suspense>
           </div>
         </div>
       </nav>
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+        {children}
       </main>
     </div>
   )

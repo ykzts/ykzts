@@ -1,8 +1,10 @@
-'use server'
-
+import { cacheTag } from 'next/cache'
 import { createClient } from './supabase/server'
 
 export async function getProfile() {
+  'use cache: private'
+  cacheTag('profile')
+
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('profiles')
@@ -17,6 +19,9 @@ export async function getProfile() {
 }
 
 export async function getWorks() {
+  'use cache: private'
+  cacheTag('works')
+
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('works')
@@ -31,6 +36,9 @@ export async function getWorks() {
 }
 
 export async function getPosts() {
+  'use cache: private'
+  cacheTag('posts')
+
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('posts')
@@ -45,6 +53,9 @@ export async function getPosts() {
 }
 
 export async function getCounts() {
+  'use cache: private'
+  cacheTag('counts')
+
   const supabase = await createClient()
 
   const [profilesResult, worksResult, postsResult] = await Promise.all([
