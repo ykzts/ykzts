@@ -11,9 +11,9 @@ async function LoginContent() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="flex min-h-screen items-center justify-center bg-background">
       <div className="card w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6">管理画面ログイン</h1>
+        <h1 className="mb-6 font-bold text-2xl">管理画面ログイン</h1>
         <LoginForm />
       </div>
     </div>

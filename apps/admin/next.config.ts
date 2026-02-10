@@ -1,7 +1,7 @@
+import { withMicrofrontends } from '@vercel/microfrontends/next'
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  basePath: '/admin',
   cacheComponents: true,
   experimental: {
     turbopackFileSystemCacheForDev: true
@@ -11,4 +11,4 @@ const nextConfig: NextConfig = {
   typedRoutes: true
 }
 
-export default nextConfig
+export default withMicrofrontends(nextConfig)

@@ -24,7 +24,7 @@ export default function LoginForm() {
 
       <form onSubmit={handleSubmit}>
         <button
-          className="btn w-full flex items-center justify-center gap-2"
+          className="btn flex w-full items-center justify-center gap-2"
           disabled={isPending}
           type="submit"
         >

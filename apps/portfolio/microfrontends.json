@@ -1,0 +1,8 @@
+{
+  "apps": [
+    {
+      "name": "ykzts-admin",
+      "path": "/admin"
+    }
+  ]
+}

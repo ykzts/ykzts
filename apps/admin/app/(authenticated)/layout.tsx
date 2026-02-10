@@ -25,8 +25,8 @@ async function UserInfo() {
 
 function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-background min-h-screen">
-      <nav className="border-b border-border bg-card">
+    <div className="min-h-screen bg-background">
+      <nav className="border-border border-b bg-card">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between">
             <div className="flex">
@@ -35,7 +35,7 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
                   管理画面
                 </Link>
               </div>
-              <div className="flex items-center ml-6 space-x-4">
+              <div className="ml-6 flex items-center space-x-4">
                 <Link className="hover:text-accent" href="/profile">
                   Profile
                 </Link>

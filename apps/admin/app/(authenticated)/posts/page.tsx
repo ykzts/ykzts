@@ -13,26 +13,26 @@ async function PostsContent() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-border">
-                <th className="text-left py-3 px-4">タイトル</th>
-                <th className="text-left py-3 px-4">作成日</th>
-                <th className="text-left py-3 px-4">更新日</th>
-                <th className="text-right py-3 px-4">操作</th>
+              <tr className="border-border border-b">
+                <th className="px-4 py-3 text-left">タイトル</th>
+                <th className="px-4 py-3 text-left">作成日</th>
+                <th className="px-4 py-3 text-left">更新日</th>
+                <th className="px-4 py-3 text-right">操作</th>
               </tr>
             </thead>
             <tbody>
               {posts.map((post) => (
-                <tr className="border-b border-border" key={post.id}>
-                  <td className="py-3 px-4">
+                <tr className="border-border border-b" key={post.id}>
+                  <td className="px-4 py-3">
                     {post.title || '(タイトルなし)'}
                   </td>
-                  <td className="py-3 px-4 text-muted">
+                  <td className="px-4 py-3 text-muted">
                     {new Date(post.created_at).toLocaleDateString('ja-JP')}
                   </td>
-                  <td className="py-3 px-4 text-muted">
+                  <td className="px-4 py-3 text-muted">
                     {new Date(post.updated_at).toLocaleDateString('ja-JP')}
                   </td>
-                  <td className="py-3 px-4 text-right">
+                  <td className="px-4 py-3 text-right">
                     <Link
                       className="text-accent hover:underline"
                       href={`/posts/${post.id}`}
@@ -53,8 +53,8 @@ async function PostsContent() {
 export default function PostsPage() {
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Posts</h1>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="font-bold text-3xl">Posts</h1>
         <Link className="btn" href="/posts/new">
           新規作成
         </Link>
