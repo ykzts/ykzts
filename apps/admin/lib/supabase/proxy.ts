@@ -39,7 +39,11 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   // Protect /admin routes - redirect to /login if not authenticated
-  if (!user && request.nextUrl.pathname !== '/login') {
+  if (
+    !user &&
+    request.nextUrl.pathname !== '/login' &&
+    !request.nextUrl.pathname.startsWith('/auth/callback')
+  ) {
     const redirectResponse = NextResponse.redirect(
       new URL('/login', request.url)
     )

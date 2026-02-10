@@ -1,17 +1,25 @@
 'use client'
 
-import { useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import { signInWithGitHub } from './actions'
 
 export default function LoginForm() {
   const [isPending, startTransition] = useTransition()
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError(null)
     startTransition(async () => {
-      const url = await signInWithGitHub()
-      if (url) {
-        window.location.href = url
+      try {
+        const url = await signInWithGitHub()
+        if (url) {
+          window.location.href = url
+          return
+        }
+        setError('ログインURLの取得に失敗しました')
+      } catch {
+        setError('ログインに失敗しました。もう一度お試しください。')
       }
     })
   }
@@ -21,6 +29,8 @@ export default function LoginForm() {
       <p className="text-muted text-sm">
         GitHub アカウントでログインしてください
       </p>
+
+      {error && <p className="text-error text-sm">{error}</p>}
 
       <form onSubmit={handleSubmit}>
         <button

@@ -1,5 +1,6 @@
 'use server'
 
+import { revalidateTag } from 'next/cache'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
@@ -63,5 +64,6 @@ export async function signInWithGitHub() {
 export async function logout() {
   const supabase = await createClient()
   await supabase.auth.signOut()
+  revalidateTag('auth-user')
   redirect('/login')
 }
