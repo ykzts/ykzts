@@ -39,8 +39,8 @@ export default function ProfileForm({
   const [socialLinks, setSocialLinks] = useState(
     initialSocialLinks.map((link) => ({
       id: link.id,
-      url: link.url,
-      isNew: link.isNew
+      isNew: link.isNew,
+      url: link.url
     }))
   )
 
@@ -48,8 +48,8 @@ export default function ProfileForm({
   const [technologies, setTechnologies] = useState(
     initialTechnologies.map((tech) => ({
       id: tech.id,
-      name: tech.name,
-      isNew: tech.isNew
+      isNew: tech.isNew,
+      name: tech.name
     }))
   )
 
