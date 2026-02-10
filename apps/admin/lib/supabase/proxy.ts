@@ -56,7 +56,9 @@ export async function updateSession(request: NextRequest) {
 
   // Redirect to /admin if already authenticated and trying to access login page
   if (user && request.nextUrl.pathname === '/admin/login') {
-    const redirectResponse = NextResponse.redirect(new URL('/admin', request.url))
+    const redirectResponse = NextResponse.redirect(
+      new URL('/admin', request.url)
+    )
     // Copy auth cookies from the original response to preserve session
     for (const cookie of response.cookies.getAll()) {
       redirectResponse.cookies.set(cookie.name, cookie.value)

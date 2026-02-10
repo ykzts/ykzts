@@ -9,7 +9,8 @@ export async function GET(request: NextRequest) {
   const next = searchParams.get('next') ?? '/admin'
 
   // Prevent open redirect: ensure next is a safe relative path
-  const safeNext = next.startsWith('/') && !next.startsWith('//') ? next : '/admin'
+  const safeNext =
+    next.startsWith('/') && !next.startsWith('//') ? next : '/admin'
 
   if (code) {
     const supabase = await createClient()
