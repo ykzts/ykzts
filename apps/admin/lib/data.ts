@@ -6,11 +6,6 @@ export async function getProfile() {
   'use cache: private'
   cacheTag('profile')
 
-  const user = await getCurrentUser()
-  if (!user) {
-    throw new Error('ログインが必要です。')
-  }
-
   const supabase = await createClient()
 
   // Get current authenticated user
