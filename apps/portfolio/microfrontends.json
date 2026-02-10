@@ -1,7 +1,10 @@
 {
   "apps": [
     {
-      "name": "ykzts-admin",
+      "name": "portfolio"
+    },
+    {
+      "name": "admin",
       "routing": [
         {
           "path": "/admin/:path*"
