@@ -78,10 +78,15 @@ export async function updateProfile(
     }
 
     // Handle social links
-    const socialLinksCount = Number.parseInt(
-      formData.get('social_links_count') as string,
-      10
-    )
+    const socialLinksCountStr = formData.get('social_links_count') as string
+    const socialLinksCount = Number.parseInt(socialLinksCountStr, 10)
+
+    if (Number.isNaN(socialLinksCount) || socialLinksCount < 0) {
+      return {
+        error: 'ソーシャルリンクの件数が不正です。'
+      }
+    }
+
     const socialLinksToKeep = new Set<string>()
 
     for (let i = 0; i < socialLinksCount; i++) {
@@ -155,10 +160,15 @@ export async function updateProfile(
     }
 
     // Handle technologies
-    const technologiesCount = Number.parseInt(
-      formData.get('technologies_count') as string,
-      10
-    )
+    const technologiesCountStr = formData.get('technologies_count') as string
+    const technologiesCount = Number.parseInt(technologiesCountStr, 10)
+
+    if (Number.isNaN(technologiesCount) || technologiesCount < 0) {
+      return {
+        error: '技術タグの件数が不正です。'
+      }
+    }
+
     const technologiesToKeep = new Set<string>()
 
     for (let i = 0; i < technologiesCount; i++) {

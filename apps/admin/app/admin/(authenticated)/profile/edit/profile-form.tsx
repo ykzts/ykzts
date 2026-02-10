@@ -184,7 +184,7 @@ export default function ProfileForm({
                 name={`social_link_url_${index}`}
                 onChange={(e) => updateSocialLink(index, 'url', e.target.value)}
                 placeholder="URL"
-                required={link.service !== '' || link.url !== ''}
+                required
                 type="url"
                 value={link.url}
               />
