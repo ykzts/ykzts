@@ -25,15 +25,16 @@ export function SortableItem({ children, id }: SortableItemProps) {
   }
 
   return (
-    <div className="flex gap-2" ref={setNodeRef} style={style} {...attributes}>
+    <div className="flex gap-2" ref={setNodeRef} style={style}>
       <button
+        aria-label="ドラッグハンドル"
         className="drag-handle flex-shrink-0 cursor-grab active:cursor-grabbing"
         ref={setActivatorNodeRef}
         type="button"
+        {...attributes}
         {...listeners}
       >
         <svg
-          aria-label="ドラッグハンドル"
           className="h-6 w-6 text-gray-400 hover:text-gray-600"
           fill="none"
           role="img"
