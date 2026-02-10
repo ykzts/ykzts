@@ -23,14 +23,9 @@ export default async function ProfilePage() {
       <div className="card">
         {!profile ? (
           <div>
-            <p className="text-muted mb-4">
-              プロフィールがまだ作成されていません
+            <p className="text-muted">
+              プロフィールがまだ作成されていません。編集ページから作成してください。
             </p>
-            <form action="/admin/profile/create" method="get">
-              <button className="btn" type="submit">
-                プロフィールを作成
-              </button>
-            </form>
           </div>
         ) : (
           <div className="space-y-4">
@@ -70,16 +65,16 @@ export default async function ProfilePage() {
                 {new Date(profile.updated_at).toLocaleString('ja-JP')}
               </p>
             </div>
-
-            <div className="pt-4">
-              <form action="/admin/profile/edit" method="get">
-                <button className="btn" type="submit">
-                  編集
-                </button>
-              </form>
-            </div>
           </div>
         )}
+
+        <div className="pt-4 mt-4 border-t border-border">
+          <form action="/profile/edit" method="get">
+            <button className="btn" type="submit">
+              編集
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   )

@@ -35,29 +35,23 @@ export default async function AdminDashboard() {
       <div className="gap-6 grid grid-cols-1 md:grid-cols-3">
         <Link
           className="card hover:shadow-md transition-shadow"
-          href="/admin/profile"
+          href="/profile"
         >
           <h2 className="font-semibold mb-2 text-xl">Profile</h2>
           <p className="font-bold text-3xl text-accent">{profilesCount ?? 0}</p>
           <p className="mt-2 text-muted text-sm">プロフィール情報を管理</p>
         </Link>
 
-        <Link
-          className="card hover:shadow-md transition-shadow"
-          href="/admin/works"
-        >
-          <h2 className="text-xl font-semibold mb-2">Works</h2>
-          <p className="text-3xl font-bold text-accent">{worksCount ?? 0}</p>
-          <p className="text-sm text-muted mt-2">作品情報を管理</p>
+        <Link className="card hover:shadow-md transition-shadow" href="/works">
+          <h2 className="font-semibold mb-2 text-xl">Works</h2>
+          <p className="font-bold text-3xl text-accent">{worksCount ?? 0}</p>
+          <p className="mt-2 text-muted text-sm">作品情報を管理</p>
         </Link>
 
-        <Link
-          className="card hover:shadow-md transition-shadow"
-          href="/admin/posts"
-        >
-          <h2 className="text-xl font-semibold mb-2">Posts</h2>
-          <p className="text-3xl font-bold text-accent">{postsCount ?? 0}</p>
-          <p className="text-sm text-muted mt-2">投稿情報を管理</p>
+        <Link className="card hover:shadow-md transition-shadow" href="/posts">
+          <h2 className="font-semibold mb-2 text-xl">Posts</h2>
+          <p className="font-bold text-3xl text-accent">{postsCount ?? 0}</p>
+          <p className="mt-2 text-muted text-sm">投稿情報を管理</p>
         </Link>
       </div>
     </div>

@@ -17,7 +17,7 @@ export default async function WorksPage() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Works</h1>
-        <Link className="btn" href="/admin/works/new">
+        <Link className="btn" href="/works/new">
           新規作成
         </Link>
       </div>
@@ -51,7 +51,7 @@ export default async function WorksPage() {
                     <td className="py-3 px-4 text-right">
                       <Link
                         className="text-accent hover:underline"
-                        href={`/admin/works/${work.id}`}
+                        href={`/works/${work.id}`}
                       >
                         編集
                       </Link>

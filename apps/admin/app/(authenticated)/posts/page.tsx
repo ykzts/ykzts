@@ -17,7 +17,7 @@ export default async function PostsPage() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Posts</h1>
-        <Link className="btn" href="/admin/posts/new">
+        <Link className="btn" href="/posts/new">
           新規作成
         </Link>
       </div>
@@ -51,7 +51,7 @@ export default async function PostsPage() {
                     <td className="py-3 px-4 text-right">
                       <Link
                         className="text-accent hover:underline"
-                        href={`/admin/posts/${post.id}`}
+                        href={`/posts/${post.id}`}
                       >
                         編集
                       </Link>
