@@ -90,9 +90,15 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
         <button className="btn" disabled={isPending} type="submit">
           {isPending ? '保存中...' : '保存'}
         </button>
-        <a className="btn-secondary" href="/admin/profile">
+        <button
+          className="btn-secondary"
+          onClick={() => {
+            window.location.href = '/admin/profile'
+          }}
+          type="button"
+        >
           キャンセル
-        </a>
+        </button>
       </div>
     </form>
   )

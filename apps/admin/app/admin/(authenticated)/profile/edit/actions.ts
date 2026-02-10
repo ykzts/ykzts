@@ -21,9 +21,9 @@ export async function updateProfile(
   }
 
   if (email && email.trim() !== '') {
-    // Simple email validation
+    // Server-side email validation (HTML5 validation is also applied on the client)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(email.trim())) {
       return {
         error: 'メールアドレスの形式が正しくありません。'
       }
