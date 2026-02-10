@@ -115,7 +115,7 @@ export function WorkForm() {
             defaultValue={DEFAULT_PORTABLE_TEXT}
             id="content"
             name="content"
-            placeholder='Portable Text形式のJSON（例: [{"_type":"block","children":[{"_type":"span","marks":[],"text":"プロジェクトの説明"}],"markDefs":[],"style":"normal"}]）'
+            placeholder="Portable Text形式のJSONを入力してください"
             required
           />
           <p className="mt-1 text-muted text-sm">
