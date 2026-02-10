@@ -8,7 +8,7 @@ export async function getProfile() {
 
   const user = await getCurrentUser()
   if (!user) {
-    return null
+    throw new Error('ログインが必要です。')
   }
 
   const supabase = await createClient()
@@ -42,7 +42,7 @@ export async function getSocialLinks() {
 
   const user = await getCurrentUser()
   if (!user) {
-    return []
+    throw new Error('ログインが必要です。')
   }
 
   const supabase = await createClient()
@@ -75,7 +75,7 @@ export async function getTechnologies() {
 
   const user = await getCurrentUser()
   if (!user) {
-    return []
+    throw new Error('ログインが必要です。')
   }
 
   const supabase = await createClient()

@@ -12,10 +12,7 @@ const profileSchema = z.object({
   about: z.string().optional(),
   email: z
     .string()
-    .regex(
-      /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-      'メールアドレスの形式が正しくありません。'
-    )
+    .email('メールアドレスの形式が正しくありません。')
     .optional()
     .or(z.literal('')),
   name: z.string().min(1, '名前は必須項目です。'),
