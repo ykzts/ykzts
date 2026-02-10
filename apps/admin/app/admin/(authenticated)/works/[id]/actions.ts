@@ -3,6 +3,7 @@
 import type { Json } from '@ykzts/supabase'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 
 export type ActionState = {
@@ -10,36 +11,66 @@ export type ActionState = {
   success?: boolean
 } | null
 
+// Zod schema for work validation
+const workSchema = z.object({
+  content: z.string().min(1, 'コンテンツは必須です'),
+  id: z.string().uuid('無効なIDです'),
+  slug: z
+    .string()
+    .min(1, 'スラッグは必須です')
+    .regex(
+      /^[a-zA-Z0-9\-_]+$/,
+      'スラッグは英数字、ハイフン、アンダースコアのみ使用できます'
+    ),
+  starts_at: z.string().min(1, '開始日は必須です'),
+  title: z
+    .string()
+    .min(1, 'タイトルは必須です')
+    .max(256, 'タイトルは256文字以内で入力してください')
+})
+
 export async function updateWork(
   _prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
-  const id = formData.get('id') as string
-  const title = formData.get('title') as string
-  const slug = formData.get('slug') as string
-  const startsAt = formData.get('starts_at') as string
-  const content = formData.get('content') as string
+  // Extract and validate FormData values
+  const id = formData.get('id')
+  const title = formData.get('title')
+  const slug = formData.get('slug')
+  const startsAt = formData.get('starts_at')
+  const content = formData.get('content')
 
-  // Validation
-  if (!title || !slug || !startsAt || !content) {
-    return { error: 'すべてのフィールドを入力してください' }
+  // Check types - FormData.get() can return string | File | null
+  if (
+    typeof id !== 'string' ||
+    typeof title !== 'string' ||
+    typeof slug !== 'string' ||
+    typeof startsAt !== 'string' ||
+    typeof content !== 'string'
+  ) {
+    return { error: '無効な入力データです' }
   }
 
-  if (title.length < 1 || title.length > 256) {
-    return { error: 'タイトルは1〜256文字で入力してください' }
+  // Validate with Zod
+  const validation = workSchema.safeParse({
+    content,
+    id,
+    slug: slug.trim(),
+    starts_at: startsAt,
+    title: title.trim()
+  })
+
+  if (!validation.success) {
+    const firstError = validation.error.issues[0]
+    return { error: firstError?.message ?? 'バリデーションエラー' }
   }
 
-  // Simple URL-safe validation
-  if (!/^[a-zA-Z0-9\-_]+$/.test(slug)) {
-    return {
-      error: 'スラッグは英数字、ハイフン、アンダースコアのみ使用できます'
-    }
-  }
+  const validatedData = validation.data
 
   // Parse content as JSON
   let contentJson: Json
   try {
-    contentJson = JSON.parse(content) as Json
+    contentJson = JSON.parse(validatedData.content) as Json
   } catch {
     return { error: 'コンテンツのフォーマットが正しくありません' }
   }
@@ -47,15 +78,18 @@ export async function updateWork(
   try {
     const supabase = await createClient()
 
-    const { error } = await supabase
+    // Update and return the updated row to verify success
+    const { data, error } = await supabase
       .from('works')
       .update({
         content: contentJson,
-        slug,
-        starts_at: startsAt,
-        title
+        slug: validatedData.slug,
+        starts_at: validatedData.starts_at,
+        title: validatedData.title
       })
-      .eq('id', id)
+      .eq('id', validatedData.id)
+      .select('id')
+      .maybeSingle()
 
     if (error) {
       // Check for unique constraint violation on slug
@@ -63,6 +97,11 @@ export async function updateWork(
         return { error: 'このスラッグは既に使用されています' }
       }
       return { error: `更新に失敗しました: ${error.message}` }
+    }
+
+    // Verify that a row was actually updated
+    if (!data) {
+      return { error: '更新対象が存在しないか、権限がありません' }
     }
 
     revalidateTag('works', 'max')
@@ -78,10 +117,20 @@ export async function updateWork(
 export async function deleteWork(id: string): Promise<void> {
   const supabase = await createClient()
 
-  const { error } = await supabase.from('works').delete().eq('id', id)
+  // Delete and return the deleted row to verify success
+  const { data, error } = await supabase
+    .from('works')
+    .delete()
+    .eq('id', id)
+    .select('id')
+    .maybeSingle()
 
   if (error) {
     throw new Error(`削除に失敗しました: ${error.message}`)
+  }
+
+  if (!data) {
+    throw new Error('削除対象が存在しないか、権限がありません')
   }
 
   revalidateTag('works', 'max')

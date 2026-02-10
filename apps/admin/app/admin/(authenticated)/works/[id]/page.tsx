@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { getWork } from '@/lib/data'
 import { WorkForm } from './work-form'
+import { WorkFormSkeleton } from './work-form-skeleton'
 
 export function generateStaticParams() {
   // Return dummy param for build-time validation with Cache Components
@@ -32,7 +33,13 @@ export default async function EditWorkPage({
   return (
     <div>
       <h1 className="mb-6 font-bold text-3xl">作品編集</h1>
-      <Suspense fallback={<div className="card">Loading...</div>}>
+      <Suspense
+        fallback={
+          <div className="card">
+            <WorkFormSkeleton />
+          </div>
+        }
+      >
         <WorkEditContent id={id} />
       </Suspense>
     </div>

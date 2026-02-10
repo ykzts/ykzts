@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useState } from 'react'
 import type { ActionState } from './actions'
 import { deleteWork, updateWork } from './actions'
 
@@ -21,14 +21,26 @@ export function WorkForm({ work }: WorkFormProps) {
     updateWork,
     null
   )
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
 
   const handleDelete = async () => {
     if (!confirm('本当にこの作品を削除しますか？この操作は取り消せません。')) {
       return
     }
 
-    await deleteWork(work.id)
-    // deleteWork handles redirect, no need to catch errors
+    setIsDeleting(true)
+    setDeleteError(null)
+
+    try {
+      await deleteWork(work.id)
+      // If successful, deleteWork will redirect
+    } catch (error) {
+      setIsDeleting(false)
+      setDeleteError(
+        error instanceof Error ? error.message : '削除に失敗しました'
+      )
+    }
   }
 
   // Convert content to JSON string for textarea
@@ -42,6 +54,12 @@ export function WorkForm({ work }: WorkFormProps) {
         {state?.error && (
           <div className="rounded bg-error/10 p-4 text-error">
             {state.error}
+          </div>
+        )}
+
+        {deleteError && (
+          <div className="rounded bg-error/10 p-4 text-error">
+            {deleteError}
           </div>
         )}
 
@@ -112,13 +130,17 @@ export function WorkForm({ work }: WorkFormProps) {
         <div className="flex justify-between gap-4">
           <button
             className="btn-danger"
-            disabled={isPending}
+            disabled={isPending || isDeleting}
             onClick={handleDelete}
             type="button"
           >
-            削除
+            {isDeleting ? '削除中...' : '削除'}
           </button>
-          <button className="btn" disabled={isPending} type="submit">
+          <button
+            className="btn"
+            disabled={isPending || isDeleting}
+            type="submit"
+          >
             {isPending ? '保存中...' : '保存'}
           </button>
         </div>

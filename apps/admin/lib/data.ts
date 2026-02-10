@@ -40,6 +40,19 @@ export async function getWork(id: string) {
   cacheTag('works')
 
   const supabase = await createClient()
+
+  // Get current user's profile to ensure we only fetch their works
+  const { data: profileData } = await supabase
+    .from('profiles')
+    .select('id')
+    .maybeSingle()
+
+  if (!profileData) {
+    return null
+  }
+
+  // Note: profile_id filtering is handled by RLS policies
+  // We verify the user has a profile, and RLS ensures they can only see their own works
   const { data, error } = await supabase
     .from('works')
     .select('id, title, slug, starts_at, content, created_at, updated_at')
