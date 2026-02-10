@@ -79,7 +79,9 @@ export async function createPost(
       return { error: '投稿の作成に失敗しました' }
     }
 
+    // Revalidate both posts list and dashboard counts
     revalidateTag('posts', 'max')
+    revalidateTag('counts', 'max')
   } catch (error) {
     return {
       error: `予期しないエラーが発生しました: ${error instanceof Error ? error.message : '不明なエラー'}`

@@ -6,9 +6,21 @@ export async function getProfile() {
   cacheTag('profile')
 
   const supabase = await createClient()
+
+  // Get current authenticated user
+  const {
+    data: { user }
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    throw new Error('認証されていません')
+  }
+
+  // Filter by user_id to get the authenticated user's profile
   const { data, error } = await supabase
     .from('profiles')
     .select('id, name, tagline, email, about, created_at, updated_at')
+    .eq('user_id', user.id)
     .maybeSingle()
 
   if (error) {
