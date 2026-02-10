@@ -1,5 +1,6 @@
 'use server'
 
+import type { Json } from '@ykzts/supabase'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
@@ -36,9 +37,9 @@ export async function updateWork(
   }
 
   // Parse content as JSON
-  let contentJson: unknown
+  let contentJson: Json
   try {
-    contentJson = JSON.parse(content)
+    contentJson = JSON.parse(content) as Json
   } catch {
     return { error: 'コンテンツのフォーマットが正しくありません' }
   }
