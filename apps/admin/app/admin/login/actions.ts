@@ -12,7 +12,9 @@ export async function signInWithGitHub() {
 
   let baseOrigin = origin
   if (!baseOrigin) {
-    const protocol = headersList.get('x-forwarded-proto') ?? 'https'
+    const protocol = (headersList.get('x-forwarded-proto') ?? 'https')
+      .split(',')[0]
+      .trim()
     const host = headersList.get('host')
     if (!host) {
       throw new Error('Unable to determine origin for OAuth redirect')

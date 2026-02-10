@@ -5,6 +5,11 @@
 -- SECURITY: Users can only modify their own profile data
 
 -- Add profile_id to works and posts tables to link content to profiles
+-- NOTE: Columns are nullable to support existing rows. Pre-existing rows without
+-- a profile_id will be un-editable until backfilled. A follow-up migration should:
+-- 1. Create/assign appropriate profiles for existing content
+-- 2. Backfill profile_id for all existing works and posts rows
+-- 3. Add NOT NULL constraint to enforce referential integrity for new inserts
 ALTER TABLE works ADD COLUMN IF NOT EXISTS profile_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
 ALTER TABLE posts ADD COLUMN IF NOT EXISTS profile_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
 
