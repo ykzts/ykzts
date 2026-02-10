@@ -64,6 +64,6 @@ export async function signInWithGitHub() {
 export async function logout() {
   const supabase = await createClient()
   await supabase.auth.signOut()
-  revalidateTag('auth-user')
+  revalidateTag('auth-user', 'private')
   redirect('/login')
 }
