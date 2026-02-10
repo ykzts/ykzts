@@ -7,7 +7,6 @@ import { createClient } from '@/lib/supabase/server'
 
 export type ActionState = {
   error?: string
-  success?: boolean
 } | null
 
 // Zod schema for post validation
@@ -78,13 +77,21 @@ export async function updatePost(
 }
 
 export async function deletePost(id: string): Promise<void> {
+  // Validate ID as UUID before querying the database
+  const idValidation = z.string().uuid('無効なIDです').safeParse(id)
+
+  if (!idValidation.success) {
+    const firstError = idValidation.error.issues[0]
+    throw new Error(firstError?.message ?? '無効なIDです')
+  }
+
   const supabase = await createClient()
 
   // Delete and return the deleted row to verify success
   const { data, error } = await supabase
     .from('posts')
     .delete()
-    .eq('id', id)
+    .eq('id', idValidation.data)
     .select('id')
     .maybeSingle()
 
@@ -97,5 +104,6 @@ export async function deletePost(id: string): Promise<void> {
   }
 
   revalidateTag('posts', 'max')
+  revalidateTag('counts', 'max')
   redirect('/admin/posts')
 }
