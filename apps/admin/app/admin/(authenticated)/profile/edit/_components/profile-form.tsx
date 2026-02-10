@@ -115,33 +115,26 @@ export default function ProfileForm({
     )
   }
 
-  // Handle drag end for social links
-  const handleSocialLinksDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event
+  // Generic drag end handler
+  const createDragEndHandler = <T extends { id: string }>(
+    setter: React.Dispatch<React.SetStateAction<T[]>>
+  ) => {
+    return (event: DragEndEvent) => {
+      const { active, over } = event
 
-    if (over && active.id !== over.id) {
-      setSocialLinks((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id)
-        const newIndex = items.findIndex((item) => item.id === over.id)
+      if (over && active.id !== over.id) {
+        setter((items) => {
+          const oldIndex = items.findIndex((item) => item.id === active.id)
+          const newIndex = items.findIndex((item) => item.id === over.id)
 
-        return arrayMove(items, oldIndex, newIndex)
-      })
+          return arrayMove(items, oldIndex, newIndex)
+        })
+      }
     }
   }
 
-  // Handle drag end for technologies
-  const handleTechnologiesDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event
-
-    if (over && active.id !== over.id) {
-      setTechnologies((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id)
-        const newIndex = items.findIndex((item) => item.id === over.id)
-
-        return arrayMove(items, oldIndex, newIndex)
-      })
-    }
-  }
+  const handleSocialLinksDragEnd = createDragEndHandler(setSocialLinks)
+  const handleTechnologiesDragEnd = createDragEndHandler(setTechnologies)
 
   return (
     <form action={formAction} className="space-y-6">
