@@ -66,8 +66,8 @@ export async function getCounts() {
   }
 
   return {
+    posts: postsResult.count ?? 0,
     profiles: profilesResult.count ?? 0,
-    works: worksResult.count ?? 0,
-    posts: postsResult.count ?? 0
+    works: worksResult.count ?? 0
   }
 }
