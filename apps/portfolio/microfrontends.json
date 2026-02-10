@@ -2,7 +2,11 @@
   "apps": [
     {
       "name": "ykzts-admin",
-      "path": "/admin"
+      "routing": [
+        {
+          "path": "/admin/:path*"
+        }
+      ]
     }
   ]
 }
