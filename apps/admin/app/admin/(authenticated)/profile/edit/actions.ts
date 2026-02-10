@@ -11,7 +11,6 @@ import { createClient } from '@/lib/supabase/server'
 const profileSchema = z.object({
   about: z.string().optional(),
   email: z
-    .string()
     .email('メールアドレスの形式が正しくありません。')
     .optional()
     .or(z.literal('')),
@@ -20,12 +19,12 @@ const profileSchema = z.object({
 })
 
 const socialLinkSchema = z.object({
-  id: z.string(),
-  url: z.string().url('URLの形式が正しくありません。')
+  id: z.uuid(),
+  url: z.url('URLの形式が正しくありません。')
 })
 
 const technologySchema = z.object({
-  id: z.string(),
+  id: z.uuid(),
   name: z.string().min(1)
 })
 
@@ -44,10 +43,10 @@ export async function updateProfile(
 
     // Extract and validate profile data
     const rawProfileData = {
-      about: (formData.get('about') as string | null) ?? undefined,
-      email: (formData.get('email') as string | null) ?? '',
-      name: (formData.get('name') as string | null) ?? '',
-      tagline: (formData.get('tagline') as string | null) ?? undefined
+      about: formData.get('about') ?? undefined,
+      email: formData.get('email') ?? '',
+      name: formData.get('name') ?? '',
+      tagline: formData.get('tagline') ?? undefined
     }
 
     const profileValidation = profileSchema.safeParse(rawProfileData)
