@@ -249,8 +249,8 @@ importers:
   renovate-config:
     devDependencies:
       renovate:
-        specifier: 43.4.1
-        version: 43.4.1(encoding@0.1.13)(typanion@3.14.0)
+        specifier: 43.4.2
+        version: 43.4.2(encoding@0.1.13)(typanion@3.14.0)
 
 packages:
 
@@ -4643,8 +4643,8 @@ packages:
     resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
     engines: {node: '>=18'}
 
-  commander@14.0.2:
-    resolution: {integrity: sha512-TywoWNNRbhoD0BXs1P3ZEScW8W5iKrnbithIl0YH+uCmBd0QpPOA8yc82DS3BIE5Ma6FnBVUsJ7wVUDz4dvOWQ==}
+  commander@14.0.3:
+    resolution: {integrity: sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw==}
     engines: {node: '>=20'}
 
   commander@2.20.3:
@@ -8237,8 +8237,8 @@ packages:
   renderkid@3.0.0:
     resolution: {integrity: sha512-q/7VIQA8lmM1hF+jn+sFSPWGlMkSAeNYcPLmDQx2zzuiDfaLrOmumR8iaUKlenFgh0XRPIUeSPlH3A+AW3Z5pg==}
 
-  renovate@43.4.1:
-    resolution: {integrity: sha512-YLTBxmGA+g9sLAC7MW6qxww+07udMEZgyG36IqWS+NehKpr2N2KfCpEMNbSiR2MBTiX7buKnmcb/cY56gn3iBQ==}
+  renovate@43.4.2:
+    resolution: {integrity: sha512-h6P5SAbwj7GXJ442wMA6R0WcQuP3AA/FppHQO071D+xXU2hNazieQ4hlSMUbNKO7/ojT6vlAye8AT7JPdug5jA==}
     engines: {node: ^24.11.0, pnpm: ^10.0.0}
     hasBin: true
 
@@ -15653,7 +15653,7 @@ snapshots:
 
   commander@12.1.0: {}
 
-  commander@14.0.2: {}
+  commander@14.0.3: {}
 
   commander@2.20.3: {}
 
@@ -16136,7 +16136,7 @@ snapshots:
   editorconfig@3.0.1:
     dependencies:
       '@one-ini/wasm': 0.2.0
-      commander: 14.0.2
+      commander: 14.0.3
       minimatch: 10.0.1
       semver: 7.7.3
 
@@ -19921,7 +19921,7 @@ snapshots:
       lodash: 4.17.21
       strip-ansi: 6.0.1
 
-  renovate@43.4.1(encoding@0.1.13)(typanion@3.14.0):
+  renovate@43.4.2(encoding@0.1.13)(typanion@3.14.0):
     dependencies:
       '@aws-sdk/client-codecommit': 3.980.0
       '@aws-sdk/client-ec2': 3.980.0
@@ -19969,7 +19969,7 @@ snapshots:
       cacache: 20.0.3
       changelog-filename-regex: 2.0.1
       clean-git-ref: 2.0.1
-      commander: 14.0.2
+      commander: 14.0.3
       conventional-commits-detector: 1.0.3
       croner: 9.1.0
       cronstrue: 3.11.0
