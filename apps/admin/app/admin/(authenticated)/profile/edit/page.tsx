@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { getProfile, getSocialLinks, getTechnologies } from '@/lib/data'
-import ProfileForm from './profile-form'
-import ProfileEditSkeleton from './skeleton'
+import ProfileForm from './_components/profile-form'
+import ProfileEditSkeleton from './_components/skeleton'
 
 async function ProfileFormWrapper() {
   const [profile, socialLinks, technologies] = await Promise.all([

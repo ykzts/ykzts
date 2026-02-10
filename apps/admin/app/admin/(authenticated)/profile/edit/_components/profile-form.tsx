@@ -3,7 +3,7 @@
 import type { Json } from '@ykzts/supabase'
 import { useRouter } from 'next/navigation'
 import { useActionState, useState } from 'react'
-import { updateProfile } from './actions'
+import { updateProfile } from '../actions'
 
 type ProfileFormProps = {
   initialData?: {

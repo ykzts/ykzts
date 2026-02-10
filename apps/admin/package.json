@@ -19,7 +19,8 @@
     "@ykzts/tsconfig": "workspace:*",
     "postcss": "8.5.6",
     "tailwindcss": "4.1.18",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "4.0.18"
   },
   "license": "MIT",
   "name": "@ykzts/admin",
@@ -33,6 +34,7 @@
     "build": "next build",
     "dev": "next dev --port $(microfrontends port)",
     "start": "next start",
+    "test": "vitest --run",
     "typegen": "next typegen"
   },
   "type": "module",

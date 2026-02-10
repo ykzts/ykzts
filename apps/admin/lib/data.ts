@@ -46,20 +46,10 @@ export async function getSocialLinks() {
   }
 
   const supabase = await createClient()
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('id')
-    .eq('user_id', user.id)
-    .maybeSingle()
-
-  if (!profile) {
-    return []
-  }
-
   const { data, error } = await supabase
     .from('social_links')
-    .select('id, service, url, sort_order')
-    .eq('profile_id', profile.id)
+    .select('id, service, url, sort_order, profile_id!inner(user_id)')
+    .eq('profile_id.user_id', user.id)
     .order('sort_order', { ascending: true })
 
   if (error) {
@@ -79,20 +69,10 @@ export async function getTechnologies() {
   }
 
   const supabase = await createClient()
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('id')
-    .eq('user_id', user.id)
-    .maybeSingle()
-
-  if (!profile) {
-    return []
-  }
-
   const { data, error } = await supabase
     .from('technologies')
-    .select('id, name, sort_order')
-    .eq('profile_id', profile.id)
+    .select('id, name, sort_order, profile_id!inner(user_id)')
+    .eq('profile_id.user_id', user.id)
     .order('sort_order', { ascending: true })
 
   if (error) {
