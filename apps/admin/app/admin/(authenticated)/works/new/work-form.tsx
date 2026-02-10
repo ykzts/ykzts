@@ -4,6 +4,10 @@ import { useActionState, useState } from 'react'
 import type { ActionState } from './actions'
 import { createWork } from './actions'
 
+// Default Portable Text content (empty paragraph)
+const DEFAULT_PORTABLE_TEXT =
+  '[{"_type":"block","children":[{"_type":"span","marks":[],"text":""}],"markDefs":[],"style":"normal"}]'
+
 function generateSlug(title: string): string {
   return title
     .toLowerCase()
@@ -108,7 +112,7 @@ export function WorkForm() {
           </label>
           <textarea
             className="input min-h-[200px] w-full resize-y"
-            defaultValue='[{"_type":"block","children":[{"_type":"span","marks":[],"text":""}],"markDefs":[],"style":"normal"}]'
+            defaultValue={DEFAULT_PORTABLE_TEXT}
             id="content"
             name="content"
             placeholder='Portable Text形式のJSON（例: [{"_type":"block","children":[{"_type":"span","marks":[],"text":"プロジェクトの説明"}],"markDefs":[],"style":"normal"}]）'

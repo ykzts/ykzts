@@ -116,8 +116,8 @@ export async function createWork(
     }
 
     // Revalidate both works list and dashboard counts
-    revalidateTag('works', 'max')
-    revalidateTag('counts', 'max')
+    revalidateTag('works')
+    revalidateTag('counts')
   } catch (error) {
     return {
       error: `予期しないエラーが発生しました: ${error instanceof Error ? error.message : '不明なエラー'}`
