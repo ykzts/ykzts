@@ -35,6 +35,24 @@ export async function getWorks() {
   return data
 }
 
+export async function getWork(id: string) {
+  'use cache: private'
+  cacheTag('works')
+
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('works')
+    .select('id, title, slug, starts_at, content, created_at, updated_at')
+    .eq('id', id)
+    .maybeSingle()
+
+  if (error) {
+    throw new Error(`作品の取得に失敗しました: ${error.message}`)
+  }
+
+  return data
+}
+
 export async function getPosts() {
   'use cache: private'
   cacheTag('posts')
