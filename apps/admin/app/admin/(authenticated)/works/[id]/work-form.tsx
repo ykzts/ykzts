@@ -27,13 +27,8 @@ export function WorkForm({ work }: WorkFormProps) {
       return
     }
 
-    try {
-      await deleteWork(work.id)
-    } catch (error) {
-      alert(
-        `削除に失敗しました: ${error instanceof Error ? error.message : '不明なエラー'}`
-      )
-    }
+    await deleteWork(work.id)
+    // deleteWork handles redirect, no need to catch errors
   }
 
   // Convert content to JSON string for textarea
