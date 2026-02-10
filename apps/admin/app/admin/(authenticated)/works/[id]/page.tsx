@@ -22,12 +22,12 @@ async function WorkEditContent({ id }: { id: string }) {
   )
 }
 
-export default function EditWorkPage({
+export default async function EditWorkPage({
   params
 }: {
   params: Promise<{ id: string }>
 }) {
-  const { id } = params as unknown as { id: string }
+  const { id } = await params
 
   return (
     <div>
