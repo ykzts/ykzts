@@ -6,7 +6,38 @@ import { createClient } from '@/lib/supabase/server'
 
 export async function signInWithGitHub() {
   const supabase = await createClient()
-  const origin = (await headers()).get('origin')
+  const headersList = await headers()
+  const origin = headersList.get('origin')
+
+  // Prevent invalid redirect URL if origin is missing
+  if (!origin) {
+    // Fallback: construct from protocol and host headers
+    const protocol = headersList.get('x-forwarded-proto') ?? 'https'
+    const host = headersList.get('host')
+    if (!host) {
+      throw new Error('Unable to determine origin for OAuth redirect')
+    }
+    const safeOrigin = `${protocol}://${host}`
+    const redirectTo = `${safeOrigin}/auth/callback`
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      options: {
+        redirectTo
+      },
+      provider: 'github'
+    })
+
+    if (error) {
+      throw new Error(error.message)
+    }
+
+    if (data.url) {
+      return data.url
+    }
+
+    return null
+  }
+
   const redirectTo = `${origin}/auth/callback`
 
   const { data, error } = await supabase.auth.signInWithOAuth({

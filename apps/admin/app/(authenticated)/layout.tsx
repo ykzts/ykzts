@@ -3,14 +3,9 @@ import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { getCurrentUser } from '@/lib/auth'
 import { logout } from '../login/actions'
+import type { User } from '@supabase/supabase-js'
 
-async function UserInfo() {
-  const user = await getCurrentUser()
-
-  if (!user) {
-    redirect('/login')
-  }
-
+function UserInfo({ user }: { user: User }) {
   return (
     <div className="flex items-center">
       <span className="mr-4 text-muted text-sm">{user.email ?? 'Unknown'}</span>
@@ -23,7 +18,14 @@ async function UserInfo() {
   )
 }
 
-function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
+async function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
+  // Auth guard at layout level - runs before children render
+  const user = await getCurrentUser()
+
+  if (!user) {
+    redirect('/login')
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <nav className="border-border border-b bg-card">
@@ -48,7 +50,7 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
               </div>
             </div>
             <Suspense fallback={<div>Loading...</div>}>
-              <UserInfo />
+              <UserInfo user={user} />
             </Suspense>
           </div>
         </div>
