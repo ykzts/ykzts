@@ -1,9 +1,25 @@
 'use client'
 
+import {
+  closestCenter,
+  DndContext,
+  type DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy
+} from '@dnd-kit/sortable'
 import type { Json } from '@ykzts/supabase'
 import { useRouter } from 'next/navigation'
 import { useActionState, useState } from 'react'
 import { updateProfile } from '../actions'
+import { SortableItem } from './sortable-item'
 
 type ProfileFormProps = {
   initialData?: {
@@ -53,6 +69,14 @@ export default function ProfileForm({
     }))
   )
 
+  // Sensors for drag and drop
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates
+    })
+  )
+
   const addSocialLink = () => {
     setSocialLinks([
       ...socialLinks,
@@ -89,6 +113,34 @@ export default function ProfileForm({
         i === index ? { ...tech, name: value } : tech
       )
     )
+  }
+
+  // Handle drag end for social links
+  const handleSocialLinksDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+
+    if (over && active.id !== over.id) {
+      setSocialLinks((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id)
+        const newIndex = items.findIndex((item) => item.id === over.id)
+
+        return arrayMove(items, oldIndex, newIndex)
+      })
+    }
+  }
+
+  // Handle drag end for technologies
+  const handleTechnologiesDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+
+    if (over && active.id !== over.id) {
+      setTechnologies((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id)
+        const newIndex = items.findIndex((item) => item.id === over.id)
+
+        return arrayMove(items, oldIndex, newIndex)
+      })
+    }
   }
 
   return (
@@ -173,44 +225,57 @@ export default function ProfileForm({
             + 追加
           </button>
         </div>
-        <div className="space-y-3">
-          {socialLinks.map((link, index) => (
-            <div className="flex gap-2" key={link.id}>
-              {!link.isNew && (
-                <input
-                  name={`social_link_id_${index}`}
-                  type="hidden"
-                  value={link.id}
-                />
-              )}
-              <input
-                className="input flex-1"
-                name={`social_link_url_${index}`}
-                onChange={(e) => updateSocialLink(index, e.target.value)}
-                placeholder="URL (例: https://github.com/username)"
-                required
-                type="url"
-                value={link.url}
-              />
-              <button
-                className="btn-danger"
-                onClick={() => removeSocialLink(index)}
-                type="button"
-              >
-                削除
-              </button>
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleSocialLinksDragEnd}
+          sensors={sensors}
+        >
+          <SortableContext
+            items={socialLinks.map((link) => link.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="space-y-3">
+              {socialLinks.map((link, index) => (
+                <SortableItem id={link.id} key={link.id}>
+                  <div className="flex gap-2">
+                    {!link.isNew && (
+                      <input
+                        name={`social_link_id_${index}`}
+                        type="hidden"
+                        value={link.id}
+                      />
+                    )}
+                    <input
+                      className="input flex-1"
+                      name={`social_link_url_${index}`}
+                      onChange={(e) => updateSocialLink(index, e.target.value)}
+                      placeholder="URL (例: https://github.com/username)"
+                      required
+                      type="url"
+                      value={link.url}
+                    />
+                    <button
+                      className="btn-danger"
+                      onClick={() => removeSocialLink(index)}
+                      type="button"
+                    >
+                      削除
+                    </button>
+                  </div>
+                </SortableItem>
+              ))}
             </div>
-          ))}
-          <input
-            name="social_links_count"
-            type="hidden"
-            value={socialLinks.length}
-          />
-          <p className="mt-2 text-muted text-sm">
-            URLから自動的にサービスを検出します (GitHub, X, Facebook, Mastodon
-            など)
-          </p>
-        </div>
+          </SortableContext>
+        </DndContext>
+        <input
+          name="social_links_count"
+          type="hidden"
+          value={socialLinks.length}
+        />
+        <p className="mt-2 text-muted text-sm">
+          URLから自動的にサービスを検出します (GitHub, X, Facebook, Mastodon
+          など)
+        </p>
       </div>
 
       {/* Technologies Section */}
@@ -225,39 +290,52 @@ export default function ProfileForm({
             + 追加
           </button>
         </div>
-        <div className="space-y-3">
-          {technologies.map((tech, index) => (
-            <div className="flex gap-2" key={tech.id}>
-              {!tech.isNew && (
-                <input
-                  name={`technology_id_${index}`}
-                  type="hidden"
-                  value={tech.id}
-                />
-              )}
-              <input
-                className="input flex-1"
-                name={`technology_name_${index}`}
-                onChange={(e) => updateTechnology(index, e.target.value)}
-                placeholder="技術名 (例: TypeScript)"
-                type="text"
-                value={tech.name}
-              />
-              <button
-                className="btn-danger"
-                onClick={() => removeTechnology(index)}
-                type="button"
-              >
-                削除
-              </button>
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleTechnologiesDragEnd}
+          sensors={sensors}
+        >
+          <SortableContext
+            items={technologies.map((tech) => tech.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="space-y-3">
+              {technologies.map((tech, index) => (
+                <SortableItem id={tech.id} key={tech.id}>
+                  <div className="flex gap-2">
+                    {!tech.isNew && (
+                      <input
+                        name={`technology_id_${index}`}
+                        type="hidden"
+                        value={tech.id}
+                      />
+                    )}
+                    <input
+                      className="input flex-1"
+                      name={`technology_name_${index}`}
+                      onChange={(e) => updateTechnology(index, e.target.value)}
+                      placeholder="技術名 (例: TypeScript)"
+                      type="text"
+                      value={tech.name}
+                    />
+                    <button
+                      className="btn-danger"
+                      onClick={() => removeTechnology(index)}
+                      type="button"
+                    >
+                      削除
+                    </button>
+                  </div>
+                </SortableItem>
+              ))}
             </div>
-          ))}
-          <input
-            name="technologies_count"
-            type="hidden"
-            value={technologies.length}
-          />
-        </div>
+          </SortableContext>
+        </DndContext>
+        <input
+          name="technologies_count"
+          type="hidden"
+          value={technologies.length}
+        />
       </div>
 
       <div className="flex gap-4">
