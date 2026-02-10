@@ -1,6 +1,7 @@
 'use client'
 
 import type { Json } from '@ykzts/supabase'
+import { useRouter } from 'next/navigation'
 import { useActionState } from 'react'
 import { updateProfile } from './actions'
 
@@ -14,6 +15,7 @@ type ProfileFormProps = {
 }
 
 export default function ProfileForm({ initialData }: ProfileFormProps) {
+  const router = useRouter()
   const [state, formAction, isPending] = useActionState(updateProfile, null)
 
   return (
@@ -93,7 +95,7 @@ export default function ProfileForm({ initialData }: ProfileFormProps) {
         <button
           className="btn-secondary"
           onClick={() => {
-            window.location.href = '/admin/profile'
+            router.push('/admin/profile')
           }}
           type="button"
         >
