@@ -35,6 +35,37 @@ export async function getWorks() {
   return data
 }
 
+export async function getWork(id: string) {
+  'use cache: private'
+  cacheTag('works')
+
+  const supabase = await createClient()
+
+  // Get current user's profile to ensure we only fetch their works
+  const { data: profileData } = await supabase
+    .from('profiles')
+    .select('id')
+    .maybeSingle()
+
+  if (!profileData) {
+    return null
+  }
+
+  // Note: profile_id filtering is handled by RLS policies
+  // We verify the user has a profile, and RLS ensures they can only see their own works
+  const { data, error } = await supabase
+    .from('works')
+    .select('id, title, slug, starts_at, content, created_at, updated_at')
+    .eq('id', id)
+    .maybeSingle()
+
+  if (error) {
+    throw new Error(`作品の取得に失敗しました: ${error.message}`)
+  }
+
+  return data
+}
+
 export async function getPosts() {
   'use cache: private'
   cacheTag('posts')
