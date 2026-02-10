@@ -1,15 +1,12 @@
 {
-  "apps": [
-    {
-      "name": "portfolio"
-    },
-    {
-      "name": "admin",
+  "applications": {
+    "portfolio": {},
+    "admin": {
       "routing": [
         {
           "path": "/admin/:path*"
         }
       ]
     }
-  ]
+  }
 }
