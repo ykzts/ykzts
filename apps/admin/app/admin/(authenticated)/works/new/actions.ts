@@ -19,7 +19,9 @@ const workSchema = z.object({
     .string()
     .min(1, 'スラッグは必須です')
     .regex(/^[a-z0-9-]+$/, 'スラッグは小文字英数字とハイフンのみ使用できます'),
-  starts_at: z.string().date('日付はYYYY-MM-DD形式で入力してください'),
+  starts_at: z.coerce
+    .date()
+    .transform((date) => date.toISOString().split('T')[0]),
   title: z
     .string()
     .min(1, 'タイトルは必須です')
