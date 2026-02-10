@@ -13,7 +13,7 @@ async function UserInfo() {
 
   return (
     <div className="flex items-center">
-      <span className="mr-4 text-muted text-sm">{user.email}</span>
+      <span className="mr-4 text-muted text-sm">{user.email ?? 'Unknown'}</span>
       <form action={logout}>
         <button className="btn-secondary" type="submit">
           ログアウト

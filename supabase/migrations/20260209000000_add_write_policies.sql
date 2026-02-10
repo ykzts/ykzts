@@ -1,6 +1,14 @@
 -- Migration: Add RLS write policies for authenticated users
 -- This migration adds INSERT, UPDATE, and DELETE policies for authenticated users
 -- while maintaining public read access
+--
+-- SECURITY NOTE: These policies currently allow ANY authenticated user to write.
+-- For production use with multiple users, restrict to admin role:
+-- Example: WITH CHECK ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin')
+-- Or restrict to specific user ID: WITH CHECK (auth.uid() = '<YOUR_ADMIN_UUID>')
+--
+-- For single-user admin scenarios, ensure OAuth is configured to only allow
+-- your specific GitHub account via Supabase Auth settings.
 
 -- Profiles table write policies
 CREATE POLICY "Enable insert access for authenticated users" ON profiles

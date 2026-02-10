@@ -26,24 +26,22 @@
   }
 }
 
-@layer utilities {
-  .btn {
-    @apply px-4 py-2 rounded bg-accent text-accent-foreground font-medium hover:bg-accent/90 transition-colors;
-  }
+@utility btn {
+  @apply px-4 py-2 rounded bg-accent text-accent-foreground font-medium hover:bg-accent/90 transition-colors;
+}
 
-  .btn-secondary {
-    @apply px-4 py-2 rounded bg-card text-card-foreground font-medium border border-border hover:bg-muted/10 transition-colors;
-  }
+@utility btn-secondary {
+  @apply px-4 py-2 rounded bg-card text-card-foreground font-medium border border-border hover:bg-muted/10 transition-colors;
+}
 
-  .btn-danger {
-    @apply px-4 py-2 rounded bg-error text-white font-medium hover:bg-error/90 transition-colors;
-  }
+@utility btn-danger {
+  @apply px-4 py-2 rounded bg-error text-white font-medium hover:bg-error/90 transition-colors;
+}
 
-  .input {
-    @apply px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-accent;
-  }
+@utility input {
+  @apply px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-accent;
+}
 
-  .card {
-    @apply bg-card border border-border rounded-lg p-6 shadow-sm;
-  }
+@utility card {
+  @apply bg-card border border-border rounded-lg p-6 shadow-sm;
 }
