@@ -11,6 +11,7 @@ import { createClient } from '@/lib/supabase/server'
 const profileSchema = z.object({
   about: z.string().optional(),
   email: z
+    .string()
     .email('メールアドレスの形式が正しくありません。')
     .optional()
     .or(z.literal('')),
