@@ -1,9 +1,9 @@
+import type { User } from '@supabase/supabase-js'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { getCurrentUser } from '@/lib/auth'
 import { logout } from '../login/actions'
-import type { User } from '@supabase/supabase-js'
 
 function UserInfo({ user }: { user: User }) {
   return (
@@ -18,7 +18,11 @@ function UserInfo({ user }: { user: User }) {
   )
 }
 
-async function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
+async function AuthenticatedLayout({
+  children
+}: {
+  children: React.ReactNode
+}) {
   // Auth guard at layout level - runs before children render
   const user = await getCurrentUser()
 
