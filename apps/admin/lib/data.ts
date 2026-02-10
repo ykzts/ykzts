@@ -30,6 +30,60 @@ export async function getProfile() {
   return data
 }
 
+export async function getSocialLinks() {
+  'use cache: private'
+  cacheTag('profile')
+
+  const supabase = await createClient()
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('id')
+    .maybeSingle()
+
+  if (!profile) {
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from('social_links')
+    .select('id, service, url, sort_order')
+    .eq('profile_id', profile.id)
+    .order('sort_order', { ascending: true })
+
+  if (error) {
+    throw new Error(`ソーシャルリンクの取得に失敗しました: ${error.message}`)
+  }
+
+  return data ?? []
+}
+
+export async function getTechnologies() {
+  'use cache: private'
+  cacheTag('profile')
+
+  const supabase = await createClient()
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('id')
+    .maybeSingle()
+
+  if (!profile) {
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from('technologies')
+    .select('id, name, sort_order')
+    .eq('profile_id', profile.id)
+    .order('sort_order', { ascending: true })
+
+  if (error) {
+    throw new Error(`技術タグの取得に失敗しました: ${error.message}`)
+  }
+
+  return data ?? []
+}
+
 export async function getWorks() {
   'use cache: private'
   cacheTag('works')

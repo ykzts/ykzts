@@ -1,11 +1,21 @@
 import { Suspense } from 'react'
-import { getProfile } from '@/lib/data'
+import { getProfile, getSocialLinks, getTechnologies } from '@/lib/data'
 import ProfileForm from './profile-form'
 
 async function ProfileFormWrapper() {
-  const profile = await getProfile()
+  const [profile, socialLinks, technologies] = await Promise.all([
+    getProfile(),
+    getSocialLinks(),
+    getTechnologies()
+  ])
 
-  return <ProfileForm initialData={profile} />
+  return (
+    <ProfileForm
+      initialData={profile}
+      initialSocialLinks={socialLinks}
+      initialTechnologies={technologies}
+    />
+  )
 }
 
 export default function EditProfilePage() {

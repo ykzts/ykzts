@@ -1,8 +1,12 @@
 import { Suspense } from 'react'
-import { getProfile } from '@/lib/data'
+import { getProfile, getSocialLinks, getTechnologies } from '@/lib/data'
 
 async function ProfileContent() {
-  const profile = await getProfile()
+  const [profile, socialLinks, technologies] = await Promise.all([
+    getProfile(),
+    getSocialLinks(),
+    getTechnologies()
+  ])
 
   return (
     <div className="card">
@@ -34,6 +38,44 @@ async function ProfileContent() {
                 メールアドレス
               </div>
               <p>{profile.email}</p>
+            </div>
+          )}
+
+          {socialLinks.length > 0 && (
+            <div>
+              <div className="mb-2 block font-medium text-sm">
+                ソーシャルリンク
+              </div>
+              <ul className="space-y-1">
+                {socialLinks.map((link) => (
+                  <li key={link.id}>
+                    <a
+                      className="text-accent hover:underline"
+                      href={link.url}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {link.service || link.url}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {technologies.length > 0 && (
+            <div>
+              <div className="mb-2 block font-medium text-sm">技術タグ</div>
+              <div className="flex flex-wrap gap-2">
+                {technologies.map((tech) => (
+                  <span
+                    className="rounded bg-muted/10 px-3 py-1 text-sm"
+                    key={tech.id}
+                  >
+                    {tech.name}
+                  </span>
+                ))}
+              </div>
             </div>
           )}
 
