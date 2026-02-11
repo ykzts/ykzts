@@ -1,5 +1,5 @@
 import { cacheTag } from 'next/cache'
-import type { Database } from '@ykzts/supabase'
+import type { Database, Json } from '@ykzts/supabase'
 import { getCurrentUser } from './auth'
 import { createClient } from './supabase/server'
 
@@ -8,7 +8,7 @@ type PostVersion = Database['public']['Tables']['post_versions']['Row']
 
 export type PostWithDetails = Post & {
   current_version?: {
-    content: unknown
+    content: Json
   } | null
   profile?: {
     name: string | null
@@ -144,7 +144,7 @@ export async function getPostById(id: string): Promise<PostWithDetails | null> {
  */
 export async function createPost(params: {
   changeSummary?: string
-  content: unknown
+  content: Json
   excerpt?: string
   publishedAt?: string
   slug: string
@@ -176,7 +176,7 @@ export async function createPost(params: {
  */
 export async function updatePost(params: {
   changeSummary?: string
-  content?: unknown
+  content?: Json
   excerpt?: string
   postId: string
   publishedAt?: string
