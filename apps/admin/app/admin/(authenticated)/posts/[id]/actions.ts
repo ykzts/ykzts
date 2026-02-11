@@ -11,30 +11,23 @@ export type ActionState = {
 
 // Zod schema for post validation
 const postSchema = z.object({
-  id: z.string().uuid('無効なIDです'),
+  id: z.uuid('無効なIDです'),
   title: z
     .string()
+    .trim()
     .max(256, 'タイトルは256文字以内で入力してください')
     .optional()
+    .or(z.literal(''))
 })
 
 export async function updatePost(
   _prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
-  // Extract and validate FormData values
-  const id = formData.get('id')
-  const title = formData.get('title')
-
-  // Check types - FormData.get() can return string | File | null
-  if (typeof id !== 'string' || (title !== null && typeof title !== 'string')) {
-    return { error: '無効な入力データです' }
-  }
-
-  // Validate with Zod
+  // Extract and validate FormData values with Zod
   const validation = postSchema.safeParse({
-    id,
-    title: title?.trim() || undefined
+    id: formData.get('id'),
+    title: formData.get('title') ?? ''
   })
 
   if (!validation.success) {
@@ -78,7 +71,7 @@ export async function updatePost(
 
 export async function deletePost(id: string): Promise<void> {
   // Validate ID as UUID before querying the database
-  const idValidation = z.string().uuid('無効なIDです').safeParse(id)
+  const idValidation = z.uuid('無効なIDです').safeParse(id)
 
   if (!idValidation.success) {
     const firstError = idValidation.error.issues[0]
