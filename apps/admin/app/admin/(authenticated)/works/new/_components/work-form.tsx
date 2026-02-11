@@ -1,6 +1,7 @@
 'use client'
 
 import { useActionState, useState } from 'react'
+import { RichTextEditor } from '@/components/portable-text-editor'
 import type { ActionState } from '../actions'
 import { createWork } from '../actions'
 
@@ -112,17 +113,7 @@ export function WorkForm() {
           <label className="mb-2 block font-medium" htmlFor="content">
             コンテンツ <span className="text-error">*</span>
           </label>
-          <textarea
-            className="input min-h-[200px] w-full resize-y"
-            defaultValue={DEFAULT_PORTABLE_TEXT}
-            id="content"
-            name="content"
-            placeholder="Portable Text形式のJSONを入力してください"
-            required
-          />
-          <p className="mt-1 text-muted text-sm">
-            必須、Portable Text形式のJSON（初期実装ではテキストエリアで代用）
-          </p>
+          <RichTextEditor initialValue={DEFAULT_PORTABLE_TEXT} name="content" />
         </div>
 
         <div className="flex justify-end">

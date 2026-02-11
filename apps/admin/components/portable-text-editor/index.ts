@@ -1,1 +1,1 @@
-export { RichTextEditor } from './portable-text-editor'
+export { RichTextEditor } from './rich-text-editor'
