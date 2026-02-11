@@ -4,30 +4,46 @@
   --font-sans: system-ui, sans-serif;
   --font-mono: ui-monospace, monospace;
 
+  /* shadcn/ui base-nova color variables */
   --color-background: #ffffff;
   --color-foreground: #1a1a2e;
-  --color-muted: #6b7280;
-  --color-accent: #2563eb;
-  --color-accent-foreground: #ffffff;
   --color-card: #f9fafb;
   --color-card-foreground: #1a1a2e;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #1a1a2e;
+  --color-primary: #2563eb;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f3f4f6;
+  --color-secondary-foreground: #1a1a2e;
+  --color-muted: #f3f4f6;
+  --color-muted-foreground: #6b7280;
+  --color-accent: #f3f4f6;
+  --color-accent-foreground: #1a1a2e;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
   --color-border: #e5e7eb;
-  --color-error: #ef4444;
-  --color-success: #10b981;
+  --color-input: #e5e7eb;
+  --color-ring: #2563eb;
+
+  /* Additional color tokens */
+  --radius: 0.5rem;
 }
 
 @layer base {
+  * {
+    @apply border-border;
+  }
   body {
     @apply bg-background text-foreground;
   }
 
   a {
-    @apply text-accent hover:underline;
+    @apply text-primary hover:underline;
   }
 }
 
 @utility btn {
-  @apply px-4 py-2 rounded bg-accent text-accent-foreground font-medium hover:bg-accent/90 transition-colors;
+  @apply px-4 py-2 rounded bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors;
 }
 
 @utility btn-secondary {
@@ -35,11 +51,11 @@
 }
 
 @utility btn-danger {
-  @apply px-4 py-2 rounded bg-error text-white font-medium hover:bg-error/90 transition-colors;
+  @apply px-4 py-2 rounded bg-destructive text-destructive-foreground font-medium hover:bg-destructive/90 transition-colors;
 }
 
 @utility input {
-  @apply px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-accent;
+  @apply px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring;
 }
 
 @utility card {
