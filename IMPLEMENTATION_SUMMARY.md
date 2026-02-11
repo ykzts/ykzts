@@ -137,6 +137,7 @@ apps/admin/
 ## Future Enhancements
 
 Potential features for future PRs:
+- **Link insertion modal**: Replace browser prompt() with custom accessible modal
 - Headings (H1-H6)
 - Bulleted lists
 - Numbered lists

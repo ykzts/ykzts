@@ -76,7 +76,7 @@ export function lexicalToPortableText(
           const linkText = linkNode.getTextContent()
 
           // Generate a unique key for the mark definition
-          const markKey = `link-${Math.random().toString(36).substr(2, 9)}`
+          const markKey = `link-${crypto.randomUUID()}`
 
           markDefs.push({
             _key: markKey,

@@ -45,7 +45,13 @@ export function ToolbarPlugin() {
 
   const insertLink = useCallback(() => {
     if (!isLink) {
-      const url = prompt('URL を入力してください:')
+      // TODO: Replace with custom accessible modal in future enhancement
+      // Using browser prompt for MVP, but should be replaced with:
+      // - Custom modal with proper focus management
+      // - Keyboard navigation support
+      // - Screen reader announcements
+      // - Cancel button
+      const url = prompt('リンクのURLを入力してください（例: https://example.com）:')
       if (url) {
         editor.dispatchCommand(TOGGLE_LINK_COMMAND, url)
       }

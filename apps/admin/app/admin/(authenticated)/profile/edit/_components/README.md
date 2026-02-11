@@ -91,6 +91,7 @@ import PortableTextEditor from './portable-text-editor'
 
 ## 今後の拡張予定
 
+- [ ] **リンク挿入モーダル**: ブラウザのprompt()をアクセシブルなカスタムモーダルに置き換え
 - [ ] 見出し（H1-H6）
 - [ ] 箇条書きリスト
 - [ ] 番号付きリスト
