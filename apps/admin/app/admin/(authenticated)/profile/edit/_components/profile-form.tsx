@@ -20,6 +20,7 @@ import { useRouter } from 'next/navigation'
 import { useActionState, useCallback, useState } from 'react'
 import { updateProfile } from '../actions'
 import { SortableItem } from './sortable-item'
+import PortableTextEditor from './portable-text-editor'
 
 type ProfileFormProps = {
   initialData?: {
@@ -205,22 +206,16 @@ export default function ProfileForm({
         <label className="mb-2 block font-medium" htmlFor="about">
           自己紹介
         </label>
-        <textarea
-          className="input w-full"
-          defaultValue={
+        <PortableTextEditor
+          initialValue={
             initialData?.about
               ? typeof initialData.about === 'string'
                 ? initialData.about
                 : JSON.stringify(initialData.about)
-              : ''
+              : undefined
           }
-          id="about"
           name="about"
-          rows={6}
         />
-        <p className="mt-1 text-muted text-sm">
-          将来的にPortable Textエディタに対応予定
-        </p>
       </div>
 
       {/* Social Links Section */}
