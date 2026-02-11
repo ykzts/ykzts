@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@source '../../packages/ui/src/**/*.{ts,tsx}';
+@source '../../../../packages/ui/src/**/*.{ts,tsx}';
 
 @theme {
   --font-sans: system-ui, sans-serif;

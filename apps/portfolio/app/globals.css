@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
-@source '../../packages/ui/src/**/*.{ts,tsx}';
+@source '../../../packages/ui/src/**/*.{ts,tsx}';
 
 @theme {
   --font-sans:
