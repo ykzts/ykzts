@@ -34,66 +34,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      posts: {
-        Row: {
-          created_at: string
-          current_version_id: string | null
-          excerpt: string | null
-          id: string
-          profile_id: string | null
-          published_at: string | null
-          redirect_from: string[] | null
-          slug: string
-          status: string | null
-          tags: string[] | null
-          title: string | null
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          current_version_id?: string | null
-          excerpt?: string | null
-          id?: string
-          profile_id?: string | null
-          published_at?: string | null
-          redirect_from?: string[] | null
-          slug: string
-          status?: string | null
-          tags?: string[] | null
-          title?: string | null
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          current_version_id?: string | null
-          excerpt?: string | null
-          id?: string
-          profile_id?: string | null
-          published_at?: string | null
-          redirect_from?: string[] | null
-          slug?: string
-          status?: string | null
-          tags?: string[] | null
-          title?: string | null
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "posts_current_version_id_fkey"
-            columns: ["current_version_id"]
-            isOneToOne: false
-            referencedRelation: "post_versions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "posts_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       post_versions: {
         Row: {
           change_summary: string | null
@@ -148,6 +88,66 @@ export type Database = {
           },
         ]
       }
+      posts: {
+        Row: {
+          created_at: string
+          current_version_id: string | null
+          excerpt: string | null
+          id: string
+          profile_id: string | null
+          published_at: string | null
+          redirect_from: string[] | null
+          slug: string | null
+          status: string | null
+          tags: string[] | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_version_id?: string | null
+          excerpt?: string | null
+          id?: string
+          profile_id?: string | null
+          published_at?: string | null
+          redirect_from?: string[] | null
+          slug?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_version_id?: string | null
+          excerpt?: string | null
+          id?: string
+          profile_id?: string | null
+          published_at?: string | null
+          redirect_from?: string[] | null
+          slug?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_current_version_id_fkey"
+            columns: ["current_version_id"]
+            isOneToOne: false
+            referencedRelation: "post_versions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           about: Json | null
@@ -179,15 +179,7 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "profiles_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       social_links: {
         Row: {
@@ -310,35 +302,30 @@ export type Database = {
     Functions: {
       create_post: {
         Args: {
-          p_title: string
-          p_slug: string
-          p_excerpt: string
           p_content: Json
-          p_tags?: string[] | null
+          p_excerpt: string
+          p_published_at?: string
+          p_slug: string
           p_status?: string
-          p_published_at?: string | null
+          p_tags?: string[]
+          p_title: string
         }
         Returns: string
       }
+      delete_post: { Args: { p_post_id: string }; Returns: undefined }
       update_post: {
         Args: {
-          p_post_id: string
-          p_title?: string | null
-          p_slug?: string | null
-          p_excerpt?: string | null
-          p_content?: Json | null
-          p_tags?: string[] | null
-          p_status?: string | null
-          p_published_at?: string | null
           p_change_summary?: string
+          p_content?: Json
+          p_excerpt?: string
+          p_post_id: string
+          p_published_at?: string
+          p_slug?: string
+          p_status?: string
+          p_tags?: string[]
+          p_title?: string
         }
         Returns: string
-      }
-      delete_post: {
-        Args: {
-          p_post_id: string
-        }
-        Returns: void
       }
     }
     Enums: {
