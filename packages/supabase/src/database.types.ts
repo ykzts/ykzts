@@ -338,7 +338,7 @@ export type Database = {
         Args: {
           p_post_id: string
         }
-        Returns: undefined
+        Returns: void
       }
     }
     Enums: {
