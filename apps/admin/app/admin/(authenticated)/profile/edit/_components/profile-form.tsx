@@ -207,6 +207,7 @@ export default function ProfileForm({
           自己紹介
         </label>
         <RichTextEditor
+          id="about"
           initialValue={
             initialData?.about
               ? typeof initialData.about === 'string'

@@ -1,8 +1,6 @@
 'use client'
 
-import { CodeNode } from '@lexical/code'
 import { LinkNode } from '@lexical/link'
-import { ListItemNode, ListNode } from '@lexical/list'
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
@@ -10,9 +8,8 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
-import { HeadingNode, QuoteNode } from '@lexical/rich-text'
 import type { EditorState, LexicalEditor } from 'lexical'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { LinkPlugin } from './link-plugin'
 import {
   initializeEditorWithPortableText,
@@ -31,19 +28,21 @@ const editorTheme = {
 }
 
 type RichTextEditorProps = {
+  id?: string
   initialValue?: string
   name: string
   onChange?: (value: string) => void
 }
 
 export function RichTextEditor({
+  id,
   initialValue,
   name,
   onChange
 }: RichTextEditorProps) {
   const [isClient, setIsClient] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
-  const [previewContent, setPreviewContent] = useState('')
+  const [previewContent, setPreviewContent] = useState(initialValue || '')
   const hiddenInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -56,33 +55,33 @@ export function RichTextEditor({
           initializeEditorWithPortableText(editor, initialValue)
         }
       : undefined,
-    namespace: 'PortableTextEditor',
-    nodes: [HeadingNode, ListNode, ListItemNode, QuoteNode, CodeNode, LinkNode],
+    namespace: 'RichTextEditor',
+    nodes: [LinkNode],
     onError: (error: Error) => {
       console.error('Lexical error:', error)
     },
     theme: editorTheme
   }
 
-  const handleEditorChange = (
-    editorState: EditorState,
-    editor: LexicalEditor
-  ) => {
-    editorState.read(() => {
-      const portableText = lexicalToPortableText(editor)
-      const jsonString = JSON.stringify(portableText)
+  const handleEditorChange = useCallback(
+    (editorState: EditorState, editor: LexicalEditor) => {
+      editorState.read(() => {
+        const portableText = lexicalToPortableText(editor)
+        const jsonString = JSON.stringify(portableText)
 
-      if (hiddenInputRef.current) {
-        hiddenInputRef.current.value = jsonString
-      }
+        if (hiddenInputRef.current) {
+          hiddenInputRef.current.value = jsonString
+        }
 
-      if (onChange) {
-        onChange(jsonString)
-      }
+        if (onChange) {
+          onChange(jsonString)
+        }
 
-      setPreviewContent(jsonString)
-    })
-  }
+        setPreviewContent(jsonString)
+      })
+    },
+    [onChange]
+  )
 
   if (!isClient) {
     return (
@@ -100,7 +99,10 @@ export function RichTextEditor({
           <div className="relative">
             <RichTextPlugin
               contentEditable={
-                <ContentEditable className="min-h-[150px] resize-y overflow-auto px-4 py-3 text-foreground outline-none" />
+                <ContentEditable
+                  className="min-h-[150px] overflow-auto px-4 py-3 text-foreground outline-none"
+                  id={id}
+                />
               }
               ErrorBoundary={LexicalErrorBoundary}
               placeholder={
@@ -133,7 +135,13 @@ export function RichTextEditor({
         <div className="rounded border border-border bg-muted/5 p-4">
           <div className="mb-2 font-medium text-sm">プレビュー (JSON)</div>
           <pre className="overflow-auto text-xs">
-            {JSON.stringify(JSON.parse(previewContent), null, 2)}
+            {(() => {
+              try {
+                return JSON.stringify(JSON.parse(previewContent), null, 2)
+              } catch {
+                return previewContent
+              }
+            })()}
           </pre>
         </div>
       )}
