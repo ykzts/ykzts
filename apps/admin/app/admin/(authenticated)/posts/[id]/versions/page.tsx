@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { getPostById, getPostVersions } from '@/lib/posts'
+import { VersionsSkeleton } from './_components/versions-skeleton'
 
 async function VersionsContent({ postId }: { postId: string }) {
   const [post, versions] = await Promise.all([
@@ -147,13 +148,7 @@ export default async function VersionsPage({
   return (
     <div>
       <h1 className="mb-6 font-bold text-3xl">バージョン履歴</h1>
-      <Suspense
-        fallback={
-          <Card className="p-6">
-            <div>読み込み中...</div>
-          </Card>
-        }
-      >
+      <Suspense fallback={<VersionsSkeleton />}>
         <VersionsContent postId={id} />
       </Suspense>
     </div>

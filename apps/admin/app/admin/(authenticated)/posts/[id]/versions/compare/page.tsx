@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { compareVersions, getPostById } from '@/lib/posts'
+import { CompareSkeleton } from './_components/compare-skeleton'
 
 function DiffItem({
   label,
@@ -188,13 +189,7 @@ export default function ComparePage({
   return (
     <div>
       <h1 className="mb-6 font-bold text-3xl">バージョン比較</h1>
-      <Suspense
-        fallback={
-          <Card className="p-6">
-            <div>読み込み中...</div>
-          </Card>
-        }
-      >
+      <Suspense fallback={<CompareSkeleton />}>
         <ComparePageContent params={params} searchParams={searchParams} />
       </Suspense>
     </div>

@@ -6,6 +6,7 @@ import { getPosts } from '@/lib/posts'
 import { NewPostButton } from './_components/new-post-button'
 import { PostsFilters } from './_components/posts-filters'
 import { PostsPagination } from './_components/posts-pagination'
+import { PostsSkeleton } from './_components/posts-skeleton'
 
 async function PostsContent({
   page,
@@ -113,13 +114,7 @@ export default function PostsPage({
 
       <PostsFilters />
 
-      <Suspense
-        fallback={
-          <Card className="p-6">
-            <div>読み込み中...</div>
-          </Card>
-        }
-      >
+      <Suspense fallback={<PostsSkeleton />}>
         <PostsContentAsync searchParams={searchParams} />
       </Suspense>
     </div>

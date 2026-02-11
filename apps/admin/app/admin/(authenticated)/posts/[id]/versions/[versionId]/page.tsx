@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { getPostById, getPostVersion } from '@/lib/posts'
 import { RollbackButton } from './_components/rollback-button'
+import { VersionDetailSkeleton } from './_components/version-detail-skeleton'
 
 async function VersionDetailContent({
   postId,
@@ -148,13 +149,7 @@ export default async function VersionDetailPage({
   return (
     <div>
       <h1 className="mb-6 font-bold text-3xl">バージョン詳細</h1>
-      <Suspense
-        fallback={
-          <Card className="p-6">
-            <div>読み込み中...</div>
-          </Card>
-        }
-      >
+      <Suspense fallback={<VersionDetailSkeleton />}>
         <VersionDetailContent postId={id} versionId={versionId} />
       </Suspense>
     </div>
