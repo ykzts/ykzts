@@ -40,6 +40,7 @@ export type Database = {
           current_version_id: string | null
           excerpt: string | null
           id: string
+          profile_id: string | null
           published_at: string | null
           redirect_from: string[] | null
           slug: string | null
@@ -53,6 +54,7 @@ export type Database = {
           current_version_id?: string | null
           excerpt?: string | null
           id?: string
+          profile_id?: string | null
           published_at?: string | null
           redirect_from?: string[] | null
           slug?: string | null
@@ -66,6 +68,7 @@ export type Database = {
           current_version_id?: string | null
           excerpt?: string | null
           id?: string
+          profile_id?: string | null
           published_at?: string | null
           redirect_from?: string[] | null
           slug?: string | null
@@ -80,6 +83,13 @@ export type Database = {
             columns: ["current_version_id"]
             isOneToOne: false
             referencedRelation: "post_versions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -147,6 +157,7 @@ export type Database = {
           name: string
           tagline: string | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           about?: Json | null
@@ -156,6 +167,7 @@ export type Database = {
           name: string
           tagline?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           about?: Json | null
@@ -165,8 +177,17 @@ export type Database = {
           name?: string
           tagline?: string | null
           updated_at?: string
+          user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       social_links: {
         Row: {
@@ -246,6 +267,7 @@ export type Database = {
           content: Json
           created_at: string
           id: string
+          profile_id: string | null
           slug: string
           starts_at: string
           title: string
@@ -255,6 +277,7 @@ export type Database = {
           content: Json
           created_at?: string
           id?: string
+          profile_id?: string | null
           slug: string
           starts_at: string
           title: string
@@ -264,12 +287,21 @@ export type Database = {
           content?: Json
           created_at?: string
           id?: string
+          profile_id?: string | null
           slug?: string
           starts_at?: string
           title?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "works_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

@@ -21,14 +21,17 @@ BEGIN
   END IF;
 END $$;
 
--- Add CHECK constraint for status column
+-- Update existing rows to have 'draft' status if NULL before adding CHECK constraint
+UPDATE posts SET status = 'draft' WHERE status IS NULL;
+
+-- Add CHECK constraint for status column (allows NULL for new rows but ensures valid values when set)
 DO $$
 BEGIN
   IF NOT EXISTS (
     SELECT 1 FROM pg_constraint WHERE conname = 'posts_status_check'
   ) THEN
     ALTER TABLE posts ADD CONSTRAINT posts_status_check 
-      CHECK (status IN ('draft', 'scheduled', 'published'));
+      CHECK (status IS NULL OR status IN ('draft', 'scheduled', 'published'));
   END IF;
 END $$;
 
@@ -60,7 +63,7 @@ BEGIN
 END $$;
 
 -- 3. Create indexes for better query performance
-CREATE INDEX IF NOT EXISTS posts_slug_idx ON posts(slug);
+-- Note: posts_slug_idx is not needed as UNIQUE constraint already creates an index
 CREATE INDEX IF NOT EXISTS posts_status_idx ON posts(status);
 CREATE INDEX IF NOT EXISTS posts_published_at_idx ON posts(published_at DESC);
 CREATE INDEX IF NOT EXISTS post_versions_post_id_idx ON post_versions(post_id);
@@ -70,8 +73,11 @@ CREATE INDEX IF NOT EXISTS post_versions_version_number_idx ON post_versions(pos
 ALTER TABLE post_versions ENABLE ROW LEVEL SECURITY;
 
 -- 5. Update RLS policies for posts table
--- Drop existing policy if it exists
+-- Drop existing policies from previous migrations
 DROP POLICY IF EXISTS "Enable read access for all users" ON posts;
+DROP POLICY IF EXISTS "Users can insert their own posts" ON posts;
+DROP POLICY IF EXISTS "Users can update their own posts" ON posts;
+DROP POLICY IF EXISTS "Users can delete their own posts" ON posts;
 
 -- Create new policies for posts
 -- Public can read published posts that are already published
@@ -84,21 +90,49 @@ CREATE POLICY "Enable read access for authenticated users" ON posts
   FOR SELECT
   USING (auth.uid() IS NOT NULL);
 
--- Authenticated users can insert posts
+-- Authenticated users can insert their own posts
 CREATE POLICY "Enable insert for authenticated users" ON posts
   FOR INSERT
-  WITH CHECK (auth.uid() IS NOT NULL);
+  WITH CHECK (
+    auth.uid() IS NOT NULL
+    AND EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = posts.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
 
--- Authenticated users can update posts
+-- Authenticated users can update their own posts
 CREATE POLICY "Enable update for authenticated users" ON posts
   FOR UPDATE
-  USING (auth.uid() IS NOT NULL)
-  WITH CHECK (auth.uid() IS NOT NULL);
+  USING (
+    auth.uid() IS NOT NULL
+    AND EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = posts.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  )
+  WITH CHECK (
+    auth.uid() IS NOT NULL
+    AND EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = posts.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
 
--- Authenticated users can delete posts
+-- Authenticated users can delete their own posts
 CREATE POLICY "Enable delete for authenticated users" ON posts
   FOR DELETE
-  USING (auth.uid() IS NOT NULL);
+  USING (
+    auth.uid() IS NOT NULL
+    AND EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = posts.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
 
 -- 6. Create RLS policies for post_versions table
 -- Authenticated users can read all post versions
@@ -106,21 +140,63 @@ CREATE POLICY "Enable read access for authenticated users" ON post_versions
   FOR SELECT
   USING (auth.uid() IS NOT NULL);
 
--- Authenticated users can insert post versions
+-- Only post owners can insert versions for their posts, and created_by must match auth.uid()
 CREATE POLICY "Enable insert for authenticated users" ON post_versions
   FOR INSERT
-  WITH CHECK (auth.uid() IS NOT NULL);
+  WITH CHECK (
+    auth.uid() IS NOT NULL
+    AND created_by = auth.uid()
+    AND EXISTS (
+      SELECT 1 FROM posts
+      INNER JOIN profiles ON posts.profile_id = profiles.id
+      WHERE posts.id = post_versions.post_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
 
--- Authenticated users can update post versions
+-- Only post owners or version creators can update a post version
 CREATE POLICY "Enable update for authenticated users" ON post_versions
   FOR UPDATE
-  USING (auth.uid() IS NOT NULL)
-  WITH CHECK (auth.uid() IS NOT NULL);
+  USING (
+    auth.uid() IS NOT NULL
+    AND (
+      created_by = auth.uid()
+      OR EXISTS (
+        SELECT 1 FROM posts
+        INNER JOIN profiles ON posts.profile_id = profiles.id
+        WHERE posts.id = post_versions.post_id
+        AND profiles.user_id = auth.uid()
+      )
+    )
+  )
+  WITH CHECK (
+    auth.uid() IS NOT NULL
+    AND (
+      created_by = auth.uid()
+      OR EXISTS (
+        SELECT 1 FROM posts
+        INNER JOIN profiles ON posts.profile_id = profiles.id
+        WHERE posts.id = post_versions.post_id
+        AND profiles.user_id = auth.uid()
+      )
+    )
+  );
 
--- Authenticated users can delete post versions
+-- Only post owners or version creators can delete a post version
 CREATE POLICY "Enable delete for authenticated users" ON post_versions
   FOR DELETE
-  USING (auth.uid() IS NOT NULL);
+  USING (
+    auth.uid() IS NOT NULL
+    AND (
+      created_by = auth.uid()
+      OR EXISTS (
+        SELECT 1 FROM posts
+        INNER JOIN profiles ON posts.profile_id = profiles.id
+        WHERE posts.id = post_versions.post_id
+        AND profiles.user_id = auth.uid()
+      )
+    )
+  );
 
 -- Note: post_versions table doesn't have updated_at column as versions are immutable
 -- Note: The trigger function update_updated_at_column() already exists from the initial migration for posts table
