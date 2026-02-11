@@ -41,10 +41,11 @@ type PortableTextValue = PortableTextBlock[]
 export function lexicalToPortableText(
   editor: LexicalEditor
 ): PortableTextValue {
-  const blocks: PortableTextBlock[] = []
+  return editor.read(() => {
+    const blocks: PortableTextBlock[] = []
 
-  const root = $getRoot()
-  const children = root.getChildren()
+    const root = $getRoot()
+    const children = root.getChildren()
 
   for (const child of children) {
     if ($isParagraphNode(child)) {
@@ -133,18 +134,19 @@ export function lexicalToPortableText(
     }
   }
 
-  // Return at least one empty block
-  if (blocks.length === 0) {
-    blocks.push({
-      _key: crypto.randomUUID(),
-      _type: 'block',
-      children: [{ _key: crypto.randomUUID(), _type: 'span', text: '' }],
-      markDefs: [],
-      style: 'normal'
-    })
-  }
+    // Return at least one empty block
+    if (blocks.length === 0) {
+      blocks.push({
+        _key: crypto.randomUUID(),
+        _type: 'block',
+        children: [{ _key: crypto.randomUUID(), _type: 'span', text: '' }],
+        markDefs: [],
+        style: 'normal'
+      })
+    }
 
-  return blocks
+    return blocks
+  })
 }
 
 /**
