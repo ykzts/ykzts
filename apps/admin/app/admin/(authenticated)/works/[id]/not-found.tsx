@@ -7,16 +7,13 @@ import {
 
 export default function NotFound() {
   return (
-    <div>
-      <h1 className="mb-6 font-bold text-3xl">作品が見つかりません</h1>
-      <Empty>
-        <EmptyContent>
-          <EmptyTitle>作品が見つかりません</EmptyTitle>
-          <EmptyDescription>
-            指定された作品は存在しないか、アクセス権限がありません。
-          </EmptyDescription>
-        </EmptyContent>
-      </Empty>
-    </div>
+    <Empty>
+      <EmptyContent>
+        <EmptyTitle>作品が見つかりません</EmptyTitle>
+        <EmptyDescription>
+          指定された作品は存在しないか、アクセス権限がありません。
+        </EmptyDescription>
+      </EmptyContent>
+    </Empty>
   )
 }

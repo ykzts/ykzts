@@ -5,14 +5,14 @@
   --font-sans: system-ui, sans-serif;
   --font-mono: ui-monospace, monospace;
 
-  --color-background: #ffffff;
+  --color-background: #fff;
   --color-foreground: #1a1a2e;
   --color-card: #f9fafb;
   --color-card-foreground: #1a1a2e;
-  --color-popover: #ffffff;
+  --color-popover: #fff;
   --color-popover-foreground: #1a1a2e;
   --color-primary: #2563eb;
-  --color-primary-foreground: #ffffff;
+  --color-primary-foreground: #fff;
   --color-secondary: #f3f4f6;
   --color-secondary-foreground: #1a1a2e;
   --color-muted: #f3f4f6;
@@ -20,7 +20,7 @@
   --color-accent: #f3f4f6;
   --color-accent-foreground: #1a1a2e;
   --color-destructive: #ef4444;
-  --color-destructive-foreground: #ffffff;
+  --color-destructive-foreground: #fff;
   --color-border: #e5e7eb;
   --color-input: #e5e7eb;
   --color-ring: #2563eb;
@@ -38,7 +38,7 @@
     @apply bg-background text-foreground;
   }
 
-  a {
+  a:not([class]) {
     @apply text-primary hover:underline;
   }
 }

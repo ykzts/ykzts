@@ -251,6 +251,7 @@ export default function ProfileForm({
                     />
                   )}
                   <Input
+                    aria-label="ソーシャルリンクURL"
                     className="flex-1"
                     name={`social_link_url_${index}`}
                     onChange={(e) => updateSocialLink(index, e.target.value)}
@@ -316,10 +317,12 @@ export default function ProfileForm({
                     />
                   )}
                   <Input
+                    aria-label="技術名"
                     className="flex-1"
                     name={`technology_name_${index}`}
                     onChange={(e) => updateTechnology(index, e.target.value)}
                     placeholder="技術名 (例: TypeScript)"
+                    required
                     type="text"
                     value={tech.name}
                   />
