@@ -20,10 +20,17 @@ export function ToolbarPlugin() {
       setIsBold(selection.hasFormat('bold'))
       setIsItalic(selection.hasFormat('italic'))
 
-      // Check if we're in a link
-      const node = selection.anchor.getNode()
-      const parent = node.getParent()
-      setIsLink($isLinkNode(parent) || $isLinkNode(node))
+      // Check if we're in a link - check both anchor and focus nodes
+      const anchorNode = selection.anchor.getNode()
+      const focusNode = selection.focus.getNode()
+      const anchorParent = anchorNode.getParent()
+      const focusParent = focusNode.getParent()
+      setIsLink(
+        $isLinkNode(anchorNode) ||
+          $isLinkNode(anchorParent) ||
+          $isLinkNode(focusNode) ||
+          $isLinkNode(focusParent)
+      )
     }
   }, [])
 

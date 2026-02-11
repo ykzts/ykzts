@@ -3,7 +3,9 @@
 import { LinkPlugin as LexicalLinkPlugin } from '@lexical/react/LexicalLinkPlugin'
 
 export function validateUrl(url: string): boolean {
-  return URL.canParse(url)
+  if (!URL.canParse(url)) return false
+  const { protocol } = new URL(url)
+  return protocol === 'http:' || protocol === 'https:'
 }
 
 export function LinkPlugin() {
