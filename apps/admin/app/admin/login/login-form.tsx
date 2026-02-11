@@ -1,5 +1,5 @@
 'use client'
-import { Button } from '@ykzts/ui/button'
+import { Button } from '@ykzts/ui/components/button'
 
 import { useState, useTransition } from 'react'
 import { signInWithGitHub } from './actions'

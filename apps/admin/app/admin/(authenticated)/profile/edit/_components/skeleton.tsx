@@ -1,4 +1,4 @@
-import { buttonVariants } from '@ykzts/ui/button'
+import { buttonVariants } from '@ykzts/ui/components/button'
 import { cn } from '@ykzts/ui/lib/utils'
 
 export default function ProfileEditSkeleton() {

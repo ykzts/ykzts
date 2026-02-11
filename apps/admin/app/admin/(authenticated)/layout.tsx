@@ -1,5 +1,5 @@
 import type { User } from '@supabase/supabase-js'
-import { Button } from '@ykzts/ui/button'
+import { Button } from '@ykzts/ui/components/button'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'

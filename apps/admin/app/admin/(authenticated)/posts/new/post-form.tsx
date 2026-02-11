@@ -1,6 +1,7 @@
 'use client'
-import { Button } from '@ykzts/ui/button'
-import { Input } from '@ykzts/ui/input'
+import { Alert, AlertDescription } from '@ykzts/ui/components/alert'
+import { Button } from '@ykzts/ui/components/button'
+import { Input } from '@ykzts/ui/components/input'
 
 import { useActionState } from 'react'
 import type { ActionState } from './actions'
@@ -16,9 +17,9 @@ export function PostForm() {
     <div>
       <form action={formAction} className="space-y-6">
         {state?.error && (
-          <div className="rounded bg-error/10 p-4 text-error">
-            {state.error}
-          </div>
+          <Alert variant="destructive">
+            <AlertDescription>{state.error}</AlertDescription>
+          </Alert>
         )}
 
         <div>

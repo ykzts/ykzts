@@ -1,5 +1,5 @@
-import { buttonVariants } from '@ykzts/ui/button'
-import { Card } from '@ykzts/ui/card'
+import { buttonVariants } from '@ykzts/ui/components/button'
+import { Card } from '@ykzts/ui/components/card'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { getWorks } from '@/lib/data'

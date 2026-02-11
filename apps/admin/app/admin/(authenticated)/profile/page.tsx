@@ -1,5 +1,5 @@
-import { Button } from '@ykzts/ui/button'
-import { Card } from '@ykzts/ui/card'
+import { Button } from '@ykzts/ui/components/button'
+import { Card } from '@ykzts/ui/components/card'
 import { Suspense } from 'react'
 import { getProfile, getSocialLinks, getTechnologies } from '@/lib/data'
 

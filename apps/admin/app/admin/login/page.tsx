@@ -1,4 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@ykzts/ui/card'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle
+} from '@ykzts/ui/components/card'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { getCurrentUser } from '@/lib/auth'

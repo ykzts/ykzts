@@ -1,10 +1,11 @@
 'use client'
 
 import { Turnstile } from '@marsidev/react-turnstile'
-import { Button } from '@ykzts/ui/button'
-import { Field } from '@ykzts/ui/field'
-import { Input } from '@ykzts/ui/input'
-import { Textarea } from '@ykzts/ui/textarea'
+import { Button } from '@ykzts/ui/components/button'
+import { Checkbox } from '@ykzts/ui/components/checkbox'
+import { Field } from '@ykzts/ui/components/field'
+import { Input } from '@ykzts/ui/components/input'
+import { Textarea } from '@ykzts/ui/components/textarea'
 import Link from 'next/link'
 import { useActionState, useEffect, useRef, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
@@ -136,16 +137,14 @@ export default function ContactForm() {
 
         <div className="mb-5">
           <label className="flex cursor-pointer items-start gap-2.5 text-base text-muted-foreground">
-            <input
+            <Checkbox
               aria-describedby={
                 errors.privacyConsent ? 'privacy-error' : undefined
               }
               aria-invalid={Boolean(errors.privacyConsent)}
-              className="mt-1 cursor-pointer accent-primary"
               defaultChecked={formData.privacyConsent || false}
               name="privacyConsent"
               required
-              type="checkbox"
             />
             <span>
               <Link className="text-primary hover:underline" href="/privacy">

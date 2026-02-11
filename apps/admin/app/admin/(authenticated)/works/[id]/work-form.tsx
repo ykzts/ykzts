@@ -1,6 +1,7 @@
 'use client'
-import { Button } from '@ykzts/ui/button'
-import { Input } from '@ykzts/ui/input'
+import { Alert, AlertDescription } from '@ykzts/ui/components/alert'
+import { Button } from '@ykzts/ui/components/button'
+import { Input } from '@ykzts/ui/components/input'
 
 import { useActionState, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
@@ -58,15 +59,15 @@ export function WorkForm({ work }: WorkFormProps) {
         <input name="id" type="hidden" value={work.id} />
 
         {state?.error && (
-          <div className="rounded bg-error/10 p-4 text-error">
-            {state.error}
-          </div>
+          <Alert variant="destructive">
+            <AlertDescription>{state.error}</AlertDescription>
+          </Alert>
         )}
 
         {deleteError && (
-          <div className="rounded bg-error/10 p-4 text-error">
-            {deleteError}
-          </div>
+          <Alert variant="destructive">
+            <AlertDescription>{deleteError}</AlertDescription>
+          </Alert>
         )}
 
         <div>

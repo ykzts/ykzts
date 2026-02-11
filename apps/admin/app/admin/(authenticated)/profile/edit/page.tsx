@@ -1,4 +1,4 @@
-import { Card } from '@ykzts/ui/card'
+import { Card } from '@ykzts/ui/components/card'
 import { Suspense } from 'react'
 import { getProfile, getSocialLinks, getTechnologies } from '@/lib/data'
 import ProfileForm from './_components/profile-form'

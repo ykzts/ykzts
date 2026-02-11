@@ -1,4 +1,4 @@
-import { Card } from '@ykzts/ui/card'
+import { Card } from '@ykzts/ui/components/card'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { getPost } from '@/lib/data'

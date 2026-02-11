@@ -1,4 +1,4 @@
-import { Card } from '@ykzts/ui/card'
+import { Card } from '@ykzts/ui/components/card'
 import { PostForm } from './post-form'
 
 export default function NewPostPage() {

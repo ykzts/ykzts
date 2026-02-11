@@ -1,4 +1,4 @@
-import { Badge } from '@ykzts/ui/badge'
+import { Badge } from '@ykzts/ui/components/badge'
 import Image from 'next/image'
 import { Suspense } from 'react'
 import Skeleton from '@/components/skeleton'

@@ -1,4 +1,4 @@
-import { Card } from '@ykzts/ui/card'
+import { Card } from '@ykzts/ui/components/card'
 import { WorkForm } from './_components/work-form'
 
 export default function NewWorkPage() {
