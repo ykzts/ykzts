@@ -43,7 +43,7 @@ export type Database = {
           profile_id: string | null
           published_at: string | null
           redirect_from: string[] | null
-          slug: string | null
+          slug: string
           status: string | null
           tags: string[] | null
           title: string | null
@@ -57,7 +57,7 @@ export type Database = {
           profile_id?: string | null
           published_at?: string | null
           redirect_from?: string[] | null
-          slug?: string | null
+          slug: string
           status?: string | null
           tags?: string[] | null
           title?: string | null
@@ -71,7 +71,7 @@ export type Database = {
           profile_id?: string | null
           published_at?: string | null
           redirect_from?: string[] | null
-          slug?: string | null
+          slug?: string
           status?: string | null
           tags?: string[] | null
           title?: string | null

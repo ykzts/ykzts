@@ -64,10 +64,9 @@ END $$;
 
 -- 3. Create indexes for better query performance
 -- Note: posts_slug_idx is not needed as UNIQUE constraint already creates an index
+-- Note: post_versions indexes are not needed as UNIQUE(post_id, version_number) already creates them
 CREATE INDEX IF NOT EXISTS posts_status_idx ON posts(status);
 CREATE INDEX IF NOT EXISTS posts_published_at_idx ON posts(published_at DESC);
-CREATE INDEX IF NOT EXISTS post_versions_post_id_idx ON post_versions(post_id);
-CREATE INDEX IF NOT EXISTS post_versions_version_number_idx ON post_versions(post_id, version_number);
 
 -- 4. Enable Row Level Security for post_versions table
 ALTER TABLE post_versions ENABLE ROW LEVEL SECURITY;
@@ -107,6 +106,18 @@ CREATE POLICY "Block direct delete" ON posts
   USING (false);
 
 -- 6. Create RLS policies for post_versions table
+-- Public can read versions for published posts
+CREATE POLICY "Enable read access for published post versions" ON post_versions
+  FOR SELECT
+  USING (
+    EXISTS (
+      SELECT 1 FROM posts
+      WHERE posts.id = post_versions.post_id
+        AND posts.status = 'published'
+        AND posts.published_at <= now()
+    )
+  );
+
 -- Authenticated users can read all post versions
 CREATE POLICY "Enable read access for authenticated users" ON post_versions
   FOR SELECT
@@ -156,9 +167,19 @@ BEGIN
     RAISE EXCEPTION 'User profile not found';
   END IF;
 
+  -- Validate required fields
+  IF p_slug IS NULL OR p_slug = '' THEN
+    RAISE EXCEPTION 'Slug is required and cannot be empty';
+  END IF;
+
   -- Validate status
   IF p_status NOT IN ('draft', 'scheduled', 'published') THEN
     RAISE EXCEPTION 'Invalid status. Must be draft, scheduled, or published';
+  END IF;
+
+  -- Auto-set published_at for published posts
+  IF p_status = 'published' AND p_published_at IS NULL THEN
+    p_published_at := now();
   END IF;
 
   -- Insert the post
@@ -234,9 +255,20 @@ BEGIN
   END IF;
 
   -- Get current values for fields not being updated
-  SELECT title, excerpt, tags INTO v_current_title, v_current_excerpt, v_current_tags
+  SELECT title, excerpt, tags, published_at INTO v_current_title, v_current_excerpt, v_current_tags, p_published_at
   FROM posts
   WHERE id = p_post_id;
+
+  -- Auto-set published_at when publishing for the first time
+  IF p_status = 'published' THEN
+    -- If no published_at provided and post doesn't have one, set to now()
+    IF p_published_at IS NULL THEN
+      SELECT published_at INTO p_published_at FROM posts WHERE id = p_post_id;
+      IF p_published_at IS NULL THEN
+        p_published_at := now();
+      END IF;
+    END IF;
+  END IF;
 
   -- Update the post fields that are provided
   UPDATE posts
@@ -246,7 +278,10 @@ BEGIN
     excerpt = COALESCE(p_excerpt, excerpt),
     tags = COALESCE(p_tags, tags),
     status = COALESCE(p_status, status),
-    published_at = COALESCE(p_published_at, published_at)
+    published_at = CASE 
+      WHEN p_status = 'published' THEN p_published_at
+      ELSE COALESCE(p_published_at, published_at)
+    END
   WHERE id = p_post_id;
 
   -- Create a new version only if content is provided
