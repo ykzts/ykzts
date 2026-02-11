@@ -178,7 +178,30 @@ async function CompareContent({
   )
 }
 
-export default async function ComparePage({
+export default function ComparePage({
+  params,
+  searchParams
+}: {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ from?: string; to?: string }>
+}) {
+  return (
+    <div>
+      <h1 className="mb-6 font-bold text-3xl">バージョン比較</h1>
+      <Suspense
+        fallback={
+          <Card className="p-6">
+            <div>読み込み中...</div>
+          </Card>
+        }
+      >
+        <ComparePageContent params={params} searchParams={searchParams} />
+      </Suspense>
+    </div>
+  )
+}
+
+async function ComparePageContent({
   params,
   searchParams
 }: {
@@ -191,7 +214,6 @@ export default async function ComparePage({
   if (!from || !to) {
     return (
       <div>
-        <h1 className="mb-6 font-bold text-3xl">バージョン比較</h1>
         <Card className="p-6">
           <p className="text-error">比較するバージョンが指定されていません</p>
           <Button
@@ -206,18 +228,5 @@ export default async function ComparePage({
     )
   }
 
-  return (
-    <div>
-      <h1 className="mb-6 font-bold text-3xl">バージョン比較</h1>
-      <Suspense
-        fallback={
-          <Card className="p-6">
-            <div>読み込み中...</div>
-          </Card>
-        }
-      >
-        <CompareContent fromId={from} postId={id} toId={to} />
-      </Suspense>
-    </div>
-  )
+  return <CompareContent fromId={from} postId={id} toId={to} />
 }
