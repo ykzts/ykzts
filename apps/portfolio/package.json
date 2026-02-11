@@ -1,6 +1,7 @@
 {
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
+    "@base-ui/react": "1.1.0",
     "@marsidev/react-turnstile": "1.4.2",
     "@mdx-js/react": "3.1.1",
     "@portabletext/react": "6.0.2",
@@ -10,6 +11,8 @@
     "@vercel/analytics": "1.6.1",
     "@vercel/microfrontends": "2.3.0",
     "@ykzts/supabase": "workspace:*",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
     "next": "16.1.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
