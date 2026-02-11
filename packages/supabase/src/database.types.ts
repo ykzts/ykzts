@@ -308,7 +308,38 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_post: {
+        Args: {
+          p_title: string
+          p_slug: string
+          p_excerpt: string
+          p_content: Json
+          p_tags?: string[] | null
+          p_status?: string
+          p_published_at?: string | null
+        }
+        Returns: string
+      }
+      update_post: {
+        Args: {
+          p_post_id: string
+          p_title?: string | null
+          p_slug?: string | null
+          p_excerpt?: string | null
+          p_content?: Json | null
+          p_tags?: string[] | null
+          p_status?: string | null
+          p_published_at?: string | null
+          p_change_summary?: string
+        }
+        Returns: string
+      }
+      delete_post: {
+        Args: {
+          p_post_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
