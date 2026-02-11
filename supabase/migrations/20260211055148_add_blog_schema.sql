@@ -284,40 +284,58 @@ BEGIN
     END
   WHERE id = p_post_id;
 
-  -- Create a new version only if content is provided
-  IF p_content IS NOT NULL THEN
+  -- Create a new version if content is provided OR if any metadata changed
+  IF p_content IS NOT NULL OR 
+     p_title IS NOT NULL OR 
+     p_excerpt IS NOT NULL OR 
+     p_tags IS NOT NULL THEN
     -- Get the next version number
     SELECT COALESCE(MAX(version_number), 0) + 1 INTO v_max_version
     FROM post_versions
     WHERE post_id = p_post_id;
 
-    -- Insert the new version
-    INSERT INTO post_versions (
-      post_id, 
-      version_number, 
-      content, 
-      title, 
-      excerpt, 
-      tags, 
-      created_by, 
-      change_summary
-    )
-    VALUES (
-      p_post_id,
-      v_max_version,
-      p_content,
-      COALESCE(p_title, v_current_title),
-      COALESCE(p_excerpt, v_current_excerpt),
-      COALESCE(p_tags, v_current_tags),
-      v_profile_id,
-      p_change_summary
-    )
-    RETURNING id INTO v_version_id;
+    -- Get current content if not provided
+    DECLARE
+      v_current_content JSONB;
+    BEGIN
+      IF p_content IS NULL THEN
+        SELECT content INTO v_current_content
+        FROM post_versions
+        WHERE post_id = p_post_id AND id = (
+          SELECT current_version_id FROM posts WHERE id = p_post_id
+        );
+      ELSE
+        v_current_content := p_content;
+      END IF;
 
-    -- Update the post to reference the new current version
-    UPDATE posts
-    SET current_version_id = v_version_id
-    WHERE id = p_post_id;
+      -- Insert the new version
+      INSERT INTO post_versions (
+        post_id, 
+        version_number, 
+        content, 
+        title, 
+        excerpt, 
+        tags, 
+        created_by, 
+        change_summary
+      )
+      VALUES (
+        p_post_id,
+        v_max_version,
+        v_current_content,
+        COALESCE(p_title, v_current_title),
+        COALESCE(p_excerpt, v_current_excerpt),
+        COALESCE(p_tags, v_current_tags),
+        v_profile_id,
+        p_change_summary
+      )
+      RETURNING id INTO v_version_id;
+
+      -- Update the post to reference the new current version
+      UPDATE posts
+      SET current_version_id = v_version_id
+      WHERE id = p_post_id;
+    END;
   END IF;
 
   RETURN p_post_id;
