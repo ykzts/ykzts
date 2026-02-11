@@ -8,7 +8,9 @@ import { logout } from '../login/actions'
 function UserInfo({ user }: { user: User }) {
   return (
     <div className="flex items-center">
-      <span className="mr-4 text-muted text-sm">{user.email ?? 'Unknown'}</span>
+      <span className="mr-4 text-muted-foreground text-sm">
+        {user.email ?? 'Unknown'}
+      </span>
       <form action={logout}>
         <button className="btn-secondary" type="submit">
           ログアウト
@@ -38,13 +40,13 @@ async function AuthGuard({ children }: { children: React.ReactNode }) {
                 </Link>
               </div>
               <div className="ml-6 flex items-center space-x-4">
-                <Link className="hover:text-accent" href="/admin/profile">
+                <Link className="hover:text-primary" href="/admin/profile">
                   Profile
                 </Link>
-                <Link className="hover:text-accent" href="/admin/works">
+                <Link className="hover:text-primary" href="/admin/works">
                   Works
                 </Link>
-                <Link className="hover:text-accent" href="/admin/posts">
+                <Link className="hover:text-primary" href="/admin/posts">
                   Posts
                 </Link>
               </div>

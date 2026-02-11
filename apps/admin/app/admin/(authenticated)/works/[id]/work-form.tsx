@@ -80,7 +80,7 @@ export function WorkForm({ work }: WorkFormProps) {
             required
             type="text"
           />
-          <p className="mt-1 text-muted text-sm">1〜256文字</p>
+          <p className="mt-1 text-muted-foreground text-sm">1〜256文字</p>
         </div>
 
         <div>
@@ -96,7 +96,7 @@ export function WorkForm({ work }: WorkFormProps) {
             required
             type="text"
           />
-          <p className="mt-1 text-muted text-sm">
+          <p className="mt-1 text-muted-foreground text-sm">
             英数字、ハイフン、アンダースコアのみ使用可能
           </p>
         </div>

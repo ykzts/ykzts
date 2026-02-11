@@ -12,8 +12,10 @@ async function DashboardContent() {
         href="/admin/profile"
       >
         <h2 className="mb-2 font-semibold text-xl">Profile</h2>
-        <p className="font-bold text-3xl text-accent">{counts.profiles}</p>
-        <p className="mt-2 text-muted text-sm">プロフィール情報を管理</p>
+        <p className="font-bold text-3xl text-primary">{counts.profiles}</p>
+        <p className="mt-2 text-muted-foreground text-sm">
+          プロフィール情報を管理
+        </p>
       </Link>
 
       <Link
@@ -21,8 +23,8 @@ async function DashboardContent() {
         href="/admin/works"
       >
         <h2 className="mb-2 font-semibold text-xl">Works</h2>
-        <p className="font-bold text-3xl text-accent">{counts.works}</p>
-        <p className="mt-2 text-muted text-sm">作品情報を管理</p>
+        <p className="font-bold text-3xl text-primary">{counts.works}</p>
+        <p className="mt-2 text-muted-foreground text-sm">作品情報を管理</p>
       </Link>
 
       <Link
@@ -30,8 +32,8 @@ async function DashboardContent() {
         href="/admin/posts"
       >
         <h2 className="mb-2 font-semibold text-xl">Posts</h2>
-        <p className="font-bold text-3xl text-accent">{counts.posts}</p>
-        <p className="mt-2 text-muted text-sm">投稿情報を管理</p>
+        <p className="font-bold text-3xl text-primary">{counts.posts}</p>
+        <p className="mt-2 text-muted-foreground text-sm">投稿情報を管理</p>
       </Link>
     </div>
   )

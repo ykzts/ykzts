@@ -8,7 +8,7 @@ async function PostsContent() {
   return (
     <div className="card">
       {!posts || posts.length === 0 ? (
-        <p className="text-muted">投稿がありません</p>
+        <p className="text-muted-foreground">投稿がありません</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -26,15 +26,15 @@ async function PostsContent() {
                   <td className="px-4 py-3">
                     {post.title || '(タイトルなし)'}
                   </td>
-                  <td className="px-4 py-3 text-muted">
+                  <td className="px-4 py-3 text-muted-foreground">
                     {new Date(post.created_at).toLocaleDateString('ja-JP')}
                   </td>
-                  <td className="px-4 py-3 text-muted">
+                  <td className="px-4 py-3 text-muted-foreground">
                     {new Date(post.updated_at).toLocaleDateString('ja-JP')}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <Link
-                      className="text-accent hover:underline"
+                      className="text-primary hover:underline"
                       href={`/admin/posts/${post.id}`}
                     >
                       編集

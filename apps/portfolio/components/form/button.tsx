@@ -16,9 +16,9 @@ export default function Button({
 
   const variantClasses = {
     primary:
-      'bg-accent text-accent-foreground hover:enabled:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50',
+      'bg-primary text-primary-foreground hover:enabled:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50',
     secondary:
-      'bg-transparent border border-border text-foreground hover:enabled:border-accent hover:enabled:text-accent disabled:cursor-not-allowed disabled:opacity-50'
+      'bg-transparent border border-border text-foreground hover:enabled:border-primary hover:enabled:text-primary disabled:cursor-not-allowed disabled:opacity-50'
   }
 
   return (

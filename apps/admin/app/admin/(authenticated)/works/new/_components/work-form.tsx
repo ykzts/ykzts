@@ -63,7 +63,7 @@ export function WorkForm() {
             type="text"
             value={title}
           />
-          <p className="mt-1 text-muted text-sm">必須、1〜256文字</p>
+          <p className="mt-1 text-muted-foreground text-sm">必須、1〜256文字</p>
         </div>
 
         <div>
@@ -90,7 +90,7 @@ export function WorkForm() {
               自動生成
             </button>
           </div>
-          <p className="mt-1 text-muted text-sm">
+          <p className="mt-1 text-muted-foreground text-sm">
             必須、URL-safe形式（小文字英数字とハイフン）、一意性制約あり。自動生成は英数字のみ対応、日本語タイトルの場合は手動でローマ字に変換してください。
           </p>
         </div>
@@ -106,7 +106,7 @@ export function WorkForm() {
             required
             type="date"
           />
-          <p className="mt-1 text-muted text-sm">必須</p>
+          <p className="mt-1 text-muted-foreground text-sm">必須</p>
         </div>
 
         <div>

@@ -26,7 +26,7 @@ export default function LoginForm() {
 
   return (
     <div className="space-y-4">
-      <p className="text-muted text-sm">
+      <p className="text-muted-foreground text-sm">
         GitHub アカウントでログインしてください
       </p>
 

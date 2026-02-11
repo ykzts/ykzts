@@ -8,7 +8,7 @@ async function WorksContent() {
   return (
     <div className="card">
       {!works || works.length === 0 ? (
-        <p className="text-muted">作品がありません</p>
+        <p className="text-muted-foreground">作品がありません</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -25,16 +25,18 @@ async function WorksContent() {
               {works.map((work) => (
                 <tr className="border-border border-b" key={work.id}>
                   <td className="px-4 py-3">{work.title}</td>
-                  <td className="px-4 py-3 text-muted">{work.slug}</td>
-                  <td className="px-4 py-3 text-muted">
+                  <td className="px-4 py-3 text-muted-foreground">
+                    {work.slug}
+                  </td>
+                  <td className="px-4 py-3 text-muted-foreground">
                     {new Date(work.starts_at).toLocaleDateString('ja-JP')}
                   </td>
-                  <td className="px-4 py-3 text-muted">
+                  <td className="px-4 py-3 text-muted-foreground">
                     {new Date(work.created_at).toLocaleDateString('ja-JP')}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <Link
-                      className="text-accent hover:underline"
+                      className="text-primary hover:underline"
                       href={`/admin/works/${work.id}`}
                     >
                       編集

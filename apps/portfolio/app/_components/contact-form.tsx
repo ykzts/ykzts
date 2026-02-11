@@ -34,14 +34,14 @@ export default function ContactForm() {
     return (
       <>
         <Toaster />
-        <div className="rounded-lg border border-accent/30 bg-accent/10 p-6 text-center">
+        <div className="rounded-lg border border-primary/30 bg-primary/10 p-6 text-center">
           <h3 className="mb-3 font-semibold text-foreground text-xl">
             送信完了
           </h3>
-          <p className="mb-3 text-base text-muted">
+          <p className="mb-3 text-base text-muted-foreground">
             お問い合わせいただきありがとうございます。内容を確認次第、ご返信させていただきます。
           </p>
-          <p className="mb-5 text-base text-muted">
+          <p className="mb-5 text-base text-muted-foreground">
             通常、2〜3営業日以内にご返信いたします。
           </p>
           <Button onClick={() => window.location.reload()} type="button">
@@ -100,7 +100,7 @@ export default function ContactForm() {
         />
 
         <div className="mb-5">
-          <label className="flex cursor-pointer items-start gap-2.5 text-base text-muted">
+          <label className="flex cursor-pointer items-start gap-2.5 text-base text-muted-foreground">
             <input
               aria-describedby={
                 errors.privacyConsent ? 'privacy-error' : undefined
@@ -113,7 +113,7 @@ export default function ContactForm() {
               type="checkbox"
             />
             <span>
-              <Link className="text-accent hover:underline" href="/privacy">
+              <Link className="text-primary hover:underline" href="/privacy">
                 プライバシーポリシー
               </Link>
               に同意します <span className="text-red-500">*</span>

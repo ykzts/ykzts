@@ -276,7 +276,7 @@ export default function ProfileForm({
           type="hidden"
           value={socialLinks.length}
         />
-        <p className="mt-2 text-muted text-sm">
+        <p className="mt-2 text-muted-foreground text-sm">
           URLから自動的にサービスを検出します (GitHub, X, Facebook, Mastodon
           など)
         </p>

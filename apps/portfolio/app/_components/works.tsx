@@ -7,7 +7,7 @@ import PortableTextBlock from './portable-text'
 function WorksSkeleton() {
   return (
     <section className="mx-auto max-w-4xl py-20" id="works">
-      <h2 className="mb-12 font-semibold text-base text-muted uppercase tracking-widest">
+      <h2 className="mb-12 font-semibold text-base text-muted-foreground uppercase tracking-widest">
         Works
       </h2>
       <div className="space-y-12">
@@ -32,13 +32,13 @@ async function WorksImpl() {
 
   return (
     <section className="mx-auto max-w-4xl py-20" id="works">
-      <h2 className="mb-12 font-semibold text-base text-muted uppercase tracking-widest">
+      <h2 className="mb-12 font-semibold text-base text-muted-foreground uppercase tracking-widest">
         Works
       </h2>
       <div className="space-y-8">
         {works.map((work) => (
           <article
-            className="group rounded-xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-accent/50 hover:shadow-md"
+            className="group rounded-xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-primary/50 hover:shadow-md"
             id={work.slug}
             key={work.slug}
           >
@@ -46,7 +46,7 @@ async function WorksImpl() {
               {work.title}
             </h3>
             {work.content && (
-              <div className="prose prose-base max-w-none prose-a:text-accent prose-p:text-base prose-p:text-muted prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
+              <div className="prose prose-base max-w-none prose-a:text-primary prose-p:text-base prose-p:text-muted-foreground prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
                 <PortableTextBlock value={work.content} />
               </div>
             )}

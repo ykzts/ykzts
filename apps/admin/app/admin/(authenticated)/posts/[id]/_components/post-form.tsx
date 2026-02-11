@@ -70,7 +70,9 @@ export function PostForm({ post }: PostFormProps) {
             placeholder="タイトルを入力（任意）"
             type="text"
           />
-          <p className="mt-1 text-muted text-sm">任意、256文字以内</p>
+          <p className="mt-1 text-muted-foreground text-sm">
+            任意、256文字以内
+          </p>
         </div>
 
         <div className="flex justify-between gap-4">

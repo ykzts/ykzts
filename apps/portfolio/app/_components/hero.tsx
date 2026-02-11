@@ -34,7 +34,7 @@ async function HeroImpl() {
           <h1 className="mb-4 font-bold text-5xl text-foreground tracking-tight md:text-6xl lg:text-7xl">
             {profile.name}
           </h1>
-          <p className="mb-8 max-w-2xl text-muted text-xl leading-relaxed">
+          <p className="mb-8 max-w-2xl text-muted-foreground text-xl leading-relaxed">
             {profile.tagline}
           </p>
 

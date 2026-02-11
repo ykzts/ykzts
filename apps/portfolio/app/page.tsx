@@ -38,21 +38,21 @@ export default function HomePage(_props: PageProps<'/'>) {
           <Link className="font-semibold text-foreground text-lg" href="/">
             ykzts.com
           </Link>
-          <div className="flex gap-8 text-base text-muted">
+          <div className="flex gap-8 text-base text-muted-foreground">
             <a
-              className="rounded transition-colors duration-200 hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
+              className="rounded transition-colors duration-200 hover:text-primary focus:outline-2 focus:outline-accent focus:outline-offset-2"
               href="#about"
             >
               About
             </a>
             <a
-              className="rounded transition-colors duration-200 hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
+              className="rounded transition-colors duration-200 hover:text-primary focus:outline-2 focus:outline-accent focus:outline-offset-2"
               href="#works"
             >
               Works
             </a>
             <a
-              className="rounded transition-colors duration-200 hover:text-accent focus:outline-2 focus:outline-accent focus:outline-offset-2"
+              className="rounded transition-colors duration-200 hover:text-primary focus:outline-2 focus:outline-accent focus:outline-offset-2"
               href="#contact"
             >
               Contact

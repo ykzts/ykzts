@@ -76,7 +76,7 @@ export function ToolbarPlugin() {
       <button
         aria-label="太字"
         className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          isBold ? 'bg-muted/30 text-accent' : 'text-muted'
+          isBold ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
         }`}
         onClick={formatBold}
         type="button"
@@ -86,7 +86,7 @@ export function ToolbarPlugin() {
       <button
         aria-label="斜体"
         className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          isItalic ? 'bg-muted/30 text-accent' : 'text-muted'
+          isItalic ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
         }`}
         onClick={formatItalic}
         type="button"
@@ -96,7 +96,7 @@ export function ToolbarPlugin() {
       <button
         aria-label="リンク"
         className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          isLink ? 'bg-muted/30 text-accent' : 'text-muted'
+          isLink ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
         }`}
         onClick={insertLink}
         type="button"
