@@ -40,7 +40,7 @@
     @apply bg-background text-foreground;
   }
 
-  a:not([class]):not(:is(.prose *)) {
+  a:not([class], :is(.prose *)) {
     @apply text-primary border-b border-primary/30 transition-all duration-200 ease-in-out hover:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary;
   }
 
