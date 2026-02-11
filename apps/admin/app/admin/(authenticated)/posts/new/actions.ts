@@ -49,8 +49,8 @@ export async function createPostAction(
       title: validatedData.title
     })
 
-    revalidateTag('posts')
-    revalidateTag('counts')
+    revalidateTag('posts', 'max')
+    revalidateTag('counts', 'max')
   } catch (error) {
     return {
       error: `作成に失敗しました: ${error instanceof Error ? error.message : '不明なエラー'}`
