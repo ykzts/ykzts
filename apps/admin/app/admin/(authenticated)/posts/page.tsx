@@ -94,7 +94,39 @@ async function PostsContent({
   )
 }
 
-export default async function PostsPage({
+export default function PostsPage({
+  searchParams
+}: {
+  searchParams: Promise<{
+    page?: string
+    perPage?: string
+    search?: string
+    status?: string
+  }>
+}) {
+  return (
+    <div>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="font-bold text-3xl">Posts</h1>
+        <NewPostButton />
+      </div>
+
+      <PostsFilters />
+
+      <Suspense
+        fallback={
+          <Card className="p-6">
+            <div>読み込み中...</div>
+          </Card>
+        }
+      >
+        <PostsContentAsync searchParams={searchParams} />
+      </Suspense>
+    </div>
+  )
+}
+
+async function PostsContentAsync({
   searchParams
 }: {
   searchParams: Promise<{
@@ -120,28 +152,11 @@ export default async function PostsPage({
     : 'all'
 
   return (
-    <div>
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="font-bold text-3xl">Posts</h1>
-        <NewPostButton />
-      </div>
-
-      <PostsFilters />
-
-      <Suspense
-        fallback={
-          <Card className="p-6">
-            <div>読み込み中...</div>
-          </Card>
-        }
-      >
-        <PostsContent
-          page={page}
-          perPage={perPage}
-          search={search}
-          status={status}
-        />
-      </Suspense>
-    </div>
+    <PostsContent
+      page={page}
+      perPage={perPage}
+      search={search}
+      status={status}
+    />
   )
 }
