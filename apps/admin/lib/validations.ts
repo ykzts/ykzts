@@ -11,7 +11,11 @@ export const postSchema = z.object({
     .trim()
     .max(1000, '抜粋は1000文字以内で入力してください')
     .optional(),
-  published_at: z.string().optional(),
+  published_at: z
+    .string()
+    .datetime({ message: '有効な日時形式で入力してください' })
+    .optional()
+    .or(z.literal('')),
   slug: z
     .string()
     .trim()

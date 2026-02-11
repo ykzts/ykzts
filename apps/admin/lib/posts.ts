@@ -350,7 +350,7 @@ export async function rollbackToVersion(postId: string, versionId: string) {
 
   // Use update_post to create a new version with the old content
   const { data, error } = await supabase.rpc('update_post', {
-    p_change_summary: `Rolled back to version ${versionNumber}`,
+    p_change_summary: `バージョン${versionNumber}にロールバック`,
     p_content: targetVersion.content,
     p_excerpt: targetVersion.excerpt || null,
     p_post_id: postId,

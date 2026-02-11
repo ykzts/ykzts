@@ -21,7 +21,6 @@ export async function updatePostAction(
     excerpt: formData.get('excerpt') || undefined,
     id: formData.get('id'),
     published_at: formData.get('published_at') || undefined,
-    redirect_from: formData.get('redirect_from') || undefined,
     slug: formData.get('slug'),
     status: formData.get('status') || undefined,
     tags: formData.get('tags') || undefined,
@@ -41,12 +40,9 @@ export async function updatePostAction(
       ? JSON.parse(validatedData.content)
       : undefined
     const tags = validatedData.tags ? JSON.parse(validatedData.tags) : undefined
-    const redirectFrom = validatedData.redirect_from
-      ? JSON.parse(validatedData.redirect_from)
-      : undefined
 
     await updatePost({
-      changeSummary: validatedData.change_summary || 'Updated post',
+      changeSummary: validatedData.change_summary || '投稿を更新',
       content,
       excerpt: validatedData.excerpt,
       postId: validatedData.id,
@@ -55,8 +51,6 @@ export async function updatePostAction(
       status: validatedData.status,
       tags
     })
-
-    // Handle redirect_from separately if needed (would require additional DB support)
 
     revalidateTag('posts')
   } catch (error) {

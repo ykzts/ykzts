@@ -29,10 +29,6 @@ export function PostForm({ post }: PostFormProps) {
   const [autoSlug, setAutoSlug] = useState(!post.slug)
   const [tags, setTags] = useState<string[]>(post.tags || [])
   const [tagInput, setTagInput] = useState('')
-  const [redirectPaths, setRedirectPaths] = useState<string[]>(
-    post.redirect_from || []
-  )
-  const [redirectInput, setRedirectInput] = useState('')
   const [status, setStatus] = useState<string>(post.status || 'draft')
   const [contentPreview, setContentPreview] = useState<string | undefined>(
     post.current_version?.content
@@ -79,18 +75,6 @@ export function PostForm({ post }: PostFormProps) {
     setTags(tags.filter((tag) => tag !== tagToRemove))
   }
 
-  const handleAddRedirect = () => {
-    const newPath = redirectInput.trim()
-    if (newPath && !redirectPaths.includes(newPath)) {
-      setRedirectPaths([...redirectPaths, newPath])
-      setRedirectInput('')
-    }
-  }
-
-  const handleRemoveRedirect = (pathToRemove: string) => {
-    setRedirectPaths(redirectPaths.filter((path) => path !== pathToRemove))
-  }
-
   const initialContent = post.current_version?.content
     ? JSON.stringify(post.current_version.content)
     : undefined
@@ -100,11 +84,6 @@ export function PostForm({ post }: PostFormProps) {
       <form action={formAction} className="space-y-6">
         <input name="id" type="hidden" value={post.id} />
         <input name="tags" type="hidden" value={JSON.stringify(tags)} />
-        <input
-          name="redirect_from"
-          type="hidden"
-          value={JSON.stringify(redirectPaths)}
-        />
 
         {state?.error && (
           <div className="rounded border border-error bg-error/10 p-4 text-error">
@@ -301,51 +280,6 @@ export function PostForm({ post }: PostFormProps) {
             </p>
           </div>
         )}
-
-        {/* Redirect From */}
-        <div>
-          <label className="mb-2 block font-medium">リダイレクト元パス</label>
-          <div className="flex gap-2">
-            <Input
-              onChange={(e) => setRedirectInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault()
-                  handleAddRedirect()
-                }
-              }}
-              placeholder="/old-path"
-              type="text"
-              value={redirectInput}
-            />
-            <Button
-              onClick={handleAddRedirect}
-              type="button"
-              variant="outline"
-            >
-              追加
-            </Button>
-          </div>
-          {redirectPaths.length > 0 && (
-            <ul className="mt-2 space-y-1">
-              {redirectPaths.map((path) => (
-                <li className="flex items-center justify-between" key={path}>
-                  <code className="text-sm">{path}</code>
-                  <button
-                    className="text-error hover:underline text-sm"
-                    onClick={() => handleRemoveRedirect(path)}
-                    type="button"
-                  >
-                    削除
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-          <p className="mt-1 text-muted-foreground text-sm">
-            この投稿にリダイレクトする旧URLパス
-          </p>
-        </div>
 
         {/* Version History Link */}
         <div>
