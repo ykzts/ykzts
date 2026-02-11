@@ -1,6 +1,7 @@
 'use client'
 
 import { useActionState, useState } from 'react'
+import { RichTextEditor } from '@/components/portable-text-editor'
 import type { ActionState } from './actions'
 import { deleteWork, updateWork } from './actions'
 
@@ -43,8 +44,11 @@ export function WorkForm({ work }: WorkFormProps) {
     }
   }
 
-  // Convert content to JSON string for textarea
-  const contentString = JSON.stringify(work.content, null, 2)
+  // Convert content to JSON string for editor
+  const contentString =
+    typeof work.content === 'string'
+      ? work.content
+      : JSON.stringify(work.content ?? '')
 
   return (
     <div>
@@ -113,18 +117,13 @@ export function WorkForm({ work }: WorkFormProps) {
 
         <div>
           <label className="mb-2 block font-medium" htmlFor="content">
-            コンテンツ (JSON) <span className="text-error">*</span>
+            コンテンツ <span className="text-error">*</span>
           </label>
-          <textarea
-            className="input min-h-[300px] w-full font-mono text-sm"
-            defaultValue={contentString}
+          <RichTextEditor
             id="content"
+            initialValue={contentString}
             name="content"
-            required
           />
-          <p className="mt-1 text-muted text-sm">
-            Portable Text形式のJSON（将来的にエディタに置き換え予定）
-          </p>
         </div>
 
         <div className="flex justify-between gap-4">

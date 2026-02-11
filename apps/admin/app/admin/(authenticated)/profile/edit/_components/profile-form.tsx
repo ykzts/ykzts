@@ -18,6 +18,7 @@ import {
 import type { Json } from '@ykzts/supabase'
 import { useRouter } from 'next/navigation'
 import { useActionState, useCallback, useState } from 'react'
+import { RichTextEditor } from '@/components/portable-text-editor'
 import { updateProfile } from '../actions'
 import { SortableItem } from './sortable-item'
 
@@ -205,22 +206,17 @@ export default function ProfileForm({
         <label className="mb-2 block font-medium" htmlFor="about">
           自己紹介
         </label>
-        <textarea
-          className="input w-full"
-          defaultValue={
+        <RichTextEditor
+          id="about"
+          initialValue={
             initialData?.about
               ? typeof initialData.about === 'string'
                 ? initialData.about
                 : JSON.stringify(initialData.about)
-              : ''
+              : undefined
           }
-          id="about"
           name="about"
-          rows={6}
         />
-        <p className="mt-1 text-muted text-sm">
-          将来的にPortable Textエディタに対応予定
-        </p>
       </div>
 
       {/* Social Links Section */}
