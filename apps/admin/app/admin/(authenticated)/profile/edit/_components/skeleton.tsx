@@ -1,6 +1,3 @@
-import { buttonVariants } from '@ykzts/ui/components/button'
-import { cn } from '@ykzts/ui/lib/utils'
-
 export default function ProfileEditSkeleton() {
   return (
     <div className="animate-pulse space-y-6">
@@ -46,18 +43,8 @@ export default function ProfileEditSkeleton() {
 
       {/* Buttons */}
       <div className="flex gap-4">
-        <div
-          className={cn(
-            buttonVariants(),
-            'h-10 w-20 cursor-default bg-muted/10'
-          )}
-        />
-        <div
-          className={cn(
-            buttonVariants({ variant: 'secondary' }),
-            'h-10 w-24 cursor-default bg-muted/10'
-          )}
-        />
+        <div className="inline-flex h-10 w-20 cursor-default items-center justify-center gap-2 rounded-md bg-muted/10 px-4 py-2 font-medium text-sm" />
+        <div className="inline-flex h-10 w-24 cursor-default items-center justify-center gap-2 rounded-md bg-muted/10 px-4 py-2 font-medium text-sm" />
       </div>
     </div>
   )
