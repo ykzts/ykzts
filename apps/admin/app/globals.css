@@ -1,0 +1,43 @@
+@import 'tailwindcss';
+@source '../node_modules/@ykzts/ui';
+
+@theme {
+  --font-sans: system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
+  --color-background: #fff;
+  --color-foreground: #1a1a2e;
+  --color-card: #f9fafb;
+  --color-card-foreground: #1a1a2e;
+  --color-popover: #fff;
+  --color-popover-foreground: #1a1a2e;
+  --color-primary: #2563eb;
+  --color-primary-foreground: #fff;
+  --color-secondary: #f3f4f6;
+  --color-secondary-foreground: #1a1a2e;
+  --color-muted: #f3f4f6;
+  --color-muted-foreground: #6b7280;
+  --color-accent: #f3f4f6;
+  --color-accent-foreground: #1a1a2e;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #fff;
+  --color-border: #e5e7eb;
+  --color-input: #e5e7eb;
+  --color-ring: #2563eb;
+  --color-error: var(--color-destructive);
+  --color-error-foreground: var(--color-destructive-foreground);
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  a:not([class]) {
+    @apply text-primary hover:underline;
+  }
+}

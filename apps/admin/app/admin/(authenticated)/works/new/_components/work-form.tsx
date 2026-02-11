@@ -1,4 +1,7 @@
 'use client'
+import { Alert, AlertDescription } from '@ykzts/ui/components/alert'
+import { Button } from '@ykzts/ui/components/button'
+import { Input } from '@ykzts/ui/components/input'
 
 import { useActionState, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
@@ -43,17 +46,16 @@ export function WorkForm() {
     <div>
       <form action={formAction} className="space-y-6">
         {state?.error && (
-          <div className="rounded bg-error/10 p-4 text-error" role="alert">
-            {state.error}
-          </div>
+          <Alert variant="destructive">
+            <AlertDescription>{state.error}</AlertDescription>
+          </Alert>
         )}
 
         <div>
           <label className="mb-2 block font-medium" htmlFor="title">
             タイトル <span className="text-error">*</span>
           </label>
-          <input
-            className="input w-full"
+          <Input
             id="title"
             maxLength={256}
             name="title"
@@ -63,7 +65,7 @@ export function WorkForm() {
             type="text"
             value={title}
           />
-          <p className="mt-1 text-muted text-sm">必須、1〜256文字</p>
+          <p className="mt-1 text-muted-foreground text-sm">必須、1〜256文字</p>
         </div>
 
         <div>
@@ -71,8 +73,8 @@ export function WorkForm() {
             スラッグ <span className="text-error">*</span>
           </label>
           <div className="flex gap-2">
-            <input
-              className="input flex-1"
+            <Input
+              className="flex-1"
               id="slug"
               name="slug"
               onChange={(e) => setSlug(e.target.value)}
@@ -82,15 +84,15 @@ export function WorkForm() {
               type="text"
               value={slug}
             />
-            <button
-              className="btn-secondary"
+            <Button
               onClick={handleGenerateSlug}
               type="button"
+              variant="secondary"
             >
               自動生成
-            </button>
+            </Button>
           </div>
-          <p className="mt-1 text-muted text-sm">
+          <p className="mt-1 text-muted-foreground text-sm">
             必須、URL-safe形式（小文字英数字とハイフン）、一意性制約あり。自動生成は英数字のみ対応、日本語タイトルの場合は手動でローマ字に変換してください。
           </p>
         </div>
@@ -99,14 +101,8 @@ export function WorkForm() {
           <label className="mb-2 block font-medium" htmlFor="starts_at">
             開始日 <span className="text-error">*</span>
           </label>
-          <input
-            className="input w-full"
-            id="starts_at"
-            name="starts_at"
-            required
-            type="date"
-          />
-          <p className="mt-1 text-muted text-sm">必須</p>
+          <Input id="starts_at" name="starts_at" required type="date" />
+          <p className="mt-1 text-muted-foreground text-sm">必須</p>
         </div>
 
         <div>
@@ -121,9 +117,9 @@ export function WorkForm() {
         </div>
 
         <div className="flex justify-end">
-          <button className="btn" disabled={isPending} type="submit">
+          <Button disabled={isPending} type="submit">
             {isPending ? '作成中...' : '作成'}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

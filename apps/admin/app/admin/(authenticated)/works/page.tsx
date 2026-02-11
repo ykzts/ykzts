@@ -1,14 +1,16 @@
+import { Card } from '@ykzts/ui/components/card'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { getWorks } from '@/lib/data'
+import { NewWorkButton } from './_components/new-work-button'
 
 async function WorksContent() {
   const works = await getWorks()
 
   return (
-    <div className="card">
+    <Card className="p-6">
       {!works || works.length === 0 ? (
-        <p className="text-muted">作品がありません</p>
+        <p className="text-muted-foreground">作品がありません</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -25,16 +27,18 @@ async function WorksContent() {
               {works.map((work) => (
                 <tr className="border-border border-b" key={work.id}>
                   <td className="px-4 py-3">{work.title}</td>
-                  <td className="px-4 py-3 text-muted">{work.slug}</td>
-                  <td className="px-4 py-3 text-muted">
+                  <td className="px-4 py-3 text-muted-foreground">
+                    {work.slug}
+                  </td>
+                  <td className="px-4 py-3 text-muted-foreground">
                     {new Date(work.starts_at).toLocaleDateString('ja-JP')}
                   </td>
-                  <td className="px-4 py-3 text-muted">
+                  <td className="px-4 py-3 text-muted-foreground">
                     {new Date(work.created_at).toLocaleDateString('ja-JP')}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <Link
-                      className="text-accent hover:underline"
+                      className="text-primary hover:underline"
                       href={`/admin/works/${work.id}`}
                     >
                       編集
@@ -46,7 +50,7 @@ async function WorksContent() {
           </table>
         </div>
       )}
-    </div>
+    </Card>
   )
 }
 
@@ -55,9 +59,7 @@ export default function WorksPage() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="font-bold text-3xl">Works</h1>
-        <Link className="btn" href="/admin/works/new">
-          新規作成
-        </Link>
+        <NewWorkButton />
       </div>
 
       <Suspense fallback={<div>Loading...</div>}>

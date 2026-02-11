@@ -16,6 +16,8 @@ import {
   verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 import type { Json } from '@ykzts/supabase'
+import { Button } from '@ykzts/ui/components/button'
+import { Input } from '@ykzts/ui/components/input'
 import { useRouter } from 'next/navigation'
 import { useActionState, useCallback, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
@@ -166,8 +168,7 @@ export default function ProfileForm({
         <label className="mb-2 block font-medium" htmlFor="name">
           名前 <span className="text-error">*</span>
         </label>
-        <input
-          className="input w-full"
+        <Input
           defaultValue={initialData?.name ?? ''}
           id="name"
           name="name"
@@ -180,8 +181,7 @@ export default function ProfileForm({
         <label className="mb-2 block font-medium" htmlFor="tagline">
           キャッチコピー
         </label>
-        <input
-          className="input w-full"
+        <Input
           defaultValue={initialData?.tagline ?? ''}
           id="tagline"
           name="tagline"
@@ -193,8 +193,7 @@ export default function ProfileForm({
         <label className="mb-2 block font-medium" htmlFor="email">
           メールアドレス
         </label>
-        <input
-          className="input w-full"
+        <Input
           defaultValue={initialData?.email ?? ''}
           id="email"
           name="email"
@@ -223,13 +222,14 @@ export default function ProfileForm({
       <div>
         <div className="mb-3 flex items-center justify-between">
           <div className="block font-medium">ソーシャルリンク</div>
-          <button
-            className="btn-secondary text-sm"
+          <Button
             onClick={addSocialLink}
+            size="sm"
             type="button"
+            variant="secondary"
           >
             + 追加
-          </button>
+          </Button>
         </div>
         <DndContext
           collisionDetection={closestCenter}
@@ -250,8 +250,9 @@ export default function ProfileForm({
                       value={link.id}
                     />
                   )}
-                  <input
-                    className="input flex-1"
+                  <Input
+                    aria-label="ソーシャルリンクURL"
+                    className="flex-1"
                     name={`social_link_url_${index}`}
                     onChange={(e) => updateSocialLink(index, e.target.value)}
                     placeholder="URL (例: https://github.com/username)"
@@ -259,13 +260,14 @@ export default function ProfileForm({
                     type="url"
                     value={link.url}
                   />
-                  <button
-                    className="btn-danger"
+                  <Button
                     onClick={() => removeSocialLink(index)}
+                    size="sm"
                     type="button"
+                    variant="destructive"
                   >
                     削除
-                  </button>
+                  </Button>
                 </SortableItem>
               ))}
             </div>
@@ -276,7 +278,7 @@ export default function ProfileForm({
           type="hidden"
           value={socialLinks.length}
         />
-        <p className="mt-2 text-muted text-sm">
+        <p className="mt-2 text-muted-foreground text-sm">
           URLから自動的にサービスを検出します (GitHub, X, Facebook, Mastodon
           など)
         </p>
@@ -286,13 +288,14 @@ export default function ProfileForm({
       <div>
         <div className="mb-3 flex items-center justify-between">
           <div className="block font-medium">技術タグ</div>
-          <button
-            className="btn-secondary text-sm"
+          <Button
             onClick={addTechnology}
+            size="sm"
             type="button"
+            variant="secondary"
           >
             + 追加
-          </button>
+          </Button>
         </div>
         <DndContext
           collisionDetection={closestCenter}
@@ -313,21 +316,24 @@ export default function ProfileForm({
                       value={tech.id}
                     />
                   )}
-                  <input
-                    className="input flex-1"
+                  <Input
+                    aria-label="技術名"
+                    className="flex-1"
                     name={`technology_name_${index}`}
                     onChange={(e) => updateTechnology(index, e.target.value)}
                     placeholder="技術名 (例: TypeScript)"
+                    required
                     type="text"
                     value={tech.name}
                   />
-                  <button
-                    className="btn-danger"
+                  <Button
                     onClick={() => removeTechnology(index)}
+                    size="sm"
                     type="button"
+                    variant="destructive"
                   >
                     削除
-                  </button>
+                  </Button>
                 </SortableItem>
               ))}
             </div>
@@ -341,18 +347,18 @@ export default function ProfileForm({
       </div>
 
       <div className="flex gap-4">
-        <button className="btn" disabled={isPending} type="submit">
+        <Button disabled={isPending} type="submit">
           {isPending ? '保存中...' : '保存'}
-        </button>
-        <button
-          className="btn-secondary"
+        </Button>
+        <Button
           onClick={() => {
             router.push('/admin/profile')
           }}
           type="button"
+          variant="secondary"
         >
           キャンセル
-        </button>
+        </Button>
       </div>
     </form>
   )

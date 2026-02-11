@@ -1,3 +1,5 @@
+import { Button } from '@ykzts/ui/components/button'
+import { Card } from '@ykzts/ui/components/card'
 import { Suspense } from 'react'
 import { getProfile, getSocialLinks, getTechnologies } from '@/lib/data'
 
@@ -9,10 +11,10 @@ async function ProfileContent() {
   ])
 
   return (
-    <div className="card">
+    <Card className="p-6">
       {!profile ? (
         <div>
-          <p className="text-muted">
+          <p className="text-muted-foreground">
             プロフィールがまだ作成されていません。編集ページから作成してください。
           </p>
         </div>
@@ -50,7 +52,7 @@ async function ProfileContent() {
                 {socialLinks.map((link) => (
                   <li key={link.id}>
                     <a
-                      className="text-accent hover:underline"
+                      className="text-primary hover:underline"
                       href={link.url}
                       rel="noopener noreferrer"
                       target="_blank"
@@ -81,14 +83,14 @@ async function ProfileContent() {
 
           <div>
             <div className="mb-1 block font-medium text-sm">作成日</div>
-            <p className="text-muted text-sm">
+            <p className="text-muted-foreground text-sm">
               {new Date(profile.created_at).toLocaleString('ja-JP')}
             </p>
           </div>
 
           <div>
             <div className="mb-1 block font-medium text-sm">更新日</div>
-            <p className="text-muted text-sm">
+            <p className="text-muted-foreground text-sm">
               {new Date(profile.updated_at).toLocaleString('ja-JP')}
             </p>
           </div>
@@ -97,12 +99,10 @@ async function ProfileContent() {
 
       <div className="mt-4 border-border border-t pt-4">
         <form action="/admin/profile/edit" method="get">
-          <button className="btn" type="submit">
-            編集
-          </button>
+          <Button type="submit">編集</Button>
         </form>
       </div>
-    </div>
+    </Card>
   )
 }
 

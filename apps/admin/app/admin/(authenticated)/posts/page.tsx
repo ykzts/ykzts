@@ -1,14 +1,16 @@
+import { Card } from '@ykzts/ui/components/card'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { getPosts } from '@/lib/data'
+import { NewPostButton } from './_components/new-post-button'
 
 async function PostsContent() {
   const posts = await getPosts()
 
   return (
-    <div className="card">
+    <Card className="p-6">
       {!posts || posts.length === 0 ? (
-        <p className="text-muted">投稿がありません</p>
+        <p className="text-muted-foreground">投稿がありません</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -26,15 +28,15 @@ async function PostsContent() {
                   <td className="px-4 py-3">
                     {post.title || '(タイトルなし)'}
                   </td>
-                  <td className="px-4 py-3 text-muted">
+                  <td className="px-4 py-3 text-muted-foreground">
                     {new Date(post.created_at).toLocaleDateString('ja-JP')}
                   </td>
-                  <td className="px-4 py-3 text-muted">
+                  <td className="px-4 py-3 text-muted-foreground">
                     {new Date(post.updated_at).toLocaleDateString('ja-JP')}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <Link
-                      className="text-accent hover:underline"
+                      className="text-primary hover:underline"
                       href={`/admin/posts/${post.id}`}
                     >
                       編集
@@ -46,7 +48,7 @@ async function PostsContent() {
           </table>
         </div>
       )}
-    </div>
+    </Card>
   )
 }
 
@@ -55,9 +57,7 @@ export default function PostsPage() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="font-bold text-3xl">Posts</h1>
-        <Link className="btn" href="/admin/posts/new">
-          新規作成
-        </Link>
+        <NewPostButton />
       </div>
 
       <Suspense fallback={<div>Loading...</div>}>

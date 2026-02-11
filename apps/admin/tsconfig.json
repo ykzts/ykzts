@@ -3,7 +3,8 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@ykzts/ui/*": ["../../packages/ui/src/*"]
     },
     "plugins": [
       {

@@ -1,3 +1,4 @@
+import { Card } from '@ykzts/ui/components/card'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { getWork } from '@/lib/data'
@@ -17,9 +18,9 @@ async function WorkEditContent({ id }: { id: string }) {
   }
 
   return (
-    <div className="card">
+    <Card className="p-6">
       <WorkForm work={work} />
-    </div>
+    </Card>
   )
 }
 
@@ -35,9 +36,9 @@ export default async function EditWorkPage({
       <h1 className="mb-6 font-bold text-3xl">作品編集</h1>
       <Suspense
         fallback={
-          <div className="card">
+          <Card className="p-6">
             <WorkFormSkeleton />
-          </div>
+          </Card>
         }
       >
         <WorkEditContent id={id} />

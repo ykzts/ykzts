@@ -1,3 +1,4 @@
+import { Card } from '@ykzts/ui/components/card'
 import { Suspense } from 'react'
 import { getProfile, getSocialLinks, getTechnologies } from '@/lib/data'
 import ProfileForm from './_components/profile-form'
@@ -23,11 +24,11 @@ export default function EditProfilePage() {
   return (
     <div>
       <h1 className="mb-6 font-bold text-3xl">プロフィール編集</h1>
-      <div className="card">
+      <Card className="p-6">
         <Suspense fallback={<ProfileEditSkeleton />}>
           <ProfileFormWrapper />
         </Suspense>
-      </div>
+      </Card>
     </div>
   )
 }

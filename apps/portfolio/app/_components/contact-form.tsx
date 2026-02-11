@@ -1,10 +1,14 @@
 'use client'
 
 import { Turnstile } from '@marsidev/react-turnstile'
+import { Button } from '@ykzts/ui/components/button'
+import { Checkbox } from '@ykzts/ui/components/checkbox'
+import { Field } from '@ykzts/ui/components/field'
+import { Input } from '@ykzts/ui/components/input'
+import { Textarea } from '@ykzts/ui/components/textarea'
 import Link from 'next/link'
 import { useActionState, useEffect, useRef, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
-import { Button, Input, Textarea } from '@/components/form'
 import { submitContactForm } from '../_actions/contact'
 
 export default function ContactForm() {
@@ -34,14 +38,14 @@ export default function ContactForm() {
     return (
       <>
         <Toaster />
-        <div className="rounded-lg border border-accent/30 bg-accent/10 p-6 text-center">
+        <div className="rounded-lg border border-primary/30 bg-primary/10 p-6 text-center">
           <h3 className="mb-3 font-semibold text-foreground text-xl">
             送信完了
           </h3>
-          <p className="mb-3 text-base text-muted">
+          <p className="mb-3 text-base text-muted-foreground">
             お問い合わせいただきありがとうございます。内容を確認次第、ご返信させていただきます。
           </p>
-          <p className="mb-5 text-base text-muted">
+          <p className="mb-5 text-base text-muted-foreground">
             通常、2〜3営業日以内にご返信いたします。
           </p>
           <Button onClick={() => window.location.reload()} type="button">
@@ -59,68 +63,100 @@ export default function ContactForm() {
     <>
       <Toaster />
       <form action={formAction} ref={formRef}>
-        <Input
-          defaultValue={formData.name || ''}
-          error={errors.name}
-          id="name"
-          label="お名前"
-          name="name"
-          required
-          type="text"
-        />
+        <Field className="mb-5">
+          <Field.Label htmlFor="name">
+            お名前 <span className="text-red-500">*</span>
+          </Field.Label>
+          <Input
+            aria-describedby={errors.name ? 'name-error' : undefined}
+            aria-invalid={Boolean(errors.name)}
+            defaultValue={formData.name || ''}
+            id="name"
+            name="name"
+            required
+            type="text"
+          />
+          {errors.name && (
+            <Field.Error id="name-error">{errors.name}</Field.Error>
+          )}
+        </Field>
 
-        <Input
-          defaultValue={formData.email || ''}
-          error={errors.email}
-          id="email"
-          label="メールアドレス"
-          name="email"
-          required
-          type="email"
-        />
+        <Field className="mb-5">
+          <Field.Label htmlFor="email">
+            メールアドレス <span className="text-red-500">*</span>
+          </Field.Label>
+          <Input
+            aria-describedby={errors.email ? 'email-error' : undefined}
+            aria-invalid={Boolean(errors.email)}
+            defaultValue={formData.email || ''}
+            id="email"
+            name="email"
+            required
+            type="email"
+          />
+          {errors.email && (
+            <Field.Error id="email-error">{errors.email}</Field.Error>
+          )}
+        </Field>
 
-        <Input
-          defaultValue={formData.subject || ''}
-          error={errors.subject}
-          id="subject"
-          label="件名"
-          name="subject"
-          required
-          type="text"
-        />
+        <Field className="mb-5">
+          <Field.Label htmlFor="subject">
+            件名 <span className="text-red-500">*</span>
+          </Field.Label>
+          <Input
+            aria-describedby={errors.subject ? 'subject-error' : undefined}
+            aria-invalid={Boolean(errors.subject)}
+            defaultValue={formData.subject || ''}
+            id="subject"
+            name="subject"
+            required
+            type="text"
+          />
+          {errors.subject && (
+            <Field.Error id="subject-error">{errors.subject}</Field.Error>
+          )}
+        </Field>
 
-        <Textarea
-          defaultValue={formData.message || ''}
-          error={errors.message}
-          id="message"
-          label="メッセージ"
-          name="message"
-          required
-          rows={6}
-        />
+        <Field className="mb-5">
+          <Field.Label htmlFor="message">
+            メッセージ <span className="text-red-500">*</span>
+          </Field.Label>
+          <Textarea
+            aria-describedby={errors.message ? 'message-error' : undefined}
+            aria-invalid={Boolean(errors.message)}
+            defaultValue={formData.message || ''}
+            id="message"
+            name="message"
+            required
+            rows={6}
+          />
+          {errors.message && (
+            <Field.Error id="message-error">{errors.message}</Field.Error>
+          )}
+        </Field>
 
-        <div className="mb-5">
-          <label className="flex cursor-pointer items-start gap-2.5 text-base text-muted">
-            <input
-              aria-describedby={
-                errors.privacyConsent ? 'privacy-error' : undefined
-              }
-              aria-invalid={Boolean(errors.privacyConsent)}
-              className="mt-1 cursor-pointer accent-accent"
-              defaultChecked={formData.privacyConsent || false}
-              name="privacyConsent"
-              required
-              type="checkbox"
-            />
-            <span>
-              <Link className="text-accent hover:underline" href="/privacy">
-                プライバシーポリシー
-              </Link>
-              に同意します <span className="text-red-500">*</span>
-            </span>
-          </label>
+        <div className="mb-5 flex cursor-pointer items-start gap-2.5 text-base text-muted-foreground">
+          <Checkbox
+            aria-describedby={
+              errors.privacyConsent ? 'privacy-error' : undefined
+            }
+            aria-invalid={Boolean(errors.privacyConsent)}
+            aria-label="プライバシーポリシーに同意"
+            defaultChecked={formData.privacyConsent || false}
+            name="privacyConsent"
+            required
+          />
+          <span>
+            <Link className="text-primary hover:underline" href="/privacy">
+              プライバシーポリシー
+            </Link>
+            に同意します <span className="text-red-500">*</span>
+          </span>
           {errors.privacyConsent && (
-            <p className="mt-1.5 text-red-500 text-sm" id="privacy-error">
+            <p
+              className="mt-1.5 w-full text-red-500 text-sm"
+              id="privacy-error"
+            >
               {errors.privacyConsent}
             </p>
           )}

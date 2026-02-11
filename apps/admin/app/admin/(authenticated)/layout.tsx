@@ -1,4 +1,5 @@
 import type { User } from '@supabase/supabase-js'
+import { Button } from '@ykzts/ui/components/button'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
@@ -8,11 +9,13 @@ import { logout } from '../login/actions'
 function UserInfo({ user }: { user: User }) {
   return (
     <div className="flex items-center">
-      <span className="mr-4 text-muted text-sm">{user.email ?? 'Unknown'}</span>
+      <span className="mr-4 text-muted-foreground text-sm">
+        {user.email ?? 'Unknown'}
+      </span>
       <form action={logout}>
-        <button className="btn-secondary" type="submit">
+        <Button type="submit" variant="secondary">
           ログアウト
-        </button>
+        </Button>
       </form>
     </div>
   )
@@ -32,19 +35,19 @@ async function AuthGuard({ children }: { children: React.ReactNode }) {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between">
             <div className="flex">
-              <div className="flex flex-shrink-0 items-center">
+              <div className="flex shrink-0 items-center">
                 <Link className="font-bold text-xl" href="/admin">
                   管理画面
                 </Link>
               </div>
               <div className="ml-6 flex items-center space-x-4">
-                <Link className="hover:text-accent" href="/admin/profile">
+                <Link className="hover:text-primary" href="/admin/profile">
                   Profile
                 </Link>
-                <Link className="hover:text-accent" href="/admin/works">
+                <Link className="hover:text-primary" href="/admin/works">
                   Works
                 </Link>
-                <Link className="hover:text-accent" href="/admin/posts">
+                <Link className="hover:text-primary" href="/admin/posts">
                   Posts
                 </Link>
               </div>

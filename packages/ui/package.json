@@ -1,0 +1,42 @@
+{
+  "name": "@ykzts/ui",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./components/alert": "./src/components/alert.tsx",
+    "./components/badge": "./src/components/badge.tsx",
+    "./components/button": "./src/components/button.tsx",
+    "./components/card": "./src/components/card.tsx",
+    "./components/checkbox": "./src/components/checkbox.tsx",
+    "./components/dialog": "./src/components/dialog.tsx",
+    "./components/empty": "./src/components/empty.tsx",
+    "./components/field": "./src/components/field.tsx",
+    "./components/input": "./src/components/input.tsx",
+    "./components/label": "./src/components/label.tsx",
+    "./components/separator": "./src/components/separator.tsx",
+    "./components/skeleton": "./src/components/skeleton.tsx",
+    "./components/textarea": "./src/components/textarea.tsx",
+    "./lib/utils": "./src/lib/utils.ts"
+  },
+  "scripts": {
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "@base-ui/react": "1.1.0",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "lucide-react": "0.563.0",
+    "tailwind-merge": "3.4.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.13",
+    "@types/react-dom": "19.2.3",
+    "@ykzts/tsconfig": "workspace:*",
+    "typescript": "5.9.3"
+  }
+}

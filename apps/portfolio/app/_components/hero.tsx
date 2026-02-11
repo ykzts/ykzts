@@ -1,3 +1,4 @@
+import { Badge } from '@ykzts/ui/components/badge'
 import Image from 'next/image'
 import { Suspense } from 'react'
 import Skeleton from '@/components/skeleton'
@@ -34,16 +35,16 @@ async function HeroImpl() {
           <h1 className="mb-4 font-bold text-5xl text-foreground tracking-tight md:text-6xl lg:text-7xl">
             {profile.name}
           </h1>
-          <p className="mb-8 max-w-2xl text-muted text-xl leading-relaxed">
+          <p className="mb-8 max-w-2xl text-muted-foreground text-xl leading-relaxed">
             {profile.tagline}
           </p>
 
           {/* Tech Stack Tags */}
           <div className="flex flex-wrap gap-2">
             {profile.technologies.map((tech) => (
-              <span className="tech-tag" key={tech.name}>
+              <Badge key={tech.name} variant="secondary">
                 {tech.name}
-              </span>
+              </Badge>
             ))}
           </div>
         </div>

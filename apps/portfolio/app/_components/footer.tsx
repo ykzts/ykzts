@@ -7,7 +7,7 @@ import { getProfile } from '@/lib/supabase'
 function FooterSkeleton() {
   return (
     <footer className="border-border border-t px-6 py-12 md:px-12 lg:px-24">
-      <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-base text-muted md:flex-row">
+      <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-base text-muted-foreground md:flex-row">
         <div className="flex flex-col items-center gap-1 md:items-start">
           <Skeleton className="h-5 w-32" />
           <Skeleton className="h-4 w-48" />
@@ -23,13 +23,13 @@ async function FooterImpl() {
 
   return (
     <footer className="border-border border-t px-6 py-12 md:px-12 lg:px-24">
-      <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-base text-muted md:flex-row">
+      <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-base text-muted-foreground md:flex-row">
         <div className="flex flex-col items-center gap-1 md:items-start">
           <span>© {profile.name}</span>
           <span className="text-sm">
             Artwork by{' '}
             <ExternalLink
-              className="text-accent transition-colors duration-200 hover:text-accent/80"
+              className="text-primary transition-colors duration-200 hover:text-primary/80"
               href="https://x.com/diru_k1005"
             >
               Kannazuki Diru
@@ -37,7 +37,7 @@ async function FooterImpl() {
           </span>
         </div>
         <Link
-          className="transition-colors duration-200 hover:text-accent"
+          className="transition-colors duration-200 hover:text-primary"
           href="/privacy"
         >
           Privacy Policy

@@ -1,4 +1,6 @@
 'use client'
+import { Button } from '@ykzts/ui/components/button'
+import { Input } from '@ykzts/ui/components/input'
 
 import { useActionState, useState } from 'react'
 import type { ActionState } from '../actions'
@@ -61,8 +63,7 @@ export function PostForm({ post }: PostFormProps) {
           <label className="mb-2 block font-medium" htmlFor="title">
             タイトル
           </label>
-          <input
-            className="input w-full"
+          <Input
             defaultValue={post.title ?? ''}
             id="title"
             maxLength={256}
@@ -70,25 +71,23 @@ export function PostForm({ post }: PostFormProps) {
             placeholder="タイトルを入力（任意）"
             type="text"
           />
-          <p className="mt-1 text-muted text-sm">任意、256文字以内</p>
+          <p className="mt-1 text-muted-foreground text-sm">
+            任意、256文字以内
+          </p>
         </div>
 
         <div className="flex justify-between gap-4">
-          <button
-            className="btn-danger"
+          <Button
             disabled={isPending || isDeleting}
             onClick={handleDelete}
             type="button"
+            variant="destructive"
           >
             {isDeleting ? '削除中...' : '削除'}
-          </button>
-          <button
-            className="btn"
-            disabled={isPending || isDeleting}
-            type="submit"
-          >
+          </Button>
+          <Button disabled={isPending || isDeleting} type="submit">
             {isPending ? '保存中...' : '保存'}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

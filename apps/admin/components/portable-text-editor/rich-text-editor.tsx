@@ -18,7 +18,7 @@ import {
 } from './portable-text-serializer'
 
 const editorTheme = {
-  link: 'text-accent hover:underline',
+  link: 'text-primary hover:underline',
   paragraph: 'mb-1',
   text: {
     bold: 'font-bold',
@@ -106,7 +106,7 @@ export function RichTextEditor({
               }
               ErrorBoundary={LexicalErrorBoundary}
               placeholder={
-                <div className="pointer-events-none absolute top-3 left-4 text-muted">
+                <div className="pointer-events-none absolute top-3 left-4 text-muted-foreground">
                   {placeholder || 'テキストを入力してください...'}
                 </div>
               }
