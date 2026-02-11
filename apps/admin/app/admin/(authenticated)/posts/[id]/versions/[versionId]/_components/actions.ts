@@ -8,7 +8,9 @@ export async function rollbackAction(postId: string, versionId: string) {
     // Validate that the version belongs to the post
     const version = await getPostVersion(versionId)
     if (!version || version.post_id !== postId) {
-      throw new Error('指定されたバージョンは存在しないか、この投稿に属していません')
+      throw new Error(
+        '指定されたバージョンは存在しないか、この投稿に属していません'
+      )
     }
 
     await rollbackToVersion(postId, versionId)

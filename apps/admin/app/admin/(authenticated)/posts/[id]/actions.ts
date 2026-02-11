@@ -1,5 +1,6 @@
 'use server'
 
+import type { Json } from '@ykzts/supabase'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
@@ -16,7 +17,7 @@ export async function updatePostAction(
 ): Promise<ActionState> {
   // Extract and validate FormData values with Zod
   const publishedAtRaw = formData.get('published_at')
-  
+
   // Transform datetime-local format to ISO 8601
   let publishedAt: string | undefined
   if (publishedAtRaw && publishedAtRaw !== '') {
@@ -48,21 +49,21 @@ export async function updatePostAction(
 
   try {
     // Parse JSON fields with error handling
-    let content
-    let tags
+    let content: Json | undefined
+    let tags: string[] | undefined
 
     if (validatedData.content) {
       try {
-        content = JSON.parse(validatedData.content)
-      } catch (error) {
+        content = JSON.parse(validatedData.content) as Json
+      } catch (_error) {
         return { error: 'コンテンツのJSON形式が不正です' }
       }
     }
 
     if (validatedData.tags) {
       try {
-        tags = JSON.parse(validatedData.tags)
-      } catch (error) {
+        tags = JSON.parse(validatedData.tags) as string[]
+      } catch (_error) {
         return { error: 'タグのJSON形式が不正です' }
       }
     }

@@ -16,7 +16,7 @@ export async function createPostAction(
 ): Promise<ActionState> {
   // Extract and validate FormData values with Zod
   const publishedAtRaw = formData.get('published_at')
-  
+
   // Transform datetime-local format to ISO 8601
   let publishedAt: string | undefined
   if (publishedAtRaw && publishedAtRaw !== '') {
@@ -52,7 +52,7 @@ export async function createPostAction(
     if (validatedData.content) {
       try {
         content = JSON.parse(validatedData.content)
-      } catch (error) {
+      } catch (_error) {
         return { error: 'コンテンツのJSON形式が不正です' }
       }
     }
@@ -60,7 +60,7 @@ export async function createPostAction(
     if (validatedData.tags) {
       try {
         tags = JSON.parse(validatedData.tags)
-      } catch (error) {
+      } catch (_error) {
         return { error: 'タグのJSON形式が不正です' }
       }
     }
