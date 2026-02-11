@@ -34,26 +34,119 @@ export type Database = {
   }
   public: {
     Tables: {
+      post_versions: {
+        Row: {
+          change_summary: string | null
+          content: Json
+          created_at: string
+          created_by: string | null
+          excerpt: string | null
+          id: string
+          post_id: string
+          tags: string[] | null
+          title: string | null
+          version_number: number
+        }
+        Insert: {
+          change_summary?: string | null
+          content: Json
+          created_at?: string
+          created_by?: string | null
+          excerpt?: string | null
+          id?: string
+          post_id: string
+          tags?: string[] | null
+          title?: string | null
+          version_number: number
+        }
+        Update: {
+          change_summary?: string | null
+          content?: Json
+          created_at?: string
+          created_by?: string | null
+          excerpt?: string | null
+          id?: string
+          post_id?: string
+          tags?: string[] | null
+          title?: string | null
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_versions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_versions_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           created_at: string
+          current_version_id: string | null
+          excerpt: string | null
           id: string
+          profile_id: string | null
+          published_at: string | null
+          redirect_from: string[] | null
+          slug: string | null
+          status: string | null
+          tags: string[] | null
           title: string | null
           updated_at: string
         }
         Insert: {
           created_at?: string
+          current_version_id?: string | null
+          excerpt?: string | null
           id?: string
+          profile_id?: string | null
+          published_at?: string | null
+          redirect_from?: string[] | null
+          slug?: string | null
+          status?: string | null
+          tags?: string[] | null
           title?: string | null
           updated_at?: string
         }
         Update: {
           created_at?: string
+          current_version_id?: string | null
+          excerpt?: string | null
           id?: string
+          profile_id?: string | null
+          published_at?: string | null
+          redirect_from?: string[] | null
+          slug?: string | null
+          status?: string | null
+          tags?: string[] | null
           title?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "posts_current_version_id_fkey"
+            columns: ["current_version_id"]
+            isOneToOne: false
+            referencedRelation: "post_versions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -64,6 +157,7 @@ export type Database = {
           name: string
           tagline: string | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           about?: Json | null
@@ -73,6 +167,7 @@ export type Database = {
           name: string
           tagline?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           about?: Json | null
@@ -82,6 +177,7 @@ export type Database = {
           name?: string
           tagline?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -163,6 +259,7 @@ export type Database = {
           content: Json
           created_at: string
           id: string
+          profile_id: string | null
           slug: string
           starts_at: string
           title: string
@@ -172,6 +269,7 @@ export type Database = {
           content: Json
           created_at?: string
           id?: string
+          profile_id?: string | null
           slug: string
           starts_at: string
           title: string
@@ -181,19 +279,54 @@ export type Database = {
           content?: Json
           created_at?: string
           id?: string
+          profile_id?: string | null
           slug?: string
           starts_at?: string
           title?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "works_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_post: {
+        Args: {
+          p_content: Json
+          p_excerpt: string
+          p_published_at?: string
+          p_slug: string
+          p_status?: string
+          p_tags?: string[]
+          p_title: string
+        }
+        Returns: string
+      }
+      delete_post: { Args: { p_post_id: string }; Returns: undefined }
+      update_post: {
+        Args: {
+          p_change_summary?: string
+          p_content?: Json
+          p_excerpt?: string
+          p_post_id: string
+          p_published_at?: string
+          p_slug?: string
+          p_status?: string
+          p_tags?: string[]
+          p_title?: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
