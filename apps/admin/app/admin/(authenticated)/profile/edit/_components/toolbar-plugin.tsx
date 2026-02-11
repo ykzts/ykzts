@@ -1,16 +1,10 @@
 'use client'
 
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import {
-  $getSelection,
-  $isRangeSelection,
-  FORMAT_TEXT_COMMAND,
-  type LexicalEditor
-} from 'lexical'
-import { useCallback, useEffect, useState } from 'react'
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link'
-import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils'
-import { $isListNode, ListNode } from '@lexical/list'
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
+import { mergeRegister } from '@lexical/utils'
+import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical'
+import { useCallback, useEffect, useState } from 'react'
 
 export function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext()

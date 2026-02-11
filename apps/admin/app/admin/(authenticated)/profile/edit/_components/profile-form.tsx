@@ -19,8 +19,8 @@ import type { Json } from '@ykzts/supabase'
 import { useRouter } from 'next/navigation'
 import { useActionState, useCallback, useState } from 'react'
 import { updateProfile } from '../actions'
-import { SortableItem } from './sortable-item'
 import PortableTextEditor from './portable-text-editor'
+import { SortableItem } from './sortable-item'
 
 type ProfileFormProps = {
   initialData?: {

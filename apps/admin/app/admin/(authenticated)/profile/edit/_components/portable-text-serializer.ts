@@ -1,19 +1,15 @@
 'use client'
 
+import { $createLinkNode, $isLinkNode, type LinkNode } from '@lexical/link'
 import {
   $createParagraphNode,
   $createTextNode,
   $getRoot,
   $isParagraphNode,
   $isTextNode,
-  type EditorState,
   type LexicalEditor,
-  type LexicalNode,
-  type ParagraphNode,
-  type TextNode,
-  type TextFormatType
+  type TextNode
 } from 'lexical'
-import { $createLinkNode, $isLinkNode, type LinkNode } from '@lexical/link'
 
 // Portable Text types
 type PortableTextBlock = {
@@ -40,7 +36,9 @@ type PortableTextValue = PortableTextBlock[]
 /**
  * Convert Lexical editor state to Portable Text format
  */
-export function lexicalToPortableText(editor: LexicalEditor): PortableTextValue {
+export function lexicalToPortableText(
+  editor: LexicalEditor
+): PortableTextValue {
   const blocks: PortableTextBlock[] = []
 
   const root = $getRoot()

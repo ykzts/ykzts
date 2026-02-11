@@ -1,5 +1,8 @@
 'use client'
 
+import { CodeNode } from '@lexical/code'
+import { LinkNode } from '@lexical/link'
+import { ListItemNode, ListNode } from '@lexical/list'
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
@@ -7,27 +10,24 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
-import { LinkNode } from '@lexical/link'
-import { ListItemNode, ListNode } from '@lexical/list'
 import { HeadingNode, QuoteNode } from '@lexical/rich-text'
-import { CodeNode } from '@lexical/code'
 import type { EditorState, LexicalEditor } from 'lexical'
 import { useEffect, useRef, useState } from 'react'
-import { ToolbarPlugin } from './toolbar-plugin'
 import { LinkPlugin } from './link-plugin'
 import {
-  lexicalToPortableText,
-  initializeEditorWithPortableText
+  initializeEditorWithPortableText,
+  lexicalToPortableText
 } from './portable-text-serializer'
+import { ToolbarPlugin } from './toolbar-plugin'
 
 const editorTheme = {
+  link: 'text-accent hover:underline',
   paragraph: 'mb-1',
   text: {
     bold: 'font-bold',
     italic: 'italic',
     underline: 'underline'
-  },
-  link: 'text-accent hover:underline'
+  }
 }
 
 type PortableTextEditorProps = {
@@ -51,24 +51,17 @@ export default function PortableTextEditor({
   }, [])
 
   const initialConfig = {
-    namespace: 'PortableTextEditor',
-    theme: editorTheme,
-    onError: (error: Error) => {
-      console.error('Lexical error:', error)
-    },
-    nodes: [
-      HeadingNode,
-      ListNode,
-      ListItemNode,
-      QuoteNode,
-      CodeNode,
-      LinkNode
-    ],
     editorState: initialValue
       ? (editor: LexicalEditor) => {
           initializeEditorWithPortableText(editor, initialValue)
         }
-      : undefined
+      : undefined,
+    namespace: 'PortableTextEditor',
+    nodes: [HeadingNode, ListNode, ListItemNode, QuoteNode, CodeNode, LinkNode],
+    onError: (error: Error) => {
+      console.error('Lexical error:', error)
+    },
+    theme: editorTheme
   }
 
   const handleEditorChange = (
