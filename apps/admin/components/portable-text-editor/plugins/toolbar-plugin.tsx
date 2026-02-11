@@ -5,6 +5,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { mergeRegister } from '@lexical/utils'
 import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical'
 import { useCallback, useEffect, useState } from 'react'
+import { HiOutlineBold, HiOutlineItalic, HiOutlineLink } from 'react-icons/hi2'
 
 export function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext()
@@ -66,23 +67,23 @@ export function ToolbarPlugin() {
     <div className="flex gap-1 border-b border-border bg-muted/5 p-2">
       <button
         aria-label="太字"
-        className={`rounded px-3 py-1 font-bold text-sm transition-colors hover:bg-muted/20 ${
+        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
           isBold ? 'bg-muted/30 text-accent' : 'text-muted'
         }`}
         onClick={formatBold}
         type="button"
       >
-        B
+        <HiOutlineBold />
       </button>
       <button
         aria-label="斜体"
-        className={`rounded px-3 py-1 font-serif italic text-sm transition-colors hover:bg-muted/20 ${
+        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
           isItalic ? 'bg-muted/30 text-accent' : 'text-muted'
         }`}
         onClick={formatItalic}
         type="button"
       >
-        I
+        <HiOutlineItalic />
       </button>
       <button
         aria-label="リンク"
@@ -92,7 +93,7 @@ export function ToolbarPlugin() {
         onClick={insertLink}
         type="button"
       >
-        🔗
+        <HiOutlineLink />
       </button>
     </div>
   )
