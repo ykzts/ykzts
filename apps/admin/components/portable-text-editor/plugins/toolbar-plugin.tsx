@@ -6,6 +6,7 @@ import { mergeRegister } from '@lexical/utils'
 import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical'
 import { useCallback, useEffect, useState } from 'react'
 import { HiOutlineBold, HiOutlineItalic, HiOutlineLink } from 'react-icons/hi2'
+import { validateUrl } from './link-plugin'
 
 export function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext()
@@ -55,7 +56,7 @@ export function ToolbarPlugin() {
       const url = prompt(
         'リンクのURLを入力してください（例: https://example.com）:'
       )
-      if (url) {
+      if (url && validateUrl(url)) {
         editor.dispatchCommand(TOGGLE_LINK_COMMAND, url)
       }
     } else {

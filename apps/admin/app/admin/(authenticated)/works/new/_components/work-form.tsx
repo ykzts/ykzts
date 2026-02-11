@@ -113,7 +113,11 @@ export function WorkForm() {
           <label className="mb-2 block font-medium" htmlFor="content">
             コンテンツ <span className="text-error">*</span>
           </label>
-          <RichTextEditor initialValue={DEFAULT_PORTABLE_TEXT} name="content" />
+          <RichTextEditor
+            id="content"
+            initialValue={DEFAULT_PORTABLE_TEXT}
+            name="content"
+          />
         </div>
 
         <div className="flex justify-end">

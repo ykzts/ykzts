@@ -48,7 +48,7 @@ export function WorkForm({ work }: WorkFormProps) {
   const contentString =
     typeof work.content === 'string'
       ? work.content
-      : JSON.stringify(work.content)
+      : JSON.stringify(work.content ?? '')
 
   return (
     <div>
@@ -119,7 +119,11 @@ export function WorkForm({ work }: WorkFormProps) {
           <label className="mb-2 block font-medium" htmlFor="content">
             コンテンツ <span className="text-error">*</span>
           </label>
-          <RichTextEditor initialValue={contentString} name="content" />
+          <RichTextEditor
+            id="content"
+            initialValue={contentString}
+            name="content"
+          />
         </div>
 
         <div className="flex justify-between gap-4">

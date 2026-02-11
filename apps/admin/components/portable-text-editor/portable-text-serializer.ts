@@ -13,6 +13,7 @@ import {
 
 // Portable Text types
 type PortableTextBlock = {
+  _key: string
   _type: 'block'
   children: PortableTextSpan[]
   markDefs: PortableTextMarkDef[]
@@ -20,6 +21,7 @@ type PortableTextBlock = {
 }
 
 type PortableTextSpan = {
+  _key: string
   _type: 'span'
   marks?: string[]
   text: string
@@ -66,6 +68,7 @@ export function lexicalToPortableText(
           }
 
           spans.push({
+            _key: crypto.randomUUID(),
             _type: 'span',
             marks: marks.length > 0 ? marks : undefined,
             text
@@ -73,7 +76,6 @@ export function lexicalToPortableText(
         } else if ($isLinkNode(node)) {
           const linkNode = node as LinkNode
           const url = linkNode.getURL()
-          const linkText = linkNode.getTextContent()
 
           // Generate a unique key for the mark definition
           const markKey = `link-${crypto.randomUUID()}`
@@ -84,39 +86,45 @@ export function lexicalToPortableText(
             href: url
           })
 
-          // Get text format from link's children
+          // Create separate spans for each child to preserve per-child formatting
           const linkChildren = linkNode.getChildren()
-          const marks: string[] = [markKey]
-
           for (const linkChild of linkChildren) {
             if ($isTextNode(linkChild)) {
+              const text = linkChild.getTextContent()
               const format = linkChild.getFormat()
+              const childMarks: string[] = [markKey]
+
+              // Check for bold
               if (format & 1) {
-                marks.push('strong')
+                childMarks.push('strong')
               }
+              // Check for italic
               if (format & 2) {
-                marks.push('em')
+                childMarks.push('em')
               }
+
+              spans.push({
+                _key: crypto.randomUUID(),
+                _type: 'span',
+                marks: childMarks,
+                text
+              })
             }
           }
-
-          spans.push({
-            _type: 'span',
-            marks,
-            text: linkText
-          })
         }
       }
 
       // Add empty span if no content
       if (spans.length === 0) {
         spans.push({
+          _key: crypto.randomUUID(),
           _type: 'span',
           text: ''
         })
       }
 
       blocks.push({
+        _key: crypto.randomUUID(),
         _type: 'block',
         children: spans,
         markDefs,
@@ -128,8 +136,9 @@ export function lexicalToPortableText(
   // Return at least one empty block
   if (blocks.length === 0) {
     blocks.push({
+      _key: crypto.randomUUID(),
       _type: 'block',
-      children: [{ _type: 'span', text: '' }],
+      children: [{ _key: crypto.randomUUID(), _type: 'span', text: '' }],
       markDefs: [],
       style: 'normal'
     })

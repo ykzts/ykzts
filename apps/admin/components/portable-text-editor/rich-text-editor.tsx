@@ -28,6 +28,7 @@ const editorTheme = {
 }
 
 type RichTextEditorProps = {
+  autoFocus?: boolean
   id?: string
   initialValue?: string
   name: string
@@ -36,6 +37,7 @@ type RichTextEditorProps = {
 }
 
 export function RichTextEditor({
+  autoFocus = false,
   id,
   initialValue,
   name,
@@ -111,13 +113,18 @@ export function RichTextEditor({
             />
           </div>
           <HistoryPlugin />
-          <AutoFocusPlugin />
+          {autoFocus && <AutoFocusPlugin />}
           <LinkPlugin />
         </div>
         <EditorStatePlugin onChange={handleEditorChange} />
       </LexicalComposer>
 
-      <input name={name} ref={hiddenInputRef} type="hidden" />
+      <input
+        defaultValue={initialValue || ''}
+        name={name}
+        ref={hiddenInputRef}
+        type="hidden"
+      />
     </div>
   )
 }
