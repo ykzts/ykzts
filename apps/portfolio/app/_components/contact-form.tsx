@@ -4,7 +4,9 @@ import { Turnstile } from '@marsidev/react-turnstile'
 import Link from 'next/link'
 import { useActionState, useEffect, useRef, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
-import { Button, Input, Textarea } from '@/components/form'
+import { Button } from '@ykzts/ui/button'
+import { Input } from '@ykzts/ui/input'
+import { Textarea } from '@ykzts/ui/textarea'
 import { submitContactForm } from '../_actions/contact'
 
 export default function ContactForm() {
@@ -59,45 +61,85 @@ export default function ContactForm() {
     <>
       <Toaster />
       <form action={formAction} ref={formRef}>
-        <Input
-          defaultValue={formData.name || ''}
-          error={errors.name}
-          id="name"
-          label="お名前"
-          name="name"
-          required
-          type="text"
-        />
+        <div className="mb-5">
+          <label className="mb-2 block text-base text-foreground" htmlFor="name">
+            お名前 <span className="text-red-500">*</span>
+          </label>
+          <Input
+            defaultValue={formData.name || ''}
+            aria-describedby={errors.name ? 'name-error' : undefined}
+            aria-invalid={Boolean(errors.name)}
+            id="name"
+            name="name"
+            required
+            type="text"
+          />
+          {errors.name && (
+            <p className="mt-1.5 text-red-500 text-sm" id="name-error">
+              {errors.name}
+            </p>
+          )}
+        </div>
 
-        <Input
-          defaultValue={formData.email || ''}
-          error={errors.email}
-          id="email"
-          label="メールアドレス"
-          name="email"
-          required
-          type="email"
-        />
+        <div className="mb-5">
+          <label className="mb-2 block text-base text-foreground" htmlFor="email">
+            メールアドレス <span className="text-red-500">*</span>
+          </label>
+          <Input
+            defaultValue={formData.email || ''}
+            aria-describedby={errors.email ? 'email-error' : undefined}
+            aria-invalid={Boolean(errors.email)}
+            id="email"
+            name="email"
+            required
+            type="email"
+          />
+          {errors.email && (
+            <p className="mt-1.5 text-red-500 text-sm" id="email-error">
+              {errors.email}
+            </p>
+          )}
+        </div>
 
-        <Input
-          defaultValue={formData.subject || ''}
-          error={errors.subject}
-          id="subject"
-          label="件名"
-          name="subject"
-          required
-          type="text"
-        />
+        <div className="mb-5">
+          <label className="mb-2 block text-base text-foreground" htmlFor="subject">
+            件名 <span className="text-red-500">*</span>
+          </label>
+          <Input
+            defaultValue={formData.subject || ''}
+            aria-describedby={errors.subject ? 'subject-error' : undefined}
+            aria-invalid={Boolean(errors.subject)}
+            id="subject"
+            name="subject"
+            required
+            type="text"
+          />
+          {errors.subject && (
+            <p className="mt-1.5 text-red-500 text-sm" id="subject-error">
+              {errors.subject}
+            </p>
+          )}
+        </div>
 
-        <Textarea
-          defaultValue={formData.message || ''}
-          error={errors.message}
-          id="message"
-          label="メッセージ"
-          name="message"
-          required
-          rows={6}
-        />
+        <div className="mb-5">
+          <label className="mb-2 block text-base text-foreground" htmlFor="message">
+            メッセージ <span className="text-red-500">*</span>
+          </label>
+          <Textarea
+            defaultValue={formData.message || ''}
+            aria-describedby={errors.message ? 'message-error' : undefined}
+            aria-invalid={Boolean(errors.message)}
+            id="message"
+            name="message"
+            required
+            rows={6}
+          />
+          {errors.message && (
+            <p className="mt-1.5 text-red-500 text-sm" id="message-error">
+              {errors.message}
+            </p>
+          )}
+        </div>
 
         <div className="mb-5">
           <label className="flex cursor-pointer items-start gap-2.5 text-base text-muted-foreground">
@@ -106,7 +148,7 @@ export default function ContactForm() {
                 errors.privacyConsent ? 'privacy-error' : undefined
               }
               aria-invalid={Boolean(errors.privacyConsent)}
-              className="mt-1 cursor-pointer accent-accent"
+              className="mt-1 cursor-pointer accent-primary"
               defaultChecked={formData.privacyConsent || false}
               name="privacyConsent"
               required
