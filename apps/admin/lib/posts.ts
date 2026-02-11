@@ -156,7 +156,7 @@ export async function createPost(params: {
 
   const { data, error } = await supabase.rpc('create_post', {
     p_content: params.content,
-    p_excerpt: params.excerpt ?? '',
+    p_excerpt: params.excerpt || '',
     p_published_at: params.publishedAt,
     p_slug: params.slug,
     p_status: params.status,
@@ -352,13 +352,13 @@ export async function rollbackToVersion(postId: string, versionId: string) {
   const { data, error } = await supabase.rpc('update_post', {
     p_change_summary: `バージョン${versionNumber}にロールバック`,
     p_content: targetVersion.content,
-    p_excerpt: targetVersion.excerpt || null,
+    p_excerpt: targetVersion.excerpt ?? undefined,
     p_post_id: postId,
-    p_published_at: null,
-    p_slug: null,
-    p_status: null,
-    p_tags: targetVersion.tags || null,
-    p_title: targetVersion.title || null
+    p_published_at: undefined,
+    p_slug: undefined,
+    p_status: undefined,
+    p_tags: targetVersion.tags ?? undefined,
+    p_title: targetVersion.title ?? undefined
   })
 
   if (error) {
