@@ -1,10 +1,10 @@
 @import 'tailwindcss';
+@source '../../packages/ui/src/**/*.{ts,tsx}';
 
 @theme {
   --font-sans: system-ui, sans-serif;
   --font-mono: ui-monospace, monospace;
 
-  /* shadcn/ui base-nova color variables */
   --color-background: #ffffff;
   --color-foreground: #1a1a2e;
   --color-card: #f9fafb;
@@ -24,8 +24,6 @@
   --color-border: #e5e7eb;
   --color-input: #e5e7eb;
   --color-ring: #2563eb;
-
-  /* Additional color tokens */
   --radius: 0.5rem;
 }
 
@@ -33,6 +31,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }

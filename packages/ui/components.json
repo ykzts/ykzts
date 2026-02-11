@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "aliases": {
+    "components": "@ykzts/ui",
+    "hooks": "@ykzts/ui/hooks",
+    "lib": "@ykzts/ui/lib",
+    "ui": "@ykzts/ui",
+    "utils": "@ykzts/ui/utils"
+  },
+  "iconLibrary": "lucide",
+  "registries": {},
+  "rsc": false,
+  "rtl": false,
+  "style": "base-nova",
+  "tailwind": {
+    "baseColor": "neutral",
+    "config": "",
+    "css": "",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "tsx": true
+}

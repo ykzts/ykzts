@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+@source '../../packages/ui/src/**/*.{ts,tsx}';
 
 @theme {
   --font-sans:
@@ -8,7 +9,6 @@
   --font-heading:
     var(--font-inter), var(--font-noto-sans-jp), system-ui, sans-serif;
 
-  /* shadcn/ui base-nova color variables */
   --color-background: #fafafa;
   --color-foreground: #1a1a2e;
   --color-card: #ffffff;
@@ -28,8 +28,6 @@
   --color-border: #e2e5e9;
   --color-input: #e2e5e9;
   --color-ring: #2563eb;
-
-  /* Additional color tokens */
   --radius: 0.5rem;
 }
 
@@ -37,6 +35,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
