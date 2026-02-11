@@ -15,12 +15,22 @@ export async function createPostAction(
   formData: FormData
 ): Promise<ActionState> {
   // Extract and validate FormData values with Zod
-  const publishedAt = formData.get('published_at')
+  const publishedAtRaw = formData.get('published_at')
+  
+  // Transform datetime-local format to ISO 8601
+  let publishedAt: string | undefined
+  if (publishedAtRaw && publishedAtRaw !== '') {
+    try {
+      publishedAt = new Date(publishedAtRaw.toString()).toISOString()
+    } catch {
+      return { error: '無効な公開日時形式です' }
+    }
+  }
 
   const validation = postSchema.safeParse({
     content: formData.get('content'),
     excerpt: formData.get('excerpt') || undefined,
-    published_at: publishedAt && publishedAt !== '' ? publishedAt : undefined,
+    published_at: publishedAt,
     slug: formData.get('slug'),
     status: formData.get('status') || 'draft',
     tags: formData.get('tags') || undefined,
@@ -35,11 +45,25 @@ export async function createPostAction(
   const validatedData = validation.data
 
   try {
-    // Parse JSON fields
-    const content = validatedData.content
-      ? JSON.parse(validatedData.content)
-      : { children: [], type: 'root' }
-    const tags = validatedData.tags ? JSON.parse(validatedData.tags) : []
+    // Parse JSON fields with error handling
+    let content = { children: [], type: 'root' }
+    let tags: string[] = []
+
+    if (validatedData.content) {
+      try {
+        content = JSON.parse(validatedData.content)
+      } catch (error) {
+        return { error: 'コンテンツのJSON形式が不正です' }
+      }
+    }
+
+    if (validatedData.tags) {
+      try {
+        tags = JSON.parse(validatedData.tags)
+      } catch (error) {
+        return { error: 'タグのJSON形式が不正です' }
+      }
+    }
 
     await createPost({
       content,
