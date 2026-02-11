@@ -3,7 +3,7 @@
 import { Button } from '@ykzts/ui/components/button'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { rollbackAction } from './actions'
+import { rollbackAction } from '../actions'
 
 type RollbackButtonProps = {
   postId: string
