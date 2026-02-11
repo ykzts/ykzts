@@ -75,27 +75,27 @@ async function VersionDetailContent({
       <Card className="p-6">
         <h2 className="mb-4 font-bold text-xl">コンテンツ</h2>
 
-        <div className="space-y-4">
+        <dl className="space-y-4">
           {version.title && (
-            <div>
+            <>
               <dt className="mb-2 font-medium text-muted-foreground text-sm">
                 タイトル
               </dt>
               <dd className="font-medium text-lg">{version.title}</dd>
-            </div>
+            </>
           )}
 
           {version.excerpt && (
-            <div>
+            <>
               <dt className="mb-2 font-medium text-muted-foreground text-sm">
                 抜粋
               </dt>
               <dd className="text-muted-foreground">{version.excerpt}</dd>
-            </div>
+            </>
           )}
 
           {version.tags && version.tags.length > 0 && (
-            <div>
+            <>
               <dt className="mb-2 font-medium text-muted-foreground text-sm">
                 タグ
               </dt>
@@ -106,20 +106,18 @@ async function VersionDetailContent({
                   </Badge>
                 ))}
               </dd>
-            </div>
+            </>
           )}
 
-          <div>
-            <dt className="mb-2 font-medium text-muted-foreground text-sm">
-              本文（JSON）
-            </dt>
-            <dd>
-              <pre className="overflow-auto rounded bg-muted p-4 text-sm">
-                {JSON.stringify(version.content, null, 2)}
-              </pre>
-            </dd>
-          </div>
-        </div>
+          <dt className="mb-2 font-medium text-muted-foreground text-sm">
+            本文（JSON）
+          </dt>
+          <dd>
+            <pre className="overflow-auto rounded bg-muted p-4 text-sm">
+              {JSON.stringify(version.content, null, 2)}
+            </pre>
+          </dd>
+        </dl>
       </Card>
 
       <div className="flex justify-between">
@@ -153,7 +151,7 @@ export default async function VersionDetailPage({
       <Suspense
         fallback={
           <Card className="p-6">
-            <div>Loading...</div>
+            <div>読み込み中...</div>
           </Card>
         }
       >

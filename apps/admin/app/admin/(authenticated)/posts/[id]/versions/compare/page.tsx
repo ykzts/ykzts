@@ -212,7 +212,7 @@ export default async function ComparePage({
       <Suspense
         fallback={
           <Card className="p-6">
-            <div>Loading...</div>
+            <div>読み込み中...</div>
           </Card>
         }
       >

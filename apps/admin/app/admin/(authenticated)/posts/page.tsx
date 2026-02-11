@@ -105,11 +105,19 @@ export default async function PostsPage({
   }>
 }) {
   const params = await searchParams
-  const page = Number.parseInt(params.page || '1', 10)
-  const perPage = Number.parseInt(params.perPage || '20', 10)
+  let page = Number.parseInt(params.page || '1', 10)
+  let perPage = Number.parseInt(params.perPage || '20', 10)
+
+  // Validate pagination parameters
+  if (!Number.isFinite(page) || page < 1) page = 1
+  if (!Number.isFinite(perPage) || perPage < 1) perPage = 20
+
   const search = params.search
-  const status =
-    (params.status as 'draft' | 'scheduled' | 'published' | 'all') || 'all'
+  const status = ['draft', 'scheduled', 'published', 'all'].includes(
+    params.status || ''
+  )
+    ? (params.status as 'draft' | 'scheduled' | 'published' | 'all')
+    : 'all'
 
   return (
     <div>
@@ -123,7 +131,7 @@ export default async function PostsPage({
       <Suspense
         fallback={
           <Card className="p-6">
-            <div>Loading...</div>
+            <div>読み込み中...</div>
           </Card>
         }
       >

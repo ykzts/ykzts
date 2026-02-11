@@ -1,5 +1,6 @@
 'use server'
 
+import type { Json } from '@ykzts/supabase'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createPost } from '@/lib/posts'
@@ -46,10 +47,10 @@ export async function createPostAction(
 
   try {
     // Parse JSON fields with error handling
-    const content: Json | undefined =
+    const content: Json =
       validatedData.content && validatedData.content !== ''
         ? JSON.parse(validatedData.content)
-        : []
+        : ([] as Json)
     const tags: string[] =
       validatedData.tags && validatedData.tags !== ''
         ? JSON.parse(validatedData.tags)
