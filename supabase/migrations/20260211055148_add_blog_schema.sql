@@ -30,7 +30,7 @@ BEGIN
   IF NOT EXISTS (
     SELECT 1 FROM pg_constraint WHERE conname = 'posts_status_check'
   ) THEN
-    ALTER TABLE posts ADD CONSTRAINT posts_status_check 
+    ALTER TABLE posts ADD CONSTRAINT posts_status_check
       CHECK (status IS NULL OR status IN ('draft', 'scheduled', 'published'));
   END IF;
 END $$;
@@ -57,7 +57,7 @@ BEGIN
   IF NOT EXISTS (
     SELECT 1 FROM pg_constraint WHERE conname = 'posts_current_version_id_fkey'
   ) THEN
-    ALTER TABLE posts ADD CONSTRAINT posts_current_version_id_fkey 
+    ALTER TABLE posts ADD CONSTRAINT posts_current_version_id_fkey
       FOREIGN KEY (current_version_id) REFERENCES post_versions(id) ON DELETE SET NULL;
   END IF;
 END $$;
@@ -162,7 +162,7 @@ BEGIN
   SELECT id INTO v_profile_id
   FROM profiles
   WHERE user_id = auth.uid();
-  
+
   IF v_profile_id IS NULL THEN
     RAISE EXCEPTION 'User profile not found';
   END IF;
@@ -231,7 +231,7 @@ BEGIN
   SELECT id INTO v_profile_id
   FROM profiles
   WHERE user_id = auth.uid();
-  
+
   IF v_profile_id IS NULL THEN
     RAISE EXCEPTION 'User profile not found';
   END IF;
@@ -278,16 +278,16 @@ BEGIN
     excerpt = COALESCE(p_excerpt, excerpt),
     tags = COALESCE(p_tags, tags),
     status = COALESCE(p_status, status),
-    published_at = CASE 
+    published_at = CASE
       WHEN p_status = 'published' THEN p_published_at
       ELSE COALESCE(p_published_at, published_at)
     END
   WHERE id = p_post_id;
 
   -- Create a new version if content is provided OR if any metadata changed
-  IF p_content IS NOT NULL OR 
-     p_title IS NOT NULL OR 
-     p_excerpt IS NOT NULL OR 
+  IF p_content IS NOT NULL OR
+     p_title IS NOT NULL OR
+     p_excerpt IS NOT NULL OR
      p_tags IS NOT NULL THEN
     -- Get the next version number
     SELECT COALESCE(MAX(version_number), 0) + 1 INTO v_max_version
@@ -310,13 +310,13 @@ BEGIN
 
       -- Insert the new version
       INSERT INTO post_versions (
-        post_id, 
-        version_number, 
-        content, 
-        title, 
-        excerpt, 
-        tags, 
-        created_by, 
+        post_id,
+        version_number,
+        content,
+        title,
+        excerpt,
+        tags,
+        created_by,
         change_summary
       )
       VALUES (
@@ -357,7 +357,7 @@ BEGIN
   SELECT id INTO v_profile_id
   FROM profiles
   WHERE user_id = auth.uid();
-  
+
   IF v_profile_id IS NULL THEN
     RAISE EXCEPTION 'User profile not found';
   END IF;
