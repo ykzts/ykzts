@@ -1,32 +1,12 @@
+import { Button as BaseButton } from '@ykzts/ui/button'
 import type { ButtonHTMLAttributes } from 'react'
-import { twMerge } from 'tailwind-merge'
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'primary' | 'secondary'
 }
 
-export default function Button({
-  children,
-  variant = 'primary',
-  className,
-  ...props
-}: ButtonProps) {
-  const baseClasses =
-    'rounded-lg border-0 px-6 py-3 text-base font-medium transition-all duration-200 ease-in-out focus:outline-2 focus:outline-offset-2 focus:outline-accent'
+export default function Button({ variant = 'primary', ...props }: ButtonProps) {
+  const mappedVariant = variant === 'primary' ? 'default' : 'outline'
 
-  const variantClasses = {
-    primary:
-      'bg-primary text-primary-foreground hover:enabled:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50',
-    secondary:
-      'bg-transparent border border-border text-foreground hover:enabled:border-primary hover:enabled:text-primary disabled:cursor-not-allowed disabled:opacity-50'
-  }
-
-  return (
-    <button
-      {...props}
-      className={twMerge(baseClasses, variantClasses[variant], className)}
-    >
-      {children}
-    </button>
-  )
+  return <BaseButton variant={mappedVariant} {...props} />
 }

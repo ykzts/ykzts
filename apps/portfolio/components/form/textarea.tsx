@@ -1,5 +1,5 @@
+import { Textarea as BaseTextarea } from '@ykzts/ui/textarea'
 import type { TextareaHTMLAttributes } from 'react'
-import { twMerge } from 'tailwind-merge'
 
 export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   error?: string
@@ -21,14 +21,11 @@ export default function Textarea({
           {label} {required && <span className="text-red-500">*</span>}
         </label>
       )}
-      <textarea
+      <BaseTextarea
         {...props}
         aria-describedby={error ? `${id}-error` : undefined}
         aria-invalid={Boolean(error)}
-        className={twMerge(
-          'min-h-[140px] w-full resize-y rounded-lg border border-border bg-background px-4 py-3 text-base text-foreground transition-all duration-200 placeholder:text-muted-foreground/50 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary aria-invalid:border-red-500 aria-invalid:focus:ring-red-500',
-          className
-        )}
+        className={className}
         id={id}
         required={required}
       />

@@ -1,5 +1,5 @@
+import { Input as BaseInput } from '@ykzts/ui/input'
 import type { InputHTMLAttributes } from 'react'
-import { twMerge } from 'tailwind-merge'
 
 export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   error?: string
@@ -21,14 +21,11 @@ export default function Input({
           {label} {required && <span className="text-red-500">*</span>}
         </label>
       )}
-      <input
+      <BaseInput
         {...props}
         aria-describedby={error ? `${id}-error` : undefined}
         aria-invalid={Boolean(error)}
-        className={twMerge(
-          'w-full rounded-lg border border-border bg-background px-4 py-3 text-base text-foreground transition-all duration-200 placeholder:text-muted-foreground-foreground/50 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary aria-invalid:border-red-500 aria-invalid:focus:ring-red-500',
-          className
-        )}
+        className={className}
         id={id}
         required={required}
       />
