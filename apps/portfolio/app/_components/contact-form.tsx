@@ -1,12 +1,12 @@
 'use client'
 
 import { Turnstile } from '@marsidev/react-turnstile'
-import Link from 'next/link'
-import { useActionState, useEffect, useRef, useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
 import { Button } from '@ykzts/ui/button'
 import { Input } from '@ykzts/ui/input'
 import { Textarea } from '@ykzts/ui/textarea'
+import Link from 'next/link'
+import { useActionState, useEffect, useRef, useState } from 'react'
+import toast, { Toaster } from 'react-hot-toast'
 import { submitContactForm } from '../_actions/contact'
 
 export default function ContactForm() {
@@ -62,13 +62,16 @@ export default function ContactForm() {
       <Toaster />
       <form action={formAction} ref={formRef}>
         <div className="mb-5">
-          <label className="mb-2 block text-base text-foreground" htmlFor="name">
+          <label
+            className="mb-2 block text-base text-foreground"
+            htmlFor="name"
+          >
             お名前 <span className="text-red-500">*</span>
           </label>
           <Input
-            defaultValue={formData.name || ''}
             aria-describedby={errors.name ? 'name-error' : undefined}
             aria-invalid={Boolean(errors.name)}
+            defaultValue={formData.name || ''}
             id="name"
             name="name"
             required
@@ -82,13 +85,16 @@ export default function ContactForm() {
         </div>
 
         <div className="mb-5">
-          <label className="mb-2 block text-base text-foreground" htmlFor="email">
+          <label
+            className="mb-2 block text-base text-foreground"
+            htmlFor="email"
+          >
             メールアドレス <span className="text-red-500">*</span>
           </label>
           <Input
-            defaultValue={formData.email || ''}
             aria-describedby={errors.email ? 'email-error' : undefined}
             aria-invalid={Boolean(errors.email)}
+            defaultValue={formData.email || ''}
             id="email"
             name="email"
             required
@@ -102,13 +108,16 @@ export default function ContactForm() {
         </div>
 
         <div className="mb-5">
-          <label className="mb-2 block text-base text-foreground" htmlFor="subject">
+          <label
+            className="mb-2 block text-base text-foreground"
+            htmlFor="subject"
+          >
             件名 <span className="text-red-500">*</span>
           </label>
           <Input
-            defaultValue={formData.subject || ''}
             aria-describedby={errors.subject ? 'subject-error' : undefined}
             aria-invalid={Boolean(errors.subject)}
+            defaultValue={formData.subject || ''}
             id="subject"
             name="subject"
             required
@@ -122,13 +131,16 @@ export default function ContactForm() {
         </div>
 
         <div className="mb-5">
-          <label className="mb-2 block text-base text-foreground" htmlFor="message">
+          <label
+            className="mb-2 block text-base text-foreground"
+            htmlFor="message"
+          >
             メッセージ <span className="text-red-500">*</span>
           </label>
           <Textarea
-            defaultValue={formData.message || ''}
             aria-describedby={errors.message ? 'message-error' : undefined}
             aria-invalid={Boolean(errors.message)}
+            defaultValue={formData.message || ''}
             id="message"
             name="message"
             required

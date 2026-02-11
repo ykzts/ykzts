@@ -1,4 +1,6 @@
 'use client'
+import { Button } from '@ykzts/ui/button'
+import { Input } from '@ykzts/ui/input'
 
 import { useActionState } from 'react'
 import type { ActionState } from './actions'
@@ -23,8 +25,7 @@ export function PostForm() {
           <label className="mb-2 block font-medium" htmlFor="title">
             タイトル
           </label>
-          <input
-            className="input w-full"
+          <Input
             id="title"
             maxLength={256}
             name="title"
@@ -37,9 +38,9 @@ export function PostForm() {
         </div>
 
         <div className="flex justify-end">
-          <button className="btn" disabled={isPending} type="submit">
+          <Button disabled={isPending} type="submit">
             {isPending ? '作成中...' : '作成'}
-          </button>
+          </Button>
         </div>
       </form>
     </div>
