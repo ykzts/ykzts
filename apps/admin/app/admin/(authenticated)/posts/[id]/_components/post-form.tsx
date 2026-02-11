@@ -1,27 +1,53 @@
 'use client'
 import { Button } from '@ykzts/ui/components/button'
 import { Input } from '@ykzts/ui/components/input'
+import { Textarea } from '@ykzts/ui/components/textarea'
+import { RichTextEditor } from '@/components/portable-text-editor'
 
-import { useActionState, useState } from 'react'
+import Link from 'next/link'
+import { useActionState, useEffect, useState } from 'react'
+import type { PostWithDetails } from '@/lib/posts'
 import type { ActionState } from '../actions'
-import { deletePost, updatePost } from '../actions'
+import { deletePostAction, updatePostAction } from '../actions'
 
 type PostFormProps = {
-  post: {
-    created_at: string
-    id: string
-    title: string | null
-    updated_at: string
-  }
+  post: PostWithDetails
+}
+
+function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
 }
 
 export function PostForm({ post }: PostFormProps) {
   const [state, formAction, isPending] = useActionState<ActionState, FormData>(
-    updatePost,
+    updatePostAction,
     null
   )
   const [isDeleting, setIsDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
+  
+  const [title, setTitle] = useState(post.title || '')
+  const [slug, setSlug] = useState(post.slug || '')
+  const [autoSlug, setAutoSlug] = useState(!post.slug)
+  const [tags, setTags] = useState<string[]>(post.tags || [])
+  const [tagInput, setTagInput] = useState('')
+  const [redirectPaths, setRedirectPaths] = useState<string[]>(
+    post.redirect_from || []
+  )
+  const [redirectInput, setRedirectInput] = useState('')
+  const [status, setStatus] = useState<string>(post.status || 'draft')
+
+  // Auto-generate slug from title if auto mode is enabled
+  useEffect(() => {
+    if (autoSlug && title) {
+      setSlug(generateSlug(title))
+    }
+  }, [title, autoSlug])
 
   const handleDelete = async () => {
     if (!confirm('本当にこの投稿を削除しますか？この操作は取り消せません。')) {
@@ -32,8 +58,8 @@ export function PostForm({ post }: PostFormProps) {
     setDeleteError(null)
 
     try {
-      await deletePost(post.id)
-      // If successful, deletePost will redirect
+      await deletePostAction(post.id)
+      // If successful, deletePostAction will redirect
     } catch (error) {
       setIsDeleting(false)
       setDeleteError(
@@ -42,10 +68,44 @@ export function PostForm({ post }: PostFormProps) {
     }
   }
 
+  const handleAddTag = () => {
+    const newTag = tagInput.trim()
+    if (newTag && !tags.includes(newTag)) {
+      setTags([...tags, newTag])
+      setTagInput('')
+    }
+  }
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    setTags(tags.filter((tag) => tag !== tagToRemove))
+  }
+
+  const handleAddRedirect = () => {
+    const newPath = redirectInput.trim()
+    if (newPath && !redirectPaths.includes(newPath)) {
+      setRedirectPaths([...redirectPaths, newPath])
+      setRedirectInput('')
+    }
+  }
+
+  const handleRemoveRedirect = (pathToRemove: string) => {
+    setRedirectPaths(redirectPaths.filter((path) => path !== pathToRemove))
+  }
+
+  const initialContent = post.current_version?.content
+    ? JSON.stringify(post.current_version.content)
+    : undefined
+
   return (
     <div>
       <form action={formAction} className="space-y-6">
         <input name="id" type="hidden" value={post.id} />
+        <input name="tags" type="hidden" value={JSON.stringify(tags)} />
+        <input
+          name="redirect_from"
+          type="hidden"
+          value={JSON.stringify(redirectPaths)}
+        />
 
         {state?.error && (
           <div className="rounded border border-error bg-error/10 p-4 text-error">
@@ -59,23 +119,225 @@ export function PostForm({ post }: PostFormProps) {
           </div>
         )}
 
+        {/* Title */}
         <div>
           <label className="mb-2 block font-medium" htmlFor="title">
-            タイトル
+            タイトル <span className="text-error">*</span>
           </label>
           <Input
-            defaultValue={post.title ?? ''}
             id="title"
             maxLength={256}
             name="title"
-            placeholder="タイトルを入力（任意）"
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="投稿のタイトルを入力"
+            required
             type="text"
+            value={title}
           />
           <p className="mt-1 text-muted-foreground text-sm">
-            任意、256文字以内
+            必須、256文字以内
           </p>
         </div>
 
+        {/* Slug */}
+        <div>
+          <label className="mb-2 block font-medium" htmlFor="slug">
+            スラッグ <span className="text-error">*</span>
+          </label>
+          <div className="flex gap-2">
+            <Input
+              disabled={autoSlug}
+              id="slug"
+              maxLength={256}
+              name="slug"
+              onChange={(e) => setSlug(e.target.value)}
+              placeholder="url-friendly-slug"
+              required
+              type="text"
+              value={slug}
+            />
+            <Button
+              onClick={() => setAutoSlug(!autoSlug)}
+              type="button"
+              variant="outline"
+            >
+              {autoSlug ? '手動' : '自動'}
+            </Button>
+          </div>
+          <p className="mt-1 text-muted-foreground text-sm">
+            URL用の識別子（自動生成または手動入力）
+          </p>
+        </div>
+
+        {/* Excerpt */}
+        <div>
+          <label className="mb-2 block font-medium" htmlFor="excerpt">
+            抜粋
+          </label>
+          <Textarea
+            defaultValue={post.excerpt || ''}
+            id="excerpt"
+            name="excerpt"
+            placeholder="投稿の簡単な説明（任意）"
+            rows={3}
+          />
+          <p className="mt-1 text-muted-foreground text-sm">
+            投稿の要約や説明文
+          </p>
+        </div>
+
+        {/* Content */}
+        <div>
+          <label className="mb-2 block font-medium" htmlFor="content">
+            コンテンツ
+          </label>
+          <RichTextEditor
+            id="content"
+            initialValue={initialContent}
+            name="content"
+            placeholder="投稿の本文を入力..."
+          />
+        </div>
+
+        {/* Tags */}
+        <div>
+          <label className="mb-2 block font-medium">タグ</label>
+          <div className="flex gap-2">
+            <Input
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  handleAddTag()
+                }
+              }}
+              placeholder="タグを入力してEnter"
+              type="text"
+              value={tagInput}
+            />
+            <Button onClick={handleAddTag} type="button" variant="outline">
+              追加
+            </Button>
+          </div>
+          {tags.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-2">
+              {tags.map((tag) => (
+                <span
+                  className="inline-flex items-center gap-1 rounded bg-secondary px-3 py-1 text-sm"
+                  key={tag}
+                >
+                  {tag}
+                  <button
+                    className="text-muted-foreground hover:text-foreground"
+                    onClick={() => handleRemoveTag(tag)}
+                    type="button"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Status */}
+        <div>
+          <label className="mb-2 block font-medium" htmlFor="status">
+            ステータス
+          </label>
+          <select
+            className="w-full rounded border border-border bg-background px-3 py-2"
+            id="status"
+            name="status"
+            onChange={(e) => setStatus(e.target.value)}
+            value={status}
+          >
+            <option value="draft">下書き</option>
+            <option value="scheduled">予約公開</option>
+            <option value="published">公開</option>
+          </select>
+        </div>
+
+        {/* Published At */}
+        {(status === 'scheduled' || status === 'published') && (
+          <div>
+            <label className="mb-2 block font-medium" htmlFor="published_at">
+              公開日時
+            </label>
+            <Input
+              defaultValue={
+                post.published_at
+                  ? new Date(post.published_at).toISOString().slice(0, 16)
+                  : ''
+              }
+              id="published_at"
+              name="published_at"
+              type="datetime-local"
+            />
+            <p className="mt-1 text-muted-foreground text-sm">
+              {status === 'scheduled'
+                ? '指定した日時に自動公開されます'
+                : '公開日時を記録します'}
+            </p>
+          </div>
+        )}
+
+        {/* Redirect From */}
+        <div>
+          <label className="mb-2 block font-medium">リダイレクト元パス</label>
+          <div className="flex gap-2">
+            <Input
+              onChange={(e) => setRedirectInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  handleAddRedirect()
+                }
+              }}
+              placeholder="/old-path"
+              type="text"
+              value={redirectInput}
+            />
+            <Button
+              onClick={handleAddRedirect}
+              type="button"
+              variant="outline"
+            >
+              追加
+            </Button>
+          </div>
+          {redirectPaths.length > 0 && (
+            <ul className="mt-2 space-y-1">
+              {redirectPaths.map((path) => (
+                <li className="flex items-center justify-between" key={path}>
+                  <code className="text-sm">{path}</code>
+                  <button
+                    className="text-error hover:underline text-sm"
+                    onClick={() => handleRemoveRedirect(path)}
+                    type="button"
+                  >
+                    削除
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="mt-1 text-muted-foreground text-sm">
+            この投稿にリダイレクトする旧URLパス
+          </p>
+        </div>
+
+        {/* Version History Link */}
+        <div>
+          <Link
+            className="text-primary hover:underline text-sm"
+            href={`/admin/posts/${post.id}/versions`}
+          >
+            バージョン履歴を表示
+          </Link>
+        </div>
+
+        {/* Action Buttons */}
         <div className="flex justify-between gap-4">
           <Button
             disabled={isPending || isDeleting}
@@ -85,9 +347,18 @@ export function PostForm({ post }: PostFormProps) {
           >
             {isDeleting ? '削除中...' : '削除'}
           </Button>
-          <Button disabled={isPending || isDeleting} type="submit">
-            {isPending ? '保存中...' : '保存'}
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              render={<Link href="/admin/posts" />}
+              type="button"
+              variant="outline"
+            >
+              キャンセル
+            </Button>
+            <Button disabled={isPending || isDeleting} type="submit">
+              {isPending ? '保存中...' : '保存'}
+            </Button>
+          </div>
         </div>
       </form>
     </div>

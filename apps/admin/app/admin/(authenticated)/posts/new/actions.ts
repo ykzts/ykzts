@@ -3,37 +3,37 @@
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
-import { getProfile } from '@/lib/data'
-import { createClient } from '@/lib/supabase/server'
+import { createPost } from '@/lib/posts'
 
 export type ActionState = {
   error?: string
   success?: boolean
 } | null
 
-// Zod schema for post validation
-const postSchema = z.object({
-  title: z
-    .string()
-    .max(256, 'タイトルは256文字以内で入力してください')
-    .optional()
+// Zod schema for post creation validation
+const createPostSchema = z.object({
+  content: z.string().optional(),
+  excerpt: z.string().trim().max(1000, '抜粋は1000文字以内で入力してください').optional(),
+  published_at: z.string().optional(),
+  slug: z.string().trim().min(1, 'スラッグは必須です').max(256, 'スラッグは256文字以内で入力してください'),
+  status: z.enum(['draft', 'scheduled', 'published']).optional(),
+  tags: z.string().optional(),
+  title: z.string().trim().min(1, 'タイトルは必須です').max(256, 'タイトルは256文字以内で入力してください')
 })
 
-export async function createPost(
+export async function createPostAction(
   _prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
-  // Extract FormData values
-  const title = formData.get('title')
-
-  // Check types - FormData.get() can return string | File | null
-  if (title !== null && typeof title !== 'string') {
-    return { error: '無効な入力データです' }
-  }
-
-  // Validate with Zod
-  const validation = postSchema.safeParse({
-    title: title?.trim() || undefined
+  // Extract and validate FormData values with Zod
+  const validation = createPostSchema.safeParse({
+    content: formData.get('content'),
+    excerpt: formData.get('excerpt') || undefined,
+    published_at: formData.get('published_at') || undefined,
+    slug: formData.get('slug'),
+    status: formData.get('status') || 'draft',
+    tags: formData.get('tags') || undefined,
+    title: formData.get('title')
   })
 
   if (!validation.success) {
@@ -43,48 +43,28 @@ export async function createPost(
 
   const validatedData = validation.data
 
-  // Get current user's profile ID
-  let profileId: string
   try {
-    const profile = await getProfile()
-    if (!profile) {
-      return { error: 'プロフィールが見つかりません' }
-    }
-    profileId = profile.id
+    // Parse JSON fields
+    const content = validatedData.content
+      ? JSON.parse(validatedData.content)
+      : { type: 'root', children: [] }
+    const tags = validatedData.tags ? JSON.parse(validatedData.tags) : []
+
+    await createPost({
+      content,
+      excerpt: validatedData.excerpt,
+      publishedAt: validatedData.published_at,
+      slug: validatedData.slug,
+      status: validatedData.status as 'draft' | 'scheduled' | 'published',
+      tags,
+      title: validatedData.title
+    })
+
+    revalidateTag('posts')
+    revalidateTag('counts')
   } catch (error) {
     return {
-      error: `プロフィールの取得に失敗しました: ${error instanceof Error ? error.message : '不明なエラー'}`
-    }
-  }
-
-  try {
-    const supabase = await createClient()
-
-    // Insert new post
-    const { data, error } = await supabase
-      .from('posts')
-      .insert({
-        profile_id: profileId,
-        title: validatedData.title || null
-      })
-      .select('id')
-      .maybeSingle()
-
-    if (error) {
-      return { error: `投稿の作成に失敗しました: ${error.message}` }
-    }
-
-    // Verify that a row was actually inserted
-    if (!data) {
-      return { error: '投稿の作成に失敗しました' }
-    }
-
-    // Revalidate both posts list and dashboard counts
-    revalidateTag('posts', 'max')
-    revalidateTag('counts', 'max')
-  } catch (error) {
-    return {
-      error: `予期しないエラーが発生しました: ${error instanceof Error ? error.message : '不明なエラー'}`
+      error: `作成に失敗しました: ${error instanceof Error ? error.message : '不明なエラー'}`
     }
   }
 

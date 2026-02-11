@@ -1,0 +1,369 @@
+import { cacheTag } from 'next/cache'
+import type { Database } from '@ykzts/supabase'
+import { getCurrentUser } from './auth'
+import { createClient } from './supabase/server'
+
+type Post = Database['public']['Tables']['posts']['Row']
+type PostVersion = Database['public']['Tables']['post_versions']['Row']
+
+export type PostWithDetails = Post & {
+  current_version?: {
+    content: unknown
+  } | null
+  profile?: {
+    name: string | null
+  } | null
+}
+
+export type PostsFilter = {
+  page?: number
+  perPage?: number
+  search?: string
+  status?: 'draft' | 'scheduled' | 'published' | 'all'
+}
+
+export type PostVersionWithProfile = PostVersion & {
+  profile?: {
+    name: string | null
+  } | null
+}
+
+/**
+ * Get posts list with filtering, search, and pagination
+ */
+export async function getPosts(filter: PostsFilter = {}) {
+  'use cache: private'
+  cacheTag('posts')
+
+  const {
+    page = 1,
+    perPage = 20,
+    search,
+    status = 'all'
+  } = filter
+
+  const supabase = await createClient()
+
+  let query = supabase
+    .from('posts')
+    .select(`
+      id,
+      title,
+      slug,
+      excerpt,
+      status,
+      published_at,
+      created_at,
+      updated_at,
+      profile:profiles!posts_profile_id_fkey(name)
+    `, { count: 'exact' })
+
+  // Apply status filter
+  if (status !== 'all') {
+    query = query.eq('status', status)
+  }
+
+  // Apply search filter
+  if (search && search.trim()) {
+    query = query.or(`title.ilike.%${search}%,excerpt.ilike.%${search}%`)
+  }
+
+  // Apply pagination
+  const from = (page - 1) * perPage
+  const to = from + perPage - 1
+  query = query.range(from, to)
+
+  // Order by created_at descending
+  query = query.order('created_at', { ascending: false })
+
+  const { data, error, count } = await query
+
+  if (error) {
+    throw new Error(`投稿の取得に失敗しました: ${error.message}`)
+  }
+
+  return {
+    data: data ?? [],
+    count: count ?? 0,
+    page,
+    perPage,
+    totalPages: Math.ceil((count ?? 0) / perPage)
+  }
+}
+
+/**
+ * Get a single post by ID with full details
+ */
+export async function getPostById(id: string): Promise<PostWithDetails | null> {
+  'use cache: private'
+  cacheTag('posts')
+
+  const user = await getCurrentUser()
+  if (!user) {
+    throw new Error('認証されていません')
+  }
+
+  const supabase = await createClient()
+
+  // Get the authenticated user's profile
+  const { data: profileData, error: profileError } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (profileError) {
+    throw new Error(`プロフィールの取得に失敗しました: ${profileError.message}`)
+  }
+
+  if (!profileData) {
+    return null
+  }
+
+  // Fetch post with current version and profile info
+  const { data, error } = await supabase
+    .from('posts')
+    .select(`
+      *,
+      current_version:post_versions!posts_current_version_id_fkey(content),
+      profile:profiles!posts_profile_id_fkey(name)
+    `)
+    .eq('id', id)
+    .eq('profile_id', profileData.id)
+    .maybeSingle()
+
+  if (error) {
+    throw new Error(`投稿の取得に失敗しました: ${error.message}`)
+  }
+
+  return data
+}
+
+/**
+ * Create a new post using the database function
+ */
+export async function createPost(params: {
+  changeSummary?: string
+  content: unknown
+  excerpt?: string
+  publishedAt?: string
+  slug: string
+  status?: 'draft' | 'scheduled' | 'published'
+  tags?: string[]
+  title: string
+}) {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase.rpc('create_post', {
+    p_content: params.content,
+    p_excerpt: params.excerpt || null,
+    p_published_at: params.publishedAt || null,
+    p_slug: params.slug,
+    p_status: params.status || 'draft',
+    p_tags: params.tags || null,
+    p_title: params.title
+  })
+
+  if (error) {
+    throw new Error(`投稿の作成に失敗しました: ${error.message}`)
+  }
+
+  return data
+}
+
+/**
+ * Update an existing post using the database function
+ */
+export async function updatePost(params: {
+  changeSummary?: string
+  content?: unknown
+  excerpt?: string
+  postId: string
+  publishedAt?: string
+  slug?: string
+  status?: 'draft' | 'scheduled' | 'published'
+  tags?: string[]
+  title?: string
+}) {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase.rpc('update_post', {
+    p_change_summary: params.changeSummary || 'Updated',
+    p_content: params.content || null,
+    p_excerpt: params.excerpt || null,
+    p_post_id: params.postId,
+    p_published_at: params.publishedAt || null,
+    p_slug: params.slug || null,
+    p_status: params.status || null,
+    p_tags: params.tags || null,
+    p_title: params.title || null
+  })
+
+  if (error) {
+    throw new Error(`投稿の更新に失敗しました: ${error.message}`)
+  }
+
+  return data
+}
+
+/**
+ * Delete a post using the database function
+ */
+export async function deletePost(postId: string): Promise<void> {
+  const supabase = await createClient()
+
+  const { error } = await supabase.rpc('delete_post', {
+    p_post_id: postId
+  })
+
+  if (error) {
+    throw new Error(`投稿の削除に失敗しました: ${error.message}`)
+  }
+}
+
+/**
+ * Get all versions for a post
+ */
+export async function getPostVersions(
+  postId: string
+): Promise<PostVersionWithProfile[]> {
+  'use cache: private'
+  cacheTag('posts')
+
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('post_versions')
+    .select(`
+      *,
+      profile:profiles!post_versions_created_by_fkey(name)
+    `)
+    .eq('post_id', postId)
+    .order('version_number', { ascending: false })
+
+  if (error) {
+    throw new Error(`バージョン履歴の取得に失敗しました: ${error.message}`)
+  }
+
+  return data ?? []
+}
+
+/**
+ * Get a specific version
+ */
+export async function getPostVersion(
+  versionId: string
+): Promise<PostVersionWithProfile | null> {
+  'use cache: private'
+  cacheTag('posts')
+
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('post_versions')
+    .select(`
+      *,
+      profile:profiles!post_versions_created_by_fkey(name)
+    `)
+    .eq('id', versionId)
+    .maybeSingle()
+
+  if (error) {
+    throw new Error(`バージョンの取得に失敗しました: ${error.message}`)
+  }
+
+  return data
+}
+
+/**
+ * Compare two versions and return both for client-side diff
+ */
+export async function compareVersions(versionId1: string, versionId2: string) {
+  'use cache: private'
+  cacheTag('posts')
+
+  const supabase = await createClient()
+
+  const [version1Result, version2Result] = await Promise.all([
+    supabase
+      .from('post_versions')
+      .select('*')
+      .eq('id', versionId1)
+      .maybeSingle(),
+    supabase
+      .from('post_versions')
+      .select('*')
+      .eq('id', versionId2)
+      .maybeSingle()
+  ])
+
+  if (version1Result.error) {
+    throw new Error(
+      `バージョン1の取得に失敗しました: ${version1Result.error.message}`
+    )
+  }
+
+  if (version2Result.error) {
+    throw new Error(
+      `バージョン2の取得に失敗しました: ${version2Result.error.message}`
+    )
+  }
+
+  return {
+    version1: version1Result.data,
+    version2: version2Result.data
+  }
+}
+
+/**
+ * Rollback to a specific version by creating a new version with that content
+ */
+export async function rollbackToVersion(postId: string, versionId: string) {
+  const supabase = await createClient()
+
+  // Get the version to rollback to
+  const { data: targetVersion, error: versionError } = await supabase
+    .from('post_versions')
+    .select('content, title, excerpt, tags')
+    .eq('id', versionId)
+    .eq('post_id', postId)
+    .maybeSingle()
+
+  if (versionError) {
+    throw new Error(
+      `ロールバック対象のバージョンの取得に失敗しました: ${versionError.message}`
+    )
+  }
+
+  if (!targetVersion) {
+    throw new Error('指定されたバージョンが見つかりません')
+  }
+
+  // Get version number for change summary
+  const { data: versionInfo } = await supabase
+    .from('post_versions')
+    .select('version_number')
+    .eq('id', versionId)
+    .maybeSingle()
+
+  const versionNumber = versionInfo?.version_number ?? 'unknown'
+
+  // Use update_post to create a new version with the old content
+  const { data, error } = await supabase.rpc('update_post', {
+    p_change_summary: `Rolled back to version ${versionNumber}`,
+    p_content: targetVersion.content,
+    p_excerpt: targetVersion.excerpt || null,
+    p_post_id: postId,
+    p_published_at: null,
+    p_slug: null,
+    p_status: null,
+    p_tags: targetVersion.tags || null,
+    p_title: targetVersion.title || null
+  })
+
+  if (error) {
+    throw new Error(`ロールバックに失敗しました: ${error.message}`)
+  }
+
+  return data
+}
