@@ -12,20 +12,10 @@ export const postSchema = z.object({
     .max(1000, '抜粋は1000文字以内で入力してください')
     .optional(),
   published_at: z
-    .string()
-    .refine(
-      (val) => {
-        if (!val || val === '') return true
-        // Check if it's a valid datetime string
-        try {
-          const date = new Date(val)
-          return !Number.isNaN(date.getTime())
-        } catch {
-          return false
-        }
-      },
-      { message: '有効な日時形式で入力してください' }
-    )
+    .union([
+      z.string().datetime({ message: '有効な日時形式で入力してください' }),
+      z.literal('')
+    ])
     .optional(),
   slug: z
     .string()

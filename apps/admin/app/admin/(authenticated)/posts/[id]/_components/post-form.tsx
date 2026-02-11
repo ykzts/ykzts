@@ -259,17 +259,39 @@ export function PostForm({ post }: PostFormProps) {
         {/* Published At */}
         {(status === 'scheduled' || status === 'published') && (
           <div>
-            <label className="mb-2 block font-medium" htmlFor="published_at">
+            <label
+              className="mb-2 block font-medium"
+              htmlFor="published_at_display"
+            >
               公開日時
             </label>
+            {/* Hidden input that holds the ISO 8601 value actually submitted */}
+            <Input
+              defaultValue={post.published_at ?? ''}
+              id="published_at"
+              name="published_at"
+              type="hidden"
+            />
+            {/* Visible datetime-local input for user interaction */}
             <Input
               defaultValue={
                 post.published_at
                   ? new Date(post.published_at).toISOString().slice(0, 16)
                   : ''
               }
-              id="published_at"
-              name="published_at"
+              id="published_at_display"
+              name="published_at_display"
+              onChange={(e) => {
+                const form = e.currentTarget.form
+                const hidden = form?.elements.namedItem(
+                  'published_at'
+                ) as HTMLInputElement | null
+                if (hidden) {
+                  hidden.value = e.currentTarget.value
+                    ? new Date(e.currentTarget.value).toISOString()
+                    : ''
+                }
+              }}
               type="datetime-local"
             />
             <p className="mt-1 text-muted-foreground text-sm">

@@ -1,15 +1,16 @@
+import slugify from 'slugify'
+
 /**
  * Generate a URL-friendly slug from a string
- * Converts to lowercase, removes special characters, and replaces spaces with hyphens
- * For Japanese text, this will create empty slugs - users should manually edit slugs for Japanese titles
+ * Supports Unicode/Japanese text with transliteration
  */
 export function generateSlug(text: string): string {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_-]+/g, '-')
-    .replace(/^-+|-+$/g, '')
+  return slugify(text, {
+    locale: 'ja',
+    lower: true,
+    strict: true,
+    trim: true
+  })
 }
 
 /**
