@@ -13,9 +13,20 @@ export const postSchema = z.object({
     .optional(),
   published_at: z
     .string()
-    .datetime({ message: '有効な日時形式で入力してください' })
-    .optional()
-    .or(z.literal('')),
+    .refine(
+      (val) => {
+        if (!val || val === '') return true
+        // Check if it's a valid datetime string
+        try {
+          const date = new Date(val)
+          return !Number.isNaN(date.getTime())
+        } catch {
+          return false
+        }
+      },
+      { message: '有効な日時形式で入力してください' }
+    )
+    .optional(),
   slug: z
     .string()
     .trim()

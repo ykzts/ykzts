@@ -15,10 +15,12 @@ export async function createPostAction(
   formData: FormData
 ): Promise<ActionState> {
   // Extract and validate FormData values with Zod
+  const publishedAt = formData.get('published_at')
+  
   const validation = postSchema.safeParse({
     content: formData.get('content'),
     excerpt: formData.get('excerpt') || undefined,
-    published_at: formData.get('published_at') || undefined,
+    published_at: publishedAt && publishedAt !== '' ? publishedAt : undefined,
     slug: formData.get('slug'),
     status: formData.get('status') || 'draft',
     tags: formData.get('tags') || undefined,
