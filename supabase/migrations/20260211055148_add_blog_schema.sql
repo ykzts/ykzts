@@ -78,6 +78,9 @@ DROP POLICY IF EXISTS "Enable read access for all users" ON posts;
 DROP POLICY IF EXISTS "Users can insert their own posts" ON posts;
 DROP POLICY IF EXISTS "Users can update their own posts" ON posts;
 DROP POLICY IF EXISTS "Users can delete their own posts" ON posts;
+DROP POLICY IF EXISTS "Enable insert for authenticated users" ON posts;
+DROP POLICY IF EXISTS "Enable update for authenticated users" ON posts;
+DROP POLICY IF EXISTS "Enable delete for authenticated users" ON posts;
 
 -- Create new policies for posts
 -- Public can read published posts that are already published
@@ -90,49 +93,18 @@ CREATE POLICY "Enable read access for authenticated users" ON posts
   FOR SELECT
   USING (auth.uid() IS NOT NULL);
 
--- Authenticated users can insert their own posts
-CREATE POLICY "Enable insert for authenticated users" ON posts
+-- Block direct INSERT/UPDATE/DELETE - must use functions
+CREATE POLICY "Block direct insert" ON posts
   FOR INSERT
-  WITH CHECK (
-    auth.uid() IS NOT NULL
-    AND EXISTS (
-      SELECT 1 FROM profiles
-      WHERE profiles.id = posts.profile_id
-      AND profiles.user_id = auth.uid()
-    )
-  );
+  WITH CHECK (false);
 
--- Authenticated users can update their own posts
-CREATE POLICY "Enable update for authenticated users" ON posts
+CREATE POLICY "Block direct update" ON posts
   FOR UPDATE
-  USING (
-    auth.uid() IS NOT NULL
-    AND EXISTS (
-      SELECT 1 FROM profiles
-      WHERE profiles.id = posts.profile_id
-      AND profiles.user_id = auth.uid()
-    )
-  )
-  WITH CHECK (
-    auth.uid() IS NOT NULL
-    AND EXISTS (
-      SELECT 1 FROM profiles
-      WHERE profiles.id = posts.profile_id
-      AND profiles.user_id = auth.uid()
-    )
-  );
+  USING (false);
 
--- Authenticated users can delete their own posts
-CREATE POLICY "Enable delete for authenticated users" ON posts
+CREATE POLICY "Block direct delete" ON posts
   FOR DELETE
-  USING (
-    auth.uid() IS NOT NULL
-    AND EXISTS (
-      SELECT 1 FROM profiles
-      WHERE profiles.id = posts.profile_id
-      AND profiles.user_id = auth.uid()
-    )
-  );
+  USING (false);
 
 -- 6. Create RLS policies for post_versions table
 -- Authenticated users can read all post versions
@@ -140,64 +112,227 @@ CREATE POLICY "Enable read access for authenticated users" ON post_versions
   FOR SELECT
   USING (auth.uid() IS NOT NULL);
 
--- Only post owners can insert versions for their posts, and created_by must match auth.uid()
-CREATE POLICY "Enable insert for authenticated users" ON post_versions
+-- Block direct INSERT/UPDATE/DELETE - must use functions
+CREATE POLICY "Block direct insert" ON post_versions
   FOR INSERT
-  WITH CHECK (
-    auth.uid() IS NOT NULL
-    AND created_by = auth.uid()
-    AND EXISTS (
-      SELECT 1 FROM posts
-      INNER JOIN profiles ON posts.profile_id = profiles.id
-      WHERE posts.id = post_versions.post_id
-      AND profiles.user_id = auth.uid()
-    )
-  );
+  WITH CHECK (false);
 
--- Only post owners or version creators can update a post version
-CREATE POLICY "Enable update for authenticated users" ON post_versions
+CREATE POLICY "Block direct update" ON post_versions
   FOR UPDATE
-  USING (
-    auth.uid() IS NOT NULL
-    AND (
-      created_by = auth.uid()
-      OR EXISTS (
-        SELECT 1 FROM posts
-        INNER JOIN profiles ON posts.profile_id = profiles.id
-        WHERE posts.id = post_versions.post_id
-        AND profiles.user_id = auth.uid()
-      )
-    )
-  )
-  WITH CHECK (
-    auth.uid() IS NOT NULL
-    AND (
-      created_by = auth.uid()
-      OR EXISTS (
-        SELECT 1 FROM posts
-        INNER JOIN profiles ON posts.profile_id = profiles.id
-        WHERE posts.id = post_versions.post_id
-        AND profiles.user_id = auth.uid()
-      )
-    )
-  );
+  USING (false);
 
--- Only post owners or version creators can delete a post version
-CREATE POLICY "Enable delete for authenticated users" ON post_versions
+CREATE POLICY "Block direct delete" ON post_versions
   FOR DELETE
-  USING (
-    auth.uid() IS NOT NULL
-    AND (
-      created_by = auth.uid()
-      OR EXISTS (
-        SELECT 1 FROM posts
-        INNER JOIN profiles ON posts.profile_id = profiles.id
-        WHERE posts.id = post_versions.post_id
-        AND profiles.user_id = auth.uid()
-      )
+  USING (false);
+
+-- 7. Create functions for post management
+
+-- Function to create a new post with initial version
+CREATE OR REPLACE FUNCTION create_post(
+  p_title TEXT,
+  p_slug TEXT,
+  p_excerpt TEXT,
+  p_content JSONB,
+  p_tags TEXT[] DEFAULT NULL,
+  p_status TEXT DEFAULT 'draft',
+  p_published_at TIMESTAMPTZ DEFAULT NULL
+)
+RETURNS UUID
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  v_post_id UUID;
+  v_version_id UUID;
+  v_profile_id UUID;
+BEGIN
+  -- Get the profile_id for the current user
+  SELECT id INTO v_profile_id
+  FROM profiles
+  WHERE user_id = auth.uid();
+  
+  IF v_profile_id IS NULL THEN
+    RAISE EXCEPTION 'User profile not found';
+  END IF;
+
+  -- Validate status
+  IF p_status NOT IN ('draft', 'scheduled', 'published') THEN
+    RAISE EXCEPTION 'Invalid status. Must be draft, scheduled, or published';
+  END IF;
+
+  -- Insert the post
+  INSERT INTO posts (title, slug, excerpt, status, published_at, tags, profile_id)
+  VALUES (p_title, p_slug, p_excerpt, p_status, p_published_at, p_tags, v_profile_id)
+  RETURNING id INTO v_post_id;
+
+  -- Create the initial version
+  INSERT INTO post_versions (post_id, version_number, content, title, excerpt, tags, created_by, change_summary)
+  VALUES (v_post_id, 1, p_content, p_title, p_excerpt, p_tags, v_profile_id, 'Initial version')
+  RETURNING id INTO v_version_id;
+
+  -- Update the post to reference the current version
+  UPDATE posts
+  SET current_version_id = v_version_id
+  WHERE id = v_post_id;
+
+  RETURN v_post_id;
+END;
+$$;
+
+-- Function to update a post and create a new version
+CREATE OR REPLACE FUNCTION update_post(
+  p_post_id UUID,
+  p_title TEXT DEFAULT NULL,
+  p_slug TEXT DEFAULT NULL,
+  p_excerpt TEXT DEFAULT NULL,
+  p_content JSONB DEFAULT NULL,
+  p_tags TEXT[] DEFAULT NULL,
+  p_status TEXT DEFAULT NULL,
+  p_published_at TIMESTAMPTZ DEFAULT NULL,
+  p_change_summary TEXT DEFAULT 'Updated'
+)
+RETURNS UUID
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  v_version_id UUID;
+  v_profile_id UUID;
+  v_owner_profile_id UUID;
+  v_max_version INTEGER;
+  v_current_title TEXT;
+  v_current_excerpt TEXT;
+  v_current_tags TEXT[];
+BEGIN
+  -- Get the profile_id for the current user
+  SELECT id INTO v_profile_id
+  FROM profiles
+  WHERE user_id = auth.uid();
+  
+  IF v_profile_id IS NULL THEN
+    RAISE EXCEPTION 'User profile not found';
+  END IF;
+
+  -- Check ownership
+  SELECT profile_id INTO v_owner_profile_id
+  FROM posts
+  WHERE id = p_post_id;
+
+  IF v_owner_profile_id IS NULL THEN
+    RAISE EXCEPTION 'Post not found';
+  END IF;
+
+  IF v_owner_profile_id != v_profile_id THEN
+    RAISE EXCEPTION 'Permission denied';
+  END IF;
+
+  -- Validate status if provided
+  IF p_status IS NOT NULL AND p_status NOT IN ('draft', 'scheduled', 'published') THEN
+    RAISE EXCEPTION 'Invalid status. Must be draft, scheduled, or published';
+  END IF;
+
+  -- Get current values for fields not being updated
+  SELECT title, excerpt, tags INTO v_current_title, v_current_excerpt, v_current_tags
+  FROM posts
+  WHERE id = p_post_id;
+
+  -- Update the post fields that are provided
+  UPDATE posts
+  SET
+    title = COALESCE(p_title, title),
+    slug = COALESCE(p_slug, slug),
+    excerpt = COALESCE(p_excerpt, excerpt),
+    tags = COALESCE(p_tags, tags),
+    status = COALESCE(p_status, status),
+    published_at = COALESCE(p_published_at, published_at)
+  WHERE id = p_post_id;
+
+  -- Create a new version only if content is provided
+  IF p_content IS NOT NULL THEN
+    -- Get the next version number
+    SELECT COALESCE(MAX(version_number), 0) + 1 INTO v_max_version
+    FROM post_versions
+    WHERE post_id = p_post_id;
+
+    -- Insert the new version
+    INSERT INTO post_versions (
+      post_id, 
+      version_number, 
+      content, 
+      title, 
+      excerpt, 
+      tags, 
+      created_by, 
+      change_summary
     )
-  );
+    VALUES (
+      p_post_id,
+      v_max_version,
+      p_content,
+      COALESCE(p_title, v_current_title),
+      COALESCE(p_excerpt, v_current_excerpt),
+      COALESCE(p_tags, v_current_tags),
+      v_profile_id,
+      p_change_summary
+    )
+    RETURNING id INTO v_version_id;
+
+    -- Update the post to reference the new current version
+    UPDATE posts
+    SET current_version_id = v_version_id
+    WHERE id = p_post_id;
+  END IF;
+
+  RETURN p_post_id;
+END;
+$$;
+
+-- Function to delete a post (and all its versions due to CASCADE)
+CREATE OR REPLACE FUNCTION delete_post(p_post_id UUID)
+RETURNS VOID
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  v_profile_id UUID;
+  v_owner_profile_id UUID;
+BEGIN
+  -- Get the profile_id for the current user
+  SELECT id INTO v_profile_id
+  FROM profiles
+  WHERE user_id = auth.uid();
+  
+  IF v_profile_id IS NULL THEN
+    RAISE EXCEPTION 'User profile not found';
+  END IF;
+
+  -- Check ownership
+  SELECT profile_id INTO v_owner_profile_id
+  FROM posts
+  WHERE id = p_post_id;
+
+  IF v_owner_profile_id IS NULL THEN
+    RAISE EXCEPTION 'Post not found';
+  END IF;
+
+  IF v_owner_profile_id != v_profile_id THEN
+    RAISE EXCEPTION 'Permission denied';
+  END IF;
+
+  -- Delete the post (versions will be deleted automatically due to CASCADE)
+  DELETE FROM posts WHERE id = p_post_id;
+END;
+$$;
+
+-- Grant execute permissions to authenticated users
+GRANT EXECUTE ON FUNCTION create_post TO authenticated;
+GRANT EXECUTE ON FUNCTION update_post TO authenticated;
+GRANT EXECUTE ON FUNCTION delete_post TO authenticated;
 
 -- Note: post_versions table doesn't have updated_at column as versions are immutable
 -- Note: The trigger function update_updated_at_column() already exists from the initial migration for posts table
 -- Note: current_version_id is initially NULL and can be updated later when versions are created
+-- Note: All write operations must go through the functions above to ensure business logic is enforced
