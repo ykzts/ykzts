@@ -61,7 +61,15 @@ export async function getPosts(filter: PostsFilter = {}) {
 
   // Apply search filter
   if (search?.trim()) {
-    query = query.or(`title.ilike.%${search}%,excerpt.ilike.%${search}%`)
+    // Escape special characters to prevent SQL injection in LIKE patterns
+    const escapedSearch = search
+      .trim()
+      .replace(/\\/g, '\\\\')
+      .replace(/%/g, '\\%')
+      .replace(/_/g, '\\_')
+    query = query.or(
+      `title.ilike.%${escapedSearch}%,excerpt.ilike.%${escapedSearch}%`
+    )
   }
 
   // Apply pagination

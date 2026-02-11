@@ -19,7 +19,7 @@ export function PostsFilters() {
       params.set('status', status)
     }
     params.delete('page') // Reset to page 1 when filtering
-    router.push(`?${params.toString()}`)
+    router.push(`/admin/posts?${params.toString()}`)
   }
 
   const handleSearch = (e: React.FormEvent) => {
@@ -31,7 +31,7 @@ export function PostsFilters() {
       params.delete('search')
     }
     params.delete('page') // Reset to page 1 when searching
-    router.push(`?${params.toString()}`)
+    router.push(`/admin/posts?${params.toString()}`)
   }
 
   const handleClearFilters = () => {

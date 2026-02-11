@@ -22,7 +22,7 @@ export function PostsPagination({
     } else {
       params.set('page', page.toString())
     }
-    router.push(`?${params.toString()}`)
+    router.push(`/admin/posts?${params.toString()}`)
   }
 
   const pages = []

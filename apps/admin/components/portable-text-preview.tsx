@@ -94,16 +94,25 @@ export function PortableTextPreview({ value }: PortableTextPreviewProps) {
               if (linkMark) {
                 const markDef = markDefMap.get(linkMark)
                 if (markDef && markDef._type === 'link' && markDef.href) {
-                  content = (
-                    <a
-                      className="text-primary hover:underline"
-                      href={markDef.href}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {content}
-                    </a>
-                  )
+                  // Sanitize href to prevent XSS attacks
+                  const href = markDef.href
+                  const isSafe =
+                    href.startsWith('http://') ||
+                    href.startsWith('https://') ||
+                    href.startsWith('mailto:')
+
+                  if (isSafe) {
+                    content = (
+                      <a
+                        className="text-primary hover:underline"
+                        href={href}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        {content}
+                      </a>
+                    )
+                  }
                 }
               }
 

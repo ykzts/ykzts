@@ -37,10 +37,11 @@ export function RollbackButton({
       router.push(`/admin/posts/${postId}/versions`)
       router.refresh()
     } catch (err) {
-      setIsLoading(false)
       setError(
         err instanceof Error ? err.message : 'ロールバックに失敗しました'
       )
+    } finally {
+      setIsLoading(false)
     }
   }
 

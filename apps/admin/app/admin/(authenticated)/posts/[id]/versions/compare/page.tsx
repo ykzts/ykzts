@@ -36,16 +36,16 @@ function DiffItem({
       </div>
       <div className="space-y-2">
         <div className="rounded bg-red-50 p-2 dark:bg-red-950/20">
-          <div className="mb-1 font-medium text-red-600 text-xs dark:text-red-400">
-            古いバージョン
+          <div className="mb-1 flex items-center gap-1 font-medium text-red-600 text-xs dark:text-red-400">
+            <span>− 古いバージョン</span>
           </div>
           <div className="text-red-900 text-sm dark:text-red-100">
             {oldStr || '(空)'}
           </div>
         </div>
         <div className="rounded bg-green-50 p-2 dark:bg-green-950/20">
-          <div className="mb-1 font-medium text-green-600 text-xs dark:text-green-400">
-            新しいバージョン
+          <div className="mb-1 flex items-center gap-1 font-medium text-green-600 text-xs dark:text-green-400">
+            <span>+ 新しいバージョン</span>
           </div>
           <div className="text-green-900 text-sm dark:text-green-100">
             {newStr || '(空)'}

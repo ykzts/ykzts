@@ -1,6 +1,7 @@
 /**
  * Generate a URL-friendly slug from a string
  * Converts to lowercase, removes special characters, and replaces spaces with hyphens
+ * For Japanese text, this will create empty slugs - users should manually edit slugs for Japanese titles
  */
 export function generateSlug(text: string): string {
   return text
