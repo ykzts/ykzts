@@ -2,6 +2,7 @@
 
 import { Turnstile } from '@marsidev/react-turnstile'
 import { Button } from '@ykzts/ui/button'
+import { Field } from '@ykzts/ui/field'
 import { Input } from '@ykzts/ui/input'
 import { Textarea } from '@ykzts/ui/textarea'
 import Link from 'next/link'
@@ -61,13 +62,10 @@ export default function ContactForm() {
     <>
       <Toaster />
       <form action={formAction} ref={formRef}>
-        <div className="mb-5">
-          <label
-            className="mb-2 block text-base text-foreground"
-            htmlFor="name"
-          >
+        <Field className="mb-5">
+          <Field.Label htmlFor="name">
             お名前 <span className="text-red-500">*</span>
-          </label>
+          </Field.Label>
           <Input
             aria-describedby={errors.name ? 'name-error' : undefined}
             aria-invalid={Boolean(errors.name)}
@@ -78,19 +76,14 @@ export default function ContactForm() {
             type="text"
           />
           {errors.name && (
-            <p className="mt-1.5 text-red-500 text-sm" id="name-error">
-              {errors.name}
-            </p>
+            <Field.Error id="name-error">{errors.name}</Field.Error>
           )}
-        </div>
+        </Field>
 
-        <div className="mb-5">
-          <label
-            className="mb-2 block text-base text-foreground"
-            htmlFor="email"
-          >
+        <Field className="mb-5">
+          <Field.Label htmlFor="email">
             メールアドレス <span className="text-red-500">*</span>
-          </label>
+          </Field.Label>
           <Input
             aria-describedby={errors.email ? 'email-error' : undefined}
             aria-invalid={Boolean(errors.email)}
@@ -101,19 +94,14 @@ export default function ContactForm() {
             type="email"
           />
           {errors.email && (
-            <p className="mt-1.5 text-red-500 text-sm" id="email-error">
-              {errors.email}
-            </p>
+            <Field.Error id="email-error">{errors.email}</Field.Error>
           )}
-        </div>
+        </Field>
 
-        <div className="mb-5">
-          <label
-            className="mb-2 block text-base text-foreground"
-            htmlFor="subject"
-          >
+        <Field className="mb-5">
+          <Field.Label htmlFor="subject">
             件名 <span className="text-red-500">*</span>
-          </label>
+          </Field.Label>
           <Input
             aria-describedby={errors.subject ? 'subject-error' : undefined}
             aria-invalid={Boolean(errors.subject)}
@@ -124,19 +112,14 @@ export default function ContactForm() {
             type="text"
           />
           {errors.subject && (
-            <p className="mt-1.5 text-red-500 text-sm" id="subject-error">
-              {errors.subject}
-            </p>
+            <Field.Error id="subject-error">{errors.subject}</Field.Error>
           )}
-        </div>
+        </Field>
 
-        <div className="mb-5">
-          <label
-            className="mb-2 block text-base text-foreground"
-            htmlFor="message"
-          >
+        <Field className="mb-5">
+          <Field.Label htmlFor="message">
             メッセージ <span className="text-red-500">*</span>
-          </label>
+          </Field.Label>
           <Textarea
             aria-describedby={errors.message ? 'message-error' : undefined}
             aria-invalid={Boolean(errors.message)}
@@ -147,11 +130,9 @@ export default function ContactForm() {
             rows={6}
           />
           {errors.message && (
-            <p className="mt-1.5 text-red-500 text-sm" id="message-error">
-              {errors.message}
-            </p>
+            <Field.Error id="message-error">{errors.message}</Field.Error>
           )}
-        </div>
+        </Field>
 
         <div className="mb-5">
           <label className="flex cursor-pointer items-start gap-2.5 text-base text-muted-foreground">

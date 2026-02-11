@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@source '../../../../packages/ui/src/**/*.{ts,tsx}';
+@source '../../../../node_modules/@ykzts/ui';
 
 @theme {
   --font-sans: system-ui, sans-serif;
@@ -41,22 +41,6 @@
   a {
     @apply text-primary hover:underline;
   }
-}
-
-@utility btn {
-  @apply px-4 py-2 rounded bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors;
-}
-
-@utility btn-secondary {
-  @apply px-4 py-2 rounded bg-card text-card-foreground font-medium border border-border hover:bg-muted/10 transition-colors;
-}
-
-@utility btn-danger {
-  @apply px-4 py-2 rounded bg-destructive text-destructive-foreground font-medium hover:bg-destructive/90 transition-colors;
-}
-
-@utility input {
-  @apply px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring;
 }
 
 @utility card {

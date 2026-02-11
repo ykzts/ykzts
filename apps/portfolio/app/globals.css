@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
-@source '../../../packages/ui/src/**/*.{ts,tsx}';
+@source '../node_modules/@ykzts/ui';
 
 @theme {
   --font-sans:
@@ -47,8 +47,4 @@
   ::selection {
     @apply bg-primary/20 text-foreground;
   }
-}
-
-@utility tech-tag {
-  @apply inline-flex items-center rounded-full bg-primary/20 px-3 py-1.5 text-sm font-medium text-foreground border border-primary/30;
 }

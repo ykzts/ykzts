@@ -54,8 +54,7 @@ export function WorkForm() {
           <label className="mb-2 block font-medium" htmlFor="title">
             タイトル <span className="text-error">*</span>
           </label>
-          <input
-            className="input w-full"
+          <Input
             id="title"
             maxLength={256}
             name="title"
@@ -73,8 +72,8 @@ export function WorkForm() {
             スラッグ <span className="text-error">*</span>
           </label>
           <div className="flex gap-2">
-            <input
-              className="input flex-1"
+            <Input
+              className="flex-1"
               id="slug"
               name="slug"
               onChange={(e) => setSlug(e.target.value)}
@@ -84,13 +83,13 @@ export function WorkForm() {
               type="text"
               value={slug}
             />
-            <button
-              className="btn-secondary"
+            <Button
               onClick={handleGenerateSlug}
               type="button"
+              variant="secondary"
             >
               自動生成
-            </button>
+            </Button>
           </div>
           <p className="mt-1 text-muted-foreground text-sm">
             必須、URL-safe形式（小文字英数字とハイフン）、一意性制約あり。自動生成は英数字のみ対応、日本語タイトルの場合は手動でローマ字に変換してください。
@@ -101,13 +100,7 @@ export function WorkForm() {
           <label className="mb-2 block font-medium" htmlFor="starts_at">
             開始日 <span className="text-error">*</span>
           </label>
-          <input
-            className="input w-full"
-            id="starts_at"
-            name="starts_at"
-            required
-            type="date"
-          />
+          <Input id="starts_at" name="starts_at" required type="date" />
           <p className="mt-1 text-muted-foreground text-sm">必須</p>
         </div>
 
@@ -123,9 +116,9 @@ export function WorkForm() {
         </div>
 
         <div className="flex justify-end">
-          <button className="btn" disabled={isPending} type="submit">
+          <Button disabled={isPending} type="submit">
             {isPending ? '作成中...' : '作成'}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

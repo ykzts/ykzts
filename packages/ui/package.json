@@ -4,12 +4,16 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./badge": "./src/components/badge.tsx",
     "./button": "./src/components/button.tsx",
     "./card": "./src/components/card.tsx",
+    "./field": "./src/components/field.tsx",
     "./input": "./src/components/input.tsx",
+    "./label": "./src/components/label.tsx",
+    "./separator": "./src/components/separator.tsx",
     "./skeleton": "./src/components/skeleton.tsx",
     "./textarea": "./src/components/textarea.tsx",
-    "./utils": "./src/lib/utils.ts"
+    "./lib/utils": "./src/lib/utils.ts"
   },
   "scripts": {
     "lint": "biome check ."

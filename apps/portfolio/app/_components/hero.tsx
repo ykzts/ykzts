@@ -1,3 +1,4 @@
+import { Badge } from '@ykzts/ui/badge'
 import Image from 'next/image'
 import { Suspense } from 'react'
 import Skeleton from '@/components/skeleton'
@@ -41,9 +42,9 @@ async function HeroImpl() {
           {/* Tech Stack Tags */}
           <div className="flex flex-wrap gap-2">
             {profile.technologies.map((tech) => (
-              <span className="tech-tag" key={tech.name}>
+              <Badge key={tech.name} variant="secondary">
                 {tech.name}
-              </span>
+              </Badge>
             ))}
           </div>
         </div>
