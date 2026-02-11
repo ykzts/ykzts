@@ -37,23 +37,106 @@ export type Database = {
       posts: {
         Row: {
           created_at: string
+          current_version_id: string | null
+          excerpt: string | null
           id: string
+          published_at: string | null
+          redirect_from: string[] | null
+          slug: string | null
+          status: string | null
+          tags: string[] | null
           title: string | null
           updated_at: string
         }
         Insert: {
           created_at?: string
+          current_version_id?: string | null
+          excerpt?: string | null
           id?: string
+          published_at?: string | null
+          redirect_from?: string[] | null
+          slug?: string | null
+          status?: string | null
+          tags?: string[] | null
           title?: string | null
           updated_at?: string
         }
         Update: {
           created_at?: string
+          current_version_id?: string | null
+          excerpt?: string | null
           id?: string
+          published_at?: string | null
+          redirect_from?: string[] | null
+          slug?: string | null
+          status?: string | null
+          tags?: string[] | null
           title?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "posts_current_version_id_fkey"
+            columns: ["current_version_id"]
+            isOneToOne: false
+            referencedRelation: "post_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      post_versions: {
+        Row: {
+          change_summary: string | null
+          content: Json
+          created_at: string
+          created_by: string | null
+          excerpt: string | null
+          id: string
+          post_id: string
+          tags: string[] | null
+          title: string | null
+          version_number: number
+        }
+        Insert: {
+          change_summary?: string | null
+          content: Json
+          created_at?: string
+          created_by?: string | null
+          excerpt?: string | null
+          id?: string
+          post_id: string
+          tags?: string[] | null
+          title?: string | null
+          version_number: number
+        }
+        Update: {
+          change_summary?: string | null
+          content?: Json
+          created_at?: string
+          created_by?: string | null
+          excerpt?: string | null
+          id?: string
+          post_id?: string
+          tags?: string[] | null
+          title?: string | null
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_versions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_versions_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
