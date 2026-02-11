@@ -47,92 +47,92 @@ export function lexicalToPortableText(
     const root = $getRoot()
     const children = root.getChildren()
 
-  for (const child of children) {
-    if ($isParagraphNode(child)) {
-      const textNodes = child.getChildren()
-      const spans: PortableTextSpan[] = []
-      const markDefs: PortableTextMarkDef[] = []
+    for (const child of children) {
+      if ($isParagraphNode(child)) {
+        const textNodes = child.getChildren()
+        const spans: PortableTextSpan[] = []
+        const markDefs: PortableTextMarkDef[] = []
 
-      for (const node of textNodes) {
-        if ($isTextNode(node)) {
-          const text = node.getTextContent()
-          const format = node.getFormat()
-          const marks: string[] = []
+        for (const node of textNodes) {
+          if ($isTextNode(node)) {
+            const text = node.getTextContent()
+            const format = node.getFormat()
+            const marks: string[] = []
 
-          // Check for bold
-          if (format & 1) {
-            marks.push('strong')
-          }
-          // Check for italic
-          if (format & 2) {
-            marks.push('em')
-          }
+            // Check for bold
+            if (format & 1) {
+              marks.push('strong')
+            }
+            // Check for italic
+            if (format & 2) {
+              marks.push('em')
+            }
 
-          spans.push({
-            _key: crypto.randomUUID(),
-            _type: 'span',
-            marks: marks.length > 0 ? marks : undefined,
-            text
-          })
-        } else if ($isLinkNode(node)) {
-          const linkNode = node as LinkNode
-          const url = linkNode.getURL()
+            spans.push({
+              _key: crypto.randomUUID(),
+              _type: 'span',
+              marks: marks.length > 0 ? marks : undefined,
+              text
+            })
+          } else if ($isLinkNode(node)) {
+            const linkNode = node as LinkNode
+            const url = linkNode.getURL()
 
-          // Generate a unique key for the mark definition
-          const markKey = `link-${crypto.randomUUID()}`
+            // Generate a unique key for the mark definition
+            const markKey = `link-${crypto.randomUUID()}`
 
-          markDefs.push({
-            _key: markKey,
-            _type: 'link',
-            href: url
-          })
+            markDefs.push({
+              _key: markKey,
+              _type: 'link',
+              href: url
+            })
 
-          // Create separate spans for each child to preserve per-child formatting
-          const linkChildren = linkNode.getChildren()
-          for (const linkChild of linkChildren) {
-            if ($isTextNode(linkChild)) {
-              const text = linkChild.getTextContent()
-              const format = linkChild.getFormat()
-              const childMarks: string[] = [markKey]
+            // Create separate spans for each child to preserve per-child formatting
+            const linkChildren = linkNode.getChildren()
+            for (const linkChild of linkChildren) {
+              if ($isTextNode(linkChild)) {
+                const text = linkChild.getTextContent()
+                const format = linkChild.getFormat()
+                const childMarks: string[] = [markKey]
 
-              // Check for bold
-              if (format & 1) {
-                childMarks.push('strong')
+                // Check for bold
+                if (format & 1) {
+                  childMarks.push('strong')
+                }
+                // Check for italic
+                if (format & 2) {
+                  childMarks.push('em')
+                }
+
+                spans.push({
+                  _key: crypto.randomUUID(),
+                  _type: 'span',
+                  marks: childMarks,
+                  text
+                })
               }
-              // Check for italic
-              if (format & 2) {
-                childMarks.push('em')
-              }
-
-              spans.push({
-                _key: crypto.randomUUID(),
-                _type: 'span',
-                marks: childMarks,
-                text
-              })
             }
           }
         }
-      }
 
-      // Add empty span if no content
-      if (spans.length === 0) {
-        spans.push({
+        // Add empty span if no content
+        if (spans.length === 0) {
+          spans.push({
+            _key: crypto.randomUUID(),
+            _type: 'span',
+            text: ''
+          })
+        }
+
+        blocks.push({
           _key: crypto.randomUUID(),
-          _type: 'span',
-          text: ''
+          _type: 'block',
+          children: spans,
+          markDefs,
+          style: 'normal'
         })
       }
-
-      blocks.push({
-        _key: crypto.randomUUID(),
-        _type: 'block',
-        children: spans,
-        markDefs,
-        style: 'normal'
-      })
     }
-  }
 
     // Return at least one empty block
     if (blocks.length === 0) {

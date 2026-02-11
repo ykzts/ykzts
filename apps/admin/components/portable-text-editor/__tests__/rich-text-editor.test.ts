@@ -1,7 +1,17 @@
-import { $createParagraphNode, $createTextNode, $getRoot, $isParagraphNode, $isTextNode, createEditor } from 'lexical'
-import { describe, expect, it } from 'vitest'
-import { initializeEditorWithPortableText, lexicalToPortableText } from '../portable-text-serializer'
 import { LinkNode } from '@lexical/link'
+import {
+  $createParagraphNode,
+  $createTextNode,
+  $getRoot,
+  $isParagraphNode,
+  $isTextNode,
+  createEditor
+} from 'lexical'
+import { describe, expect, it } from 'vitest'
+import {
+  initializeEditorWithPortableText,
+  lexicalToPortableText
+} from '../portable-text-serializer'
 
 describe('Portable Text Serializer', () => {
   describe('lexicalToPortableText', () => {
@@ -107,15 +117,15 @@ describe('Portable Text Serializer', () => {
 
       editor.update(() => {
         const root = $getRoot()
-        
+
         const paragraph1 = $createParagraphNode()
         const text1 = $createTextNode('First paragraph')
         paragraph1.append(text1)
-        
+
         const paragraph2 = $createParagraphNode()
         const text2 = $createTextNode('Second paragraph')
         paragraph2.append(text2)
-        
+
         root.append(paragraph1, paragraph2)
       })
 
@@ -148,7 +158,7 @@ describe('Portable Text Serializer', () => {
         const root = $getRoot()
         const paragraph = root.getFirstChild()
         expect($isParagraphNode(paragraph)).toBe(true)
-        
+
         if ($isParagraphNode(paragraph)) {
           const text = paragraph.getFirstChild()
           expect($isTextNode(text)).toBe(true)
@@ -178,7 +188,7 @@ describe('Portable Text Serializer', () => {
       editor.read(() => {
         const root = $getRoot()
         const paragraph = root.getFirstChild()
-        
+
         if ($isParagraphNode(paragraph)) {
           const text = paragraph.getFirstChild()
           if ($isTextNode(text)) {
@@ -208,7 +218,7 @@ describe('Portable Text Serializer', () => {
       editor.read(() => {
         const root = $getRoot()
         const paragraph = root.getFirstChild()
-        
+
         if ($isParagraphNode(paragraph)) {
           const text = paragraph.getFirstChild()
           if ($isTextNode(text)) {

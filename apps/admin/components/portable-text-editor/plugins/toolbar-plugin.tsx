@@ -65,7 +65,7 @@ export function ToolbarPlugin() {
   }, [editor, isLink])
 
   return (
-    <div className="flex gap-1 border-b border-border bg-muted/5 p-2">
+    <div className="flex gap-1 border-border border-b bg-muted/5 p-2">
       <button
         aria-label="太字"
         className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
