@@ -24,6 +24,8 @@
   --color-border: #e5e7eb;
   --color-input: #e5e7eb;
   --color-ring: #2563eb;
+  --color-error: var(--color-destructive);
+  --color-error-foreground: var(--color-destructive-foreground);
   --radius: 0.5rem;
 }
 
