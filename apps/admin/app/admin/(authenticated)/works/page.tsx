@@ -2,6 +2,7 @@ import { Card } from '@ykzts/ui/components/card'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { getWorks } from '@/lib/data'
+import { NewWorkButton } from './_components/new-work-button'
 
 async function WorksContent() {
   const works = await getWorks()
@@ -58,12 +59,7 @@ export default function WorksPage() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="font-bold text-3xl">Works</h1>
-        <Link
-          className="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border border-transparent bg-primary px-2.5 font-medium text-primary-foreground text-sm outline-none transition-all hover:bg-primary/80"
-          href="/admin/works/new"
-        >
-          新規作成
-        </Link>
+        <NewWorkButton />
       </div>
 
       <Suspense fallback={<div>Loading...</div>}>

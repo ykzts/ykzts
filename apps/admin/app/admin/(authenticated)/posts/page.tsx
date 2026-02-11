@@ -2,6 +2,7 @@ import { Card } from '@ykzts/ui/components/card'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { getPosts } from '@/lib/data'
+import { NewPostButton } from './_components/new-post-button'
 
 async function PostsContent() {
   const posts = await getPosts()
@@ -56,12 +57,7 @@ export default function PostsPage() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="font-bold text-3xl">Posts</h1>
-        <Link
-          className="inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border border-transparent bg-primary px-2.5 font-medium text-primary-foreground text-sm outline-none transition-all hover:bg-primary/80"
-          href="/admin/posts/new"
-        >
-          新規作成
-        </Link>
+        <NewPostButton />
       </div>
 
       <Suspense fallback={<div>Loading...</div>}>
