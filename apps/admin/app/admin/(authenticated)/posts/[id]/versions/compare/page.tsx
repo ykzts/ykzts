@@ -15,16 +15,12 @@ function DiffItem({
   newValue?: string | string[] | null
   oldValue?: string | string[] | null
 }) {
-  const oldStr = Array.isArray(oldValue)
-    ? oldValue.join(', ')
-    : oldValue || ''
-  const newStr = Array.isArray(newValue)
-    ? newValue.join(', ')
-    : newValue || ''
+  const oldStr = Array.isArray(oldValue) ? oldValue.join(', ') : oldValue || ''
+  const newStr = Array.isArray(newValue) ? newValue.join(', ') : newValue || ''
 
   if (oldStr === newStr) {
     return (
-      <div className="border-border rounded border p-3">
+      <div className="rounded border border-border p-3">
         <div className="mb-2 font-medium text-muted-foreground text-sm">
           {label}
         </div>
@@ -34,7 +30,7 @@ function DiffItem({
   }
 
   return (
-    <div className="border-border rounded border p-3">
+    <div className="rounded border border-border p-3">
       <div className="mb-2 font-medium text-muted-foreground text-sm">
         {label}
       </div>
@@ -145,9 +141,7 @@ async function CompareContent({
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <div className="mb-2 flex items-center gap-2">
-              <Badge variant="secondary">
-                v{version1.version_number}
-              </Badge>
+              <Badge variant="secondary">v{version1.version_number}</Badge>
               <span className="font-medium text-sm">古いバージョン</span>
             </div>
             <pre className="overflow-auto rounded bg-red-50 p-4 text-xs dark:bg-red-950/20">
@@ -156,9 +150,7 @@ async function CompareContent({
           </div>
           <div>
             <div className="mb-2 flex items-center gap-2">
-              <Badge variant="default">
-                v{version2.version_number}
-              </Badge>
+              <Badge variant="default">v{version2.version_number}</Badge>
               <span className="font-medium text-sm">新しいバージョン</span>
             </div>
             <pre className="overflow-auto rounded bg-green-50 p-4 text-xs dark:bg-green-950/20">
@@ -175,7 +167,10 @@ async function CompareContent({
         >
           履歴に戻る
         </Button>
-        <Button render={<Link href={`/admin/posts/${postId}`} />} variant="outline">
+        <Button
+          render={<Link href={`/admin/posts/${postId}`} />}
+          variant="outline"
+        >
           投稿編集
         </Button>
       </div>
@@ -198,9 +193,7 @@ export default async function ComparePage({
       <div>
         <h1 className="mb-6 font-bold text-3xl">バージョン比較</h1>
         <Card className="p-6">
-          <p className="text-error">
-            比較するバージョンが指定されていません
-          </p>
+          <p className="text-error">比較するバージョンが指定されていません</p>
           <Button
             className="mt-4"
             render={<Link href={`/admin/posts/${id}/versions`} />}

@@ -52,14 +52,12 @@ async function VersionsContent({ postId }: { postId: string }) {
         <h2 className="mb-4 font-bold text-xl">バージョン履歴</h2>
 
         {versions.length === 0 ? (
-          <p className="text-muted-foreground">
-            バージョン履歴がありません
-          </p>
+          <p className="text-muted-foreground">バージョン履歴がありません</p>
         ) : (
           <div className="space-y-4">
             {versions.map((version, index) => (
               <div
-                className="border-border rounded border p-4"
+                className="rounded border border-border p-4"
                 key={version.id}
               >
                 <div className="mb-3 flex items-start justify-between">
@@ -68,9 +66,7 @@ async function VersionsContent({ postId }: { postId: string }) {
                       <span className="font-bold">
                         バージョン {version.version_number}
                       </span>
-                      {index === 0 && (
-                        <Badge variant="default">現在</Badge>
-                      )}
+                      {index === 0 && <Badge variant="default">現在</Badge>}
                     </div>
                     <p className="mt-1 text-muted-foreground text-sm">
                       {new Date(version.created_at).toLocaleString('ja-JP')}
@@ -127,7 +123,10 @@ async function VersionsContent({ postId }: { postId: string }) {
       </Card>
 
       <div className="flex justify-between">
-        <Button render={<Link href={`/admin/posts/${postId}`} />} variant="outline">
+        <Button
+          render={<Link href={`/admin/posts/${postId}`} />}
+          variant="outline"
+        >
           投稿編集に戻る
         </Button>
         <Button render={<Link href="/admin/posts" />} variant="outline">

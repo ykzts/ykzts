@@ -16,7 +16,7 @@ export async function updatePostAction(
 ): Promise<ActionState> {
   // Extract and validate FormData values with Zod
   const publishedAt = formData.get('published_at')
-  
+
   const validation = postUpdateSchema.safeParse({
     change_summary: formData.get('change_summary') || undefined,
     content: formData.get('content'),
@@ -66,7 +66,10 @@ export async function updatePostAction(
 
 export async function deletePostAction(id: string): Promise<void> {
   // Validate ID as UUID before querying the database
-  const idValidation = z.string().uuid({ message: '無効なIDです' }).safeParse(id)
+  const idValidation = z
+    .string()
+    .uuid({ message: '無効なIDです' })
+    .safeParse(id)
 
   if (!idValidation.success) {
     const firstError = idValidation.error.issues[0]

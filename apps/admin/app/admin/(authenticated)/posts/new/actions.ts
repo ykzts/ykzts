@@ -16,7 +16,7 @@ export async function createPostAction(
 ): Promise<ActionState> {
   // Extract and validate FormData values with Zod
   const publishedAt = formData.get('published_at')
-  
+
   const validation = postSchema.safeParse({
     content: formData.get('content'),
     excerpt: formData.get('excerpt') || undefined,
@@ -38,7 +38,7 @@ export async function createPostAction(
     // Parse JSON fields
     const content = validatedData.content
       ? JSON.parse(validatedData.content)
-      : { type: 'root', children: [] }
+      : { children: [], type: 'root' }
     const tags = validatedData.tags ? JSON.parse(validatedData.tags) : []
 
     await createPost({

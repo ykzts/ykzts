@@ -2,13 +2,12 @@
 import { Button } from '@ykzts/ui/components/button'
 import { Input } from '@ykzts/ui/components/input'
 import { Textarea } from '@ykzts/ui/components/textarea'
-import { PortableTextPreview } from '@/components/portable-text-preview'
-import { RichTextEditor } from '@/components/portable-text-editor'
-
 import Link from 'next/link'
 import { useActionState, useEffect, useState } from 'react'
-import { generateSlug } from '@/lib/utils'
+import { RichTextEditor } from '@/components/portable-text-editor'
+import { PortableTextPreview } from '@/components/portable-text-preview'
 import type { PostWithDetails } from '@/lib/posts'
+import { generateSlug } from '@/lib/utils'
 import type { ActionState } from '../actions'
 import { deletePostAction, updatePostAction } from '../actions'
 
@@ -23,7 +22,7 @@ export function PostForm({ post }: PostFormProps) {
   )
   const [isDeleting, setIsDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
-  
+
   const [title, setTitle] = useState(post.title || '')
   const [slug, setSlug] = useState(post.slug || '')
   const [autoSlug, setAutoSlug] = useState(!post.slug)
@@ -200,7 +199,7 @@ export function PostForm({ post }: PostFormProps) {
 
         {/* Tags */}
         <div>
-          <label className="mb-2 block font-medium">タグ</label>
+          <div className="mb-2 block font-medium">タグ</div>
           <div className="flex gap-2">
             <Input
               onChange={(e) => setTagInput(e.target.value)}
@@ -284,7 +283,7 @@ export function PostForm({ post }: PostFormProps) {
         {/* Version History Link */}
         <div>
           <Link
-            className="text-primary hover:underline text-sm"
+            className="text-primary text-sm hover:underline"
             href={`/admin/posts/${post.id}/versions`}
           >
             バージョン履歴を表示

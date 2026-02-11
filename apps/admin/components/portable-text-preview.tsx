@@ -58,7 +58,7 @@ export function PortableTextPreview({ value }: PortableTextPreviewProps) {
   }
 
   return (
-    <div className="prose prose-sm max-w-none dark:prose-invert">
+    <div className="prose prose-sm dark:prose-invert max-w-none">
       {blocks.map((block) => {
         if (block._type !== 'block') return null
 

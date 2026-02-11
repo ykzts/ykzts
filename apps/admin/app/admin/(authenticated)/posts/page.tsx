@@ -88,10 +88,7 @@ async function PostsContent({
       </Card>
 
       {result.totalPages > 1 && (
-        <PostsPagination
-          currentPage={page}
-          totalPages={result.totalPages}
-        />
+        <PostsPagination currentPage={page} totalPages={result.totalPages} />
       )}
     </>
   )
@@ -111,7 +108,8 @@ export default async function PostsPage({
   const page = Number.parseInt(params.page || '1', 10)
   const perPage = Number.parseInt(params.perPage || '20', 10)
   const search = params.search
-  const status = (params.status as 'draft' | 'scheduled' | 'published' | 'all') || 'all'
+  const status =
+    (params.status as 'draft' | 'scheduled' | 'published' | 'all') || 'all'
 
   return (
     <div>
@@ -122,7 +120,13 @@ export default async function PostsPage({
 
       <PostsFilters />
 
-      <Suspense fallback={<Card className="p-6"><div>Loading...</div></Card>}>
+      <Suspense
+        fallback={
+          <Card className="p-6">
+            <div>Loading...</div>
+          </Card>
+        }
+      >
         <PostsContent
           page={page}
           perPage={perPage}

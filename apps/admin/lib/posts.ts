@@ -1,5 +1,5 @@
-import { cacheTag } from 'next/cache'
 import type { Database, Json } from '@ykzts/supabase'
+import { cacheTag } from 'next/cache'
 import { getCurrentUser } from './auth'
 import { createClient } from './supabase/server'
 
@@ -35,18 +35,12 @@ export async function getPosts(filter: PostsFilter = {}) {
   'use cache: private'
   cacheTag('posts')
 
-  const {
-    page = 1,
-    perPage = 20,
-    search,
-    status = 'all'
-  } = filter
+  const { page = 1, perPage = 20, search, status = 'all' } = filter
 
   const supabase = await createClient()
 
-  let query = supabase
-    .from('posts')
-    .select(`
+  let query = supabase.from('posts').select(
+    `
       id,
       title,
       slug,
@@ -56,7 +50,9 @@ export async function getPosts(filter: PostsFilter = {}) {
       created_at,
       updated_at,
       profile:profiles!posts_profile_id_fkey(name)
-    `, { count: 'exact' })
+    `,
+    { count: 'exact' }
+  )
 
   // Apply status filter
   if (status !== 'all') {
@@ -64,7 +60,7 @@ export async function getPosts(filter: PostsFilter = {}) {
   }
 
   // Apply search filter
-  if (search && search.trim()) {
+  if (search?.trim()) {
     query = query.or(`title.ilike.%${search}%,excerpt.ilike.%${search}%`)
   }
 
@@ -83,8 +79,8 @@ export async function getPosts(filter: PostsFilter = {}) {
   }
 
   return {
-    data: data ?? [],
     count: count ?? 0,
+    data: data ?? [],
     page,
     perPage,
     totalPages: Math.ceil((count ?? 0) / perPage)

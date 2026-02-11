@@ -36,7 +36,11 @@ async function VersionDetailContent({
             {isCurrent && <Badge variant="default">現在のバージョン</Badge>}
           </div>
           {!isCurrent && (
-            <RollbackButton postId={postId} versionId={versionId} versionNumber={version.version_number} />
+            <RollbackButton
+              postId={postId}
+              versionId={versionId}
+              versionNumber={version.version_number}
+            />
           )}
         </div>
 
@@ -125,7 +129,10 @@ async function VersionDetailContent({
         >
           履歴に戻る
         </Button>
-        <Button render={<Link href={`/admin/posts/${postId}`} />} variant="outline">
+        <Button
+          render={<Link href={`/admin/posts/${postId}`} />}
+          variant="outline"
+        >
           投稿編集
         </Button>
       </div>

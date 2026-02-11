@@ -2,11 +2,10 @@
 import { Button } from '@ykzts/ui/components/button'
 import { Input } from '@ykzts/ui/components/input'
 import { Textarea } from '@ykzts/ui/components/textarea'
-import { PortableTextPreview } from '@/components/portable-text-preview'
-import { RichTextEditor } from '@/components/portable-text-editor'
-
 import Link from 'next/link'
 import { useActionState, useEffect, useState } from 'react'
+import { RichTextEditor } from '@/components/portable-text-editor'
+import { PortableTextPreview } from '@/components/portable-text-preview'
 import { generateSlug } from '@/lib/utils'
 import type { ActionState } from './actions'
 import { createPostAction } from './actions'
@@ -157,7 +156,7 @@ export function PostForm() {
 
         {/* Tags */}
         <div>
-          <label className="mb-2 block font-medium">タグ</label>
+          <div className="mb-2 block font-medium">タグ</div>
           <div className="flex gap-2">
             <Input
               onChange={(e) => setTagInput(e.target.value)}
