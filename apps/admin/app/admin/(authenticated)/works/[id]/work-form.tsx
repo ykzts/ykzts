@@ -73,8 +73,7 @@ export function WorkForm({ work }: WorkFormProps) {
           <label className="mb-2 block font-medium" htmlFor="title">
             タイトル <span className="text-error">*</span>
           </label>
-          <input
-            className="input w-full"
+          <Input
             defaultValue={work.title}
             id="title"
             maxLength={256}
@@ -89,8 +88,8 @@ export function WorkForm({ work }: WorkFormProps) {
           <label className="mb-2 block font-medium" htmlFor="slug">
             スラッグ <span className="text-error">*</span>
           </label>
-          <input
-            className="input w-full font-mono"
+          <Input
+            className="font-mono"
             defaultValue={work.slug}
             id="slug"
             name="slug"
@@ -107,8 +106,7 @@ export function WorkForm({ work }: WorkFormProps) {
           <label className="mb-2 block font-medium" htmlFor="starts_at">
             開始日 <span className="text-error">*</span>
           </label>
-          <input
-            className="input w-full"
+          <Input
             defaultValue={work.starts_at}
             id="starts_at"
             name="starts_at"
@@ -129,21 +127,17 @@ export function WorkForm({ work }: WorkFormProps) {
         </div>
 
         <div className="flex justify-between gap-4">
-          <button
-            className="btn-danger"
+          <Button
             disabled={isPending || isDeleting}
             onClick={handleDelete}
             type="button"
+            variant="destructive"
           >
             {isDeleting ? '削除中...' : '削除'}
-          </button>
-          <button
-            className="btn"
-            disabled={isPending || isDeleting}
-            type="submit"
-          >
+          </Button>
+          <Button disabled={isPending || isDeleting} type="submit">
             {isPending ? '保存中...' : '保存'}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

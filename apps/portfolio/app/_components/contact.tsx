@@ -26,7 +26,7 @@ export default function Contact() {
         <div>
           <h3 className="mb-4 font-medium text-foreground text-lg">Blog</h3>
           <Link
-            className="inline-flex items-center gap-2 text-primary text-base transition-colors duration-200 hover:text-primary/80"
+            className="inline-flex items-center gap-2 text-base text-primary transition-colors duration-200 hover:text-primary/80"
             href="https://ykzts.blog/"
           >
             ykzts.blog

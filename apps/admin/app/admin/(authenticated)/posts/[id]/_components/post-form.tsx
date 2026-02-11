@@ -63,8 +63,7 @@ export function PostForm({ post }: PostFormProps) {
           <label className="mb-2 block font-medium" htmlFor="title">
             タイトル
           </label>
-          <input
-            className="input w-full"
+          <Input
             defaultValue={post.title ?? ''}
             id="title"
             maxLength={256}
@@ -78,21 +77,17 @@ export function PostForm({ post }: PostFormProps) {
         </div>
 
         <div className="flex justify-between gap-4">
-          <button
-            className="btn-danger"
+          <Button
             disabled={isPending || isDeleting}
             onClick={handleDelete}
             type="button"
+            variant="destructive"
           >
             {isDeleting ? '削除中...' : '削除'}
-          </button>
-          <button
-            className="btn"
-            disabled={isPending || isDeleting}
-            type="submit"
-          >
+          </Button>
+          <Button disabled={isPending || isDeleting} type="submit">
             {isPending ? '保存中...' : '保存'}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

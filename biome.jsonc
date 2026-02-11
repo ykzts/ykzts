@@ -25,7 +25,11 @@
     }
   },
   "files": {
-    "includes": ["**/*", "!packages/supabase/src/database.types.ts"]
+    "includes": [
+      "**",
+      "!packages/supabase/src/database.types.ts",
+      "!packages/ui/src/components/**/*.tsx"
+    ]
   },
   "formatter": {
     "useEditorconfig": true

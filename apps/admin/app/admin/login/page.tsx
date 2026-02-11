@@ -1,3 +1,4 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@ykzts/ui/card'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { getCurrentUser } from '@/lib/auth'
@@ -12,10 +13,14 @@ async function LoginContent() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="card w-full max-w-md">
-        <h1 className="mb-6 font-bold text-2xl">管理画面ログイン</h1>
-        <LoginForm />
-      </div>
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-2xl">管理画面ログイン</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <LoginForm />
+        </CardContent>
+      </Card>
     </div>
   )
 }

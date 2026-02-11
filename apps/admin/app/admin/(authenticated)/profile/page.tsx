@@ -1,3 +1,5 @@
+import { Button } from '@ykzts/ui/button'
+import { Card } from '@ykzts/ui/card'
 import { Suspense } from 'react'
 import { getProfile, getSocialLinks, getTechnologies } from '@/lib/data'
 
@@ -9,7 +11,7 @@ async function ProfileContent() {
   ])
 
   return (
-    <div className="card">
+    <Card className="p-6">
       {!profile ? (
         <div>
           <p className="text-muted-foreground">
@@ -97,12 +99,10 @@ async function ProfileContent() {
 
       <div className="mt-4 border-border border-t pt-4">
         <form action="/admin/profile/edit" method="get">
-          <button className="btn" type="submit">
-            編集
-          </button>
+          <Button type="submit">編集</Button>
         </form>
       </div>
-    </div>
+    </Card>
   )
 }
 

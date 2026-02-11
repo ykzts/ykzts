@@ -1,4 +1,5 @@
 import type { User } from '@supabase/supabase-js'
+import { Button } from '@ykzts/ui/button'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
@@ -12,9 +13,9 @@ function UserInfo({ user }: { user: User }) {
         {user.email ?? 'Unknown'}
       </span>
       <form action={logout}>
-        <button className="btn-secondary" type="submit">
+        <Button type="submit" variant="secondary">
           ログアウト
-        </button>
+        </Button>
       </form>
     </div>
   )
@@ -34,7 +35,7 @@ async function AuthGuard({ children }: { children: React.ReactNode }) {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between">
             <div className="flex">
-              <div className="flex flex-shrink-0 items-center">
+              <div className="flex shrink-0 items-center">
                 <Link className="font-bold text-xl" href="/admin">
                   管理画面
                 </Link>

@@ -45,7 +45,7 @@ export default function PrivacyModal() {
         </div>
         <div className="mt-8 flex justify-center border-border border-t pt-6">
           <button
-            className="rounded-lg bg-primary px-8 py-2.5 font-medium text-primary-foreground text-base transition-colors duration-200 hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+            className="rounded-lg bg-primary px-8 py-2.5 font-medium text-base text-primary-foreground transition-colors duration-200 hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
             onClick={handleClose}
             type="button"
           >

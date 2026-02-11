@@ -1,3 +1,5 @@
+import { buttonVariants } from '@ykzts/ui/button'
+import { Card } from '@ykzts/ui/card'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { getPosts } from '@/lib/data'
@@ -6,7 +8,7 @@ async function PostsContent() {
   const posts = await getPosts()
 
   return (
-    <div className="card">
+    <Card className="p-6">
       {!posts || posts.length === 0 ? (
         <p className="text-muted-foreground">投稿がありません</p>
       ) : (
@@ -46,7 +48,7 @@ async function PostsContent() {
           </table>
         </div>
       )}
-    </div>
+    </Card>
   )
 }
 
@@ -55,7 +57,7 @@ export default function PostsPage() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="font-bold text-3xl">Posts</h1>
-        <Link className="btn" href="/admin/posts/new">
+        <Link className={buttonVariants()} href="/admin/posts/new">
           新規作成
         </Link>
       </div>

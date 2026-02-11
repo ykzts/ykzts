@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@source '../../../../node_modules/@ykzts/ui';
+@source '../node_modules/@ykzts/ui';
 
 @theme {
   --font-sans: system-ui, sans-serif;
@@ -41,8 +41,4 @@
   a {
     @apply text-primary hover:underline;
   }
-}
-
-@utility card {
-  @apply bg-card border border-border rounded-lg p-6 shadow-sm;
 }

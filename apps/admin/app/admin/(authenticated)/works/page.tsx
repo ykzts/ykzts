@@ -1,3 +1,5 @@
+import { buttonVariants } from '@ykzts/ui/button'
+import { Card } from '@ykzts/ui/card'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { getWorks } from '@/lib/data'
@@ -6,7 +8,7 @@ async function WorksContent() {
   const works = await getWorks()
 
   return (
-    <div className="card">
+    <Card className="p-6">
       {!works || works.length === 0 ? (
         <p className="text-muted-foreground">作品がありません</p>
       ) : (
@@ -48,7 +50,7 @@ async function WorksContent() {
           </table>
         </div>
       )}
-    </div>
+    </Card>
   )
 }
 
@@ -57,7 +59,7 @@ export default function WorksPage() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="font-bold text-3xl">Works</h1>
-        <Link className="btn" href="/admin/works/new">
+        <Link className={buttonVariants()} href="/admin/works/new">
           新規作成
         </Link>
       </div>

@@ -26,12 +26,20 @@ Used by:
 
 ```json
 {
-  "extends": "@ykzts/tsconfig/basic.json"  
+  "extends": "@ykzts/tsconfig/basic.json"
 }
 ```
 
 Used by:
 - `@ykzts/schemas`: Schema definitions package
+
+### For React Component Libraries
+
+```json
+{
+  "extends": "@ykzts/tsconfig/react-library.json"
+}
+```
 
 ## Available Configurations
 
@@ -42,9 +50,16 @@ Used by:
 - Library support: DOM, DOM iterable, ES2022
 - Optimized for Node.js environments
 
+### `react-library.json`
+- Target: ES2022
+- Module: ESNext with bundler module resolution
+- JSX: react-jsx (for component libraries)
+- Strict mode enabled
+- Library support: DOM, DOM iterable, ES2022
+
 ### `next.json`
 - Target: ES2022
-- Module: ESNext with bundler module resolution  
+- Module: ESNext with bundler module resolution
 - JSX: preserve (for React components)
 - Includes incremental compilation and isolated modules
 - Optimized for Next.js applications with React
