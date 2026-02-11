@@ -18,7 +18,7 @@ import {
 import type { Json } from '@ykzts/supabase'
 import { useRouter } from 'next/navigation'
 import { useActionState, useCallback, useState } from 'react'
-import { PortableTextEditor } from '@/components/portable-text-editor'
+import { RichTextEditor } from '@/components/portable-text-editor'
 import { updateProfile } from '../actions'
 import { SortableItem } from './sortable-item'
 
@@ -206,7 +206,7 @@ export default function ProfileForm({
         <label className="mb-2 block font-medium" htmlFor="about">
           自己紹介
         </label>
-        <PortableTextEditor
+        <RichTextEditor
           initialValue={
             initialData?.about
               ? typeof initialData.about === 'string'

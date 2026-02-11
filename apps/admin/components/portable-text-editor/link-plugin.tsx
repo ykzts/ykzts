@@ -2,10 +2,10 @@
 
 import { LinkPlugin as LexicalLinkPlugin } from '@lexical/react/LexicalLinkPlugin'
 
-export function LinkPlugin() {
-  const validateUrl = (url: string): boolean => {
-    return URL.canParse(url)
-  }
+function validateUrl(url: string): boolean {
+  return URL.canParse(url)
+}
 
+export function LinkPlugin() {
   return <LexicalLinkPlugin validateUrl={validateUrl} />
 }

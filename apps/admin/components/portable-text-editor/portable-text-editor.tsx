@@ -30,17 +30,17 @@ const editorTheme = {
   }
 }
 
-type PortableTextEditorProps = {
+type RichTextEditorProps = {
   initialValue?: string
   name: string
   onChange?: (value: string) => void
 }
 
-export default function PortableTextEditor({
+export function RichTextEditor({
   initialValue,
   name,
   onChange
-}: PortableTextEditorProps) {
+}: RichTextEditorProps) {
   const [isClient, setIsClient] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
   const [previewContent, setPreviewContent] = useState('')
