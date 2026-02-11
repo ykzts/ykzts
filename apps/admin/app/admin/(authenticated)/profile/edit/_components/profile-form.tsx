@@ -18,8 +18,8 @@ import {
 import type { Json } from '@ykzts/supabase'
 import { useRouter } from 'next/navigation'
 import { useActionState, useCallback, useState } from 'react'
+import { PortableTextEditor } from '@/components/portable-text-editor'
 import { updateProfile } from '../actions'
-import PortableTextEditor from './portable-text-editor'
 import { SortableItem } from './sortable-item'
 
 type ProfileFormProps = {

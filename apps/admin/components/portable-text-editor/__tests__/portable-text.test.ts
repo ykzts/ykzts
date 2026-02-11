@@ -53,9 +53,7 @@ describe('Portable Text Format', () => {
     const portableText = [
       {
         _type: 'block',
-        children: [
-          { _type: 'span', marks: ['link-123'], text: 'Click here' }
-        ],
+        children: [{ _type: 'span', marks: ['link-123'], text: 'Click here' }],
         markDefs: [
           { _key: 'link-123', _type: 'link', href: 'https://example.com' }
         ],

@@ -51,7 +51,9 @@ export function ToolbarPlugin() {
       // - Keyboard navigation support
       // - Screen reader announcements
       // - Cancel button
-      const url = prompt('リンクのURLを入力してください（例: https://example.com）:')
+      const url = prompt(
+        'リンクのURLを入力してください（例: https://example.com）:'
+      )
       if (url) {
         editor.dispatchCommand(TOGGLE_LINK_COMMAND, url)
       }
