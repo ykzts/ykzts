@@ -3,7 +3,7 @@ import { Button } from '@ykzts/ui/components/button'
 import { Input } from '@ykzts/ui/components/input'
 import { Textarea } from '@ykzts/ui/components/textarea'
 import Link from 'next/link'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
 import { PortableTextPreview } from '@/components/portable-text-preview'
 import type { PostWithDetails } from '@/lib/posts'
@@ -36,13 +36,6 @@ export function PostForm({ post }: PostFormProps) {
   )
   const [showPreview, setShowPreview] = useState(false)
 
-  // Auto-generate slug from title if auto mode is enabled
-  useEffect(() => {
-    if (autoSlug && title) {
-      setSlug(generateSlug(title))
-    }
-  }, [title, autoSlug])
-
   const handleDelete = async () => {
     if (!confirm('本当にこの投稿を削除しますか？この操作は取り消せません。')) {
       return
@@ -72,6 +65,12 @@ export function PostForm({ post }: PostFormProps) {
 
   const handleRemoveTag = (tagToRemove: string) => {
     setTags(tags.filter((tag) => tag !== tagToRemove))
+  }
+
+  const handleGenerateSlug = () => {
+    if (title) {
+      setSlug(generateSlug(title))
+    }
   }
 
   const initialContent = post.current_version?.content
@@ -123,18 +122,23 @@ export function PostForm({ post }: PostFormProps) {
           </label>
           <div className="flex gap-2">
             <Input
-              disabled={autoSlug}
               id="slug"
               maxLength={256}
               name="slug"
               onChange={(e) => setSlug(e.target.value)}
               placeholder="url-friendly-slug"
+              readOnly={autoSlug}
               required
               type="text"
               value={slug}
             />
             <Button
-              onClick={() => setAutoSlug(!autoSlug)}
+              onClick={() => {
+                setAutoSlug(!autoSlug)
+                if (!autoSlug) {
+                  handleGenerateSlug()
+                }
+              }}
               type="button"
               variant="outline"
             >

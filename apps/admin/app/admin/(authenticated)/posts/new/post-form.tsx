@@ -3,7 +3,7 @@ import { Button } from '@ykzts/ui/components/button'
 import { Input } from '@ykzts/ui/components/input'
 import { Textarea } from '@ykzts/ui/components/textarea'
 import Link from 'next/link'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
 import { PortableTextPreview } from '@/components/portable-text-preview'
 import { generateSlug } from '@/lib/utils'
@@ -25,13 +25,6 @@ export function PostForm() {
   const [contentPreview, setContentPreview] = useState<string | undefined>()
   const [showPreview, setShowPreview] = useState(false)
 
-  // Auto-generate slug from title if auto mode is enabled
-  useEffect(() => {
-    if (autoSlug && title) {
-      setSlug(generateSlug(title))
-    }
-  }, [title, autoSlug])
-
   const handleAddTag = () => {
     const newTag = tagInput.trim()
     if (newTag && !tags.includes(newTag)) {
@@ -42,6 +35,12 @@ export function PostForm() {
 
   const handleRemoveTag = (tagToRemove: string) => {
     setTags(tags.filter((tag) => tag !== tagToRemove))
+  }
+
+  const handleGenerateSlug = () => {
+    if (title) {
+      setSlug(generateSlug(title))
+    }
   }
 
   return (
@@ -82,18 +81,23 @@ export function PostForm() {
           </label>
           <div className="flex gap-2">
             <Input
-              disabled={autoSlug}
               id="slug"
               maxLength={256}
               name="slug"
               onChange={(e) => setSlug(e.target.value)}
               placeholder="url-friendly-slug"
+              readOnly={autoSlug}
               required
               type="text"
               value={slug}
             />
             <Button
-              onClick={() => setAutoSlug(!autoSlug)}
+              onClick={() => {
+                setAutoSlug(!autoSlug)
+                if (!autoSlug) {
+                  handleGenerateSlug()
+                }
+              }}
               type="button"
               variant="outline"
             >
