@@ -22,12 +22,12 @@ export default function PrivacyModal() {
   }
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[80vh]">
+    <Dialog onOpenChange={handleOpenChange} open={open}>
+      <DialogContent className="max-h-[80vh] max-w-4xl">
         <DialogHeader>
           <DialogTitle>プライバシーポリシー</DialogTitle>
         </DialogHeader>
-        <div className="overflow-y-auto -mx-4 px-8">
+        <div className="-mx-4 overflow-y-auto px-8">
           <div className="prose prose-base max-w-none prose-a:text-primary prose-headings:text-foreground prose-p:text-base prose-p:text-muted-foreground prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
             <PrivacyContent />
           </div>

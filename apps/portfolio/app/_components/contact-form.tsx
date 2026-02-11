@@ -135,26 +135,28 @@ export default function ContactForm() {
           )}
         </Field>
 
-        <div className="mb-5">
-          <label className="flex cursor-pointer items-start gap-2.5 text-base text-muted-foreground">
-            <Checkbox
-              aria-describedby={
-                errors.privacyConsent ? 'privacy-error' : undefined
-              }
-              aria-invalid={Boolean(errors.privacyConsent)}
-              defaultChecked={formData.privacyConsent || false}
-              name="privacyConsent"
-              required
-            />
-            <span>
-              <Link className="text-primary hover:underline" href="/privacy">
-                プライバシーポリシー
-              </Link>
-              に同意します <span className="text-red-500">*</span>
-            </span>
-          </label>
+        <div className="mb-5 flex cursor-pointer items-start gap-2.5 text-base text-muted-foreground">
+          <Checkbox
+            aria-describedby={
+              errors.privacyConsent ? 'privacy-error' : undefined
+            }
+            aria-invalid={Boolean(errors.privacyConsent)}
+            aria-label="プライバシーポリシーに同意"
+            defaultChecked={formData.privacyConsent || false}
+            name="privacyConsent"
+            required
+          />
+          <span>
+            <Link className="text-primary hover:underline" href="/privacy">
+              プライバシーポリシー
+            </Link>
+            に同意します <span className="text-red-500">*</span>
+          </span>
           {errors.privacyConsent && (
-            <p className="mt-1.5 text-red-500 text-sm" id="privacy-error">
+            <p
+              className="mt-1.5 w-full text-red-500 text-sm"
+              id="privacy-error"
+            >
               {errors.privacyConsent}
             </p>
           )}
