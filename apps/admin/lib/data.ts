@@ -140,6 +140,49 @@ export async function getPosts() {
   return data
 }
 
+export async function getPost(id: string) {
+  'use cache: private'
+  cacheTag('posts')
+
+  // Get current authenticated user (cached)
+  const user = await getCurrentUser()
+
+  if (!user) {
+    throw new Error('認証されていません')
+  }
+
+  const supabase = await createClient()
+
+  // Get the authenticated user's profile
+  const { data: profileData, error: profileError } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (profileError) {
+    throw new Error(`プロフィールの取得に失敗しました: ${profileError.message}`)
+  }
+
+  if (!profileData) {
+    return null
+  }
+
+  // Restrict posts by both post ID and the authenticated user's profile_id
+  const { data, error } = await supabase
+    .from('posts')
+    .select('id, title, created_at, updated_at')
+    .eq('id', id)
+    .eq('profile_id', profileData.id)
+    .maybeSingle()
+
+  if (error) {
+    throw new Error(`投稿の取得に失敗しました: ${error.message}`)
+  }
+
+  return data
+}
+
 export async function getCounts() {
   'use cache: private'
   cacheTag('counts')
