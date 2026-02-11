@@ -4,30 +4,19 @@ import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { deletePost, updatePost } from '@/lib/posts'
+import { postUpdateSchema } from '@/lib/validations'
 
 export type ActionState = {
   error?: string
 } | null
-
-// Zod schema for post validation
-const postSchema = z.object({
-  content: z.string().optional(),
-  excerpt: z.string().trim().max(1000, '抜粋は1000文字以内で入力してください').optional(),
-  id: z.string().uuid({ message: '無効なIDです' }),
-  published_at: z.string().optional(),
-  redirect_from: z.string().optional(),
-  slug: z.string().trim().min(1, 'スラッグは必須です').max(256, 'スラッグは256文字以内で入力してください'),
-  status: z.enum(['draft', 'scheduled', 'published']).optional(),
-  tags: z.string().optional(),
-  title: z.string().trim().min(1, 'タイトルは必須です').max(256, 'タイトルは256文字以内で入力してください')
-})
 
 export async function updatePostAction(
   _prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
   // Extract and validate FormData values with Zod
-  const validation = postSchema.safeParse({
+  const validation = postUpdateSchema.safeParse({
+    change_summary: formData.get('change_summary') || undefined,
     content: formData.get('content'),
     excerpt: formData.get('excerpt') || undefined,
     id: formData.get('id'),
@@ -57,7 +46,7 @@ export async function updatePostAction(
       : undefined
 
     await updatePost({
-      changeSummary: 'Updated post',
+      changeSummary: validatedData.change_summary || 'Updated post',
       content,
       excerpt: validatedData.excerpt,
       postId: validatedData.id,

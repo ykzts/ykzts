@@ -7,21 +7,13 @@ import { RichTextEditor } from '@/components/portable-text-editor'
 
 import Link from 'next/link'
 import { useActionState, useEffect, useState } from 'react'
+import { generateSlug } from '@/lib/utils'
 import type { PostWithDetails } from '@/lib/posts'
 import type { ActionState } from '../actions'
 import { deletePostAction, updatePostAction } from '../actions'
 
 type PostFormProps = {
   post: PostWithDetails
-}
-
-function generateSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_-]+/g, '-')
-    .replace(/^-+|-+$/g, '')
 }
 
 export function PostForm({ post }: PostFormProps) {

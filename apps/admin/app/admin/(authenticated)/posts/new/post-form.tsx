@@ -7,17 +7,9 @@ import { RichTextEditor } from '@/components/portable-text-editor'
 
 import Link from 'next/link'
 import { useActionState, useEffect, useState } from 'react'
+import { generateSlug } from '@/lib/utils'
 import type { ActionState } from './actions'
 import { createPostAction } from './actions'
-
-function generateSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_-]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-}
 
 export function PostForm() {
   const [state, formAction, isPending] = useActionState<ActionState, FormData>(

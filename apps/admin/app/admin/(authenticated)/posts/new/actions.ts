@@ -2,31 +2,20 @@
 
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { z } from 'zod'
 import { createPost } from '@/lib/posts'
+import { postSchema } from '@/lib/validations'
 
 export type ActionState = {
   error?: string
   success?: boolean
 } | null
 
-// Zod schema for post creation validation
-const createPostSchema = z.object({
-  content: z.string().optional(),
-  excerpt: z.string().trim().max(1000, '抜粋は1000文字以内で入力してください').optional(),
-  published_at: z.string().optional(),
-  slug: z.string().trim().min(1, 'スラッグは必須です').max(256, 'スラッグは256文字以内で入力してください'),
-  status: z.enum(['draft', 'scheduled', 'published']).optional(),
-  tags: z.string().optional(),
-  title: z.string().trim().min(1, 'タイトルは必須です').max(256, 'タイトルは256文字以内で入力してください')
-})
-
 export async function createPostAction(
   _prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
   // Extract and validate FormData values with Zod
-  const validation = createPostSchema.safeParse({
+  const validation = postSchema.safeParse({
     content: formData.get('content'),
     excerpt: formData.get('excerpt') || undefined,
     published_at: formData.get('published_at') || undefined,
