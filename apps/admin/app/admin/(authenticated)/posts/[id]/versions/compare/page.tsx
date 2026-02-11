@@ -67,7 +67,7 @@ async function CompareContent({
 }) {
   const [post, comparison] = await Promise.all([
     getPostById(postId),
-    compareVersions(fromId, toId)
+    compareVersions(fromId, toId, postId)
   ])
 
   if (!post || !comparison.version1 || !comparison.version2) {

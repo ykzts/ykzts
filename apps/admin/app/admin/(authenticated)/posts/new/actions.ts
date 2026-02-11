@@ -46,24 +46,14 @@ export async function createPostAction(
 
   try {
     // Parse JSON fields with error handling
-    let content = { children: [], type: 'root' }
-    let tags: string[] = []
-
-    if (validatedData.content) {
-      try {
-        content = JSON.parse(validatedData.content)
-      } catch (_error) {
-        return { error: 'コンテンツのJSON形式が不正です' }
-      }
-    }
-
-    if (validatedData.tags) {
-      try {
-        tags = JSON.parse(validatedData.tags)
-      } catch (_error) {
-        return { error: 'タグのJSON形式が不正です' }
-      }
-    }
+    const content: Json | undefined =
+      validatedData.content && validatedData.content !== ''
+        ? JSON.parse(validatedData.content)
+        : []
+    const tags: string[] =
+      validatedData.tags && validatedData.tags !== ''
+        ? JSON.parse(validatedData.tags)
+        : []
 
     await createPost({
       content,

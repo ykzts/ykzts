@@ -35,7 +35,11 @@ export async function getPosts(filter: PostsFilter = {}) {
   'use cache: private'
   cacheTag('posts')
 
-  const { page = 1, perPage = 20, search, status = 'all' } = filter
+  let { page = 1, perPage = 20, search, status = 'all' } = filter
+
+  // Validate pagination inputs
+  if (!Number.isFinite(page) || page < 1) page = 1
+  if (!Number.isFinite(perPage) || perPage < 1) perPage = 20
 
   const supabase = await createClient()
 
@@ -59,7 +63,7 @@ export async function getPosts(filter: PostsFilter = {}) {
     query = query.eq('status', status)
   }
 
-  // Apply search filter
+  // Apply search filter (excerpt only - title search disabled for Japanese text incompatibility)
   if (search?.trim()) {
     // Escape special characters to prevent SQL injection in LIKE patterns
     const escapedSearch = search
@@ -67,9 +71,7 @@ export async function getPosts(filter: PostsFilter = {}) {
       .replace(/\\/g, '\\\\')
       .replace(/%/g, '\\%')
       .replace(/_/g, '\\_')
-    query = query.or(
-      `title.ilike.%${escapedSearch}%,excerpt.ilike.%${escapedSearch}%`
-    )
+    query = query.ilike('excerpt', `%${escapedSearch}%`)
   }
 
   // Apply pagination
@@ -234,7 +236,43 @@ export async function getPostVersions(
   'use cache: private'
   cacheTag('posts')
 
+  const user = await getCurrentUser()
+  if (!user) {
+    throw new Error('認証されていません')
+  }
+
   const supabase = await createClient()
+
+  // Get the authenticated user's profile
+  const { data: profileData, error: profileError } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (profileError) {
+    throw new Error(`プロフィールの取得に失敗しました: ${profileError.message}`)
+  }
+
+  if (!profileData) {
+    throw new Error('プロフィールが見つかりません')
+  }
+
+  // Verify post ownership first
+  const { data: post, error: postError } = await supabase
+    .from('posts')
+    .select('id, profile_id')
+    .eq('id', postId)
+    .eq('profile_id', profileData.id)
+    .maybeSingle()
+
+  if (postError) {
+    throw new Error(`投稿の確認に失敗しました: ${postError.message}`)
+  }
+
+  if (!post) {
+    throw new Error('投稿にアクセス権がありません')
+  }
 
   const { data, error } = await supabase
     .from('post_versions')
@@ -261,12 +299,33 @@ export async function getPostVersion(
   'use cache: private'
   cacheTag('posts')
 
+  const user = await getCurrentUser()
+  if (!user) {
+    throw new Error('認証されていません')
+  }
+
   const supabase = await createClient()
+
+  // Get the authenticated user's profile
+  const { data: profileData, error: profileError } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (profileError) {
+    throw new Error(`プロフィールの取得に失敗しました: ${profileError.message}`)
+  }
+
+  if (!profileData) {
+    throw new Error('プロフィールが見つかりません')
+  }
 
   const { data, error } = await supabase
     .from('post_versions')
     .select(`
       *,
+      post:posts!post_versions_post_id_fkey(profile_id),
       profile:profiles!post_versions_created_by_fkey(name)
     `)
     .eq('id', versionId)
@@ -276,28 +335,82 @@ export async function getPostVersion(
     throw new Error(`バージョンの取得に失敗しました: ${error.message}`)
   }
 
+  if (!data) {
+    return null
+  }
+
+  // Verify post ownership
+  const post = (
+    data as PostVersionWithProfile & { post?: { profile_id: string } }
+  ).post as unknown as { profile_id: string }
+  if (!post || post.profile_id !== profileData.id) {
+    throw new Error('このバージョンにアクセス権がありません')
+  }
+
   return data
 }
 
 /**
  * Compare two versions and return both for client-side diff
  */
-export async function compareVersions(versionId1: string, versionId2: string) {
+export async function compareVersions(
+  versionId1: string,
+  versionId2: string,
+  postId: string
+) {
   'use cache: private'
   cacheTag('posts')
 
+  const user = await getCurrentUser()
+  if (!user) {
+    throw new Error('認証されていません')
+  }
+
   const supabase = await createClient()
+
+  // Get the authenticated user's profile
+  const { data: profileData, error: profileError } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (profileError) {
+    throw new Error(`プロフィールの取得に失敗しました: ${profileError.message}`)
+  }
+
+  if (!profileData) {
+    throw new Error('プロフィールが見つかりません')
+  }
+
+  // Verify post ownership
+  const { data: post, error: postError } = await supabase
+    .from('posts')
+    .select('id, profile_id')
+    .eq('id', postId)
+    .eq('profile_id', profileData.id)
+    .maybeSingle()
+
+  if (postError) {
+    throw new Error(`投稿の確認に失敗しました: ${postError.message}`)
+  }
+
+  if (!post) {
+    throw new Error('投稿にアクセス権がありません')
+  }
 
   const [version1Result, version2Result] = await Promise.all([
     supabase
       .from('post_versions')
       .select('*')
       .eq('id', versionId1)
+      .eq('post_id', postId)
       .maybeSingle(),
     supabase
       .from('post_versions')
       .select('*')
       .eq('id', versionId2)
+      .eq('post_id', postId)
       .maybeSingle()
   ])
 
