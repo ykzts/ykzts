@@ -156,11 +156,11 @@ export async function createPost(params: {
 
   const { data, error } = await supabase.rpc('create_post', {
     p_content: params.content,
-    p_excerpt: params.excerpt || null,
-    p_published_at: params.publishedAt || null,
+    p_excerpt: params.excerpt ?? '',
+    p_published_at: params.publishedAt,
     p_slug: params.slug,
-    p_status: params.status || 'draft',
-    p_tags: params.tags || null,
+    p_status: params.status,
+    p_tags: params.tags,
     p_title: params.title
   })
 
@@ -188,15 +188,15 @@ export async function updatePost(params: {
   const supabase = await createClient()
 
   const { data, error } = await supabase.rpc('update_post', {
-    p_change_summary: params.changeSummary || 'Updated',
-    p_content: params.content || null,
-    p_excerpt: params.excerpt || null,
+    p_change_summary: params.changeSummary,
+    p_content: params.content,
+    p_excerpt: params.excerpt,
     p_post_id: params.postId,
-    p_published_at: params.publishedAt || null,
-    p_slug: params.slug || null,
-    p_status: params.status || null,
-    p_tags: params.tags || null,
-    p_title: params.title || null
+    p_published_at: params.publishedAt,
+    p_slug: params.slug,
+    p_status: params.status,
+    p_tags: params.tags,
+    p_title: params.title
   })
 
   if (error) {
