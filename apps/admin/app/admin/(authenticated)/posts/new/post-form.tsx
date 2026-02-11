@@ -2,6 +2,7 @@
 import { Button } from '@ykzts/ui/components/button'
 import { Input } from '@ykzts/ui/components/input'
 import { Textarea } from '@ykzts/ui/components/textarea'
+import { PortableTextPreview } from '@/components/portable-text-preview'
 import { RichTextEditor } from '@/components/portable-text-editor'
 
 import Link from 'next/link'
@@ -30,6 +31,8 @@ export function PostForm() {
   const [tags, setTags] = useState<string[]>([])
   const [tagInput, setTagInput] = useState('')
   const [status, setStatus] = useState<string>('draft')
+  const [contentPreview, setContentPreview] = useState<string | undefined>()
+  const [showPreview, setShowPreview] = useState(false)
 
   // Auto-generate slug from title if auto mode is enabled
   useEffect(() => {
@@ -129,14 +132,35 @@ export function PostForm() {
 
         {/* Content */}
         <div>
-          <label className="mb-2 block font-medium" htmlFor="content">
-            コンテンツ
-          </label>
-          <RichTextEditor
-            id="content"
-            name="content"
-            placeholder="投稿の本文を入力..."
-          />
+          <div className="mb-2 flex items-center justify-between">
+            <label className="block font-medium" htmlFor="content">
+              コンテンツ
+            </label>
+            <Button
+              onClick={() => setShowPreview(!showPreview)}
+              size="sm"
+              type="button"
+              variant="outline"
+            >
+              {showPreview ? 'プレビューを隠す' : 'プレビューを表示'}
+            </Button>
+          </div>
+          <div className={showPreview ? 'grid grid-cols-2 gap-4' : ''}>
+            <div>
+              <RichTextEditor
+                id="content"
+                name="content"
+                onChange={(value) => setContentPreview(value)}
+                placeholder="投稿の本文を入力..."
+              />
+            </div>
+            {showPreview && (
+              <div className="rounded border border-border bg-card p-4">
+                <h3 className="mb-3 font-medium text-sm">プレビュー</h3>
+                <PortableTextPreview value={contentPreview} />
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Tags */}
