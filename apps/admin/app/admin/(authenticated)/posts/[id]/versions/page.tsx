@@ -150,7 +150,7 @@ export default async function VersionsPage({
       <Suspense
         fallback={
           <Card className="p-6">
-            <div>Loading...</div>
+            <div>読み込み中...</div>
           </Card>
         }
       >
