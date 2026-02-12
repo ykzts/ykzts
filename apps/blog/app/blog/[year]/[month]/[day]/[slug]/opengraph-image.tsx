@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import { MAX_EXCERPT_LENGTH } from '@/lib/constants'
 import { getPostBySlug } from '@/lib/supabase/posts'
 
 export const alt = 'ykzts.com/blog'
@@ -7,8 +8,6 @@ export const size = {
   width: 1200
 }
 export const contentType = 'image/png'
-
-const MAX_EXCERPT_LENGTH = 150
 
 type Props = {
   params: Promise<{

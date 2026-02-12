@@ -1,6 +1,5 @@
+import { DEFAULT_POST_TITLE, MAX_EXCERPT_LENGTH } from '@/lib/constants'
 import { getPostsForFeed } from '@/lib/supabase/posts'
-
-const MAX_EXCERPT_LENGTH = 150
 
 export async function GET() {
   const posts = await getPostsForFeed(20)
@@ -29,7 +28,7 @@ ${posts
     const month = String(publishedDate.getUTCMonth() + 1).padStart(2, '0')
     const day = String(publishedDate.getUTCDate()).padStart(2, '0')
     const postUrl = `${baseUrl}/${year}/${month}/${day}/${post.slug}`
-    const title = post.title || 'Untitled'
+    const title = post.title || DEFAULT_POST_TITLE
     const summary = post.excerpt || ''
     const truncatedSummary =
       summary.length > MAX_EXCERPT_LENGTH
