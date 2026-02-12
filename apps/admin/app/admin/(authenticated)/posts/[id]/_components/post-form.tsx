@@ -1,5 +1,7 @@
 'use client'
 import { Button } from '@ykzts/ui/components/button'
+import { Field } from '@ykzts/ui/components/field'
+import { Input } from '@ykzts/ui/components/input'
 import {
   Select,
   SelectContent,
@@ -110,12 +112,11 @@ export function PostForm({ post }: PostFormProps) {
         )}
 
         {/* Title */}
-        <div>
-          <label className="mb-2 block font-medium" htmlFor="title">
+        <Field>
+          <Field.Label htmlFor="title">
             タイトル <span className="text-error">*</span>
-          </label>
-          <input
-            className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:font-medium file:text-foreground file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+          </Field.Label>
+          <Input
             defaultValue={post.title || ''}
             id="title"
             maxLength={256}
@@ -124,19 +125,16 @@ export function PostForm({ post }: PostFormProps) {
             required
             type="text"
           />
-          <p className="mt-1 text-muted-foreground text-sm">
-            必須、256文字以内
-          </p>
-        </div>
+          <Field.Description>必須、256文字以内</Field.Description>
+        </Field>
 
         {/* Slug */}
-        <div>
-          <label className="mb-2 block font-medium" htmlFor="slug">
+        <Field>
+          <Field.Label htmlFor="slug">
             スラッグ <span className="text-error">*</span>
-          </label>
+          </Field.Label>
           <div className="flex gap-2">
-            <input
-              className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:font-medium file:text-foreground file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+            <Input
               defaultValue={post.slug || ''}
               id="slug"
               maxLength={256}
@@ -153,16 +151,14 @@ export function PostForm({ post }: PostFormProps) {
               自動生成
             </Button>
           </div>
-          <p className="mt-1 text-muted-foreground text-sm">
+          <Field.Description>
             URL用の識別子（手動入力またはボタンで自動生成）
-          </p>
-        </div>
+          </Field.Description>
+        </Field>
 
         {/* Excerpt */}
-        <div>
-          <label className="mb-2 block font-medium" htmlFor="excerpt">
-            抜粋
-          </label>
+        <Field>
+          <Field.Label htmlFor="excerpt">抜粋</Field.Label>
           <Textarea
             defaultValue={post.excerpt || ''}
             id="excerpt"
@@ -170,17 +166,13 @@ export function PostForm({ post }: PostFormProps) {
             placeholder="投稿の簡単な説明（任意）"
             rows={3}
           />
-          <p className="mt-1 text-muted-foreground text-sm">
-            投稿の要約や説明文
-          </p>
-        </div>
+          <Field.Description>投稿の要約や説明文</Field.Description>
+        </Field>
 
         {/* Content */}
-        <div>
-          <div className="mb-2 flex items-center justify-between">
-            <label className="block font-medium" htmlFor="content">
-              コンテンツ
-            </label>
+        <Field>
+          <div className="flex items-center justify-between">
+            <Field.Label htmlFor="content">コンテンツ</Field.Label>
             <Button
               onClick={() => setShowPreview(!showPreview)}
               size="sm"
@@ -207,14 +199,13 @@ export function PostForm({ post }: PostFormProps) {
               </div>
             )}
           </div>
-        </div>
+        </Field>
 
         {/* Tags */}
-        <div>
-          <div className="mb-2 block font-medium">タグ</div>
+        <Field>
+          <Field.Label>タグ</Field.Label>
           <div className="flex gap-2">
-            <input
-              className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:font-medium file:text-foreground file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+            <Input
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
@@ -249,13 +240,11 @@ export function PostForm({ post }: PostFormProps) {
               ))}
             </div>
           )}
-        </div>
+        </Field>
 
         {/* Status */}
-        <div>
-          <label className="mb-2 block font-medium" htmlFor="status">
-            ステータス
-          </label>
+        <Field>
+          <Field.Label htmlFor="status">ステータス</Field.Label>
           <Select
             defaultValue={post.status || 'draft'}
             name="status"
@@ -272,17 +261,12 @@ export function PostForm({ post }: PostFormProps) {
               <SelectItem value="published">公開</SelectItem>
             </SelectContent>
           </Select>
-        </div>
+        </Field>
 
         {/* Published At */}
         {showPublishedAt && (
-          <div>
-            <label
-              className="mb-2 block font-medium"
-              htmlFor="published_at_display"
-            >
-              公開日時
-            </label>
+          <Field>
+            <Field.Label htmlFor="published_at_display">公開日時</Field.Label>
             {/* Hidden input that holds the ISO 8601 value actually submitted */}
             <input
               defaultValue={post.published_at ?? ''}
@@ -291,8 +275,7 @@ export function PostForm({ post }: PostFormProps) {
               type="hidden"
             />
             {/* Visible datetime-local input for user interaction */}
-            <input
-              className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            <Input
               defaultValue={
                 post.published_at
                   ? new Date(post.published_at).toISOString().slice(0, 16)
@@ -313,10 +296,10 @@ export function PostForm({ post }: PostFormProps) {
               }}
               type="datetime-local"
             />
-            <p className="mt-1 text-muted-foreground text-sm">
+            <Field.Description>
               指定した日時に自動公開されます
-            </p>
-          </div>
+            </Field.Description>
+          </Field>
         )}
 
         {/* Version History Link */}
