@@ -229,7 +229,7 @@ When you create or update a PR with migration changes:
 1. **Automatic Local Validation**: GitHub Actions starts a local Supabase instance and applies migrations
    - Validates SQL syntax and schema changes
    - Checks for conflicts and errors in a safe local environment
-   - Runs on `ubuntu-slim` for fast, cost-efficient validation
+   - Runs on `ubuntu-24.04` (requires Docker for local Supabase)
    - **Works for external contributors**: No secrets required, uses local Supabase
 
 2. **PR Comment**: Results are posted as a comment on your PR
