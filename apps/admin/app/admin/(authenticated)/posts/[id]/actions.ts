@@ -82,7 +82,7 @@ export async function updatePostAction(
     revalidateTag('posts', 'max')
   } catch (error) {
     return {
-      error: `更新に失敗しました: ${error instanceof Error ? error.message : '不明なエラー'}`
+      error: error instanceof Error ? error.message : '不明なエラー'
     }
   }
 
@@ -107,9 +107,7 @@ export async function deletePostAction(id: string): Promise<void> {
     revalidateTag('posts', 'max')
     revalidateTag('counts', 'max')
   } catch (error) {
-    throw new Error(
-      `削除に失敗しました: ${error instanceof Error ? error.message : '不明なエラー'}`
-    )
+    throw new Error(error instanceof Error ? error.message : '不明なエラー')
   }
 
   redirect('/admin/posts')
