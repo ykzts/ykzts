@@ -1,0 +1,50 @@
+import type { BundledLanguage, BundledTheme, Highlighter } from 'shiki'
+import { createHighlighter } from 'shiki'
+
+let highlighter: Highlighter | null = null
+
+const languages: BundledLanguage[] = [
+  'typescript',
+  'javascript',
+  'bash',
+  'json',
+  'css',
+  'html'
+]
+
+const themes: BundledTheme[] = ['github-light', 'github-dark']
+
+async function getHighlighter() {
+  if (!highlighter) {
+    highlighter = await createHighlighter({
+      langs: languages,
+      themes
+    })
+  }
+  return highlighter
+}
+
+export async function highlightCode(
+  code: string,
+  language?: string
+): Promise<string> {
+  const hl = await getHighlighter()
+
+  const lang =
+    language && hl.getLoadedLanguages().includes(language as BundledLanguage)
+      ? (language as BundledLanguage)
+      : 'plaintext'
+
+  // Load language if not already loaded
+  if (lang !== 'plaintext' && !hl.getLoadedLanguages().includes(lang)) {
+    await hl.loadLanguage(lang)
+  }
+
+  return hl.codeToHtml(code, {
+    lang,
+    themes: {
+      dark: 'github-dark',
+      light: 'github-light'
+    }
+  })
+}
