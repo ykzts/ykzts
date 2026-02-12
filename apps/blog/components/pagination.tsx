@@ -21,7 +21,8 @@ export default function Pagination({
   const prevPage = currentPage > 1 ? currentPage - 1 : null
   const nextPage = currentPage < totalPages ? currentPage + 1 : null
 
-  const prevUrl = prevPage === 1 ? ('/' as Route) : (`${baseUrl}/${prevPage}` as Route)
+  const prevUrl =
+    prevPage === 1 ? ('/' as Route) : (`${baseUrl}/${prevPage}` as Route)
   const nextUrl = nextPage ? (`${baseUrl}/${nextPage}` as Route) : null
 
   return (
