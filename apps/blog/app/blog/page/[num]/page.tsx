@@ -18,6 +18,11 @@ export async function generateStaticParams() {
     pages.push({ num: String(i) })
   }
 
+  // Return placeholder if no pages to satisfy Next.js Cache Components requirement
+  if (pages.length === 0) {
+    return [{ num: '2' }]
+  }
+
   return pages
 }
 
@@ -26,6 +31,12 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { num } = await params
   const pageNum = Number.parseInt(num, 10)
+
+  if (Number.isNaN(pageNum) || pageNum < 1) {
+    return {
+      title: 'ページ'
+    }
+  }
 
   return {
     title: `ページ ${pageNum}`

@@ -15,7 +15,7 @@ export default function TagList({ tags, className }: TagListProps) {
   return (
     <div className={className}>
       {tags.map((tag) => (
-        <Link href={`/blog/tags/${tag}` as Route} key={tag}>
+        <Link href={`/blog/tags/${encodeURIComponent(tag)}` as Route} key={tag}>
           <Badge variant="secondary">{tag}</Badge>
         </Link>
       ))}

@@ -31,18 +31,20 @@ export async function generateMetadata({
   params
 }: PageProps): Promise<Metadata> {
   const { tag } = await params
+  const decodedTag = decodeURIComponent(tag)
 
   return {
-    description: `${tag}タグの記事一覧`,
-    title: `${tag}タグの記事`
+    description: `${decodedTag}タグの記事一覧`,
+    title: `${decodedTag}タグの記事`
   }
 }
 
 export default async function TagArchivePage({ params }: PageProps) {
   const { tag } = await params
+  const decodedTag = decodeURIComponent(tag)
 
-  const posts = await getPostsByTag(tag, 1)
-  const postCount = await getPostCountByTag(tag)
+  const posts = await getPostsByTag(decodedTag, 1)
+  const postCount = await getPostCountByTag(decodedTag)
 
   if (!posts || posts.length === 0) {
     notFound()
@@ -55,7 +57,7 @@ export default async function TagArchivePage({ params }: PageProps) {
       <Header />
       <main className="container mx-auto px-4 py-8">
         <h1 className="mb-8 font-bold text-3xl">
-          {tag} ({postCount}件)
+          {decodedTag} ({postCount}件)
         </h1>
         <div className="space-y-6">
           {posts.map((post) => (
@@ -65,7 +67,7 @@ export default async function TagArchivePage({ params }: PageProps) {
         {totalPages > 1 && (
           <div className="mt-8">
             <Pagination
-              baseUrl={`/blog/tags/${tag}/page`}
+              baseUrl={`/blog/tags/${encodeURIComponent(decodedTag)}/page`}
               currentPage={1}
               totalPages={totalPages}
             />

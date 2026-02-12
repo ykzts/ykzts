@@ -22,10 +22,10 @@ export async function generateStaticParams() {
   return posts.map((post) => {
     const date = new Date(post.published_at)
     return {
-      day: String(date.getDate()).padStart(2, '0'),
-      month: String(date.getMonth() + 1).padStart(2, '0'),
+      day: String(date.getUTCDate()).padStart(2, '0'),
+      month: String(date.getUTCMonth() + 1).padStart(2, '0'),
       slug: post.slug,
-      year: String(date.getFullYear())
+      year: String(date.getUTCFullYear())
     }
   })
 }
@@ -65,9 +65,9 @@ export default async function PostDetailPage({ params }: PageProps) {
 
   // Validate URL date components match the post's published_at date
   const publishedDate = new Date(post.published_at)
-  const expectedYear = String(publishedDate.getFullYear())
-  const expectedMonth = String(publishedDate.getMonth() + 1).padStart(2, '0')
-  const expectedDay = String(publishedDate.getDate()).padStart(2, '0')
+  const expectedYear = String(publishedDate.getUTCFullYear())
+  const expectedMonth = String(publishedDate.getUTCMonth() + 1).padStart(2, '0')
+  const expectedDay = String(publishedDate.getUTCDate()).padStart(2, '0')
 
   if (year !== expectedYear || month !== expectedMonth || day !== expectedDay) {
     notFound()
