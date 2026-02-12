@@ -16,8 +16,9 @@ export async function rollbackAction(postId: string, versionId: string) {
     await rollbackToVersion(postId, versionId)
     revalidateTag('posts', 'max')
   } catch (error) {
-    throw new Error(
-      `ロールバックに失敗しました: ${error instanceof Error ? error.message : '不明なエラー'}`
-    )
+    if (error instanceof Error) {
+      throw error
+    }
+    throw new Error('不明なエラー')
   }
 }

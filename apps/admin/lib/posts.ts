@@ -41,10 +41,32 @@ export async function getPosts(filter: PostsFilter = {}) {
   if (!Number.isFinite(page) || page < 1) page = 1
   if (!Number.isFinite(perPage) || perPage < 1) perPage = 20
 
+  const user = await getCurrentUser()
+  if (!user) {
+    throw new Error('認証されていません')
+  }
+
   const supabase = await createClient()
 
-  let query = supabase.from('posts').select(
-    `
+  // Get the authenticated user's profile
+  const { data: profileData, error: profileError } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (profileError) {
+    throw new Error(`プロフィールの取得に失敗しました: ${profileError.message}`)
+  }
+
+  if (!profileData) {
+    throw new Error('プロフィールが見つかりません')
+  }
+
+  let query = supabase
+    .from('posts')
+    .select(
+      `
       id,
       title,
       slug,
@@ -55,8 +77,9 @@ export async function getPosts(filter: PostsFilter = {}) {
       updated_at,
       profile:profiles!posts_profile_id_fkey(name)
     `,
-    { count: 'exact' }
-  )
+      { count: 'exact' }
+    )
+    .eq('profile_id', profileData.id)
 
   // Apply status filter
   if (status !== 'all') {
@@ -441,7 +464,7 @@ export async function rollbackToVersion(postId: string, versionId: string) {
   // Get the version to rollback to
   const { data: targetVersion, error: versionError } = await supabase
     .from('post_versions')
-    .select('content, title, excerpt, tags')
+    .select('content, title, excerpt, tags, version_number')
     .eq('id', versionId)
     .eq('post_id', postId)
     .maybeSingle()
@@ -456,14 +479,7 @@ export async function rollbackToVersion(postId: string, versionId: string) {
     throw new Error('指定されたバージョンが見つかりません')
   }
 
-  // Get version number for change summary
-  const { data: versionInfo } = await supabase
-    .from('post_versions')
-    .select('version_number')
-    .eq('id', versionId)
-    .maybeSingle()
-
-  const versionNumber = versionInfo?.version_number ?? 'unknown'
+  const versionNumber = targetVersion.version_number ?? 'unknown'
 
   // Use update_post to create a new version with the old content
   const { data, error } = await supabase.rpc('update_post', {

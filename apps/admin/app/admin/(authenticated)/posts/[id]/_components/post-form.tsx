@@ -1,6 +1,14 @@
 'use client'
 import { Button } from '@ykzts/ui/components/button'
+import { Field } from '@ykzts/ui/components/field'
 import { Input } from '@ykzts/ui/components/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@ykzts/ui/components/select'
 import { Textarea } from '@ykzts/ui/components/textarea'
 import Link from 'next/link'
 import { useActionState, useState } from 'react'
@@ -23,12 +31,11 @@ export function PostForm({ post }: PostFormProps) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
 
-  const [title, setTitle] = useState(post.title || '')
-  const [slug, setSlug] = useState(post.slug || '')
-  const [autoSlug, setAutoSlug] = useState(!post.slug)
   const [tags, setTags] = useState<string[]>(post.tags || [])
   const [tagInput, setTagInput] = useState('')
-  const [status, setStatus] = useState<string>(post.status || 'draft')
+  const [showPublishedAt, setShowPublishedAt] = useState(
+    post.status === 'scheduled' || post.status === 'published'
+  )
   const [contentPreview, setContentPreview] = useState<string | undefined>(
     post.current_version?.content
       ? JSON.stringify(post.current_version.content)
@@ -67,9 +74,18 @@ export function PostForm({ post }: PostFormProps) {
     setTags(tags.filter((tag) => tag !== tagToRemove))
   }
 
-  const handleGenerateSlug = () => {
-    if (title) {
-      setSlug(generateSlug(title))
+  const handleGenerateSlug = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    const form = e.currentTarget.form
+    if (!form) return
+
+    const titleInput = form.elements.namedItem(
+      'title'
+    ) as HTMLInputElement | null
+    const slugInput = form.elements.namedItem('slug') as HTMLInputElement | null
+
+    if (titleInput && slugInput && titleInput.value) {
+      slugInput.value = generateSlug(titleInput.value)
     }
   }
 
@@ -96,65 +112,53 @@ export function PostForm({ post }: PostFormProps) {
         )}
 
         {/* Title */}
-        <div>
-          <label className="mb-2 block font-medium" htmlFor="title">
+        <Field>
+          <Field.Label htmlFor="title">
             タイトル <span className="text-error">*</span>
-          </label>
+          </Field.Label>
           <Input
+            defaultValue={post.title || ''}
             id="title"
             maxLength={256}
             name="title"
-            onChange={(e) => setTitle(e.target.value)}
             placeholder="投稿のタイトルを入力"
             required
             type="text"
-            value={title}
           />
-          <p className="mt-1 text-muted-foreground text-sm">
-            必須、256文字以内
-          </p>
-        </div>
+          <Field.Description>必須、256文字以内</Field.Description>
+        </Field>
 
         {/* Slug */}
-        <div>
-          <label className="mb-2 block font-medium" htmlFor="slug">
+        <Field>
+          <Field.Label htmlFor="slug">
             スラッグ <span className="text-error">*</span>
-          </label>
+          </Field.Label>
           <div className="flex gap-2">
             <Input
+              defaultValue={post.slug || ''}
               id="slug"
               maxLength={256}
               name="slug"
-              onChange={(e) => setSlug(e.target.value)}
               placeholder="url-friendly-slug"
-              readOnly={autoSlug}
               required
               type="text"
-              value={slug}
             />
             <Button
-              onClick={() => {
-                setAutoSlug(!autoSlug)
-                if (!autoSlug) {
-                  handleGenerateSlug()
-                }
-              }}
+              onClick={handleGenerateSlug}
               type="button"
               variant="outline"
             >
-              {autoSlug ? '手動' : '自動'}
+              自動生成
             </Button>
           </div>
-          <p className="mt-1 text-muted-foreground text-sm">
-            URL用の識別子（自動生成または手動入力）
-          </p>
-        </div>
+          <Field.Description>
+            URL用の識別子（手動入力またはボタンで自動生成）
+          </Field.Description>
+        </Field>
 
         {/* Excerpt */}
-        <div>
-          <label className="mb-2 block font-medium" htmlFor="excerpt">
-            抜粋
-          </label>
+        <Field>
+          <Field.Label htmlFor="excerpt">抜粋</Field.Label>
           <Textarea
             defaultValue={post.excerpt || ''}
             id="excerpt"
@@ -162,17 +166,13 @@ export function PostForm({ post }: PostFormProps) {
             placeholder="投稿の簡単な説明（任意）"
             rows={3}
           />
-          <p className="mt-1 text-muted-foreground text-sm">
-            投稿の要約や説明文
-          </p>
-        </div>
+          <Field.Description>投稿の要約や説明文</Field.Description>
+        </Field>
 
         {/* Content */}
-        <div>
-          <div className="mb-2 flex items-center justify-between">
-            <label className="block font-medium" htmlFor="content">
-              コンテンツ
-            </label>
+        <Field>
+          <div className="flex items-center justify-between">
+            <Field.Label htmlFor="content">コンテンツ</Field.Label>
             <Button
               onClick={() => setShowPreview(!showPreview)}
               size="sm"
@@ -199,11 +199,11 @@ export function PostForm({ post }: PostFormProps) {
               </div>
             )}
           </div>
-        </div>
+        </Field>
 
         {/* Tags */}
-        <div>
-          <div className="mb-2 block font-medium">タグ</div>
+        <Field>
+          <Field.Label>タグ</Field.Label>
           <div className="flex gap-2">
             <Input
               onChange={(e) => setTagInput(e.target.value)}
@@ -240,37 +240,35 @@ export function PostForm({ post }: PostFormProps) {
               ))}
             </div>
           )}
-        </div>
+        </Field>
 
         {/* Status */}
-        <div>
-          <label className="mb-2 block font-medium" htmlFor="status">
-            ステータス
-          </label>
-          <select
-            className="w-full rounded border border-border bg-background px-3 py-2"
-            id="status"
+        <Field>
+          <Field.Label htmlFor="status">ステータス</Field.Label>
+          <Select
+            defaultValue={post.status || 'draft'}
             name="status"
-            onChange={(e) => setStatus(e.target.value)}
-            value={status}
+            onValueChange={(value) => {
+              setShowPublishedAt(value === 'scheduled' || value === 'published')
+            }}
           >
-            <option value="draft">下書き</option>
-            <option value="scheduled">予約公開</option>
-            <option value="published">公開</option>
-          </select>
-        </div>
+            <SelectTrigger className="w-full" id="status">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="draft">下書き</SelectItem>
+              <SelectItem value="scheduled">予約公開</SelectItem>
+              <SelectItem value="published">公開</SelectItem>
+            </SelectContent>
+          </Select>
+        </Field>
 
         {/* Published At */}
-        {(status === 'scheduled' || status === 'published') && (
-          <div>
-            <label
-              className="mb-2 block font-medium"
-              htmlFor="published_at_display"
-            >
-              公開日時
-            </label>
+        {showPublishedAt && (
+          <Field>
+            <Field.Label htmlFor="published_at_display">公開日時</Field.Label>
             {/* Hidden input that holds the ISO 8601 value actually submitted */}
-            <Input
+            <input
               defaultValue={post.published_at ?? ''}
               id="published_at"
               name="published_at"
@@ -298,12 +296,10 @@ export function PostForm({ post }: PostFormProps) {
               }}
               type="datetime-local"
             />
-            <p className="mt-1 text-muted-foreground text-sm">
-              {status === 'scheduled'
-                ? '指定した日時に自動公開されます'
-                : '公開日時を記録します'}
-            </p>
-          </div>
+            <Field.Description>
+              指定した日時に自動公開されます
+            </Field.Description>
+          </Field>
         )}
 
         {/* Version History Link */}
