@@ -201,7 +201,6 @@ export async function getAllPosts() {
     .eq('status', 'published')
     .lte('published_at', new Date().toISOString())
     .not('slug', 'is', null)
-    .not('published_at', 'is', null)
     .order('published_at', { ascending: false })
 
   if (error) {

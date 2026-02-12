@@ -36,14 +36,14 @@ export default async function PaginationPage({ params }: PageProps) {
   const { num } = await params
   const pageNum = Number.parseInt(num, 10)
 
+  // Handle invalid page numbers (NaN or non-positive)
+  if (Number.isNaN(pageNum) || pageNum < 1) {
+    notFound()
+  }
+
   // Redirect page 1 to home
   if (pageNum === 1) {
     redirect('/')
-  }
-
-  // Handle invalid page numbers
-  if (!Number.isFinite(pageNum) || pageNum < 1) {
-    notFound()
   }
 
   const totalPages = await getTotalPages()
