@@ -1,4 +1,5 @@
 import { Badge } from '@ykzts/ui/components/badge'
+import type { Route } from 'next'
 import Link from 'next/link'
 
 type TagListProps = {
@@ -14,7 +15,7 @@ export default function TagList({ tags, className }: TagListProps) {
   return (
     <div className={className}>
       {tags.map((tag) => (
-        <Link href={`/tags/${tag}`} key={tag}>
+        <Link href={`/tags/${tag}` as Route} key={tag}>
           <Badge variant="secondary">{tag}</Badge>
         </Link>
       ))}

@@ -46,11 +46,11 @@ export async function generateMetadata({
     description: post.excerpt || undefined,
     openGraph: {
       description: post.excerpt || undefined,
-      title: post.title,
+      title: post.title || 'Untitled',
       type: 'article',
       url: `https://ykzts.com/blog/${params}`
     },
-    title: post.title
+    title: post.title || 'Untitled'
   }
 }
 

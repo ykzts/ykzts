@@ -50,10 +50,10 @@ export async function getPosts(page = 1) {
       : (post.current_version?.content ?? null),
     excerpt: post.excerpt,
     id: post.id,
-    published_at: post.published_at,
-    slug: post.slug,
+    published_at: post.published_at as string,
+    slug: post.slug as string,
     tags: post.tags,
-    title: post.title
+    title: post.title as string
   }))
 }
 
@@ -100,10 +100,10 @@ export async function getPostBySlug(slug: string) {
       : (data.current_version?.content ?? null),
     excerpt: data.excerpt,
     id: data.id,
-    published_at: data.published_at,
-    slug: data.slug,
+    published_at: data.published_at as string,
+    slug: data.slug as string,
     tags: data.tags,
-    title: data.title
+    title: data.title as string
   }
 }
 
@@ -153,10 +153,10 @@ export async function getPostsByTag(tag: string, page = 1) {
       : (post.current_version?.content ?? null),
     excerpt: post.excerpt,
     id: post.id,
-    published_at: post.published_at,
-    slug: post.slug,
+    published_at: post.published_at as string,
+    slug: post.slug as string,
     tags: post.tags,
-    title: post.title
+    title: post.title as string
   }))
 }
 
@@ -201,6 +201,7 @@ export async function getAllPosts() {
     .eq('status', 'published')
     .lte('published_at', new Date().toISOString())
     .not('slug', 'is', null)
+    .not('published_at', 'is', null)
     .order('published_at', { ascending: false })
 
   if (error) {
@@ -208,7 +209,7 @@ export async function getAllPosts() {
   }
 
   return data.map((post) => ({
-    published_at: post.published_at,
+    published_at: post.published_at as string,
     slug: post.slug as string
   }))
 }

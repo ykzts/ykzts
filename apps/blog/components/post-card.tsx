@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle
 } from '@ykzts/ui/components/card'
+import type { Route } from 'next'
 import Link from 'next/link'
 import DateDisplay from './date-display'
 import TagList from './tag-list'
@@ -22,13 +23,13 @@ type PostCardProps = {
   post: Post
 }
 
-function getDateBasedUrl(slug: string, publishedAt: string): string {
+function getDateBasedUrl(slug: string, publishedAt: string): Route {
   const date = new Date(publishedAt)
   const year = date.getFullYear()
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
 
-  return `/${year}/${month}/${day}/${slug}`
+  return `/${year}/${month}/${day}/${slug}` as Route
 }
 
 export default function PostCard({ post }: PostCardProps) {
