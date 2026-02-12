@@ -70,11 +70,15 @@ export async function generateMetadata({
     description: post.excerpt || undefined,
     openGraph: {
       description: post.excerpt || undefined,
+      publishedTime: post.published_at,
       title: post.title || 'Untitled',
       type: 'article',
       url: `https://ykzts.com/blog/${year}/${month}/${day}/${slug}`
     },
-    title: post.title || 'Untitled'
+    title: post.title || 'Untitled',
+    twitter: {
+      card: 'summary_large_image'
+    }
   }
 }
 

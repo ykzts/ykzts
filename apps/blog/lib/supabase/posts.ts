@@ -197,7 +197,7 @@ export async function getAllPosts() {
 
   const { data, error } = await supabase
     .from('posts')
-    .select('slug, published_at')
+    .select('slug, published_at, updated_at')
     .eq('status', 'published')
     .lte('published_at', new Date().toISOString())
     .not('slug', 'is', null)
@@ -209,7 +209,8 @@ export async function getAllPosts() {
 
   return data.map((post) => ({
     published_at: post.published_at as string,
-    slug: post.slug as string
+    slug: post.slug as string,
+    updated_at: post.updated_at as string
   }))
 }
 
