@@ -16,7 +16,7 @@ export async function invalidateCaches(tag: string): Promise<void> {
   const blogUrl = process.env.BLOG_URL
   const portfolioUrl = process.env.PORTFOLIO_URL
 
-  const requests: Promise<Response>[] = []
+  const requests: Promise<{ url: string; response: Response }>[] = []
 
   if (blogUrl) {
     requests.push(
@@ -27,7 +27,7 @@ export async function invalidateCaches(tag: string): Promise<void> {
           'x-revalidate-secret': secret
         },
         method: 'POST'
-      })
+      }).then((response) => ({ response, url: blogUrl }))
     )
   }
 
@@ -40,7 +40,7 @@ export async function invalidateCaches(tag: string): Promise<void> {
           'x-revalidate-secret': secret
         },
         method: 'POST'
-      })
+      }).then((response) => ({ response, url: portfolioUrl }))
     )
   }
 
@@ -52,9 +52,18 @@ export async function invalidateCaches(tag: string): Promise<void> {
   }
 
   try {
-    await Promise.all(requests)
+    const results = await Promise.all(requests)
+
+    // Check for failed requests
+    for (const { response, url } of results) {
+      if (!response.ok) {
+        console.error(
+          `Cache invalidation failed for ${url}: ${response.status} ${response.statusText}`
+        )
+      }
+    }
   } catch (error) {
     // Log but don't fail the action if cache invalidation fails
-    console.error('Cache invalidation failed:', error)
+    console.error('Cache invalidation network error:', error)
   }
 }

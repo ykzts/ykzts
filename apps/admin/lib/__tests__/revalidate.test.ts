@@ -124,7 +124,7 @@ describe('invalidateCaches', () => {
 
     expect(fetch).toHaveBeenCalledTimes(1)
     expect(consoleSpy).toHaveBeenCalledWith(
-      'Cache invalidation failed:',
+      'Cache invalidation network error:',
       expect.any(Error)
     )
 
@@ -145,5 +145,26 @@ describe('invalidateCaches', () => {
       },
       method: 'POST'
     })
+  })
+
+  it('should log error for failed HTTP responses', async () => {
+    process.env.REVALIDATE_SECRET = 'test-secret'
+    process.env.BLOG_URL = 'https://example.blog'
+    vi.mocked(fetch).mockResolvedValue(
+      new Response(JSON.stringify({ message: 'Invalid secret' }), {
+        status: 401,
+        statusText: 'Unauthorized'
+      })
+    )
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    await invalidateCaches('posts')
+
+    expect(fetch).toHaveBeenCalledTimes(1)
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'Cache invalidation failed for https://example.blog: 401 Unauthorized'
+    )
+
+    consoleSpy.mockRestore()
   })
 })
