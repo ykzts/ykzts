@@ -1,4 +1,3 @@
-import { cacheTag } from 'next/cache'
 import { getAllPosts, getPostBySlug } from '@/lib/supabase/posts'
 
 export async function GET() {
@@ -18,7 +17,9 @@ export async function GET() {
 
   const baseUrl = 'https://ykzts.com/blog'
   const feedUpdated =
-    posts.length > 0 ? new Date(posts[0].updated_at).toISOString() : new Date().toISOString()
+    posts.length > 0
+      ? new Date(posts[0].updated_at).toISOString()
+      : new Date().toISOString()
 
   const atomXml = `<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
@@ -32,16 +33,16 @@ export async function GET() {
     <email>ykzts@desire.sh</email>
   </author>
 ${postsWithDetails
-    .map((post) => {
-      const publishedDate = new Date(post.published_at)
-      const year = String(publishedDate.getUTCFullYear())
-      const month = String(publishedDate.getUTCMonth() + 1).padStart(2, '0')
-      const day = String(publishedDate.getUTCDate()).padStart(2, '0')
-      const postUrl = `${baseUrl}/${year}/${month}/${day}/${post.slug}`
-      const title = post.title || 'Untitled'
-      const summary = post.excerpt || ''
+  .map((post) => {
+    const publishedDate = new Date(post.published_at)
+    const year = String(publishedDate.getUTCFullYear())
+    const month = String(publishedDate.getUTCMonth() + 1).padStart(2, '0')
+    const day = String(publishedDate.getUTCDate()).padStart(2, '0')
+    const postUrl = `${baseUrl}/${year}/${month}/${day}/${post.slug}`
+    const title = post.title || 'Untitled'
+    const summary = post.excerpt || ''
 
-      return `  <entry>
+    return `  <entry>
     <title>${escapeXml(title)}</title>
     <link href="${postUrl}" />
     <id>${postUrl}</id>
@@ -49,8 +50,8 @@ ${postsWithDetails
     <updated>${new Date(post.updated_at).toISOString()}</updated>
     <summary>${escapeXml(summary)}</summary>
   </entry>`
-    })
-    .join('\n')}
+  })
+  .join('\n')}
 </feed>`
 
   return new Response(atomXml, {

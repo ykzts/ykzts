@@ -58,8 +58,8 @@ export default async function Image({ params }: Props) {
       <div
         style={{
           display: 'flex',
-          flexDirection: 'column',
           flex: 1,
+          flexDirection: 'column',
           justifyContent: 'center'
         }}
       >
