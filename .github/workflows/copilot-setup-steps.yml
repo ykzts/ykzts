@@ -13,25 +13,25 @@ on:
     paths:
       - '.github/workflows/copilot-setup-steps.yml'
 
-permissions:
-  contents: read
-
-env:
-  # renovate: datasource=npm depName=corepack
-  COREPACK_VERSION: 0.34.6
-  # renovate: datasource=node-version depName=node
-  NODE_VERSION: 24.13.0
-
 jobs:
   copilot-setup-steps:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    env:
+      # renovate: datasource=npm depName=corepack
+      COREPACK_VERSION: 0.34.6
+      # renovate: datasource=node-version depName=node
+      NODE_VERSION: 24.13.0
+      # renovate: datasource=github-releases depName=supabase/cli
+      SUPABASE_VERSION: 2.75.0
     steps:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Enable Corepack
         run: |
-          npm install -g corepack@${{ env.COREPACK_VERSION }}
+          npm install -g corepack@${COREPACK_VERSION}
           corepack enable
 
       - name: Setup Node.js
@@ -43,22 +43,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Start Supabase local stack
-        run: npx supabase start
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@b60b5899c73b63a2d2d651b1e90db8d4c9392f51 # v1.6.0
+        with:
+          version: ${{ env.SUPABASE_VERSION }}
 
-      - name: Verify environment
-        run: |
-          echo "Biome version:"
-          pnpm exec biome --version
-          echo ""
-          echo "Turbo version:"
-          pnpm exec turbo --version
-          echo ""
-          echo "Node.js version:"
-          node --version
-          echo ""
-          echo "pnpm version:"
-          pnpm --version
-          echo ""
-          echo "Supabase status:"
-          npx supabase status
+      - name: Start Supabase local stack
+        run: supabase start
