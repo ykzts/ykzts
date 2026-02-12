@@ -54,6 +54,18 @@ export async function generateMetadata({
     }
   }
 
+  // Validate URL date components match the post's published_at date
+  const publishedDate = new Date(post.published_at)
+  const expectedYear = String(publishedDate.getUTCFullYear())
+  const expectedMonth = String(publishedDate.getUTCMonth() + 1).padStart(2, '0')
+  const expectedDay = String(publishedDate.getUTCDate()).padStart(2, '0')
+
+  if (year !== expectedYear || month !== expectedMonth || day !== expectedDay) {
+    return {
+      title: 'Not Found'
+    }
+  }
+
   return {
     description: post.excerpt || undefined,
     openGraph: {

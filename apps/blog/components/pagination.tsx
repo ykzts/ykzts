@@ -21,8 +21,13 @@ export default function Pagination({
   const prevPage = currentPage > 1 ? currentPage - 1 : null
   const nextPage = currentPage < totalPages ? currentPage + 1 : null
 
+  // Derive page 1 URL from baseUrl by removing trailing '/page'
+  const baseUrlPage1 = baseUrl.endsWith('/page')
+    ? (baseUrl.slice(0, -'/page'.length) as Route)
+    : ('/blog' as Route)
+
   const prevUrl =
-    prevPage === 1 ? ('/blog' as Route) : (`${baseUrl}/${prevPage}` as Route)
+    prevPage === 1 ? baseUrlPage1 : (`${baseUrl}/${prevPage}` as Route)
   const nextUrl = nextPage ? (`${baseUrl}/${nextPage}` as Route) : null
 
   return (
