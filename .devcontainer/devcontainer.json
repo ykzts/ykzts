@@ -13,7 +13,7 @@
     "ghcr.io/devcontainers/features/github-cli:1.1.0": {}
   },
   "forwardPorts": [3000],
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:4-22-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:4-24-bookworm",
   "name": "ykzts.com",
   "postCreateCommand": "./.devcontainer/post-create.sh"
 }
