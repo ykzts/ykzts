@@ -87,7 +87,7 @@ export function PostsPagination({
       )}
 
       <Button
-        disabled={currentPage === totalPages || totalPages === 0}
+        disabled={currentPage >= totalPages || totalPages === 0}
         onClick={() => handlePageChange(currentPage + 1)}
         size="sm"
         variant="outline"

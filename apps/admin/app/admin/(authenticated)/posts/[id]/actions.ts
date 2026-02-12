@@ -107,7 +107,10 @@ export async function deletePostAction(id: string): Promise<void> {
     revalidateTag('posts', 'max')
     revalidateTag('counts', 'max')
   } catch (error) {
-    throw new Error(error instanceof Error ? error.message : '不明なエラー')
+    if (error instanceof Error) {
+      throw error
+    }
+    throw new Error('不明なエラー')
   }
 
   redirect('/admin/posts')
