@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize]
     paths:
       - 'supabase/migrations/**'
+      - '.github/workflows/supabase-migrate.yml'
   push:
     branches: [main]
     paths:
@@ -27,13 +28,13 @@ jobs:
   check:
     name: Validate migrations locally
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup Supabase CLI
-        uses: supabase/setup-cli@c62d8d88c1018e4da540d7f2ef16361c77916c73 # v1.6.0
+        uses: supabase/setup-cli@b60b5899c73b63a2d2d651b1e90db8d4c9392f51 # v1.6.0
         with:
           version: ${{ env.SUPABASE_VERSION }}
 
@@ -79,11 +80,12 @@ jobs:
             }
             `;
             
-            // Find existing comment
-            const { data: comments } = await github.rest.issues.listComments({
+            // Find existing comment (with pagination)
+            const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
+              per_page: 100,
             });
             
             const botComment = comments.find(comment => 
@@ -125,7 +127,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup Supabase CLI
-        uses: supabase/setup-cli@c62d8d88c1018e4da540d7f2ef16361c77916c73 # v1.6.0
+        uses: supabase/setup-cli@b60b5899c73b63a2d2d651b1e90db8d4c9392f51 # v1.6.0
         with:
           version: ${{ env.SUPABASE_VERSION }}
 
