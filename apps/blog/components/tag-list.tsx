@@ -1,0 +1,24 @@
+import { Badge } from '@ykzts/ui/components/badge'
+import type { Route } from 'next'
+import Link from 'next/link'
+
+type TagListProps = {
+  tags: string[]
+  className?: string
+}
+
+export default function TagList({ tags, className }: TagListProps) {
+  if (!tags || tags.length === 0) {
+    return null
+  }
+
+  return (
+    <div className={className}>
+      {tags.map((tag) => (
+        <Link href={`/blog/tags/${encodeURIComponent(tag)}` as Route} key={tag}>
+          <Badge variant="secondary">{tag}</Badge>
+        </Link>
+      ))}
+    </div>
+  )
+}

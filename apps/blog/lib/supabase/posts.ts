@@ -50,10 +50,10 @@ export async function getPosts(page = 1) {
       : (post.current_version?.content ?? null),
     excerpt: post.excerpt,
     id: post.id,
-    published_at: post.published_at,
-    slug: post.slug,
+    published_at: post.published_at as string,
+    slug: post.slug as string,
     tags: post.tags,
-    title: post.title
+    title: post.title as string
   }))
 }
 
@@ -100,10 +100,10 @@ export async function getPostBySlug(slug: string) {
       : (data.current_version?.content ?? null),
     excerpt: data.excerpt,
     id: data.id,
-    published_at: data.published_at,
-    slug: data.slug,
+    published_at: data.published_at as string,
+    slug: data.slug as string,
     tags: data.tags,
-    title: data.title
+    title: data.title as string
   }
 }
 
@@ -153,10 +153,10 @@ export async function getPostsByTag(tag: string, page = 1) {
       : (post.current_version?.content ?? null),
     excerpt: post.excerpt,
     id: post.id,
-    published_at: post.published_at,
-    slug: post.slug,
+    published_at: post.published_at as string,
+    slug: post.slug as string,
     tags: post.tags,
-    title: post.title
+    title: post.title as string
   }))
 }
 
@@ -208,7 +208,59 @@ export async function getAllPosts() {
   }
 
   return data.map((post) => ({
-    published_at: post.published_at,
+    published_at: post.published_at as string,
     slug: post.slug as string
   }))
 }
+
+export async function getTotalPostCount() {
+  cacheTag('posts')
+
+  if (!supabase) {
+    throw new Error(
+      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
+    )
+  }
+
+  const { count, error } = await supabase
+    .from('posts')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', 'published')
+    .lte('published_at', new Date().toISOString())
+
+  if (error) {
+    throw new Error(`Failed to count posts: ${error.message}`)
+  }
+
+  return count ?? 0
+}
+
+export async function getTotalPages() {
+  const count = await getTotalPostCount()
+  return Math.ceil(count / POSTS_PER_PAGE)
+}
+
+export async function getPostCountByTag(tag: string) {
+  cacheTag('posts')
+
+  if (!supabase) {
+    throw new Error(
+      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
+    )
+  }
+
+  const { count, error } = await supabase
+    .from('posts')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', 'published')
+    .lte('published_at', new Date().toISOString())
+    .contains('tags', [tag])
+
+  if (error) {
+    throw new Error(`Failed to count posts by tag: ${error.message}`)
+  }
+
+  return count ?? 0
+}
+
+export { POSTS_PER_PAGE }
