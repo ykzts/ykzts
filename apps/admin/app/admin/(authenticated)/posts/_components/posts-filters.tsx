@@ -77,7 +77,7 @@ export function PostsFilters() {
       <form className="flex gap-2" onSubmit={handleSearch}>
         <Input
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="タイトルや抜粋で検索..."
+          placeholder="抜粋で検索..."
           type="text"
           value={search}
         />

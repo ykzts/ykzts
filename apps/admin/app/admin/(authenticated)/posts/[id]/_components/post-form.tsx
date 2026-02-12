@@ -3,7 +3,7 @@ import { Button } from '@ykzts/ui/components/button'
 import { Input } from '@ykzts/ui/components/input'
 import { Textarea } from '@ykzts/ui/components/textarea'
 import Link from 'next/link'
-import { useActionState, useState } from 'react'
+import { useActionState, useRef, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
 import { PortableTextPreview } from '@/components/portable-text-preview'
 import type { PostWithDetails } from '@/lib/posts'
@@ -23,11 +23,15 @@ export function PostForm({ post }: PostFormProps) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
 
-  const [title, setTitle] = useState(post.title || '')
-  const [slug, setSlug] = useState(post.slug || '')
+  const titleRef = useRef<HTMLInputElement>(null)
+  const slugRef = useRef<HTMLInputElement>(null)
+  const statusRef = useRef<HTMLSelectElement>(null)
+
   const [tags, setTags] = useState<string[]>(post.tags || [])
   const [tagInput, setTagInput] = useState('')
-  const [status, setStatus] = useState<string>(post.status || 'draft')
+  const [currentStatus, setCurrentStatus] = useState<string>(
+    post.status || 'draft'
+  )
   const [contentPreview, setContentPreview] = useState<string | undefined>(
     post.current_version?.content
       ? JSON.stringify(post.current_version.content)
@@ -67,8 +71,11 @@ export function PostForm({ post }: PostFormProps) {
   }
 
   const handleGenerateSlug = () => {
-    if (title) {
-      setSlug(generateSlug(title))
+    if (titleRef.current && slugRef.current) {
+      const title = titleRef.current.value
+      if (title) {
+        slugRef.current.value = generateSlug(title)
+      }
     }
   }
 
@@ -99,15 +106,16 @@ export function PostForm({ post }: PostFormProps) {
           <label className="mb-2 block font-medium" htmlFor="title">
             タイトル <span className="text-error">*</span>
           </label>
-          <Input
+          <input
+            className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:font-medium file:text-foreground file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+            defaultValue={post.title || ''}
             id="title"
             maxLength={256}
             name="title"
-            onChange={(e) => setTitle(e.target.value)}
             placeholder="投稿のタイトルを入力"
+            ref={titleRef}
             required
             type="text"
-            value={title}
           />
           <p className="mt-1 text-muted-foreground text-sm">
             必須、256文字以内
@@ -120,15 +128,16 @@ export function PostForm({ post }: PostFormProps) {
             スラッグ <span className="text-error">*</span>
           </label>
           <div className="flex gap-2">
-            <Input
+            <input
+              className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:font-medium file:text-foreground file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+              defaultValue={post.slug || ''}
               id="slug"
               maxLength={256}
               name="slug"
-              onChange={(e) => setSlug(e.target.value)}
               placeholder="url-friendly-slug"
+              ref={slugRef}
               required
               type="text"
-              value={slug}
             />
             <Button
               onClick={handleGenerateSlug}
@@ -242,10 +251,11 @@ export function PostForm({ post }: PostFormProps) {
           </label>
           <select
             className="w-full rounded border border-border bg-background px-3 py-2"
+            defaultValue={post.status || 'draft'}
             id="status"
             name="status"
-            onChange={(e) => setStatus(e.target.value)}
-            value={status}
+            onChange={(e) => setCurrentStatus(e.target.value)}
+            ref={statusRef}
           >
             <option value="draft">下書き</option>
             <option value="scheduled">予約公開</option>
@@ -254,7 +264,7 @@ export function PostForm({ post }: PostFormProps) {
         </div>
 
         {/* Published At */}
-        {(status === 'scheduled' || status === 'published') && (
+        {(currentStatus === 'scheduled' || currentStatus === 'published') && (
           <div>
             <label
               className="mb-2 block font-medium"
@@ -292,7 +302,7 @@ export function PostForm({ post }: PostFormProps) {
               type="datetime-local"
             />
             <p className="mt-1 text-muted-foreground text-sm">
-              {status === 'scheduled'
+              {currentStatus === 'scheduled'
                 ? '指定した日時に自動公開されます'
                 : '公開日時を記録します'}
             </p>
