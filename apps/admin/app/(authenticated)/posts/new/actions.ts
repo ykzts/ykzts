@@ -4,6 +4,7 @@ import type { Json } from '@ykzts/supabase'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createPost } from '@/lib/posts'
+import { invalidateCaches } from '@/lib/revalidate'
 import { postSchema } from '@/lib/validations'
 
 export type ActionState = {
@@ -68,6 +69,7 @@ export async function createPostAction(
 
     revalidateTag('posts', 'max')
     revalidateTag('counts', 'max')
+    await invalidateCaches('posts')
   } catch (error) {
     return {
       error: `作成に失敗しました: ${error instanceof Error ? error.message : '不明なエラー'}`

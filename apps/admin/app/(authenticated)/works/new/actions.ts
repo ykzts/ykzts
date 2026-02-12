@@ -5,6 +5,7 @@ import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { getProfile } from '@/lib/data'
+import { invalidateCaches } from '@/lib/revalidate'
 import { createClient } from '@/lib/supabase/server'
 
 export type ActionState = {
@@ -101,6 +102,7 @@ export async function createWork(
     // Revalidate both works list and dashboard counts
     revalidateTag('works', 'max')
     revalidateTag('counts', 'max')
+    await invalidateCaches('works')
   } catch (error) {
     return {
       error: `予期しないエラーが発生しました: ${error instanceof Error ? error.message : '不明なエラー'}`

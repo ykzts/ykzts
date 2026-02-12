@@ -2,6 +2,7 @@
 
 import { revalidateTag } from 'next/cache'
 import { getPostVersion, rollbackToVersion } from '@/lib/posts'
+import { invalidateCaches } from '@/lib/revalidate'
 
 export async function rollbackAction(postId: string, versionId: string) {
   try {
@@ -15,6 +16,7 @@ export async function rollbackAction(postId: string, versionId: string) {
 
     await rollbackToVersion(postId, versionId)
     revalidateTag('posts', 'max')
+    await invalidateCaches('posts')
   } catch (error) {
     if (error instanceof Error) {
       throw error

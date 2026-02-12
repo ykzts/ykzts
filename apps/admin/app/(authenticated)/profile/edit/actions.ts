@@ -4,6 +4,7 @@ import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { getCurrentUser } from '@/lib/auth'
+import { invalidateCaches } from '@/lib/revalidate'
 import { detectServiceFromURL } from '@/lib/social-service-detector'
 import { createClient } from '@/lib/supabase/server'
 
@@ -328,6 +329,7 @@ export async function updateProfile(
 
     // Invalidate cache
     revalidateTag('profile', 'max')
+    await invalidateCaches('profile')
   } catch (error) {
     return {
       error: `エラーが発生しました: ${error instanceof Error ? error.message : '不明なエラー'}`
