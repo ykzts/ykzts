@@ -212,3 +212,55 @@ export async function getAllPosts() {
     slug: post.slug as string
   }))
 }
+
+export async function getTotalPostCount() {
+  cacheTag('posts')
+
+  if (!supabase) {
+    throw new Error(
+      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
+    )
+  }
+
+  const { count, error } = await supabase
+    .from('posts')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', 'published')
+    .lte('published_at', new Date().toISOString())
+
+  if (error) {
+    throw new Error(`Failed to count posts: ${error.message}`)
+  }
+
+  return count ?? 0
+}
+
+export async function getTotalPages() {
+  const count = await getTotalPostCount()
+  return Math.ceil(count / POSTS_PER_PAGE)
+}
+
+export async function getPostCountByTag(tag: string) {
+  cacheTag('posts')
+
+  if (!supabase) {
+    throw new Error(
+      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
+    )
+  }
+
+  const { count, error } = await supabase
+    .from('posts')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', 'published')
+    .lte('published_at', new Date().toISOString())
+    .contains('tags', [tag])
+
+  if (error) {
+    throw new Error(`Failed to count posts by tag: ${error.message}`)
+  }
+
+  return count ?? 0
+}
+
+export { POSTS_PER_PAGE }
