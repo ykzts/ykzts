@@ -222,20 +222,21 @@ Migrations are stored in `supabase/migrations/` directory with timestamp-based n
 - Keep migrations focused on a single logical change
 - Include both schema changes and necessary data migrations
 
-#### 2. Pull Request Stage (Dry-run)
+#### 2. Pull Request Stage (Local Validation)
 
 When you create or update a PR with migration changes:
 
-1. **Automatic Dry-run**: GitHub Actions automatically runs `supabase db push --dry-run`
+1. **Automatic Local Validation**: GitHub Actions starts a local Supabase instance and applies migrations
    - Validates SQL syntax and schema changes
-   - Checks for conflicts with existing database state
+   - Checks for conflicts and errors in a safe local environment
    - Runs on `ubuntu-slim` for fast feedback
+   - **Works for external contributors**: No secrets required, uses local Supabase
 
 2. **PR Comment**: Results are posted as a comment on your PR
-   - ✅ Success: Migration is safe to apply
+   - ✅ Success: Migration validated successfully
    - ❌ Failure: Review and fix errors before merging
 
-3. **Review Output**: Check the dry-run output in the PR comment
+3. **Review Output**: Check the validation output in the PR comment
    - Review schema changes
    - Verify expected tables/columns are created
    - Ensure no unintended side effects
@@ -273,18 +274,19 @@ If you need to rollback a migration:
 
 ### Required GitHub Secrets
 
-The migration workflow requires the following secrets to be configured:
+The migration workflow requires the following secrets for **production deployment only**:
 
 - `SUPABASE_ACCESS_TOKEN`: Personal access token from Supabase Dashboard
   - Generated at: Settings → Access Tokens
   - **Important**: Requires manual renewal (OIDC not supported)
+  - **Used for**: Production deployment only (not required for PR validation)
   
 - `SUPABASE_PROJECT_REF`: Your Supabase project reference ID
   - Found in: Project Settings → General → Project URL
   - Format: `abcdefghijklmnopqrst`
+  - **Used for**: Production deployment only
 
-- `SUPABASE_DB_PASSWORD`: Database password for direct connection
-  - Found in: Project Settings → Database → Connection String
+**Note**: PR validation uses local Supabase and does not require any secrets, making it safe for external contributors.
 
 ### Local Development
 
@@ -331,15 +333,15 @@ CREATE POLICY "policy_name" ON table_name
 
 ### Troubleshooting
 
-**Dry-run fails in PR:**
+**Migration validation fails in PR:**
 - Review the error message in the PR comment
 - Fix SQL syntax errors or schema conflicts
-- Test locally with `supabase db push --dry-run`
+- Test locally with `supabase start` to reproduce the issue
 - Push fixes to your PR branch
 
 **Production deployment fails:**
 - Check GitHub Actions logs for error details
-- Verify secrets are correctly configured
+- Verify secrets are correctly configured (`SUPABASE_ACCESS_TOKEN`, `SUPABASE_PROJECT_REF`)
 - Ensure no manual changes conflict with migration
 - Contact @ykzts if issues persist
 
