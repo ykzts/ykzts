@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
 
   if (!validation.success) {
     return NextResponse.json(
-      { errors: validation.error.errors, message: 'Invalid request body' },
+      { errors: validation.error.issues, message: 'Invalid request body' },
       { status: 400 }
     )
   }
