@@ -1,7 +1,7 @@
 import { Card } from '@ykzts/ui/components/card'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
-import { getPost } from '@/lib/data'
+import { getPostById } from '@/lib/posts'
 import { PostForm } from './_components/post-form'
 import { PostFormSkeleton } from './_components/post-form-skeleton'
 
@@ -11,7 +11,7 @@ export function generateStaticParams() {
 }
 
 async function PostEditContent({ id }: { id: string }) {
-  const post = await getPost(id)
+  const post = await getPostById(id)
 
   if (!post) {
     notFound()

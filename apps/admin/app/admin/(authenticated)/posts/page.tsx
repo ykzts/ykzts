@@ -1,58 +1,110 @@
+import { Badge } from '@ykzts/ui/components/badge'
 import { Card } from '@ykzts/ui/components/card'
 import Link from 'next/link'
 import { Suspense } from 'react'
-import { getPosts } from '@/lib/data'
+import { getPosts } from '@/lib/posts'
 import { NewPostButton } from './_components/new-post-button'
+import { PostsFilters } from './_components/posts-filters'
+import { PostsPagination } from './_components/posts-pagination'
+import { PostsSkeleton } from './_components/posts-skeleton'
 
-async function PostsContent() {
-  const posts = await getPosts()
+async function PostsContent({
+  page,
+  perPage,
+  search,
+  status
+}: {
+  page: number
+  perPage: number
+  search?: string
+  status: 'draft' | 'scheduled' | 'published' | 'all'
+}) {
+  const result = await getPosts({ page, perPage, search, status })
 
   return (
-    <Card className="p-6">
-      {!posts || posts.length === 0 ? (
-        <p className="text-muted-foreground">投稿がありません</p>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-border border-b">
-                <th className="px-4 py-3 text-left">タイトル</th>
-                <th className="px-4 py-3 text-left">作成日</th>
-                <th className="px-4 py-3 text-left">更新日</th>
-                <th className="px-4 py-3 text-right">操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              {posts.map((post) => (
-                <tr className="border-border border-b" key={post.id}>
-                  <td className="px-4 py-3">
-                    {post.title || '(タイトルなし)'}
-                  </td>
-                  <td className="px-4 py-3 text-muted-foreground">
-                    {new Date(post.created_at).toLocaleDateString('ja-JP')}
-                  </td>
-                  <td className="px-4 py-3 text-muted-foreground">
-                    {new Date(post.updated_at).toLocaleDateString('ja-JP')}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <Link
-                      className="text-primary hover:underline"
-                      href={`/admin/posts/${post.id}`}
-                    >
-                      編集
-                    </Link>
-                  </td>
+    <>
+      <Card className="p-6">
+        {!result.data || result.data.length === 0 ? (
+          <p className="text-muted-foreground">投稿がありません</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-border border-b">
+                  <th className="px-4 py-3 text-left">タイトル</th>
+                  <th className="px-4 py-3 text-left">ステータス</th>
+                  <th className="px-4 py-3 text-left">公開日時</th>
+                  <th className="px-4 py-3 text-left">作成者</th>
+                  <th className="px-4 py-3 text-right">操作</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {result.data.map((post) => (
+                  <tr className="border-border border-b" key={post.id}>
+                    <td className="px-4 py-3">
+                      {post.title || '(タイトルなし)'}
+                    </td>
+                    <td className="px-4 py-3">
+                      {post.status === 'published' && (
+                        <Badge variant="default">公開</Badge>
+                      )}
+                      {post.status === 'draft' && (
+                        <Badge variant="secondary">下書き</Badge>
+                      )}
+                      {post.status === 'scheduled' && (
+                        <Badge variant="outline">予約</Badge>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {post.published_at
+                        ? new Date(post.published_at).toLocaleDateString(
+                            'ja-JP',
+                            {
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                              month: 'short',
+                              year: 'numeric'
+                            }
+                          )
+                        : '-'}
+                    </td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {post.profile?.name || '不明'}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <Link
+                        className="text-primary hover:underline"
+                        href={`/admin/posts/${post.id}`}
+                      >
+                        編集
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Card>
+
+      {result.totalPages > 1 && (
+        <PostsPagination currentPage={page} totalPages={result.totalPages} />
       )}
-    </Card>
+    </>
   )
 }
 
-export default function PostsPage() {
+export default function PostsPage({
+  searchParams
+}: {
+  searchParams: Promise<{
+    page?: string
+    perPage?: string
+    search?: string
+    status?: string
+  }>
+}) {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
@@ -60,9 +112,46 @@ export default function PostsPage() {
         <NewPostButton />
       </div>
 
-      <Suspense fallback={<div>Loading...</div>}>
-        <PostsContent />
+      <PostsFilters />
+
+      <Suspense fallback={<PostsSkeleton />}>
+        <PostsContentAsync searchParams={searchParams} />
       </Suspense>
     </div>
+  )
+}
+
+async function PostsContentAsync({
+  searchParams
+}: {
+  searchParams: Promise<{
+    page?: string
+    perPage?: string
+    search?: string
+    status?: string
+  }>
+}) {
+  const params = await searchParams
+  let page = Number.parseInt(params.page || '1', 10)
+  let perPage = Number.parseInt(params.perPage || '20', 10)
+
+  // Validate pagination parameters
+  if (!Number.isFinite(page) || page < 1) page = 1
+  if (!Number.isFinite(perPage) || perPage < 1) perPage = 20
+
+  const search = params.search
+  const status = ['draft', 'scheduled', 'published', 'all'].includes(
+    params.status || ''
+  )
+    ? (params.status as 'draft' | 'scheduled' | 'published' | 'all')
+    : 'all'
+
+  return (
+    <PostsContent
+      page={page}
+      perPage={perPage}
+      search={search}
+      status={status}
+    />
   )
 }
