@@ -1,19 +1,7 @@
-import { getAllPosts, getPostBySlug } from '@/lib/supabase/posts'
+import { getPostsForFeed } from '@/lib/supabase/posts'
 
 export async function GET() {
-  const posts = await getAllPosts()
-
-  // Fetch full post details for feed entries
-  const postsWithDetails = await Promise.all(
-    posts.slice(0, 20).map(async (post) => {
-      const fullPost = await getPostBySlug(post.slug)
-      return {
-        ...post,
-        excerpt: fullPost?.excerpt,
-        title: fullPost?.title
-      }
-    })
-  )
+  const posts = await getPostsForFeed(20)
 
   const baseUrl = 'https://ykzts.com/blog'
   const feedUpdated =
@@ -32,7 +20,7 @@ export async function GET() {
     <name>Yamagishi Kazutoshi</name>
     <email>ykzts@desire.sh</email>
   </author>
-${postsWithDetails
+${posts
   .map((post) => {
     const publishedDate = new Date(post.published_at)
     const year = String(publishedDate.getUTCFullYear())

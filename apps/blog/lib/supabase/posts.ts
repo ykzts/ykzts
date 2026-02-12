@@ -209,6 +209,36 @@ export async function getAllPosts() {
   }))
 }
 
+export async function getPostsForFeed(limit = 20) {
+  cacheTag('posts')
+
+  if (!supabase) {
+    // Return empty array when Supabase is not configured (e.g., during build without env vars)
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select('slug, title, excerpt, published_at, updated_at')
+    .eq('status', 'published')
+    .lte('published_at', new Date().toISOString())
+    .not('slug', 'is', null)
+    .order('published_at', { ascending: false })
+    .limit(limit)
+
+  if (error) {
+    throw new Error(`Failed to fetch posts for feed: ${error.message}`)
+  }
+
+  return data.map((post) => ({
+    excerpt: post.excerpt,
+    published_at: post.published_at as string,
+    slug: post.slug as string,
+    title: post.title as string,
+    updated_at: post.updated_at as string
+  }))
+}
+
 export async function getTotalPostCount() {
   cacheTag('posts')
 
