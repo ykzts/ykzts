@@ -306,9 +306,9 @@ pnpm typegen
 Example migration file:
 
 ```sql
--- Descriptive comment about the migration
--- Author: @username
--- Date: YYYY-MM-DD
+-- Add user profile fields for enhanced user information
+-- Author: @ykzts
+-- Date: 2026-02-08
 
 -- Create new table
 CREATE TABLE IF NOT EXISTS table_name (
@@ -327,6 +327,7 @@ CREATE POLICY "policy_name" ON table_name
   FOR SELECT
   USING (true);
 ```
+
 
 ### Troubleshooting
 
