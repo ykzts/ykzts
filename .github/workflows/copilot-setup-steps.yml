@@ -1,0 +1,51 @@
+# GitHub Copilot Coding Agent Setup Workflow
+# This workflow sets up the development environment for GitHub Copilot Coding Agent
+# in an ephemeral development environment.
+#
+# For more information, see:
+# https://docs.github.com/ja/copilot/how-tos/use-copilot-agents/coding-agent/customize-the-agent-environment
+
+name: Copilot Setup Steps
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/copilot-setup-steps.yml'
+  push:
+    paths:
+      - '.github/workflows/copilot-setup-steps.yml'
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Enable Corepack
+        run: |
+          # renovate: datasource=npm depName=corepack
+          npm install -g corepack@0.34.6
+          corepack enable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          cache: pnpm
+          # renovate: datasource=node-version depName=node
+          node-version: 24.13.0
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@b60b5899c73b63a2d2d651b1e90db8d4c9392f51 # v1.6.0
+        with:
+          # renovate: datasource=github-releases depName=supabase/cli
+          version: 2.75.0
+
+      - name: Start Supabase local stack
+        run: supabase start
