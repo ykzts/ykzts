@@ -41,6 +41,7 @@ jobs:
       - name: Start Supabase local server and apply migrations
         id: migrate
         run: |
+          set -o pipefail
           # Start local Supabase (automatically applies migrations)
           echo "Starting local Supabase and applying migrations..."
           if supabase start 2>&1 | tee migration-output.txt; then
@@ -134,9 +135,10 @@ jobs:
       - name: Apply migrations
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
         run: |
           # Link to production project
-          supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
+          supabase link --project-ref "$SUPABASE_PROJECT_REF"
           
           # Apply migrations (idempotent - skips already applied migrations)
           echo "Applying migrations to production..."

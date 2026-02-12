@@ -296,12 +296,14 @@ To test migrations locally:
 # Start local Supabase
 supabase start
 
-# Apply migrations locally
-supabase db push
+# Reset and reapply all migrations locally
+supabase db reset
 
 # Generate TypeScript types
 pnpm typegen
 ```
+
+**Note**: `supabase db reset` recreates the local database and reapplies all migrations. If you only want to apply pending migrations without resetting data, use `supabase migration up` instead.
 
 ### Migration File Structure
 
