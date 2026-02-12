@@ -152,7 +152,7 @@ This repository strictly follows the **Conventional Commits** specification. All
 
 ## Environment and Configuration
 
-- **Node.js**: Version 22.20.0
+- **Node.js**: Version 24
 - **Package Manager**: pnpm with Corepack
 - **Editor**: VSCode configuration included
 - **Git**: Main branch, proper ignore files
