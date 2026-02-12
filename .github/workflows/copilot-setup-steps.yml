@@ -1,0 +1,67 @@
+# GitHub Copilot Coding Agent Setup Workflow
+# This workflow sets up the development environment for GitHub Copilot Coding Agent
+# in an ephemeral development environment.
+#
+# For more information, see:
+# https://docs.github.com/ja/copilot/how-tos/use-copilot-agents/coding-agent/customize-the-agent-environment
+
+name: Copilot Setup Steps
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/copilot-setup-steps.yml'
+
+permissions:
+  contents: read
+
+env:
+  # renovate: datasource=npm depName=corepack
+  COREPACK_VERSION: 0.34.6
+  # renovate: datasource=node-version depName=node
+  NODE_VERSION: 24.13.0
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Enable Corepack
+        run: |
+          npm install -g corepack@${COREPACK_VERSION}
+          corepack enable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          cache: pnpm
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Start Supabase local stack
+        run: npx supabase start
+
+      - name: Run database migrations
+        run: npx supabase db reset --local
+
+      - name: Verify environment
+        run: |
+          echo "Biome version:"
+          pnpm exec biome --version
+          echo ""
+          echo "Turbo version:"
+          pnpm exec turbo --version
+          echo ""
+          echo "Node.js version:"
+          node --version
+          echo ""
+          echo "pnpm version:"
+          pnpm --version
+          echo ""
+          echo "Supabase status:"
+          npx supabase status
