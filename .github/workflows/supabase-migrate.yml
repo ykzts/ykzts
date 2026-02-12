@@ -1,0 +1,147 @@
+name: Supabase Migration
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - 'supabase/migrations/**'
+      - '.github/workflows/supabase-migrate.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/**'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  # renovate: datasource=github-releases depName=supabase/cli
+  SUPABASE_VERSION: 2.75.0
+
+# Prevent concurrent migrations to the same environment
+concurrency:
+  group: supabase-migration-${{ github.event_name == 'push' && 'production' || format('pr-{0}', github.event.pull_request.number) }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Validate migrations locally
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@b60b5899c73b63a2d2d651b1e90db8d4c9392f51 # v1.6.0
+        with:
+          version: ${{ env.SUPABASE_VERSION }}
+
+      - name: Start Supabase local server and apply migrations
+        id: migrate
+        run: |
+          set -o pipefail
+          # Start local Supabase (automatically applies migrations)
+          echo "Starting local Supabase and applying migrations..."
+          if supabase start 2>&1 | tee migration-output.txt; then
+            echo "migration_success=true" >> $GITHUB_OUTPUT
+          else
+            echo "migration_success=false" >> $GITHUB_OUTPUT
+          fi
+          
+          # Save truncated output for PR comment (last 100 lines to avoid "Argument list too long" error)
+          echo 'MIGRATION_OUTPUT<<EOF' >> $GITHUB_ENV
+          tail -n 100 migration-output.txt >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      - name: Comment on PR
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const migrationSuccess = ${{ steps.migrate.outputs.migration_success }};
+            const migrationOutput = process.env.MIGRATION_OUTPUT;
+            
+            const body = `## 🔍 Supabase Migration Validation Results
+            
+            ${migrationSuccess ? '✅ Migrations applied successfully to local Supabase' : '❌ Migration validation failed'}
+            
+            <details>
+            <summary>View migration output (last 100 lines)</summary>
+            
+            \`\`\`
+            ${migrationOutput}
+            \`\`\`
+            
+            </details>
+            
+            ${migrationSuccess ? 
+              '> ✨ Migrations validated locally. They will be applied to production after merging.' : 
+              '> ⚠️ Please review and fix the migration errors before merging.'
+            }
+            `;
+            
+            // Find existing comment (with pagination)
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('🔍 Supabase Migration Validation Results')
+            );
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body,
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body,
+              });
+            }
+
+      - name: Fail if migration failed
+        if: steps.migrate.outputs.migration_success != 'true'
+        run: |
+          echo "Migration validation failed. Please fix the migration errors."
+          exit 1
+
+  deploy:
+    name: Apply migration to production
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@b60b5899c73b63a2d2d651b1e90db8d4c9392f51 # v1.6.0
+        with:
+          version: ${{ env.SUPABASE_VERSION }}
+
+      - name: Apply migrations
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: |
+          # Link to production project
+          supabase link --project-ref "$SUPABASE_PROJECT_REF"
+          
+          # Apply migrations (idempotent - skips already applied migrations)
+          echo "Applying migrations to production..."
+          supabase db push
+          
+          echo "✅ Migrations applied successfully!"

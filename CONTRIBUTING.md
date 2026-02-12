@@ -218,10 +218,161 @@ All pull requests must pass the following automated checks:
 2. **Type Generation**: `pnpm typegen`
 3. **Tests**: `pnpm test`
 4. **Validation**: `pnpm validate`
+5. **Supabase Migration Dry-run**: Automatic check for migration changes
 
 These checks run automatically on:
 - Pull request creation and updates
 - Pushes to the main branch
+
+## Supabase Database Migrations
+
+This project uses Supabase for content management and automatically applies database migrations through GitHub Actions.
+
+### Migration Workflow
+
+#### 1. Creating New Migrations
+
+Migrations are stored in `supabase/migrations/` directory with timestamp-based naming:
+
+```bash
+# Example migration filename
+20260211055148_add_blog_schema.sql
+```
+
+**Best Practices:**
+- Use descriptive names that explain what the migration does
+- Test migrations locally before committing
+- Keep migrations focused on a single logical change
+- Include both schema changes and necessary data migrations
+
+#### 2. Pull Request Stage (Local Validation)
+
+When you create or update a PR with migration changes:
+
+1. **Automatic Local Validation**: GitHub Actions starts a local Supabase instance and applies migrations
+   - Validates SQL syntax and schema changes
+   - Checks for conflicts and errors in a safe local environment
+   - Runs on `ubuntu-24.04` (requires Docker for local Supabase)
+   - **Works for external contributors**: No secrets required, uses local Supabase
+
+2. **PR Comment**: Results are posted as a comment on your PR
+   - ✅ Success: Migration validated successfully
+   - ❌ Failure: Review and fix errors before merging
+
+3. **Review Output**: Check the validation output in the PR comment
+   - Review schema changes
+   - Verify expected tables/columns are created
+   - Ensure no unintended side effects
+
+#### 3. Production Deployment (After Merge)
+
+When your PR is merged to the `main` branch:
+
+1. **Automatic Application**: GitHub Actions applies migrations to production
+   - Runs `supabase db push` on `ubuntu-24.04` (more stable)
+   - Uses `concurrency` to prevent simultaneous migrations
+   - Protected by GitHub `production` environment
+
+2. **Idempotent Operations**: Already applied migrations are automatically skipped
+   - Supabase CLI tracks migration history
+   - Safe to re-run migrations
+
+3. **Verification**: Check workflow logs to confirm successful application
+
+#### 4. Rollback Procedures
+
+If you need to rollback a migration:
+
+1. **Manual Rollback via Supabase Dashboard**:
+   - Log into [Supabase Dashboard](https://supabase.com/dashboard)
+   - Navigate to SQL Editor
+   - Write and execute rollback SQL manually
+
+2. **Create Revert Migration** (Recommended):
+   - Create a new migration file that reverts the changes
+   - Follow the normal PR workflow
+   - Automatic dry-run validation before production
+
+**Note**: Automated rollbacks are not implemented to prevent accidental data loss.
+
+### Required GitHub Secrets
+
+The migration workflow requires the following secrets for **production deployment only**:
+
+- `SUPABASE_ACCESS_TOKEN`: Personal access token from Supabase Dashboard
+  - Generated at: Settings → Access Tokens
+  - **Important**: Requires manual renewal (OIDC not supported)
+  - **Used for**: Production deployment only (not required for PR validation)
+  
+- `SUPABASE_PROJECT_REF`: Your Supabase project reference ID
+  - Found in: Project Settings → General → Project URL
+  - Format: `abcdefghijklmnopqrst`
+  - **Used for**: Production deployment only
+
+**Note**: PR validation uses local Supabase and does not require any secrets, making it safe for external contributors.
+
+### Local Development
+
+To test migrations locally:
+
+```bash
+# Start local Supabase
+supabase start
+
+# Reset and reapply all migrations locally
+supabase db reset
+
+# Generate TypeScript types
+pnpm typegen
+```
+
+**Note**: `supabase db reset` recreates the local database and reapplies all migrations. If you only want to apply pending migrations without resetting data, use `supabase migration up` instead.
+
+### Migration File Structure
+
+Example migration file:
+
+```sql
+-- Add user profile fields for enhanced user information
+-- Author: @ykzts
+-- Date: 2026-02-08
+
+-- Create new table
+CREATE TABLE IF NOT EXISTS table_name (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Create indexes
+CREATE INDEX IF NOT EXISTS idx_name ON table_name(column_name);
+
+-- Enable Row Level Security
+ALTER TABLE table_name ENABLE ROW LEVEL SECURITY;
+
+-- Create RLS policies
+CREATE POLICY "policy_name" ON table_name
+  FOR SELECT
+  USING (true);
+```
+
+
+### Troubleshooting
+
+**Migration validation fails in PR:**
+- Review the error message in the PR comment
+- Fix SQL syntax errors or schema conflicts
+- Test locally with `supabase start` to reproduce the issue
+- Push fixes to your PR branch
+
+**Production deployment fails:**
+- Check GitHub Actions logs for error details
+- Verify secrets are correctly configured (`SUPABASE_ACCESS_TOKEN`, `SUPABASE_PROJECT_REF`)
+- Ensure no manual changes conflict with migration
+- Contact @ykzts if issues persist
+
+**Type generation out of sync:**
+- Run `pnpm typegen` after applying migrations
+- Commit updated type files in `packages/supabase/`
 
 ## Issue Reporting
 
