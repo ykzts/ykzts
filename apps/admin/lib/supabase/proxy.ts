@@ -38,14 +38,14 @@ export async function updateSession(request: NextRequest) {
     data: { user }
   } = await supabase.auth.getUser()
 
-  // Protect /admin routes - redirect to /admin/login if not authenticated
+  // Protect / routes - redirect to /login if not authenticated
   if (
     !user &&
-    request.nextUrl.pathname !== '/admin/login' &&
-    !request.nextUrl.pathname.startsWith('/admin/auth/callback')
+    request.nextUrl.pathname !== '/login' &&
+    !request.nextUrl.pathname.startsWith('/auth/callback')
   ) {
     const redirectResponse = NextResponse.redirect(
-      new URL('/admin/login', request.url)
+      new URL('/login', request.url)
     )
     // Copy auth cookies from the original response to preserve token refresh
     for (const cookie of response.cookies.getAll()) {
@@ -54,11 +54,9 @@ export async function updateSession(request: NextRequest) {
     return redirectResponse
   }
 
-  // Redirect to /admin if already authenticated and trying to access login page
-  if (user && request.nextUrl.pathname === '/admin/login') {
-    const redirectResponse = NextResponse.redirect(
-      new URL('/admin', request.url)
-    )
+  // Redirect to / if already authenticated and trying to access login page
+  if (user && request.nextUrl.pathname === '/login') {
+    const redirectResponse = NextResponse.redirect(new URL('/', request.url))
     // Copy auth cookies from the original response to preserve session
     for (const cookie of response.cookies.getAll()) {
       redirectResponse.cookies.set(cookie)

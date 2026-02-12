@@ -1,0 +1,50 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+@source '../node_modules/@ykzts/ui';
+
+@theme {
+  --font-sans:
+    var(--font-inter), var(--font-noto-sans-jp), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-heading:
+    var(--font-inter), var(--font-noto-sans-jp), system-ui, sans-serif;
+
+  --color-background: #fafafa;
+  --color-foreground: #1a1a2e;
+  --color-card: #fff;
+  --color-card-foreground: #1a1a2e;
+  --color-popover: #fff;
+  --color-popover-foreground: #1a1a2e;
+  --color-primary: #2563eb;
+  --color-primary-foreground: #fff;
+  --color-secondary: #f3f4f6;
+  --color-secondary-foreground: #1a1a2e;
+  --color-muted: #f3f4f6;
+  --color-muted-foreground: #5a6270;
+  --color-accent: #f3f4f6;
+  --color-accent-foreground: #1a1a2e;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #fff;
+  --color-border: #e2e5e9;
+  --color-input: #e2e5e9;
+  --color-ring: #2563eb;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  a:not([class], :is(.prose *)) {
+    @apply text-primary border-b border-primary/30 transition-all duration-200 ease-in-out hover:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary;
+  }
+
+  ::selection {
+    @apply bg-primary/20 text-foreground;
+  }
+}

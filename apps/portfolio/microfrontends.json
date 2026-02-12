@@ -1,16 +1,16 @@
 {
   "$schema": "https://openapi.vercel.sh/microfrontends.json",
   "applications": {
-    "admin": {
+    "blog": {
       "development": {
-        "fallback": "ykzts-admin.vercel.app",
-        "local": 3001
+        "fallback": "ykzts.com",
+        "local": 3002
       },
-      "packageName": "@ykzts/admin",
+      "packageName": "@ykzts/blog",
       "routing": [
         {
-          "group": "admin",
-          "paths": ["/admin", "/admin/:path*"]
+          "group": "blog",
+          "paths": ["/blog", "/blog/:path*"]
         }
       ]
     },
