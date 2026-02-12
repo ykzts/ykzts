@@ -1,5 +1,7 @@
 import { getPostsForFeed } from '@/lib/supabase/posts'
 
+const MAX_EXCERPT_LENGTH = 150
+
 export async function GET() {
   const posts = await getPostsForFeed(20)
 
@@ -12,9 +14,9 @@ export async function GET() {
   const atomXml = `<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>ykzts.com/blog</title>
-  <link href="${baseUrl}" />
-  <link href="${baseUrl}/atom.xml" rel="self" />
-  <id>${baseUrl}/</id>
+  <link href="${escapeXml(baseUrl)}" />
+  <link href="${escapeXml(`${baseUrl}/atom.xml`)}" rel="self" />
+  <id>${escapeXml(`${baseUrl}/`)}</id>
   <updated>${feedUpdated}</updated>
   <author>
     <name>Yamagishi Kazutoshi</name>
@@ -29,14 +31,18 @@ ${posts
     const postUrl = `${baseUrl}/${year}/${month}/${day}/${post.slug}`
     const title = post.title || 'Untitled'
     const summary = post.excerpt || ''
+    const truncatedSummary =
+      summary.length > MAX_EXCERPT_LENGTH
+        ? `${summary.slice(0, MAX_EXCERPT_LENGTH)}...`
+        : summary
 
     return `  <entry>
     <title>${escapeXml(title)}</title>
-    <link href="${postUrl}" />
-    <id>${postUrl}</id>
+    <link href="${escapeXml(postUrl)}" />
+    <id>${escapeXml(postUrl)}</id>
     <published>${new Date(post.published_at).toISOString()}</published>
     <updated>${new Date(post.updated_at).toISOString()}</updated>
-    <summary>${escapeXml(summary)}</summary>
+    <summary>${escapeXml(truncatedSummary)}</summary>
   </entry>`
   })
   .join('\n')}

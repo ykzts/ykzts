@@ -8,6 +8,8 @@ export const size = {
 }
 export const contentType = 'image/png'
 
+const MAX_EXCERPT_LENGTH = 150
+
 type Props = {
   params: Promise<{
     year: string
@@ -81,8 +83,8 @@ export default async function Image({ params }: Props) {
               lineHeight: 1.5
             }}
           >
-            {post.excerpt.slice(0, 150)}
-            {post.excerpt.length > 150 ? '...' : ''}
+            {post.excerpt.slice(0, MAX_EXCERPT_LENGTH)}
+            {post.excerpt.length > MAX_EXCERPT_LENGTH ? '...' : ''}
           </div>
         )}
       </div>
