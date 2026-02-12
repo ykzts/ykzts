@@ -1,14 +1,11 @@
 'use client'
 
 import { Button } from '@ykzts/ui/components/button'
-import { Input } from '@ykzts/ui/components/input'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
 
 export function PostsFilters() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [search, setSearch] = useState(searchParams.get('search') || '')
   const currentStatus = searchParams.get('status') || 'all'
 
   const handleStatusFilter = (status: string) => {
@@ -22,24 +19,11 @@ export function PostsFilters() {
     router.push(`/admin/posts?${params.toString()}`)
   }
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    const params = new URLSearchParams(searchParams.toString())
-    if (search.trim()) {
-      params.set('search', search.trim())
-    } else {
-      params.delete('search')
-    }
-    params.delete('page') // Reset to page 1 when searching
-    router.push(`/admin/posts?${params.toString()}`)
-  }
-
   const handleClearFilters = () => {
-    setSearch('')
     router.push('/admin/posts')
   }
 
-  const hasFilters = searchParams.has('search') || searchParams.has('status')
+  const hasFilters = searchParams.has('status')
 
   return (
     <div className="mb-6 space-y-4">
@@ -72,22 +56,12 @@ export function PostsFilters() {
         >
           公開
         </Button>
-      </div>
-
-      <form className="flex gap-2" onSubmit={handleSearch}>
-        <Input
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="抜粋で検索..."
-          type="text"
-          value={search}
-        />
-        <Button type="submit">検索</Button>
         {hasFilters && (
-          <Button onClick={handleClearFilters} type="button" variant="outline">
+          <Button onClick={handleClearFilters} size="sm" variant="outline">
             クリア
           </Button>
         )}
-      </form>
+      </div>
     </div>
   )
 }
