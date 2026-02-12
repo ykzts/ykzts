@@ -1,8 +1,8 @@
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock, TypedObject } from '@portabletext/types'
 
 export type PortableTextValue = PortableTextBlock[]
 
-export interface CodeBlock extends PortableTextBlock {
+export interface CodeBlock extends TypedObject {
   _type: 'code'
   code: string
   language?: string

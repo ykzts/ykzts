@@ -8,7 +8,17 @@ const POSTS_PER_PAGE = 10
 export async function getPosts(page = 1) {
   cacheTag('posts')
 
-  const offset = (page - 1) * POSTS_PER_PAGE
+  if (!supabase) {
+    throw new Error(
+      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
+    )
+  }
+
+  const safePage =
+    typeof page === 'number' && Number.isFinite(page)
+      ? Math.max(1, Math.floor(page))
+      : 1
+  const offset = (safePage - 1) * POSTS_PER_PAGE
 
   const { data, error } = await supabase
     .from('posts')
@@ -49,6 +59,12 @@ export async function getPosts(page = 1) {
 
 export async function getPostBySlug(slug: string) {
   cacheTag('posts')
+
+  if (!supabase) {
+    throw new Error(
+      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
+    )
+  }
 
   const { data, error } = await supabase
     .from('posts')
@@ -94,7 +110,17 @@ export async function getPostBySlug(slug: string) {
 export async function getPostsByTag(tag: string, page = 1) {
   cacheTag('posts')
 
-  const offset = (page - 1) * POSTS_PER_PAGE
+  if (!supabase) {
+    throw new Error(
+      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
+    )
+  }
+
+  const safePage =
+    typeof page === 'number' && Number.isFinite(page)
+      ? Math.max(1, Math.floor(page))
+      : 1
+  const offset = (safePage - 1) * POSTS_PER_PAGE
 
   const { data, error } = await supabase
     .from('posts')
@@ -137,6 +163,12 @@ export async function getPostsByTag(tag: string, page = 1) {
 export async function getAllTags() {
   cacheTag('posts')
 
+  if (!supabase) {
+    throw new Error(
+      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
+    )
+  }
+
   const { data, error } = await supabase
     .from('posts')
     .select('tags')
@@ -156,6 +188,12 @@ export async function getAllTags() {
 
 export async function getAllPosts() {
   cacheTag('posts')
+
+  if (!supabase) {
+    throw new Error(
+      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
+    )
+  }
 
   const { data, error } = await supabase
     .from('posts')
