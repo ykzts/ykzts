@@ -33,7 +33,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params
 }: PageProps): Promise<Metadata> {
-  const { slug } = await params
+  const { year, month, day, slug } = await params
   const post = await getPostBySlug(slug)
 
   if (!post) {
@@ -48,7 +48,7 @@ export async function generateMetadata({
       description: post.excerpt || undefined,
       title: post.title || 'Untitled',
       type: 'article',
-      url: `https://ykzts.com/blog/${params}`
+      url: `https://ykzts.com/blog/${year}/${month}/${day}/${slug}`
     },
     title: post.title || 'Untitled'
   }
