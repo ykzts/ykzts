@@ -205,7 +205,7 @@ export function PostForm() {
               setShowPublishedAt(value === 'scheduled' || value === 'published')
             }}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full" id="status">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
