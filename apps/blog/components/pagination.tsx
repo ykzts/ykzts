@@ -12,7 +12,7 @@ type PaginationProps = {
 export default function Pagination({
   currentPage,
   totalPages,
-  baseUrl = '/page'
+  baseUrl = '/blog/page'
 }: PaginationProps) {
   if (totalPages <= 1) {
     return null
@@ -22,7 +22,7 @@ export default function Pagination({
   const nextPage = currentPage < totalPages ? currentPage + 1 : null
 
   const prevUrl =
-    prevPage === 1 ? ('/' as Route) : (`${baseUrl}/${prevPage}` as Route)
+    prevPage === 1 ? ('/blog' as Route) : (`${baseUrl}/${prevPage}` as Route)
   const nextUrl = nextPage ? (`${baseUrl}/${nextPage}` as Route) : null
 
   return (

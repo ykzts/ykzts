@@ -43,7 +43,7 @@ export default async function PaginationPage({ params }: PageProps) {
 
   // Redirect page 1 to home
   if (pageNum === 1) {
-    redirect('/')
+    redirect('/blog')
   }
 
   const totalPages = await getTotalPages()

@@ -29,7 +29,7 @@ function getDateBasedUrl(slug: string, publishedAt: string): Route {
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
 
-  return `/${year}/${month}/${day}/${slug}` as Route
+  return `/blog/${year}/${month}/${day}/${slug}` as Route
 }
 
 export default function PostCard({ post }: PostCardProps) {

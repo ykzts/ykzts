@@ -17,6 +17,11 @@ type PageProps = {
 export async function generateStaticParams() {
   const tags = await getAllTags()
 
+  // Return a dummy tag if no tags exist to satisfy Next.js Cache Components requirement
+  if (tags.length === 0) {
+    return [{ tag: '_placeholder' }]
+  }
+
   return tags.map((tag) => ({
     tag
   }))
@@ -60,7 +65,7 @@ export default async function TagArchivePage({ params }: PageProps) {
         {totalPages > 1 && (
           <div className="mt-8">
             <Pagination
-              baseUrl={`/tags/${tag}/page`}
+              baseUrl={`/blog/tags/${tag}/page`}
               currentPage={1}
               totalPages={totalPages}
             />
