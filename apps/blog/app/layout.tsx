@@ -1,13 +1,13 @@
 import './globals.css'
+import { cn } from '@ykzts/ui/lib/utils'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
-import { twMerge } from 'tailwind-merge'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://ykzts.com/blog'),
+  metadataBase: new URL('https://ykzts.com'),
   title: {
-    default: 'ykzts.blog',
-    template: '%s | ykzts.blog'
+    default: 'ykzts.com/blog',
+    template: '%s | ykzts.com/blog'
   }
 }
 
@@ -43,7 +43,7 @@ export default function RootLayout({
 }) {
   return (
     <html
-      className={twMerge(
+      className={cn(
         'scroll-smooth antialiased',
         inter.variable,
         jetBrainsMono.variable,

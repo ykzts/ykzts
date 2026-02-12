@@ -3,10 +3,10 @@ import { withMicrofrontends } from '@vercel/microfrontends/next/config'
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  basePath: '/blog',
   cacheComponents: true,
   experimental: {
-    turbopackFileSystemCacheForDev: true
+    turbopackFileSystemCacheForDev: true,
+    turbopackUseSystemTlsCerts: true
   },
   reactCompiler: true,
   reactStrictMode: true,
