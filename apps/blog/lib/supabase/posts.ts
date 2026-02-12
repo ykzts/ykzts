@@ -9,9 +9,8 @@ export async function getPosts(page = 1) {
   cacheTag('posts')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    // Return empty array when Supabase is not configured (e.g., during build without env vars)
+    return []
   }
 
   const safePage =
@@ -61,9 +60,8 @@ export async function getPostBySlug(slug: string) {
   cacheTag('posts')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    // Return null when Supabase is not configured (e.g., during build without env vars)
+    return null
   }
 
   const { data, error } = await supabase
@@ -111,9 +109,8 @@ export async function getPostsByTag(tag: string, page = 1) {
   cacheTag('posts')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    // Return empty array when Supabase is not configured (e.g., during build without env vars)
+    return []
   }
 
   const safePage =
@@ -164,9 +161,8 @@ export async function getAllTags() {
   cacheTag('posts')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    // Return empty array when Supabase is not configured (e.g., during build without env vars)
+    return []
   }
 
   const { data, error } = await supabase
@@ -190,9 +186,8 @@ export async function getAllPosts() {
   cacheTag('posts')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    // Return empty array when Supabase is not configured (e.g., during build without env vars)
+    return []
   }
 
   const { data, error } = await supabase
@@ -218,9 +213,8 @@ export async function getTotalPostCount() {
   cacheTag('posts')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    // Return 0 when Supabase is not configured (e.g., during build without env vars)
+    return 0
   }
 
   const { count, error } = await supabase
@@ -245,9 +239,8 @@ export async function getPostCountByTag(tag: string) {
   cacheTag('posts')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    // Return 0 when Supabase is not configured (e.g., during build without env vars)
+    return 0
   }
 
   const { count, error } = await supabase

@@ -1,11 +1,7 @@
-'use cache'
-
 import { cacheTag } from 'next/cache'
 import { getAllPosts, getPostBySlug } from '@/lib/supabase/posts'
 
 export async function GET() {
-  cacheTag('posts')
-
   const posts = await getAllPosts()
 
   // Fetch full post details for feed entries

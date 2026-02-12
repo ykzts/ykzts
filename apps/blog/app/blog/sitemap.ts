@@ -1,12 +1,7 @@
-'use cache'
-
-import { cacheTag } from 'next/cache'
 import type { MetadataRoute } from 'next'
 import { getAllPosts, getAllTags } from '@/lib/supabase/posts'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  cacheTag('posts')
-
   const posts = await getAllPosts()
   const tags = await getAllTags()
 
