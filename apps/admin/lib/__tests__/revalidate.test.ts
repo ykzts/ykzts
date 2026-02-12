@@ -110,7 +110,7 @@ describe('invalidateCaches', () => {
     )
   })
 
-  it('should handle fetch errors gracefully using Promise.allSettled', async () => {
+  it('should handle fetch errors gracefully', async () => {
     process.env.REVALIDATE_SECRET = 'test-secret'
     process.env.REVALIDATE_URLS = 'https://example.blog/api/blog/revalidate'
     vi.mocked(fetch).mockRejectedValue(new Error('Network error'))
@@ -192,5 +192,20 @@ describe('invalidateCaches', () => {
         signal: expect.any(AbortSignal)
       })
     )
+  })
+
+  it('should handle invalid URLs gracefully', async () => {
+    process.env.REVALIDATE_SECRET = 'test-secret'
+    process.env.REVALIDATE_URLS = 'not-a-valid-url'
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    await invalidateCaches('posts')
+
+    expect(fetch).not.toHaveBeenCalled()
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'Invalid revalidation URL: not-a-valid-url'
+    )
+
+    consoleSpy.mockRestore()
   })
 })

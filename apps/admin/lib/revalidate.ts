@@ -34,7 +34,17 @@ export async function invalidateCaches(tag: string): Promise<void> {
 
   // Create requests with timeout and proper URL construction
   const requests = urls.map((baseUrl) => {
-    const requestUrl = new URL(baseUrl).toString()
+    let requestUrl: string
+    try {
+      requestUrl = new URL(baseUrl).toString()
+    } catch {
+      console.error(`Invalid revalidation URL: ${baseUrl}`)
+      return Promise.resolve({
+        error: new Error(`Invalid URL: ${baseUrl}`),
+        ok: false as const,
+        url: baseUrl
+      })
+    }
     return fetch(requestUrl, {
       body: JSON.stringify({ tag }),
       headers: {
