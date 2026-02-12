@@ -9,7 +9,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: 'Invalid secret' }, { status: 401 })
   }
 
-  const { tag } = await request.json()
+  let tag: unknown
+
+  try {
+    const body = await request.json()
+    tag = (body as { tag?: unknown }).tag
+  } catch {
+    return NextResponse.json({ message: 'Invalid JSON body' }, { status: 400 })
+  }
 
   if (!tag || typeof tag !== 'string') {
     return NextResponse.json({ message: 'Invalid tag' }, { status: 400 })

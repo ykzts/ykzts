@@ -10,7 +10,7 @@
       "routing": [
         {
           "group": "blog",
-          "paths": ["/blog", "/blog/:path*"]
+          "paths": ["/blog", "/blog/:path*", "/api/blog/:path*"]
         }
       ]
     },

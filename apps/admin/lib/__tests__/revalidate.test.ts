@@ -36,87 +36,83 @@ describe('invalidateCaches', () => {
     consoleSpy.mockRestore()
   })
 
-  it('should skip cache invalidation when BLOG_URL and PORTFOLIO_URL are not configured', async () => {
+  it('should skip cache invalidation when REVALIDATE_URLS is not configured', async () => {
     process.env.REVALIDATE_SECRET = 'test-secret'
-    delete process.env.BLOG_URL
-    delete process.env.PORTFOLIO_URL
+    delete process.env.REVALIDATE_URLS
     const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
 
     await invalidateCaches('posts')
 
     expect(fetch).not.toHaveBeenCalled()
     expect(consoleSpy).toHaveBeenCalledWith(
-      'BLOG_URL and PORTFOLIO_URL not configured, skipping cache invalidation'
+      'REVALIDATE_URLS not configured, skipping cache invalidation'
     )
 
     consoleSpy.mockRestore()
   })
 
-  it('should call revalidation endpoint for blog when BLOG_URL is configured', async () => {
+  it('should skip cache invalidation when REVALIDATE_URLS is empty', async () => {
     process.env.REVALIDATE_SECRET = 'test-secret'
-    process.env.BLOG_URL = 'https://example.blog'
-    delete process.env.PORTFOLIO_URL
+    process.env.REVALIDATE_URLS = '  ,  , '
+    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+    await invalidateCaches('posts')
+
+    expect(fetch).not.toHaveBeenCalled()
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'No valid URLs in REVALIDATE_URLS, skipping cache invalidation'
+    )
+
+    consoleSpy.mockRestore()
+  })
+
+  it('should call revalidation endpoint for a single URL', async () => {
+    process.env.REVALIDATE_SECRET = 'test-secret'
+    process.env.REVALIDATE_URLS = 'https://example.blog/api/blog/revalidate'
 
     await invalidateCaches('posts')
 
     expect(fetch).toHaveBeenCalledTimes(1)
-    expect(fetch).toHaveBeenCalledWith('https://example.blog/api/revalidate', {
-      body: JSON.stringify({ tag: 'posts' }),
-      headers: {
-        'content-type': 'application/json',
-        'x-revalidate-secret': 'test-secret'
-      },
-      method: 'POST'
-    })
+    expect(fetch).toHaveBeenCalledWith(
+      'https://example.blog/api/blog/revalidate',
+      expect.objectContaining({
+        body: JSON.stringify({ tag: 'posts' }),
+        headers: {
+          'content-type': 'application/json',
+          'x-revalidate-secret': 'test-secret'
+        },
+        method: 'POST'
+      })
+    )
   })
 
-  it('should call revalidation endpoint for portfolio when PORTFOLIO_URL is configured', async () => {
+  it('should call revalidation endpoints for multiple comma-separated URLs', async () => {
     process.env.REVALIDATE_SECRET = 'test-secret'
-    process.env.PORTFOLIO_URL = 'https://example.com'
-    delete process.env.BLOG_URL
-
-    await invalidateCaches('works')
-
-    expect(fetch).toHaveBeenCalledTimes(1)
-    expect(fetch).toHaveBeenCalledWith('https://example.com/api/revalidate', {
-      body: JSON.stringify({ tag: 'works' }),
-      headers: {
-        'content-type': 'application/json',
-        'x-revalidate-secret': 'test-secret'
-      },
-      method: 'POST'
-    })
-  })
-
-  it('should call revalidation endpoints for both blog and portfolio', async () => {
-    process.env.REVALIDATE_SECRET = 'test-secret'
-    process.env.BLOG_URL = 'https://example.blog'
-    process.env.PORTFOLIO_URL = 'https://example.com'
+    process.env.REVALIDATE_URLS =
+      'https://example.blog/api/blog/revalidate,https://example.com/api/revalidate'
 
     await invalidateCaches('posts')
 
     expect(fetch).toHaveBeenCalledTimes(2)
-    expect(fetch).toHaveBeenCalledWith('https://example.blog/api/revalidate', {
-      body: JSON.stringify({ tag: 'posts' }),
-      headers: {
-        'content-type': 'application/json',
-        'x-revalidate-secret': 'test-secret'
-      },
-      method: 'POST'
-    })
-    expect(fetch).toHaveBeenCalledWith('https://example.com/api/revalidate', {
-      body: JSON.stringify({ tag: 'posts' }),
-      headers: {
-        'content-type': 'application/json',
-        'x-revalidate-secret': 'test-secret'
-      },
-      method: 'POST'
-    })
+    expect(fetch).toHaveBeenCalledWith(
+      'https://example.blog/api/blog/revalidate',
+      expect.objectContaining({
+        body: JSON.stringify({ tag: 'posts' }),
+        method: 'POST'
+      })
+    )
+    expect(fetch).toHaveBeenCalledWith(
+      'https://example.com/api/revalidate',
+      expect.objectContaining({
+        body: JSON.stringify({ tag: 'posts' }),
+        method: 'POST'
+      })
+    )
   })
 
-  it('should handle fetch errors gracefully', async () => {
+  it('should handle fetch errors gracefully using Promise.allSettled', async () => {
     process.env.REVALIDATE_SECRET = 'test-secret'
-    process.env.BLOG_URL = 'https://example.blog'
+    process.env.REVALIDATE_URLS = 'https://example.blog/api/blog/revalidate'
     vi.mocked(fetch).mockRejectedValue(new Error('Network error'))
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
@@ -124,7 +120,7 @@ describe('invalidateCaches', () => {
 
     expect(fetch).toHaveBeenCalledTimes(1)
     expect(consoleSpy).toHaveBeenCalledWith(
-      'Cache invalidation network error:',
+      'Cache invalidation network error for https://example.blog/api/blog/revalidate:',
       expect.any(Error)
     )
 
@@ -133,23 +129,21 @@ describe('invalidateCaches', () => {
 
   it('should work with different cache tags', async () => {
     process.env.REVALIDATE_SECRET = 'test-secret'
-    process.env.BLOG_URL = 'https://example.blog'
+    process.env.REVALIDATE_URLS = 'https://example.blog/api/blog/revalidate'
 
     await invalidateCaches('profile')
 
-    expect(fetch).toHaveBeenCalledWith('https://example.blog/api/revalidate', {
-      body: JSON.stringify({ tag: 'profile' }),
-      headers: {
-        'content-type': 'application/json',
-        'x-revalidate-secret': 'test-secret'
-      },
-      method: 'POST'
-    })
+    expect(fetch).toHaveBeenCalledWith(
+      'https://example.blog/api/blog/revalidate',
+      expect.objectContaining({
+        body: JSON.stringify({ tag: 'profile' })
+      })
+    )
   })
 
   it('should log error for failed HTTP responses', async () => {
     process.env.REVALIDATE_SECRET = 'test-secret'
-    process.env.BLOG_URL = 'https://example.blog'
+    process.env.REVALIDATE_URLS = 'https://example.blog/api/blog/revalidate'
     vi.mocked(fetch).mockResolvedValue(
       new Response(JSON.stringify({ message: 'Invalid secret' }), {
         status: 401,
@@ -162,9 +156,41 @@ describe('invalidateCaches', () => {
 
     expect(fetch).toHaveBeenCalledTimes(1)
     expect(consoleSpy).toHaveBeenCalledWith(
-      'Cache invalidation failed for https://example.blog: 401 Unauthorized'
+      'Cache invalidation failed for https://example.blog/api/blog/revalidate: 401 Unauthorized'
     )
 
     consoleSpy.mockRestore()
+  })
+
+  it('should trim whitespace from URLs', async () => {
+    process.env.REVALIDATE_SECRET = 'test-secret'
+    process.env.REVALIDATE_URLS =
+      ' https://example.blog/api/blog/revalidate , https://example.com/api/revalidate '
+
+    await invalidateCaches('posts')
+
+    expect(fetch).toHaveBeenCalledTimes(2)
+    expect(fetch).toHaveBeenCalledWith(
+      'https://example.blog/api/blog/revalidate',
+      expect.any(Object)
+    )
+    expect(fetch).toHaveBeenCalledWith(
+      'https://example.com/api/revalidate',
+      expect.any(Object)
+    )
+  })
+
+  it('should use AbortSignal timeout', async () => {
+    process.env.REVALIDATE_SECRET = 'test-secret'
+    process.env.REVALIDATE_URLS = 'https://example.blog/api/blog/revalidate'
+
+    await invalidateCaches('posts')
+
+    expect(fetch).toHaveBeenCalledWith(
+      'https://example.blog/api/blog/revalidate',
+      expect.objectContaining({
+        signal: expect.any(AbortSignal)
+      })
+    )
   })
 })

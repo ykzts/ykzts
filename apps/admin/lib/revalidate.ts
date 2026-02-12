@@ -13,57 +13,65 @@ export async function invalidateCaches(tag: string): Promise<void> {
     return
   }
 
-  const blogUrl = process.env.BLOG_URL
-  const portfolioUrl = process.env.PORTFOLIO_URL
-
-  const requests: Promise<{ url: string; response: Response }>[] = []
-
-  if (blogUrl) {
-    requests.push(
-      fetch(`${blogUrl}/api/revalidate`, {
-        body: JSON.stringify({ tag }),
-        headers: {
-          'content-type': 'application/json',
-          'x-revalidate-secret': secret
-        },
-        method: 'POST'
-      }).then((response) => ({ response, url: blogUrl }))
-    )
+  const revalidateUrlsEnv = process.env.REVALIDATE_URLS
+  if (!revalidateUrlsEnv) {
+    console.warn('REVALIDATE_URLS not configured, skipping cache invalidation')
+    return
   }
 
-  if (portfolioUrl) {
-    requests.push(
-      fetch(`${portfolioUrl}/api/revalidate`, {
-        body: JSON.stringify({ tag }),
-        headers: {
-          'content-type': 'application/json',
-          'x-revalidate-secret': secret
-        },
-        method: 'POST'
-      }).then((response) => ({ response, url: portfolioUrl }))
-    )
-  }
+  // Parse comma-separated URLs
+  const urls = revalidateUrlsEnv
+    .split(',')
+    .map((url) => url.trim())
+    .filter((url) => url.length > 0)
 
-  if (requests.length === 0) {
+  if (urls.length === 0) {
     console.warn(
-      'BLOG_URL and PORTFOLIO_URL not configured, skipping cache invalidation'
+      'No valid URLs in REVALIDATE_URLS, skipping cache invalidation'
     )
     return
   }
 
-  try {
-    const results = await Promise.all(requests)
+  // Create requests with timeout and proper URL construction
+  const requests = urls.map((baseUrl) => {
+    const requestUrl = new URL(baseUrl).toString()
+    return fetch(requestUrl, {
+      body: JSON.stringify({ tag }),
+      headers: {
+        'content-type': 'application/json',
+        'x-revalidate-secret': secret
+      },
+      method: 'POST',
+      signal: AbortSignal.timeout(5000)
+    })
+      .then(
+        (response) =>
+          ({ ok: true, response, url: requestUrl }) as
+            | { ok: true; response: Response; url: string }
+            | { error: unknown; ok: false; url: string }
+      )
+      .catch(
+        (error) =>
+          ({ error, ok: false, url: requestUrl }) as
+            | { ok: true; response: Response; url: string }
+            | { error: unknown; ok: false; url: string }
+      )
+  })
 
-    // Check for failed requests
-    for (const { response, url } of results) {
-      if (!response.ok) {
-        console.error(
-          `Cache invalidation failed for ${url}: ${response.status} ${response.statusText}`
-        )
-      }
+  // Wait for all requests to complete
+  const results = await Promise.all(requests)
+
+  // Log any failures
+  for (const result of results) {
+    if (!result.ok) {
+      console.error(
+        `Cache invalidation network error for ${result.url}:`,
+        result.error
+      )
+    } else if (!result.response.ok) {
+      console.error(
+        `Cache invalidation failed for ${result.url}: ${result.response.status} ${result.response.statusText}`
+      )
     }
-  } catch (error) {
-    // Log but don't fail the action if cache invalidation fails
-    console.error('Cache invalidation network error:', error)
   }
 }
