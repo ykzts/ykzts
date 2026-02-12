@@ -35,11 +35,6 @@ export async function highlightCode(
       ? (language as BundledLanguage)
       : 'plaintext'
 
-  // Load language if not already loaded
-  if (lang !== 'plaintext' && !hl.getLoadedLanguages().includes(lang)) {
-    await hl.loadLanguage(lang)
-  }
-
   return hl.codeToHtml(code, {
     lang,
     themes: {
