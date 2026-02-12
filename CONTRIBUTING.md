@@ -30,8 +30,8 @@ This is a pnpm workspace monorepo with the following structure:
 
 ### Prerequisites
 
-- **Node.js**: Version 22.20.0 (check with `node --version`)
-- **Corepack**: Install with `npm install -g corepack@0.34.0`
+- **Node.js**: Version 24.13.0 (check with `node --version`)
+- **Corepack**: Install with `npm install -g corepack@0.34.6`
 - **Docker**: Required for Supabase local development (admin and portfolio apps)
 
 ### Getting Started
