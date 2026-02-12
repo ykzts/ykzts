@@ -3,7 +3,6 @@ import {
   type PortableTextMarkComponentProps,
   type PortableTextReactComponents
 } from '@portabletext/react'
-import Link from 'next/link'
 import type { ComponentProps } from 'react'
 import type { CodeBlock, PortableTextValue } from '@/lib/portable-text'
 import { highlightCode } from '@/lib/shiki'
@@ -23,15 +22,14 @@ const portableTextComponents = {
       const isExternal =
         href.startsWith('http://') || href.startsWith('https://')
 
-      if (isExternal) {
-        return (
-          <a href={href} rel="noopener noreferrer" target="_blank">
-            {children}
-          </a>
-        )
-      }
+      const rel = isExternal ? 'noopener noreferrer' : undefined
+      const target = isExternal ? '_blank' : undefined
 
-      return <Link href={href}>{children}</Link>
+      return (
+        <a href={href} rel={rel} target={target}>
+          {children}
+        </a>
+      )
     }
   },
   types: {
