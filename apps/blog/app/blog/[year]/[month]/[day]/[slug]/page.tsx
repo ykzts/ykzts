@@ -19,6 +19,18 @@ type PageProps = {
 export async function generateStaticParams() {
   const posts = await getAllPosts()
 
+  // Return placeholder if no posts to satisfy Next.js Cache Components requirement
+  if (posts.length === 0) {
+    return [
+      {
+        day: '01',
+        month: '01',
+        slug: '_placeholder',
+        year: '2024'
+      }
+    ]
+  }
+
   return posts.map((post) => {
     const date = new Date(post.published_at)
     return {
