@@ -21,27 +21,22 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-    env:
-      # renovate: datasource=npm depName=corepack
-      COREPACK_VERSION: 0.34.6
-      # renovate: datasource=node-version depName=node
-      NODE_VERSION: 24.13.0
-      # renovate: datasource=github-releases depName=supabase/cli
-      SUPABASE_VERSION: 2.75.0
     steps:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Enable Corepack
         run: |
-          npm install -g corepack@${COREPACK_VERSION}
+          # renovate: datasource=npm depName=corepack
+          npm install -g corepack@0.34.6
           corepack enable
 
       - name: Setup Node.js
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           cache: pnpm
-          node-version: ${{ env.NODE_VERSION }}
+          # renovate: datasource=node-version depName=node
+          node-version: 24.13.0
 
       - name: Install dependencies
         run: pnpm install
@@ -49,7 +44,8 @@ jobs:
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@b60b5899c73b63a2d2d651b1e90db8d4c9392f51 # v1.6.0
         with:
-          version: ${{ env.SUPABASE_VERSION }}
+          # renovate: datasource=github-releases depName=supabase/cli
+          version: 2.75.0
 
       - name: Start Supabase local stack
         run: supabase start
