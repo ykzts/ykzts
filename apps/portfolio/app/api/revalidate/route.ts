@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: 'Invalid tag' }, { status: 400 })
   }
 
-  revalidateTag(tag)
+  revalidateTag(tag, 'max')
 
   return NextResponse.json({ now: Date.now(), revalidated: true })
 }
