@@ -46,9 +46,6 @@ jobs:
       - name: Start Supabase local stack
         run: npx supabase start
 
-      - name: Run database migrations
-        run: npx supabase db reset --local
-
       - name: Verify environment
         run: |
           echo "Biome version:"
