@@ -49,9 +49,9 @@ jobs:
             echo "migration_success=false" >> $GITHUB_OUTPUT
           fi
           
-          # Save output for PR comment
+          # Save truncated output for PR comment (last 100 lines to avoid "Argument list too long" error)
           echo 'MIGRATION_OUTPUT<<EOF' >> $GITHUB_ENV
-          cat migration-output.txt >> $GITHUB_ENV
+          tail -n 100 migration-output.txt >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
       - name: Comment on PR
@@ -66,7 +66,7 @@ jobs:
             ${migrationSuccess ? '✅ Migrations applied successfully to local Supabase' : '❌ Migration validation failed'}
             
             <details>
-            <summary>View migration output</summary>
+            <summary>View migration output (last 100 lines)</summary>
             
             \`\`\`
             ${migrationOutput}
