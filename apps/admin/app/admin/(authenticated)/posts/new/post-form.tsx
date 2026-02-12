@@ -18,7 +18,6 @@ export function PostForm() {
 
   const [title, setTitle] = useState('')
   const [slug, setSlug] = useState('')
-  const [autoSlug, setAutoSlug] = useState(true)
   const [tags, setTags] = useState<string[]>([])
   const [tagInput, setTagInput] = useState('')
   const [status, setStatus] = useState<string>('draft')
@@ -86,26 +85,20 @@ export function PostForm() {
               name="slug"
               onChange={(e) => setSlug(e.target.value)}
               placeholder="url-friendly-slug"
-              readOnly={autoSlug}
               required
               type="text"
               value={slug}
             />
             <Button
-              onClick={() => {
-                setAutoSlug(!autoSlug)
-                if (!autoSlug) {
-                  handleGenerateSlug()
-                }
-              }}
+              onClick={handleGenerateSlug}
               type="button"
               variant="outline"
             >
-              {autoSlug ? '手動' : '自動'}
+              自動生成
             </Button>
           </div>
           <p className="mt-1 text-muted-foreground text-sm">
-            URL用の識別子（自動生成または手動入力）
+            URL用の識別子（手動入力またはボタンで自動生成）
           </p>
         </div>
 

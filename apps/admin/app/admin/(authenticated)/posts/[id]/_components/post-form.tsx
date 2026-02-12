@@ -25,7 +25,6 @@ export function PostForm({ post }: PostFormProps) {
 
   const [title, setTitle] = useState(post.title || '')
   const [slug, setSlug] = useState(post.slug || '')
-  const [autoSlug, setAutoSlug] = useState(!post.slug)
   const [tags, setTags] = useState<string[]>(post.tags || [])
   const [tagInput, setTagInput] = useState('')
   const [status, setStatus] = useState<string>(post.status || 'draft')
@@ -127,26 +126,20 @@ export function PostForm({ post }: PostFormProps) {
               name="slug"
               onChange={(e) => setSlug(e.target.value)}
               placeholder="url-friendly-slug"
-              readOnly={autoSlug}
               required
               type="text"
               value={slug}
             />
             <Button
-              onClick={() => {
-                setAutoSlug(!autoSlug)
-                if (!autoSlug) {
-                  handleGenerateSlug()
-                }
-              }}
+              onClick={handleGenerateSlug}
               type="button"
               variant="outline"
             >
-              {autoSlug ? '手動' : '自動'}
+              自動生成
             </Button>
           </div>
           <p className="mt-1 text-muted-foreground text-sm">
-            URL用の識別子（自動生成または手動入力）
+            URL用の識別子（手動入力またはボタンで自動生成）
           </p>
         </div>
 
