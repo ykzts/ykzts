@@ -1,9 +1,15 @@
 'use client'
 import { Button } from '@ykzts/ui/components/button'
-import { Input } from '@ykzts/ui/components/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@ykzts/ui/components/select'
 import { Textarea } from '@ykzts/ui/components/textarea'
 import Link from 'next/link'
-import { useActionState, useRef, useState } from 'react'
+import { useActionState, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
 import { PortableTextPreview } from '@/components/portable-text-preview'
 import { generateSlug } from '@/lib/utils'
@@ -16,15 +22,11 @@ export function PostForm() {
     null
   )
 
-  const titleRef = useRef<HTMLInputElement>(null)
-  const slugRef = useRef<HTMLInputElement>(null)
-  const statusRef = useRef<HTMLSelectElement>(null)
-
   const [tags, setTags] = useState<string[]>([])
   const [tagInput, setTagInput] = useState('')
   const [contentPreview, setContentPreview] = useState<string | undefined>()
   const [showPreview, setShowPreview] = useState(false)
-  const [currentStatus, setCurrentStatus] = useState<string>('draft')
+  const [showPublishedAt, setShowPublishedAt] = useState(false)
 
   const handleAddTag = () => {
     const newTag = tagInput.trim()
@@ -38,12 +40,18 @@ export function PostForm() {
     setTags(tags.filter((tag) => tag !== tagToRemove))
   }
 
-  const handleGenerateSlug = () => {
-    if (titleRef.current && slugRef.current) {
-      const title = titleRef.current.value
-      if (title) {
-        slugRef.current.value = generateSlug(title)
-      }
+  const handleGenerateSlug = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    const form = e.currentTarget.form
+    if (!form) return
+
+    const titleInput = form.elements.namedItem(
+      'title'
+    ) as HTMLInputElement | null
+    const slugInput = form.elements.namedItem('slug') as HTMLInputElement | null
+
+    if (titleInput && slugInput && titleInput.value) {
+      slugInput.value = generateSlug(titleInput.value)
     }
   }
 
@@ -69,7 +77,6 @@ export function PostForm() {
             maxLength={256}
             name="title"
             placeholder="投稿のタイトルを入力"
-            ref={titleRef}
             required
             type="text"
           />
@@ -90,7 +97,6 @@ export function PostForm() {
               maxLength={256}
               name="slug"
               placeholder="url-friendly-slug"
-              ref={slugRef}
               required
               type="text"
             />
@@ -160,7 +166,8 @@ export function PostForm() {
         <div>
           <div className="mb-2 block font-medium">タグ</div>
           <div className="flex gap-2">
-            <Input
+            <input
+              className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:font-medium file:text-foreground file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
@@ -202,22 +209,26 @@ export function PostForm() {
           <label className="mb-2 block font-medium" htmlFor="status">
             ステータス
           </label>
-          <select
-            className="w-full rounded border border-border bg-background px-3 py-2"
+          <Select
             defaultValue="draft"
-            id="status"
             name="status"
-            onChange={(e) => setCurrentStatus(e.target.value)}
-            ref={statusRef}
+            onValueChange={(value) => {
+              setShowPublishedAt(value === 'scheduled' || value === 'published')
+            }}
           >
-            <option value="draft">下書き</option>
-            <option value="scheduled">予約公開</option>
-            <option value="published">公開</option>
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="draft">下書き</SelectItem>
+              <SelectItem value="scheduled">予約公開</SelectItem>
+              <SelectItem value="published">公開</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Published At */}
-        {(currentStatus === 'scheduled' || currentStatus === 'published') && (
+        {showPublishedAt && (
           <div>
             <label
               className="mb-2 block font-medium"
@@ -226,9 +237,10 @@ export function PostForm() {
               公開日時
             </label>
             {/* Hidden input that holds the ISO 8601 value actually submitted */}
-            <Input id="published_at" name="published_at" type="hidden" />
+            <input id="published_at" name="published_at" type="hidden" />
             {/* Visible datetime-local input for user interaction */}
-            <Input
+            <input
+              className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               id="published_at_display"
               name="published_at_display"
               onChange={(e) => {
@@ -245,9 +257,7 @@ export function PostForm() {
               type="datetime-local"
             />
             <p className="mt-1 text-muted-foreground text-sm">
-              {currentStatus === 'scheduled'
-                ? '指定した日時に自動公開されます'
-                : '公開日時を記録します'}
+              指定した日時に自動公開されます
             </p>
           </div>
         )}
