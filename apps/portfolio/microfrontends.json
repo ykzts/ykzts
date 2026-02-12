@@ -14,6 +14,19 @@
         }
       ]
     },
+    "blog": {
+      "development": {
+        "fallback": "ykzts.com",
+        "local": 3002
+      },
+      "packageName": "@ykzts/blog",
+      "routing": [
+        {
+          "group": "blog",
+          "paths": ["/blog", "/blog/:path*"]
+        }
+      ]
+    },
     "portfolio": {
       "development": {
         "fallback": "ykzts.com",

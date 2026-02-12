@@ -1,0 +1,43 @@
+{
+  "author": "Yamagishi Kazutoshi",
+  "dependencies": {
+    "@portabletext/react": "6.0.2",
+    "@supabase/supabase-js": "2.95.3",
+    "@vercel/microfrontends": "2.3.0",
+    "@ykzts/supabase": "workspace:*",
+    "@ykzts/ui": "workspace:*",
+    "next": "16.1.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "shiki": "3.22.0",
+    "tailwind-merge": "3.4.0"
+  },
+  "description": "Next.js blog application for ykzts.blog",
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.1.18",
+    "@tailwindcss/typography": "0.5.19",
+    "@types/node": "22.19.10",
+    "@types/react": "19.2.13",
+    "@types/react-dom": "19.2.3",
+    "@ykzts/tsconfig": "workspace:*",
+    "postcss": "8.5.6",
+    "tailwindcss": "4.1.18",
+    "typescript": "5.9.3"
+  },
+  "license": "MIT",
+  "name": "@ykzts/blog",
+  "private": true,
+  "repository": {
+    "directory": "apps/blog",
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.git"
+  },
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --port $(microfrontends port)",
+    "start": "next start",
+    "typegen": "next typegen"
+  },
+  "type": "module",
+  "version": "1.0.0"
+}
