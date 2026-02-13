@@ -2,6 +2,13 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase/client'
 
+// NOTE: middleware.ts is deprecated in favor of middleware.config.ts in Next.js 16+
+// However, middleware.config.ts doesn't support dynamic database queries for redirects.
+// We'll continue using middleware.ts until Next.js provides a suitable alternative
+// for dynamic redirect logic. When removed, consider moving to:
+// 1. Edge Config for fast key-value lookups
+// 2. Vercel KV for persistence
+// 3. Pre-generated static redirects in vercel.json (if redirect_from becomes static)
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 

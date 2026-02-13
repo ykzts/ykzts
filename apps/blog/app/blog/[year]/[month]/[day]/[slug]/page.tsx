@@ -71,11 +71,13 @@ export async function generateMetadata({
     }
   }
 
+  const authorName = post.profile?.name || 'Yamagishi Kazutoshi'
+
   return {
-    authors: [{ name: 'Yamagishi Kazutoshi' }],
+    authors: [{ name: authorName }],
     description: post.excerpt || undefined,
     openGraph: {
-      authors: ['Yamagishi Kazutoshi'],
+      authors: [authorName],
       description: post.excerpt || undefined,
       publishedTime: post.published_at,
       title: post.title || DEFAULT_POST_TITLE,
@@ -116,12 +118,13 @@ export default async function PostDetailPage({ params }: PageProps) {
   }
 
   // JSON-LD structured data for Article schema
+  const authorName = post.profile?.name || 'Yamagishi Kazutoshi'
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     author: {
       '@type': 'Person',
-      name: 'Yamagishi Kazutoshi',
+      name: authorName,
       url: 'https://ykzts.com'
     },
     dateModified: post.updated_at,

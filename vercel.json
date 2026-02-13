@@ -1,4 +1,5 @@
 {
+  "$comment": "Feed redirects: Atom is a modern, widely-supported syndication format with better extensibility than RSS. RSS feed readers typically support both formats equally well, so redirecting legacy RSS/index.xml paths to Atom provides consistency while maintaining compatibility.",
   "crons": [
     {
       "path": "/api/blog/cron/publish",

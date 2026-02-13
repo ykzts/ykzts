@@ -27,6 +27,10 @@ export async function getPosts(page = 1, isDraft = false) {
       excerpt,
       tags,
       published_at,
+      profile:profiles!posts_profile_id_fkey(
+        id,
+        name
+      ),
       current_version:post_versions!posts_current_version_id_fkey(
         content
       )
@@ -81,6 +85,10 @@ export async function getPostBySlug(slug: string, isDraft = false) {
       tags,
       published_at,
       updated_at,
+      profile:profiles!posts_profile_id_fkey(
+        id,
+        name
+      ),
       current_version:post_versions!posts_current_version_id_fkey(
         content
       )
@@ -112,6 +120,7 @@ export async function getPostBySlug(slug: string, isDraft = false) {
       : (data.current_version?.content ?? null),
     excerpt: data.excerpt,
     id: data.id,
+    profile: Array.isArray(data.profile) ? data.profile[0] : data.profile,
     published_at: data.published_at as string,
     slug: data.slug as string,
     tags: data.tags,
