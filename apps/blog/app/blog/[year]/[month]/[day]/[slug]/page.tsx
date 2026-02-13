@@ -9,6 +9,7 @@ import TagList from '@/components/tag-list'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
 import { isPortableTextValue } from '@/lib/portable-text'
 import { getAllPosts, getPostBySlug } from '@/lib/supabase/posts'
+import { getPublisherProfile } from '@/lib/supabase/profiles'
 
 type PageProps = {
   params: Promise<{
@@ -129,6 +130,9 @@ export default async function PostDetailPage({ params }: PageProps) {
     notFound()
   }
 
+  // Fetch publisher profile dynamically
+  const publisherProfile = await getPublisherProfile()
+
   // JSON-LD structured data for Article schema
   const baseUrl = layoutMetadata.metadataBase?.toString() || 'https://ykzts.com'
   const jsonLd = {
@@ -144,7 +148,7 @@ export default async function PostDetailPage({ params }: PageProps) {
     headline: post.title || DEFAULT_POST_TITLE,
     publisher: {
       '@type': 'Person',
-      name: 'Yamagishi Kazutoshi',
+      name: publisherProfile.name,
       url: baseUrl
     }
   }
