@@ -92,6 +92,10 @@ export function ToolbarPlugin() {
         const result = await uploadImage({ file })
 
         if (result.error) {
+          // TODO: Replace with toast notification in future enhancement
+          // Using browser alert for MVP, but should be replaced with:
+          // - Toast notification component
+          // - Proper error display in the UI
           alert(result.error)
         } else if (result.url) {
           editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
@@ -101,6 +105,7 @@ export function ToolbarPlugin() {
         }
       } catch (error) {
         console.error('Image upload error:', error)
+        // TODO: Replace with toast notification in future enhancement
         alert('画像のアップロードに失敗しました。')
       } finally {
         setIsUploading(false)

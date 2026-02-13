@@ -11,6 +11,7 @@ import type {
   Spread
 } from 'lexical'
 import { DecoratorNode } from 'lexical'
+import type { ReactElement } from 'react'
 
 export type SerializedImageNode = Spread<
   {
@@ -22,7 +23,7 @@ export type SerializedImageNode = Spread<
   SerializedLexicalNode
 >
 
-export class ImageNode extends DecoratorNode<JSX.Element> {
+export class ImageNode extends DecoratorNode<ReactElement> {
   __src: string
   __altText: string
   __width?: number
@@ -122,7 +123,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     writable.__altText = altText
   }
 
-  decorate(): JSX.Element {
+  decorate(): ReactElement {
     return (
       <img
         alt={this.__altText}
@@ -160,9 +161,9 @@ function convertImageElement(domNode: Node): null | DOMConversionOutput {
     const { alt: altText, src, width, height } = domNode
     const node = $createImageNode({
       altText,
-      height: width ? Number(width) : undefined,
+      height: height ? Number(height) : undefined,
       src,
-      width: height ? Number(height) : undefined
+      width: width ? Number(width) : undefined
     })
     return { node }
   }

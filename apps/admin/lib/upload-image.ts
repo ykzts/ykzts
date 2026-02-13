@@ -38,8 +38,13 @@ export async function uploadImage({
 
     const supabase = createClient()
 
-    // Generate unique filename
+    // Generate unique filename with proper extension handling
     const fileExt = file.name.split('.').pop()
+    if (!fileExt || fileExt === file.name) {
+      return {
+        error: 'ファイル名に拡張子が含まれていません。'
+      }
+    }
     const fileName = `${crypto.randomUUID()}.${fileExt}`
     const filePath = `uploads/${fileName}`
 
