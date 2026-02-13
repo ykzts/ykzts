@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
+import { metadata as layoutMetadata } from '@/app/layout'
 import DateDisplay from '@/components/date-display'
 import Header from '@/components/header'
 import PortableTextBlock from '@/components/portable-text'
@@ -129,13 +130,14 @@ export default async function PostDetailPage({ params }: PageProps) {
   }
 
   // JSON-LD structured data for Article schema
+  const baseUrl = layoutMetadata.metadataBase?.toString() || 'https://ykzts.com'
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     author: {
       '@type': 'Person',
       name: post.profile.name,
-      url: 'https://ykzts.com'
+      url: baseUrl
     },
     dateModified: post.updated_at,
     datePublished: post.published_at,
@@ -144,7 +146,7 @@ export default async function PostDetailPage({ params }: PageProps) {
     publisher: {
       '@type': 'Person',
       name: post.profile.name,
-      url: 'https://ykzts.com'
+      url: baseUrl
     }
   }
 
