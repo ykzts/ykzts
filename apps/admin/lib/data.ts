@@ -1,6 +1,7 @@
 import { cacheTag } from 'next/cache'
 import { getCurrentUser } from './auth'
 import { createClient } from './supabase/server'
+import { DEFAULT_TIMEZONE } from './timezones'
 
 export async function getProfile() {
   'use cache: private'
@@ -27,6 +28,35 @@ export async function getProfile() {
   }
 
   return data
+}
+
+/**
+ * Get only the timezone setting from the user's profile
+ * Lightweight version of getProfile() for pages that only need timezone info
+ */
+export async function getProfileTimezone(): Promise<string> {
+  'use cache: private'
+  cacheTag('profile')
+
+  const user = await getCurrentUser()
+
+  if (!user) {
+    return DEFAULT_TIMEZONE
+  }
+
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('timezone')
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (error || !data) {
+    return DEFAULT_TIMEZONE
+  }
+
+  return data.timezone ?? DEFAULT_TIMEZONE
 }
 
 export async function getSocialLinks() {

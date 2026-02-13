@@ -2,7 +2,7 @@ import { Button } from '@ykzts/ui/components/button'
 import { Card } from '@ykzts/ui/components/card'
 import { Suspense } from 'react'
 import { getProfile, getSocialLinks, getTechnologies } from '@/lib/data'
-import { formatDateTime } from '@/lib/timezones'
+import { formatDateTimeWithTimezone } from '@/lib/timezones'
 
 async function ProfileContent() {
   const [profile, socialLinks, technologies] = await Promise.all([
@@ -44,12 +44,10 @@ async function ProfileContent() {
             </div>
           )}
 
-          {profile.timezone && (
-            <div>
-              <div className="mb-1 block font-medium text-sm">タイムゾーン</div>
-              <p>{profile.timezone}</p>
-            </div>
-          )}
+          <div>
+            <div className="mb-1 block font-medium text-sm">タイムゾーン</div>
+            <p>{profile.timezone}</p>
+          </div>
 
           {socialLinks.length > 0 && (
             <div>
@@ -92,14 +90,14 @@ async function ProfileContent() {
           <div>
             <div className="mb-1 block font-medium text-sm">作成日</div>
             <p className="text-muted-foreground text-sm">
-              {formatDateTime(profile.created_at, profile.timezone)}
+              {formatDateTimeWithTimezone(profile.created_at, profile.timezone)}
             </p>
           </div>
 
           <div>
             <div className="mb-1 block font-medium text-sm">更新日</div>
             <p className="text-muted-foreground text-sm">
-              {formatDateTime(profile.updated_at, profile.timezone)}
+              {formatDateTimeWithTimezone(profile.updated_at, profile.timezone)}
             </p>
           </div>
         </div>

@@ -20,13 +20,20 @@ export function getCommonTimezones() {
     { label: 'Asia/Singapore (Singapore)', value: 'Asia/Singapore' },
     { label: 'Asia/Bangkok (Thailand)', value: 'Asia/Bangkok' },
     { label: 'Asia/Dubai (UAE)', value: 'Asia/Dubai' },
+    { label: 'Asia/Kolkata (India)', value: 'Asia/Kolkata' },
+    { label: 'Asia/Jakarta (Indonesia)', value: 'Asia/Jakarta' },
+    { label: 'Asia/Manila (Philippines)', value: 'Asia/Manila' },
+    { label: 'Asia/Taipei (Taiwan)', value: 'Asia/Taipei' },
     { label: 'Australia/Sydney (Australia)', value: 'Australia/Sydney' },
+    { label: 'Pacific/Auckland (New Zealand)', value: 'Pacific/Auckland' },
 
     // Europe
     { label: 'Europe/London (UK)', value: 'Europe/London' },
     { label: 'Europe/Paris (France)', value: 'Europe/Paris' },
     { label: 'Europe/Berlin (Germany)', value: 'Europe/Berlin' },
     { label: 'Europe/Moscow (Russia)', value: 'Europe/Moscow' },
+    { label: 'Europe/Istanbul (Turkey)', value: 'Europe/Istanbul' },
+    { label: 'Europe/Amsterdam (Netherlands)', value: 'Europe/Amsterdam' },
 
     // Americas
     { label: 'America/New_York (US Eastern)', value: 'America/New_York' },
@@ -36,6 +43,18 @@ export function getCommonTimezones() {
     { label: 'America/Toronto (Canada Eastern)', value: 'America/Toronto' },
     { label: 'America/Mexico_City (Mexico)', value: 'America/Mexico_City' },
     { label: 'America/Sao_Paulo (Brazil)', value: 'America/Sao_Paulo' },
+    {
+      label: 'America/Buenos_Aires (Argentina)',
+      value: 'America/Buenos_Aires'
+    },
+
+    // Africa
+    { label: 'Africa/Cairo (Egypt)', value: 'Africa/Cairo' },
+    {
+      label: 'Africa/Johannesburg (South Africa)',
+      value: 'Africa/Johannesburg'
+    },
+    { label: 'Africa/Lagos (Nigeria)', value: 'Africa/Lagos' },
 
     // UTC
     { label: 'UTC', value: 'UTC' }
@@ -61,7 +80,7 @@ export function formatDateWithTimezone(
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      month: 'short',
+      month: 'numeric',
       timeZoneName: 'short',
       year: 'numeric',
       ...options
@@ -94,7 +113,7 @@ export function formatDateOnly(
 
     return new Intl.DateTimeFormat('ja-JP', {
       day: 'numeric',
-      month: 'short',
+      month: 'numeric',
       timeZone: timezone,
       year: 'numeric'
     }).format(date)
@@ -108,11 +127,11 @@ export function formatDateOnly(
 }
 
 /**
- * Format a date string to full date and time
+ * Format a date string to full date and time with timezone
  * @param dateString - ISO date string from database
  * @param timezone - IANA timezone identifier
  */
-export function formatDateTime(
+export function formatDateTimeWithTimezone(
   dateString: string,
   timezone: string = DEFAULT_TIMEZONE
 ): string {
@@ -123,7 +142,7 @@ export function formatDateTime(
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      month: 'short',
+      month: 'numeric',
       second: '2-digit',
       timeZone: timezone,
       timeZoneName: 'short',
@@ -131,7 +150,7 @@ export function formatDateTime(
     }).format(date)
   } catch (error) {
     console.error(
-      `Error formatting date in formatDateTime: dateString=${dateString}, timezone=${timezone}`,
+      `Error formatting date in formatDateTimeWithTimezone: dateString=${dateString}, timezone=${timezone}`,
       error
     )
     return dateString

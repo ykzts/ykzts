@@ -21,7 +21,7 @@ import { Input } from '@ykzts/ui/components/input'
 import { useRouter } from 'next/navigation'
 import { useActionState, useCallback, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
-import { getCommonTimezones } from '@/lib/timezones'
+import { DEFAULT_TIMEZONE, getCommonTimezones } from '@/lib/timezones'
 import { updateProfile } from '../actions'
 import { SortableItem } from './sortable-item'
 
@@ -209,7 +209,7 @@ export default function ProfileForm({
         </label>
         <select
           className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-          defaultValue={initialData?.timezone ?? 'Asia/Tokyo'}
+          defaultValue={initialData?.timezone ?? DEFAULT_TIMEZONE}
           id="timezone"
           name="timezone"
         >

@@ -18,7 +18,19 @@ const profileSchema = z.object({
     .or(z.literal('')),
   name: z.string().min(1, '名前は必須項目です。'),
   tagline: z.string().optional(),
-  timezone: z.string().min(1, 'タイムゾーンは必須項目です。')
+  timezone: z
+    .string()
+    .min(1, 'タイムゾーンは必須項目です。')
+    .refine(
+      (tz) => {
+        try {
+          return Intl.supportedValuesOf('timeZone').includes(tz)
+        } catch {
+          return false
+        }
+      },
+      { message: '無効なタイムゾーン識別子です。' }
+    )
 })
 
 const socialLinkSchema = z.object({
