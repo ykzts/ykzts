@@ -46,9 +46,7 @@ async function ProfileContent() {
 
           {profile.timezone && (
             <div>
-              <div className="mb-1 block font-medium text-sm">
-                タイムゾーン
-              </div>
+              <div className="mb-1 block font-medium text-sm">タイムゾーン</div>
               <p>{profile.timezone}</p>
             </div>
           )}

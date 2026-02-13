@@ -7,7 +7,7 @@ import { NewWorkButton } from './_components/new-work-button'
 
 async function WorksContent() {
   const [works, profile] = await Promise.all([getWorks(), getProfile()])
-  
+
   const timezone = profile?.timezone ?? 'Asia/Tokyo'
 
   return (

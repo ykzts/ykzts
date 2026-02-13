@@ -16,13 +16,13 @@ export function getCommonTimezones() {
     { label: 'Asia/Bangkok (ICT)', value: 'Asia/Bangkok' },
     { label: 'Asia/Dubai (GST)', value: 'Asia/Dubai' },
     { label: 'Australia/Sydney (AEDT)', value: 'Australia/Sydney' },
-    
+
     // Europe
     { label: 'Europe/London (GMT)', value: 'Europe/London' },
     { label: 'Europe/Paris (CET)', value: 'Europe/Paris' },
     { label: 'Europe/Berlin (CET)', value: 'Europe/Berlin' },
     { label: 'Europe/Moscow (MSK)', value: 'Europe/Moscow' },
-    
+
     // Americas
     { label: 'America/New_York (EST)', value: 'America/New_York' },
     { label: 'America/Chicago (CST)', value: 'America/Chicago' },
@@ -31,7 +31,7 @@ export function getCommonTimezones() {
     { label: 'America/Toronto (EST)', value: 'America/Toronto' },
     { label: 'America/Mexico_City (CST)', value: 'America/Mexico_City' },
     { label: 'America/Sao_Paulo (BRT)', value: 'America/Sao_Paulo' },
-    
+
     // UTC
     { label: 'UTC', value: 'UTC' }
   ]
@@ -50,7 +50,7 @@ export function formatDateWithTimezone(
 ): string {
   try {
     const date = new Date(dateString)
-    
+
     // Default options for consistent formatting
     const defaultOptions: Intl.DateTimeFormatOptions = {
       day: 'numeric',
@@ -61,7 +61,7 @@ export function formatDateWithTimezone(
       year: 'numeric',
       ...options
     }
-    
+
     return new Intl.DateTimeFormat('ja-JP', {
       ...defaultOptions,
       timeZone: timezone
@@ -83,7 +83,7 @@ export function formatDateOnly(
 ): string {
   try {
     const date = new Date(dateString)
-    
+
     return new Intl.DateTimeFormat('ja-JP', {
       day: 'numeric',
       month: 'short',
@@ -107,7 +107,7 @@ export function formatDateTime(
 ): string {
   try {
     const date = new Date(dateString)
-    
+
     return new Intl.DateTimeFormat('ja-JP', {
       day: 'numeric',
       hour: '2-digit',

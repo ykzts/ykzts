@@ -25,7 +25,7 @@ async function PostsContent({
     getPosts({ page, perPage, search, status }),
     getProfile()
   ])
-  
+
   const timezone = profile?.timezone ?? 'Asia/Tokyo'
 
   return (
