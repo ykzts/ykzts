@@ -1,12 +1,11 @@
 'use cache'
 
 import { cacheTag } from 'next/cache'
-import { draftMode } from 'next/headers'
 import { supabase } from './client'
 
 const POSTS_PER_PAGE = 10
 
-export async function getPosts(page = 1) {
+export async function getPosts(page = 1, isDraft = false) {
   cacheTag('posts')
 
   if (!supabase) {
@@ -19,9 +18,6 @@ export async function getPosts(page = 1) {
       ? Math.max(1, Math.floor(page))
       : 1
   const offset = (safePage - 1) * POSTS_PER_PAGE
-
-  const draft = await draftMode()
-  const isEnabled = draft.isEnabled
 
   let query = supabase.from('posts').select(
     `
@@ -39,7 +35,7 @@ export async function getPosts(page = 1) {
 
   // In draft mode, show all posts including drafts and scheduled
   // In normal mode, only show published posts that are not in the future
-  if (!isEnabled) {
+  if (!isDraft) {
     query = query
       .eq('status', 'published')
       .lte('published_at', new Date().toISOString())
@@ -66,16 +62,13 @@ export async function getPosts(page = 1) {
   }))
 }
 
-export async function getPostBySlug(slug: string) {
+export async function getPostBySlug(slug: string, isDraft = false) {
   cacheTag('posts')
 
   if (!supabase) {
     // Return null when Supabase is not configured (e.g., during build without env vars)
     return null
   }
-
-  const draft = await draftMode()
-  const isEnabled = draft.isEnabled
 
   let query = supabase
     .from('posts')
@@ -97,7 +90,7 @@ export async function getPostBySlug(slug: string) {
 
   // In draft mode, show any post regardless of status
   // In normal mode, only show published posts that are not in the future
-  if (!isEnabled) {
+  if (!isDraft) {
     query = query
       .eq('status', 'published')
       .lte('published_at', new Date().toISOString())
@@ -127,7 +120,7 @@ export async function getPostBySlug(slug: string) {
   }
 }
 
-export async function getPostsByTag(tag: string, page = 1) {
+export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
   cacheTag('posts')
 
   if (!supabase) {
@@ -140,9 +133,6 @@ export async function getPostsByTag(tag: string, page = 1) {
       ? Math.max(1, Math.floor(page))
       : 1
   const offset = (safePage - 1) * POSTS_PER_PAGE
-
-  const draft = await draftMode()
-  const isEnabled = draft.isEnabled
 
   let query = supabase
     .from('posts')
@@ -163,7 +153,7 @@ export async function getPostsByTag(tag: string, page = 1) {
 
   // In draft mode, show all posts including drafts and scheduled
   // In normal mode, only show published posts that are not in the future
-  if (!isEnabled) {
+  if (!isDraft) {
     query = query
       .eq('status', 'published')
       .lte('published_at', new Date().toISOString())
@@ -272,7 +262,7 @@ export async function getPostsForFeed(limit = 20) {
   }))
 }
 
-export async function getTotalPostCount() {
+export async function getTotalPostCount(isDraft = false) {
   cacheTag('posts')
 
   if (!supabase) {
@@ -280,14 +270,11 @@ export async function getTotalPostCount() {
     return 0
   }
 
-  const draft = await draftMode()
-  const isEnabled = draft.isEnabled
-
   let query = supabase.from('posts').select('*', { count: 'exact', head: true })
 
   // In draft mode, count all posts
   // In normal mode, only count published posts that are not in the future
-  if (!isEnabled) {
+  if (!isDraft) {
     query = query
       .eq('status', 'published')
       .lte('published_at', new Date().toISOString())
@@ -302,21 +289,18 @@ export async function getTotalPostCount() {
   return count ?? 0
 }
 
-export async function getTotalPages() {
-  const count = await getTotalPostCount()
+export async function getTotalPages(isDraft = false) {
+  const count = await getTotalPostCount(isDraft)
   return Math.ceil(count / POSTS_PER_PAGE)
 }
 
-export async function getPostCountByTag(tag: string) {
+export async function getPostCountByTag(tag: string, isDraft = false) {
   cacheTag('posts')
 
   if (!supabase) {
     // Return 0 when Supabase is not configured (e.g., during build without env vars)
     return 0
   }
-
-  const draft = await draftMode()
-  const isEnabled = draft.isEnabled
 
   let query = supabase
     .from('posts')
@@ -325,7 +309,7 @@ export async function getPostCountByTag(tag: string) {
 
   // In draft mode, count all posts
   // In normal mode, only count published posts that are not in the future
-  if (!isEnabled) {
+  if (!isDraft) {
     query = query
       .eq('status', 'published')
       .lte('published_at', new Date().toISOString())

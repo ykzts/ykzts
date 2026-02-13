@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import Header from '@/components/header'
 import Pagination from '@/components/pagination'
@@ -43,8 +44,11 @@ export default async function TagArchivePage({ params }: PageProps) {
   const { tag } = await params
   const decodedTag = decodeURIComponent(tag)
 
-  const posts = await getPostsByTag(decodedTag, 1)
-  const postCount = await getPostCountByTag(decodedTag)
+  const draft = await draftMode()
+  const isDraft = draft.isEnabled
+
+  const posts = await getPostsByTag(decodedTag, 1, isDraft)
+  const postCount = await getPostCountByTag(decodedTag, isDraft)
 
   if (!posts || posts.length === 0) {
     notFound()

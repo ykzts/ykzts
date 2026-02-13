@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import DateDisplay from '@/components/date-display'
 import Header from '@/components/header'
@@ -47,7 +48,10 @@ export async function generateMetadata({
   params
 }: PageProps): Promise<Metadata> {
   const { year, month, day, slug } = await params
-  const post = await getPostBySlug(slug)
+  const draft = await draftMode()
+  const isDraft = draft.isEnabled
+
+  const post = await getPostBySlug(slug, isDraft)
 
   if (!post) {
     return {
@@ -87,8 +91,10 @@ export async function generateMetadata({
 
 export default async function PostDetailPage({ params }: PageProps) {
   const { year, month, day, slug } = await params
+  const draft = await draftMode()
+  const isDraft = draft.isEnabled
 
-  const post = await getPostBySlug(slug)
+  const post = await getPostBySlug(slug, isDraft)
 
   if (!post) {
     notFound()

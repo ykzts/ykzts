@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
 import Header from '@/components/header'
 import Pagination from '@/components/pagination'
@@ -57,14 +58,17 @@ export default async function PaginationPage({ params }: PageProps) {
     redirect('/blog')
   }
 
-  const totalPages = await getTotalPages()
+  const draft = await draftMode()
+  const isDraft = draft.isEnabled
+
+  const totalPages = await getTotalPages(isDraft)
 
   // Handle page numbers beyond total pages
   if (pageNum > totalPages) {
     notFound()
   }
 
-  const posts = await getPosts(pageNum)
+  const posts = await getPosts(pageNum, isDraft)
 
   // If no posts found, show not found
   if (!posts || posts.length === 0) {

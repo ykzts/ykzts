@@ -21,6 +21,22 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
+  // Skip canonical blog URLs (format: /blog/YYYY/MM/DD/slug)
+  // These are the expected URL format and don't need redirect lookup
+  if (pathname.match(/^\/blog\/\d{4}\/\d{2}\/\d{2}\/.+$/)) {
+    return NextResponse.next()
+  }
+
+  // Skip blog homepage and pagination pages
+  if (pathname === '/blog' || pathname.match(/^\/blog\/page\/\d+$/)) {
+    return NextResponse.next()
+  }
+
+  // Skip tag pages
+  if (pathname.match(/^\/blog\/tags\/.+/)) {
+    return NextResponse.next()
+  }
+
   // Try to find a post with this path in redirect_from
   if (!supabase) {
     return NextResponse.next()
