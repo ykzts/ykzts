@@ -15,6 +15,14 @@ export type ImageUploadResult = {
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
 
+// Map MIME types to file extensions
+const MIME_TO_EXT: Record<string, string> = {
+  'image/gif': 'gif',
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp'
+}
+
 export async function uploadImage({
   file,
   onProgress
@@ -38,15 +46,29 @@ export async function uploadImage({
 
     const supabase = createClient()
 
-    // Generate unique filename with proper extension handling
-    const fileExt = file.name.split('.').pop()
-    if (!fileExt || fileExt === file.name) {
+    // Get current user
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser()
+
+    if (userError || !user) {
       return {
-        error: 'ファイル名に拡張子が含まれていません。'
+        error: 'ユーザー情報の取得に失敗しました。ログインしてください。'
       }
     }
+
+    // Derive extension from MIME type for consistency
+    const fileExt = MIME_TO_EXT[file.type]
+    if (!fileExt) {
+      return {
+        error: '不明な画像形式です。'
+      }
+    }
+
+    // Generate unique filename with user ID prefix
     const fileName = `${crypto.randomUUID()}.${fileExt}`
-    const filePath = `uploads/${fileName}`
+    const filePath = `${user.id}/${fileName}`
 
     // Report initial progress
     if (onProgress) {
