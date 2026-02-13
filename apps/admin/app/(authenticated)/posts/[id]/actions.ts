@@ -5,6 +5,7 @@ import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { deletePost, updatePost } from '@/lib/posts'
+import { invalidateCaches } from '@/lib/revalidate'
 import { postUpdateSchema } from '@/lib/validations'
 
 export type ActionState = {
@@ -80,6 +81,7 @@ export async function updatePostAction(
     })
 
     revalidateTag('posts', 'max')
+    await invalidateCaches('posts')
   } catch (error) {
     return {
       error: error instanceof Error ? error.message : '不明なエラー'
@@ -106,6 +108,7 @@ export async function deletePostAction(id: string): Promise<void> {
 
     revalidateTag('posts', 'max')
     revalidateTag('counts', 'max')
+    await invalidateCaches('posts')
   } catch (error) {
     if (error instanceof Error) {
       throw error
