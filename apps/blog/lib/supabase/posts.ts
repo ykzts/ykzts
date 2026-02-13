@@ -5,7 +5,7 @@ import { supabase } from './client'
 
 const POSTS_PER_PAGE = 10
 
-export async function getPosts(page = 1) {
+export async function getPosts(page = 1, isDraft = false) {
   cacheTag('posts')
 
   if (!supabase) {
@@ -19,23 +19,33 @@ export async function getPosts(page = 1) {
       : 1
   const offset = (safePage - 1) * POSTS_PER_PAGE
 
-  const { data, error } = await supabase
-    .from('posts')
-    .select(
-      `
+  let query = supabase.from('posts').select(
+    `
       id,
       slug,
       title,
       excerpt,
       tags,
       published_at,
+      profile:profiles!posts_profile_id_fkey(
+        id,
+        name
+      ),
       current_version:post_versions!posts_current_version_id_fkey(
         content
       )
     `
-    )
-    .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
+  )
+
+  // In draft mode, show all posts including drafts and scheduled
+  // In normal mode, only show published posts that are not in the future
+  if (!isDraft) {
+    query = query
+      .eq('status', 'published')
+      .lte('published_at', new Date().toISOString())
+  }
+
+  const { data, error } = await query
     .order('published_at', { ascending: false })
     .range(offset, offset + POSTS_PER_PAGE - 1)
 
@@ -56,7 +66,7 @@ export async function getPosts(page = 1) {
   }))
 }
 
-export async function getPostBySlug(slug: string) {
+export async function getPostBySlug(slug: string, isDraft = false) {
   cacheTag('posts')
 
   if (!supabase) {
@@ -64,7 +74,7 @@ export async function getPostBySlug(slug: string) {
     return null
   }
 
-  const { data, error } = await supabase
+  let query = supabase
     .from('posts')
     .select(
       `
@@ -74,15 +84,27 @@ export async function getPostBySlug(slug: string) {
       excerpt,
       tags,
       published_at,
+      updated_at,
+      profile:profiles!posts_profile_id_fkey(
+        id,
+        name
+      ),
       current_version:post_versions!posts_current_version_id_fkey(
         content
       )
     `
     )
     .eq('slug', slug)
-    .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
-    .maybeSingle()
+
+  // In draft mode, show any post regardless of status
+  // In normal mode, only show published posts that are not in the future
+  if (!isDraft) {
+    query = query
+      .eq('status', 'published')
+      .lte('published_at', new Date().toISOString())
+  }
+
+  const { data, error } = await query.maybeSingle()
 
   if (error) {
     throw new Error(`Failed to fetch post: ${error.message}`)
@@ -98,14 +120,16 @@ export async function getPostBySlug(slug: string) {
       : (data.current_version?.content ?? null),
     excerpt: data.excerpt,
     id: data.id,
+    profile: Array.isArray(data.profile) ? data.profile[0] : data.profile,
     published_at: data.published_at as string,
     slug: data.slug as string,
     tags: data.tags,
-    title: data.title as string
+    title: data.title as string,
+    updated_at: data.updated_at as string
   }
 }
 
-export async function getPostsByTag(tag: string, page = 1) {
+export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
   cacheTag('posts')
 
   if (!supabase) {
@@ -119,7 +143,7 @@ export async function getPostsByTag(tag: string, page = 1) {
       : 1
   const offset = (safePage - 1) * POSTS_PER_PAGE
 
-  const { data, error } = await supabase
+  let query = supabase
     .from('posts')
     .select(
       `
@@ -134,9 +158,17 @@ export async function getPostsByTag(tag: string, page = 1) {
       )
     `
     )
-    .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
     .contains('tags', [tag])
+
+  // In draft mode, show all posts including drafts and scheduled
+  // In normal mode, only show published posts that are not in the future
+  if (!isDraft) {
+    query = query
+      .eq('status', 'published')
+      .lte('published_at', new Date().toISOString())
+  }
+
+  const { data, error } = await query
     .order('published_at', { ascending: false })
     .range(offset, offset + POSTS_PER_PAGE - 1)
 
@@ -239,7 +271,7 @@ export async function getPostsForFeed(limit = 20) {
   }))
 }
 
-export async function getTotalPostCount() {
+export async function getTotalPostCount(isDraft = false) {
   cacheTag('posts')
 
   if (!supabase) {
@@ -247,11 +279,17 @@ export async function getTotalPostCount() {
     return 0
   }
 
-  const { count, error } = await supabase
-    .from('posts')
-    .select('*', { count: 'exact', head: true })
-    .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
+  let query = supabase.from('posts').select('*', { count: 'exact', head: true })
+
+  // In draft mode, count all posts
+  // In normal mode, only count published posts that are not in the future
+  if (!isDraft) {
+    query = query
+      .eq('status', 'published')
+      .lte('published_at', new Date().toISOString())
+  }
+
+  const { count, error } = await query
 
   if (error) {
     throw new Error(`Failed to count posts: ${error.message}`)
@@ -260,12 +298,12 @@ export async function getTotalPostCount() {
   return count ?? 0
 }
 
-export async function getTotalPages() {
-  const count = await getTotalPostCount()
+export async function getTotalPages(isDraft = false) {
+  const count = await getTotalPostCount(isDraft)
   return Math.ceil(count / POSTS_PER_PAGE)
 }
 
-export async function getPostCountByTag(tag: string) {
+export async function getPostCountByTag(tag: string, isDraft = false) {
   cacheTag('posts')
 
   if (!supabase) {
@@ -273,12 +311,20 @@ export async function getPostCountByTag(tag: string) {
     return 0
   }
 
-  const { count, error } = await supabase
+  let query = supabase
     .from('posts')
     .select('*', { count: 'exact', head: true })
-    .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
     .contains('tags', [tag])
+
+  // In draft mode, count all posts
+  // In normal mode, only count published posts that are not in the future
+  if (!isDraft) {
+    query = query
+      .eq('status', 'published')
+      .lte('published_at', new Date().toISOString())
+  }
+
+  const { count, error } = await query
 
   if (error) {
     throw new Error(`Failed to count posts by tag: ${error.message}`)

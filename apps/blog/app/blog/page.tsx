@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import Header from '@/components/header'
 import Pagination from '@/components/pagination'
 import PostCard from '@/components/post-card'
@@ -16,8 +17,11 @@ export const metadata: Metadata = {
 }
 
 export default async function HomePage() {
-  const posts = await getPosts(1)
-  const totalPages = await getTotalPages()
+  const draft = await draftMode()
+  const isDraft = draft.isEnabled
+
+  const posts = await getPosts(1, isDraft)
+  const totalPages = await getTotalPages(isDraft)
 
   return (
     <>

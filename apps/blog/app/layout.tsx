@@ -2,6 +2,7 @@ import './globals.css'
 import { cn } from '@ykzts/ui/lib/utils'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
+import DraftModeBannerClient from '@/components/draft-mode-banner-client'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com'),
@@ -52,7 +53,10 @@ export default function RootLayout({
       lang="ja"
     >
       <head />
-      <body>{children}</body>
+      <body>
+        <DraftModeBannerClient />
+        {children}
+      </body>
     </html>
   )
 }

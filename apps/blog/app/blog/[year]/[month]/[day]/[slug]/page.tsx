@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
+import { metadata as layoutMetadata } from '@/app/layout'
 import DateDisplay from '@/components/date-display'
 import Header from '@/components/header'
 import PortableTextBlock from '@/components/portable-text'
@@ -7,6 +9,7 @@ import TagList from '@/components/tag-list'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
 import { isPortableTextValue } from '@/lib/portable-text'
 import { getAllPosts, getPostBySlug } from '@/lib/supabase/posts'
+import { getPublisherProfile } from '@/lib/supabase/profiles'
 
 type PageProps = {
   params: Promise<{
@@ -47,7 +50,10 @@ export async function generateMetadata({
   params
 }: PageProps): Promise<Metadata> {
   const { year, month, day, slug } = await params
-  const post = await getPostBySlug(slug)
+  const draft = await draftMode()
+  const isDraft = draft.isEnabled
+
+  const post = await getPostBySlug(slug, isDraft)
 
   if (!post) {
     return {
@@ -67,9 +73,19 @@ export async function generateMetadata({
     }
   }
 
+  if (!post.profile?.name) {
+    return {
+      title: 'Not Found'
+    }
+  }
+
+  const authorName = post.profile.name
+
   return {
+    authors: [{ name: authorName }],
     description: post.excerpt || undefined,
     openGraph: {
+      authors: [authorName],
       description: post.excerpt || undefined,
       publishedTime: post.published_at,
       title: post.title || DEFAULT_POST_TITLE,
@@ -85,8 +101,10 @@ export async function generateMetadata({
 
 export default async function PostDetailPage({ params }: PageProps) {
   const { year, month, day, slug } = await params
+  const draft = await draftMode()
+  const isDraft = draft.isEnabled
 
-  const post = await getPostBySlug(slug)
+  const post = await getPostBySlug(slug, isDraft)
 
   if (!post) {
     notFound()
@@ -107,8 +125,41 @@ export default async function PostDetailPage({ params }: PageProps) {
     notFound()
   }
 
+  // Profile is required for author information
+  if (!post.profile?.name) {
+    notFound()
+  }
+
+  // Fetch publisher profile dynamically
+  const publisherProfile = await getPublisherProfile()
+
+  // JSON-LD structured data for Article schema
+  const baseUrl = layoutMetadata.metadataBase?.toString() || 'https://ykzts.com'
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    author: {
+      '@type': 'Person',
+      name: post.profile.name
+    },
+    dateModified: post.updated_at,
+    datePublished: post.published_at,
+    description: post.excerpt || undefined,
+    headline: post.title || DEFAULT_POST_TITLE,
+    publisher: {
+      '@type': 'Person',
+      name: publisherProfile.name,
+      url: baseUrl
+    }
+  }
+
   return (
     <>
+      <script
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe with JSON.stringify
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
       <Header />
       <main className="container mx-auto px-4 py-8">
         <article className="mx-auto max-w-3xl">

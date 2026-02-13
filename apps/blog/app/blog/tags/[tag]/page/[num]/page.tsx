@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
 import Header from '@/components/header'
 import Pagination from '@/components/pagination'
@@ -52,8 +53,11 @@ export default async function TagPaginationPage({ params }: PageProps) {
     redirect(`/blog/tags/${encodeURIComponent(decodedTag)}`)
   }
 
-  const posts = await getPostsByTag(decodedTag, pageNum)
-  const postCount = await getPostCountByTag(decodedTag)
+  const draft = await draftMode()
+  const isDraft = draft.isEnabled
+
+  const posts = await getPostsByTag(decodedTag, pageNum, isDraft)
+  const postCount = await getPostCountByTag(decodedTag, isDraft)
 
   if (!posts || posts.length === 0) {
     notFound()
