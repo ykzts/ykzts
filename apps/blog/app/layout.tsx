@@ -2,7 +2,6 @@ import './globals.css'
 import { cn } from '@ykzts/ui/lib/utils'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
-import { draftMode } from 'next/headers'
 import DraftModeBannerClient from '@/components/draft-mode-banner-client'
 
 export const metadata: Metadata = {
@@ -38,13 +37,11 @@ const notoSansJp = Noto_Sans_JP({
   weight: ['400', '500', '600', '700']
 })
 
-export default async function RootLayout({
+export default function RootLayout({
   children
 }: {
   children: React.ReactNode
 }) {
-  const draft = await draftMode()
-
   return (
     <html
       className={cn(
@@ -57,7 +54,7 @@ export default async function RootLayout({
     >
       <head />
       <body>
-        {draft.isEnabled && <DraftModeBannerClient />}
+        <DraftModeBannerClient />
         {children}
       </body>
     </html>

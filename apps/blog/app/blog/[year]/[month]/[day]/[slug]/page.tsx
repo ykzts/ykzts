@@ -71,7 +71,13 @@ export async function generateMetadata({
     }
   }
 
-  const authorName = post.profile?.name || 'Yamagishi Kazutoshi'
+  if (!post.profile?.name) {
+    return {
+      title: 'Not Found'
+    }
+  }
+
+  const authorName = post.profile.name
 
   return {
     authors: [{ name: authorName }],
@@ -117,14 +123,18 @@ export default async function PostDetailPage({ params }: PageProps) {
     notFound()
   }
 
+  // Profile is required for author information
+  if (!post.profile?.name) {
+    notFound()
+  }
+
   // JSON-LD structured data for Article schema
-  const authorName = post.profile?.name || 'Yamagishi Kazutoshi'
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     author: {
       '@type': 'Person',
-      name: authorName,
+      name: post.profile.name,
       url: 'https://ykzts.com'
     },
     dateModified: post.updated_at,
@@ -133,7 +143,7 @@ export default async function PostDetailPage({ params }: PageProps) {
     headline: post.title || DEFAULT_POST_TITLE,
     publisher: {
       '@type': 'Person',
-      name: 'Yamagishi Kazutoshi',
+      name: post.profile.name,
       url: 'https://ykzts.com'
     }
   }

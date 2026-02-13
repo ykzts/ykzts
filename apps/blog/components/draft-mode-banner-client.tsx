@@ -1,17 +1,25 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Link from '@/components/link'
 
 export default function DraftModeBannerClient() {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isDraftMode, setIsDraftMode] = useState(false)
 
   useEffect(() => {
-    setIsVisible(true)
+    // Check if draft mode is enabled by checking for the draft mode cookie
+    const hasDraftModeCookie = document.cookie
+      .split('; ')
+      .some((cookie) => cookie.startsWith('__prerender_bypass='))
+    setIsDraftMode(hasDraftModeCookie)
   }, [])
 
-  if (!isVisible) {
+  if (!isDraftMode) {
     return null
+  }
+
+  const handleDisable = async () => {
+    await fetch('/api/blog/draft/disable')
+    window.location.href = '/blog'
   }
 
   return (
@@ -20,12 +28,13 @@ export default function DraftModeBannerClient() {
       role="alert"
     >
       ドラフトモード有効中 - 下書きと予約投稿が表示されます
-      <Link
+      <button
         className="ml-4 underline hover:no-underline"
-        href="/api/blog/draft/disable"
+        onClick={handleDisable}
+        type="button"
       >
         無効化
-      </Link>
+      </button>
     </div>
   )
 }
