@@ -4,6 +4,7 @@ import DateDisplay from '@/components/date-display'
 import Header from '@/components/header'
 import PortableTextBlock from '@/components/portable-text'
 import TagList from '@/components/tag-list'
+import { DEFAULT_POST_TITLE } from '@/lib/constants'
 import { isPortableTextValue } from '@/lib/portable-text'
 import { getAllPosts, getPostBySlug } from '@/lib/supabase/posts'
 
@@ -70,11 +71,15 @@ export async function generateMetadata({
     description: post.excerpt || undefined,
     openGraph: {
       description: post.excerpt || undefined,
-      title: post.title || 'Untitled',
+      publishedTime: post.published_at,
+      title: post.title || DEFAULT_POST_TITLE,
       type: 'article',
-      url: `https://ykzts.com/blog/${year}/${month}/${day}/${slug}`
+      url: `/blog/${year}/${month}/${day}/${slug}`
     },
-    title: post.title || 'Untitled'
+    title: post.title || DEFAULT_POST_TITLE,
+    twitter: {
+      card: 'summary_large_image'
+    }
   }
 }
 

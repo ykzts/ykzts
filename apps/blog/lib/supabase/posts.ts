@@ -9,9 +9,8 @@ export async function getPosts(page = 1) {
   cacheTag('posts')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    // Return empty array when Supabase is not configured (e.g., during build without env vars)
+    return []
   }
 
   const safePage =
@@ -61,9 +60,8 @@ export async function getPostBySlug(slug: string) {
   cacheTag('posts')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    // Return null when Supabase is not configured (e.g., during build without env vars)
+    return null
   }
 
   const { data, error } = await supabase
@@ -111,9 +109,8 @@ export async function getPostsByTag(tag: string, page = 1) {
   cacheTag('posts')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    // Return empty array when Supabase is not configured (e.g., during build without env vars)
+    return []
   }
 
   const safePage =
@@ -164,9 +161,8 @@ export async function getAllTags() {
   cacheTag('posts')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    // Return empty array when Supabase is not configured (e.g., during build without env vars)
+    return []
   }
 
   const { data, error } = await supabase
@@ -190,14 +186,13 @@ export async function getAllPosts() {
   cacheTag('posts')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    // Return empty array when Supabase is not configured (e.g., during build without env vars)
+    return []
   }
 
   const { data, error } = await supabase
     .from('posts')
-    .select('slug, published_at')
+    .select('slug, published_at, updated_at')
     .eq('status', 'published')
     .lte('published_at', new Date().toISOString())
     .not('slug', 'is', null)
@@ -209,7 +204,38 @@ export async function getAllPosts() {
 
   return data.map((post) => ({
     published_at: post.published_at as string,
-    slug: post.slug as string
+    slug: post.slug as string,
+    updated_at: post.updated_at as string
+  }))
+}
+
+export async function getPostsForFeed(limit = 20) {
+  cacheTag('posts')
+
+  if (!supabase) {
+    // Return empty array when Supabase is not configured (e.g., during build without env vars)
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select('slug, title, excerpt, published_at, updated_at')
+    .eq('status', 'published')
+    .lte('published_at', new Date().toISOString())
+    .not('slug', 'is', null)
+    .order('published_at', { ascending: false })
+    .limit(limit)
+
+  if (error) {
+    throw new Error(`Failed to fetch posts for feed: ${error.message}`)
+  }
+
+  return data.map((post) => ({
+    excerpt: post.excerpt,
+    published_at: post.published_at as string,
+    slug: post.slug as string,
+    title: post.title as string,
+    updated_at: post.updated_at as string
   }))
 }
 
@@ -217,9 +243,8 @@ export async function getTotalPostCount() {
   cacheTag('posts')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    // Return 0 when Supabase is not configured (e.g., during build without env vars)
+    return 0
   }
 
   const { count, error } = await supabase
@@ -244,9 +269,8 @@ export async function getPostCountByTag(tag: string) {
   cacheTag('posts')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    // Return 0 when Supabase is not configured (e.g., during build without env vars)
+    return 0
   }
 
   const { count, error } = await supabase
