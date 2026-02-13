@@ -8,29 +8,29 @@
 export function getCommonTimezones() {
   return [
     // Asia/Pacific
-    { label: 'Asia/Tokyo (JST)', value: 'Asia/Tokyo' },
-    { label: 'Asia/Seoul (KST)', value: 'Asia/Seoul' },
-    { label: 'Asia/Shanghai (CST)', value: 'Asia/Shanghai' },
-    { label: 'Asia/Hong_Kong (HKT)', value: 'Asia/Hong_Kong' },
-    { label: 'Asia/Singapore (SGT)', value: 'Asia/Singapore' },
-    { label: 'Asia/Bangkok (ICT)', value: 'Asia/Bangkok' },
-    { label: 'Asia/Dubai (GST)', value: 'Asia/Dubai' },
-    { label: 'Australia/Sydney (AEDT)', value: 'Australia/Sydney' },
+    { label: 'Asia/Tokyo (Japan)', value: 'Asia/Tokyo' },
+    { label: 'Asia/Seoul (Korea)', value: 'Asia/Seoul' },
+    { label: 'Asia/Shanghai (China)', value: 'Asia/Shanghai' },
+    { label: 'Asia/Hong_Kong (Hong Kong)', value: 'Asia/Hong_Kong' },
+    { label: 'Asia/Singapore (Singapore)', value: 'Asia/Singapore' },
+    { label: 'Asia/Bangkok (Thailand)', value: 'Asia/Bangkok' },
+    { label: 'Asia/Dubai (UAE)', value: 'Asia/Dubai' },
+    { label: 'Australia/Sydney (Australia)', value: 'Australia/Sydney' },
 
     // Europe
-    { label: 'Europe/London (GMT)', value: 'Europe/London' },
-    { label: 'Europe/Paris (CET)', value: 'Europe/Paris' },
-    { label: 'Europe/Berlin (CET)', value: 'Europe/Berlin' },
-    { label: 'Europe/Moscow (MSK)', value: 'Europe/Moscow' },
+    { label: 'Europe/London (UK)', value: 'Europe/London' },
+    { label: 'Europe/Paris (France)', value: 'Europe/Paris' },
+    { label: 'Europe/Berlin (Germany)', value: 'Europe/Berlin' },
+    { label: 'Europe/Moscow (Russia)', value: 'Europe/Moscow' },
 
     // Americas
-    { label: 'America/New_York (EST)', value: 'America/New_York' },
-    { label: 'America/Chicago (CST)', value: 'America/Chicago' },
-    { label: 'America/Denver (MST)', value: 'America/Denver' },
-    { label: 'America/Los_Angeles (PST)', value: 'America/Los_Angeles' },
-    { label: 'America/Toronto (EST)', value: 'America/Toronto' },
-    { label: 'America/Mexico_City (CST)', value: 'America/Mexico_City' },
-    { label: 'America/Sao_Paulo (BRT)', value: 'America/Sao_Paulo' },
+    { label: 'America/New_York (US Eastern)', value: 'America/New_York' },
+    { label: 'America/Chicago (US Central)', value: 'America/Chicago' },
+    { label: 'America/Denver (US Mountain)', value: 'America/Denver' },
+    { label: 'America/Los_Angeles (US Pacific)', value: 'America/Los_Angeles' },
+    { label: 'America/Toronto (Canada Eastern)', value: 'America/Toronto' },
+    { label: 'America/Mexico_City (Mexico)', value: 'America/Mexico_City' },
+    { label: 'America/Sao_Paulo (Brazil)', value: 'America/Sao_Paulo' },
 
     // UTC
     { label: 'UTC', value: 'UTC' }
@@ -67,7 +67,10 @@ export function formatDateWithTimezone(
       timeZone: timezone
     }).format(date)
   } catch (error) {
-    console.error('Error formatting date:', error)
+    console.error(
+      `Error formatting date in formatDateWithTimezone: dateString=${dateString}, timezone=${timezone}`,
+      error
+    )
     return dateString
   }
 }
@@ -91,7 +94,10 @@ export function formatDateOnly(
       year: 'numeric'
     }).format(date)
   } catch (error) {
-    console.error('Error formatting date:', error)
+    console.error(
+      `Error formatting date in formatDateOnly: dateString=${dateString}, timezone=${timezone}`,
+      error
+    )
     return dateString
   }
 }
@@ -119,7 +125,10 @@ export function formatDateTime(
       year: 'numeric'
     }).format(date)
   } catch (error) {
-    console.error('Error formatting date:', error)
+    console.error(
+      `Error formatting date in formatDateTime: dateString=${dateString}, timezone=${timezone}`,
+      error
+    )
     return dateString
   }
 }
