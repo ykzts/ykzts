@@ -1,11 +1,14 @@
 import { Card } from '@ykzts/ui/components/card'
 import Link from 'next/link'
 import { Suspense } from 'react'
-import { getWorks } from '@/lib/data'
+import { getProfile, getWorks } from '@/lib/data'
+import { formatDateOnly } from '@/lib/timezones'
 import { NewWorkButton } from './_components/new-work-button'
 
 async function WorksContent() {
-  const works = await getWorks()
+  const [works, profile] = await Promise.all([getWorks(), getProfile()])
+  
+  const timezone = profile?.timezone ?? 'Asia/Tokyo'
 
   return (
     <Card className="p-6">
@@ -31,10 +34,10 @@ async function WorksContent() {
                     {work.slug}
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">
-                    {new Date(work.starts_at).toLocaleDateString('ja-JP')}
+                    {formatDateOnly(work.starts_at, timezone)}
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">
-                    {new Date(work.created_at).toLocaleDateString('ja-JP')}
+                    {formatDateOnly(work.created_at, timezone)}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <Link

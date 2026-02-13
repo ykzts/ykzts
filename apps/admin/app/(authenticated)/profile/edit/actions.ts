@@ -16,7 +16,8 @@ const profileSchema = z.object({
     .optional()
     .or(z.literal('')),
   name: z.string().min(1, '名前は必須項目です。'),
-  tagline: z.string().optional()
+  tagline: z.string().optional(),
+  timezone: z.string().min(1, 'タイムゾーンは必須項目です。')
 })
 
 const socialLinkSchema = z.object({
@@ -47,7 +48,8 @@ export async function updateProfile(
       about: formData.get('about') ?? undefined,
       email: formData.get('email') ?? '',
       name: formData.get('name') ?? '',
-      tagline: formData.get('tagline') ?? undefined
+      tagline: formData.get('tagline') ?? undefined,
+      timezone: formData.get('timezone') ?? 'Asia/Tokyo'
     }
 
     const profileValidation = profileSchema.safeParse(rawProfileData)
@@ -58,7 +60,7 @@ export async function updateProfile(
       }
     }
 
-    const { name, tagline, email, about } = profileValidation.data
+    const { name, tagline, email, about, timezone } = profileValidation.data
 
     // Handle about field (JSONB)
     let aboutValue: string | null = null
@@ -100,6 +102,7 @@ export async function updateProfile(
       email: email && email.trim() !== '' ? email.trim() : null,
       name: name.trim(),
       tagline: tagline && tagline.trim() !== '' ? tagline.trim() : null,
+      timezone,
       user_id: user.id
     }
 

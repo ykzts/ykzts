@@ -18,7 +18,7 @@ export async function getProfile() {
   // Filter by user_id to get the authenticated user's profile
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, name, tagline, email, about, created_at, updated_at')
+    .select('id, name, tagline, email, about, timezone, created_at, updated_at')
     .eq('user_id', user.id)
     .maybeSingle()
 
