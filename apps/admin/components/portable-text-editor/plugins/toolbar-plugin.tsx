@@ -4,8 +4,15 @@ import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { mergeRegister } from '@lexical/utils'
 import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical'
-import { useCallback, useEffect, useState } from 'react'
-import { HiOutlineBold, HiOutlineItalic, HiOutlineLink } from 'react-icons/hi2'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  HiOutlineBold,
+  HiOutlineItalic,
+  HiOutlineLink,
+  HiOutlinePhoto
+} from 'react-icons/hi2'
+import { uploadImage } from '@/lib/upload-image'
+import { INSERT_IMAGE_COMMAND } from './image-plugin'
 import { validateUrl } from './link-plugin'
 
 export function ToolbarPlugin() {
@@ -13,6 +20,8 @@ export function ToolbarPlugin() {
   const [isBold, setIsBold] = useState(false)
   const [isItalic, setIsItalic] = useState(false)
   const [isLink, setIsLink] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const updateToolbar = useCallback(() => {
     const selection = $getSelection()
@@ -71,6 +80,43 @@ export function ToolbarPlugin() {
     }
   }, [editor, isLink])
 
+  const handleImageUpload = useCallback(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const files = event.target.files
+      if (!files || files.length === 0) return
+
+      const file = files[0]
+      setIsUploading(true)
+
+      try {
+        const result = await uploadImage({ file })
+
+        if (result.error) {
+          alert(result.error)
+        } else if (result.url) {
+          editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
+            altText: file.name.replace(/\.[^/.]+$/, ''),
+            src: result.url
+          })
+        }
+      } catch (error) {
+        console.error('Image upload error:', error)
+        alert('画像のアップロードに失敗しました。')
+      } finally {
+        setIsUploading(false)
+        // Reset file input
+        if (fileInputRef.current) {
+          fileInputRef.current.value = ''
+        }
+      }
+    },
+    [editor]
+  )
+
+  const triggerImageUpload = () => {
+    fileInputRef.current?.click()
+  }
+
   return (
     <div className="flex gap-1 border-border border-b bg-muted/5 p-2">
       <button
@@ -103,6 +149,24 @@ export function ToolbarPlugin() {
       >
         <HiOutlineLink />
       </button>
+      <button
+        aria-label="画像"
+        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+          isUploading ? 'opacity-50 cursor-not-allowed' : ''
+        } text-muted-foreground`}
+        disabled={isUploading}
+        onClick={triggerImageUpload}
+        type="button"
+      >
+        <HiOutlinePhoto />
+      </button>
+      <input
+        accept="image/jpeg,image/png,image/gif,image/webp"
+        className="hidden"
+        onChange={handleImageUpload}
+        ref={fileInputRef}
+        type="file"
+      />
     </div>
   )
 }
