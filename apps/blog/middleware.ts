@@ -25,7 +25,7 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
-    const { data: posts, error } = await supabase
+    const { data: post, error } = await supabase
       .from('posts')
       .select('slug, published_at')
       .contains('redirect_from', [pathname])
@@ -38,14 +38,14 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next()
     }
 
-    if (posts?.slug && posts.published_at) {
+    if (post?.slug && post.published_at) {
       // Construct canonical URL
-      const publishedDate = new Date(posts.published_at)
+      const publishedDate = new Date(post.published_at)
       const year = String(publishedDate.getUTCFullYear())
       const month = String(publishedDate.getUTCMonth() + 1).padStart(2, '0')
       const day = String(publishedDate.getUTCDate()).padStart(2, '0')
 
-      const canonicalUrl = `/blog/${year}/${month}/${day}/${posts.slug}`
+      const canonicalUrl = `/blog/${year}/${month}/${day}/${post.slug}`
 
       // 301 redirect to canonical URL
       return NextResponse.redirect(new URL(canonicalUrl, request.url), 301)
