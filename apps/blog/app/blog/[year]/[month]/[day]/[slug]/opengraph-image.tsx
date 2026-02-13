@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og'
-import { MAX_EXCERPT_LENGTH } from '@/lib/constants'
+import { DEFAULT_POST_TITLE, MAX_EXCERPT_LENGTH } from '@/lib/constants'
 import { getPostBySlug } from '@/lib/supabase/posts'
 
 export const alt = 'ykzts.com/blog'
@@ -72,7 +72,7 @@ export default async function Image({ params }: Props) {
             marginBottom: 24
           }}
         >
-          {post.title}
+          {post.title || DEFAULT_POST_TITLE}
         </div>
         {post.excerpt && (
           <div

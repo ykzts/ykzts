@@ -74,7 +74,7 @@ export async function generateMetadata({
       publishedTime: post.published_at,
       title: post.title || DEFAULT_POST_TITLE,
       type: 'article',
-      url: `https://ykzts.com/blog/${year}/${month}/${day}/${slug}`
+      url: `/blog/${year}/${month}/${day}/${slug}`
     },
     title: post.title || DEFAULT_POST_TITLE,
     twitter: {

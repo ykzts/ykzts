@@ -1,11 +1,14 @@
 import type { MetadataRoute } from 'next'
+import { metadata } from '@/app/layout'
 import { getAllPosts, getAllTags } from '@/lib/supabase/posts'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getAllPosts()
   const tags = await getAllTags()
 
-  const baseUrl = 'https://ykzts.com/blog'
+  const baseUrl = metadata.metadataBase
+    ? new URL('/blog', metadata.metadataBase).toString()
+    : 'https://ykzts.com/blog'
 
   // Homepage entry
   const homepageEntry: MetadataRoute.Sitemap[number] = {
@@ -26,7 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       lastModified: new Date(post.updated_at),
       priority: 0.8,
-      url: `${baseUrl}/${year}/${month}/${day}/${post.slug}`
+      url: `${baseUrl}/${year}/${month}/${day}/${encodeURIComponent(post.slug)}`
     }
   })
 

@@ -1,10 +1,13 @@
+import { metadata } from '@/app/layout'
 import { DEFAULT_POST_TITLE, MAX_EXCERPT_LENGTH } from '@/lib/constants'
 import { getPostsForFeed } from '@/lib/supabase/posts'
 
 export async function GET() {
   const posts = await getPostsForFeed(20)
 
-  const baseUrl = 'https://ykzts.com/blog'
+  const baseUrl = metadata.metadataBase
+    ? new URL('/blog', metadata.metadataBase).toString()
+    : 'https://ykzts.com/blog'
   const feedUpdated =
     posts.length > 0
       ? new Date(posts[0].updated_at).toISOString()
@@ -27,7 +30,7 @@ ${posts
     const year = String(publishedDate.getUTCFullYear())
     const month = String(publishedDate.getUTCMonth() + 1).padStart(2, '0')
     const day = String(publishedDate.getUTCDate()).padStart(2, '0')
-    const postUrl = `${baseUrl}/${year}/${month}/${day}/${post.slug}`
+    const postUrl = `${baseUrl}/${year}/${month}/${day}/${encodeURIComponent(post.slug)}`
     const title = post.title || DEFAULT_POST_TITLE
     const summary = post.excerpt || ''
     const truncatedSummary =
