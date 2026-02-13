@@ -7,6 +7,7 @@ import { getCurrentUser } from '@/lib/auth'
 import { invalidateCaches } from '@/lib/revalidate'
 import { detectServiceFromURL } from '@/lib/social-service-detector'
 import { createClient } from '@/lib/supabase/server'
+import { DEFAULT_TIMEZONE } from '@/lib/timezones'
 
 // Validation schemas
 const profileSchema = z.object({
@@ -49,7 +50,7 @@ export async function updateProfile(
       email: formData.get('email') ?? '',
       name: formData.get('name') ?? '',
       tagline: formData.get('tagline') ?? undefined,
-      timezone: formData.get('timezone') ?? 'Asia/Tokyo'
+      timezone: formData.get('timezone') ?? DEFAULT_TIMEZONE
     }
 
     const profileValidation = profileSchema.safeParse(rawProfileData)

@@ -3,6 +3,11 @@
  */
 
 /**
+ * Default timezone for the application
+ */
+export const DEFAULT_TIMEZONE = 'Asia/Tokyo'
+
+/**
  * Get a list of commonly used timezones grouped by region
  */
 export function getCommonTimezones() {
@@ -45,7 +50,7 @@ export function getCommonTimezones() {
  */
 export function formatDateWithTimezone(
   dateString: string,
-  timezone: string = 'Asia/Tokyo',
+  timezone: string = DEFAULT_TIMEZONE,
   options: Intl.DateTimeFormatOptions = {}
 ): string {
   try {
@@ -82,7 +87,7 @@ export function formatDateWithTimezone(
  */
 export function formatDateOnly(
   dateString: string,
-  timezone: string = 'Asia/Tokyo'
+  timezone: string = DEFAULT_TIMEZONE
 ): string {
   try {
     const date = new Date(dateString)
@@ -109,7 +114,7 @@ export function formatDateOnly(
  */
 export function formatDateTime(
   dateString: string,
-  timezone: string = 'Asia/Tokyo'
+  timezone: string = DEFAULT_TIMEZONE
 ): string {
   try {
     const date = new Date(dateString)

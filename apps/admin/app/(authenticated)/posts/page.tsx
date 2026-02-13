@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Suspense } from 'react'
 import { getProfile } from '@/lib/data'
 import { getPosts } from '@/lib/posts'
-import { formatDateWithTimezone } from '@/lib/timezones'
+import { DEFAULT_TIMEZONE, formatDateWithTimezone } from '@/lib/timezones'
 import { NewPostButton } from './_components/new-post-button'
 import { PostsFilters } from './_components/posts-filters'
 import { PostsPagination } from './_components/posts-pagination'
@@ -26,7 +26,7 @@ async function PostsContent({
     getProfile()
   ])
 
-  const timezone = profile?.timezone ?? 'Asia/Tokyo'
+  const timezone = profile?.timezone ?? DEFAULT_TIMEZONE
 
   return (
     <>
