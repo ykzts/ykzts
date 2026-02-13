@@ -18,7 +18,9 @@ export async function getPublisherProfile() {
     .maybeSingle()
 
   if (profileError) {
-    throw new Error(`Failed to fetch publisher profile: ${profileError.message}`)
+    throw new Error(
+      `Failed to fetch publisher profile: ${profileError.message}`
+    )
   }
 
   if (!profileData) {
