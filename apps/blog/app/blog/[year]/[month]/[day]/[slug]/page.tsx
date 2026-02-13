@@ -136,8 +136,7 @@ export default async function PostDetailPage({ params }: PageProps) {
     '@type': 'BlogPosting',
     author: {
       '@type': 'Person',
-      name: post.profile.name,
-      url: baseUrl
+      name: post.profile.name
     },
     dateModified: post.updated_at,
     datePublished: post.published_at,
@@ -145,7 +144,7 @@ export default async function PostDetailPage({ params }: PageProps) {
     headline: post.title || DEFAULT_POST_TITLE,
     publisher: {
       '@type': 'Person',
-      name: post.profile.name,
+      name: 'Yamagishi Kazutoshi',
       url: baseUrl
     }
   }
