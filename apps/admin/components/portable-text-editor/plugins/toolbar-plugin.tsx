@@ -152,7 +152,7 @@ export function ToolbarPlugin() {
       <button
         aria-label="画像"
         className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          isUploading ? 'opacity-50 cursor-not-allowed' : ''
+          isUploading ? 'cursor-not-allowed opacity-50' : ''
         } text-muted-foreground`}
         disabled={isUploading}
         onClick={triggerImageUpload}

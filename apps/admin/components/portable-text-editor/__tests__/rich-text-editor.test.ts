@@ -8,6 +8,7 @@ import {
   createEditor
 } from 'lexical'
 import { describe, expect, it } from 'vitest'
+import { $createImageNode, $isImageNode, ImageNode } from '../nodes/image-node'
 import {
   initializeEditorWithPortableText,
   lexicalToPortableText
@@ -17,7 +18,7 @@ describe('Portable Text Serializer', () => {
   describe('lexicalToPortableText', () => {
     it('should serialize plain text to Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode]
+        nodes: [LinkNode, ImageNode]
       })
 
       editor.update(() => {
@@ -40,7 +41,7 @@ describe('Portable Text Serializer', () => {
 
     it('should serialize bold text to Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode]
+        nodes: [LinkNode, ImageNode]
       })
 
       editor.update(() => {
@@ -60,7 +61,7 @@ describe('Portable Text Serializer', () => {
 
     it('should serialize italic text to Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode]
+        nodes: [LinkNode, ImageNode]
       })
 
       editor.update(() => {
@@ -80,7 +81,7 @@ describe('Portable Text Serializer', () => {
 
     it('should serialize combined formatting to Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode]
+        nodes: [LinkNode, ImageNode]
       })
 
       editor.update(() => {
@@ -101,7 +102,7 @@ describe('Portable Text Serializer', () => {
 
     it('should serialize empty editor to empty block', () => {
       const editor = createEditor({
-        nodes: [LinkNode]
+        nodes: [LinkNode, ImageNode]
       })
 
       const portableText = lexicalToPortableText(editor)
@@ -112,7 +113,7 @@ describe('Portable Text Serializer', () => {
 
     it('should serialize multiple paragraphs to multiple blocks', () => {
       const editor = createEditor({
-        nodes: [LinkNode]
+        nodes: [LinkNode, ImageNode]
       })
 
       editor.update(() => {
@@ -140,7 +141,7 @@ describe('Portable Text Serializer', () => {
   describe('initializeEditorWithPortableText', () => {
     it('should deserialize plain text from Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode]
+        nodes: [LinkNode, ImageNode]
       })
 
       const json = JSON.stringify([
@@ -171,7 +172,7 @@ describe('Portable Text Serializer', () => {
 
     it('should deserialize bold text from Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode]
+        nodes: [LinkNode, ImageNode]
       })
 
       const json = JSON.stringify([
@@ -201,7 +202,7 @@ describe('Portable Text Serializer', () => {
 
     it('should deserialize italic text from Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode]
+        nodes: [LinkNode, ImageNode]
       })
 
       const json = JSON.stringify([
@@ -231,7 +232,7 @@ describe('Portable Text Serializer', () => {
 
     it('should handle invalid JSON gracefully', () => {
       const editor = createEditor({
-        nodes: [LinkNode]
+        nodes: [LinkNode, ImageNode]
       })
 
       initializeEditorWithPortableText(editor, 'invalid json')
@@ -247,7 +248,7 @@ describe('Portable Text Serializer', () => {
   describe('Round-trip serialization', () => {
     it('should preserve plain text through round-trip', () => {
       const editor = createEditor({
-        nodes: [LinkNode]
+        nodes: [LinkNode, ImageNode]
       })
 
       editor.update(() => {
@@ -262,7 +263,7 @@ describe('Portable Text Serializer', () => {
       const json = JSON.stringify(portableText)
 
       const editor2 = createEditor({
-        nodes: [LinkNode]
+        nodes: [LinkNode, ImageNode]
       })
       initializeEditorWithPortableText(editor2, json)
 
@@ -273,7 +274,7 @@ describe('Portable Text Serializer', () => {
 
     it('should preserve formatting through round-trip', () => {
       const editor = createEditor({
-        nodes: [LinkNode]
+        nodes: [LinkNode, ImageNode]
       })
 
       editor.update(() => {
@@ -290,7 +291,7 @@ describe('Portable Text Serializer', () => {
       const json = JSON.stringify(portableText)
 
       const editor2 = createEditor({
-        nodes: [LinkNode]
+        nodes: [LinkNode, ImageNode]
       })
       initializeEditorWithPortableText(editor2, json)
 
@@ -299,6 +300,144 @@ describe('Portable Text Serializer', () => {
       expect(portableText2[0].children[0].marks).toContain('strong')
       expect(portableText2[0].children[0].marks).toContain('em')
       expect(portableText2[0].children[0].text).toBe('Bold italic')
+    })
+  })
+
+  describe('Image Node', () => {
+    it('should serialize image to Portable Text', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const imageNode = $createImageNode({
+          altText: 'Test image',
+          src: 'https://example.com/image.jpg'
+        })
+        root.append(imageNode)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText).toHaveLength(1)
+      expect(portableText[0]._type).toBe('image')
+      if (portableText[0]._type === 'image') {
+        expect(portableText[0].alt).toBe('Test image')
+        expect(portableText[0].asset.url).toBe('https://example.com/image.jpg')
+        expect(portableText[0]._key).toBeDefined()
+      }
+    })
+
+    it('should deserialize image from Portable Text', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode]
+      })
+
+      const json = JSON.stringify([
+        {
+          _key: 'test-key',
+          _type: 'image',
+          alt: 'Test image',
+          asset: {
+            _type: 'reference',
+            url: 'https://example.com/image.jpg'
+          }
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        const imageNode = root.getFirstChild()
+        expect($isImageNode(imageNode)).toBe(true)
+
+        if ($isImageNode(imageNode)) {
+          expect(imageNode.getAltText()).toBe('Test image')
+          expect(imageNode.getSrc()).toBe('https://example.com/image.jpg')
+        }
+      })
+    })
+
+    it('should preserve images through round-trip', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const imageNode = $createImageNode({
+          altText: 'Round trip image',
+          src: 'https://example.com/roundtrip.png'
+        })
+        root.append(imageNode)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+      const json = JSON.stringify(portableText)
+
+      const editor2 = createEditor({
+        nodes: [LinkNode, ImageNode]
+      })
+      initializeEditorWithPortableText(editor2, json)
+
+      const portableText2 = lexicalToPortableText(editor2)
+
+      expect(portableText2).toHaveLength(1)
+      expect(portableText2[0]._type).toBe('image')
+      if (portableText2[0]._type === 'image') {
+        expect(portableText2[0].alt).toBe('Round trip image')
+        expect(portableText2[0].asset.url).toBe(
+          'https://example.com/roundtrip.png'
+        )
+      }
+    })
+
+    it('should handle mixed content with images and text blocks', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+
+        // Add text block
+        const paragraph = $createParagraphNode()
+        const text = $createTextNode('Text before image')
+        paragraph.append(text)
+        root.append(paragraph)
+
+        // Add image
+        const imageNode = $createImageNode({
+          altText: 'Middle image',
+          src: 'https://example.com/middle.jpg'
+        })
+        root.append(imageNode)
+
+        // Add another text block
+        const paragraph2 = $createParagraphNode()
+        const text2 = $createTextNode('Text after image')
+        paragraph2.append(text2)
+        root.append(paragraph2)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText).toHaveLength(3)
+      expect(portableText[0]._type).toBe('block')
+      expect(portableText[1]._type).toBe('image')
+      expect(portableText[2]._type).toBe('block')
+
+      if (portableText[0]._type === 'block') {
+        expect(portableText[0].children[0].text).toBe('Text before image')
+      }
+      if (portableText[1]._type === 'image') {
+        expect(portableText[1].alt).toBe('Middle image')
+      }
+      if (portableText[2]._type === 'block') {
+        expect(portableText[2].children[0].text).toBe('Text after image')
+      }
     })
   })
 })

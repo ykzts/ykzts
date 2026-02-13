@@ -23,14 +23,16 @@ export async function uploadImage({
     // Validate file type
     if (!ALLOWED_TYPES.includes(file.type)) {
       return {
-        error: 'サポートされていない画像形式です。JPEG、PNG、GIF、WebPのみアップロード可能です。'
+        error:
+          'サポートされていない画像形式です。JPEG、PNG、GIF、WebPのみアップロード可能です。'
       }
     }
 
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
       return {
-        error: 'ファイルサイズが大きすぎます。5MB以下の画像をアップロードしてください。'
+        error:
+          'ファイルサイズが大きすぎます。5MB以下の画像をアップロードしてください。'
       }
     }
 

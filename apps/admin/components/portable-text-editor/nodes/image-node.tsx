@@ -126,7 +126,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     return (
       <img
         alt={this.__altText}
-        className="max-w-full h-auto my-2"
+        className="my-2 h-auto max-w-full"
         height={this.__height}
         src={this.__src}
         width={this.__width}
