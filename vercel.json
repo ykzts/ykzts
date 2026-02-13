@@ -1,0 +1,25 @@
+{
+  "crons": [
+    {
+      "path": "/blog/api/cron/publish",
+      "schedule": "*/5 * * * *"
+    }
+  ],
+  "redirects": [
+    {
+      "destination": "/blog/atom.xml",
+      "permanent": true,
+      "source": "/blog/feed"
+    },
+    {
+      "destination": "/blog/atom.xml",
+      "permanent": true,
+      "source": "/blog/index.xml"
+    },
+    {
+      "destination": "/blog/atom.xml",
+      "permanent": true,
+      "source": "/blog/rss"
+    }
+  ]
+}

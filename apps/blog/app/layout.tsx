@@ -2,6 +2,8 @@ import './globals.css'
 import { cn } from '@ykzts/ui/lib/utils'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
+import { draftMode } from 'next/headers'
+import DraftModeBanner from '@/components/draft-mode-banner'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com'),
@@ -36,11 +38,13 @@ const notoSansJp = Noto_Sans_JP({
   weight: ['400', '500', '600', '700']
 })
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: {
   children: React.ReactNode
 }) {
+  const draft = await draftMode()
+
   return (
     <html
       className={cn(
@@ -52,7 +56,10 @@ export default function RootLayout({
       lang="ja"
     >
       <head />
-      <body>{children}</body>
+      <body>
+        {draft.isEnabled && <DraftModeBanner />}
+        {children}
+      </body>
     </html>
   )
 }

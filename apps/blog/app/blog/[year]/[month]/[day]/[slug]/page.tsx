@@ -68,8 +68,10 @@ export async function generateMetadata({
   }
 
   return {
+    authors: [{ name: 'Yamagishi Kazutoshi' }],
     description: post.excerpt || undefined,
     openGraph: {
+      authors: ['Yamagishi Kazutoshi'],
       description: post.excerpt || undefined,
       publishedTime: post.published_at,
       title: post.title || DEFAULT_POST_TITLE,
@@ -107,8 +109,33 @@ export default async function PostDetailPage({ params }: PageProps) {
     notFound()
   }
 
+  // JSON-LD structured data for Article schema
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    author: {
+      '@type': 'Person',
+      name: 'Yamagishi Kazutoshi',
+      url: 'https://ykzts.com'
+    },
+    dateModified: post.updated_at,
+    datePublished: post.published_at,
+    description: post.excerpt || undefined,
+    headline: post.title || DEFAULT_POST_TITLE,
+    publisher: {
+      '@type': 'Person',
+      name: 'Yamagishi Kazutoshi',
+      url: 'https://ykzts.com'
+    }
+  }
+
   return (
     <>
+      <script
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe with JSON.stringify
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
       <Header />
       <main className="container mx-auto px-4 py-8">
         <article className="mx-auto max-w-3xl">
