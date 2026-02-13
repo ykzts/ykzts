@@ -14,7 +14,16 @@ vi.mock('next/headers', () => ({
   draftMode: mockDraftMode
 }))
 
-describe('GET /api/draft', () => {
+// Mock Supabase client
+const mockSupabase = {
+  from: vi.fn()
+}
+
+vi.mock('@/lib/supabase/client', () => ({
+  supabase: mockSupabase
+}))
+
+describe('GET /api/blog/draft', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
@@ -23,7 +32,7 @@ describe('GET /api/draft', () => {
     const { GET } = await import('../route')
 
     const request = new NextRequest(
-      'http://localhost:3000/api/draft?slug=test-post',
+      'http://localhost:3000/api/blog/draft?slug=test-post',
       {
         method: 'GET'
       }
@@ -41,7 +50,7 @@ describe('GET /api/draft', () => {
     const { GET } = await import('../route')
 
     const request = new NextRequest(
-      'http://localhost:3000/api/draft?secret=wrong-secret&slug=test-post',
+      'http://localhost:3000/api/blog/draft?secret=wrong-secret&slug=test-post',
       {
         method: 'GET'
       }
@@ -59,7 +68,7 @@ describe('GET /api/draft', () => {
     const { GET } = await import('../route')
 
     const request = new NextRequest(
-      'http://localhost:3000/api/draft?secret=test-draft-secret',
+      'http://localhost:3000/api/blog/draft?secret=test-draft-secret',
       {
         method: 'GET'
       }
@@ -73,11 +82,27 @@ describe('GET /api/draft', () => {
     expect(mockDraftMode).not.toHaveBeenCalled()
   })
 
-  it('should enable draft mode and redirect with valid credentials', async () => {
+  it('should enable draft mode and redirect to post with valid credentials', async () => {
     const { GET } = await import('../route')
 
+    const mockSelect = vi.fn().mockReturnThis()
+    const mockEq = vi.fn().mockReturnThis()
+    const mockMaybeSingle = vi.fn().mockResolvedValue({
+      data: {
+        published_at: '2024-01-15T12:00:00Z',
+        slug: 'test-post'
+      },
+      error: null
+    })
+
+    mockSupabase.from.mockReturnValue({
+      eq: mockEq,
+      maybeSingle: mockMaybeSingle,
+      select: mockSelect
+    })
+
     const request = new NextRequest(
-      'http://localhost:3000/api/draft?secret=test-draft-secret&slug=test-post',
+      'http://localhost:3000/api/blog/draft?secret=test-draft-secret&slug=test-post',
       {
         method: 'GET'
       }
@@ -87,7 +112,7 @@ describe('GET /api/draft', () => {
 
     expect(response.status).toBe(307)
     expect(response.headers.get('location')).toBe(
-      'http://localhost:3000/blog?preview=test-post'
+      'http://localhost:3000/blog/2024/01/15/test-post'
     )
     expect(mockDraftMode).toHaveBeenCalled()
     expect(mockEnable).toHaveBeenCalled()

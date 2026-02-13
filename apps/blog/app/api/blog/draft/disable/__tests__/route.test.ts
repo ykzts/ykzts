@@ -11,7 +11,7 @@ vi.mock('next/headers', () => ({
   draftMode: mockDraftMode
 }))
 
-describe('GET /api/draft/disable', () => {
+describe('GET /api/blog/draft/disable', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
@@ -19,9 +19,12 @@ describe('GET /api/draft/disable', () => {
   it('should disable draft mode and redirect to homepage', async () => {
     const { GET } = await import('../route')
 
-    const request = new NextRequest('http://localhost:3000/api/draft/disable', {
-      method: 'GET'
-    })
+    const request = new NextRequest(
+      'http://localhost:3000/api/blog/draft/disable',
+      {
+        method: 'GET'
+      }
+    )
 
     const response = await GET(request)
 

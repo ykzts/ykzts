@@ -10,10 +10,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Skip API routes and static assets
+  // Skip API routes, special routes, and static assets
   if (
     pathname.startsWith('/blog/api/') ||
     pathname.startsWith('/blog/_next/') ||
+    pathname === '/blog/atom.xml' ||
+    pathname === '/blog/sitemap.xml' ||
     pathname.match(/\.(jpg|jpeg|png|gif|svg|ico|css|js|woff|woff2|ttf)$/)
   ) {
     return NextResponse.next()

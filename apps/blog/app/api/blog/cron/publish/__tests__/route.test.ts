@@ -27,9 +27,12 @@ describe('GET /api/cron/publish', () => {
   it('should return 401 for missing authorization header', async () => {
     const { GET } = await import('../route')
 
-    const request = new NextRequest('http://localhost:3000/api/cron/publish', {
-      method: 'GET'
-    })
+    const request = new NextRequest(
+      'http://localhost:3000/api/blog/cron/publish',
+      {
+        method: 'GET'
+      }
+    )
 
     const response = await GET(request)
     const data = await response.json()
@@ -42,12 +45,15 @@ describe('GET /api/cron/publish', () => {
   it('should return 401 for invalid authorization token', async () => {
     const { GET } = await import('../route')
 
-    const request = new NextRequest('http://localhost:3000/api/cron/publish', {
-      headers: {
-        authorization: 'Bearer invalid-token'
-      },
-      method: 'GET'
-    })
+    const request = new NextRequest(
+      'http://localhost:3000/api/blog/cron/publish',
+      {
+        headers: {
+          authorization: 'Bearer invalid-token'
+        },
+        method: 'GET'
+      }
+    )
 
     const response = await GET(request)
     const data = await response.json()
@@ -73,12 +79,15 @@ describe('GET /api/cron/publish', () => {
       select: mockSelect
     })
 
-    const request = new NextRequest('http://localhost:3000/api/cron/publish', {
-      headers: {
-        authorization: 'Bearer test-cron-secret'
-      },
-      method: 'GET'
-    })
+    const request = new NextRequest(
+      'http://localhost:3000/api/blog/cron/publish',
+      {
+        headers: {
+          authorization: 'Bearer test-cron-secret'
+        },
+        method: 'GET'
+      }
+    )
 
     const response = await GET(request)
     const data = await response.json()
@@ -121,12 +130,15 @@ describe('GET /api/cron/publish', () => {
         update: mockUpdate
       })
 
-    const request = new NextRequest('http://localhost:3000/api/cron/publish', {
-      headers: {
-        authorization: 'Bearer test-cron-secret'
-      },
-      method: 'GET'
-    })
+    const request = new NextRequest(
+      'http://localhost:3000/api/blog/cron/publish',
+      {
+        headers: {
+          authorization: 'Bearer test-cron-secret'
+        },
+        method: 'GET'
+      }
+    )
 
     const response = await GET(request)
     const data = await response.json()
@@ -158,12 +170,15 @@ describe('GET /api/cron/publish', () => {
       select: mockSelect
     })
 
-    const request = new NextRequest('http://localhost:3000/api/cron/publish', {
-      headers: {
-        authorization: 'Bearer test-cron-secret'
-      },
-      method: 'GET'
-    })
+    const request = new NextRequest(
+      'http://localhost:3000/api/blog/cron/publish',
+      {
+        headers: {
+          authorization: 'Bearer test-cron-secret'
+        },
+        method: 'GET'
+      }
+    )
 
     const response = await GET(request)
     const data = await response.json()
@@ -202,12 +217,15 @@ describe('GET /api/cron/publish', () => {
         update: mockUpdate
       })
 
-    const request = new NextRequest('http://localhost:3000/api/cron/publish', {
-      headers: {
-        authorization: 'Bearer test-cron-secret'
-      },
-      method: 'GET'
-    })
+    const request = new NextRequest(
+      'http://localhost:3000/api/blog/cron/publish',
+      {
+        headers: {
+          authorization: 'Bearer test-cron-secret'
+        },
+        method: 'GET'
+      }
+    )
 
     const response = await GET(request)
     const data = await response.json()
