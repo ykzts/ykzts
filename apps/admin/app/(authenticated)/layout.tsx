@@ -4,6 +4,9 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
   SheetTrigger
 } from '@ykzts/ui/components/sheet'
 import { Menu, User as UserIcon } from 'lucide-react'
@@ -35,7 +38,7 @@ const NAV_LINKS = [
   { href: '/posts', label: 'Posts' }
 ] as const
 
-function MobileNav() {
+function MobileNav({ user }: { user: User }) {
   return (
     <Sheet>
       <SheetTrigger
@@ -45,18 +48,39 @@ function MobileNav() {
         <span className="sr-only">メニューを開く</span>
       </SheetTrigger>
       <SheetContent side="left">
-        <nav className="flex flex-col gap-4 pt-4">
+        <SheetHeader>
+          <SheetTitle>管理画面</SheetTitle>
+        </SheetHeader>
+        <nav className="flex flex-col gap-2 px-4">
           {NAV_LINKS.map(({ href, label }) => (
             <SheetClose
               key={href}
               render={
-                <Link className="text-lg hover:text-primary" href={href} />
+                <Link
+                  className="flex items-center rounded-md px-3 py-2 font-medium text-base transition-colors hover:bg-muted"
+                  href={href}
+                />
               }
             >
               {label}
             </SheetClose>
           ))}
         </nav>
+        <SheetFooter>
+          <div className="flex items-center gap-3 border-t pt-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
+              <UserIcon className="h-5 w-5 text-muted-foreground" />
+            </div>
+            <div className="flex-1">
+              <p className="font-medium text-sm">{user.email}</p>
+            </div>
+          </div>
+          <form action={logout}>
+            <Button className="w-full" type="submit" variant="outline">
+              ログアウト
+            </Button>
+          </form>
+        </SheetFooter>
       </SheetContent>
     </Sheet>
   )
@@ -76,7 +100,7 @@ async function AuthGuard({ children }: { children: React.ReactNode }) {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-4">
-              <MobileNav />
+              <MobileNav user={user} />
               <Link className="font-bold text-xl" href="/">
                 管理画面
               </Link>
