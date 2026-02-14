@@ -39,18 +39,22 @@ export async function detectImages(
   const mdxDir = dirname(mdxFilePath)
 
   // Pattern 1: Markdown image syntax ![alt](path)
-  const markdownImageRegex = /!\[([^\]]*)\]\(([^)]+)\)/g
+  // Use a more robust regex that handles parentheses in paths
+  // Matches until the last ) before optional title or end
+  const markdownImageRegex =
+    /!\[([^\]]*)\]\(([^)"']+?)(?:\s+["'][^"']*["'])?\)/g
   let match: RegExpExecArray | null
 
   // biome-ignore lint/suspicious/noAssignInExpressions: RegExp.exec() is commonly used this way
   while ((match = markdownImageRegex.exec(content)) !== null) {
     const [, altText, imagePath] = match
 
-    // Skip external URLs (http://, https://, //)
+    // Skip external URLs (http://, https://, //) and data URIs
     if (
       imagePath.startsWith('http://') ||
       imagePath.startsWith('https://') ||
-      imagePath.startsWith('//')
+      imagePath.startsWith('//') ||
+      imagePath.startsWith('data:')
     ) {
       continue
     }
@@ -96,11 +100,12 @@ export async function detectImages(
     const altMatch = attributes.match(/alt=["']([^"']*)["']/)
     const altText = altMatch ? altMatch[1] : ''
 
-    // Skip external URLs
+    // Skip external URLs and data URIs
     if (
       imagePath.startsWith('http://') ||
       imagePath.startsWith('https://') ||
-      imagePath.startsWith('//')
+      imagePath.startsWith('//') ||
+      imagePath.startsWith('data:')
     ) {
       continue
     }

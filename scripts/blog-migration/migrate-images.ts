@@ -117,20 +117,20 @@ async function migrate(dryRun = false, shouldTransform = false) {
   if (!dryRun) {
     supabase = initSupabase()
 
-    // Get the authenticated user (service key should authenticate as admin)
-    const {
-      data: { user },
-      error: userError
-    } = await supabase.auth.getUser()
+    // Get user ID from environment variable (service key cannot be used with getUser())
+    // The user ID should be set in MIGRATION_USER_ID environment variable
+    userId = process.env.MIGRATION_USER_ID ?? ''
 
-    if (userError || !user) {
-      console.error('Error: Could not authenticate with Supabase')
-      console.error('Make sure SUPABASE_SERVICE_KEY is correct')
+    if (!userId) {
+      console.error('Error: MIGRATION_USER_ID environment variable is required')
+      console.error(
+        'Please set it to the user ID that should own the uploaded images'
+      )
+      console.error('Example: export MIGRATION_USER_ID=your-user-uuid')
       process.exit(1)
     }
 
-    userId = user.id
-    console.log(`Authenticated as user: ${userId}`)
+    console.log(`Using user ID: ${userId}`)
   }
 
   console.log('🔍 Scanning for MDX files...')
@@ -294,6 +294,20 @@ async function migrate(dryRun = false, shouldTransform = false) {
             console.log('   [DRY RUN] Would update file')
             console.log(`   Updated ${mappings.length} image reference(s)`)
           } else {
+            // Safety check: detect if file has already been transformed
+            // Check if content contains storage URLs (pattern: /storage/v1/object/public/images/)
+            const storageUrlPattern = /\/storage\/v1\/object\/public\/images\//
+            if (storageUrlPattern.test(originalContent)) {
+              console.log(
+                '   ⚠️  File appears to be already transformed (contains storage URLs)'
+              )
+              console.log(
+                '   Skipping to prevent data loss. Use git checkout to restore if needed.'
+              )
+              skippedFiles++
+              continue
+            }
+
             await writeFile(filePath, transformedContent, 'utf-8')
             console.log(`   ✅ Updated ${mappings.length} image reference(s)`)
           }
