@@ -25,7 +25,9 @@ export async function parseMDX(filePath: string): Promise<ParsedMDX> {
   const fileContent = await readFile(filePath, 'utf-8')
 
   // Extract frontmatter between --- markers
-  const frontmatterMatch = fileContent.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
+  const frontmatterMatch = fileContent.match(
+    /^---\n([\s\S]*?)\n---\n([\s\S]*)$/
+  )
 
   if (!frontmatterMatch) {
     throw new Error(`No frontmatter found in ${filePath}`)
@@ -37,7 +39,7 @@ export async function parseMDX(filePath: string): Promise<ParsedMDX> {
   const frontmatter: Frontmatter = {}
   const lines = frontmatterText.split('\n')
 
-  let currentKey: string | null = null
+  const _currentKey: string | null = null
   let inLastUpdate = false
 
   for (const line of lines) {
@@ -100,8 +102,8 @@ export async function parseMDX(filePath: string): Promise<ParsedMDX> {
   }
 
   return {
-    frontmatter,
-    content: content.trim()
+    content: content.trim(),
+    frontmatter
   }
 }
 
@@ -112,7 +114,9 @@ export async function parseMDX(filePath: string): Promise<ParsedMDX> {
  */
 export function parseMDXContent(fileContent: string): ParsedMDX {
   // Extract frontmatter between --- markers
-  const frontmatterMatch = fileContent.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
+  const frontmatterMatch = fileContent.match(
+    /^---\n([\s\S]*?)\n---\n([\s\S]*)$/
+  )
 
   if (!frontmatterMatch) {
     throw new Error('No frontmatter found in content')
@@ -186,7 +190,7 @@ export function parseMDXContent(fileContent: string): ParsedMDX {
   }
 
   return {
-    frontmatter,
-    content: content.trim()
+    content: content.trim(),
+    frontmatter
   }
 }

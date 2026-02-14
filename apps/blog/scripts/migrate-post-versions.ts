@@ -1,15 +1,15 @@
 #!/usr/bin/env tsx
 /**
  * Phase 4.2: Git履歴ベースの移行スクリプト
- * 
+ *
  * このスクリプトは以下を実行します：
  * 1. apps/blog-legacy/blog内の全MDXファイルを検索
  * 2. 各ファイルのGit履歴を分析して複数バージョンを生成
  * 3. post_versionsテーブルに挿入
- * 
+ *
  * Usage:
  *   pnpm tsx apps/blog/scripts/migrate-post-versions.ts [--dry-run]
- * 
+ *
  * Options:
  *   --dry-run  データベースに書き込まずに実行（デバッグ用）
  */
@@ -25,15 +25,19 @@ const REPO_ROOT = '/home/runner/work/ykzts/ykzts'
 const BLOG_LEGACY_DIR = join(REPO_ROOT, 'apps/blog-legacy/blog')
 
 // Supabase client (initialized only if not in dry-run mode)
-let supabase: ReturnType<typeof createClient<Database>> | null = null
+let _supabase: ReturnType<typeof createClient<Database>> | null = null
 
 function initSupabase() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const supabaseKey =
+    process.env.SUPABASE_SERVICE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!supabaseUrl || !supabaseKey) {
     console.error('Error: Supabase credentials not found')
-    console.error('Please set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_KEY')
+    console.error(
+      'Please set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_KEY'
+    )
     process.exit(1)
   }
 
@@ -67,13 +71,13 @@ async function findMDXFiles(dir: string): Promise<string[]> {
 function extractSlug(filePath: string): string {
   const relativePath = relative(BLOG_LEGACY_DIR, filePath)
   const parts = relativePath.split('/')
-  
+
   // Expected format: YYYY/MM/DD/slug/index.mdx
   if (parts.length >= 5 && parts[4] === 'index.mdx') {
     const [year, month, day, slug] = parts
     return `${year}-${month}-${day}-${slug}`
   }
-  
+
   // Fallback
   return relativePath.replace(/\//g, '-').replace(/\.mdx$/, '')
 }
@@ -82,21 +86,21 @@ function extractSlug(filePath: string): string {
  * Convert MDX content to Portable Text format
  * This is a simplified version - in production, you'd use a proper converter
  */
-function convertToPortableText(content: string): unknown {
+function _convertToPortableText(content: string): unknown {
   // For now, store as a simple text block
   return [
     {
-      _type: 'block',
       _key: 'content',
-      style: 'normal',
+      _type: 'block',
       children: [
         {
-          _type: 'span',
           _key: 'text',
-          text: content,
-          marks: []
+          _type: 'span',
+          marks: [],
+          text: content
         }
-      ]
+      ],
+      style: 'normal'
     }
   ]
 }
@@ -107,7 +111,7 @@ function convertToPortableText(content: string): unknown {
 async function migrate(dryRun = false) {
   // Initialize Supabase client if not in dry-run mode
   if (!dryRun) {
-    supabase = initSupabase()
+    _supabase = initSupabase()
   }
 
   console.log('🔍 Scanning for MDX files...')
@@ -132,7 +136,9 @@ async function migrate(dryRun = false) {
       console.log(`   Found ${versions.length} version(s)`)
 
       if (versions.length === 0) {
-        console.log(`   ⚠️  No versions found (file might not be in Git history)`)
+        console.log(
+          `   ⚠️  No versions found (file might not be in Git history)`
+        )
         continue
       }
 
@@ -147,8 +153,10 @@ async function migrate(dryRun = false) {
         console.log(`   Version ${version.versionNumber}:`)
         console.log(`     Date: ${version.versionDate.toISOString()}`)
         console.log(`     Title: ${version.frontmatter.title}`)
-        console.log(`     Tags: ${version.frontmatter.tags?.join(', ') || 'none'}`)
-        
+        console.log(
+          `     Tags: ${version.frontmatter.tags?.join(', ') || 'none'}`
+        )
+
         if (dryRun) {
           console.log(`     [DRY RUN] Would insert into database`)
         } else {
@@ -166,7 +174,7 @@ async function migrate(dryRun = false) {
   }
 
   // Summary
-  console.log('\n\n' + '='.repeat(60))
+  console.log(`\n\n${'='.repeat(60)}`)
   console.log('📊 Migration Summary')
   console.log('='.repeat(60))
   console.log(`Total files found:              ${mdxFiles.length}`)
@@ -174,7 +182,7 @@ async function migrate(dryRun = false) {
   console.log(`Files with multiple versions:   ${filesWithMultipleVersions}`)
   console.log(`Total versions generated:       ${totalVersions}`)
   console.log(`Errors:                         ${errors}`)
-  
+
   if (dryRun) {
     console.log('\n⚠️  DRY RUN MODE - No data was written to database')
   }

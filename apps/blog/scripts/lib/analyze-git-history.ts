@@ -47,11 +47,11 @@ export async function getFileHistory(filePath: string): Promise<GitCommit[]> {
         const parsed = parseMDXContent(content)
 
         commits.push({
-          hash,
+          content: parsed.content,
           date: new Date(dateStr),
-          message,
           frontmatter: parsed.frontmatter,
-          content: parsed.content
+          hash,
+          message
         })
       } catch (error) {
         // File might not exist in this commit (e.g., it was deleted then re-added)
@@ -101,9 +101,7 @@ export function detectLastUpdateChanges(commits: GitCommit[]): GitCommit[] {
  * @param filePath - Path to the file relative to repository root
  * @returns Array of version data with version_date
  */
-export async function generateVersionsFromHistory(
-  filePath: string
-): Promise<
+export async function generateVersionsFromHistory(filePath: string): Promise<
   Array<{
     versionNumber: number
     versionDate: Date
@@ -138,12 +136,12 @@ export async function generateVersionsFromHistory(
     : firstCommit.date
 
   versions.push({
-    versionNumber: 1,
-    versionDate: initialDate,
-    frontmatter: firstCommit.frontmatter,
-    content: firstCommit.content,
     commitHash: firstCommit.hash,
-    commitMessage: firstCommit.message
+    commitMessage: firstCommit.message,
+    content: firstCommit.content,
+    frontmatter: firstCommit.frontmatter,
+    versionDate: initialDate,
+    versionNumber: 1
   })
 
   // Track changes to last_update.date
@@ -157,12 +155,12 @@ export async function generateVersionsFromHistory(
     // If last_update.date changed
     if (currentLastUpdate && currentLastUpdate !== previousLastUpdate) {
       versions.push({
-        versionNumber: versionNumber++,
-        versionDate: new Date(currentLastUpdate),
-        frontmatter: commit.frontmatter,
-        content: commit.content,
         commitHash: commit.hash,
-        commitMessage: commit.message
+        commitMessage: commit.message,
+        content: commit.content,
+        frontmatter: commit.frontmatter,
+        versionDate: new Date(currentLastUpdate),
+        versionNumber: versionNumber++
       })
       previousLastUpdate = currentLastUpdate
     }
