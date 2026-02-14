@@ -14,7 +14,7 @@
  *   --dry-run  データベースに書き込まずに実行（デバッグ用）
  */
 
-import { exec } from 'node:child_process'
+import { execFile } from 'node:child_process'
 import { readdir } from 'node:fs/promises'
 import { dirname, join, relative, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -26,7 +26,7 @@ import {
   setRepoRoot
 } from './lib/analyze-git-history'
 
-const execAsync = promisify(exec)
+const execFileAsync = promisify(execFile)
 
 // Repository root - auto-detect using git or environment variable
 async function getRepoRoot(): Promise<string> {
@@ -35,7 +35,10 @@ async function getRepoRoot(): Promise<string> {
   }
 
   try {
-    const { stdout } = await execAsync('git rev-parse --show-toplevel')
+    const { stdout } = await execFileAsync('git', [
+      'rev-parse',
+      '--show-toplevel'
+    ])
     return stdout.trim()
   } catch {
     // Fallback to script location
