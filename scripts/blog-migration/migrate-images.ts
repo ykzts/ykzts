@@ -20,13 +20,14 @@
 import { execFile } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { readdir, readFile, stat, writeFile } from 'node:fs/promises'
-import { dirname, extname, join, relative } from 'node:path'
+import { dirname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { promisify } from 'node:util'
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '@ykzts/supabase'
 import {
   detectImagesInFile,
+  getExtensionFromMimeType,
   getMimeType,
   type ImageReference
 } from './lib/detect-images.ts'
@@ -122,8 +123,8 @@ async function uploadImage(
 ): Promise<string | null> {
   const fileContent = await readFile(imageRef.absolutePath)
   const fileHash = generateFileHash(fileContent)
-  const ext = extname(imageRef.absolutePath).substring(1) // Remove leading dot
   const mimeType = getMimeType(imageRef.absolutePath)
+  const ext = getExtensionFromMimeType(mimeType)
 
   // Use hash as filename to deduplicate
   const fileName = `${fileHash}.${ext}`
@@ -205,7 +206,8 @@ interface ImageMigrationResult {
  * Main migration function
  */
 async function migrate(dryRun = false, shouldTransform = false) {
-  // Initialize Supabase client if not in dry-run mode
+  // Initialize Supabase client and get user ID if not in dry-run mode
+  let userId = 'dry-run-user-id'
   if (!dryRun) {
     supabase = initSupabase()
 
@@ -221,7 +223,8 @@ async function migrate(dryRun = false, shouldTransform = false) {
       process.exit(1)
     }
 
-    console.log(`Authenticated as user: ${user.id}`)
+    userId = user.id
+    console.log(`Authenticated as user: ${userId}`)
   }
 
   console.log('🔍 Scanning for MDX files...')
@@ -287,17 +290,7 @@ async function migrate(dryRun = false, shouldTransform = false) {
 
         // Upload the image (or simulate in dry-run mode)
         let newUrl: string | null = null
-        if (dryRun || !supabase) {
-          // For dry-run, use a fake user ID
-          newUrl = await uploadImage(image, 'dry-run-user-id', true)
-        } else {
-          const {
-            data: { user }
-          } = await supabase.auth.getUser()
-          if (user) {
-            newUrl = await uploadImage(image, user.id, false)
-          }
-        }
+        newUrl = await uploadImage(image, userId, dryRun)
 
         if (newUrl) {
           uploadedImages++
