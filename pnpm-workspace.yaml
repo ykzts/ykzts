@@ -3,6 +3,7 @@ packages:
   - packages/*
   - profile
   - renovate-config
+  - scripts/*
 
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:

@@ -1,0 +1,13 @@
+{
+  "name": "blog-migration-scripts",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "2.95.3",
+    "@ykzts/supabase": "workspace:*"
+  },
+  "devDependencies": {
+    "vitest": "4.0.18"
+  }
+}
