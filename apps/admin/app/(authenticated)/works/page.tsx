@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import { getProfileTimezone, getWorks } from '@/lib/data'
 import { formatDateOnly } from '@/lib/timezones'
 import { NewWorkButton } from './_components/new-work-button'
+import { WorksPageSkeleton } from './_components/works-page-skeleton'
 
 async function WorksContent() {
   const [works, timezone] = await Promise.all([
@@ -66,7 +67,7 @@ export default function WorksPage() {
         <NewWorkButton />
       </div>
 
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<WorksPageSkeleton />}>
         <WorksContent />
       </Suspense>
     </div>
