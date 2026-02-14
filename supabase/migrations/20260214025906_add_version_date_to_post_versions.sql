@@ -7,11 +7,11 @@
 ALTER TABLE post_versions
   ADD COLUMN version_date TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now());
 
--- 2. Populate existing records with created_at values
--- This ensures existing data remains consistent
+-- 2. Update existing records to set version_date from created_at
+-- Note: New records will use the DEFAULT (now()), but existing records
+-- should preserve their created_at timestamp as the version_date
 UPDATE post_versions
-SET version_date = created_at
-WHERE version_date IS NULL;
+SET version_date = created_at;
 
 -- 3. Update create_post function to include version_date parameter
 CREATE OR REPLACE FUNCTION create_post(
@@ -107,7 +107,8 @@ DECLARE
   v_current_title TEXT;
   v_current_excerpt TEXT;
   v_current_tags TEXT[];
-  v_current_published_at TIMESTAMPTZ;
+  v_db_published_at TIMESTAMPTZ;
+  v_final_published_at TIMESTAMPTZ;
   v_version_date TIMESTAMPTZ;
 BEGIN
   -- Get the profile_id for the current user
@@ -138,22 +139,26 @@ BEGIN
   END IF;
 
   -- Get current values for fields not being updated
-  SELECT title, excerpt, tags, published_at INTO v_current_title, v_current_excerpt, v_current_tags, v_current_published_at
+  SELECT title, excerpt, tags, published_at INTO v_current_title, v_current_excerpt, v_current_tags, v_db_published_at
   FROM posts
   WHERE id = p_post_id;
 
-  -- Auto-set published_at when publishing for the first time
+  -- Determine final published_at value
   IF p_status = 'published' THEN
     -- If no published_at provided and post doesn't have one, set to now()
     IF p_published_at IS NULL THEN
-      IF v_current_published_at IS NULL THEN
-        v_current_published_at := now();
+      IF v_db_published_at IS NULL THEN
+        v_final_published_at := now();
+      ELSE
+        v_final_published_at := v_db_published_at;
       END IF;
     ELSE
-      v_current_published_at := p_published_at;
+      v_final_published_at := p_published_at;
     END IF;
   ELSIF p_published_at IS NOT NULL THEN
-    v_current_published_at := p_published_at;
+    v_final_published_at := p_published_at;
+  ELSE
+    v_final_published_at := v_db_published_at;
   END IF;
 
   -- Update the post fields that are provided
@@ -165,7 +170,7 @@ BEGIN
     tags = COALESCE(p_tags, tags),
     status = COALESCE(p_status, status),
     published_at = CASE
-      WHEN p_status = 'published' THEN v_current_published_at
+      WHEN p_status = 'published' THEN v_final_published_at
       ELSE COALESCE(p_published_at, published_at)
     END
   WHERE id = p_post_id;
