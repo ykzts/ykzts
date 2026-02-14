@@ -29,6 +29,8 @@ function parseFrontmatter(frontmatterText: string): Frontmatter {
 
   /**
    * Parse array value from string like "[item1, item2]"
+   * @param value - String value that may contain an array notation
+   * @returns Array of trimmed non-empty strings
    */
   const parseArray = (value: string): string[] => {
     const arrayMatch = value.match(/\[(.*?)\]/)

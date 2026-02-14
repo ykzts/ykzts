@@ -25,6 +25,8 @@ const REPO_ROOT = process.env.REPO_ROOT || process.cwd()
 const BLOG_LEGACY_DIR = join(REPO_ROOT, 'apps/blog-legacy/blog')
 
 // Supabase client (initialized only if not in dry-run mode)
+// Note: Prefixed with underscore as it's unused in current implementation.
+// Will be used when database insertion logic is implemented in Phase 4.3.
 let _supabase: ReturnType<typeof createClient<Database>> | null = null
 
 function initSupabase() {
