@@ -45,6 +45,7 @@ export type Database = {
           post_id: string
           tags: string[] | null
           title: string | null
+          version_date: string
           version_number: number
         }
         Insert: {
@@ -57,6 +58,7 @@ export type Database = {
           post_id: string
           tags?: string[] | null
           title?: string | null
+          version_date?: string
           version_number: number
         }
         Update: {
@@ -69,6 +71,7 @@ export type Database = {
           post_id?: string
           tags?: string[] | null
           title?: string | null
+          version_date?: string
           version_number?: number
         }
         Relationships: [
@@ -312,6 +315,7 @@ export type Database = {
           p_status?: string
           p_tags?: string[]
           p_title: string
+          p_version_date?: string
         }
         Returns: string
       }
@@ -327,6 +331,7 @@ export type Database = {
           p_status?: string
           p_tags?: string[]
           p_title?: string
+          p_version_date?: string
         }
         Returns: string
       }
