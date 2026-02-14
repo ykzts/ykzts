@@ -16,6 +16,7 @@
     "./components/label": "./src/components/label.tsx",
     "./components/select": "./src/components/select.tsx",
     "./components/separator": "./src/components/separator.tsx",
+    "./components/sheet": "./src/components/sheet.tsx",
     "./components/skeleton": "./src/components/skeleton.tsx",
     "./components/textarea": "./src/components/textarea.tsx",
     "./lib/utils": "./src/lib/utils.ts"
