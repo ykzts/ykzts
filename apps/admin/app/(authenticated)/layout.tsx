@@ -29,28 +29,33 @@ function UserInfo({ user }: { user: User }) {
   )
 }
 
+const NAV_LINKS = [
+  { href: '/profile', label: 'Profile' },
+  { href: '/works', label: 'Works' },
+  { href: '/posts', label: 'Posts' }
+] as const
+
 function MobileNav() {
   return (
     <Sheet>
       <SheetTrigger
-        render={
-          <Button className="sm:hidden" size="icon-sm" variant="ghost" />
-        }
+        render={<Button className="sm:hidden" size="icon-sm" variant="ghost" />}
       >
         <Menu className="h-5 w-5" />
         <span className="sr-only">メニューを開く</span>
       </SheetTrigger>
       <SheetContent side="left">
         <nav className="flex flex-col gap-4 pt-4">
-          <SheetClose render={<Link className="text-lg hover:text-primary" href="/profile" />}>
-            Profile
-          </SheetClose>
-          <SheetClose render={<Link className="text-lg hover:text-primary" href="/works" />}>
-            Works
-          </SheetClose>
-          <SheetClose render={<Link className="text-lg hover:text-primary" href="/posts" />}>
-            Posts
-          </SheetClose>
+          {NAV_LINKS.map(({ href, label }) => (
+            <SheetClose
+              key={href}
+              render={
+                <Link className="text-lg hover:text-primary" href={href} />
+              }
+            >
+              {label}
+            </SheetClose>
+          ))}
         </nav>
       </SheetContent>
     </Sheet>
@@ -76,15 +81,11 @@ async function AuthGuard({ children }: { children: React.ReactNode }) {
                 管理画面
               </Link>
               <div className="ml-2 hidden items-center gap-4 sm:flex">
-                <Link className="hover:text-primary" href="/profile">
-                  Profile
-                </Link>
-                <Link className="hover:text-primary" href="/works">
-                  Works
-                </Link>
-                <Link className="hover:text-primary" href="/posts">
-                  Posts
-                </Link>
+                {NAV_LINKS.map(({ href, label }) => (
+                  <Link className="hover:text-primary" href={href} key={href}>
+                    {label}
+                  </Link>
+                ))}
               </div>
             </div>
             <UserInfo user={user} />
