@@ -24,13 +24,13 @@ export function transformMDXContent(
   let transformedContent = content
 
   for (const mapping of mappings) {
-    const { altText, newUrl, originalPath } = mapping
+    const { newUrl, originalPath } = mapping
 
     // Escape special regex characters in the path
     const escapedPath = originalPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
     // Pattern 1: Transform markdown images ![alt](path)
-    // We need to be careful to only replace images with matching alt text
+    // Match by path only to avoid issues with empty or duplicate alt text
     const markdownRegex = new RegExp(
       `!\\[([^\\]]*)\\]\\(${escapedPath}\\)`,
       'g'
@@ -38,18 +38,14 @@ export function transformMDXContent(
 
     transformedContent = transformedContent.replace(
       markdownRegex,
-      (match, capturedAlt) => {
-        // Only replace if the alt text matches or is empty
-        if (capturedAlt === altText || altText === '') {
-          return `![${capturedAlt}](${newUrl})`
-        }
-        return match
+      (_match, capturedAlt) => {
+        return `![${capturedAlt}](${newUrl})`
       }
     )
 
     // Pattern 2: Transform JSX img tags
     // Match: <img ... src="path" ... />
-    // We need to handle attributes in any order
+    // We match by path only to avoid issues with empty or duplicate alt text
     const jsxRegex = new RegExp(
       `<img\\s+([^>]*?)src=["']${escapedPath}["']([^>]*?)\\s*\\/?>`,
       'gi'
@@ -57,16 +53,9 @@ export function transformMDXContent(
 
     transformedContent = transformedContent.replace(
       jsxRegex,
-      (match, attrsBefore, attrsAfter) => {
-        // Check if this img tag has the matching alt text
-        const altMatch = match.match(/alt=["']([^"']*)["']/)
-        const imgAltText = altMatch ? altMatch[1] : ''
-
-        if (imgAltText === altText || altText === '') {
-          // Replace the src attribute value
-          return `<img ${attrsBefore}src="${newUrl}"${attrsAfter} />`
-        }
-        return match
+      (_match, attrsBefore, attrsAfter) => {
+        // Replace the src attribute value
+        return `<img ${attrsBefore}src="${newUrl}"${attrsAfter} />`
       }
     )
   }

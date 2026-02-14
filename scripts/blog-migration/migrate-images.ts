@@ -332,6 +332,8 @@ async function migrate(dryRun = false, shouldTransform = false) {
 
     // Group results by MDX file
     const resultsByFile = new Map<string, ImageMigrationResult[]>()
+    const imagesByFile = new Map<string, ImageReference[]>()
+
     for (const result of imageResults) {
       const existing = resultsByFile.get(result.mdxFile) || []
       existing.push(result)
@@ -358,22 +360,27 @@ async function migrate(dryRun = false, shouldTransform = false) {
         // Read the file content
         const originalContent = await readFile(filePath, 'utf-8')
 
+        // Detect images once and cache
+        if (!imagesByFile.has(relativePath)) {
+          const images = await detectImagesInFile(filePath)
+          imagesByFile.set(relativePath, images)
+        }
+        const images = imagesByFile.get(relativePath) || []
+
         // Create URL mapping for this file
         const uploadedUrls = new Map<string, string>()
         for (const result of results) {
           if (result.newUrl) {
-            // We need to get the original images to map absolute paths
-            const images = await detectImagesInFile(filePath)
+            // Find the matching image by path
             for (const img of images) {
-              if (img.path === result.originalPath && result.newUrl) {
+              if (img.path === result.originalPath) {
                 uploadedUrls.set(img.absolutePath, result.newUrl)
+                break
               }
             }
           }
         }
 
-        // Re-detect images to get proper ImageReference objects
-        const images = await detectImagesInFile(filePath)
         const mappings = createImageMappings(images, uploadedUrls)
 
         // Transform the content
