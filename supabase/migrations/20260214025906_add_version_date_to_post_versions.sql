@@ -107,6 +107,7 @@ DECLARE
   v_current_title TEXT;
   v_current_excerpt TEXT;
   v_current_tags TEXT[];
+  v_current_content JSONB;
   v_db_published_at TIMESTAMPTZ;
   v_final_published_at TIMESTAMPTZ;
   v_version_date TIMESTAMPTZ;
@@ -120,10 +121,11 @@ BEGIN
     RAISE EXCEPTION 'User profile not found';
   END IF;
 
-  -- Check ownership
+  -- Check ownership and lock the row to prevent race conditions
   SELECT profile_id INTO v_owner_profile_id
   FROM posts
-  WHERE id = p_post_id;
+  WHERE id = p_post_id
+  FOR UPDATE;
 
   IF v_owner_profile_id IS NULL THEN
     RAISE EXCEPTION 'Post not found';
@@ -169,10 +171,7 @@ BEGIN
     excerpt = COALESCE(p_excerpt, excerpt),
     tags = COALESCE(p_tags, tags),
     status = COALESCE(p_status, status),
-    published_at = CASE
-      WHEN p_status = 'published' THEN v_final_published_at
-      ELSE COALESCE(p_published_at, published_at)
-    END
+    published_at = v_final_published_at
   WHERE id = p_post_id;
 
   -- Create a new version if content is provided OR if any metadata changed
@@ -189,49 +188,45 @@ BEGIN
     v_version_date := COALESCE(p_version_date, now());
 
     -- Get current content if not provided
-    DECLARE
-      v_current_content JSONB;
-    BEGIN
-      IF p_content IS NULL THEN
-        SELECT content INTO v_current_content
-        FROM post_versions
-        WHERE post_id = p_post_id AND id = (
-          SELECT current_version_id FROM posts WHERE id = p_post_id
-        );
-      ELSE
-        v_current_content := p_content;
-      END IF;
+    IF p_content IS NULL THEN
+      SELECT content INTO v_current_content
+      FROM post_versions
+      WHERE post_id = p_post_id AND id = (
+        SELECT current_version_id FROM posts WHERE id = p_post_id
+      );
+    ELSE
+      v_current_content := p_content;
+    END IF;
 
-      -- Insert the new version with version_date
-      INSERT INTO post_versions (
-        post_id,
-        version_number,
-        content,
-        title,
-        excerpt,
-        tags,
-        created_by,
-        change_summary,
-        version_date
-      )
-      VALUES (
-        p_post_id,
-        v_max_version,
-        v_current_content,
-        COALESCE(p_title, v_current_title),
-        COALESCE(p_excerpt, v_current_excerpt),
-        COALESCE(p_tags, v_current_tags),
-        v_profile_id,
-        p_change_summary,
-        v_version_date
-      )
-      RETURNING id INTO v_version_id;
+    -- Insert the new version with version_date
+    INSERT INTO post_versions (
+      post_id,
+      version_number,
+      content,
+      title,
+      excerpt,
+      tags,
+      created_by,
+      change_summary,
+      version_date
+    )
+    VALUES (
+      p_post_id,
+      v_max_version,
+      v_current_content,
+      COALESCE(p_title, v_current_title),
+      COALESCE(p_excerpt, v_current_excerpt),
+      COALESCE(p_tags, v_current_tags),
+      v_profile_id,
+      p_change_summary,
+      v_version_date
+    )
+    RETURNING id INTO v_version_id;
 
-      -- Update the post to reference the new current version
-      UPDATE posts
-      SET current_version_id = v_version_id
-      WHERE id = p_post_id;
-    END;
+    -- Update the post to reference the new current version
+    UPDATE posts
+    SET current_version_id = v_version_id
+    WHERE id = p_post_id;
   END IF;
 
   RETURN p_post_id;
