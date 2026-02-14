@@ -107,6 +107,7 @@ DECLARE
   v_current_title TEXT;
   v_current_excerpt TEXT;
   v_current_tags TEXT[];
+  v_current_published_at TIMESTAMPTZ;
   v_version_date TIMESTAMPTZ;
 BEGIN
   -- Get the profile_id for the current user
@@ -137,7 +138,7 @@ BEGIN
   END IF;
 
   -- Get current values for fields not being updated
-  SELECT title, excerpt, tags, published_at INTO v_current_title, v_current_excerpt, v_current_tags, p_published_at
+  SELECT title, excerpt, tags, published_at INTO v_current_title, v_current_excerpt, v_current_tags, v_current_published_at
   FROM posts
   WHERE id = p_post_id;
 
@@ -145,11 +146,14 @@ BEGIN
   IF p_status = 'published' THEN
     -- If no published_at provided and post doesn't have one, set to now()
     IF p_published_at IS NULL THEN
-      SELECT published_at INTO p_published_at FROM posts WHERE id = p_post_id;
-      IF p_published_at IS NULL THEN
-        p_published_at := now();
+      IF v_current_published_at IS NULL THEN
+        v_current_published_at := now();
       END IF;
+    ELSE
+      v_current_published_at := p_published_at;
     END IF;
+  ELSIF p_published_at IS NOT NULL THEN
+    v_current_published_at := p_published_at;
   END IF;
 
   -- Update the post fields that are provided
@@ -161,7 +165,7 @@ BEGIN
     tags = COALESCE(p_tags, tags),
     status = COALESCE(p_status, status),
     published_at = CASE
-      WHEN p_status = 'published' THEN p_published_at
+      WHEN p_status = 'published' THEN v_current_published_at
       ELSE COALESCE(p_published_at, published_at)
     END
   WHERE id = p_post_id;
