@@ -8,20 +8,44 @@
  * 3. post_versionsテーブルに挿入
  *
  * Usage:
- *   pnpm tsx apps/blog/scripts/migrate-post-versions.ts [--dry-run]
+ *   pnpm tsx scripts/blog-migration/migrate-post-versions.ts [--dry-run]
  *
  * Options:
  *   --dry-run  データベースに書き込まずに実行（デバッグ用）
  */
 
+import { exec } from 'node:child_process'
 import { readdir } from 'node:fs/promises'
-import { join, relative } from 'node:path'
+import { dirname, join, relative, sep } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { promisify } from 'node:util'
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '@ykzts/supabase'
-import { generateVersionsFromHistory } from './lib/analyze-git-history.ts'
+import {
+  generateVersionsFromHistory,
+  setRepoRoot
+} from './lib/analyze-git-history'
 
-// Repository root - use environment variable or detect from script location
-const REPO_ROOT = process.env.REPO_ROOT || process.cwd()
+const execAsync = promisify(exec)
+
+// Repository root - auto-detect using git or environment variable
+async function getRepoRoot(): Promise<string> {
+  if (process.env.REPO_ROOT) {
+    return process.env.REPO_ROOT
+  }
+
+  try {
+    const { stdout } = await execAsync('git rev-parse --show-toplevel')
+    return stdout.trim()
+  } catch {
+    // Fallback to script location
+    return join(dirname(fileURLToPath(import.meta.url)), '..', '..')
+  }
+}
+
+const REPO_ROOT = await getRepoRoot()
+// Set repo root for git history analysis
+setRepoRoot(REPO_ROOT)
 const BLOG_LEGACY_DIR = join(REPO_ROOT, 'apps/blog-legacy/blog')
 
 // Supabase client (initialized only if not in dry-run mode)
@@ -31,14 +55,15 @@ let _supabase: ReturnType<typeof createClient<Database>> | null = null
 
 function initSupabase() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseKey =
-    process.env.SUPABASE_SERVICE_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const supabaseKey = process.env.SUPABASE_SERVICE_KEY
 
   if (!supabaseUrl || !supabaseKey) {
     console.error('Error: Supabase credentials not found')
     console.error(
       'Please set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_KEY'
+    )
+    console.error(
+      'Note: SUPABASE_SERVICE_KEY is required for migration (not NEXT_PUBLIC_SUPABASE_ANON_KEY)'
     )
     process.exit(1)
   }
@@ -72,7 +97,9 @@ async function findMDXFiles(dir: string): Promise<string[]> {
  */
 function extractSlug(filePath: string): string {
   const relativePath = relative(BLOG_LEGACY_DIR, filePath)
-  const parts = relativePath.split('/')
+  // Normalize path separators to forward slash for consistency across platforms
+  const normalizedPath = relativePath.split(sep).join('/')
+  const parts = normalizedPath.split('/')
 
   // Expected format: YYYY/MM/DD/slug/index.mdx
   if (parts.length >= 5 && parts[4] === 'index.mdx') {
@@ -81,7 +108,7 @@ function extractSlug(filePath: string): string {
   }
 
   // Fallback
-  return relativePath.replace(/\//g, '-').replace(/\.mdx$/, '')
+  return normalizedPath.replace(/\//g, '-').replace(/\.mdx$/, '')
 }
 
 /**

@@ -1,12 +1,16 @@
-import { exec } from 'node:child_process'
+import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import type { Frontmatter } from './parse-mdx.ts'
-import { parseMDXContent } from './parse-mdx.ts'
+import type { Frontmatter } from './parse-mdx'
+import { parseMDXContent } from './parse-mdx'
 
-const execAsync = promisify(exec)
+const execFileAsync = promisify(execFile)
 
-// Repository root - configurable via environment variable
-const REPO_ROOT = process.env.REPO_ROOT || process.cwd()
+// Repository root - will be set by the migration script
+export let REPO_ROOT = process.cwd()
+
+export function setRepoRoot(root: string) {
+  REPO_ROOT = root
+}
 
 export interface GitCommit {
   hash: string
@@ -23,9 +27,10 @@ export interface GitCommit {
  */
 export async function getFileHistory(filePath: string): Promise<GitCommit[]> {
   try {
-    // Get all commits that affected this file
-    const { stdout: logOutput } = await execAsync(
-      `git log --all --format="%H|%ai|%s" --follow -- "${filePath}"`,
+    // Get all commits that affected this file (using %aI for strict ISO 8601 dates)
+    const { stdout: logOutput } = await execFileAsync(
+      'git',
+      ['log', '--all', '--format=%H|%aI|%s', '--follow', '--', filePath],
       { cwd: REPO_ROOT }
     )
 
@@ -42,26 +47,35 @@ export async function getFileHistory(filePath: string): Promise<GitCommit[]> {
 
       // Get file content at this commit
       try {
-        const { stdout: content } = await execAsync(
-          `git show ${hash}:"${filePath}"`,
+        const { stdout: content } = await execFileAsync(
+          'git',
+          ['show', `${hash}:${filePath}`],
           { cwd: REPO_ROOT }
         )
 
         // Parse MDX content
-        const parsed = parseMDXContent(content)
+        try {
+          const parsed = parseMDXContent(content)
 
-        commits.push({
-          content: parsed.content,
-          date: new Date(dateStr),
-          frontmatter: parsed.frontmatter,
-          hash,
-          message
-        })
-      } catch (error) {
+          commits.push({
+            content: parsed.content,
+            date: new Date(dateStr),
+            frontmatter: parsed.frontmatter,
+            hash,
+            message
+          })
+        } catch (parseError) {
+          // Content exists at this commit but could not be parsed
+          console.error(
+            `Failed to parse MDX content for ${filePath} at commit ${hash}:`,
+            parseError
+          )
+        }
+      } catch (gitError) {
         // File might not exist in this commit (e.g., it was deleted then re-added)
         console.warn(
           `Could not get content for ${filePath} at commit ${hash}:`,
-          error
+          gitError
         )
       }
     }
