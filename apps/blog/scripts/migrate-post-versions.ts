@@ -20,8 +20,8 @@ import { createClient } from '@supabase/supabase-js'
 import type { Database } from '@ykzts/supabase'
 import { generateVersionsFromHistory } from './lib/analyze-git-history.ts'
 
-// Repository root
-const REPO_ROOT = '/home/runner/work/ykzts/ykzts'
+// Repository root - use environment variable or detect from script location
+const REPO_ROOT = process.env.REPO_ROOT || process.cwd()
 const BLOG_LEGACY_DIR = join(REPO_ROOT, 'apps/blog-legacy/blog')
 
 // Supabase client (initialized only if not in dry-run mode)

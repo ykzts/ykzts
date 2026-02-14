@@ -5,6 +5,9 @@ import { parseMDXContent } from './parse-mdx.ts'
 
 const execAsync = promisify(exec)
 
+// Repository root - configurable via environment variable
+const REPO_ROOT = process.env.REPO_ROOT || process.cwd()
+
 export interface GitCommit {
   hash: string
   date: Date
@@ -21,9 +24,9 @@ export interface GitCommit {
 export async function getFileHistory(filePath: string): Promise<GitCommit[]> {
   try {
     // Get all commits that affected this file
-    // Use cd to ensure we're in the repo root
     const { stdout: logOutput } = await execAsync(
-      `cd /home/runner/work/ykzts/ykzts && git log --all --format="%H|%ai|%s" --follow -- "${filePath}"`
+      `git log --all --format="%H|%ai|%s" --follow -- "${filePath}"`,
+      { cwd: REPO_ROOT }
     )
 
     if (!logOutput.trim()) {
@@ -40,7 +43,8 @@ export async function getFileHistory(filePath: string): Promise<GitCommit[]> {
       // Get file content at this commit
       try {
         const { stdout: content } = await execAsync(
-          `cd /home/runner/work/ykzts/ykzts && git show ${hash}:"${filePath}"`
+          `git show ${hash}:"${filePath}"`,
+          { cwd: REPO_ROOT }
         )
 
         // Parse MDX content

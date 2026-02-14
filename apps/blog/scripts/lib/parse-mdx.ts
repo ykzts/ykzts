@@ -39,7 +39,6 @@ export async function parseMDX(filePath: string): Promise<ParsedMDX> {
   const frontmatter: Frontmatter = {}
   const lines = frontmatterText.split('\n')
 
-  const _currentKey: string | null = null
   let inLastUpdate = false
 
   for (const line of lines) {
