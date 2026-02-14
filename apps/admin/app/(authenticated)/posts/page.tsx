@@ -2,7 +2,9 @@ import { Badge } from '@ykzts/ui/components/badge'
 import { Card } from '@ykzts/ui/components/card'
 import Link from 'next/link'
 import { Suspense } from 'react'
+import { getProfileTimezone } from '@/lib/data'
 import { getPosts } from '@/lib/posts'
+import { formatDateWithTimezone } from '@/lib/timezones'
 import { NewPostButton } from './_components/new-post-button'
 import { PostsFilters } from './_components/posts-filters'
 import { PostsPagination } from './_components/posts-pagination'
@@ -19,7 +21,10 @@ async function PostsContent({
   search?: string
   status: 'draft' | 'scheduled' | 'published' | 'all'
 }) {
-  const result = await getPosts({ page, perPage, search, status })
+  const [result, timezone] = await Promise.all([
+    getPosts({ page, perPage, search, status }),
+    getProfileTimezone()
+  ])
 
   return (
     <>
@@ -57,16 +62,7 @@ async function PostsContent({
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">
                       {post.published_at
-                        ? new Date(post.published_at).toLocaleDateString(
-                            'ja-JP',
-                            {
-                              day: 'numeric',
-                              hour: '2-digit',
-                              minute: '2-digit',
-                              month: 'short',
-                              year: 'numeric'
-                            }
-                          )
+                        ? formatDateWithTimezone(post.published_at, timezone)
                         : '-'}
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">

@@ -21,6 +21,7 @@ import { Input } from '@ykzts/ui/components/input'
 import { useRouter } from 'next/navigation'
 import { useActionState, useCallback, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
+import { DEFAULT_TIMEZONE, getCommonTimezones } from '@/lib/timezones'
 import { updateProfile } from '../actions'
 import { SortableItem } from './sortable-item'
 
@@ -30,6 +31,7 @@ type ProfileFormProps = {
     email: string | null
     name: string
     tagline: string | null
+    timezone: string
   } | null
   initialSocialLinks?: Array<{
     id: string
@@ -199,6 +201,27 @@ export default function ProfileForm({
           name="email"
           type="email"
         />
+      </div>
+
+      <div>
+        <label className="mb-2 block font-medium" htmlFor="timezone">
+          タイムゾーン
+        </label>
+        <select
+          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          defaultValue={initialData?.timezone ?? DEFAULT_TIMEZONE}
+          id="timezone"
+          name="timezone"
+        >
+          {getCommonTimezones().map((tz) => (
+            <option key={tz.value} value={tz.value}>
+              {tz.label}
+            </option>
+          ))}
+        </select>
+        <p className="mt-2 text-muted-foreground text-sm">
+          日時の表示に使用するタイムゾーンを選択してください
+        </p>
       </div>
 
       <div>
