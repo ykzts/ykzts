@@ -18,7 +18,7 @@ describe('detectImages', () => {
 
   afterEach(async () => {
     // Clean up test directory
-    await rm(testDir, { recursive: true, force: true })
+    await rm(testDir, { force: true, recursive: true })
   })
 
   it('should detect markdown image syntax', async () => {
@@ -176,9 +176,7 @@ Some text
       await writeFile(join(testDir, `image.${format}`), Buffer.from([]))
     }
 
-    const content = formats
-      .map((fmt) => `![Image](./image.${fmt})`)
-      .join('\n')
+    const content = formats.map((fmt) => `![Image](./image.${fmt})`).join('\n')
 
     const images = await detectImages(content, mdxPath)
 

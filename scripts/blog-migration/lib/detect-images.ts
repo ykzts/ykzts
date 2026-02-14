@@ -1,5 +1,5 @@
 import { readFile, stat } from 'node:fs/promises'
-import { dirname, extname, isAbsolute, join, relative } from 'node:path'
+import { dirname, extname, isAbsolute, join } from 'node:path'
 
 export interface ImageReference {
   altText: string
@@ -42,6 +42,7 @@ export async function detectImages(
   const markdownImageRegex = /!\[([^\]]*)\]\(([^)]+)\)/g
   let match: RegExpExecArray | null
 
+  // biome-ignore lint/suspicious/noAssignInExpressions: RegExp.exec() is commonly used this way
   while ((match = markdownImageRegex.exec(content)) !== null) {
     const [, altText, imagePath] = match
 
@@ -81,6 +82,7 @@ export async function detectImages(
   // We need to handle attributes in any order
   const jsxImageRegex = /<img\s+([^>]+)\/?>/gi
 
+  // biome-ignore lint/suspicious/noAssignInExpressions: RegExp.exec() is commonly used this way
   while ((match = jsxImageRegex.exec(content)) !== null) {
     const [, attributes] = match
 

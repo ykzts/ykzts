@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 /**
  * Phase 4.3: Image Migration Script
  *
@@ -9,25 +10,30 @@
  * 4. アップロード結果を記録（将来的なMDX変換用）
  *
  * Usage:
- *   node scripts/blog-migration/migrate-images.ts [--dry-run]
+ *   node scripts/blog-migration/migrate-images.ts [--dry-run] [--transform]
  *
  * Options:
- *   --dry-run  画像をアップロードせずに実行（デバッグ用）
+ *   --dry-run    画像をアップロードせずに実行（デバッグ用）
+ *   --transform  MDXファイル内の画像参照を新しいURLに書き換える
  */
 
-import { createClient } from '@supabase/supabase-js'
 import { execFile } from 'node:child_process'
 import { createHash } from 'node:crypto'
-import { readdir, readFile, stat } from 'node:fs/promises'
-import { dirname, extname, join, relative, sep } from 'node:path'
+import { readdir, readFile, stat, writeFile } from 'node:fs/promises'
+import { dirname, extname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { promisify } from 'node:util'
+import { createClient } from '@supabase/supabase-js'
 import type { Database } from '@ykzts/supabase'
 import {
   detectImagesInFile,
   getMimeType,
   type ImageReference
 } from './lib/detect-images.ts'
+import {
+  createImageMappings,
+  transformMDXContent
+} from './lib/transform-mdx.ts'
 
 const execFileAsync = promisify(execFile)
 
@@ -198,7 +204,7 @@ interface ImageMigrationResult {
 /**
  * Main migration function
  */
-async function migrate(dryRun = false) {
+async function migrate(dryRun = false, shouldTransform = false) {
   // Initialize Supabase client if not in dry-run mode
   if (!dryRun) {
     supabase = initSupabase()
@@ -318,6 +324,87 @@ async function migrate(dryRun = false) {
     }
   }
 
+  // Transform MDX files if requested
+  if (shouldTransform && imageResults.length > 0) {
+    console.log(`\n\n${'='.repeat(60)}`)
+    console.log('📝 Transforming MDX Files')
+    console.log('='.repeat(60))
+
+    // Group results by MDX file
+    const resultsByFile = new Map<string, ImageMigrationResult[]>()
+    for (const result of imageResults) {
+      const existing = resultsByFile.get(result.mdxFile) || []
+      existing.push(result)
+      resultsByFile.set(result.mdxFile, existing)
+    }
+
+    let transformedFiles = 0
+    let skippedFiles = 0
+
+    for (const [relativePath, results] of resultsByFile) {
+      const filePath = join(REPO_ROOT, relativePath)
+
+      // Skip if any images failed
+      const hasFailures = results.some((r) => !r.success)
+      if (hasFailures) {
+        console.log(`\n⚠️  Skipping ${relativePath} (has failed uploads)`)
+        skippedFiles++
+        continue
+      }
+
+      try {
+        console.log(`\n📝 Transforming: ${relativePath}`)
+
+        // Read the file content
+        const originalContent = await readFile(filePath, 'utf-8')
+
+        // Create URL mapping for this file
+        const uploadedUrls = new Map<string, string>()
+        for (const result of results) {
+          if (result.newUrl) {
+            // We need to get the original images to map absolute paths
+            const images = await detectImagesInFile(filePath)
+            for (const img of images) {
+              if (img.path === result.originalPath && result.newUrl) {
+                uploadedUrls.set(img.absolutePath, result.newUrl)
+              }
+            }
+          }
+        }
+
+        // Re-detect images to get proper ImageReference objects
+        const images = await detectImagesInFile(filePath)
+        const mappings = createImageMappings(images, uploadedUrls)
+
+        // Transform the content
+        const transformedContent = transformMDXContent(
+          originalContent,
+          mappings
+        )
+
+        // Write back if content changed
+        if (transformedContent !== originalContent) {
+          if (dryRun) {
+            console.log('   [DRY RUN] Would update file')
+            console.log(`   Updated ${mappings.length} image reference(s)`)
+          } else {
+            await writeFile(filePath, transformedContent, 'utf-8')
+            console.log(`   ✅ Updated ${mappings.length} image reference(s)`)
+          }
+          transformedFiles++
+        } else {
+          console.log('   ℹ️  No changes needed')
+        }
+      } catch (error) {
+        console.error(`   ❌ Error transforming ${relativePath}:`, error)
+        skippedFiles++
+      }
+    }
+
+    console.log(`\nTransformed files: ${transformedFiles}`)
+    console.log(`Skipped files: ${skippedFiles}`)
+  }
+
   // Summary
   console.log(`\n\n${'='.repeat(60)}`)
   console.log('📊 Migration Summary')
@@ -327,7 +414,9 @@ async function migrate(dryRun = false) {
   console.log(`Unique images:                  ${uniqueImages}`)
   console.log(`Successfully uploaded:          ${uploadedImages}`)
   console.log(`Failed uploads:                 ${failedImages}`)
-  console.log(`Total size:                     ${(totalSize / 1024 / 1024).toFixed(2)} MB`)
+  console.log(
+    `Total size:                     ${(totalSize / 1024 / 1024).toFixed(2)} MB`
+  )
 
   if (dryRun) {
     console.log('\n⚠️  DRY RUN MODE - No images were uploaded')
@@ -344,7 +433,8 @@ async function migrate(dryRun = false) {
 
 // Run migration
 const dryRun = process.argv.includes('--dry-run')
-migrate(dryRun).catch((error) => {
+const shouldTransform = process.argv.includes('--transform')
+migrate(dryRun, shouldTransform).catch((error) => {
   console.error('Fatal error:', error)
   process.exit(1)
 })
