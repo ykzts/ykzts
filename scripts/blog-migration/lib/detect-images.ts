@@ -39,12 +39,13 @@ export async function detectImages(
   const mdxDir = dirname(mdxFilePath)
 
   // Pattern 1: Markdown image syntax ![alt](path)
-  // Use a more robust regex that handles parentheses in paths
+  // Use a robust regex that handles parentheses in paths
   // Pattern: ![alt text](path/to/image.png) or ![alt](path "title")
-  // Captures: [1] = alt text, [2] = image path (stops before optional title)
+  // Captures: [1] = alt text, [2] = image path (stops at whitespace before optional title)
   // Examples: ![Photo](./img/photo(1).png), ![Alt](image.jpg "Title")
+  // The key is [^\s"']+ which allows ) in paths but stops at space (for titles) or closing )
   const markdownImageRegex =
-    /!\[([^\]]*)\]\(([^)"']+?)(?:\s+["'][^"']*["'])?\)/g
+    /!\[([^\]]*)\]\(([^\s"']+)(?:\s+["'][^"']*["'])?\)/g
   let match: RegExpExecArray | null
 
   // biome-ignore lint/suspicious/noAssignInExpressions: RegExp.exec() is commonly used this way

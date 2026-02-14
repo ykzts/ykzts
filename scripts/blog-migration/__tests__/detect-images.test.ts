@@ -215,6 +215,47 @@ Some text
     expect(images[0].altText).toBe('Description')
     expect(images[0].exists).toBe(true)
   })
+
+  it('should handle parentheses in image filenames', async () => {
+    const mdxPath = join(testDir, 'test.mdx')
+    const imagePath1 = join(testDir, 'photo(1).png')
+    const imagePath2 = join(testDir, 'img(copy).jpg')
+
+    await writeFile(imagePath1, Buffer.from([]))
+    await writeFile(imagePath2, Buffer.from([]))
+
+    const content = `
+![Photo](./photo(1).png)
+![Copy](./img(copy).jpg)
+`
+
+    const images = await detectImages(content, mdxPath)
+
+    expect(images).toHaveLength(2)
+    expect(images[0].path).toBe('./photo(1).png')
+    expect(images[0].absolutePath).toBe(imagePath1)
+    expect(images[0].exists).toBe(true)
+    expect(images[1].path).toBe('./img(copy).jpg')
+    expect(images[1].absolutePath).toBe(imagePath2)
+    expect(images[1].exists).toBe(true)
+  })
+
+  it('should handle images with titles and parentheses in filenames', async () => {
+    const mdxPath = join(testDir, 'test.mdx')
+    const imagePath = join(testDir, 'photo(1).png')
+
+    await writeFile(imagePath, Buffer.from([]))
+
+    const content = '![Alt](./photo(1).png "Image Title")'
+
+    const images = await detectImages(content, mdxPath)
+
+    expect(images).toHaveLength(1)
+    expect(images[0].path).toBe('./photo(1).png')
+    expect(images[0].absolutePath).toBe(imagePath)
+    expect(images[0].altText).toBe('Alt')
+    expect(images[0].exists).toBe(true)
+  })
 })
 
 describe('getMimeType', () => {
