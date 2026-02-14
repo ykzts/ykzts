@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { HiOutlineArrowLeft } from 'react-icons/hi2'
+import { ArrowLeft } from 'lucide-react'
 
 export default function DocsLayout({ children }: LayoutProps<'/'>) {
   return (
@@ -12,7 +12,7 @@ export default function DocsLayout({ children }: LayoutProps<'/'>) {
             className="inline-flex items-center gap-2 text-primary transition-colors duration-200 hover:text-primary/80"
             href="/"
           >
-            <HiOutlineArrowLeft
+            <ArrowLeft
               aria-label="戻る"
               className="size-4"
               role="img"

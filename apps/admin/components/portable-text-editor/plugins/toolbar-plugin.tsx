@@ -4,13 +4,8 @@ import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { mergeRegister } from '@lexical/utils'
 import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical'
+import { Bold, Italic, Link2, Image } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import {
-  HiOutlineBold,
-  HiOutlineItalic,
-  HiOutlineLink,
-  HiOutlinePhoto
-} from 'react-icons/hi2'
 import { uploadImage } from '@/lib/upload-image'
 import { INSERT_IMAGE_COMMAND } from './image-plugin'
 import { validateUrl } from './link-plugin'
@@ -132,7 +127,7 @@ export function ToolbarPlugin() {
         onClick={formatBold}
         type="button"
       >
-        <HiOutlineBold />
+        <Bold />
       </button>
       <button
         aria-label="斜体"
@@ -142,7 +137,7 @@ export function ToolbarPlugin() {
         onClick={formatItalic}
         type="button"
       >
-        <HiOutlineItalic />
+        <Italic />
       </button>
       <button
         aria-label="リンク"
@@ -152,7 +147,7 @@ export function ToolbarPlugin() {
         onClick={insertLink}
         type="button"
       >
-        <HiOutlineLink />
+        <Link2 />
       </button>
       <button
         aria-label="画像"
@@ -163,7 +158,7 @@ export function ToolbarPlugin() {
         onClick={triggerImageUpload}
         type="button"
       >
-        <HiOutlinePhoto />
+        <Image />
       </button>
       <input
         accept="image/jpeg,image/png,image/gif,image/webp"
