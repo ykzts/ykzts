@@ -3,7 +3,7 @@ import { Card } from '@ykzts/ui/components/card'
 import { Suspense } from 'react'
 import { getProfile, getSocialLinks, getTechnologies } from '@/lib/data'
 import { formatDateTimeWithTimezone } from '@/lib/timezones'
-import { ProfilePageSkeleton } from './profile-page-skeleton'
+import { ProfilePageSkeleton } from './_components/profile-page-skeleton'
 
 async function ProfileContent() {
   const [profile, socialLinks, technologies] = await Promise.all([
