@@ -18,7 +18,6 @@
  */
 
 import { execFile } from 'node:child_process'
-import { createHash } from 'node:crypto'
 import { readdir, readFile, stat, writeFile } from 'node:fs/promises'
 import { dirname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -30,7 +29,7 @@ import {
   createImageMappings,
   transformMDXContent
 } from './lib/transform-mdx.ts'
-import { uploadImage } from './lib/upload-image.ts'
+import { generateFileHash, uploadImage } from './lib/upload-image.ts'
 
 const execFileAsync = promisify(execFile)
 
@@ -99,13 +98,6 @@ async function findMDXFiles(dir: string): Promise<string[]> {
   }
 
   return files
-}
-
-/**
- * Generate a hash for file content (used for deduplication tracking)
- */
-function generateFileHash(content: Buffer): string {
-  return createHash('sha256').update(content).digest('hex')
 }
 
 interface ImageMigrationResult {

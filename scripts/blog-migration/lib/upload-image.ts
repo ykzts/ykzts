@@ -11,7 +11,7 @@ import {
 /**
  * Generate a hash for file content
  */
-function generateFileHash(content: Buffer): string {
+export function generateFileHash(content: Buffer): string {
   return createHash('sha256').update(content).digest('hex')
 }
 
