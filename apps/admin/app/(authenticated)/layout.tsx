@@ -51,7 +51,7 @@ function MobileNav({ user }: { user: User }) {
         <SheetHeader>
           <SheetTitle>管理画面</SheetTitle>
         </SheetHeader>
-        <nav className="flex flex-col gap-2 px-4">
+        <nav className="mt-6 flex flex-col gap-2 px-4">
           {NAV_LINKS.map(({ href, label }) => (
             <SheetClose
               key={href}
@@ -75,7 +75,7 @@ function MobileNav({ user }: { user: User }) {
               <p className="font-medium text-sm">{user.email}</p>
             </div>
           </div>
-          <form action={logout}>
+          <form action={logout} className="mt-3">
             <Button className="w-full" type="submit" variant="outline">
               ログアウト
             </Button>
