@@ -45,6 +45,7 @@ export type Database = {
           post_id: string
           tags: string[] | null
           title: string | null
+          updated_at: string
           version_date: string
           version_number: number
         }
@@ -58,6 +59,7 @@ export type Database = {
           post_id: string
           tags?: string[] | null
           title?: string | null
+          updated_at?: string
           version_date?: string
           version_number: number
         }
@@ -71,6 +73,7 @@ export type Database = {
           post_id?: string
           tags?: string[] | null
           title?: string | null
+          updated_at?: string
           version_date?: string
           version_number?: number
         }
@@ -306,35 +309,63 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      create_post: {
-        Args: {
-          p_content: Json
-          p_excerpt: string
-          p_published_at?: string
-          p_slug: string
-          p_status?: string
-          p_tags?: string[]
-          p_title: string
-          p_version_date?: string
-        }
-        Returns: string
-      }
+      create_post:
+        | {
+            Args: {
+              p_content: Json
+              p_excerpt: string
+              p_published_at?: string
+              p_slug: string
+              p_status?: string
+              p_tags?: string[]
+              p_title: string
+            }
+            Returns: string
+          }
+        | {
+            Args: {
+              p_content: Json
+              p_excerpt: string
+              p_published_at?: string
+              p_slug: string
+              p_status?: string
+              p_tags?: string[]
+              p_title: string
+              p_version_date?: string
+            }
+            Returns: string
+          }
       delete_post: { Args: { p_post_id: string }; Returns: undefined }
-      update_post: {
-        Args: {
-          p_change_summary?: string
-          p_content?: Json
-          p_excerpt?: string
-          p_post_id: string
-          p_published_at?: string
-          p_slug?: string
-          p_status?: string
-          p_tags?: string[]
-          p_title?: string
-          p_version_date?: string
-        }
-        Returns: string
-      }
+      update_post:
+        | {
+            Args: {
+              p_change_summary?: string
+              p_content?: Json
+              p_excerpt?: string
+              p_post_id: string
+              p_published_at?: string
+              p_slug?: string
+              p_status?: string
+              p_tags?: string[]
+              p_title?: string
+            }
+            Returns: string
+          }
+        | {
+            Args: {
+              p_change_summary?: string
+              p_content?: Json
+              p_excerpt?: string
+              p_post_id: string
+              p_published_at?: string
+              p_slug?: string
+              p_status?: string
+              p_tags?: string[]
+              p_title?: string
+              p_version_date?: string
+            }
+            Returns: string
+          }
     }
     Enums: {
       [_ in never]: never
