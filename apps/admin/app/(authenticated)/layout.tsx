@@ -72,7 +72,9 @@ function MobileNav({ user }: { user: User }) {
               <UserIcon className="h-5 w-5 text-muted-foreground" />
             </div>
             <div className="flex-1">
-              <p className="font-medium text-sm">{user.email}</p>
+              <p className="font-medium text-sm">
+                {user.email ?? 'メールアドレスなし'}
+              </p>
             </div>
           </div>
           <form action={logout} className="mt-3">
