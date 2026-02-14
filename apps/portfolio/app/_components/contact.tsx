@@ -1,4 +1,4 @@
-import { HiOutlineArrowUpRight } from 'react-icons/hi2'
+import { ArrowUpRight } from 'lucide-react'
 import Link from '@/components/link'
 import ContactForm from './contact-form'
 import SocialLinks from './social-links'
@@ -30,7 +30,7 @@ export default function Contact() {
             href="https://ykzts.blog/"
           >
             ykzts.blog
-            <HiOutlineArrowUpRight aria-hidden="true" className="size-4" />
+            <ArrowUpRight aria-hidden="true" className="size-4" />
           </Link>
         </div>
 

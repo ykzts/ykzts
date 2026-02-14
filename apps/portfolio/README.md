@@ -77,7 +77,7 @@ See `.env.example` for a complete list of required environment variables.
 - `@supabase/supabase-js`: Supabase PostgreSQL database client
 - `@vercel/analytics`: Performance and user analytics
 - `react-hot-toast`: Toast notifications for form feedback
-- `react-icons`: Icon components library
+- `lucide-react`: Icon components library
 - `react-intersection-observer`: Viewport-based animations
 - `react-turnstile`: Cloudflare Turnstile spam prevention
 - `resend`: Email delivery service
