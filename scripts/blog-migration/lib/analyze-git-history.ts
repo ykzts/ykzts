@@ -70,9 +70,13 @@ export async function getFileHistory(filePath: string): Promise<GitCommit[]> {
             `Failed to parse MDX content for ${filePath} at commit ${hash}:`,
             parseError
           )
+          console.error(
+            'Please verify the MDX frontmatter format in this commit.'
+          )
         }
       } catch (gitError) {
         // File might not exist in this commit (e.g., it was deleted then re-added)
+        // This is normal if the file was renamed, moved, or temporarily deleted
         console.warn(
           `Could not get content for ${filePath} at commit ${hash}:`,
           gitError
