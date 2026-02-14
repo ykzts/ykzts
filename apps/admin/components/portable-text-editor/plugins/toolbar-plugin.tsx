@@ -127,7 +127,7 @@ export function ToolbarPlugin() {
         onClick={formatBold}
         type="button"
       >
-        <Bold />
+        <Bold className="size-4" />
       </button>
       <button
         aria-label="斜体"
@@ -137,7 +137,7 @@ export function ToolbarPlugin() {
         onClick={formatItalic}
         type="button"
       >
-        <Italic />
+        <Italic className="size-4" />
       </button>
       <button
         aria-label="リンク"
@@ -147,7 +147,7 @@ export function ToolbarPlugin() {
         onClick={insertLink}
         type="button"
       >
-        <Link2 />
+        <Link2 className="size-4" />
       </button>
       <button
         aria-label="画像"
@@ -158,7 +158,7 @@ export function ToolbarPlugin() {
         onClick={triggerImageUpload}
         type="button"
       >
-        <Image />
+        <Image className="size-4" />
       </button>
       <input
         accept="image/jpeg,image/png,image/gif,image/webp"
