@@ -25,16 +25,12 @@ import { fileURLToPath } from 'node:url'
 import { promisify } from 'node:util'
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '@ykzts/supabase'
-import {
-  detectImagesInFile,
-  getExtensionFromMimeType,
-  getMimeType,
-  type ImageReference
-} from './lib/detect-images.ts'
+import { detectImagesInFile, type ImageReference } from './lib/detect-images.ts'
 import {
   createImageMappings,
   transformMDXContent
 } from './lib/transform-mdx.ts'
+import { uploadImage } from './lib/upload-image.ts'
 
 const execFileAsync = promisify(execFile)
 
@@ -106,92 +102,10 @@ async function findMDXFiles(dir: string): Promise<string[]> {
 }
 
 /**
- * Generate a hash for file content
+ * Generate a hash for file content (used for deduplication tracking)
  */
 function generateFileHash(content: Buffer): string {
   return createHash('sha256').update(content).digest('hex')
-}
-
-/**
- * Upload an image to Supabase Storage
- * @returns The public URL of the uploaded image, or null on failure
- */
-async function uploadImage(
-  imageRef: ImageReference,
-  userId: string,
-  dryRun = false
-): Promise<string | null> {
-  const fileContent = await readFile(imageRef.absolutePath)
-  const fileHash = generateFileHash(fileContent)
-  const mimeType = getMimeType(imageRef.absolutePath)
-  const ext = getExtensionFromMimeType(mimeType)
-
-  // Use hash as filename to deduplicate
-  const fileName = `${fileHash}.${ext}`
-  const filePath = `${userId}/${fileName}`
-
-  if (dryRun) {
-    const stats = await stat(imageRef.absolutePath)
-    console.log(`     [DRY RUN] Would upload:`)
-    console.log(`       File: ${fileName}`)
-    console.log(`       Size: ${(stats.size / 1024).toFixed(2)} KB`)
-    console.log(`       Type: ${mimeType}`)
-    console.log(`       Path: ${filePath}`)
-
-    // Return a fake URL for dry-run mode
-    return `https://example.com/storage/v1/object/public/images/${filePath}`
-  }
-
-  if (!supabase) {
-    throw new Error('Supabase client not initialized')
-  }
-
-  try {
-    // Check if file already exists
-    const { data: existingFile } = await supabase.storage
-      .from('images')
-      .list(userId, {
-        limit: 1,
-        search: fileName
-      })
-
-    if (existingFile && existingFile.length > 0) {
-      console.log(`     ℹ️  Already exists: ${fileName}`)
-      const {
-        data: { publicUrl }
-      } = supabase.storage.from('images').getPublicUrl(filePath)
-      return publicUrl
-    }
-
-    // Upload the image
-    const { error: uploadError } = await supabase.storage
-      .from('images')
-      .upload(filePath, fileContent, {
-        cacheControl: '31536000', // 1 year
-        contentType: mimeType,
-        upsert: false
-      })
-
-    if (uploadError) {
-      console.error(`     ❌ Upload failed: ${uploadError.message}`)
-      return null
-    }
-
-    // Get public URL
-    const {
-      data: { publicUrl }
-    } = supabase.storage.from('images').getPublicUrl(filePath)
-
-    const stats = await stat(imageRef.absolutePath)
-    console.log(`     ✅ Uploaded: ${fileName}`)
-    console.log(`       Size: ${(stats.size / 1024).toFixed(2)} KB`)
-    console.log(`       URL: ${publicUrl}`)
-
-    return publicUrl
-  } catch (error) {
-    console.error(`     ❌ Error uploading image:`, error)
-    return null
-  }
 }
 
 interface ImageMigrationResult {
@@ -290,7 +204,7 @@ async function migrate(dryRun = false, shouldTransform = false) {
 
         // Upload the image (or simulate in dry-run mode)
         let newUrl: string | null = null
-        newUrl = await uploadImage(image, userId, dryRun)
+        newUrl = await uploadImage(image, userId, dryRun, supabase || undefined)
 
         if (newUrl) {
           uploadedImages++
