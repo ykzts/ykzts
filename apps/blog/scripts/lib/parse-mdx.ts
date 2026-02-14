@@ -27,6 +27,20 @@ function parseFrontmatter(frontmatterText: string): Frontmatter {
 
   let inLastUpdate = false
 
+  /**
+   * Parse array value from string like "[item1, item2]"
+   */
+  const parseArray = (value: string): string[] => {
+    const arrayMatch = value.match(/\[(.*?)\]/)
+    if (arrayMatch) {
+      return arrayMatch[1]
+        .split(',')
+        .map((v) => v.trim())
+        .filter((v) => v)
+    }
+    return []
+  }
+
   for (const line of lines) {
     if (line.trim() === '') continue
 
@@ -68,20 +82,9 @@ function parseFrontmatter(frontmatterText: string): Frontmatter {
       } else if (key === 'title') {
         frontmatter.title = value.trim()
       } else if (key === 'authors') {
-        // Parse array [ykzts]
-        const arrayMatch = value.match(/\[(.*?)\]/)
-        if (arrayMatch) {
-          frontmatter.authors = arrayMatch[1].split(',').map((v) => v.trim())
-        }
+        frontmatter.authors = parseArray(value)
       } else if (key === 'tags') {
-        // Parse array [tag1, tag2]
-        const arrayMatch = value.match(/\[(.*?)\]/)
-        if (arrayMatch) {
-          frontmatter.tags = arrayMatch[1]
-            .split(',')
-            .map((v) => v.trim())
-            .filter((v) => v)
-        }
+        frontmatter.tags = parseArray(value)
       }
     }
   }

@@ -85,7 +85,10 @@ function extractSlug(filePath: string): string {
 /**
  * Convert MDX content to Portable Text format
  * TODO: Implement proper MDX to Portable Text conversion in Phase 4.3
- * This is a placeholder for the actual implementation
+ *
+ * Note: This function is prefixed with underscore as it is a placeholder
+ * that will be replaced with actual implementation in a future phase.
+ * The underscore indicates it's intentionally unused in the current version.
  */
 function _convertToPortableTextPlaceholder(content: string): unknown {
   // For now, store as a simple text block
