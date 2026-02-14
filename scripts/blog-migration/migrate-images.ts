@@ -119,7 +119,7 @@ async function migrate(dryRun = false, shouldTransform = false) {
 
     // Get user ID from environment variable (service key cannot be used with getUser())
     // The user ID should be set in MIGRATION_USER_ID environment variable
-    userId = process.env.MIGRATION_USER_ID ?? ''
+    userId = process.env.MIGRATION_USER_ID
 
     if (!userId) {
       console.error('Error: MIGRATION_USER_ID environment variable is required')

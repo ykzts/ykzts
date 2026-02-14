@@ -40,7 +40,9 @@ export async function detectImages(
 
   // Pattern 1: Markdown image syntax ![alt](path)
   // Use a more robust regex that handles parentheses in paths
-  // Matches until the last ) before optional title or end
+  // Pattern: ![alt text](path/to/image.png) or ![alt](path "title")
+  // Captures: [1] = alt text, [2] = image path (stops before optional title)
+  // Examples: ![Photo](./img/photo(1).png), ![Alt](image.jpg "Title")
   const markdownImageRegex =
     /!\[([^\]]*)\]\(([^)"']+?)(?:\s+["'][^"']*["'])?\)/g
   let match: RegExpExecArray | null
