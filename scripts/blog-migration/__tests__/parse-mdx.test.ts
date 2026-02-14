@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parseMDXContent } from '../lib/parse-mdx'
+import { parseMDXContent } from '../lib/parse-mdx.ts'
 
 describe('parseMDXContent', () => {
   it('should parse basic frontmatter and content', () => {

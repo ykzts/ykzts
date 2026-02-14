@@ -1,7 +1,7 @@
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import type { Frontmatter } from './parse-mdx'
-import { parseMDXContent } from './parse-mdx'
+import type { Frontmatter } from './parse-mdx.ts'
+import { parseMDXContent } from './parse-mdx.ts'
 
 const execFileAsync = promisify(execFile)
 

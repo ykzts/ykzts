@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { GitCommit } from '../lib/analyze-git-history'
-import { detectLastUpdateChanges } from '../lib/analyze-git-history'
+import type { GitCommit } from '../lib/analyze-git-history.ts'
+import { detectLastUpdateChanges } from '../lib/analyze-git-history.ts'
 
 describe('detectLastUpdateChanges', () => {
   it('should detect when last_update.date is added', () => {

@@ -1,4 +1,4 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env node --experimental-strip-types
 /**
  * Phase 4.2: Git履歴ベースの移行スクリプト
  *
@@ -8,7 +8,7 @@
  * 3. post_versionsテーブルに挿入
  *
  * Usage:
- *   pnpm tsx scripts/blog-migration/migrate-post-versions.ts [--dry-run]
+ *   node --experimental-strip-types scripts/blog-migration/migrate-post-versions.ts [--dry-run]
  *
  * Options:
  *   --dry-run  データベースに書き込まずに実行（デバッグ用）
@@ -24,7 +24,7 @@ import type { Database } from '@ykzts/supabase'
 import {
   generateVersionsFromHistory,
   setRepoRoot
-} from './lib/analyze-git-history'
+} from './lib/analyze-git-history.ts'
 
 const execFileAsync = promisify(execFile)
 
