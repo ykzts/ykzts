@@ -9,7 +9,9 @@ import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import type { EditorState, LexicalEditor } from 'lexical'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { ImageNode } from './nodes/image-node'
 import { EditorStatePlugin } from './plugins/editor-state-plugin'
+import { ImagePlugin } from './plugins/image-plugin'
 import { LinkPlugin } from './plugins/link-plugin'
 import { ToolbarPlugin } from './plugins/toolbar-plugin'
 import {
@@ -58,7 +60,7 @@ export function RichTextEditor({
         }
       : undefined,
     namespace: 'RichTextEditor',
-    nodes: [LinkNode],
+    nodes: [LinkNode, ImageNode],
     onError: (error: Error) => {
       console.error('Lexical error:', error)
     },
@@ -115,6 +117,7 @@ export function RichTextEditor({
           <HistoryPlugin />
           {autoFocus && <AutoFocusPlugin />}
           <LinkPlugin />
+          <ImagePlugin />
         </div>
         <EditorStatePlugin onChange={handleEditorChange} />
       </LexicalComposer>

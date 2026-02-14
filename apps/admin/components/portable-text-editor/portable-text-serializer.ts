@@ -10,6 +10,7 @@ import {
   type LexicalEditor,
   type TextNode
 } from 'lexical'
+import { $createImageNode, $isImageNode } from './nodes/image-node'
 
 // Portable Text types
 type PortableTextBlock = {
@@ -18,6 +19,16 @@ type PortableTextBlock = {
   children: PortableTextSpan[]
   markDefs: PortableTextMarkDef[]
   style?: string
+}
+
+type PortableTextImage = {
+  _key: string
+  _type: 'image'
+  alt?: string
+  asset: {
+    _type: 'reference'
+    url: string
+  }
 }
 
 type PortableTextSpan = {
@@ -33,7 +44,7 @@ type PortableTextMarkDef = {
   href?: string
 }
 
-type PortableTextValue = PortableTextBlock[]
+type PortableTextValue = (PortableTextBlock | PortableTextImage)[]
 
 /**
  * Convert Lexical editor state to Portable Text format
@@ -42,13 +53,24 @@ export function lexicalToPortableText(
   editor: LexicalEditor
 ): PortableTextValue {
   return editor.read(() => {
-    const blocks: PortableTextBlock[] = []
+    const blocks: (PortableTextBlock | PortableTextImage)[] = []
 
     const root = $getRoot()
     const children = root.getChildren()
 
     for (const child of children) {
-      if ($isParagraphNode(child)) {
+      if ($isImageNode(child)) {
+        // Handle image nodes at the root level
+        blocks.push({
+          _key: crypto.randomUUID(),
+          _type: 'image',
+          alt: child.getAltText(),
+          asset: {
+            _type: 'reference',
+            url: child.getSrc()
+          }
+        })
+      } else if ($isParagraphNode(child)) {
         const textNodes = child.getChildren()
         const spans: PortableTextSpan[] = []
         const markDefs: PortableTextMarkDef[] = []
@@ -168,60 +190,70 @@ export function initializeEditorWithPortableText(
       root.clear()
 
       for (const block of portableText) {
-        if (block._type !== 'block') continue
-
-        const paragraph = $createParagraphNode()
-
-        // Create a map of mark definitions
-        const markDefMap = new Map<string, PortableTextMarkDef>()
-        if (block.markDefs) {
-          for (const markDef of block.markDefs) {
-            markDefMap.set(markDef._key, markDef)
+        if (block._type === 'image') {
+          // Handle image blocks
+          if (!block.asset?.url) {
+            continue
           }
-        }
+          const imageNode = $createImageNode({
+            altText: block.alt || '',
+            src: block.asset.url
+          })
+          root.append(imageNode)
+        } else if (block._type === 'block') {
+          const paragraph = $createParagraphNode()
 
-        for (const span of block.children) {
-          if (span._type !== 'span') continue
+          // Create a map of mark definitions
+          const markDefMap = new Map<string, PortableTextMarkDef>()
+          if (block.markDefs) {
+            for (const markDef of block.markDefs) {
+              markDefMap.set(markDef._key, markDef)
+            }
+          }
 
-          const marks = span.marks || []
-          let currentNode: TextNode | LinkNode | null = null
-          let format = 0
+          for (const span of block.children) {
+            if (span._type !== 'span') continue
 
-          // Check for formatting marks
-          const hasStrong = marks.includes('strong')
-          const hasEm = marks.includes('em')
+            const marks = span.marks || []
+            let currentNode: TextNode | LinkNode | null = null
+            let format = 0
 
-          if (hasStrong) format |= 1 // Bold
-          if (hasEm) format |= 2 // Italic
+            // Check for formatting marks
+            const hasStrong = marks.includes('strong')
+            const hasEm = marks.includes('em')
 
-          // Check for link marks
-          const linkMark = marks.find((mark) => markDefMap.has(mark))
+            if (hasStrong) format |= 1 // Bold
+            if (hasEm) format |= 2 // Italic
 
-          if (linkMark) {
-            const markDef = markDefMap.get(linkMark)
-            if (markDef && markDef._type === 'link' && markDef.href) {
+            // Check for link marks
+            const linkMark = marks.find((mark) => markDefMap.has(mark))
+
+            if (linkMark) {
+              const markDef = markDefMap.get(linkMark)
+              if (markDef && markDef._type === 'link' && markDef.href) {
+                const textNode = $createTextNode(span.text)
+                if (format) {
+                  textNode.setFormat(format)
+                }
+                const linkNode = $createLinkNode(markDef.href)
+                linkNode.append(textNode)
+                currentNode = linkNode
+              }
+            }
+
+            if (!currentNode) {
               const textNode = $createTextNode(span.text)
               if (format) {
                 textNode.setFormat(format)
               }
-              const linkNode = $createLinkNode(markDef.href)
-              linkNode.append(textNode)
-              currentNode = linkNode
+              currentNode = textNode
             }
+
+            paragraph.append(currentNode)
           }
 
-          if (!currentNode) {
-            const textNode = $createTextNode(span.text)
-            if (format) {
-              textNode.setFormat(format)
-            }
-            currentNode = textNode
-          }
-
-          paragraph.append(currentNode)
+          root.append(paragraph)
         }
-
-        root.append(paragraph)
       }
     })
   } catch (error) {
