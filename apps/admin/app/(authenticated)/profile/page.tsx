@@ -3,6 +3,7 @@ import { Card } from '@ykzts/ui/components/card'
 import { Suspense } from 'react'
 import { getProfile, getSocialLinks, getTechnologies } from '@/lib/data'
 import { formatDateTimeWithTimezone } from '@/lib/timezones'
+import { ProfilePageSkeleton } from './_components/profile-page-skeleton'
 
 async function ProfileContent() {
   const [profile, socialLinks, technologies] = await Promise.all([
@@ -119,7 +120,7 @@ export default function ProfilePage() {
         <h1 className="font-bold text-3xl">Profile</h1>
       </div>
 
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<ProfilePageSkeleton />}>
         <ProfileContent />
       </Suspense>
     </div>
