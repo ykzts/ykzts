@@ -1,4 +1,4 @@
-#!/usr/bin/env node --experimental-strip-types
+#!/usr/bin/env node
 /**
  * Phase 4.2: Git履歴ベースの移行スクリプト
  *
@@ -8,7 +8,7 @@
  * 3. post_versionsテーブルに挿入
  *
  * Usage:
- *   node --experimental-strip-types scripts/blog-migration/migrate-post-versions.ts [--dry-run]
+ *   node scripts/blog-migration/migrate-post-versions.ts [--dry-run]
  *
  * Options:
  *   --dry-run  データベースに書き込まずに実行（デバッグ用）
