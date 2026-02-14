@@ -12,12 +12,7 @@ export default function DocsLayout({ children }: LayoutProps<'/'>) {
             className="inline-flex items-center gap-2 text-primary transition-colors duration-200 hover:text-primary/80"
             href="/"
           >
-            <ArrowLeft
-              aria-label="戻る"
-              className="size-4"
-              role="img"
-              title="戻る"
-            />
+            <ArrowLeft aria-label="戻る" className="size-4" />
             トップページに戻る
           </Link>
         </p>
