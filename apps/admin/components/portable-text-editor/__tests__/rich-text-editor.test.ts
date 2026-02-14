@@ -439,5 +439,66 @@ describe('Portable Text Serializer', () => {
         expect(portableText[2].children[0].text).toBe('Text after image')
       }
     })
+
+    it('should handle malformed image blocks gracefully', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode]
+      })
+
+      // Test with missing asset
+      const jsonWithoutAsset = JSON.stringify([
+        {
+          _key: 'test-key-1',
+          _type: 'image',
+          alt: 'Image without asset'
+        },
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Valid text' }],
+          markDefs: []
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, jsonWithoutAsset)
+
+      editor.read(() => {
+        const root = $getRoot()
+        // Should only have the valid text block, malformed image skipped
+        expect(root.getChildrenSize()).toBe(1)
+        const paragraph = root.getFirstChild()
+        expect($isParagraphNode(paragraph)).toBe(true)
+      })
+
+      // Test with missing url in asset
+      const editor2 = createEditor({
+        nodes: [LinkNode, ImageNode]
+      })
+
+      const jsonWithoutUrl = JSON.stringify([
+        {
+          _key: 'test-key-2',
+          _type: 'image',
+          alt: 'Image without URL',
+          asset: {
+            _type: 'reference'
+          }
+        },
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Another valid text' }],
+          markDefs: []
+        }
+      ])
+
+      initializeEditorWithPortableText(editor2, jsonWithoutUrl)
+
+      editor2.read(() => {
+        const root = $getRoot()
+        // Should only have the valid text block, malformed image skipped
+        expect(root.getChildrenSize()).toBe(1)
+        const paragraph = root.getFirstChild()
+        expect($isParagraphNode(paragraph)).toBe(true)
+      })
+    })
   })
 })

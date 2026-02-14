@@ -192,6 +192,9 @@ export function initializeEditorWithPortableText(
       for (const block of portableText) {
         if (block._type === 'image') {
           // Handle image blocks
+          if (!block.asset?.url) {
+            continue
+          }
           const imageNode = $createImageNode({
             altText: block.alt || '',
             src: block.asset.url
