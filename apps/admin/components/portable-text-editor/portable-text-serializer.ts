@@ -1,5 +1,10 @@
 'use client'
 
+import {
+  $createCodeNode,
+  $isCodeNode,
+  type CodeNode
+} from '@lexical/code'
 import { $createLinkNode, $isLinkNode, type LinkNode } from '@lexical/link'
 import {
   $createListItemNode,
@@ -96,6 +101,10 @@ function processTextContent(textNodes: LexicalChildNodes) {
       if (format & 8) {
         marks.push('underline')
       }
+      // Check for code
+      if (format & 16) {
+        marks.push('code')
+      }
 
       spans.push({
         _key: crypto.randomUUID(),
@@ -139,6 +148,10 @@ function processTextContent(textNodes: LexicalChildNodes) {
           // Check for underline
           if (format & 8) {
             childMarks.push('underline')
+          }
+          // Check for code
+          if (format & 16) {
+            childMarks.push('code')
           }
 
           spans.push({
@@ -254,6 +267,18 @@ export function lexicalToPortableText(
           markDefs,
           style: 'blockquote'
         })
+      } else if ($isCodeNode(child)) {
+        // Handle code block nodes
+        const codeNode = child as CodeNode
+        const { spans, markDefs } = processTextContent(child.getChildren())
+
+        blocks.push({
+          _key: crypto.randomUUID(),
+          _type: 'block',
+          children: spans,
+          markDefs,
+          style: 'code'
+        })
       } else if ($isParagraphNode(child)) {
         const { spans, markDefs } = processTextContent(child.getChildren())
 
@@ -345,11 +370,13 @@ export function initializeEditorWithPortableText(
             const hasEm = marks.includes('em')
             const hasStrikethrough = marks.includes('strike-through')
             const hasUnderline = marks.includes('underline')
+            const hasCode = marks.includes('code')
 
             if (hasStrong) format |= 1 // Bold
             if (hasEm) format |= 2 // Italic
             if (hasStrikethrough) format |= 4 // Strikethrough
             if (hasUnderline) format |= 8 // Underline
+            if (hasCode) format |= 16 // Code
 
             // Check for link marks
             const linkMark = marks.find((mark) => markDefMap.has(mark))
@@ -432,6 +459,20 @@ export function initializeEditorWithPortableText(
               quoteNode.append(textNode)
             }
             root.append(quoteNode)
+          } else if (block.style === 'code') {
+            // Close any open list
+            if (currentList) {
+              root.append(currentList)
+              currentList = null
+              currentListType = null
+            }
+
+            // Create code block node
+            const codeNode = $createCodeNode()
+            for (const textNode of textNodes) {
+              codeNode.append(textNode)
+            }
+            root.append(codeNode)
           } else {
             // Close any open list
             if (currentList) {

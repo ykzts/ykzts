@@ -1,5 +1,6 @@
 'use client'
 
+import { CodeHighlightNode, CodeNode } from '@lexical/code'
 import { LinkNode } from '@lexical/link'
 import { ListItemNode, ListNode } from '@lexical/list'
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin'
@@ -23,6 +24,39 @@ import {
 } from './portable-text-serializer'
 
 const editorTheme = {
+  code: 'bg-muted/50 px-1.5 py-0.5 rounded font-mono text-sm',
+  codeHighlight: {
+    atrule: 'text-purple-600',
+    attr: 'text-blue-600',
+    boolean: 'text-orange-600',
+    builtin: 'text-cyan-600',
+    cdata: 'text-gray-600',
+    char: 'text-green-600',
+    class: 'text-yellow-600',
+    'class-name': 'text-yellow-600',
+    comment: 'text-gray-500 italic',
+    constant: 'text-orange-600',
+    deleted: 'text-red-600',
+    doctype: 'text-gray-600',
+    entity: 'text-orange-600',
+    function: 'text-blue-600',
+    important: 'text-red-600 font-bold',
+    inserted: 'text-green-600',
+    keyword: 'text-purple-600',
+    namespace: 'text-cyan-600',
+    number: 'text-orange-600',
+    operator: 'text-gray-700',
+    prolog: 'text-gray-600',
+    property: 'text-blue-600',
+    punctuation: 'text-gray-700',
+    regex: 'text-green-600',
+    selector: 'text-green-600',
+    string: 'text-green-600',
+    symbol: 'text-orange-600',
+    tag: 'text-red-600',
+    url: 'text-blue-600',
+    variable: 'text-orange-600'
+  },
   heading: {
     h2: 'text-3xl font-bold mb-3',
     h3: 'text-2xl font-bold mb-2',
@@ -43,6 +77,7 @@ const editorTheme = {
   quote: 'border-l-4 border-border pl-4 italic text-muted-foreground',
   text: {
     bold: 'font-bold',
+    code: 'bg-muted/50 px-1.5 py-0.5 rounded font-mono text-sm',
     italic: 'italic',
     strikethrough: 'line-through',
     underline: 'underline'
@@ -81,6 +116,8 @@ export function RichTextEditor({
       : undefined,
     namespace: 'RichTextEditor',
     nodes: [
+      CodeNode,
+      CodeHighlightNode,
       LinkNode,
       ImageNode,
       ListNode,
