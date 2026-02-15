@@ -224,12 +224,14 @@ export async function updatePost(params: {
 }) {
   const supabase = await createClient()
 
-  // Auto-generate excerpt from first paragraph if content is provided and excerpt is empty
-  // When excerpt is undefined or empty string and content is being updated, auto-generate
+  // Auto-generate excerpt from first paragraph if content is provided and excerpt is explicitly empty
+  // undefined means "don't update excerpt" (preserve existing in database)
+  // empty string means "clear excerpt" which triggers auto-generation when content is provided
   let excerpt = params.excerpt
   if (
     params.content &&
-    (excerpt === undefined || excerpt === '' || excerpt.trim() === '')
+    params.excerpt !== undefined &&
+    params.excerpt.trim() === ''
   ) {
     excerpt = extractFirstParagraph(params.content)
   }

@@ -185,7 +185,7 @@ describe('Post creation and update with auto-excerpt', () => {
       expect(call[1].p_excerpt).toBe('Updated content for auto-excerpt.')
     })
 
-    it('should auto-generate excerpt when content updated and excerpt undefined', async () => {
+    it('should not auto-generate excerpt when content updated but excerpt undefined', async () => {
       const content: Json = [
         {
           _key: 'block1',
@@ -212,7 +212,8 @@ describe('Post creation and update with auto-excerpt', () => {
       expect(result).toBe('mock-post-id')
       const call = mockRpc.mock.calls[0]
       expect(call[0]).toBe('update_post')
-      expect(call[1].p_excerpt).toBe('Updated content for auto-excerpt.')
+      // undefined means "don't update excerpt" - preserve existing in database
+      expect(call[1].p_excerpt).toBeUndefined()
     })
 
     it('should not auto-generate excerpt when only updating other fields', async () => {

@@ -29,10 +29,13 @@ export async function updatePostAction(
     }
   }
 
+  const excerptValue = formData.get('excerpt')
   const validation = postUpdateSchema.safeParse({
     change_summary: formData.get('change_summary') || undefined,
     content: formData.get('content'),
-    excerpt: formData.get('excerpt') || undefined,
+    // Pass empty string for empty excerpt (to trigger auto-generation)
+    // Pass undefined only if excerpt field is not present (to preserve existing)
+    excerpt: excerptValue === null ? undefined : excerptValue || '',
     id: formData.get('id'),
     published_at: publishedAt,
     slug: formData.get('slug'),
