@@ -88,6 +88,10 @@ function processTextContent(textNodes: LexicalChildNodes) {
       if (format & 2) {
         marks.push('em')
       }
+      // Check for underline
+      if (format & 8) {
+        marks.push('underline')
+      }
 
       spans.push({
         _key: crypto.randomUUID(),
@@ -123,6 +127,10 @@ function processTextContent(textNodes: LexicalChildNodes) {
           // Check for italic
           if (format & 2) {
             childMarks.push('em')
+          }
+          // Check for underline
+          if (format & 8) {
+            childMarks.push('underline')
           }
 
           spans.push({
@@ -327,9 +335,11 @@ export function initializeEditorWithPortableText(
             // Check for formatting marks
             const hasStrong = marks.includes('strong')
             const hasEm = marks.includes('em')
+            const hasUnderline = marks.includes('underline')
 
             if (hasStrong) format |= 1 // Bold
             if (hasEm) format |= 2 // Italic
+            if (hasUnderline) format |= 8 // Underline
 
             // Check for link marks
             const linkMark = marks.find((mark) => markDefMap.has(mark))
