@@ -1,3 +1,4 @@
+import type { Json } from '@ykzts/supabase'
 import { describe, expect, it } from 'vitest'
 import { extractFirstParagraph } from '../portable-text-utils'
 
@@ -276,11 +277,11 @@ describe('extractFirstParagraph', () => {
     })
 
     it('should return empty string for non-array input', () => {
-      expect(extractFirstParagraph(null)).toBe('')
+      expect(extractFirstParagraph(null as unknown as Json)).toBe('')
       expect(extractFirstParagraph(undefined)).toBe('')
-      expect(extractFirstParagraph('string')).toBe('')
-      expect(extractFirstParagraph(123)).toBe('')
-      expect(extractFirstParagraph({})).toBe('')
+      expect(extractFirstParagraph('string' as unknown as Json)).toBe('')
+      expect(extractFirstParagraph(123 as unknown as Json)).toBe('')
+      expect(extractFirstParagraph({} as unknown as Json)).toBe('')
     })
 
     it('should return empty string when no normal paragraphs exist', () => {
