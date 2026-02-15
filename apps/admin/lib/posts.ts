@@ -187,7 +187,7 @@ export async function createPost(params: {
 
   // Auto-generate excerpt from first paragraph if not provided
   let excerpt = params.excerpt || ''
-  if (!excerpt || excerpt.trim() === '') {
+  if (excerpt.trim() === '') {
     excerpt = extractFirstParagraph(params.content)
   }
 
