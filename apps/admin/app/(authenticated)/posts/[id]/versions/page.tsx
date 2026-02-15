@@ -70,7 +70,7 @@ async function VersionsContent({ postId }: { postId: string }) {
                       {index === 0 && <Badge variant="default">現在</Badge>}
                     </div>
                     <p className="mt-1 text-muted-foreground text-sm">
-                      {new Date(version.created_at).toLocaleString('ja-JP')}
+                      {new Date(version.version_date).toLocaleString('ja-JP')}
                       {' • '}
                       {version.profile?.name || '不明'}
                     </p>

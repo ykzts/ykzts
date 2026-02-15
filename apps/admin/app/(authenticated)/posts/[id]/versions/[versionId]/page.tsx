@@ -48,9 +48,9 @@ async function VersionDetailContent({
         <dl className="space-y-3">
           <div>
             <dt className="font-medium text-muted-foreground text-sm">
-              作成日時
+              バージョン日時
             </dt>
-            <dd>{new Date(version.created_at).toLocaleString('ja-JP')}</dd>
+            <dd>{new Date(version.version_date).toLocaleString('ja-JP')}</dd>
           </div>
 
           <div>
