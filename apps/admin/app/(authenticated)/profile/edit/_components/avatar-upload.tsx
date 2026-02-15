@@ -160,7 +160,7 @@ export function AvatarUpload({
             {preview ? (
               <div className="relative h-32 w-32 overflow-hidden rounded-full border-2 border-border">
                 <Image
-                  alt="Avatar preview"
+                  alt="プロフィール画像のプレビュー"
                   className="object-cover"
                   fill
                   src={preview}
