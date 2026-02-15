@@ -23,8 +23,8 @@ function normalizeContent(content: string): string {
       // Normalize truncate markers (both HTML and MDX style)
       .replace(/<!--\s*truncate\s*-->/gi, '{/* truncate */}')
       .replace(/\{\s*\/\*\s*truncate\s*\*\/\s*\}/gi, '{/* truncate */}')
-      // Normalize HTML comments to MDX comments
-      .replace(/<!--\s*(.*?)\s*-->/g, '{/* $1 */}')
+      // Normalize HTML comments to MDX comments (handles multi-line)
+      .replace(/<!--\s*([\s\S]*?)\s*-->/g, '{/* $1 */}')
       .replace(/[ \t]+$/gm, '') // Remove trailing whitespace
       .replace(/\n{3,}/g, '\n\n') // Normalize multiple newlines
       .replace(/\s+/g, ' ') // Collapse all whitespace
@@ -166,7 +166,9 @@ export async function getFileHistory(filePath: string): Promise<GitCommit[]> {
           currentCommit.filePath = parts[2]
         } else {
           // Modified, Added, etc.: use the path
-          currentCommit.filePath = parts[1] || parts[0]
+          if (parts[1]) {
+            currentCommit.filePath = parts[1]
+          }
         }
       }
     }
@@ -181,13 +183,6 @@ export async function getFileHistory(filePath: string): Promise<GitCommit[]> {
     console.error(`Error getting history for ${filePath}:`, error)
     return []
   }
-}
-
-export interface PostVersion {
-  version_date: Date
-  title: string
-  content: string
-  change_summary: string
 }
 
 /**

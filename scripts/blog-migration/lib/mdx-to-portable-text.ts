@@ -445,7 +445,8 @@ export function convertMDXToPortableText(
       // Last resort: return content as plain text blocks
       console.warn('  ⚠️  Fallback parse also failed, using plain text')
 
-      const paragraphs = contentWithoutFrontmatter
+      const cleaned = cleanProblematicMdxSyntax(contentWithoutFrontmatter)
+      const paragraphs = cleaned
         .split(/\n\n+/)
         .filter((p) => p.trim())
         .map((paragraph) => ({
