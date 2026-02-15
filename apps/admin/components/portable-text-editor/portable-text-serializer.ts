@@ -15,10 +15,14 @@ import {
   $getRoot,
   $isParagraphNode,
   $isTextNode,
+  type ElementNode,
   type LexicalEditor,
   type TextNode
 } from 'lexical'
 import { $createImageNode, $isImageNode } from './nodes/image-node'
+
+// Type alias for child nodes to improve readability
+type LexicalChildNodes = ReturnType<ElementNode['getChildren']>
 
 // Portable Text types
 type PortableTextBlock = {
@@ -59,11 +63,7 @@ type PortableTextValue = (PortableTextBlock | PortableTextImage)[]
 /**
  * Process text content from a paragraph or list item
  */
-function processTextContent(
-  textNodes: ReturnType<
-    typeof import('lexical').ElementNode.prototype.getChildren
-  >
-) {
+function processTextContent(textNodes: LexicalChildNodes) {
   const spans: PortableTextSpan[] = []
   const markDefs: PortableTextMarkDef[] = []
 
@@ -177,9 +177,7 @@ export function lexicalToPortableText(
             const itemChildren = listItemNode.getChildren()
 
             // List items might have paragraph children, collect all text
-            let allTextChildren: ReturnType<
-              typeof import('lexical').ElementNode.prototype.getChildren
-            > = []
+            let allTextChildren: LexicalChildNodes = []
             for (const itemChild of itemChildren) {
               if ($isParagraphNode(itemChild)) {
                 allTextChildren = allTextChildren.concat(
