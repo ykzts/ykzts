@@ -1,10 +1,6 @@
 'use client'
 
-import {
-  $createCodeNode,
-  $isCodeNode,
-  type CodeNode
-} from '@lexical/code'
+import { $createCodeNode, $isCodeNode, type CodeNode } from '@lexical/code'
 import { $createLinkNode, $isLinkNode, type LinkNode } from '@lexical/link'
 import {
   $createListItemNode,
@@ -269,7 +265,6 @@ export function lexicalToPortableText(
         })
       } else if ($isCodeNode(child)) {
         // Handle code block nodes
-        const codeNode = child as CodeNode
         const { spans, markDefs } = processTextContent(child.getChildren())
 
         blocks.push({

@@ -1,10 +1,10 @@
-import { LinkNode } from '@lexical/link'
 import {
   $createCodeNode,
   $isCodeNode,
   CodeHighlightNode,
   CodeNode
 } from '@lexical/code'
+import { LinkNode } from '@lexical/link'
 import {
   $createListItemNode,
   $createListNode,
@@ -1386,7 +1386,9 @@ describe('Portable Text Serializer', () => {
       const portableText2 = lexicalToPortableText(editor2)
 
       expect(portableText2[0].style).toBe('code')
-      expect(portableText2[0].children[0].text).toBe('const greeting = "Hello, World!";')
+      expect(portableText2[0].children[0].text).toBe(
+        'const greeting = "Hello, World!";'
+      )
     })
 
     it('should handle mixed content with quotes and other blocks', () => {
