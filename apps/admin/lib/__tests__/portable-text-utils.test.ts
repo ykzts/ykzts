@@ -278,7 +278,7 @@ describe('extractFirstParagraph', () => {
 
     it('should return empty string for non-array input', () => {
       expect(extractFirstParagraph(null as unknown as Json)).toBe('')
-      expect(extractFirstParagraph(undefined)).toBe('')
+      expect(extractFirstParagraph(undefined as unknown as Json)).toBe('')
       expect(extractFirstParagraph('string' as unknown as Json)).toBe('')
       expect(extractFirstParagraph(123 as unknown as Json)).toBe('')
       expect(extractFirstParagraph({} as unknown as Json)).toBe('')
