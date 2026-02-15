@@ -1,7 +1,14 @@
 'use client'
 
 import { $createLinkNode, $isLinkNode, type LinkNode } from '@lexical/link'
-import { $createListItemNode, $createListNode, $isListItemNode, $isListNode, type ListItemNode, type ListNode } from '@lexical/list'
+import {
+  $createListItemNode,
+  $createListNode,
+  $isListItemNode,
+  $isListNode,
+  type ListItemNode,
+  type ListNode
+} from '@lexical/list'
 import {
   $createParagraphNode,
   $createTextNode,
@@ -52,7 +59,11 @@ type PortableTextValue = (PortableTextBlock | PortableTextImage)[]
 /**
  * Process text content from a paragraph or list item
  */
-function processTextContent(textNodes: ReturnType<typeof import('lexical').ElementNode.prototype.getChildren>) {
+function processTextContent(
+  textNodes: ReturnType<
+    typeof import('lexical').ElementNode.prototype.getChildren
+  >
+) {
   const spans: PortableTextSpan[] = []
   const markDefs: PortableTextMarkDef[] = []
 
@@ -127,7 +138,7 @@ function processTextContent(textNodes: ReturnType<typeof import('lexical').Eleme
     })
   }
 
-  return { spans, markDefs }
+  return { markDefs, spans }
 }
 
 /**
@@ -164,17 +175,21 @@ export function lexicalToPortableText(
           if ($isListItemNode(item)) {
             const listItemNode = item as ListItemNode
             const itemChildren = listItemNode.getChildren()
-            
+
             // List items might have paragraph children, collect all text
-            let allTextChildren: ReturnType<typeof import('lexical').ElementNode.prototype.getChildren> = []
+            let allTextChildren: ReturnType<
+              typeof import('lexical').ElementNode.prototype.getChildren
+            > = []
             for (const itemChild of itemChildren) {
               if ($isParagraphNode(itemChild)) {
-                allTextChildren = allTextChildren.concat(itemChild.getChildren())
+                allTextChildren = allTextChildren.concat(
+                  itemChild.getChildren()
+                )
               } else if ($isTextNode(itemChild) || $isLinkNode(itemChild)) {
                 allTextChildren.push(itemChild)
               }
             }
-            
+
             // Process the text content of the list item
             const { spans, markDefs } = processTextContent(allTextChildren)
 
@@ -182,8 +197,8 @@ export function lexicalToPortableText(
               _key: crypto.randomUUID(),
               _type: 'block',
               children: spans,
-              listItem: listType === 'number' ? 'number' : 'bullet',
               level: 1,
+              listItem: listType === 'number' ? 'number' : 'bullet',
               markDefs,
               style: 'normal'
             })

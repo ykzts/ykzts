@@ -1,5 +1,12 @@
 import { LinkNode } from '@lexical/link'
-import { $createListItemNode, $createListNode, $isListItemNode, $isListNode, ListItemNode, ListNode } from '@lexical/list'
+import {
+  $createListItemNode,
+  $createListNode,
+  $isListItemNode,
+  $isListNode,
+  ListItemNode,
+  ListNode
+} from '@lexical/list'
 import {
   $createParagraphNode,
   $createTextNode,
@@ -540,7 +547,7 @@ describe('Portable Text Serializer', () => {
 
       editor.update(() => {
         const root = $getRoot()
-        
+
         const list = $createListNode('number')
         const item1 = $createListItemNode()
         item1.append($createTextNode('First step'))
@@ -572,16 +579,16 @@ describe('Portable Text Serializer', () => {
         {
           _type: 'block',
           children: [{ _type: 'span', text: 'Item 1' }],
-          listItem: 'bullet',
           level: 1,
+          listItem: 'bullet',
           markDefs: [],
           style: 'normal'
         },
         {
           _type: 'block',
           children: [{ _type: 'span', text: 'Item 2' }],
-          listItem: 'bullet',
           level: 1,
+          listItem: 'bullet',
           markDefs: [],
           style: 'normal'
         }
@@ -591,7 +598,7 @@ describe('Portable Text Serializer', () => {
 
       editor.read(() => {
         const root = $getRoot()
-        
+
         const list = root.getFirstChild()
         expect($isListNode(list)).toBe(true)
 
@@ -622,16 +629,16 @@ describe('Portable Text Serializer', () => {
         {
           _type: 'block',
           children: [{ _type: 'span', text: 'Step 1' }],
-          listItem: 'number',
           level: 1,
+          listItem: 'number',
           markDefs: [],
           style: 'normal'
         },
         {
           _type: 'block',
           children: [{ _type: 'span', text: 'Step 2' }],
-          listItem: 'number',
           level: 1,
+          listItem: 'number',
           markDefs: [],
           style: 'normal'
         }
@@ -641,7 +648,7 @@ describe('Portable Text Serializer', () => {
 
       editor.read(() => {
         const root = $getRoot()
-        
+
         const list = root.getFirstChild()
         expect($isListNode(list)).toBe(true)
 
@@ -670,7 +677,7 @@ describe('Portable Text Serializer', () => {
 
       editor.update(() => {
         const root = $getRoot()
-        
+
         const list = $createListNode('bullet')
         const item = $createListItemNode()
         const text = $createTextNode('Bold item')
@@ -710,8 +717,8 @@ describe('Portable Text Serializer', () => {
         {
           _type: 'block',
           children: [{ _type: 'span', text: 'List item' }],
-          listItem: 'bullet',
           level: 1,
+          listItem: 'bullet',
           markDefs: [],
           style: 'normal'
         },
@@ -727,7 +734,7 @@ describe('Portable Text Serializer', () => {
 
       editor.read(() => {
         const root = $getRoot()
-        
+
         expect(root.getChildrenSize()).toBe(3)
 
         const firstChild = root.getFirstChild()

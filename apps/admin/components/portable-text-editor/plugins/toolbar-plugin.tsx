@@ -2,18 +2,18 @@
 
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link'
 import {
+  $isListNode,
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
-  REMOVE_LIST_COMMAND,
-  $isListNode
+  REMOVE_LIST_COMMAND
 } from '@lexical/list'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { mergeRegister } from '@lexical/utils'
 import {
   $getSelection,
+  $isElementNode,
   $isRangeSelection,
-  FORMAT_TEXT_COMMAND,
-  $isElementNode
+  FORMAT_TEXT_COMMAND
 } from 'lexical'
 import { Bold, Image, Italic, Link2, List, ListOrdered } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
