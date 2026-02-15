@@ -100,7 +100,7 @@ async function processCommit(
       hash: commit.hash,
       message: commit.message
     })
-  } catch (error) {
+  } catch {
     console.warn(`Warning: Could not read ${commit.filePath} at ${commit.hash}`)
   }
 }

@@ -414,21 +414,23 @@ export function convertMDXToPortableText(
     const blocks = convertNode(tree)
 
     return blocks
-  } catch (error) {
+  } catch {
     // Fallback: try with cleaned content
     console.warn(
       '  ⚠️  MDX parse failed, attempting fallback with cleaned content'
     )
 
     try {
-      const cleanedContent = cleanProblematicMdxSyntax(contentWithoutFrontmatter)
+      const cleanedContent = cleanProblematicMdxSyntax(
+        contentWithoutFrontmatter
+      )
       const processor = unified().use(remarkParse)
 
       const tree = processor.parse(cleanedContent)
       const blocks = convertNode(tree)
 
       return blocks
-    } catch (fallbackError) {
+    } catch {
       // Last resort: return content as plain text blocks
       console.warn('  ⚠️  Fallback parse also failed, using plain text')
 
