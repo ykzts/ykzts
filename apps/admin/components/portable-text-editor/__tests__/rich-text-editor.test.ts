@@ -9,8 +9,11 @@ import {
 } from '@lexical/list'
 import {
   $createHeadingNode,
+  $createQuoteNode,
   $isHeadingNode,
-  HeadingNode
+  $isQuoteNode,
+  HeadingNode,
+  QuoteNode
 } from '@lexical/rich-text'
 import {
   $createParagraphNode,
@@ -979,6 +982,163 @@ describe('Portable Text Serializer', () => {
         if ($isHeadingNode(children[1])) {
           expect(children[1].getTag()).toBe('h2')
           expect(children[1].getTextContent()).toBe('Heading text')
+        }
+      })
+    })
+  })
+
+  describe('Quote Support', () => {
+    it('should serialize quote to Portable Text', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const quote = $createQuoteNode()
+        quote.append($createTextNode('This is a quote'))
+        root.append(quote)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText).toHaveLength(1)
+      expect(portableText[0]._type).toBe('block')
+      expect(portableText[0].style).toBe('blockquote')
+      expect(portableText[0].children[0].text).toBe('This is a quote')
+    })
+
+    it('should deserialize quote from Portable Text', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
+      })
+
+      const json = JSON.stringify([
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Quoted text' }],
+          markDefs: [],
+          style: 'blockquote'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        const quote = root.getFirstChild()
+        expect($isQuoteNode(quote)).toBe(true)
+
+        if ($isQuoteNode(quote)) {
+          expect(quote.getTextContent()).toBe('Quoted text')
+        }
+      })
+    })
+
+    it('should preserve quote formatting through round-trip', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const quote = $createQuoteNode()
+        const text = $createTextNode('Bold quote')
+        text.toggleFormat('bold')
+        quote.append(text)
+        root.append(quote)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+      const json = JSON.stringify(portableText)
+
+      const editor2 = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
+      })
+      initializeEditorWithPortableText(editor2, json)
+
+      const portableText2 = lexicalToPortableText(editor2)
+
+      expect(portableText2[0].style).toBe('blockquote')
+      expect(portableText2[0].children[0].marks).toContain('strong')
+      expect(portableText2[0].children[0].text).toBe('Bold quote')
+    })
+
+    it('should handle mixed content with quotes and other blocks', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
+      })
+
+      const json = JSON.stringify([
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Regular paragraph' }],
+          markDefs: [],
+          style: 'normal'
+        },
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Quote text' }],
+          markDefs: [],
+          style: 'blockquote'
+        },
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Another paragraph' }],
+          markDefs: [],
+          style: 'normal'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        const children = root.getChildren()
+
+        expect(children).toHaveLength(3)
+
+        expect($isParagraphNode(children[0])).toBe(true)
+        expect($isQuoteNode(children[1])).toBe(true)
+        expect($isParagraphNode(children[2])).toBe(true)
+
+        if ($isQuoteNode(children[1])) {
+          expect(children[1].getTextContent()).toBe('Quote text')
         }
       })
     })
