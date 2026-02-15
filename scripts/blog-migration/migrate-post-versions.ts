@@ -265,8 +265,11 @@ async function migrate(dryRun = false) {
             .select('id')
             .single()
 
-          if (insertPostError || !insertedPost) {
+          if (insertPostError) {
             throw insertPostError
+          }
+          if (!insertedPost) {
+            throw new Error(`Failed to insert post with slug ${slug}`)
           }
 
           postId = insertedPost.id
