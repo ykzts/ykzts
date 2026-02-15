@@ -11,7 +11,9 @@ import {
 } from '@lexical/list'
 import {
   $createHeadingNode,
+  $createQuoteNode,
   $isHeadingNode,
+  $isQuoteNode,
   type HeadingNode
 } from '@lexical/rich-text'
 import {
@@ -225,6 +227,17 @@ export function lexicalToPortableText(
           markDefs,
           style: tag
         })
+      } else if ($isQuoteNode(child)) {
+        // Handle quote nodes
+        const { spans, markDefs } = processTextContent(child.getChildren())
+
+        blocks.push({
+          _key: crypto.randomUUID(),
+          _type: 'block',
+          children: spans,
+          markDefs,
+          style: 'blockquote'
+        })
       } else if ($isParagraphNode(child)) {
         const { spans, markDefs } = processTextContent(child.getChildren())
 
@@ -385,6 +398,20 @@ export function initializeEditorWithPortableText(
               headingNode.append(textNode)
             }
             root.append(headingNode)
+          } else if (block.style === 'blockquote') {
+            // Close any open list
+            if (currentList) {
+              root.append(currentList)
+              currentList = null
+              currentListType = null
+            }
+
+            // Create quote node
+            const quoteNode = $createQuoteNode()
+            for (const textNode of textNodes) {
+              quoteNode.append(textNode)
+            }
+            root.append(quoteNode)
           } else {
             // Close any open list
             if (currentList) {

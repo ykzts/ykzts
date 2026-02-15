@@ -11,6 +11,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import {
   $createHeadingNode,
   $isHeadingNode,
+  $isQuoteNode,
   type HeadingNode
 } from '@lexical/rich-text'
 import { $setBlocksType } from '@lexical/selection'
@@ -20,6 +21,7 @@ import {
   $getSelection,
   $isParagraphNode,
   $isRangeSelection,
+  FORMAT_ELEMENT_COMMAND,
   FORMAT_TEXT_COMMAND
 } from 'lexical'
 import {
@@ -29,7 +31,8 @@ import {
   Italic,
   Link2,
   List,
-  ListOrdered
+  ListOrdered,
+  Quote
 } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { uploadImage } from '@/lib/upload-image'
@@ -43,6 +46,7 @@ export function ToolbarPlugin() {
   const [isLink, setIsLink] = useState(false)
   const [isBulletList, setIsBulletList] = useState(false)
   const [isNumberedList, setIsNumberedList] = useState(false)
+  const [isQuote, setIsQuote] = useState(false)
   const [blockType, setBlockType] = useState<
     'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   >('paragraph')
@@ -88,10 +92,16 @@ export function ToolbarPlugin() {
         const headingNode = element as HeadingNode
         const tag = headingNode.getTag()
         setBlockType(tag as 'h2' | 'h3' | 'h4' | 'h5' | 'h6')
+        setIsQuote(false)
       } else if ($isParagraphNode(element)) {
         setBlockType('paragraph')
+        setIsQuote(false)
+      } else if ($isQuoteNode(element)) {
+        setBlockType('paragraph')
+        setIsQuote(true)
       } else {
         setBlockType('paragraph')
+        setIsQuote(false)
       }
     }
   }, [])
@@ -191,6 +201,21 @@ export function ToolbarPlugin() {
     }
   }
 
+  const formatQuote = () => {
+    if (isQuote) {
+      // Remove quote formatting by converting to paragraph
+      editor.update(() => {
+        const selection = $getSelection()
+        if ($isRangeSelection(selection)) {
+          $setBlocksType(selection, () => $createParagraphNode())
+        }
+      })
+    } else {
+      // Apply quote formatting
+      editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'quote')
+    }
+  }
+
   const formatHeading = (
     headingLevel: 'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   ) => {
@@ -281,6 +306,16 @@ export function ToolbarPlugin() {
         type="button"
       >
         <ListOrdered className="size-4" />
+      </button>
+      <button
+        aria-label="引用"
+        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+          isQuote ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+        }`}
+        onClick={formatQuote}
+        type="button"
+      >
+        <Quote className="size-4" />
       </button>
       <button
         aria-label="画像"
