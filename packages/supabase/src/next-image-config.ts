@@ -49,8 +49,15 @@ export function getSupabaseImageConfig(
     if (isLocalhost && process.env.NODE_ENV !== 'production') {
       imageConfig.dangerouslyAllowLocalIP = true
 
-      // Add patterns for all common localhost variants
-      const localhostVariants = ['localhost', '127.0.0.1', '0.0.0.0']
+      // Add patterns for all common localhost variants and the actual hostname if .local
+      const localhostVariants = [
+        'localhost',
+        '127.0.0.1',
+        '0.0.0.0',
+        ...(parsedUrl.hostname.endsWith('.local')
+          ? [parsedUrl.hostname]
+          : [])
+      ]
       imageConfig.remotePatterns = localhostVariants.map((hostname) => ({
         hostname,
         pathname: '/storage/v1/object/public/**',
