@@ -10,14 +10,43 @@ import {
   SheetTrigger
 } from '@ykzts/ui/components/sheet'
 import { Menu, User as UserIcon } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { getCurrentUser } from '@/lib/auth'
+import { getProfile } from '@/lib/data'
 import { logout } from '../login/actions'
 
-// biome-ignore lint/correctness/noUnusedFunctionParameters: user parameter will be used for profile picture when implemented
-function UserInfo({ user }: { user: User }) {
+async function UserInfo() {
+  const profile = await getProfile()
+
+  return (
+    <div className="flex items-center gap-3">
+      <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-muted">
+        {profile?.avatar_url ? (
+          <Image
+            alt={`${profile?.name ?? 'ユーザー'}のプロフィール画像`}
+            className="h-full w-full object-cover"
+            height={32}
+            sizes="32px"
+            src={profile.avatar_url}
+            width={32}
+          />
+        ) : (
+          <UserIcon className="h-4 w-4 text-muted-foreground" />
+        )}
+      </div>
+      <form action={logout}>
+        <Button className="hidden sm:flex" type="submit" variant="secondary">
+          ログアウト
+        </Button>
+      </form>
+    </div>
+  )
+}
+
+function UserInfoFallback() {
   return (
     <div className="flex items-center gap-3">
       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
@@ -68,9 +97,15 @@ function MobileNav({ user }: { user: User }) {
         </nav>
         <SheetFooter>
           <div className="flex items-center gap-3 border-t pt-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
-              <UserIcon className="h-5 w-5 text-muted-foreground" />
-            </div>
+            <Suspense
+              fallback={
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
+                  <UserIcon className="h-5 w-5 text-muted-foreground" />
+                </div>
+              }
+            >
+              <MobileUserAvatar />
+            </Suspense>
             <div className="flex-1">
               <p className="font-medium text-sm">
                 {user.email ?? 'メールアドレスなし'}
@@ -85,6 +120,27 @@ function MobileNav({ user }: { user: User }) {
         </SheetFooter>
       </SheetContent>
     </Sheet>
+  )
+}
+
+async function MobileUserAvatar() {
+  const profile = await getProfile()
+
+  return (
+    <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-muted">
+      {profile?.avatar_url ? (
+        <Image
+          alt={`${profile?.name ?? 'ユーザー'}のプロフィール画像`}
+          className="h-full w-full object-cover"
+          height={40}
+          sizes="40px"
+          src={profile.avatar_url}
+          width={40}
+        />
+      ) : (
+        <UserIcon className="h-5 w-5 text-muted-foreground" />
+      )}
+    </div>
   )
 }
 
@@ -114,7 +170,9 @@ async function AuthGuard({ children }: { children: React.ReactNode }) {
                 ))}
               </div>
             </div>
-            <UserInfo user={user} />
+            <Suspense fallback={<UserInfoFallback />}>
+              <UserInfo />
+            </Suspense>
           </div>
         </div>
       </nav>
