@@ -7,6 +7,7 @@
  */
 
 import { toString as mdastToString } from 'mdast-util-to-string'
+import remarkGfm from 'remark-gfm'
 import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
 import { unified } from 'unified'
@@ -33,6 +34,7 @@ interface BlockContent extends PortableTextBlock {
     _key: string
     _type: string
     href?: string
+    identifier?: string
   }>
   listItem?: 'bullet' | 'number'
   level?: number
@@ -53,7 +55,13 @@ interface CodeBlock extends PortableTextBlock {
   language?: string
 }
 
-type PortableTextContent = BlockContent | ImageBlock | CodeBlock
+interface FootnoteBlock extends PortableTextBlock {
+  _type: 'footnote'
+  identifier: string
+  children: PortableTextBlock[]
+}
+
+type PortableTextContent = BlockContent | ImageBlock | CodeBlock | FootnoteBlock
 
 let keyCounter = 0
 function generateKey(): string {
@@ -187,6 +195,25 @@ function convertNode(
         for (const child of linkNode.children) {
           processInlineNode(child, [...marks, markKey])
         }
+      } else if (inlineNode.type === 'footnoteReference') {
+        const footnoteNode = inlineNode as {
+          identifier: string
+          label?: string
+        }
+        const markKey = generateKey()
+        markDefs.push({
+          _key: markKey,
+          _type: 'footnoteReference',
+          identifier: footnoteNode.identifier || footnoteNode.label || ''
+        })
+
+        // Add the footnote reference as a text span with the mark
+        children.push({
+          _key: generateKey(),
+          _type: 'span',
+          marks: [...marks, markKey],
+          text: `[${footnoteNode.identifier || footnoteNode.label || ''}]`
+        })
       } else if (inlineNode.type === 'image') {
         const imageNode = inlineNode as { url: string; alt?: string }
         // Handle inline images in paragraphs by breaking out and creating image blocks
@@ -329,6 +356,28 @@ function convertNode(
     return blocks
   }
 
+  if (node.type === 'footnoteDefinition') {
+    const footnoteNode = node as Parent & { identifier: string; label?: string }
+    const identifier = footnoteNode.identifier || footnoteNode.label || ''
+
+    // Convert footnote definition children to portable text blocks
+    const footnoteChildren: PortableTextBlock[] = []
+    for (const child of footnoteNode.children) {
+      footnoteChildren.push(
+        ...(convertNode(child, parentMarks) as PortableTextBlock[])
+      )
+    }
+
+    blocks.push({
+      _key: generateKey(),
+      _type: 'footnote',
+      children: footnoteChildren,
+      identifier
+    } as FootnoteBlock)
+
+    return blocks
+  }
+
   // Handle mdxJsxFlowElement and other MDX-specific nodes
   if (node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement') {
     const jsxNode = node as Parent
@@ -416,8 +465,8 @@ export function convertMDXToPortableText(
     .replace(/\{\s*\/\*\s*truncate\s*\*\/\s*\}/gi, '')
 
   try {
-    // Parse MDX to AST
-    const processor = unified().use(remarkParse).use(remarkMdx)
+    // Parse MDX to AST with GFM support for footnotes
+    const processor = unified().use(remarkParse).use(remarkGfm).use(remarkMdx)
 
     const tree = processor.parse(contentWithoutFrontmatter)
 
@@ -435,7 +484,7 @@ export function convertMDXToPortableText(
       const cleanedContent = cleanProblematicMdxSyntax(
         contentWithoutFrontmatter
       )
-      const processor = unified().use(remarkParse)
+      const processor = unified().use(remarkParse).use(remarkGfm)
 
       const tree = processor.parse(cleanedContent)
       const blocks = convertNode(tree)

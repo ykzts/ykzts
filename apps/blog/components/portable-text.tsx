@@ -8,6 +8,7 @@ import type { ComponentProps } from 'react'
 import Link from '@/components/link'
 import type {
   CodeBlock,
+  FootnoteBlock,
   ImageBlock,
   PortableTextValue
 } from '@/lib/portable-text'
@@ -15,6 +16,26 @@ import { highlightCode } from '@/lib/shiki'
 
 const portableTextComponents = {
   marks: {
+    footnoteReference({
+      value
+    }: PortableTextMarkComponentProps<{
+      _type: string
+      identifier: string
+    }>) {
+      const identifier = value?.identifier
+
+      return (
+        <sup>
+          <a
+            className="text-primary"
+            href={`#fn-${identifier}`}
+            id={`fnref-${identifier}`}
+          >
+            [{identifier}]
+          </a>
+        </sup>
+      )
+    },
     link({
       children,
       value
@@ -32,6 +53,31 @@ const portableTextComponents = {
       return (
         // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki generates safe HTML for syntax highlighting
         <div dangerouslySetInnerHTML={{ __html: html }} />
+      )
+    },
+    footnote({ value }: { value: FootnoteBlock }) {
+      const { identifier, children } = value
+
+      return (
+        <div className="footnote-definition" id={`fn-${identifier}`}>
+          <div className="flex gap-2">
+            <div className="footnote-label text-muted-foreground">
+              [{identifier}]
+            </div>
+            <div className="footnote-content flex-1">
+              <PortableText
+                components={portableTextComponents}
+                value={children}
+              />
+              <a
+                className="footnote-backref ml-1 text-primary text-sm"
+                href={`#fnref-${identifier}`}
+              >
+                ↩
+              </a>
+            </div>
+          </div>
+        </div>
       )
     },
     image({ value }: { value: ImageBlock }) {

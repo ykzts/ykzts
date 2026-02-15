@@ -17,6 +17,12 @@ export interface ImageBlock extends TypedObject {
   }
 }
 
+export interface FootnoteBlock extends TypedObject {
+  _type: 'footnote'
+  identifier: string
+  children: PortableTextBlock[]
+}
+
 export function isPortableTextValue(
   value: unknown
 ): value is PortableTextValue {
