@@ -32,7 +32,8 @@ import {
   Link2,
   List,
   ListOrdered,
-  Quote
+  Quote,
+  Underline
 } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { uploadImage } from '@/lib/upload-image'
@@ -43,6 +44,7 @@ export function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext()
   const [isBold, setIsBold] = useState(false)
   const [isItalic, setIsItalic] = useState(false)
+  const [isUnderline, setIsUnderline] = useState(false)
   const [isLink, setIsLink] = useState(false)
   const [isBulletList, setIsBulletList] = useState(false)
   const [isNumberedList, setIsNumberedList] = useState(false)
@@ -58,6 +60,7 @@ export function ToolbarPlugin() {
     if ($isRangeSelection(selection)) {
       setIsBold(selection.hasFormat('bold'))
       setIsItalic(selection.hasFormat('italic'))
+      setIsUnderline(selection.hasFormat('underline'))
 
       // Check if we're in a link - check both anchor and focus nodes
       const anchorNode = selection.anchor.getNode()
@@ -122,6 +125,10 @@ export function ToolbarPlugin() {
 
   const formatItalic = () => {
     editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')
+  }
+
+  const formatUnderline = () => {
+    editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')
   }
 
   const insertLink = useCallback(() => {
@@ -276,6 +283,16 @@ export function ToolbarPlugin() {
         type="button"
       >
         <Italic className="size-4" />
+      </button>
+      <button
+        aria-label="下線"
+        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+          isUnderline ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+        }`}
+        onClick={formatUnderline}
+        type="button"
+      >
+        <Underline className="size-4" />
       </button>
       <button
         aria-label="リンク"

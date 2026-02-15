@@ -95,6 +95,26 @@ describe('Portable Text Serializer', () => {
       expect(portableText[0].children[0].text).toBe('italic text')
     })
 
+    it('should serialize underline text to Portable Text', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const paragraph = $createParagraphNode()
+        const underlineText = $createTextNode('underline text')
+        underlineText.toggleFormat('underline')
+        paragraph.append(underlineText)
+        root.append(paragraph)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText[0].children[0].marks).toContain('underline')
+      expect(portableText[0].children[0].text).toBe('underline text')
+    })
+
     it('should serialize combined formatting to Portable Text', () => {
       const editor = createEditor({
         nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
@@ -103,9 +123,10 @@ describe('Portable Text Serializer', () => {
       editor.update(() => {
         const root = $getRoot()
         const paragraph = $createParagraphNode()
-        const text = $createTextNode('bold italic text')
+        const text = $createTextNode('bold italic underline text')
         text.toggleFormat('bold')
         text.toggleFormat('italic')
+        text.toggleFormat('underline')
         paragraph.append(text)
         root.append(paragraph)
       })
@@ -114,6 +135,7 @@ describe('Portable Text Serializer', () => {
 
       expect(portableText[0].children[0].marks).toContain('strong')
       expect(portableText[0].children[0].marks).toContain('em')
+      expect(portableText[0].children[0].marks).toContain('underline')
     })
 
     it('should serialize empty editor to empty block', () => {
@@ -241,6 +263,38 @@ describe('Portable Text Serializer', () => {
           if ($isTextNode(text)) {
             expect(text.getTextContent()).toBe('italic text')
             expect(text.hasFormat('italic')).toBe(true)
+          }
+        }
+      })
+    })
+
+    it('should deserialize underline text from Portable Text', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
+      })
+
+      const json = JSON.stringify([
+        {
+          _type: 'block',
+          children: [
+            { _type: 'span', marks: ['underline'], text: 'underline text' }
+          ],
+          markDefs: [],
+          style: 'normal'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        const paragraph = root.getFirstChild()
+
+        if ($isParagraphNode(paragraph)) {
+          const text = paragraph.getFirstChild()
+          if ($isTextNode(text)) {
+            expect(text.getTextContent()).toBe('underline text')
+            expect(text.hasFormat('underline')).toBe(true)
           }
         }
       })
