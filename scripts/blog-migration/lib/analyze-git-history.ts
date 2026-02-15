@@ -12,6 +12,69 @@ export function setRepoRoot(root: string) {
   REPO_ROOT = root
 }
 
+/**
+ * Normalize content for comparison by removing formatting differences
+ * This helps compare content while ignoring whitespace, line breaks, etc.
+ */
+function normalizeContent(content: string): string {
+  return (
+    content
+      .replace(/\r\n/g, '\n') // Normalize line endings
+      // Normalize truncate markers (both HTML and MDX style)
+      .replace(/<!--\s*truncate\s*-->/gi, '{/* truncate */}')
+      .replace(/\{\s*\/\*\s*truncate\s*\*\/\s*\}/gi, '{/* truncate */}')
+      // Normalize HTML comments to MDX comments (handles multi-line)
+      .replace(/<!--\s*([\s\S]*?)\s*-->/g, '{/* $1 */}')
+      .replace(/[ \t]+$/gm, '') // Remove trailing whitespace
+      .replace(/\n{3,}/g, '\n\n') // Normalize multiple newlines
+      .replace(/\s+/g, ' ') // Collapse all whitespace
+      .trim()
+  )
+}
+
+function isFormatCommit(message: string): boolean {
+  // Detects format commits including historical typo 'pnpm fomat'
+  return /(pnpm\s+fomat|pnpm\s+format|\bformat\b)/i.test(message)
+}
+
+function getLastUpdateValue(frontmatter: Frontmatter): string | undefined {
+  return frontmatter.last_update?.date ?? frontmatter.lastmod
+}
+
+/**
+ * Check if content has meaningful changes compared to previous content
+ */
+function hasSignificantContentChange(
+  currentContent: string,
+  previousContent: string
+): boolean {
+  const normalized1 = normalizeContent(currentContent)
+  const normalized2 = normalizeContent(previousContent)
+  return normalized1 !== normalized2
+}
+
+/**
+ * Check if frontmatter has meaningful changes (title, tags, etc.)
+ */
+function hasSignificantFrontmatterChange(
+  currentFrontmatter: Frontmatter,
+  previousFrontmatter: Frontmatter
+): boolean {
+  // Check title change
+  if (currentFrontmatter.title !== previousFrontmatter.title) {
+    return true
+  }
+
+  // Check tags change
+  const currentTags = currentFrontmatter.tags?.slice().sort().join(',') || ''
+  const previousTags = previousFrontmatter.tags?.slice().sort().join(',') || ''
+  if (currentTags !== previousTags) {
+    return true
+  }
+
+  return false
+}
+
 export interface GitCommit {
   hash: string
   date: Date
@@ -20,17 +83,46 @@ export interface GitCommit {
   content: string
 }
 
-/**
- * Get Git commit history for a specific file
- * @param filePath - Path to the file relative to repository root
- * @returns Array of commits with parsed frontmatter and content
- */
+async function processCommit(
+  commit: { hash: string; date: string; message: string; filePath: string },
+  commits: GitCommit[]
+): Promise<void> {
+  try {
+    const { stdout: fileContent } = await execFileAsync(
+      'git',
+      ['show', `${commit.hash}:${commit.filePath}`],
+      { cwd: REPO_ROOT, maxBuffer: 1024 * 1024 * 10 }
+    )
+    const parsed = parseMDXContent(fileContent)
+    commits.push({
+      content: parsed.content,
+      date: new Date(commit.date),
+      frontmatter: parsed.frontmatter,
+      hash: commit.hash,
+      message: commit.message
+    })
+  } catch {
+    console.warn(`Warning: Could not read ${commit.filePath} at ${commit.hash}`)
+  }
+}
+
 export async function getFileHistory(filePath: string): Promise<GitCommit[]> {
   try {
-    // Get all commits that affected this file (using %aI for strict ISO 8601 dates)
+    // Get all commits that affected this file with file names at each commit
+    // --follow enables rename detection
+    // --name-status shows the status (M=modified, R=renamed) and file paths
     const { stdout: logOutput } = await execFileAsync(
       'git',
-      ['log', '--all', '--format=%H|%aI|%s', '--follow', '--', filePath],
+      [
+        'log',
+        '--all',
+        '--format=COMMIT:%H|%aI|%s',
+        '--follow',
+        '--find-renames',
+        '--name-status',
+        '--',
+        filePath
+      ],
       { cwd: REPO_ROOT }
     )
 
@@ -39,49 +131,51 @@ export async function getFileHistory(filePath: string): Promise<GitCommit[]> {
     }
 
     const commits: GitCommit[] = []
-    const commitLines = logOutput.trim().split('\n')
+    const lines = logOutput.trim().split('\n')
 
-    for (const line of commitLines) {
-      const [hash, dateStr, ...messageParts] = line.split('|')
-      const message = messageParts.join('|')
+    let currentCommit: {
+      hash: string
+      date: string
+      message: string
+      filePath?: string
+    } | null = null
 
-      // Get file content at this commit
-      try {
-        const { stdout: content } = await execFileAsync(
-          'git',
-          ['show', `${hash}:${filePath}`],
-          { cwd: REPO_ROOT }
-        )
-
-        // Parse MDX content
-        try {
-          const parsed = parseMDXContent(content)
-
-          commits.push({
-            content: parsed.content,
-            date: new Date(dateStr),
-            frontmatter: parsed.frontmatter,
-            hash,
-            message
-          })
-        } catch (parseError) {
-          // Content exists at this commit but could not be parsed
-          console.error(
-            `Failed to parse MDX content for ${filePath} at commit ${hash}:`,
-            parseError
-          )
-          console.error(
-            'Please verify the MDX frontmatter format in this commit.'
-          )
+    for (const line of lines) {
+      if (line.startsWith('COMMIT:')) {
+        // Save previous commit if exists
+        if (currentCommit?.filePath) {
+          await processCommit(currentCommit, commits)
         }
-      } catch (gitError) {
-        // File might not exist in this commit (e.g., it was deleted then re-added)
-        // This is normal if the file was renamed, moved, or temporarily deleted
-        console.warn(
-          `Could not get content for ${filePath} at commit ${hash}:`,
-          gitError
-        )
+
+        // Parse new commit
+        const commitData = line.substring(7) // Remove "COMMIT:"
+        const [hash, dateStr, ...messageParts] = commitData.split('|')
+        currentCommit = {
+          date: dateStr,
+          hash,
+          message: messageParts.join('|')
+        }
+      } else if (line.trim() && currentCommit) {
+        // Parse file status line (e.g., "M\tpath/to/file.mdx" or "R100\told/path.mdx\tnew/path.mdx")
+        const parts = line.split('\t')
+        const status = parts[0]
+
+        if (status.startsWith('R')) {
+          // Renamed: use the new path (the file path after this commit)
+          // parts[1] = old path, parts[2] = new path
+          currentCommit.filePath = parts[2]
+        } else {
+          // Modified, Added, etc.: use the path
+          if (parts[1]) {
+            currentCommit.filePath = parts[1]
+          }
+        }
       }
+    }
+
+    // Process last commit
+    if (currentCommit?.filePath) {
+      await processCommit(currentCommit, commits)
     }
 
     return commits
@@ -104,7 +198,7 @@ export function detectLastUpdateChanges(commits: GitCommit[]): GitCommit[] {
   const chronological = [...commits].reverse()
 
   for (const commit of chronological) {
-    const currentLastUpdate = commit.frontmatter.last_update?.date
+    const currentLastUpdate = getLastUpdateValue(commit.frontmatter)
 
     // If last_update.date changed or was added
     if (currentLastUpdate !== previousLastUpdate) {
@@ -119,7 +213,7 @@ export function detectLastUpdateChanges(commits: GitCommit[]): GitCommit[] {
 /**
  * Generate versions from Git history
  * Creates version 1 from initial commit (using date field as version_date)
- * Creates additional versions when last_update.date changes
+ * Creates additional versions when last_update.date changes AND content has meaningful changes
  * @param filePath - Path to the file relative to repository root
  * @returns Array of version data with version_date
  */
@@ -166,25 +260,49 @@ export async function generateVersionsFromHistory(filePath: string): Promise<
     versionNumber: 1
   })
 
-  // Track changes to last_update.date
-  let previousLastUpdate = firstCommit.frontmatter.last_update?.date
+  // Track changes to last_update.date and content
+  let previousLastUpdate = getLastUpdateValue(firstCommit.frontmatter)
+  let previousContent = firstCommit.content
+  let previousFrontmatter = firstCommit.frontmatter
   let versionNumber = 2
 
   for (let i = 1; i < chronological.length; i++) {
     const commit = chronological[i]
-    const currentLastUpdate = commit.frontmatter.last_update?.date
+    const currentLastUpdate = getLastUpdateValue(commit.frontmatter)
+    const hasContentChange = hasSignificantContentChange(
+      commit.content,
+      previousContent
+    )
+    const hasFrontmatterChange = hasSignificantFrontmatterChange(
+      commit.frontmatter,
+      previousFrontmatter
+    )
+    const hasLastUpdateChange = currentLastUpdate !== previousLastUpdate
 
-    // If last_update.date changed
-    if (currentLastUpdate && currentLastUpdate !== previousLastUpdate) {
+    if (
+      isFormatCommit(commit.message) &&
+      !hasContentChange &&
+      !hasFrontmatterChange &&
+      !hasLastUpdateChange
+    ) {
+      continue
+    }
+
+    // Create a new version if any meaningful change is detected
+    if (hasContentChange || hasFrontmatterChange || hasLastUpdateChange) {
       versions.push({
         commitHash: commit.hash,
         commitMessage: commit.message,
         content: commit.content,
         frontmatter: commit.frontmatter,
-        versionDate: new Date(currentLastUpdate),
+        versionDate: currentLastUpdate
+          ? new Date(currentLastUpdate)
+          : commit.date,
         versionNumber: versionNumber++
       })
       previousLastUpdate = currentLastUpdate
+      previousContent = commit.content
+      previousFrontmatter = commit.frontmatter
     }
   }
 

@@ -356,6 +356,46 @@ function convertNode(
 }
 
 /**
+ * Clean problematic MDX syntax for fallback parsing
+ */
+function cleanProblematicMdxSyntax(content: string): string {
+  let cleaned = content
+
+  // Remove or escape problematic JSX/MDX expressions
+  // Replace {/* ... */} style comments that might be malformed
+  cleaned = cleaned.replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
+
+  // Remove standalone curly braces that might cause issues
+  // But keep code blocks intact by tracking code block state
+  const lines = cleaned.split('\n')
+  let inCodeBlock = false
+  const processedLines = lines.map((line) => {
+    // Toggle code block state when encountering fence markers
+    if (line.trim().startsWith('```')) {
+      inCodeBlock = !inCodeBlock
+      return line
+    }
+    // Skip processing if in code block or indented code
+    if (inCodeBlock || line.startsWith('    ')) {
+      return line
+    }
+    // Remove problematic JSX expressions outside code
+    return line.replace(/\{[^}]*\}/g, '')
+  })
+  cleaned = processedLines.join('\n')
+
+  // Remove all HTML/JSX tags as fallback
+  // Repeat until all nested tags are removed
+  let previous = ''
+  while (previous !== cleaned) {
+    previous = cleaned
+    cleaned = cleaned.replace(/<[^>]+>/g, '')
+  }
+
+  return cleaned
+}
+
+/**
  * Convert MDX content to Portable Text
  */
 export function convertMDXToPortableText(
@@ -375,13 +415,56 @@ export function convertMDXToPortableText(
     .replace(/<!--\s*truncate\s*-->/gi, '')
     .replace(/\{\s*\/\*\s*truncate\s*\*\/\s*\}/gi, '')
 
-  // Parse MDX to AST
-  const processor = unified().use(remarkParse).use(remarkMdx)
+  try {
+    // Parse MDX to AST
+    const processor = unified().use(remarkParse).use(remarkMdx)
 
-  const tree = processor.parse(contentWithoutFrontmatter)
+    const tree = processor.parse(contentWithoutFrontmatter)
 
-  // Convert AST to Portable Text
-  const blocks = convertNode(tree)
+    // Convert AST to Portable Text
+    const blocks = convertNode(tree)
 
-  return blocks
+    return blocks
+  } catch {
+    // Fallback: try with cleaned content
+    console.warn(
+      '  ⚠️  MDX parse failed, attempting fallback with cleaned content'
+    )
+
+    try {
+      const cleanedContent = cleanProblematicMdxSyntax(
+        contentWithoutFrontmatter
+      )
+      const processor = unified().use(remarkParse)
+
+      const tree = processor.parse(cleanedContent)
+      const blocks = convertNode(tree)
+
+      return blocks
+    } catch {
+      // Last resort: return content as plain text blocks
+      console.warn('  ⚠️  Fallback parse also failed, using plain text')
+
+      const cleaned = cleanProblematicMdxSyntax(contentWithoutFrontmatter)
+      const paragraphs = cleaned
+        .split(/\n\n+/)
+        .filter((p) => p.trim())
+        .map((paragraph) => ({
+          _key: generateKey(),
+          _type: 'block' as const,
+          children: [
+            {
+              _key: generateKey(),
+              _type: 'span' as const,
+              marks: [],
+              text: paragraph.trim()
+            }
+          ],
+          markDefs: [],
+          style: 'normal'
+        }))
+
+      return paragraphs
+    }
+  }
 }
