@@ -9,6 +9,7 @@ import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
+import { HeadingNode } from '@lexical/rich-text'
 import type { EditorState, LexicalEditor } from 'lexical'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ImageNode } from './nodes/image-node'
@@ -22,6 +23,13 @@ import {
 } from './portable-text-serializer'
 
 const editorTheme = {
+  heading: {
+    h2: 'text-3xl font-bold mb-3',
+    h3: 'text-2xl font-bold mb-2',
+    h4: 'text-xl font-bold mb-2',
+    h5: 'text-lg font-bold mb-1',
+    h6: 'text-base font-bold mb-1'
+  },
   link: 'text-primary hover:underline',
   list: {
     listitem: 'ml-8',
@@ -70,7 +78,7 @@ export function RichTextEditor({
         }
       : undefined,
     namespace: 'RichTextEditor',
-    nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+    nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode],
     onError: (error: Error) => {
       console.error('Lexical error:', error)
     },

@@ -8,9 +8,29 @@ import {
   REMOVE_LIST_COMMAND
 } from '@lexical/list'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
+import {
+  $createHeadingNode,
+  $isHeadingNode,
+  type HeadingNode
+} from '@lexical/rich-text'
+import { $setBlocksType } from '@lexical/selection'
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils'
-import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical'
-import { Bold, Image, Italic, Link2, List, ListOrdered } from 'lucide-react'
+import {
+  $createParagraphNode,
+  $getSelection,
+  $isParagraphNode,
+  $isRangeSelection,
+  FORMAT_TEXT_COMMAND
+} from 'lexical'
+import {
+  Bold,
+  ChevronDown,
+  Image,
+  Italic,
+  Link2,
+  List,
+  ListOrdered
+} from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { uploadImage } from '@/lib/upload-image'
 import { INSERT_IMAGE_COMMAND } from './image-plugin'
@@ -23,6 +43,9 @@ export function ToolbarPlugin() {
   const [isLink, setIsLink] = useState(false)
   const [isBulletList, setIsBulletList] = useState(false)
   const [isNumberedList, setIsNumberedList] = useState(false)
+  const [blockType, setBlockType] = useState<
+    'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+  >('paragraph')
   const [isUploading, setIsUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -53,6 +76,22 @@ export function ToolbarPlugin() {
       } else {
         setIsBulletList(false)
         setIsNumberedList(false)
+      }
+
+      // Check block type (heading or paragraph)
+      const element =
+        anchorNode.getKey() === 'root'
+          ? anchorNode
+          : anchorNode.getTopLevelElementOrThrow()
+
+      if ($isHeadingNode(element)) {
+        const headingNode = element as HeadingNode
+        const tag = headingNode.getTag()
+        setBlockType(tag as 'h2' | 'h3' | 'h4' | 'h5' | 'h6')
+      } else if ($isParagraphNode(element)) {
+        setBlockType('paragraph')
+      } else {
+        setBlockType('paragraph')
       }
     }
   }, [])
@@ -152,8 +191,47 @@ export function ToolbarPlugin() {
     }
   }
 
+  const formatHeading = (
+    headingLevel: 'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+  ) => {
+    editor.update(() => {
+      const selection = $getSelection()
+      if ($isRangeSelection(selection)) {
+        if (headingLevel === 'paragraph') {
+          $setBlocksType(selection, () => $createParagraphNode())
+        } else {
+          $setBlocksType(selection, () => $createHeadingNode(headingLevel))
+        }
+      }
+    })
+  }
+
   return (
     <div className="flex gap-1 border-border border-b bg-muted/5 p-2">
+      <div className="relative">
+        <select
+          aria-label="ブロックタイプ"
+          className="appearance-none rounded border border-border bg-card px-3 py-1 pr-8 text-foreground text-sm transition-colors hover:bg-muted/20"
+          onChange={(e) =>
+            formatHeading(
+              e.target.value as 'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+            )
+          }
+          value={blockType}
+        >
+          <option value="paragraph">段落</option>
+          <option value="h2">見出し2</option>
+          <option value="h3">見出し3</option>
+          <option value="h4">見出し4</option>
+          <option value="h5">見出し5</option>
+          <option value="h6">見出し6</option>
+        </select>
+        <ChevronDown
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1/2 right-2 size-4 -translate-y-1/2 text-muted-foreground"
+        />
+      </div>
+      <div className="mx-1 w-px bg-border" />
       <button
         aria-label="太字"
         className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
