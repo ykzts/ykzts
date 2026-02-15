@@ -36,6 +36,7 @@ async function ProfileContent() {
                     alt={`${profile.name}のプロフィール画像`}
                     className="object-cover"
                     fill
+                    sizes="128px"
                     src={profile.avatar_url}
                   />
                 </div>

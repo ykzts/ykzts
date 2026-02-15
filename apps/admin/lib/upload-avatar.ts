@@ -22,6 +22,21 @@ const MIME_TO_EXT: Record<string, string> = {
   'image/webp': 'webp'
 }
 
+/**
+ * Extract storage path from avatar URL
+ * @param avatarUrl - Full URL to the avatar in Supabase Storage
+ * @returns The storage path (e.g., "user_id/filename.ext") or null if invalid
+ */
+function extractStoragePath(avatarUrl: string): string | null {
+  try {
+    const url = new URL(avatarUrl)
+    const pathMatch = url.pathname.match(/\/avatars\/(.+)/)
+    return pathMatch ? pathMatch[1] : null
+  } catch {
+    return null
+  }
+}
+
 export async function uploadAvatar(
   formData: FormData
 ): Promise<AvatarUploadResult> {
@@ -76,11 +91,8 @@ export async function uploadAvatar(
     // Delete old avatar if it exists
     if (profile.avatar_url) {
       try {
-        // Extract the file path from the URL
-        const url = new URL(profile.avatar_url)
-        const pathMatch = url.pathname.match(/\/avatars\/(.+)/)
-        if (pathMatch) {
-          const oldFilePath = pathMatch[1]
+        const oldFilePath = extractStoragePath(profile.avatar_url)
+        if (oldFilePath) {
           await supabase.storage.from('avatars').remove([oldFilePath])
         }
       } catch (error) {
@@ -129,8 +141,13 @@ export async function uploadAvatar(
 
     if (updateError) {
       console.error('Profile update error:', updateError)
-      // Try to delete the uploaded file
-      await supabase.storage.from('avatars').remove([filePath])
+      // Try to delete the uploaded file (cleanup)
+      try {
+        await supabase.storage.from('avatars').remove([filePath])
+      } catch (cleanupError) {
+        console.error('Failed to cleanup uploaded file:', cleanupError)
+        // Continue to return the original update error
+      }
       return {
         error: 'プロフィールの更新に失敗しました。'
       }
@@ -177,10 +194,8 @@ export async function deleteAvatar(): Promise<{ error?: string }> {
 
     // Delete the file from storage
     try {
-      const url = new URL(profile.avatar_url)
-      const pathMatch = url.pathname.match(/\/avatars\/(.+)/)
-      if (pathMatch) {
-        const filePath = pathMatch[1]
+      const filePath = extractStoragePath(profile.avatar_url)
+      if (filePath) {
         await supabase.storage.from('avatars').remove([filePath])
       }
     } catch (error) {

@@ -163,6 +163,7 @@ export function AvatarUpload({
                   alt="プロフィール画像のプレビュー"
                   className="object-cover"
                   fill
+                  sizes="128px"
                   src={preview}
                 />
               </div>
@@ -244,7 +245,10 @@ export function AvatarUpload({
         </div>
 
         {error && (
-          <div className="mt-2 rounded border border-error bg-error/10 p-3 text-error text-sm">
+          <div
+            className="mt-2 rounded border border-error bg-error/10 p-3 text-error text-sm"
+            role="alert"
+          >
             {error}
           </div>
         )}

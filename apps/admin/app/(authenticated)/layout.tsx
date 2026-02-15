@@ -29,6 +29,7 @@ async function UserInfo() {
             alt={`${profile?.name ?? 'ユーザー'}のプロフィール画像`}
             className="h-full w-full object-cover"
             height={32}
+            sizes="32px"
             src={profile.avatar_url}
             width={32}
           />
@@ -132,6 +133,7 @@ async function MobileUserAvatar() {
           alt={`${profile?.name ?? 'ユーザー'}のプロフィール画像`}
           className="h-full w-full object-cover"
           height={40}
+          sizes="40px"
           src={profile.avatar_url}
           width={40}
         />
