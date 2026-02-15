@@ -19,7 +19,7 @@
     "@portabletext/types": "4.0.1",
     "@tailwindcss/postcss": "4.1.18",
     "@tailwindcss/typography": "0.5.19",
-    "@types/node": "22.19.10",
+    "@types/node": "22.19.11",
     "@types/react": "19.2.13",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "5.1.4",
