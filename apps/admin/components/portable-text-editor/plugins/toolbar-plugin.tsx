@@ -1,10 +1,16 @@
 'use client'
 
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link'
+import {
+  INSERT_ORDERED_LIST_COMMAND,
+  INSERT_UNORDERED_LIST_COMMAND,
+  ListNode,
+  REMOVE_LIST_COMMAND
+} from '@lexical/list'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import { mergeRegister } from '@lexical/utils'
+import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils'
 import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical'
-import { Bold, Image, Italic, Link2 } from 'lucide-react'
+import { Bold, Image, Italic, Link2, List, ListOrdered } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { uploadImage } from '@/lib/upload-image'
 import { INSERT_IMAGE_COMMAND } from './image-plugin'
@@ -15,6 +21,8 @@ export function ToolbarPlugin() {
   const [isBold, setIsBold] = useState(false)
   const [isItalic, setIsItalic] = useState(false)
   const [isLink, setIsLink] = useState(false)
+  const [isBulletList, setIsBulletList] = useState(false)
+  const [isNumberedList, setIsNumberedList] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -35,6 +43,17 @@ export function ToolbarPlugin() {
           $isLinkNode(focusNode) ||
           $isLinkNode(focusParent)
       )
+
+      // Check if we're in a list - use $getNearestNodeOfType for reliable traversal
+      const listNode = $getNearestNodeOfType(anchorNode, ListNode)
+      if (listNode) {
+        const listType = listNode.getListType()
+        setIsBulletList(listType === 'bullet')
+        setIsNumberedList(listType === 'number')
+      } else {
+        setIsBulletList(false)
+        setIsNumberedList(false)
+      }
     }
   }, [])
 
@@ -117,6 +136,22 @@ export function ToolbarPlugin() {
     fileInputRef.current?.click()
   }
 
+  const formatBulletList = () => {
+    if (isBulletList) {
+      editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)
+    } else {
+      editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined)
+    }
+  }
+
+  const formatNumberedList = () => {
+    if (isNumberedList) {
+      editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)
+    } else {
+      editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined)
+    }
+  }
+
   return (
     <div className="flex gap-1 border-border border-b bg-muted/5 p-2">
       <button
@@ -148,6 +183,26 @@ export function ToolbarPlugin() {
         type="button"
       >
         <Link2 className="size-4" />
+      </button>
+      <button
+        aria-label="順序なしリスト"
+        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+          isBulletList ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+        }`}
+        onClick={formatBulletList}
+        type="button"
+      >
+        <List className="size-4" />
+      </button>
+      <button
+        aria-label="順序付きリスト"
+        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+          isNumberedList ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+        }`}
+        onClick={formatNumberedList}
+        type="button"
+      >
+        <ListOrdered className="size-4" />
       </button>
       <button
         aria-label="画像"
