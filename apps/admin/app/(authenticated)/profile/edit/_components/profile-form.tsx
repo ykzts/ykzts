@@ -21,13 +21,16 @@ import { Input } from '@ykzts/ui/components/input'
 import { useRouter } from 'next/navigation'
 import { useActionState, useCallback, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
+import { invalidateCaches } from '@/lib/revalidate'
 import { DEFAULT_TIMEZONE, getCommonTimezones } from '@/lib/timezones'
 import { updateProfile } from '../actions'
+import { AvatarUpload } from './avatar-upload'
 import { SortableItem } from './sortable-item'
 
 type ProfileFormProps = {
   initialData?: {
     about: Json | null
+    avatar_url: string | null
     email: string | null
     name: string
     tagline: string | null
@@ -165,6 +168,17 @@ export default function ProfileForm({
           {state.error}
         </div>
       )}
+
+      {/* Avatar Upload */}
+      <AvatarUpload
+        currentAvatarUrl={initialData?.avatar_url}
+        onDeleteComplete={() => {
+          invalidateCaches(['profile'])
+        }}
+        onUploadComplete={() => {
+          invalidateCaches(['profile'])
+        }}
+      />
 
       <div>
         <label className="mb-2 block font-medium" htmlFor="name">

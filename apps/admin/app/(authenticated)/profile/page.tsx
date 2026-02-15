@@ -1,5 +1,7 @@
 import { Button } from '@ykzts/ui/components/button'
 import { Card } from '@ykzts/ui/components/card'
+import { UserCircle } from 'lucide-react'
+import Image from 'next/image'
 import { Suspense } from 'react'
 import { getProfile, getSocialLinks, getTechnologies } from '@/lib/data'
 import { formatDateTimeWithTimezone } from '@/lib/timezones'
@@ -22,6 +24,29 @@ async function ProfileContent() {
         </div>
       ) : (
         <div className="space-y-4">
+          {/* Avatar */}
+          <div>
+            <div className="mb-2 block font-medium text-sm">
+              プロフィール画像
+            </div>
+            <div className="flex items-center justify-center">
+              {profile.avatar_url ? (
+                <div className="relative h-32 w-32 overflow-hidden rounded-full border-2 border-border">
+                  <Image
+                    alt={profile.name}
+                    className="object-cover"
+                    fill
+                    src={profile.avatar_url}
+                  />
+                </div>
+              ) : (
+                <div className="flex h-32 w-32 items-center justify-center rounded-full border-2 border-border bg-muted">
+                  <UserCircle className="h-16 w-16 text-muted-foreground" />
+                </div>
+              )}
+            </div>
+          </div>
+
           <div>
             <div className="mb-1 block font-medium text-sm">名前</div>
             <p className="text-lg">{profile.name}</p>
