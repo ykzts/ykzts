@@ -3,6 +3,7 @@
 import { Button } from '@ykzts/ui/components/button'
 import { Upload, UserCircle, X } from 'lucide-react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 import { deleteAvatar, uploadAvatar } from '@/lib/upload-avatar'
 
@@ -17,6 +18,7 @@ export function AvatarUpload({
   onUploadComplete,
   onDeleteComplete
 }: AvatarUploadProps) {
+  const router = useRouter()
   const [preview, setPreview] = useState<string | null>(
     currentAvatarUrl || null
   )
@@ -81,6 +83,7 @@ export function AvatarUpload({
         setPreview(currentAvatarUrl || null)
       } else if (result.url) {
         setPreview(result.url)
+        router.refresh()
         onUploadComplete?.(result.url)
       }
     } catch (_err) {
@@ -107,6 +110,7 @@ export function AvatarUpload({
         if (fileInputRef.current) {
           fileInputRef.current.value = ''
         }
+        router.refresh()
         onDeleteComplete?.()
       }
     } catch (_err) {

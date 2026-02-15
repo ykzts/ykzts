@@ -1,6 +1,8 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
 import { getCurrentUser } from './auth'
+import { invalidateCaches } from './revalidate'
 import { createClient } from './supabase/server'
 
 export type AvatarUploadResult = {
@@ -133,6 +135,11 @@ export async function uploadAvatar(
       }
     }
 
+    // Invalidate cache and revalidate paths
+    await invalidateCaches('profile')
+    revalidatePath('/profile')
+    revalidatePath('/profile/edit')
+
     return { url: publicUrl }
   } catch (error) {
     console.error('Upload error:', error)
@@ -192,6 +199,11 @@ export async function deleteAvatar(): Promise<{ error?: string }> {
         error: 'プロフィールの更新に失敗しました。'
       }
     }
+
+    // Invalidate cache and revalidate paths
+    await invalidateCaches('profile')
+    revalidatePath('/profile')
+    revalidatePath('/profile/edit')
 
     return {}
   } catch (error) {
