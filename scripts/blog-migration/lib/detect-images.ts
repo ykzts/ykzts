@@ -38,6 +38,48 @@ export async function detectImages(
   const images: ImageReference[] = []
   const mdxDir = dirname(mdxFilePath)
 
+  const buildImageReference = async (
+    imagePath: string,
+    altText: string
+  ): Promise<ImageReference | null> => {
+    let normalizedPath = imagePath
+
+    if (normalizedPath.includes(')](')) {
+      normalizedPath = normalizedPath.split(')](')[0]
+    }
+
+    // Skip external URLs (http://, https://, //) and data URIs
+    if (
+      normalizedPath.startsWith('http://') ||
+      normalizedPath.startsWith('https://') ||
+      normalizedPath.startsWith('//') ||
+      normalizedPath.startsWith('data:')
+    ) {
+      return null
+    }
+
+    const absolutePath = isAbsolute(normalizedPath)
+      ? normalizedPath
+      : join(mdxDir, normalizedPath)
+
+    // Check if file exists and is an image
+    let exists = false
+    try {
+      const stats = await stat(absolutePath)
+      const ext = extname(absolutePath)
+      exists = stats.isFile() && isImageExtension(ext)
+    } catch {
+      exists = false
+    }
+
+    return {
+      absolutePath,
+      altText: altText || '',
+      exists,
+      path: normalizedPath
+    }
+  }
+
   // Pattern 1: Markdown image syntax ![alt](path)
   // Use a robust regex that handles parentheses in paths
   // Pattern: ![alt text](path/to/image.png) or ![alt](path "title")
@@ -51,37 +93,11 @@ export async function detectImages(
   // biome-ignore lint/suspicious/noAssignInExpressions: RegExp.exec() is commonly used this way
   while ((match = markdownImageRegex.exec(content)) !== null) {
     const [, altText, imagePath] = match
+    const imageRef = await buildImageReference(imagePath, altText)
 
-    // Skip external URLs (http://, https://, //) and data URIs
-    if (
-      imagePath.startsWith('http://') ||
-      imagePath.startsWith('https://') ||
-      imagePath.startsWith('//') ||
-      imagePath.startsWith('data:')
-    ) {
-      continue
+    if (imageRef) {
+      images.push(imageRef)
     }
-
-    const absolutePath = isAbsolute(imagePath)
-      ? imagePath
-      : join(mdxDir, imagePath)
-
-    // Check if file exists and is an image
-    let exists = false
-    try {
-      const stats = await stat(absolutePath)
-      const ext = extname(absolutePath)
-      exists = stats.isFile() && isImageExtension(ext)
-    } catch {
-      exists = false
-    }
-
-    images.push({
-      absolutePath,
-      altText: altText || '',
-      exists,
-      path: imagePath
-    })
   }
 
   // Pattern 2: JSX img tags <img src="path" alt="alt" />
@@ -103,39 +119,17 @@ export async function detectImages(
     const altMatch = attributes.match(/alt=["']([^"']*)["']/)
     const altText = altMatch ? altMatch[1] : ''
 
-    // Skip external URLs and data URIs
-    if (
-      imagePath.startsWith('http://') ||
-      imagePath.startsWith('https://') ||
-      imagePath.startsWith('//') ||
-      imagePath.startsWith('data:')
-    ) {
+    const imageRef = await buildImageReference(imagePath, altText)
+
+    if (!imageRef) {
       continue
     }
 
-    const absolutePath = isAbsolute(imagePath)
-      ? imagePath
-      : join(mdxDir, imagePath)
-
-    // Check if file exists
-    let exists = false
-    try {
-      const stats = await stat(absolutePath)
-      const ext = extname(absolutePath)
-      exists = stats.isFile() && isImageExtension(ext)
-    } catch {
-      exists = false
-    }
-
-    // Avoid duplicates
-    const isDuplicate = images.some((img) => img.absolutePath === absolutePath)
+    const isDuplicate = images.some(
+      (img) => img.absolutePath === imageRef.absolutePath
+    )
     if (!isDuplicate) {
-      images.push({
-        absolutePath,
-        altText,
-        exists,
-        path: imagePath
-      })
+      images.push(imageRef)
     }
   }
 

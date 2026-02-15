@@ -1,35 +1,79 @@
 -- Supabase Seed Data: Sample data for development and testing
 -- This file provides example data for the portfolio tables
 
--- Insert test user into auth.users
--- Note: In production, users are created through Supabase Auth API
--- This is only for local development seeding
+-- Insert test user into auth.users for local development
+-- Password: password123 (bcrypt hashed)
 INSERT INTO auth.users (
   id,
   instance_id,
   email,
   encrypted_password,
   email_confirmed_at,
+  confirmation_token,
+  recovery_token,
+  email_change_token_new,
+  email_change,
+  email_change_token_current,
   created_at,
   updated_at,
   raw_app_meta_data,
   raw_user_meta_data,
+  is_super_admin,
   aud,
   role
 ) VALUES (
   '00000000-0000-0000-0000-000000000001',
   '00000000-0000-0000-0000-000000000000',
   'test@example.com',
-  crypt('password123', gen_salt('bf')),
+  '$2a$10$ZmNZwTWPm6khfxhHhHhp5OT.SSach5kvkXYxYiA9aLcUaEvk3hLd2', -- password123
   NOW(),
+  '',
+  '',
+  '',
+  '',
+  '',
   NOW(),
   NOW(),
   '{"provider": "email", "providers": ["email"]}',
   '{"name": "Test User"}',
+  false,
   'authenticated',
   'authenticated'
 )
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (id) DO UPDATE SET
+  email = EXCLUDED.email,
+  encrypted_password = EXCLUDED.encrypted_password,
+  email_confirmed_at = EXCLUDED.email_confirmed_at,
+  confirmation_token = EXCLUDED.confirmation_token,
+  recovery_token = EXCLUDED.recovery_token,
+  email_change_token_new = EXCLUDED.email_change_token_new,
+  email_change = EXCLUDED.email_change,
+  email_change_token_current = EXCLUDED.email_change_token_current,
+  updated_at = NOW();
+
+-- Insert auth identity for email provider
+INSERT INTO auth.identities (
+  id,
+  provider_id,
+  user_id,
+  identity_data,
+  provider,
+  last_sign_in_at,
+  created_at,
+  updated_at
+) VALUES (
+  '00000000-0000-0000-0000-000000000001',
+  '00000000-0000-0000-0000-000000000001',
+  '00000000-0000-0000-0000-000000000001',
+  jsonb_build_object('sub', '00000000-0000-0000-0000-000000000001', 'email', 'test@example.com'),
+  'email',
+  NOW(),
+  NOW(),
+  NOW()
+)
+ON CONFLICT (provider_id, provider) DO UPDATE SET
+  identity_data = EXCLUDED.identity_data,
+  updated_at = NOW();
 
 -- Insert profile data for test user
 INSERT INTO profiles (
@@ -192,8 +236,104 @@ INSERT INTO works (id, profile_id, title, slug, content, starts_at, created_at, 
   )
 ON CONFLICT (id) DO NOTHING;
 
--- Insert sample posts
-INSERT INTO posts (id, profile_id, title, created_at, updated_at) VALUES
-  ('00000000-0000-0000-0000-000000000004', '00000000-0000-0000-0000-000000000001', 'Sample Post 1', NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000005', '00000000-0000-0000-0000-000000000001', 'Sample Post 2', NOW(), NOW())
+-- Insert sample posts with versions
+INSERT INTO posts (
+  id,
+  profile_id,
+  title,
+  slug,
+  excerpt,
+  status,
+  published_at,
+  tags,
+  created_at,
+  updated_at
+) VALUES
+  (
+    '00000000-0000-0000-0000-000000000004',
+    '00000000-0000-0000-0000-000000000001',
+    'Sample Post 1',
+    'sample-post-1',
+    'Sample post 1 excerpt.',
+    'published',
+    NOW(),
+    ARRAY['sample', 'seed'],
+    NOW(),
+    NOW()
+  ),
+  (
+    '00000000-0000-0000-0000-000000000005',
+    '00000000-0000-0000-0000-000000000001',
+    'Sample Post 2',
+    'sample-post-2',
+    'Sample post 2 excerpt.',
+    'published',
+    NOW(),
+    ARRAY['sample', 'seed'],
+    NOW(),
+    NOW()
+  )
+ON CONFLICT (id) DO UPDATE SET
+  profile_id = EXCLUDED.profile_id,
+  title = EXCLUDED.title,
+  slug = EXCLUDED.slug,
+  excerpt = EXCLUDED.excerpt,
+  status = EXCLUDED.status,
+  published_at = EXCLUDED.published_at,
+  tags = EXCLUDED.tags,
+  updated_at = NOW();
+
+INSERT INTO post_versions (
+  id,
+  post_id,
+  version_number,
+  content,
+  title,
+  excerpt,
+  tags,
+  created_by,
+  change_summary,
+  version_date,
+  created_at,
+  updated_at
+) VALUES
+  (
+    '00000000-0000-0000-0000-000000000104',
+    '00000000-0000-0000-0000-000000000004',
+    1,
+    '[{"_type":"block","_key":"post1-block","style":"normal","children":[{"_type":"span","_key":"post1-span","text":"Sample post 1 content.","marks":[]}]}]'::jsonb,
+    'Sample Post 1',
+    'Sample post 1 excerpt.',
+    ARRAY['sample', 'seed'],
+    '00000000-0000-0000-0000-000000000001',
+    'Initial version',
+    NOW(),
+    NOW(),
+    NOW()
+  ),
+  (
+    '00000000-0000-0000-0000-000000000105',
+    '00000000-0000-0000-0000-000000000005',
+    1,
+    '[{"_type":"block","_key":"post2-block","style":"normal","children":[{"_type":"span","_key":"post2-span","text":"Sample post 2 content.","marks":[]}]}]'::jsonb,
+    'Sample Post 2',
+    'Sample post 2 excerpt.',
+    ARRAY['sample', 'seed'],
+    '00000000-0000-0000-0000-000000000001',
+    'Initial version',
+    NOW(),
+    NOW(),
+    NOW()
+  )
 ON CONFLICT (id) DO NOTHING;
+
+UPDATE posts
+SET current_version_id = CASE id
+  WHEN '00000000-0000-0000-0000-000000000004' THEN '00000000-0000-0000-0000-000000000104'
+  WHEN '00000000-0000-0000-0000-000000000005' THEN '00000000-0000-0000-0000-000000000105'
+  ELSE current_version_id
+END
+WHERE id IN (
+  '00000000-0000-0000-0000-000000000004',
+  '00000000-0000-0000-0000-000000000005'
+);

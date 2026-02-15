@@ -37,6 +37,21 @@ export async function signInWithGitHub() {
   return data.url ?? null
 }
 
+export async function signInWithPassword(email: string, password: string) {
+  const supabase = await createClient()
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  })
+
+  if (error) {
+    return { error: error.message }
+  }
+
+  revalidateTag('auth-user', 'max')
+  redirect('/')
+}
+
 export async function logout() {
   const supabase = await createClient()
   await supabase.auth.signOut()

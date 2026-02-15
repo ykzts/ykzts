@@ -1,9 +1,22 @@
 import createMDX from '@next/mdx'
 import { withMicrofrontends } from '@vercel/microfrontends/next/config'
+import { getSupabaseImageConfig } from '@ykzts/supabase/next-image-config'
 
 import type { NextConfig } from 'next'
 
 const withMDX = createMDX()
+
+// Build CSP img-src directive with Supabase Storage domain
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+let imgSrcCsp = "img-src 'self' data:"
+if (supabaseUrl) {
+  try {
+    const url = new URL(supabaseUrl)
+    imgSrcCsp += ` ${url.protocol}//${url.host}`
+  } catch {
+    // Ignore invalid URL
+  }
+}
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -27,7 +40,7 @@ const nextConfig: NextConfig = {
               "form-action 'none'",
               "frame-ancestors 'none'",
               'frame-src https://challenges.cloudflare.com',
-              "img-src 'self' data:",
+              imgSrcCsp,
               "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
               "style-src 'self' 'unsafe-inline'"
             ].join('; ')
@@ -50,6 +63,7 @@ const nextConfig: NextConfig = {
     ])
   },
   images: {
+    ...getSupabaseImageConfig(),
     formats: ['image/avif', 'image/webp']
   },
   logging: {

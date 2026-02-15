@@ -84,7 +84,15 @@ function parseFrontmatter(frontmatterText: string): Frontmatter {
       if (key === 'date') {
         frontmatter.date = value.trim()
       } else if (key === 'title') {
-        frontmatter.title = value.trim()
+        // Remove quotes from YAML values (e.g., 'text' -> text, "text" -> text)
+        let titleValue = value.trim()
+        if (
+          (titleValue.startsWith("'") && titleValue.endsWith("'")) ||
+          (titleValue.startsWith('"') && titleValue.endsWith('"'))
+        ) {
+          titleValue = titleValue.slice(1, -1)
+        }
+        frontmatter.title = titleValue
       } else if (key === 'authors') {
         frontmatter.authors = parseArray(value)
       } else if (key === 'tags') {

@@ -1,9 +1,17 @@
 {
   "author": "Yamagishi Kazutoshi",
   "description": "Supabase database type definitions for ykzts applications",
+  "devDependencies": {
+    "@types/node": "24.14.0",
+    "next": "15.2.4"
+  },
   "exports": {
     ".": {
       "types": "./src/database.types.ts"
+    },
+    "./next-image-config": {
+      "types": "./src/next-image-config.ts",
+      "default": "./src/next-image-config.ts"
     }
   },
   "license": "MIT",
