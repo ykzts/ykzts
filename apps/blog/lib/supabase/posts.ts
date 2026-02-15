@@ -32,7 +32,8 @@ export async function getPosts(page = 1, isDraft = false) {
         name
       ),
       current_version:post_versions!posts_current_version_id_fkey(
-        content
+        content,
+        version_date
       )
     `
   )
@@ -59,10 +60,14 @@ export async function getPosts(page = 1, isDraft = false) {
       : (post.current_version?.content ?? null),
     excerpt: post.excerpt,
     id: post.id,
+    profile: Array.isArray(post.profile) ? post.profile[0] : post.profile,
     published_at: post.published_at as string,
     slug: post.slug as string,
     tags: post.tags,
-    title: post.title as string
+    title: post.title as string,
+    version_date: Array.isArray(post.current_version)
+      ? (post.current_version[0]?.version_date ?? null)
+      : (post.current_version?.version_date ?? null)
   }))
 }
 
@@ -84,13 +89,13 @@ export async function getPostBySlug(slug: string, isDraft = false) {
       excerpt,
       tags,
       published_at,
-      updated_at,
       profile:profiles!posts_profile_id_fkey(
         id,
         name
       ),
       current_version:post_versions!posts_current_version_id_fkey(
-        content
+        content,
+        version_date
       )
     `
     )
@@ -125,7 +130,9 @@ export async function getPostBySlug(slug: string, isDraft = false) {
     slug: data.slug as string,
     tags: data.tags,
     title: data.title as string,
-    updated_at: data.updated_at as string
+    version_date: Array.isArray(data.current_version)
+      ? (data.current_version[0]?.version_date ?? null)
+      : (data.current_version?.version_date ?? null)
   }
 }
 
@@ -153,8 +160,13 @@ export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
       excerpt,
       tags,
       published_at,
+      profile:profiles!posts_profile_id_fkey(
+        id,
+        name
+      ),
       current_version:post_versions!posts_current_version_id_fkey(
-        content
+        content,
+        version_date
       )
     `
     )
@@ -182,10 +194,14 @@ export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
       : (post.current_version?.content ?? null),
     excerpt: post.excerpt,
     id: post.id,
+    profile: Array.isArray(post.profile) ? post.profile[0] : post.profile,
     published_at: post.published_at as string,
     slug: post.slug as string,
     tags: post.tags,
-    title: post.title as string
+    title: post.title as string,
+    version_date: Array.isArray(post.current_version)
+      ? (post.current_version[0]?.version_date ?? null)
+      : (post.current_version?.version_date ?? null)
   }))
 }
 
@@ -224,7 +240,15 @@ export async function getAllPosts() {
 
   const { data, error } = await supabase
     .from('posts')
-    .select('slug, published_at, updated_at')
+    .select(
+      `
+      slug,
+      published_at,
+      current_version:post_versions!posts_current_version_id_fkey(
+        version_date
+      )
+    `
+    )
     .eq('status', 'published')
     .lte('published_at', new Date().toISOString())
     .not('slug', 'is', null)
@@ -237,7 +261,9 @@ export async function getAllPosts() {
   return data.map((post) => ({
     published_at: post.published_at as string,
     slug: post.slug as string,
-    updated_at: post.updated_at as string
+    version_date: Array.isArray(post.current_version)
+      ? (post.current_version[0]?.version_date ?? null)
+      : (post.current_version?.version_date ?? null)
   }))
 }
 
@@ -251,7 +277,17 @@ export async function getPostsForFeed(limit = 20) {
 
   const { data, error } = await supabase
     .from('posts')
-    .select('slug, title, excerpt, published_at, updated_at')
+    .select(
+      `
+      slug,
+      title,
+      excerpt,
+      published_at,
+      current_version:post_versions!posts_current_version_id_fkey(
+        version_date
+      )
+    `
+    )
     .eq('status', 'published')
     .lte('published_at', new Date().toISOString())
     .not('slug', 'is', null)
@@ -267,7 +303,9 @@ export async function getPostsForFeed(limit = 20) {
     published_at: post.published_at as string,
     slug: post.slug as string,
     title: post.title as string,
-    updated_at: post.updated_at as string
+    version_date: Array.isArray(post.current_version)
+      ? (post.current_version[0]?.version_date ?? null)
+      : (post.current_version?.version_date ?? null)
   }))
 }
 

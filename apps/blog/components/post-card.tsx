@@ -17,6 +17,10 @@ type Post = {
   excerpt: string | null
   published_at: string
   tags: string[] | null
+  profile?: {
+    id: string
+    name: string
+  } | null
 }
 
 type PostCardProps = {
@@ -44,7 +48,10 @@ export default function PostCard({ post }: PostCardProps) {
           </Link>
         </CardTitle>
         <CardDescription>
-          <DateDisplay date={post.published_at} />
+          <div className="flex items-center gap-4">
+            {post.profile?.name && <span>著者: {post.profile.name}</span>}
+            <DateDisplay date={post.published_at} />
+          </div>
         </CardDescription>
       </CardHeader>
       {post.excerpt && (
