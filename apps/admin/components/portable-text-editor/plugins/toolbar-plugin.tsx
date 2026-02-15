@@ -90,6 +90,8 @@ export function ToolbarPlugin() {
         setBlockType(tag as 'h2' | 'h3' | 'h4' | 'h5' | 'h6')
       } else if ($isParagraphNode(element)) {
         setBlockType('paragraph')
+      } else {
+        setBlockType('paragraph')
       }
     }
   }, [])
