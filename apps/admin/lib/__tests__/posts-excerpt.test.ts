@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Json } from '@ykzts/supabase'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPost, updatePost } from '../posts'
 
 // Mock the Supabase client with parameter capture
@@ -176,6 +176,36 @@ describe('Post creation and update with auto-excerpt', () => {
       const result = await updatePost({
         content,
         excerpt: '',
+        postId: 'test-post-id'
+      })
+
+      expect(result).toBe('mock-post-id')
+      const call = mockRpc.mock.calls[0]
+      expect(call[0]).toBe('update_post')
+      expect(call[1].p_excerpt).toBe('Updated content for auto-excerpt.')
+    })
+
+    it('should auto-generate excerpt when content updated and excerpt undefined', async () => {
+      const content: Json = [
+        {
+          _key: 'block1',
+          _type: 'block',
+          children: [
+            {
+              _key: 'span1',
+              _type: 'span',
+              marks: [],
+              text: 'Updated content for auto-excerpt.'
+            }
+          ],
+          markDefs: [],
+          style: 'normal'
+        }
+      ]
+
+      const result = await updatePost({
+        content,
+        excerpt: undefined,
         postId: 'test-post-id'
       })
 

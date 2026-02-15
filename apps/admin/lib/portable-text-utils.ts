@@ -24,10 +24,13 @@ interface PortableTextBlock {
 /**
  * Extract the first paragraph from Portable Text content
  * @param content - Portable Text content (array of blocks)
- * @param maxLength - Maximum length of the excerpt (default: 200)
+ * @param maxLength - Maximum length of content before ellipsis (default: 200). The returned string may be up to maxLength + 3 characters when truncated.
  * @returns Extracted text or empty string
  */
-export function extractFirstParagraph(content: Json, maxLength = 200): string {
+export function extractFirstParagraph(
+  content: Json | undefined,
+  maxLength = 200
+): string {
   if (!Array.isArray(content)) {
     return ''
   }
