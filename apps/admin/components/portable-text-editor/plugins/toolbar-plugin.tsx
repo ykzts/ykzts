@@ -2,19 +2,14 @@
 
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link'
 import {
-  $isListNode,
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
+  ListNode,
   REMOVE_LIST_COMMAND
 } from '@lexical/list'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import { mergeRegister } from '@lexical/utils'
-import {
-  $getSelection,
-  $isElementNode,
-  $isRangeSelection,
-  FORMAT_TEXT_COMMAND
-} from 'lexical'
+import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils'
+import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical'
 import { Bold, Image, Italic, Link2, List, ListOrdered } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { uploadImage } from '@/lib/upload-image'
@@ -49,20 +44,15 @@ export function ToolbarPlugin() {
           $isLinkNode(focusParent)
       )
 
-      // Check if we're in a list
-      const anchorNodeToCheck = $isElementNode(anchorNode)
-        ? anchorNode
-        : anchorNode.getParent()
-      if ($isElementNode(anchorNodeToCheck)) {
-        const parent = anchorNodeToCheck.getParent()
-        if ($isListNode(parent)) {
-          const listType = parent.getListType()
-          setIsBulletList(listType === 'bullet')
-          setIsNumberedList(listType === 'number')
-        } else {
-          setIsBulletList(false)
-          setIsNumberedList(false)
-        }
+      // Check if we're in a list - use $getNearestNodeOfType for reliable traversal
+      const listNode = $getNearestNodeOfType(anchorNode, ListNode)
+      if (listNode) {
+        const listType = listNode.getListType()
+        setIsBulletList(listType === 'bullet')
+        setIsNumberedList(listType === 'number')
+      } else {
+        setIsBulletList(false)
+        setIsNumberedList(false)
       }
     }
   }, [])

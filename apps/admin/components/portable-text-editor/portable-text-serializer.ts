@@ -185,6 +185,11 @@ export function lexicalToPortableText(
                 )
               } else if ($isTextNode(itemChild) || $isLinkNode(itemChild)) {
                 allTextChildren.push(itemChild)
+              } else if ($isListNode(itemChild)) {
+                // TODO: Support nested lists - for now, warn and skip
+                console.warn(
+                  'Nested lists are not yet supported and will be flattened'
+                )
               }
             }
 
@@ -195,7 +200,7 @@ export function lexicalToPortableText(
               _key: crypto.randomUUID(),
               _type: 'block',
               children: spans,
-              level: 1,
+              level: 1, // TODO: derive from actual nesting depth when nested lists are supported
               listItem: listType === 'number' ? 'number' : 'bullet',
               markDefs,
               style: 'normal'
