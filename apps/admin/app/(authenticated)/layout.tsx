@@ -26,7 +26,7 @@ async function UserInfo() {
       <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-muted">
         {profile?.avatar_url ? (
           <Image
-            alt={profile.name}
+            alt={`${profile?.name ?? 'ユーザー'}のプロフィール画像`}
             className="h-full w-full object-cover"
             height={32}
             src={profile.avatar_url}
@@ -129,7 +129,7 @@ async function MobileUserAvatar() {
     <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-muted">
       {profile?.avatar_url ? (
         <Image
-          alt={profile.name}
+          alt={`${profile?.name ?? 'ユーザー'}のプロフィール画像`}
           className="h-full w-full object-cover"
           height={40}
           src={profile.avatar_url}

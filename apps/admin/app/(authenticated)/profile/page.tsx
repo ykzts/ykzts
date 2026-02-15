@@ -33,7 +33,7 @@ async function ProfileContent() {
               {profile.avatar_url ? (
                 <div className="relative h-32 w-32 overflow-hidden rounded-full border-2 border-border">
                   <Image
-                    alt={profile.name}
+                    alt={`${profile.name}のプロフィール画像`}
                     className="object-cover"
                     fill
                     src={profile.avatar_url}
