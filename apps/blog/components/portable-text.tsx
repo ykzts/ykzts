@@ -17,6 +17,7 @@ import { highlightCode } from '@/lib/shiki'
 const portableTextComponents = {
   marks: {
     footnoteReference({
+      children,
       value
     }: PortableTextMarkComponentProps<{
       _type: string
@@ -24,14 +25,26 @@ const portableTextComponents = {
     }>) {
       const identifier = value?.identifier
 
+      // Guard: if identifier is missing, render children without link
+      if (!identifier) {
+        return <>{children}</>
+      }
+
+      // Normalize identifier for safe anchor IDs
+      const normalizedId = identifier
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9-_]/g, '')
+
       return (
         <sup>
           <a
             className="text-primary"
-            href={`#fn-${identifier}`}
-            id={`fnref-${identifier}`}
+            href={`#fn-${normalizedId}`}
+            id={`fnref-${normalizedId}`}
           >
-            [{identifier}]
+            {children}
           </a>
         </sup>
       )
@@ -58,8 +71,15 @@ const portableTextComponents = {
     footnote({ value }: { value: FootnoteBlock }) {
       const { identifier, children } = value
 
+      // Normalize identifier for safe anchor IDs
+      const normalizedId = identifier
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9-_]/g, '')
+
       return (
-        <div className="footnote-definition" id={`fn-${identifier}`}>
+        <div className="footnote-definition" id={`fn-${normalizedId}`}>
           <div className="flex gap-2">
             <div className="footnote-label text-muted-foreground">
               [{identifier}]
@@ -74,8 +94,9 @@ const portableTextComponents = {
                 value={children}
               />
               <a
+                aria-label="Back to footnote reference"
                 className="footnote-backref ml-1 text-primary text-sm"
-                href={`#fnref-${identifier}`}
+                href={`#fnref-${normalizedId}`}
               >
                 ↩
               </a>

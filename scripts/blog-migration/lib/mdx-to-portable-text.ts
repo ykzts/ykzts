@@ -147,7 +147,12 @@ function convertNode(
   if (node.type === 'paragraph') {
     const parent = node as Parent
     const children: TextSpan[] = []
-    const markDefs: Array<{ _key: string; _type: string; href?: string }> = []
+    const markDefs: Array<{
+      _key: string
+      _type: string
+      href?: string
+      identifier?: string
+    }> = []
 
     // Check if paragraph contains only an image - if so, treat it as a standalone image block
     if (parent.children.length === 1 && parent.children[0].type === 'image') {
@@ -368,7 +373,10 @@ function convertNode(
   }
 
   if (node.type === 'footnoteDefinition') {
-    const footnoteNode = node as Parent & { identifier?: string; label?: string }
+    const footnoteNode = node as Parent & {
+      identifier?: string
+      label?: string
+    }
     const identifier = getFootnoteIdentifier(footnoteNode)
 
     // Convert footnote definition children to portable text blocks
