@@ -5,6 +5,43 @@ import { supabase } from './client'
 
 const POSTS_PER_PAGE = 10
 
+type Profile = { id: string; name: string } | null
+
+/**
+ * Normalizes profile data from Supabase query results.
+ * Supabase's `.select()` with foreign key joins can return either:
+ * - An array of objects when using relational queries
+ * - A single object when using direct queries
+ * This function ensures consistent return type by extracting the first array element
+ * and validates the profile object structure.
+ */
+function normalizeProfile(data: { profile?: unknown }): Profile {
+  const profile = Array.isArray(data.profile) ? data.profile[0] : data.profile
+  if (
+    profile != null &&
+    typeof profile === 'object' &&
+    'id' in profile &&
+    'name' in profile
+  ) {
+    return profile as Profile
+  }
+  return null
+}
+
+/**
+ * Extracts version_date from the current_version field.
+ * The current_version field from Supabase queries can be:
+ * - An array containing version objects (when using foreign key joins)
+ * - A single version object (when using direct queries)
+ * This function handles both cases and returns the version_date field.
+ */
+function extractVersionDate(currentVersion: unknown): string | null {
+  if (Array.isArray(currentVersion)) {
+    return currentVersion[0]?.version_date ?? null
+  }
+  return (currentVersion as { version_date?: string })?.version_date ?? null
+}
+
 export async function getPosts(page = 1, isDraft = false) {
   cacheTag('posts')
 
@@ -32,7 +69,8 @@ export async function getPosts(page = 1, isDraft = false) {
         name
       ),
       current_version:post_versions!posts_current_version_id_fkey(
-        content
+        content,
+        version_date
       )
     `
   )
@@ -59,10 +97,12 @@ export async function getPosts(page = 1, isDraft = false) {
       : (post.current_version?.content ?? null),
     excerpt: post.excerpt,
     id: post.id,
+    profile: normalizeProfile(post),
     published_at: post.published_at as string,
     slug: post.slug as string,
     tags: post.tags,
-    title: post.title as string
+    title: post.title as string,
+    version_date: extractVersionDate(post.current_version)
   }))
 }
 
@@ -84,13 +124,13 @@ export async function getPostBySlug(slug: string, isDraft = false) {
       excerpt,
       tags,
       published_at,
-      updated_at,
       profile:profiles!posts_profile_id_fkey(
         id,
         name
       ),
       current_version:post_versions!posts_current_version_id_fkey(
-        content
+        content,
+        version_date
       )
     `
     )
@@ -120,12 +160,12 @@ export async function getPostBySlug(slug: string, isDraft = false) {
       : (data.current_version?.content ?? null),
     excerpt: data.excerpt,
     id: data.id,
-    profile: Array.isArray(data.profile) ? data.profile[0] : data.profile,
+    profile: normalizeProfile(data),
     published_at: data.published_at as string,
     slug: data.slug as string,
     tags: data.tags,
     title: data.title as string,
-    updated_at: data.updated_at as string
+    version_date: extractVersionDate(data.current_version)
   }
 }
 
@@ -153,8 +193,13 @@ export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
       excerpt,
       tags,
       published_at,
+      profile:profiles!posts_profile_id_fkey(
+        id,
+        name
+      ),
       current_version:post_versions!posts_current_version_id_fkey(
-        content
+        content,
+        version_date
       )
     `
     )
@@ -182,10 +227,12 @@ export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
       : (post.current_version?.content ?? null),
     excerpt: post.excerpt,
     id: post.id,
+    profile: normalizeProfile(post),
     published_at: post.published_at as string,
     slug: post.slug as string,
     tags: post.tags,
-    title: post.title as string
+    title: post.title as string,
+    version_date: extractVersionDate(post.current_version)
   }))
 }
 
@@ -224,7 +271,15 @@ export async function getAllPosts() {
 
   const { data, error } = await supabase
     .from('posts')
-    .select('slug, published_at, updated_at')
+    .select(
+      `
+      slug,
+      published_at,
+      current_version:post_versions!posts_current_version_id_fkey(
+        version_date
+      )
+    `
+    )
     .eq('status', 'published')
     .lte('published_at', new Date().toISOString())
     .not('slug', 'is', null)
@@ -237,7 +292,7 @@ export async function getAllPosts() {
   return data.map((post) => ({
     published_at: post.published_at as string,
     slug: post.slug as string,
-    updated_at: post.updated_at as string
+    version_date: extractVersionDate(post.current_version)
   }))
 }
 
@@ -251,7 +306,17 @@ export async function getPostsForFeed(limit = 20) {
 
   const { data, error } = await supabase
     .from('posts')
-    .select('slug, title, excerpt, published_at, updated_at')
+    .select(
+      `
+      slug,
+      title,
+      excerpt,
+      published_at,
+      current_version:post_versions!posts_current_version_id_fkey(
+        version_date
+      )
+    `
+    )
     .eq('status', 'published')
     .lte('published_at', new Date().toISOString())
     .not('slug', 'is', null)
@@ -267,7 +332,7 @@ export async function getPostsForFeed(limit = 20) {
     published_at: post.published_at as string,
     slug: post.slug as string,
     title: post.title as string,
-    updated_at: post.updated_at as string
+    version_date: extractVersionDate(post.current_version)
   }))
 }
 

@@ -142,7 +142,7 @@ export default async function PostDetailPage({ params }: PageProps) {
       '@type': 'Person',
       name: post.profile.name
     },
-    dateModified: post.updated_at,
+    dateModified: post.version_date || post.published_at,
     datePublished: post.published_at,
     description: post.excerpt || undefined,
     headline: post.title || DEFAULT_POST_TITLE,
@@ -165,8 +165,16 @@ export default async function PostDetailPage({ params }: PageProps) {
         <article className="mx-auto max-w-3xl">
           <header className="mb-8">
             <h1 className="mb-4 font-bold text-4xl">{post.title}</h1>
-            <div className="flex items-center gap-4 text-muted-foreground text-sm">
-              <DateDisplay date={post.published_at} />
+            <div className="flex flex-col gap-2 text-muted-foreground text-sm">
+              <div className="flex items-center gap-4">
+                <span>著者: {post.profile.name}</span>
+                <DateDisplay date={post.published_at} />
+              </div>
+              {post.version_date && post.version_date !== post.published_at && (
+                <div>
+                  更新: <DateDisplay date={post.version_date} />
+                </div>
+              )}
             </div>
             {post.tags && post.tags.length > 0 && (
               <div className="mt-4">
