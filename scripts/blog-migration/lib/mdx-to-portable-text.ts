@@ -69,6 +69,16 @@ function generateKey(): string {
 }
 
 /**
+ * Extract footnote identifier from node
+ */
+function getFootnoteIdentifier(node: {
+  identifier?: string
+  label?: string
+}): string {
+  return node.identifier || node.label || ''
+}
+
+/**
  * Extract excerpt from MDX content based on truncate markers
  * Supports: <!-- truncate --> and {/* truncate *\/}
  */
@@ -197,14 +207,15 @@ function convertNode(
         }
       } else if (inlineNode.type === 'footnoteReference') {
         const footnoteNode = inlineNode as {
-          identifier: string
+          identifier?: string
           label?: string
         }
+        const identifier = getFootnoteIdentifier(footnoteNode)
         const markKey = generateKey()
         markDefs.push({
           _key: markKey,
           _type: 'footnoteReference',
-          identifier: footnoteNode.identifier || footnoteNode.label || ''
+          identifier
         })
 
         // Add the footnote reference as a text span with the mark
@@ -212,7 +223,7 @@ function convertNode(
           _key: generateKey(),
           _type: 'span',
           marks: [...marks, markKey],
-          text: `[${footnoteNode.identifier || footnoteNode.label || ''}]`
+          text: `[${identifier}]`
         })
       } else if (inlineNode.type === 'image') {
         const imageNode = inlineNode as { url: string; alt?: string }
@@ -357,8 +368,8 @@ function convertNode(
   }
 
   if (node.type === 'footnoteDefinition') {
-    const footnoteNode = node as Parent & { identifier: string; label?: string }
-    const identifier = footnoteNode.identifier || footnoteNode.label || ''
+    const footnoteNode = node as Parent & { identifier?: string; label?: string }
+    const identifier = getFootnoteIdentifier(footnoteNode)
 
     // Convert footnote definition children to portable text blocks
     const footnoteChildren: PortableTextBlock[] = []

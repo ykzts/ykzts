@@ -65,6 +65,10 @@ const portableTextComponents = {
               [{identifier}]
             </div>
             <div className="footnote-content flex-1">
+              {/* 
+                Note: GFM doesn't support nested footnote references within definitions.
+                The remark-gfm parser prevents this, so no circular reference risk exists.
+              */}
               <PortableText
                 components={portableTextComponents}
                 value={children}
