@@ -23,11 +23,13 @@ import { useActionState, useCallback, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
 import { DEFAULT_TIMEZONE, getCommonTimezones } from '@/lib/timezones'
 import { updateProfile } from '../actions'
+import { AvatarUpload } from './avatar-upload'
 import { SortableItem } from './sortable-item'
 
 type ProfileFormProps = {
   initialData?: {
     about: Json | null
+    avatar_url: string | null
     email: string | null
     name: string
     tagline: string | null
@@ -165,6 +167,9 @@ export default function ProfileForm({
           {state.error}
         </div>
       )}
+
+      {/* Avatar Upload */}
+      <AvatarUpload currentAvatarUrl={initialData?.avatar_url} />
 
       <div>
         <label className="mb-2 block font-medium" htmlFor="name">
