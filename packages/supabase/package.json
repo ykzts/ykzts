@@ -2,8 +2,8 @@
   "author": "Yamagishi Kazutoshi",
   "description": "Supabase database type definitions for ykzts applications",
   "devDependencies": {
-    "@types/node": "24.14.0",
-    "next": "15.2.4"
+    "@types/node": "22.19.10",
+    "next": "16.1.6"
   },
   "exports": {
     ".": {
