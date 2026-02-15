@@ -176,11 +176,13 @@ export function AvatarUpload({
           {/* Upload area */}
           <div className="flex-1">
             <button
+              aria-describedby="avatar-upload-help"
               className={`flex min-h-32 w-full flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors ${
                 dragActive
                   ? 'border-primary bg-primary/5'
                   : 'border-border bg-muted/10'
               }`}
+              onClick={() => fileInputRef.current?.click()}
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
               onDragOver={handleDrag}
@@ -191,25 +193,20 @@ export function AvatarUpload({
               <p className="mb-1 text-center text-sm">
                 ドラッグ&amp;ドロップまたはクリックして画像を選択
               </p>
-              <p className="mb-3 text-center text-muted-foreground text-xs">
+              <p
+                className="mb-3 text-center text-muted-foreground text-xs"
+                id="avatar-upload-help"
+              >
                 JPEG、PNG、GIF、WebP（最大5MB）
               </p>
               <input
                 accept="image/jpeg,image/png,image/gif,image/webp"
-                className="hidden"
+                aria-label="プロフィール画像ファイル"
+                className="sr-only"
                 onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
                 ref={fileInputRef}
                 type="file"
               />
-              <Button
-                disabled={uploading || deleting}
-                onClick={() => fileInputRef.current?.click()}
-                size="sm"
-                type="button"
-                variant="secondary"
-              >
-                ファイルを選択
-              </Button>
             </button>
 
             {/* Action buttons */}

@@ -1,5 +1,6 @@
 'use server'
 
+import { randomUUID } from 'node:crypto'
 import { revalidatePath } from 'next/cache'
 import { getCurrentUser } from './auth'
 import { invalidateCaches } from './revalidate'
@@ -97,7 +98,7 @@ export async function uploadAvatar(
     }
 
     // Generate unique filename with user ID prefix
-    const fileName = `${crypto.randomUUID()}.${fileExt}`
+    const fileName = `${randomUUID()}.${fileExt}`
     const filePath = `${user.id}/${fileName}`
 
     // Upload to Supabase Storage
