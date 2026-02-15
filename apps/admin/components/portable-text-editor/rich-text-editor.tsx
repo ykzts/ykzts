@@ -1,11 +1,13 @@
 'use client'
 
 import { LinkNode } from '@lexical/link'
+import { ListItemNode, ListNode } from '@lexical/list'
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
+import { ListPlugin } from '@lexical/react/LexicalListPlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import type { EditorState, LexicalEditor } from 'lexical'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -21,6 +23,14 @@ import {
 
 const editorTheme = {
   link: 'text-primary hover:underline',
+  list: {
+    listitem: 'ml-8',
+    nested: {
+      listitem: 'list-none'
+    },
+    ol: 'list-decimal',
+    ul: 'list-disc'
+  },
   paragraph: 'mb-1',
   text: {
     bold: 'font-bold',
@@ -60,7 +70,7 @@ export function RichTextEditor({
         }
       : undefined,
     namespace: 'RichTextEditor',
-    nodes: [LinkNode, ImageNode],
+    nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
     onError: (error: Error) => {
       console.error('Lexical error:', error)
     },
@@ -115,6 +125,7 @@ export function RichTextEditor({
             />
           </div>
           <HistoryPlugin />
+          <ListPlugin />
           {autoFocus && <AutoFocusPlugin />}
           <LinkPlugin />
           <ImagePlugin />

@@ -1,4 +1,5 @@
 import { LinkNode } from '@lexical/link'
+import { $createListItemNode, $createListNode, $isListItemNode, $isListNode, ListItemNode, ListNode } from '@lexical/list'
 import {
   $createParagraphNode,
   $createTextNode,
@@ -18,7 +19,7 @@ describe('Portable Text Serializer', () => {
   describe('lexicalToPortableText', () => {
     it('should serialize plain text to Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       editor.update(() => {
@@ -41,7 +42,7 @@ describe('Portable Text Serializer', () => {
 
     it('should serialize bold text to Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       editor.update(() => {
@@ -61,7 +62,7 @@ describe('Portable Text Serializer', () => {
 
     it('should serialize italic text to Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       editor.update(() => {
@@ -81,7 +82,7 @@ describe('Portable Text Serializer', () => {
 
     it('should serialize combined formatting to Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       editor.update(() => {
@@ -102,7 +103,7 @@ describe('Portable Text Serializer', () => {
 
     it('should serialize empty editor to empty block', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       const portableText = lexicalToPortableText(editor)
@@ -113,7 +114,7 @@ describe('Portable Text Serializer', () => {
 
     it('should serialize multiple paragraphs to multiple blocks', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       editor.update(() => {
@@ -141,7 +142,7 @@ describe('Portable Text Serializer', () => {
   describe('initializeEditorWithPortableText', () => {
     it('should deserialize plain text from Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       const json = JSON.stringify([
@@ -172,7 +173,7 @@ describe('Portable Text Serializer', () => {
 
     it('should deserialize bold text from Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       const json = JSON.stringify([
@@ -202,7 +203,7 @@ describe('Portable Text Serializer', () => {
 
     it('should deserialize italic text from Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       const json = JSON.stringify([
@@ -232,7 +233,7 @@ describe('Portable Text Serializer', () => {
 
     it('should handle invalid JSON gracefully', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       initializeEditorWithPortableText(editor, 'invalid json')
@@ -248,7 +249,7 @@ describe('Portable Text Serializer', () => {
   describe('Round-trip serialization', () => {
     it('should preserve plain text through round-trip', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       editor.update(() => {
@@ -263,7 +264,7 @@ describe('Portable Text Serializer', () => {
       const json = JSON.stringify(portableText)
 
       const editor2 = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
       initializeEditorWithPortableText(editor2, json)
 
@@ -274,7 +275,7 @@ describe('Portable Text Serializer', () => {
 
     it('should preserve formatting through round-trip', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       editor.update(() => {
@@ -291,7 +292,7 @@ describe('Portable Text Serializer', () => {
       const json = JSON.stringify(portableText)
 
       const editor2 = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
       initializeEditorWithPortableText(editor2, json)
 
@@ -306,7 +307,7 @@ describe('Portable Text Serializer', () => {
   describe('Image Node', () => {
     it('should serialize image to Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       editor.update(() => {
@@ -331,7 +332,7 @@ describe('Portable Text Serializer', () => {
 
     it('should deserialize image from Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       const json = JSON.stringify([
@@ -362,7 +363,7 @@ describe('Portable Text Serializer', () => {
 
     it('should preserve images through round-trip', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       editor.update(() => {
@@ -378,7 +379,7 @@ describe('Portable Text Serializer', () => {
       const json = JSON.stringify(portableText)
 
       const editor2 = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
       initializeEditorWithPortableText(editor2, json)
 
@@ -396,7 +397,7 @@ describe('Portable Text Serializer', () => {
 
     it('should handle mixed content with images and text blocks', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       editor.update(() => {
@@ -442,7 +443,7 @@ describe('Portable Text Serializer', () => {
 
     it('should handle malformed image blocks gracefully', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       // Test with missing asset
@@ -471,7 +472,7 @@ describe('Portable Text Serializer', () => {
 
       // Test with missing url in asset
       const editor2 = createEditor({
-        nodes: [LinkNode, ImageNode]
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
       const jsonWithoutUrl = JSON.stringify([
@@ -498,6 +499,245 @@ describe('Portable Text Serializer', () => {
         expect(root.getChildrenSize()).toBe(1)
         const paragraph = root.getFirstChild()
         expect($isParagraphNode(paragraph)).toBe(true)
+      })
+    })
+  })
+
+  describe('List Support', () => {
+    it('should serialize bullet list to Portable Text', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const list = $createListNode('bullet')
+        const item1 = $createListItemNode()
+        item1.append($createTextNode('First item'))
+        const item2 = $createListItemNode()
+        item2.append($createTextNode('Second item'))
+        list.append(item1, item2)
+        root.append(list)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText).toHaveLength(2)
+      expect(portableText[0]._type).toBe('block')
+      expect(portableText[0].listItem).toBe('bullet')
+      expect(portableText[0].level).toBe(1)
+      expect(portableText[0].children[0].text).toBe('First item')
+      expect(portableText[1]._type).toBe('block')
+      expect(portableText[1].listItem).toBe('bullet')
+      expect(portableText[1].level).toBe(1)
+      expect(portableText[1].children[0].text).toBe('Second item')
+    })
+
+    it('should serialize numbered list to Portable Text', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        
+        const list = $createListNode('number')
+        const item1 = $createListItemNode()
+        item1.append($createTextNode('First step'))
+        const item2 = $createListItemNode()
+        item2.append($createTextNode('Second step'))
+        list.append(item1, item2)
+        root.append(list)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText).toHaveLength(2)
+      expect(portableText[0]._type).toBe('block')
+      expect(portableText[0].listItem).toBe('number')
+      expect(portableText[0].level).toBe(1)
+      expect(portableText[0].children[0].text).toBe('First step')
+      expect(portableText[1]._type).toBe('block')
+      expect(portableText[1].listItem).toBe('number')
+      expect(portableText[1].level).toBe(1)
+      expect(portableText[1].children[0].text).toBe('Second step')
+    })
+
+    it('should deserialize bullet list from Portable Text', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
+      })
+
+      const json = JSON.stringify([
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Item 1' }],
+          listItem: 'bullet',
+          level: 1,
+          markDefs: [],
+          style: 'normal'
+        },
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Item 2' }],
+          listItem: 'bullet',
+          level: 1,
+          markDefs: [],
+          style: 'normal'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        
+        const list = root.getFirstChild()
+        expect($isListNode(list)).toBe(true)
+
+        if ($isListNode(list)) {
+          expect(list.getListType()).toBe('bullet')
+          const items = list.getChildren()
+          expect(items).toHaveLength(2)
+
+          if ($isListItemNode(items[0])) {
+            const firstItemText = items[0].getTextContent()
+            expect(firstItemText).toBe('Item 1')
+          }
+
+          if ($isListItemNode(items[1])) {
+            const secondItemText = items[1].getTextContent()
+            expect(secondItemText).toBe('Item 2')
+          }
+        }
+      })
+    })
+
+    it('should deserialize numbered list from Portable Text', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
+      })
+
+      const json = JSON.stringify([
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Step 1' }],
+          listItem: 'number',
+          level: 1,
+          markDefs: [],
+          style: 'normal'
+        },
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Step 2' }],
+          listItem: 'number',
+          level: 1,
+          markDefs: [],
+          style: 'normal'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        
+        const list = root.getFirstChild()
+        expect($isListNode(list)).toBe(true)
+
+        if ($isListNode(list)) {
+          expect(list.getListType()).toBe('number')
+          const items = list.getChildren()
+          expect(items).toHaveLength(2)
+
+          if ($isListItemNode(items[0])) {
+            const firstItemText = items[0].getTextContent()
+            expect(firstItemText).toBe('Step 1')
+          }
+
+          if ($isListItemNode(items[1])) {
+            const secondItemText = items[1].getTextContent()
+            expect(secondItemText).toBe('Step 2')
+          }
+        }
+      })
+    })
+
+    it('should preserve list formatting through round-trip', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        
+        const list = $createListNode('bullet')
+        const item = $createListItemNode()
+        const text = $createTextNode('Bold item')
+        text.toggleFormat('bold')
+        item.append(text)
+        list.append(item)
+        root.append(list)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+      const json = JSON.stringify(portableText)
+
+      const editor2 = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
+      })
+      initializeEditorWithPortableText(editor2, json)
+
+      const portableText2 = lexicalToPortableText(editor2)
+
+      expect(portableText2[0].listItem).toBe('bullet')
+      expect(portableText2[0].children[0].marks).toContain('strong')
+      expect(portableText2[0].children[0].text).toBe('Bold item')
+    })
+
+    it('should handle mixed content with lists and paragraphs', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
+      })
+
+      const json = JSON.stringify([
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Paragraph before list' }],
+          markDefs: [],
+          style: 'normal'
+        },
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'List item' }],
+          listItem: 'bullet',
+          level: 1,
+          markDefs: [],
+          style: 'normal'
+        },
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Paragraph after list' }],
+          markDefs: [],
+          style: 'normal'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        
+        expect(root.getChildrenSize()).toBe(3)
+
+        const firstChild = root.getFirstChild()
+        expect($isParagraphNode(firstChild)).toBe(true)
+
+        const secondChild = root.getChildren()[1]
+        expect($isListNode(secondChild)).toBe(true)
+
+        const thirdChild = root.getChildren()[2]
+        expect($isParagraphNode(thirdChild)).toBe(true)
       })
     })
   })
