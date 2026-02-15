@@ -224,7 +224,10 @@ export function ToolbarPlugin() {
           <option value="h5">見出し5</option>
           <option value="h6">見出し6</option>
         </select>
-        <ChevronDown className="pointer-events-none absolute top-1/2 right-2 size-4 -translate-y-1/2 text-muted-foreground" />
+        <ChevronDown
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1/2 right-2 size-4 -translate-y-1/2 text-muted-foreground"
+        />
       </div>
       <div className="mx-1 w-px bg-border" />
       <button

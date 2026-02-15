@@ -368,7 +368,7 @@ export function initializeEditorWithPortableText(
             currentList.append(listItem)
           } else if (
             block.style &&
-            ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(block.style)
+            ['h2', 'h3', 'h4', 'h5', 'h6'].includes(block.style)
           ) {
             // Close any open list
             if (currentList) {
@@ -379,7 +379,7 @@ export function initializeEditorWithPortableText(
 
             // Create heading node
             const headingNode = $createHeadingNode(
-              block.style as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+              block.style as 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
             )
             for (const textNode of textNodes) {
               headingNode.append(textNode)

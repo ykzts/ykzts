@@ -24,7 +24,6 @@ import {
 
 const editorTheme = {
   heading: {
-    h1: 'text-4xl font-bold mb-4',
     h2: 'text-3xl font-bold mb-3',
     h3: 'text-2xl font-bold mb-2',
     h4: 'text-xl font-bold mb-2',
