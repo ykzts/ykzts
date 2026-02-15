@@ -5,12 +5,24 @@ import { supabase } from './client'
 
 const POSTS_PER_PAGE = 10
 
-// Helper function to extract profile from query result
+/**
+ * Normalizes profile data from Supabase query results.
+ * Supabase's `.select()` with foreign key joins can return either:
+ * - An array of objects when using relational queries
+ * - A single object when using direct queries
+ * This function ensures consistent return type by extracting the first array element.
+ */
 function normalizeProfile(data: { profile?: unknown }) {
   return Array.isArray(data.profile) ? data.profile[0] : data.profile
 }
 
-// Helper function to extract version_date from current_version
+/**
+ * Extracts version_date from the current_version field.
+ * The current_version field from Supabase queries can be:
+ * - An array containing version objects (when using foreign key joins)
+ * - A single version object (when using direct queries)
+ * This function handles both cases and returns the version_date field.
+ */
 function extractVersionDate(currentVersion: unknown): string | null {
   if (Array.isArray(currentVersion)) {
     return currentVersion[0]?.version_date ?? null
