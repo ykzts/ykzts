@@ -115,6 +115,26 @@ describe('Portable Text Serializer', () => {
       expect(portableText[0].children[0].text).toBe('underline text')
     })
 
+    it('should serialize strikethrough text to Portable Text', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const paragraph = $createParagraphNode()
+        const strikethroughText = $createTextNode('strikethrough text')
+        strikethroughText.toggleFormat('strikethrough')
+        paragraph.append(strikethroughText)
+        root.append(paragraph)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText[0].children[0].marks).toContain('strike-through')
+      expect(portableText[0].children[0].text).toBe('strikethrough text')
+    })
+
     it('should serialize combined formatting to Portable Text', () => {
       const editor = createEditor({
         nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
@@ -123,9 +143,10 @@ describe('Portable Text Serializer', () => {
       editor.update(() => {
         const root = $getRoot()
         const paragraph = $createParagraphNode()
-        const text = $createTextNode('bold italic underline text')
+        const text = $createTextNode('bold italic strikethrough underline text')
         text.toggleFormat('bold')
         text.toggleFormat('italic')
+        text.toggleFormat('strikethrough')
         text.toggleFormat('underline')
         paragraph.append(text)
         root.append(paragraph)
@@ -135,6 +156,7 @@ describe('Portable Text Serializer', () => {
 
       expect(portableText[0].children[0].marks).toContain('strong')
       expect(portableText[0].children[0].marks).toContain('em')
+      expect(portableText[0].children[0].marks).toContain('strike-through')
       expect(portableText[0].children[0].marks).toContain('underline')
     })
 
@@ -295,6 +317,42 @@ describe('Portable Text Serializer', () => {
           if ($isTextNode(text)) {
             expect(text.getTextContent()).toBe('underline text')
             expect(text.hasFormat('underline')).toBe(true)
+          }
+        }
+      })
+    })
+
+    it('should deserialize strikethrough text from Portable Text', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
+      })
+
+      const json = JSON.stringify([
+        {
+          _type: 'block',
+          children: [
+            {
+              _type: 'span',
+              marks: ['strike-through'],
+              text: 'strikethrough text'
+            }
+          ],
+          markDefs: [],
+          style: 'normal'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        const paragraph = root.getFirstChild()
+
+        if ($isParagraphNode(paragraph)) {
+          const text = paragraph.getFirstChild()
+          if ($isTextNode(text)) {
+            expect(text.getTextContent()).toBe('strikethrough text')
+            expect(text.hasFormat('strikethrough')).toBe(true)
           }
         }
       })

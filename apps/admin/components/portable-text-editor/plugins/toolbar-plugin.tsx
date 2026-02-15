@@ -33,6 +33,7 @@ import {
   List,
   ListOrdered,
   Quote,
+  Strikethrough,
   Underline
 } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -45,6 +46,7 @@ export function ToolbarPlugin() {
   const [isBold, setIsBold] = useState(false)
   const [isItalic, setIsItalic] = useState(false)
   const [isUnderline, setIsUnderline] = useState(false)
+  const [isStrikethrough, setIsStrikethrough] = useState(false)
   const [isLink, setIsLink] = useState(false)
   const [isBulletList, setIsBulletList] = useState(false)
   const [isNumberedList, setIsNumberedList] = useState(false)
@@ -61,6 +63,7 @@ export function ToolbarPlugin() {
       setIsBold(selection.hasFormat('bold'))
       setIsItalic(selection.hasFormat('italic'))
       setIsUnderline(selection.hasFormat('underline'))
+      setIsStrikethrough(selection.hasFormat('strikethrough'))
 
       // Check if we're in a link - check both anchor and focus nodes
       const anchorNode = selection.anchor.getNode()
@@ -129,6 +132,10 @@ export function ToolbarPlugin() {
 
   const formatUnderline = () => {
     editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')
+  }
+
+  const formatStrikethrough = () => {
+    editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough')
   }
 
   const insertLink = useCallback(() => {
@@ -293,6 +300,16 @@ export function ToolbarPlugin() {
         type="button"
       >
         <Underline className="size-4" />
+      </button>
+      <button
+        aria-label="取り消し線"
+        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+          isStrikethrough ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+        }`}
+        onClick={formatStrikethrough}
+        type="button"
+      >
+        <Strikethrough className="size-4" />
       </button>
       <button
         aria-label="リンク"

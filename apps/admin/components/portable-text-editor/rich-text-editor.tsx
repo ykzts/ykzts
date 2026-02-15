@@ -44,6 +44,7 @@ const editorTheme = {
   text: {
     bold: 'font-bold',
     italic: 'italic',
+    strikethrough: 'line-through',
     underline: 'underline'
   }
 }
