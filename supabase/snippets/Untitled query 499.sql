@@ -1,1 +1,0 @@
-SELECT * FROM post_versions WHERE change_summary ILIKE '%format%' OR change_summary ILIKE '%fomat%';
