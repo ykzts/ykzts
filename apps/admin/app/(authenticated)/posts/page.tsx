@@ -39,6 +39,7 @@ async function PostsContent({
                   <th className="px-4 py-3 text-left">タイトル</th>
                   <th className="px-4 py-3 text-left">ステータス</th>
                   <th className="px-4 py-3 text-left">公開日時</th>
+                  <th className="px-4 py-3 text-left">更新日時</th>
                   <th className="px-4 py-3 text-left">作成者</th>
                   <th className="px-4 py-3 text-right">操作</th>
                 </tr>
@@ -63,6 +64,14 @@ async function PostsContent({
                     <td className="px-4 py-3 text-muted-foreground">
                       {post.published_at
                         ? formatDateWithTimezone(post.published_at, timezone)
+                        : '-'}
+                    </td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {post.current_version?.version_date
+                        ? formatDateWithTimezone(
+                            post.current_version.version_date,
+                            timezone
+                          )
                         : '-'}
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">

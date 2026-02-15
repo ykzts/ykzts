@@ -12,6 +12,7 @@ export function PostsSkeleton() {
                 <th className="px-4 py-3 text-left">タイトル</th>
                 <th className="px-4 py-3 text-left">ステータス</th>
                 <th className="px-4 py-3 text-left">公開日時</th>
+                <th className="px-4 py-3 text-left">更新日時</th>
                 <th className="px-4 py-3 text-left">作成者</th>
                 <th className="px-4 py-3 text-right">操作</th>
               </tr>
@@ -28,6 +29,9 @@ export function PostsSkeleton() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="h-6 w-16 animate-pulse rounded bg-muted" />
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="h-6 w-32 animate-pulse rounded bg-muted" />
                   </td>
                   <td className="px-4 py-3">
                     <div className="h-6 w-32 animate-pulse rounded bg-muted" />

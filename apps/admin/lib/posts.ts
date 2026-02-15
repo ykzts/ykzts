@@ -9,6 +9,7 @@ type PostVersion = Database['public']['Tables']['post_versions']['Row']
 export type PostWithDetails = Post & {
   current_version?: {
     content: Json
+    version_date: string
   } | null
   profile?: {
     name: string | null
@@ -74,7 +75,7 @@ export async function getPosts(filter: PostsFilter = {}) {
       status,
       published_at,
       created_at,
-      updated_at,
+      current_version:post_versions!posts_current_version_id_fkey(version_date),
       profile:profiles!posts_profile_id_fkey(name)
     `,
       { count: 'exact' }
@@ -154,7 +155,7 @@ export async function getPostById(id: string): Promise<PostWithDetails | null> {
     .from('posts')
     .select(`
       *,
-      current_version:post_versions!posts_current_version_id_fkey(content),
+      current_version:post_versions!posts_current_version_id_fkey(content, version_date),
       profile:profiles!posts_profile_id_fkey(name)
     `)
     .eq('id', id)
