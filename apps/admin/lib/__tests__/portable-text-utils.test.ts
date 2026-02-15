@@ -184,6 +184,7 @@ describe('extractFirstParagraph', () => {
 
       const result = extractFirstParagraph(content, 10)
       expect(result).toBe('Short text...')
+      expect(result.length).toBe(13) // 10 characters + '...'
     })
 
     it('should not add ellipsis if text is exactly maxLength', () => {

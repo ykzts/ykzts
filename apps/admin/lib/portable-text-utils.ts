@@ -54,7 +54,7 @@ export function extractFirstParagraph(content: Json, maxLength = 200): string {
       if (trimmedText) {
         // Truncate to maxLength and add ellipsis if needed
         if (trimmedText.length > maxLength) {
-          return `${trimmedText.slice(0, maxLength).trim()}...`
+          return `${trimmedText.slice(0, maxLength)}...`
         }
         return trimmedText
       }
