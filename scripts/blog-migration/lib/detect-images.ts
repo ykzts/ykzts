@@ -45,6 +45,9 @@ export async function detectImages(
     let normalizedPath = imagePath
 
     if (normalizedPath.includes(')](')) {
+      console.warn(
+        `[detect-images] Path contains ')](', normalizing: ${imagePath}`
+      )
       normalizedPath = normalizedPath.split(')](')[0]
     }
 

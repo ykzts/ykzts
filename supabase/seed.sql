@@ -18,7 +18,6 @@ INSERT INTO auth.users (
   updated_at,
   raw_app_meta_data,
   raw_user_meta_data,
-  is_super_admin,
   aud,
   role
 ) VALUES (
@@ -36,7 +35,6 @@ INSERT INTO auth.users (
   NOW(),
   '{"provider": "email", "providers": ["email"]}',
   '{"name": "Test User"}',
-  false,
   'authenticated',
   'authenticated'
 )

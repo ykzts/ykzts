@@ -348,8 +348,11 @@ async function migrate(dryRun = false) {
           .select('id, version_number')
           .eq('post_id', postId)
 
-        if (versionsError || !allVersions || allVersions.length === 0) {
-          throw versionsError
+        if (versionsError || !allVersions?.length) {
+          throw (
+            versionsError ??
+            new Error(`no post_versions found for postId ${postId}`)
+          )
         }
 
         const currentVersion = allVersions.reduce((latest, candidate) => {

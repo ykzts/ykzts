@@ -7,11 +7,11 @@ import { useState, useTransition } from 'react'
 import { signInWithGitHub, signInWithPassword } from './actions'
 
 export default function LoginForm() {
+  const isDevelopment = process.env.NODE_ENV === 'development'
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
-  const [email, setEmail] = useState('test@example.com')
-  const [password, setPassword] = useState('password123')
-  const isDevelopment = process.env.NODE_ENV === 'development'
+  const [email, setEmail] = useState(isDevelopment ? 'test@example.com' : '')
+  const [password, setPassword] = useState(isDevelopment ? 'password123' : '')
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -48,7 +48,12 @@ export default function LoginForm() {
   return (
     <div className="space-y-6">
       {error && (
-        <p className="rounded-md bg-red-50 p-3 text-red-600 text-sm">{error}</p>
+        <p
+          className="rounded-md bg-red-50 p-3 text-red-600 text-sm"
+          role="alert"
+        >
+          {error}
+        </p>
       )}
 
       {isDevelopment && (

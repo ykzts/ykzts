@@ -55,7 +55,7 @@ type PortableTextContent = BlockContent | ImageBlock | CodeBlock
 
 let keyCounter = 0
 function generateKey(): string {
-  return `key_${Date.now()}_${keyCounter++}`
+  return `key_${keyCounter++}`
 }
 
 /**
@@ -193,12 +193,12 @@ function convertNode(
           const block: BlockContent = {
             _key: generateKey(),
             _type: 'block',
-            children,
+            children: [...children],
             style: 'normal'
           }
 
           if (markDefs.length > 0) {
-            block.markDefs = markDefs
+            block.markDefs = [...markDefs]
           }
 
           blocks.push(block)

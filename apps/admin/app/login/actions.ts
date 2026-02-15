@@ -38,6 +38,11 @@ export async function signInWithGitHub() {
 }
 
 export async function signInWithPassword(email: string, password: string) {
+  // Security: Only allow password auth in development
+  if (process.env.NODE_ENV !== 'development') {
+    throw new Error('Password authentication is only available in development')
+  }
+
   const supabase = await createClient()
   const { error } = await supabase.auth.signInWithPassword({
     email,
