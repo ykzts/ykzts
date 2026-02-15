@@ -5,15 +5,27 @@ import { supabase } from './client'
 
 const POSTS_PER_PAGE = 10
 
+type Profile = { id: string; name: string } | null
+
 /**
  * Normalizes profile data from Supabase query results.
  * Supabase's `.select()` with foreign key joins can return either:
  * - An array of objects when using relational queries
  * - A single object when using direct queries
- * This function ensures consistent return type by extracting the first array element.
+ * This function ensures consistent return type by extracting the first array element
+ * and validates the profile object structure.
  */
-function normalizeProfile(data: { profile?: unknown }) {
-  return Array.isArray(data.profile) ? data.profile[0] : data.profile
+function normalizeProfile(data: { profile?: unknown }): Profile {
+  const profile = Array.isArray(data.profile) ? data.profile[0] : data.profile
+  if (
+    profile != null &&
+    typeof profile === 'object' &&
+    'id' in profile &&
+    'name' in profile
+  ) {
+    return profile as Profile
+  }
+  return null
 }
 
 /**
