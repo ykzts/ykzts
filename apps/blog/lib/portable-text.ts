@@ -8,6 +8,15 @@ export interface CodeBlock extends TypedObject {
   language?: string
 }
 
+export interface ImageBlock extends TypedObject {
+  _type: 'image'
+  alt?: string
+  asset: {
+    _type: 'reference'
+    url: string
+  }
+}
+
 export function isPortableTextValue(
   value: unknown
 ): value is PortableTextValue {

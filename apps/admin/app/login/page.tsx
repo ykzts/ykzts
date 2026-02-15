@@ -11,6 +11,7 @@ import LoginForm from './login-form'
 
 async function LoginContent() {
   const user = await getCurrentUser()
+  const isDevelopment = process.env.NODE_ENV === 'development'
 
   if (user) {
     redirect('/')
@@ -23,7 +24,7 @@ async function LoginContent() {
           <CardTitle className="text-2xl">管理画面ログイン</CardTitle>
         </CardHeader>
         <CardContent>
-          <LoginForm />
+          <LoginForm isDevelopment={isDevelopment} />
         </CardContent>
       </Card>
     </div>

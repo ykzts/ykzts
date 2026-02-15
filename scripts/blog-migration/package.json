@@ -5,9 +5,14 @@
   "private": true,
   "dependencies": {
     "@supabase/supabase-js": "2.95.3",
-    "@ykzts/supabase": "workspace:*"
+    "@ykzts/supabase": "workspace:*",
+    "mdast-util-to-string": "4.0.0",
+    "remark-mdx": "3.1.0",
+    "remark-parse": "11.0.0",
+    "unified": "11.0.5"
   },
   "devDependencies": {
+    "@types/node": "24.3.0",
     "vitest": "4.0.18"
   }
 }

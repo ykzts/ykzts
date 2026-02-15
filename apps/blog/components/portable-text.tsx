@@ -3,9 +3,14 @@ import {
   type PortableTextMarkComponentProps,
   type PortableTextReactComponents
 } from '@portabletext/react'
+import Image from 'next/image'
 import type { ComponentProps } from 'react'
 import Link from '@/components/link'
-import type { CodeBlock, PortableTextValue } from '@/lib/portable-text'
+import type {
+  CodeBlock,
+  ImageBlock,
+  PortableTextValue
+} from '@/lib/portable-text'
 import { highlightCode } from '@/lib/shiki'
 
 const portableTextComponents = {
@@ -27,6 +32,33 @@ const portableTextComponents = {
       return (
         // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki generates safe HTML for syntax highlighting
         <div dangerouslySetInnerHTML={{ __html: html }} />
+      )
+    },
+    image({ value }: { value: ImageBlock }) {
+      const { alt, asset } = value
+      const imageUrl = asset?.url
+
+      if (!imageUrl) {
+        return null
+      }
+
+      return (
+        <figure className="my-8">
+          <div className="relative aspect-[4/3] w-full">
+            <Image
+              alt={alt || ''}
+              className="rounded-lg object-contain"
+              fill
+              sizes="(min-width: 1024px) 800px, 100vw"
+              src={imageUrl}
+            />
+          </div>
+          {alt && (
+            <figcaption className="mt-2 text-center text-muted-foreground text-sm">
+              {alt}
+            </figcaption>
+          )}
+        </figure>
       )
     }
   }

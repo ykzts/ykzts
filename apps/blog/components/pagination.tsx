@@ -1,3 +1,5 @@
+'use client'
+
 import { buttonVariants } from '@ykzts/ui/components/button'
 import { cn } from '@ykzts/ui/lib/utils'
 import type { Route } from 'next'
