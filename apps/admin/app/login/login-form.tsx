@@ -6,8 +6,11 @@ import { Label } from '@ykzts/ui/components/label'
 import { useState, useTransition } from 'react'
 import { signInWithGitHub, signInWithPassword } from './actions'
 
-export default function LoginForm() {
-  const isDevelopment = process.env.NODE_ENV === 'development'
+type LoginFormProps = {
+  isDevelopment?: boolean
+}
+
+export default function LoginForm({ isDevelopment = false }: LoginFormProps) {
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [email, setEmail] = useState(isDevelopment ? 'test@example.com' : '')

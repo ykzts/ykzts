@@ -124,19 +124,20 @@ export async function detectImages(
 
     const imageRef = await buildImageReference(imagePath, altText)
 
-    if (!imageRef) {
-      continue
-    }
-
-    const isDuplicate = images.some(
-      (img) => img.absolutePath === imageRef.absolutePath
-    )
-    if (!isDuplicate) {
+    if (imageRef) {
       images.push(imageRef)
     }
   }
 
-  return images
+  // Deduplicate images by absolutePath
+  const seen = new Set<string>()
+  const uniqueImages = images.filter((img) => {
+    if (seen.has(img.absolutePath)) return false
+    seen.add(img.absolutePath)
+    return true
+  })
+
+  return uniqueImages
 }
 
 /**

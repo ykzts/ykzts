@@ -44,13 +44,15 @@ const portableTextComponents = {
 
       return (
         <figure className="my-8">
-          <Image
-            alt={alt || ''}
-            className="rounded-lg"
-            height={600}
-            src={imageUrl}
-            width={800}
-          />
+          <div className="relative aspect-[4/3] w-full">
+            <Image
+              alt=""
+              className="rounded-lg object-contain"
+              fill
+              sizes="(min-width: 1024px) 800px, 100vw"
+              src={imageUrl}
+            />
+          </div>
           {alt && (
             <figcaption className="mt-2 text-center text-muted-foreground text-sm">
               {alt}

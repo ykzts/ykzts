@@ -46,7 +46,7 @@ export function getSupabaseImageConfig(
       parsedUrl.hostname.endsWith('.local')
 
     // Allow localhost IPs only in development
-    if (isLocalhost) {
+    if (isLocalhost && process.env.NODE_ENV !== 'production') {
       imageConfig.dangerouslyAllowLocalIP = true
 
       // Add patterns for all common localhost variants

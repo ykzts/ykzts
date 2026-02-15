@@ -34,6 +34,8 @@ interface BlockContent extends PortableTextBlock {
     _type: string
     href?: string
   }>
+  listItem?: 'bullet' | 'number'
+  level?: number
 }
 
 interface ImageBlock extends PortableTextBlock {
@@ -99,8 +101,8 @@ export function extractExcerpt(mdxContent: string): string | null {
     .replace(/\*\*(.+?)\*\*/g, '$1') // Remove bold
     .replace(/\*(.+?)\*/g, '$1') // Remove italic
     .replace(/`(.+?)`/g, '$1') // Remove inline code
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove links, keep text
     .replace(/!\[([^\]]*)\]\([^)]+\)/g, '') // Remove images
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove links, keep text
     .replace(/^\s*[-*+]\s+/gm, '') // Remove list markers
     .replace(/^\s*\d+\.\s+/gm, '') // Remove numbered list markers
     .replace(/\n{2,}/g, ' ') // Replace multiple newlines with space
