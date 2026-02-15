@@ -385,7 +385,12 @@ function cleanProblematicMdxSyntax(content: string): string {
   cleaned = processedLines.join('\n')
 
   // Remove all HTML/JSX tags as fallback
-  cleaned = cleaned.replace(/<[^>]+>/g, '')
+  // Repeat until all nested tags are removed
+  let previous = ''
+  while (previous !== cleaned) {
+    previous = cleaned
+    cleaned = cleaned.replace(/<[^>]+>/g, '')
+  }
 
   return cleaned
 }
