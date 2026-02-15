@@ -1,6 +1,7 @@
 import type { Database, Json } from '@ykzts/supabase'
 import { cacheTag } from 'next/cache'
 import { getCurrentUser } from './auth'
+import { extractFirstParagraph } from './portable-text-utils'
 import { createClient } from './supabase/server'
 
 type Post = Database['public']['Tables']['posts']['Row']
@@ -184,9 +185,15 @@ export async function createPost(params: {
 }) {
   const supabase = await createClient()
 
+  // Auto-generate excerpt from first paragraph if not provided
+  let excerpt = params.excerpt || ''
+  if (!excerpt || excerpt.trim() === '') {
+    excerpt = extractFirstParagraph(params.content)
+  }
+
   const { data, error } = await supabase.rpc('create_post', {
     p_content: params.content,
-    p_excerpt: params.excerpt || '',
+    p_excerpt: excerpt,
     p_published_at: params.publishedAt,
     p_slug: params.slug,
     p_status: params.status,
@@ -217,10 +224,16 @@ export async function updatePost(params: {
 }) {
   const supabase = await createClient()
 
+  // Auto-generate excerpt from first paragraph if content is provided and excerpt is empty
+  let excerpt = params.excerpt
+  if (params.content && (!excerpt || excerpt.trim() === '')) {
+    excerpt = extractFirstParagraph(params.content)
+  }
+
   const { data, error } = await supabase.rpc('update_post', {
     p_change_summary: params.changeSummary,
     p_content: params.content,
-    p_excerpt: params.excerpt,
+    p_excerpt: excerpt,
     p_post_id: params.postId,
     p_published_at: params.publishedAt,
     p_slug: params.slug,
