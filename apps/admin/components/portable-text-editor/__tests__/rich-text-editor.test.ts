@@ -8,6 +8,11 @@ import {
   ListNode
 } from '@lexical/list'
 import {
+  $createHeadingNode,
+  $isHeadingNode,
+  HeadingNode
+} from '@lexical/rich-text'
+import {
   $createParagraphNode,
   $createTextNode,
   $getRoot,
@@ -745,6 +750,236 @@ describe('Portable Text Serializer', () => {
 
         const thirdChild = root.getChildren()[2]
         expect($isParagraphNode(thirdChild)).toBe(true)
+      })
+    })
+  })
+
+  describe('Heading Support', () => {
+    it('should serialize H2 heading to Portable Text', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const heading = $createHeadingNode('h2')
+        heading.append($createTextNode('Main Heading'))
+        root.append(heading)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText).toHaveLength(1)
+      expect(portableText[0]._type).toBe('block')
+      expect(portableText[0].style).toBe('h2')
+      expect(portableText[0].children[0].text).toBe('Main Heading')
+    })
+
+    it('should serialize H3 heading to Portable Text', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const heading = $createHeadingNode('h3')
+        heading.append($createTextNode('Subheading'))
+        root.append(heading)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText).toHaveLength(1)
+      expect(portableText[0]._type).toBe('block')
+      expect(portableText[0].style).toBe('h3')
+      expect(portableText[0].children[0].text).toBe('Subheading')
+    })
+
+    it('should serialize headings H4-H6 to Portable Text', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const h4 = $createHeadingNode('h4')
+        h4.append($createTextNode('H4 Heading'))
+        const h5 = $createHeadingNode('h5')
+        h5.append($createTextNode('H5 Heading'))
+        const h6 = $createHeadingNode('h6')
+        h6.append($createTextNode('H6 Heading'))
+        root.append(h4, h5, h6)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText).toHaveLength(3)
+      expect(portableText[0].style).toBe('h4')
+      expect(portableText[0].children[0].text).toBe('H4 Heading')
+      expect(portableText[1].style).toBe('h5')
+      expect(portableText[1].children[0].text).toBe('H5 Heading')
+      expect(portableText[2].style).toBe('h6')
+      expect(portableText[2].children[0].text).toBe('H6 Heading')
+    })
+
+    it('should deserialize H2 heading from Portable Text', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
+      })
+
+      const json = JSON.stringify([
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Main Heading' }],
+          markDefs: [],
+          style: 'h2'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        const heading = root.getFirstChild()
+        expect($isHeadingNode(heading)).toBe(true)
+
+        if ($isHeadingNode(heading)) {
+          expect(heading.getTag()).toBe('h2')
+          expect(heading.getTextContent()).toBe('Main Heading')
+        }
+      })
+    })
+
+    it('should deserialize headings H3-H6 from Portable Text', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
+      })
+
+      const json = JSON.stringify([
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'H3' }],
+          markDefs: [],
+          style: 'h3'
+        },
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'H4' }],
+          markDefs: [],
+          style: 'h4'
+        },
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'H5' }],
+          markDefs: [],
+          style: 'h5'
+        },
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'H6' }],
+          markDefs: [],
+          style: 'h6'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        const children = root.getChildren()
+
+        expect(children).toHaveLength(4)
+
+        if ($isHeadingNode(children[0])) {
+          expect(children[0].getTag()).toBe('h3')
+          expect(children[0].getTextContent()).toBe('H3')
+        }
+        if ($isHeadingNode(children[1])) {
+          expect(children[1].getTag()).toBe('h4')
+          expect(children[1].getTextContent()).toBe('H4')
+        }
+        if ($isHeadingNode(children[2])) {
+          expect(children[2].getTag()).toBe('h5')
+          expect(children[2].getTextContent()).toBe('H5')
+        }
+        if ($isHeadingNode(children[3])) {
+          expect(children[3].getTag()).toBe('h6')
+          expect(children[3].getTextContent()).toBe('H6')
+        }
+      })
+    })
+
+    it('should preserve heading formatting through round-trip', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const heading = $createHeadingNode('h2')
+        const text = $createTextNode('Bold Heading')
+        text.toggleFormat('bold')
+        heading.append(text)
+        root.append(heading)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+      const json = JSON.stringify(portableText)
+
+      const editor2 = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
+      })
+      initializeEditorWithPortableText(editor2, json)
+
+      const portableText2 = lexicalToPortableText(editor2)
+
+      expect(portableText2[0].style).toBe('h2')
+      expect(portableText2[0].children[0].marks).toContain('strong')
+      expect(portableText2[0].children[0].text).toBe('Bold Heading')
+    })
+
+    it('should handle mixed content with headings and paragraphs', () => {
+      const editor = createEditor({
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
+      })
+
+      const json = JSON.stringify([
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Regular paragraph' }],
+          markDefs: [],
+          style: 'normal'
+        },
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Heading text' }],
+          markDefs: [],
+          style: 'h2'
+        },
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Another paragraph' }],
+          markDefs: [],
+          style: 'normal'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        const children = root.getChildren()
+
+        expect(children).toHaveLength(3)
+
+        expect($isParagraphNode(children[0])).toBe(true)
+        expect($isHeadingNode(children[1])).toBe(true)
+        expect($isParagraphNode(children[2])).toBe(true)
+
+        if ($isHeadingNode(children[1])) {
+          expect(children[1].getTag()).toBe('h2')
+          expect(children[1].getTextContent()).toBe('Heading text')
+        }
       })
     })
   })

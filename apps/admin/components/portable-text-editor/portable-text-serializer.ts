@@ -10,6 +10,11 @@ import {
   type ListNode
 } from '@lexical/list'
 import {
+  $createHeadingNode,
+  $isHeadingNode,
+  type HeadingNode
+} from '@lexical/rich-text'
+import {
   $createParagraphNode,
   $createTextNode,
   $getRoot,
@@ -207,6 +212,19 @@ export function lexicalToPortableText(
             })
           }
         }
+      } else if ($isHeadingNode(child)) {
+        // Handle heading nodes
+        const headingNode = child as HeadingNode
+        const tag = headingNode.getTag()
+        const { spans, markDefs } = processTextContent(child.getChildren())
+
+        blocks.push({
+          _key: crypto.randomUUID(),
+          _type: 'block',
+          children: spans,
+          markDefs,
+          style: tag
+        })
       } else if ($isParagraphNode(child)) {
         const { spans, markDefs } = processTextContent(child.getChildren())
 
@@ -348,6 +366,25 @@ export function initializeEditorWithPortableText(
               listItem.append(textNode)
             }
             currentList.append(listItem)
+          } else if (
+            block.style &&
+            ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(block.style)
+          ) {
+            // Close any open list
+            if (currentList) {
+              root.append(currentList)
+              currentList = null
+              currentListType = null
+            }
+
+            // Create heading node
+            const headingNode = $createHeadingNode(
+              block.style as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+            )
+            for (const textNode of textNodes) {
+              headingNode.append(textNode)
+            }
+            root.append(headingNode)
           } else {
             // Close any open list
             if (currentList) {
