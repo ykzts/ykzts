@@ -46,7 +46,7 @@ const portableTextComponents = {
         <figure className="my-8">
           <div className="relative aspect-[4/3] w-full">
             <Image
-              alt=""
+              alt={alt || ''}
               className="rounded-lg object-contain"
               fill
               sizes="(min-width: 1024px) 800px, 100vw"
