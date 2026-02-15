@@ -124,7 +124,8 @@ export async function parseMDX(filePath: string): Promise<ParsedMDX> {
  */
 function convertHtmlCommentsToMdx(content: string): string {
   // Convert <!-- comment --> to {/* comment */}
-  return content.replace(/<!--\s*(.*?)\s*-->/g, '{/* $1 */}')
+  // Use [\s\S] to match across line breaks
+  return content.replace(/<!--\s*([\s\S]*?)\s*-->/g, '{/* $1 */}')
 }
 
 /**
@@ -142,7 +143,8 @@ function fixLegacyMdxSyntax(content: string): string {
   // <br> -> <br/>
   fixed = fixed.replace(/<br\s*>/gi, '<br/>')
   fixed = fixed.replace(/<hr\s*>/gi, '<hr/>')
-  fixed = fixed.replace(/<img\s+([^>]*?)>/gi, '<img $1/>')
+  // Only convert <img ...> that are not already self-closing
+  fixed = fixed.replace(/<img\s+([^>]*?)(?<!\/)>/gi, '<img $1/>')
 
   // Fix JSX expressions that might have issues - escape braces in code blocks
   // This is a simple fix - if there are standalone braces not in code blocks, wrap them

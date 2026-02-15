@@ -366,11 +366,17 @@ function cleanProblematicMdxSyntax(content: string): string {
   cleaned = cleaned.replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
 
   // Remove standalone curly braces that might cause issues
-  // But keep code blocks intact by processing line by line
+  // But keep code blocks intact by tracking code block state
   const lines = cleaned.split('\n')
+  let inCodeBlock = false
   const processedLines = lines.map((line) => {
-    // Skip code blocks
-    if (line.trim().startsWith('```') || line.trim().startsWith('    ')) {
+    // Toggle code block state when encountering fence markers
+    if (line.trim().startsWith('```')) {
+      inCodeBlock = !inCodeBlock
+      return line
+    }
+    // Skip processing if in code block or indented code
+    if (inCodeBlock || line.startsWith('    ')) {
       return line
     }
     // Remove problematic JSX expressions outside code

@@ -33,6 +33,7 @@ function normalizeContent(content: string): string {
 }
 
 function isFormatCommit(message: string): boolean {
+  // Detects format commits including historical typo 'pnpm fomat'
   return /(pnpm\s+fomat|pnpm\s+format|\bformat\b)/i.test(message)
 }
 
@@ -65,8 +66,8 @@ function hasSignificantFrontmatterChange(
   }
 
   // Check tags change
-  const currentTags = currentFrontmatter.tags?.sort().join(',') || ''
-  const previousTags = previousFrontmatter.tags?.sort().join(',') || ''
+  const currentTags = currentFrontmatter.tags?.slice().sort().join(',') || ''
+  const previousTags = previousFrontmatter.tags?.slice().sort().join(',') || ''
   if (currentTags !== previousTags) {
     return true
   }
@@ -92,7 +93,7 @@ async function processCommit(
       ['show', `${commit.hash}:${commit.filePath}`],
       { cwd: REPO_ROOT, maxBuffer: 1024 * 1024 * 10 }
     )
-    const parsed = await parseMDXContent(fileContent)
+    const parsed = parseMDXContent(fileContent)
     commits.push({
       content: parsed.content,
       date: new Date(commit.date),
