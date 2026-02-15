@@ -9,8 +9,8 @@ import {
 } from '@lexical/list'
 import {
   $createHeadingNode,
-  $isHeadingNode,
   $createQuoteNode,
+  $isHeadingNode,
   $isQuoteNode,
   HeadingNode,
   QuoteNode
@@ -990,7 +990,14 @@ describe('Portable Text Serializer', () => {
   describe('Quote Support', () => {
     it('should serialize quote to Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode, QuoteNode]
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
       })
 
       editor.update(() => {
@@ -1010,7 +1017,14 @@ describe('Portable Text Serializer', () => {
 
     it('should deserialize quote from Portable Text', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode, QuoteNode]
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
       })
 
       const json = JSON.stringify([
@@ -1037,7 +1051,14 @@ describe('Portable Text Serializer', () => {
 
     it('should preserve quote formatting through round-trip', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode, QuoteNode]
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
       })
 
       editor.update(() => {
@@ -1053,7 +1074,14 @@ describe('Portable Text Serializer', () => {
       const json = JSON.stringify(portableText)
 
       const editor2 = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode, QuoteNode]
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
       })
       initializeEditorWithPortableText(editor2, json)
 
@@ -1066,7 +1094,14 @@ describe('Portable Text Serializer', () => {
 
     it('should handle mixed content with quotes and other blocks', () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode, QuoteNode]
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
       })
 
       const json = JSON.stringify([

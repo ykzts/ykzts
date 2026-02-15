@@ -10,6 +10,7 @@ import {
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import {
   $createHeadingNode,
+  $createQuoteNode,
   $isHeadingNode,
   $isQuoteNode,
   type HeadingNode
@@ -21,7 +22,6 @@ import {
   $getSelection,
   $isParagraphNode,
   $isRangeSelection,
-  FORMAT_ELEMENT_COMMAND,
   FORMAT_TEXT_COMMAND
 } from 'lexical'
 import {
@@ -202,18 +202,18 @@ export function ToolbarPlugin() {
   }
 
   const formatQuote = () => {
-    if (isQuote) {
-      // Remove quote formatting by converting to paragraph
-      editor.update(() => {
-        const selection = $getSelection()
-        if ($isRangeSelection(selection)) {
+    editor.update(() => {
+      const selection = $getSelection()
+      if ($isRangeSelection(selection)) {
+        if (isQuote) {
+          // Remove quote formatting by converting to paragraph
           $setBlocksType(selection, () => $createParagraphNode())
+        } else {
+          // Apply quote formatting using $setBlocksType
+          $setBlocksType(selection, () => $createQuoteNode())
         }
-      })
-    } else {
-      // Apply quote formatting
-      editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'quote')
-    }
+      }
+    })
   }
 
   const formatHeading = (

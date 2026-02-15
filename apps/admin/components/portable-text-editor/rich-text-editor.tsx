@@ -79,7 +79,14 @@ export function RichTextEditor({
         }
       : undefined,
     namespace: 'RichTextEditor',
-    nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode, QuoteNode],
+    nodes: [
+      LinkNode,
+      ImageNode,
+      ListNode,
+      ListItemNode,
+      HeadingNode,
+      QuoteNode
+    ],
     onError: (error: Error) => {
       console.error('Lexical error:', error)
     },
