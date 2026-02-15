@@ -5,6 +5,19 @@ import { supabase } from './client'
 
 const POSTS_PER_PAGE = 10
 
+// Helper function to extract profile from query result
+function normalizeProfile(data: { profile?: unknown }) {
+  return Array.isArray(data.profile) ? data.profile[0] : data.profile
+}
+
+// Helper function to extract version_date from current_version
+function extractVersionDate(currentVersion: unknown): string | null {
+  if (Array.isArray(currentVersion)) {
+    return currentVersion[0]?.version_date ?? null
+  }
+  return (currentVersion as { version_date?: string })?.version_date ?? null
+}
+
 export async function getPosts(page = 1, isDraft = false) {
   cacheTag('posts')
 
@@ -60,14 +73,12 @@ export async function getPosts(page = 1, isDraft = false) {
       : (post.current_version?.content ?? null),
     excerpt: post.excerpt,
     id: post.id,
-    profile: Array.isArray(post.profile) ? post.profile[0] : post.profile,
+    profile: normalizeProfile(post),
     published_at: post.published_at as string,
     slug: post.slug as string,
     tags: post.tags,
     title: post.title as string,
-    version_date: Array.isArray(post.current_version)
-      ? (post.current_version[0]?.version_date ?? null)
-      : (post.current_version?.version_date ?? null)
+    version_date: extractVersionDate(post.current_version)
   }))
 }
 
@@ -125,14 +136,12 @@ export async function getPostBySlug(slug: string, isDraft = false) {
       : (data.current_version?.content ?? null),
     excerpt: data.excerpt,
     id: data.id,
-    profile: Array.isArray(data.profile) ? data.profile[0] : data.profile,
+    profile: normalizeProfile(data),
     published_at: data.published_at as string,
     slug: data.slug as string,
     tags: data.tags,
     title: data.title as string,
-    version_date: Array.isArray(data.current_version)
-      ? (data.current_version[0]?.version_date ?? null)
-      : (data.current_version?.version_date ?? null)
+    version_date: extractVersionDate(data.current_version)
   }
 }
 
@@ -194,14 +203,12 @@ export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
       : (post.current_version?.content ?? null),
     excerpt: post.excerpt,
     id: post.id,
-    profile: Array.isArray(post.profile) ? post.profile[0] : post.profile,
+    profile: normalizeProfile(post),
     published_at: post.published_at as string,
     slug: post.slug as string,
     tags: post.tags,
     title: post.title as string,
-    version_date: Array.isArray(post.current_version)
-      ? (post.current_version[0]?.version_date ?? null)
-      : (post.current_version?.version_date ?? null)
+    version_date: extractVersionDate(post.current_version)
   }))
 }
 
@@ -261,9 +268,7 @@ export async function getAllPosts() {
   return data.map((post) => ({
     published_at: post.published_at as string,
     slug: post.slug as string,
-    version_date: Array.isArray(post.current_version)
-      ? (post.current_version[0]?.version_date ?? null)
-      : (post.current_version?.version_date ?? null)
+    version_date: extractVersionDate(post.current_version)
   }))
 }
 
@@ -303,9 +308,7 @@ export async function getPostsForFeed(limit = 20) {
     published_at: post.published_at as string,
     slug: post.slug as string,
     title: post.title as string,
-    version_date: Array.isArray(post.current_version)
-      ? (post.current_version[0]?.version_date ?? null)
-      : (post.current_version?.version_date ?? null)
+    version_date: extractVersionDate(post.current_version)
   }))
 }
 
