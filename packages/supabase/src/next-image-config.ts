@@ -54,9 +54,7 @@ export function getSupabaseImageConfig(
         'localhost',
         '127.0.0.1',
         '0.0.0.0',
-        ...(parsedUrl.hostname.endsWith('.local')
-          ? [parsedUrl.hostname]
-          : [])
+        ...(parsedUrl.hostname.endsWith('.local') ? [parsedUrl.hostname] : [])
       ]
       imageConfig.remotePatterns = localhostVariants.map((hostname) => ({
         hostname,
