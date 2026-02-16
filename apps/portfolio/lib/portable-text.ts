@@ -2,6 +2,12 @@ import type { PortableTextBlock } from '@portabletext/types'
 
 export type PortableTextValue = PortableTextBlock[]
 
+export interface CodeBlock {
+  _type: 'code'
+  code: string
+  language?: string
+}
+
 export function isPortableTextValue(
   value: unknown
 ): value is PortableTextValue {

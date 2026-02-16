@@ -68,9 +68,13 @@ export async function generatePostEmbedding(params: {
 
   // Combine title, excerpt, and content for embedding
   // Weight title more heavily by including it twice
+  // Truncate to safe character limit to avoid exceeding token limits
+  // text-embedding-3-small has 8191 token limit (~30000 chars ≈ ~7500 tokens)
+  const MAX_EMBED_CHARS = 30000
   const combinedText = `${title} ${title} ${excerptText} ${contentText}`
     .replace(/\s+/g, ' ')
     .trim()
+    .slice(0, MAX_EMBED_CHARS)
 
   return generateEmbedding(combinedText)
 }

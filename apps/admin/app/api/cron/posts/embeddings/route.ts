@@ -82,9 +82,13 @@ async function handleCronRequest(request: Request) {
     for (const post of posts) {
       try {
         // Extract content from current version
+        // Handle both array and object responses from Supabase foreign key joins
         const content =
           post.current_version && typeof post.current_version === 'object'
-            ? (post.current_version as { content: Json }).content
+            ? Array.isArray(post.current_version)
+              ? (post.current_version[0] as { content: Json } | undefined)
+                  ?.content
+              : (post.current_version as { content: Json }).content
             : null
 
         if (!content) {

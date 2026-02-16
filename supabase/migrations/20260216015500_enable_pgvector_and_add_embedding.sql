@@ -10,13 +10,13 @@ ALTER TABLE posts
   ADD COLUMN IF NOT EXISTS embedding vector(1536);
 
 -- 3. Create index for vector similarity search
--- Using ivfflat index for efficient similarity search
--- Lists parameter set to rows/1000 (will use 10 initially, can be adjusted later)
+-- Using HNSW index for efficient similarity search
+-- HNSW works well on empty tables and handles incremental inserts without requiring retraining
+-- Unlike IVFFlat which needs k-means clustering on existing data at creation time
 CREATE INDEX IF NOT EXISTS posts_embedding_idx 
   ON posts 
-  USING ivfflat (embedding vector_cosine_ops)
-  WITH (lists = 10);
+  USING hnsw (embedding vector_cosine_ops);
 
--- Note: The index will need to be reindexed as more posts are added
--- Recommended lists value: rows/1000, so adjust as the dataset grows
--- Can be updated later with: REINDEX INDEX posts_embedding_idx;
+-- Note: HNSW provides better recall for incremental inserts compared to IVFFlat
+-- For blog-scale datasets with infrequent writes, HNSW is recommended
+-- HNSW may require periodic reindexing during heavy update/delete churn
