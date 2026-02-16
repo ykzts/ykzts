@@ -29,6 +29,8 @@ import {
   Bold,
   ChevronDown,
   Code,
+  Eye,
+  EyeOff,
   FileCode,
   Image,
   Italic,
@@ -44,7 +46,15 @@ import { uploadImage } from '@/lib/upload-image'
 import { INSERT_IMAGE_COMMAND } from './image-plugin'
 import { validateUrl } from './link-plugin'
 
-export function ToolbarPlugin() {
+type ToolbarPluginProps = {
+  onPreviewToggle?: (show: boolean) => void
+  showPreview?: boolean
+}
+
+export function ToolbarPlugin({
+  onPreviewToggle,
+  showPreview = false
+}: ToolbarPluginProps = {}) {
   const [editor] = useLexicalComposerContext()
   const [isBold, setIsBold] = useState(false)
   const [isItalic, setIsItalic] = useState(false)
@@ -263,6 +273,12 @@ export function ToolbarPlugin() {
     })
   }
 
+  const togglePreview = () => {
+    if (onPreviewToggle) {
+      onPreviewToggle(!showPreview)
+    }
+  }
+
   const formatHeading = (
     headingLevel: 'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   ) => {
@@ -415,6 +431,21 @@ export function ToolbarPlugin() {
         type="button"
       >
         <Image className="size-4" />
+      </button>
+      <div className="mx-1 w-px bg-border" />
+      <button
+        aria-label={showPreview ? 'プレビューを隠す' : 'プレビューを表示'}
+        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+          showPreview ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+        }`}
+        onClick={togglePreview}
+        type="button"
+      >
+        {showPreview ? (
+          <EyeOff className="size-4" />
+        ) : (
+          <Eye className="size-4" />
+        )}
       </button>
       <input
         accept="image/jpeg,image/png,image/gif,image/webp"

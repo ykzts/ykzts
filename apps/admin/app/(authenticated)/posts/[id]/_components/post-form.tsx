@@ -13,7 +13,6 @@ import { Textarea } from '@ykzts/ui/components/textarea'
 import Link from 'next/link'
 import { useActionState, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
-import { PortableTextPreview } from '@/components/portable-text-preview'
 import type { PostWithDetails } from '@/lib/posts'
 import { generateSlug } from '@/lib/utils'
 import type { ActionState } from '../actions'
@@ -36,12 +35,6 @@ export function PostForm({ post }: PostFormProps) {
   const [showPublishedAt, setShowPublishedAt] = useState(
     post.status === 'scheduled' || post.status === 'published'
   )
-  const [contentPreview, setContentPreview] = useState<string | undefined>(
-    post.current_version?.content
-      ? JSON.stringify(post.current_version.content)
-      : undefined
-  )
-  const [showPreview, setShowPreview] = useState(false)
 
   const handleDelete = async () => {
     if (!confirm('本当にこの投稿を削除しますか？この操作は取り消せません。')) {
@@ -171,34 +164,13 @@ export function PostForm({ post }: PostFormProps) {
 
         {/* Content */}
         <Field>
-          <div className="flex items-center justify-between">
-            <Field.Label htmlFor="content">コンテンツ</Field.Label>
-            <Button
-              onClick={() => setShowPreview(!showPreview)}
-              size="sm"
-              type="button"
-              variant="outline"
-            >
-              {showPreview ? 'プレビューを隠す' : 'プレビューを表示'}
-            </Button>
-          </div>
-          <div className={showPreview ? 'grid grid-cols-2 gap-4' : ''}>
-            <div>
-              <RichTextEditor
-                id="content"
-                initialValue={initialContent}
-                name="content"
-                onChange={(value) => setContentPreview(value)}
-                placeholder="投稿の本文を入力..."
-              />
-            </div>
-            {showPreview && (
-              <div className="rounded border border-border bg-card p-4">
-                <h3 className="mb-3 font-medium text-sm">プレビュー</h3>
-                <PortableTextPreview value={contentPreview} />
-              </div>
-            )}
-          </div>
+          <Field.Label htmlFor="content">コンテンツ</Field.Label>
+          <RichTextEditor
+            id="content"
+            initialValue={initialContent}
+            name="content"
+            placeholder="投稿の本文を入力..."
+          />
         </Field>
 
         {/* Tags */}

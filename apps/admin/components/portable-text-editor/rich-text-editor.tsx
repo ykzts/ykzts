@@ -13,6 +13,7 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { HeadingNode, QuoteNode } from '@lexical/rich-text'
 import type { EditorState, LexicalEditor } from 'lexical'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { PortableTextPreview } from '../portable-text-preview'
 import { ImageNode } from './nodes/image-node'
 import { CodeHighlightPlugin } from './plugins/code-highlight-plugin'
 import { EditorStatePlugin } from './plugins/editor-state-plugin'
@@ -103,6 +104,10 @@ export function RichTextEditor({
   placeholder
 }: RichTextEditorProps) {
   const [isClient, setIsClient] = useState(false)
+  const [showPreview, setShowPreview] = useState(false)
+  const [contentPreview, setContentPreview] = useState<string | undefined>(
+    initialValue
+  )
   const hiddenInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -142,6 +147,8 @@ export function RichTextEditor({
           hiddenInputRef.current.value = jsonString
         }
 
+        setContentPreview(jsonString)
+
         if (onChange) {
           onChange(jsonString)
         }
@@ -161,30 +168,43 @@ export function RichTextEditor({
   return (
     <div>
       <LexicalComposer initialConfig={initialConfig}>
-        <div className="relative rounded border border-border bg-card">
-          <ToolbarPlugin />
-          <div className="relative">
-            <RichTextPlugin
-              contentEditable={
-                <ContentEditable
-                  className="min-h-[150px] overflow-auto px-4 py-3 text-foreground outline-none"
-                  id={id}
-                />
-              }
-              ErrorBoundary={LexicalErrorBoundary}
-              placeholder={
-                <div className="pointer-events-none absolute top-3 left-4 text-muted-foreground">
-                  {placeholder || 'テキストを入力してください...'}
-                </div>
-              }
+        <div
+          className={`grid gap-4 ${showPreview ? 'md:grid-cols-2' : 'grid-cols-1'}`}
+        >
+          <div className="relative rounded border border-border bg-card">
+            <ToolbarPlugin
+              onPreviewToggle={setShowPreview}
+              showPreview={showPreview}
             />
+            <div className="relative">
+              <RichTextPlugin
+                contentEditable={
+                  <ContentEditable
+                    className="min-h-[150px] overflow-auto px-4 py-3 text-foreground outline-none"
+                    id={id}
+                  />
+                }
+                ErrorBoundary={LexicalErrorBoundary}
+                placeholder={
+                  <div className="pointer-events-none absolute top-3 left-4 text-muted-foreground">
+                    {placeholder || 'テキストを入力してください...'}
+                  </div>
+                }
+              />
+            </div>
+            <HistoryPlugin />
+            <ListPlugin />
+            <CodeHighlightPlugin />
+            {autoFocus && <AutoFocusPlugin />}
+            <LinkPlugin />
+            <ImagePlugin />
           </div>
-          <HistoryPlugin />
-          <ListPlugin />
-          <CodeHighlightPlugin />
-          {autoFocus && <AutoFocusPlugin />}
-          <LinkPlugin />
-          <ImagePlugin />
+          {showPreview && (
+            <div className="rounded border border-border bg-card p-4">
+              <h3 className="mb-3 font-medium text-sm">プレビュー</h3>
+              <PortableTextPreview value={contentPreview} />
+            </div>
+          )}
         </div>
         <EditorStatePlugin onChange={handleEditorChange} />
       </LexicalComposer>
