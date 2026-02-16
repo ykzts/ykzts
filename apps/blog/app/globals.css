@@ -47,4 +47,27 @@
   ::selection {
     @apply bg-primary/20 text-foreground;
   }
+
+  /* Shiki code block styling */
+  pre.shiki {
+    @apply rounded-lg p-4 overflow-x-auto;
+  }
+
+  pre.shiki code {
+    @apply font-mono text-sm;
+  }
+
+  /* Hide dark theme in light mode */
+  @media (prefers-color-scheme: light) {
+    pre.shiki span[data-theme='github-dark'] {
+      display: none;
+    }
+  }
+
+  /* Hide light theme in dark mode */
+  @media (prefers-color-scheme: dark) {
+    pre.shiki span[data-theme='github-light'] {
+      display: none;
+    }
+  }
 }
