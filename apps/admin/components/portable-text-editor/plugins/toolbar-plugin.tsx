@@ -286,30 +286,34 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
 
   return (
     <div className="border-border border-b bg-muted/5">
-      <div className="flex gap-0 border-border border-b">
+      <div className="flex gap-0 border-border border-b" role="tablist">
         <button
-          aria-label="編集"
+          aria-selected={!showPreview}
           className={`px-4 py-2 text-sm transition-colors ${
             !showPreview
               ? 'border-primary border-b-2 font-medium text-foreground'
               : 'text-muted-foreground hover:text-foreground'
           }`}
           onClick={() => onPreviewToggle?.(false)}
+          role="tab"
+          tabIndex={!showPreview ? 0 : -1}
           type="button"
         >
-          Write
+          編集
         </button>
         <button
-          aria-label="プレビュー"
+          aria-selected={showPreview}
           className={`px-4 py-2 text-sm transition-colors ${
             showPreview
               ? 'border-primary border-b-2 font-medium text-foreground'
               : 'text-muted-foreground hover:text-foreground'
           }`}
           onClick={() => onPreviewToggle?.(true)}
+          role="tab"
+          tabIndex={showPreview ? 0 : -1}
           type="button"
         >
-          Preview
+          プレビュー
         </button>
       </div>
       {!showPreview && (

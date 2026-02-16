@@ -112,10 +112,11 @@ export function RichTextEditor({
     setIsClient(true)
   }, [])
 
-  // Sync contentPreview with initialValue when component mounts or initialValue changes
+  // Initialize contentPreview with initialValue only on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: initialValue should only be used on mount to avoid overwriting user edits
   useEffect(() => {
     setContentPreview(initialValue)
-  }, [initialValue])
+  }, [])
 
   const initialConfig = {
     editorState: initialValue
@@ -176,24 +177,22 @@ export function RichTextEditor({
             onPreviewToggle={setShowPreview}
             showPreview={showPreview}
           />
-          {!showPreview && (
-            <div className="relative">
-              <RichTextPlugin
-                contentEditable={
-                  <ContentEditable
-                    className="min-h-[150px] overflow-auto px-4 py-3 text-foreground outline-none"
-                    id={id}
-                  />
-                }
-                ErrorBoundary={LexicalErrorBoundary}
-                placeholder={
-                  <div className="pointer-events-none absolute top-3 left-4 text-muted-foreground">
-                    {placeholder || 'テキストを入力してください...'}
-                  </div>
-                }
-              />
-            </div>
-          )}
+          <div className={showPreview ? 'hidden' : 'relative'}>
+            <RichTextPlugin
+              contentEditable={
+                <ContentEditable
+                  className="min-h-[150px] overflow-auto px-4 py-3 text-foreground outline-none"
+                  id={id}
+                />
+              }
+              ErrorBoundary={LexicalErrorBoundary}
+              placeholder={
+                <div className="pointer-events-none absolute top-3 left-4 text-muted-foreground">
+                  {placeholder || 'テキストを入力してください...'}
+                </div>
+              }
+            />
+          </div>
           {showPreview && (
             <div className="min-h-[150px] overflow-auto px-4 py-3">
               <PortableTextPreview value={contentPreview} />
