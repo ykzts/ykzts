@@ -29,10 +29,12 @@ export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
     if (open) {
       setUrl('')
       setError('')
-      // Focus the input when dialog opens
-      setTimeout(() => {
-        inputRef.current?.focus()
-      }, 0)
+    }
+  }, [open])
+
+  useEffect(() => {
+    if (open && inputRef.current) {
+      inputRef.current.focus()
     }
   }, [open])
 
@@ -57,12 +59,6 @@ export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
     onOpenChange(false)
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      handleCancel()
-    }
-  }
-
   return (
     <Dialog onOpenChange={onOpenChange} open={open}>
       <DialogContent showCloseButton={false}>
@@ -82,7 +78,6 @@ export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
                 setUrl(e.target.value)
                 setError('')
               }}
-              onKeyDown={handleKeyDown}
               placeholder="https://example.com"
               ref={inputRef}
               type="url"
