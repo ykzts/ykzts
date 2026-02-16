@@ -38,6 +38,10 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY })
 const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY)
 
+// Default excerpt length when excerpt is not provided
+// Used for standalone script; the API uses extractFirstParagraph from portable-text-utils
+const DEFAULT_EXCERPT_LENGTH = 500
+
 /**
  * Extract text content from Portable Text JSON
  */
@@ -98,8 +102,8 @@ async function generatePostEmbedding(params: {
   // Extract text from content
   const contentText = extractTextFromPortableText(content)
 
-  // Use excerpt if available
-  const excerptText = excerpt || contentText.slice(0, 500)
+  // Use excerpt if available, otherwise use first DEFAULT_EXCERPT_LENGTH characters
+  const excerptText = excerpt || contentText.slice(0, DEFAULT_EXCERPT_LENGTH)
 
   // Combine title, excerpt, and content
   const combinedText = `${title} ${title} ${excerptText} ${contentText}`
