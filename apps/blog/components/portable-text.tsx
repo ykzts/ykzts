@@ -15,32 +15,8 @@ import type {
 } from '@/lib/portable-text'
 import { highlightCode } from '@/lib/shiki'
 
-// Helper function to extract text content from React children
-function extractTextFromChildren(children: React.ReactNode): string {
-  if (typeof children === 'string') {
-    return children
-  }
-  if (typeof children === 'number') {
-    return String(children)
-  }
-  if (Array.isArray(children)) {
-    return children.map(extractTextFromChildren).join('')
-  }
-  if (children && typeof children === 'object' && 'props' in children) {
-    const childProps = children.props as { children?: React.ReactNode }
-    return extractTextFromChildren(childProps.children)
-  }
-  return ''
-}
-
 // Component to handle code block syntax highlighting
-async function CodeBlockHighlighter({
-  children
-}: {
-  children: React.ReactNode
-}) {
-  const text = extractTextFromChildren(children)
-
+async function CodeBlockHighlighter({ text }: { text: string }) {
   try {
     const html = await highlightCode(text)
 
@@ -60,17 +36,29 @@ async function CodeBlockHighlighter({
 }
 
 // Named component for code blocks
-const CodeBlockComponent: PortableTextBlockComponent = (props) => (
-  <Suspense
-    fallback={
-      <pre className="overflow-x-auto rounded-lg bg-muted p-4">
-        <code>{extractTextFromChildren(props.children)}</code>
-      </pre>
-    }
-  >
-    <CodeBlockHighlighter>{props.children}</CodeBlockHighlighter>
-  </Suspense>
-)
+const CodeBlockComponent: PortableTextBlockComponent = (props) => {
+  // Extract text from the block's children spans
+  const text = props.value.children
+    .map((child) => {
+      if ('text' in child) {
+        return child.text
+      }
+      return ''
+    })
+    .join('')
+
+  return (
+    <Suspense
+      fallback={
+        <pre className="overflow-x-auto rounded-lg bg-muted p-4">
+          <code>{text}</code>
+        </pre>
+      }
+    >
+      <CodeBlockHighlighter text={text} />
+    </Suspense>
+  )
+}
 
 const portableTextComponents = {
   block: {

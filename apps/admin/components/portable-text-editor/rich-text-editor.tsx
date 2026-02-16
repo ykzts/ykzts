@@ -26,7 +26,7 @@ import {
 } from './portable-text-serializer'
 
 const editorTheme = {
-  code: 'bg-muted/50 px-1.5 py-0.5 rounded font-mono text-sm',
+  code: 'block bg-muted/20 border border-border rounded p-4 font-mono text-sm my-2 overflow-x-auto whitespace-pre',
   codeHighlight: {
     atrule: 'text-purple-600',
     attr: 'text-blue-600',

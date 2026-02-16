@@ -264,14 +264,20 @@ export function lexicalToPortableText(
           style: 'blockquote'
         })
       } else if ($isCodeNode(child)) {
-        // Handle code block nodes
-        const { spans, markDefs } = processTextContent(child.getChildren())
+        // Handle code block nodes - preserve raw text content including newlines
+        const textContent = child.getTextContent()
 
         blocks.push({
           _key: crypto.randomUUID(),
           _type: 'block',
-          children: spans,
-          markDefs,
+          children: [
+            {
+              _key: crypto.randomUUID(),
+              _type: 'span',
+              text: textContent
+            }
+          ],
+          markDefs: [],
           style: 'code'
         })
       } else if ($isParagraphNode(child)) {
