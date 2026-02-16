@@ -29,12 +29,23 @@ function extractTextFromChildren(children: React.ReactNode): string {
 function CodeBlockHighlighter({ children }: { children: React.ReactNode }) {
   const text = extractTextFromChildren(children)
   const htmlPromise = highlightCode(text)
-  const html = use(htmlPromise)
 
-  return (
-    // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki generates safe HTML for syntax highlighting
-    <div dangerouslySetInnerHTML={{ __html: html }} />
-  )
+  try {
+    const html = use(htmlPromise)
+
+    return (
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki generates safe HTML for syntax highlighting
+      <div dangerouslySetInnerHTML={{ __html: html }} />
+    )
+  } catch (error) {
+    // If highlighting fails, fall back to plain code block
+    console.error('Failed to highlight code block:', error)
+    return (
+      <pre className="overflow-x-auto rounded-lg bg-muted p-4">
+        <code>{text}</code>
+      </pre>
+    )
+  }
 }
 
 // Named component for code blocks
