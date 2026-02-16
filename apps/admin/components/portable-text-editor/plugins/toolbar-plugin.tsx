@@ -306,19 +306,21 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
       {!showPreview && (
         <div className="flex gap-1 p-2">
           <Select
-            onValueChange={(value) =>
-              formatBlockType(
-                value as
-                  | 'paragraph'
-                  | 'h2'
-                  | 'h3'
-                  | 'h4'
-                  | 'h5'
-                  | 'h6'
-                  | 'quote'
-                  | 'code'
-              )
-            }
+            onValueChange={(value) => {
+              if (value) {
+                formatBlockType(
+                  value as
+                    | 'paragraph'
+                    | 'h2'
+                    | 'h3'
+                    | 'h4'
+                    | 'h5'
+                    | 'h6'
+                    | 'quote'
+                    | 'code'
+                )
+              }
+            }}
             value={blockType}
           >
             <SelectTrigger aria-label="ブロックタイプ" size="sm">
