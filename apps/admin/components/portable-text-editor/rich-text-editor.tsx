@@ -13,6 +13,7 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { HeadingNode, QuoteNode } from '@lexical/rich-text'
 import type { EditorState, LexicalEditor } from 'lexical'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { PortableTextPreview } from '../portable-text-preview'
 import { ImageNode } from './nodes/image-node'
 import { CodeHighlightPlugin } from './plugins/code-highlight-plugin'
 import { EditorStatePlugin } from './plugins/editor-state-plugin'
@@ -103,10 +104,18 @@ export function RichTextEditor({
   placeholder
 }: RichTextEditorProps) {
   const [isClient, setIsClient] = useState(false)
+  const [showPreview, setShowPreview] = useState(false)
+  const [contentPreview, setContentPreview] = useState<string | undefined>()
   const hiddenInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     setIsClient(true)
+  }, [])
+
+  // Initialize contentPreview with initialValue only on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: initialValue should only be used on mount to avoid overwriting user edits
+  useEffect(() => {
+    setContentPreview(initialValue)
   }, [])
 
   const initialConfig = {
@@ -142,6 +151,8 @@ export function RichTextEditor({
           hiddenInputRef.current.value = jsonString
         }
 
+        setContentPreview(jsonString)
+
         if (onChange) {
           onChange(jsonString)
         }
@@ -162,8 +173,11 @@ export function RichTextEditor({
     <div>
       <LexicalComposer initialConfig={initialConfig}>
         <div className="relative rounded border border-border bg-card">
-          <ToolbarPlugin />
-          <div className="relative">
+          <ToolbarPlugin
+            onPreviewToggle={setShowPreview}
+            showPreview={showPreview}
+          />
+          <div className={showPreview ? 'hidden' : 'relative'}>
             <RichTextPlugin
               contentEditable={
                 <ContentEditable
@@ -179,6 +193,11 @@ export function RichTextEditor({
               }
             />
           </div>
+          {showPreview && (
+            <div className="min-h-[150px] overflow-auto px-4 py-3">
+              <PortableTextPreview value={contentPreview} />
+            </div>
+          )}
           <HistoryPlugin />
           <ListPlugin />
           <CodeHighlightPlugin />
