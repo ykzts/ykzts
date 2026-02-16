@@ -6,10 +6,29 @@ let highlighterPromise: Promise<Highlighter> | null = null
 const languages: BundledLanguage[] = [
   'typescript',
   'javascript',
+  'tsx',
+  'jsx',
+  'python',
+  'java',
+  'go',
+  'rust',
+  'cpp',
+  'c',
+  'csharp',
+  'php',
+  'ruby',
+  'swift',
+  'kotlin',
   'bash',
+  'shell',
+  'sql',
   'json',
+  'yaml',
+  'xml',
+  'html',
   'css',
-  'html'
+  'scss',
+  'markdown'
 ]
 
 const themes: BundledTheme[] = ['github-light', 'github-dark']
