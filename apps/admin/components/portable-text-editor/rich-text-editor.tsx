@@ -105,14 +105,17 @@ export function RichTextEditor({
 }: RichTextEditorProps) {
   const [isClient, setIsClient] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
-  const [contentPreview, setContentPreview] = useState<string | undefined>(
-    initialValue
-  )
+  const [contentPreview, setContentPreview] = useState<string | undefined>()
   const hiddenInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     setIsClient(true)
   }, [])
+
+  // Sync contentPreview with initialValue when component mounts or initialValue changes
+  useEffect(() => {
+    setContentPreview(initialValue)
+  }, [initialValue])
 
   const initialConfig = {
     editorState: initialValue

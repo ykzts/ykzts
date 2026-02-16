@@ -51,10 +51,8 @@ type ToolbarPluginProps = {
   showPreview?: boolean
 }
 
-export function ToolbarPlugin({
-  onPreviewToggle,
-  showPreview = false
-}: ToolbarPluginProps = {}) {
+export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
+  const { onPreviewToggle, showPreview = false } = props
   const [editor] = useLexicalComposerContext()
   const [isBold, setIsBold] = useState(false)
   const [isItalic, setIsItalic] = useState(false)
