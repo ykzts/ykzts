@@ -54,7 +54,10 @@ const CodeBlockComponent: PortableTextBlockComponent = (props) => {
     .join('')
 
   // Extract language if available
-  const language = 'language' in props.value ? props.value.language : undefined
+  const language =
+    'language' in props.value && typeof props.value.language === 'string'
+      ? props.value.language
+      : undefined
 
   return (
     <Suspense
