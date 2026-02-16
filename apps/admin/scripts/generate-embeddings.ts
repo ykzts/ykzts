@@ -15,7 +15,7 @@
  */
 
 import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@ykzts/supabase'
+import type { Database, Json } from '@ykzts/supabase'
 import OpenAI from 'openai'
 
 // Check environment variables

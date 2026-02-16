@@ -1,3 +1,4 @@
+import type { Json } from '@ykzts/supabase'
 import { NextResponse } from 'next/server'
 import { getCurrentUser } from '@/lib/auth'
 import { generatePostEmbedding } from '@/lib/embeddings'
