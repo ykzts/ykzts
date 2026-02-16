@@ -11,7 +11,8 @@ import {
 } from '@ykzts/ui/components/dialog'
 import { Input } from '@ykzts/ui/components/input'
 import { Label } from '@ykzts/ui/components/label'
-import { useEffect, useRef, useState } from 'react'
+import type { FormEvent } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { validateUrl } from './link-plugin'
 
 interface LinkDialogProps {
@@ -24,21 +25,20 @@ export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
   const [url, setUrl] = useState('')
   const [error, setError] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
+  const inputId = useId()
+  const errorId = useId()
 
   useEffect(() => {
     if (open) {
       setUrl('')
       setError('')
+      requestAnimationFrame(() => {
+        inputRef.current?.focus()
+      })
     }
   }, [open])
 
-  useEffect(() => {
-    if (open && inputRef.current) {
-      inputRef.current.focus()
-    }
-  }, [open])
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
 
     if (!url.trim()) {
@@ -62,18 +62,18 @@ export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
   return (
     <Dialog onOpenChange={onOpenChange} open={open}>
       <DialogContent showCloseButton={false}>
-        <form onSubmit={handleSubmit}>
+        <form noValidate onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>リンクを挿入</DialogTitle>
             <DialogDescription>リンクのURLを入力してください</DialogDescription>
           </DialogHeader>
 
           <div className="py-4">
-            <Label htmlFor="url-input">URL</Label>
+            <Label htmlFor={inputId}>URL</Label>
             <Input
-              aria-describedby={error ? 'url-error' : undefined}
+              aria-describedby={error ? errorId : undefined}
               aria-invalid={!!error}
-              id="url-input"
+              id={inputId}
               onChange={(e) => {
                 setUrl(e.target.value)
                 setError('')
@@ -86,7 +86,7 @@ export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
             {error && (
               <p
                 className="mt-1 text-destructive text-sm"
-                id="url-error"
+                id={errorId}
                 role="alert"
               >
                 {error}
