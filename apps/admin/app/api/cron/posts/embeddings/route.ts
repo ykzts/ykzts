@@ -13,7 +13,7 @@ function extractVersionContent(currentVersion: unknown): Json | null {
   }
 
   const version = currentVersion as { content?: Json }
-  return version.content ?? null
+  return version?.content ?? null
 }
 
 /**

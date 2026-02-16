@@ -33,10 +33,13 @@ BEGIN
     p.excerpt,
     p.updated_at,
     p.embedding_updated_at,
-    jsonb_build_object(
-      'content', pv.content,
-      'updated_at', pv.updated_at
-    ) AS current_version
+    CASE
+      WHEN pv.id IS NULL THEN NULL
+      ELSE jsonb_build_object(
+        'content', pv.content,
+        'updated_at', pv.updated_at
+      )
+    END AS current_version
   FROM posts p
   LEFT JOIN post_versions pv ON p.current_version_id = pv.id
   WHERE p.embedding IS NULL 
