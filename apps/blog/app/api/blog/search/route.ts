@@ -6,8 +6,8 @@ import { supabase } from '@/lib/supabase/client'
 
 // Validation schema for search request
 const searchRequestSchema = z.object({
-  limit: z.number().min(1).max(20).optional().default(5),
   query: z.string().min(1, 'Search query must not be empty'),
+  limit: z.number().min(1).max(20).optional().default(5),
   threshold: z.number().min(0).max(1).optional().default(0.78)
 })
 

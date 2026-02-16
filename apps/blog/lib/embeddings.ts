@@ -1,7 +1,7 @@
 import { embed } from 'ai'
 
 // Maximum character limit for embedding input to avoid exceeding token limits
-// text-embedding-3-small has 8191 token limit (~30000 chars ≈ ~7500 tokens)
+// text-embedding-3-small has 8191 token limit
 const MAX_EMBED_CHARS = 8000
 
 /**
