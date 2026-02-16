@@ -1280,6 +1280,59 @@ describe('Portable Text Serializer', () => {
       expect(portableText2[0].children[0].text).toBe('Bold quote')
     })
 
+    it('should handle mixed content with quotes and other blocks', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
+      })
+
+      const json = JSON.stringify([
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Regular paragraph' }],
+          markDefs: [],
+          style: 'normal'
+        },
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Quote text' }],
+          markDefs: [],
+          style: 'blockquote'
+        },
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'Another paragraph' }],
+          markDefs: [],
+          style: 'normal'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        const children = root.getChildren()
+
+        expect(children).toHaveLength(3)
+
+        expect($isParagraphNode(children[0])).toBe(true)
+        expect($isQuoteNode(children[1])).toBe(true)
+        expect($isParagraphNode(children[2])).toBe(true)
+
+        if ($isQuoteNode(children[1])) {
+          expect(children[1].getTextContent()).toBe('Quote text')
+        }
+      })
+    })
+  })
+
+  describe('Code Block Support', () => {
     it('should serialize code block to Portable Text', () => {
       const editor = createEditor({
         nodes: [
@@ -1389,57 +1442,6 @@ describe('Portable Text Serializer', () => {
       expect(portableText2[0].children[0].text).toBe(
         'const greeting = "Hello, World!";'
       )
-    })
-
-    it('should handle mixed content with quotes and other blocks', () => {
-      const editor = createEditor({
-        nodes: [
-          LinkNode,
-          ImageNode,
-          ListNode,
-          ListItemNode,
-          HeadingNode,
-          QuoteNode
-        ]
-      })
-
-      const json = JSON.stringify([
-        {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Regular paragraph' }],
-          markDefs: [],
-          style: 'normal'
-        },
-        {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Quote text' }],
-          markDefs: [],
-          style: 'blockquote'
-        },
-        {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Another paragraph' }],
-          markDefs: [],
-          style: 'normal'
-        }
-      ])
-
-      initializeEditorWithPortableText(editor, json)
-
-      editor.read(() => {
-        const root = $getRoot()
-        const children = root.getChildren()
-
-        expect(children).toHaveLength(3)
-
-        expect($isParagraphNode(children[0])).toBe(true)
-        expect($isQuoteNode(children[1])).toBe(true)
-        expect($isParagraphNode(children[2])).toBe(true)
-
-        if ($isQuoteNode(children[1])) {
-          expect(children[1].getTextContent()).toBe('Quote text')
-        }
-      })
     })
   })
 })

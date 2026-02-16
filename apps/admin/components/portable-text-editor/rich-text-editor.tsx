@@ -14,6 +14,7 @@ import { HeadingNode, QuoteNode } from '@lexical/rich-text'
 import type { EditorState, LexicalEditor } from 'lexical'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ImageNode } from './nodes/image-node'
+import { CodeHighlightPlugin } from './plugins/code-highlight-plugin'
 import { EditorStatePlugin } from './plugins/editor-state-plugin'
 import { ImagePlugin } from './plugins/image-plugin'
 import { LinkPlugin } from './plugins/link-plugin'
@@ -180,6 +181,7 @@ export function RichTextEditor({
           </div>
           <HistoryPlugin />
           <ListPlugin />
+          <CodeHighlightPlugin />
           {autoFocus && <AutoFocusPlugin />}
           <LinkPlugin />
           <ImagePlugin />
