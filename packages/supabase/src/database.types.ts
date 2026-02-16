@@ -45,6 +45,8 @@ export type Database = {
           post_id: string
           tags: string[] | null
           title: string | null
+          updated_at: string
+          version_date: string
           version_number: number
         }
         Insert: {
@@ -57,6 +59,8 @@ export type Database = {
           post_id: string
           tags?: string[] | null
           title?: string | null
+          updated_at?: string
+          version_date?: string
           version_number: number
         }
         Update: {
@@ -69,6 +73,8 @@ export type Database = {
           post_id?: string
           tags?: string[] | null
           title?: string | null
+          updated_at?: string
+          version_date?: string
           version_number?: number
         }
         Relationships: [
@@ -93,6 +99,7 @@ export type Database = {
           created_at: string
           current_version_id: string | null
           embedding: string | null
+          embedding_needs_update: boolean | null
           excerpt: string | null
           id: string
           profile_id: string | null
@@ -108,6 +115,7 @@ export type Database = {
           created_at?: string
           current_version_id?: string | null
           embedding?: string | null
+          embedding_needs_update?: boolean | null
           excerpt?: string | null
           id?: string
           profile_id?: string | null
@@ -123,6 +131,7 @@ export type Database = {
           created_at?: string
           current_version_id?: string | null
           embedding?: string | null
+          embedding_needs_update?: boolean | null
           excerpt?: string | null
           id?: string
           profile_id?: string | null
@@ -154,6 +163,7 @@ export type Database = {
       profiles: {
         Row: {
           about: Json | null
+          avatar_url: string | null
           created_at: string
           email: string | null
           id: string
@@ -165,6 +175,7 @@ export type Database = {
         }
         Insert: {
           about?: Json | null
+          avatar_url?: string | null
           created_at?: string
           email?: string | null
           id?: string
@@ -176,6 +187,7 @@ export type Database = {
         }
         Update: {
           about?: Json | null
+          avatar_url?: string | null
           created_at?: string
           email?: string | null
           id?: string
@@ -315,6 +327,7 @@ export type Database = {
           p_status?: string
           p_tags?: string[]
           p_title: string
+          p_version_date?: string
         }
         Returns: string
       }
@@ -330,6 +343,7 @@ export type Database = {
           p_status?: string
           p_tags?: string[]
           p_title?: string
+          p_version_date?: string
         }
         Returns: string
       }

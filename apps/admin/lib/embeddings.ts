@@ -1,21 +1,7 @@
+import { openai } from '@ai-sdk/openai'
 import type { Json } from '@ykzts/supabase'
-import OpenAI from 'openai'
+import { embed } from 'ai'
 import { extractFirstParagraph } from './portable-text-utils'
-
-/**
- * Initialize OpenAI client
- */
-function getOpenAIClient() {
-  const apiKey = process.env.OPENAI_API_KEY
-
-  if (!apiKey) {
-    throw new Error('OPENAI_API_KEY environment variable is not set')
-  }
-
-  return new OpenAI({
-    apiKey
-  })
-}
 
 /**
  * Extract text content from Portable Text JSON for embedding generation
@@ -52,18 +38,15 @@ function extractTextFromPortableText(content: Json): string {
 }
 
 /**
- * Generate embedding vector for text using OpenAI text-embedding-3-small model
+ * Generate embedding vector for text using OpenAI text-embedding-3-small model via Vercel AI SDK
  */
 export async function generateEmbedding(text: string): Promise<number[]> {
-  const openai = getOpenAIClient()
-
-  const response = await openai.embeddings.create({
-    dimensions: 1536,
-    input: text,
-    model: 'text-embedding-3-small'
+  const { embedding } = await embed({
+    model: openai.embedding('text-embedding-3-small', { dimensions: 1536 }),
+    value: text
   })
 
-  return response.data[0].embedding
+  return embedding
 }
 
 /**
