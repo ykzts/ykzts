@@ -1,6 +1,6 @@
 'use client'
 
-import { $createCodeNode, $isCodeNode, type CodeNode } from '@lexical/code'
+import { $createCodeNode, $isCodeNode } from '@lexical/code'
 import { $createLinkNode, $isLinkNode, type LinkNode } from '@lexical/link'
 import {
   $createListItemNode,
