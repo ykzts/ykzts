@@ -29,13 +29,11 @@ import {
   Bold,
   ChevronDown,
   Code,
-  FileCode,
   Image,
   Italic,
   Link2,
   List,
   ListOrdered,
-  Quote,
   Strikethrough,
   Underline
 } from 'lucide-react'
@@ -60,10 +58,8 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
   const [isLink, setIsLink] = useState(false)
   const [isBulletList, setIsBulletList] = useState(false)
   const [isNumberedList, setIsNumberedList] = useState(false)
-  const [isQuote, setIsQuote] = useState(false)
-  const [isCodeBlock, setIsCodeBlock] = useState(false)
   const [blockType, setBlockType] = useState<
-    'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+    'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'quote' | 'code'
   >('paragraph')
   const [isUploading, setIsUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -110,24 +106,14 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
         const headingNode = element as HeadingNode
         const tag = headingNode.getTag()
         setBlockType(tag as 'h2' | 'h3' | 'h4' | 'h5' | 'h6')
-        setIsQuote(false)
-        setIsCodeBlock(false)
       } else if ($isParagraphNode(element)) {
         setBlockType('paragraph')
-        setIsQuote(false)
-        setIsCodeBlock(false)
       } else if ($isQuoteNode(element)) {
-        setBlockType('paragraph')
-        setIsQuote(true)
-        setIsCodeBlock(false)
+        setBlockType('quote')
       } else if ($isCodeNode(element)) {
-        setBlockType('paragraph')
-        setIsQuote(false)
-        setIsCodeBlock(true)
+        setBlockType('code')
       } else {
         setBlockType('paragraph')
-        setIsQuote(false)
-        setIsCodeBlock(false)
       }
     }
   }, [])
@@ -239,44 +225,26 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
     }
   }
 
-  const formatQuote = () => {
-    editor.update(() => {
-      const selection = $getSelection()
-      if ($isRangeSelection(selection)) {
-        if (isQuote) {
-          // Remove quote formatting by converting to paragraph
-          $setBlocksType(selection, () => $createParagraphNode())
-        } else {
-          // Apply quote formatting using $setBlocksType
-          $setBlocksType(selection, () => $createQuoteNode())
-        }
-      }
-    })
-  }
-
-  const formatCodeBlock = () => {
-    editor.update(() => {
-      const selection = $getSelection()
-      if ($isRangeSelection(selection)) {
-        if (isCodeBlock) {
-          // Remove code block formatting by converting to paragraph
-          $setBlocksType(selection, () => $createParagraphNode())
-        } else {
-          // Apply code block formatting using $setBlocksType
-          $setBlocksType(selection, () => $createCodeNode())
-        }
-      }
-    })
-  }
-
   const formatHeading = (
-    headingLevel: 'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+    headingLevel:
+      | 'paragraph'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'quote'
+      | 'code'
   ) => {
     editor.update(() => {
       const selection = $getSelection()
       if ($isRangeSelection(selection)) {
         if (headingLevel === 'paragraph') {
           $setBlocksType(selection, () => $createParagraphNode())
+        } else if (headingLevel === 'quote') {
+          $setBlocksType(selection, () => $createQuoteNode())
+        } else if (headingLevel === 'code') {
+          $setBlocksType(selection, () => $createCodeNode())
         } else {
           $setBlocksType(selection, () => $createHeadingNode(headingLevel))
         }
@@ -331,6 +299,8 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
                     | 'h4'
                     | 'h5'
                     | 'h6'
+                    | 'quote'
+                    | 'code'
                 )
               }
               value={blockType}
@@ -341,6 +311,8 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
               <option value="h4">見出し4</option>
               <option value="h5">見出し5</option>
               <option value="h6">見出し6</option>
+              <option value="quote">引用</option>
+              <option value="code">コードブロック</option>
             </select>
             <ChevronDown
               aria-hidden="true"
@@ -434,26 +406,6 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
             type="button"
           >
             <ListOrdered className="size-4" />
-          </button>
-          <button
-            aria-label="引用"
-            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-              isQuote ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-            }`}
-            onClick={formatQuote}
-            type="button"
-          >
-            <Quote className="size-4" />
-          </button>
-          <button
-            aria-label="コードブロック"
-            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-              isCodeBlock ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-            }`}
-            onClick={formatCodeBlock}
-            type="button"
-          >
-            <FileCode className="size-4" />
           </button>
           <button
             aria-label="画像"
