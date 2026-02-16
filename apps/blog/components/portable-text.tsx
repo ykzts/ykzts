@@ -42,19 +42,22 @@ function CodeBlockHighlighter({ children }: { children: React.ReactNode }) {
   )
 }
 
+// Named component for code blocks
+const CodeBlockComponent: PortableTextBlockComponent = (props) => (
+  <Suspense
+    fallback={
+      <pre className="overflow-x-auto rounded-lg bg-muted p-4">
+        <code>{extractTextFromChildren(props.children)}</code>
+      </pre>
+    }
+  >
+    <CodeBlockHighlighter>{props.children}</CodeBlockHighlighter>
+  </Suspense>
+)
+
 const portableTextComponents = {
   block: {
-    code: ((props) => (
-      <Suspense
-        fallback={
-          <pre className="overflow-x-auto rounded-lg bg-muted p-4">
-            <code>{extractTextFromChildren(props.children)}</code>
-          </pre>
-        }
-      >
-        <CodeBlockHighlighter>{props.children}</CodeBlockHighlighter>
-      </Suspense>
-    )) satisfies PortableTextBlockComponent
+    code: CodeBlockComponent
   },
   marks: {
     code({ children }: { children: React.ReactNode }) {
