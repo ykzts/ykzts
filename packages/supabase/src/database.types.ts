@@ -99,7 +99,7 @@ export type Database = {
           created_at: string
           current_version_id: string | null
           embedding: string | null
-          embedding_needs_update: boolean | null
+          embedding_updated_at: string | null
           excerpt: string | null
           id: string
           profile_id: string | null
@@ -115,7 +115,7 @@ export type Database = {
           created_at?: string
           current_version_id?: string | null
           embedding?: string | null
-          embedding_needs_update?: boolean | null
+          embedding_updated_at?: string | null
           excerpt?: string | null
           id?: string
           profile_id?: string | null
@@ -131,7 +131,7 @@ export type Database = {
           created_at?: string
           current_version_id?: string | null
           embedding?: string | null
-          embedding_needs_update?: boolean | null
+          embedding_updated_at?: string | null
           excerpt?: string | null
           id?: string
           profile_id?: string | null

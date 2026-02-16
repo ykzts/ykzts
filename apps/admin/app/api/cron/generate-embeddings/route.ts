@@ -38,7 +38,8 @@ async function handleCronRequest(request: Request) {
   try {
     const supabase = await createClient()
 
-    // Query posts that need embedding updates (limited batch)
+    // Query posts where embedding is outdated (timestamp-based comparison)
+    // embedding_updated_at < updated_at means content changed after last embedding
     const { data: posts, error: postsError } = await supabase
       .from('posts')
       .select(
@@ -46,10 +47,14 @@ async function handleCronRequest(request: Request) {
         id,
         title,
         excerpt,
-        current_version:post_versions!posts_current_version_id_fkey(content)
+        updated_at,
+        embedding_updated_at,
+        current_version:post_versions!posts_current_version_id_fkey(content, updated_at)
       `
       )
-      .eq('embedding_needs_update', true)
+      .or(
+        'embedding.is.null,embedding_updated_at.is.null,embedding_updated_at.lt.updated_at'
+      )
       .limit(10) // Process 10 posts per cron run to avoid timeouts
 
     if (postsError) {
@@ -89,12 +94,12 @@ async function handleCronRequest(request: Request) {
           title: post.title ?? ''
         })
 
-        // Update post with embedding and clear the update flag
+        // Update post with embedding and set timestamp
         const { error: updateError } = await supabase
           .from('posts')
           .update({
             embedding: JSON.stringify(embedding),
-            embedding_needs_update: false
+            embedding_updated_at: new Date().toISOString()
           })
           .eq('id', post.id)
 
