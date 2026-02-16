@@ -38,6 +38,7 @@ import {
   Underline
 } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner'
 import { uploadImage } from '@/lib/upload-image'
 import { INSERT_IMAGE_COMMAND } from './image-plugin'
 import { LinkDialog } from './link-dialog'
@@ -183,11 +184,7 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
         const result = await uploadImage({ file })
 
         if (result.error) {
-          // TODO: Replace with toast notification in future enhancement
-          // Using browser alert for MVP, but should be replaced with:
-          // - Toast notification component
-          // - Proper error display in the UI
-          alert(result.error)
+          toast.error(result.error)
         } else if (result.url) {
           editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
             altText: file.name.replace(/\.[^/.]+$/, ''),
@@ -196,8 +193,7 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
         }
       } catch (error) {
         console.error('Image upload error:', error)
-        // TODO: Replace with toast notification in future enhancement
-        alert('画像のアップロードに失敗しました。')
+        toast.error('画像のアップロードに失敗しました。')
       } finally {
         setIsUploading(false)
         // Reset file input

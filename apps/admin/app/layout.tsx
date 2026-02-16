@@ -1,3 +1,4 @@
+import { Toaster } from '@ykzts/ui/components/sonner'
 import type { Metadata } from 'next'
 import './globals.css'
 
@@ -13,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body>
+        {children}
+        <Toaster />
+      </body>
     </html>
   )
 }
