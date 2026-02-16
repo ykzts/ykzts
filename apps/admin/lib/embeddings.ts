@@ -1,4 +1,3 @@
-import { openai } from '@ai-sdk/openai'
 import type { Json } from '@ykzts/supabase'
 import { embed } from 'ai'
 import { extractFirstParagraph } from './portable-text-utils'
@@ -43,7 +42,7 @@ function extractTextFromPortableText(content: Json): string {
  */
 export async function generateEmbedding(text: string): Promise<number[]> {
   const { embedding } = await embed({
-    model: openai.embedding('text-embedding-3-small'),
+    model: 'openai/text-embedding-3-small',
     value: text
   })
 
