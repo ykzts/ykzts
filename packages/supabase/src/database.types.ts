@@ -345,6 +345,22 @@ export type Database = {
           current_version: Json | null
         }>
       }
+      search_posts_by_embedding: {
+        Args: {
+          query_embedding: string
+          match_threshold?: number
+          match_count?: number
+        }
+        Returns: Array<{
+          id: string
+          title: string
+          slug: string
+          excerpt: string | null
+          published_at: string
+          tags: string[] | null
+          similarity: number
+        }>
+      }
       update_post: {
         Args: {
           p_change_summary?: string
