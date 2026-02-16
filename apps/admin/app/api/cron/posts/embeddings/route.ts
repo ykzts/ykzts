@@ -4,17 +4,12 @@ import { generatePostEmbedding } from '@/lib/embeddings'
 import { createClient } from '@/lib/supabase/server'
 
 /**
- * Extract content from current_version, handling both array and object responses
- * Supabase foreign key joins may return arrays even for one-to-one relationships
+ * Extract content from current_version returned by database function
+ * The function returns a JSONB object with content and updated_at
  */
 function extractVersionContent(currentVersion: unknown): Json | null {
   if (!currentVersion || typeof currentVersion !== 'object') {
     return null
-  }
-
-  if (Array.isArray(currentVersion)) {
-    const firstVersion = currentVersion[0] as { content: Json } | undefined
-    return firstVersion?.content ?? null
   }
 
   return (currentVersion as { content: Json }).content
@@ -61,24 +56,13 @@ async function handleCronRequest(request: Request) {
   try {
     const supabase = await createClient()
 
-    // Query posts where embedding is outdated (timestamp-based comparison)
-    // embedding_updated_at < updated_at means content changed after last embedding
-    const { data: posts, error: postsError } = await supabase
-      .from('posts')
-      .select(
-        `
-        id,
-        title,
-        excerpt,
-        updated_at,
-        embedding_updated_at,
-        current_version:post_versions!posts_current_version_id_fkey(content, updated_at)
-      `
-      )
-      .or(
-        'embedding.is.null,embedding_updated_at.is.null,embedding_updated_at.lt.updated_at'
-      )
-      .limit(10) // Process 10 posts per cron run to avoid timeouts
+    // Use RPC function to query posts needing embeddings
+    // This function handles column-to-column timestamp comparison on the database side
+    // (PostgREST query builder cannot compare columns directly)
+    const { data: posts, error: postsError } = await supabase.rpc(
+      'get_posts_needing_embeddings',
+      { batch_size: 10 }
+    )
 
     if (postsError) {
       throw new Error(`Failed to fetch posts: ${postsError.message}`)
