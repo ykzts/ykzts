@@ -5,7 +5,7 @@ import {
   type PortableTextReactComponents
 } from '@portabletext/react'
 import type React from 'react'
-import { type ComponentProps, Suspense, use } from 'react'
+import { type ComponentProps, Suspense } from 'react'
 import Link from '@/components/link'
 import type { PortableTextValue } from '@/lib/portable-text'
 import { highlightCode } from '@/lib/shiki'
@@ -14,6 +14,9 @@ import { highlightCode } from '@/lib/shiki'
 function extractTextFromChildren(children: React.ReactNode): string {
   if (typeof children === 'string') {
     return children
+  }
+  if (typeof children === 'number') {
+    return String(children)
   }
   if (Array.isArray(children)) {
     return children.map(extractTextFromChildren).join('')
@@ -26,12 +29,15 @@ function extractTextFromChildren(children: React.ReactNode): string {
 }
 
 // Component to handle code block syntax highlighting
-function CodeBlockHighlighter({ children }: { children: React.ReactNode }) {
+async function CodeBlockHighlighter({
+  children
+}: {
+  children: React.ReactNode
+}) {
   const text = extractTextFromChildren(children)
-  const htmlPromise = highlightCode(text)
 
   try {
-    const html = use(htmlPromise)
+    const html = await highlightCode(text)
 
     return (
       // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki generates safe HTML for syntax highlighting
