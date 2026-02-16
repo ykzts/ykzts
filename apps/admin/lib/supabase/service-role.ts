@@ -13,9 +13,15 @@ export function createServiceRoleClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-  if (!supabaseUrl || !supabaseServiceRoleKey) {
+  if (!supabaseUrl) {
     throw new Error(
-      'Supabase service role is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.'
+      'NEXT_PUBLIC_SUPABASE_URL is not configured. Set the environment variable.'
+    )
+  }
+
+  if (!supabaseServiceRoleKey) {
+    throw new Error(
+      'SUPABASE_SERVICE_ROLE_KEY is not configured. Set the environment variable.'
     )
   }
 
