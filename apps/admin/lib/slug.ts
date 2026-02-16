@@ -44,32 +44,41 @@ export async function generateUniqueSlugForPost(
   }
 
   // Base slug exists, find the next available number
-  let counter = 2
-  while (counter < 1000) {
-    // Safety limit
-    const candidateSlug = `${baseSlug}-${counter}`
+  // Fetch all slugs that match the pattern baseSlug-N to find the highest number
+  let allSlugsQuery = supabase
+    .from('posts')
+    .select('slug')
+    .like('slug', `${baseSlug}-%`)
 
-    let checkQuery = supabase
-      .from('posts')
-      .select('slug')
-      .eq('slug', candidateSlug)
-      .limit(1)
-
-    if (excludePostId) {
-      checkQuery = checkQuery.neq('id', excludePostId)
-    }
-
-    const { data: existingSlug } = await checkQuery.maybeSingle()
-
-    if (!existingSlug) {
-      return candidateSlug
-    }
-
-    counter++
+  if (excludePostId) {
+    allSlugsQuery = allSlugsQuery.neq('id', excludePostId)
   }
 
-  // Fallback: use timestamp if we couldn't find a unique slug
-  return `${baseSlug}-${Date.now()}`
+  const { data: existingSlugs } = await allSlugsQuery
+
+  // Extract numbers from existing slugs and find the next available
+  const existingNumbers = new Set(
+    (existingSlugs || [])
+      .map((item) => {
+        if (!item.slug) return null
+        const match = item.slug.match(new RegExp(`^${baseSlug}-(\\d+)$`))
+        return match ? Number.parseInt(match[1], 10) : null
+      })
+      .filter((n): n is number => n !== null)
+  )
+
+  // Find the first available number starting from 2
+  let nextNumber = 2
+  while (existingNumbers.has(nextNumber) && nextNumber < 1000) {
+    nextNumber++
+  }
+
+  if (nextNumber >= 1000) {
+    // Fallback: use timestamp if we couldn't find a unique slug
+    return `${baseSlug}-${Date.now()}`
+  }
+
+  return `${baseSlug}-${nextNumber}`
 }
 
 /**
@@ -113,30 +122,39 @@ export async function generateUniqueSlugForWork(
   }
 
   // Base slug exists, find the next available number
-  let counter = 2
-  while (counter < 1000) {
-    // Safety limit
-    const candidateSlug = `${baseSlug}-${counter}`
+  // Fetch all slugs that match the pattern baseSlug-N to find the highest number
+  let allSlugsQuery = supabase
+    .from('works')
+    .select('slug')
+    .like('slug', `${baseSlug}-%`)
 
-    let checkQuery = supabase
-      .from('works')
-      .select('slug')
-      .eq('slug', candidateSlug)
-      .limit(1)
-
-    if (excludeWorkId) {
-      checkQuery = checkQuery.neq('id', excludeWorkId)
-    }
-
-    const { data: existingSlug } = await checkQuery.maybeSingle()
-
-    if (!existingSlug) {
-      return candidateSlug
-    }
-
-    counter++
+  if (excludeWorkId) {
+    allSlugsQuery = allSlugsQuery.neq('id', excludeWorkId)
   }
 
-  // Fallback: use timestamp if we couldn't find a unique slug
-  return `${baseSlug}-${Date.now()}`
+  const { data: existingSlugs } = await allSlugsQuery
+
+  // Extract numbers from existing slugs and find the next available
+  const existingNumbers = new Set(
+    (existingSlugs || [])
+      .map((item) => {
+        if (!item.slug) return null
+        const match = item.slug.match(new RegExp(`^${baseSlug}-(\\d+)$`))
+        return match ? Number.parseInt(match[1], 10) : null
+      })
+      .filter((n): n is number => n !== null)
+  )
+
+  // Find the first available number starting from 2
+  let nextNumber = 2
+  while (existingNumbers.has(nextNumber) && nextNumber < 1000) {
+    nextNumber++
+  }
+
+  if (nextNumber >= 1000) {
+    // Fallback: use timestamp if we couldn't find a unique slug
+    return `${baseSlug}-${Date.now()}`
+  }
+
+  return `${baseSlug}-${nextNumber}`
 }
