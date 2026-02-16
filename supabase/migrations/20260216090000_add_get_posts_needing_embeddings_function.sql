@@ -11,10 +11,14 @@ RETURNS TABLE (
   current_version JSONB
 )
 LANGUAGE plpgsql
-SECURITY DEFINER
+SECURITY DEFINER -- Required for cron job to read all posts (bypasses RLS)
 SET search_path = public
 AS $$
 BEGIN
+  -- This function is called by the cron job API endpoint at /api/cron/posts/embeddings
+  -- which validates the CRON_SECRET header for authorization
+  -- SECURITY DEFINER is necessary to allow reading all posts regardless of auth context
+  
   -- Return posts that need embeddings generated:
   -- 1. Posts with no embedding (embedding IS NULL)
   -- 2. Posts with no embedding timestamp (embedding_updated_at IS NULL)
