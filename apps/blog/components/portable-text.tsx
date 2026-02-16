@@ -1,10 +1,12 @@
 import {
   PortableText,
+  type PortableTextBlockComponent,
   type PortableTextMarkComponentProps,
   type PortableTextReactComponents
 } from '@portabletext/react'
 import Image from 'next/image'
-import type { ComponentProps } from 'react'
+import type React from 'react'
+import { type ComponentProps, Suspense, use } from 'react'
 import Link from '@/components/link'
 import type {
   CodeBlock,
@@ -13,8 +15,55 @@ import type {
 } from '@/lib/portable-text'
 import { highlightCode } from '@/lib/shiki'
 
+// Helper function to extract text content from React children
+function extractTextFromChildren(children: React.ReactNode): string {
+  if (typeof children === 'string') {
+    return children
+  }
+  if (Array.isArray(children)) {
+    return children.map(extractTextFromChildren).join('')
+  }
+  if (children && typeof children === 'object' && 'props' in children) {
+    const childProps = children.props as { children?: React.ReactNode }
+    return extractTextFromChildren(childProps.children)
+  }
+  return ''
+}
+
+// Component to handle code block syntax highlighting
+function CodeBlockHighlighter({ children }: { children: React.ReactNode }) {
+  const text = extractTextFromChildren(children)
+  const htmlPromise = highlightCode(text)
+  const html = use(htmlPromise)
+
+  return (
+    // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki generates safe HTML for syntax highlighting
+    <div dangerouslySetInnerHTML={{ __html: html }} />
+  )
+}
+
 const portableTextComponents = {
+  block: {
+    code: ((props) => (
+      <Suspense
+        fallback={
+          <pre className="overflow-x-auto rounded-lg bg-muted p-4">
+            <code>{extractTextFromChildren(props.children)}</code>
+          </pre>
+        }
+      >
+        <CodeBlockHighlighter>{props.children}</CodeBlockHighlighter>
+      </Suspense>
+    )) satisfies PortableTextBlockComponent
+  },
   marks: {
+    code({ children }: { children: React.ReactNode }) {
+      return (
+        <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">
+          {children}
+        </code>
+      )
+    },
     link({
       children,
       value
