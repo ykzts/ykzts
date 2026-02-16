@@ -15,6 +15,10 @@ export async function GET(request: Request) {
   return handleCronRequest(request)
 }
 
+export async function PUT(request: Request) {
+  return handleCronRequest(request)
+}
+
 export async function POST(request: Request) {
   return handleCronRequest(request)
 }
