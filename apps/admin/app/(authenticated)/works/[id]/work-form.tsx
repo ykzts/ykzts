@@ -50,15 +50,17 @@ export function WorkForm({ work }: WorkFormProps) {
     }
   }
 
-  const handleGenerateSlug = async () => {
-    const form = document.querySelector('form')
+  const handleGenerateSlug = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    const form = e.currentTarget.form
     if (!form) return
 
     const titleInput = form.elements.namedItem(
       'title'
     ) as HTMLInputElement | null
+    const slugInput = form.elements.namedItem('slug') as HTMLInputElement | null
 
-    if (titleInput?.value) {
+    if (titleInput?.value && slugInput) {
       setIsGeneratingSlug(true)
       try {
         // Use server action to generate unique slug, excluding current work
@@ -66,21 +68,11 @@ export function WorkForm({ work }: WorkFormProps) {
           titleInput.value,
           work.id
         )
-        const slugInput = form.elements.namedItem(
-          'slug'
-        ) as HTMLInputElement | null
-        if (slugInput) {
-          slugInput.value = uniqueSlug
-        }
+        slugInput.value = uniqueSlug
       } catch (error) {
         // Fallback to client-side generation if server action fails
         console.error('Failed to generate unique slug:', error)
-        const slugInput = form.elements.namedItem(
-          'slug'
-        ) as HTMLInputElement | null
-        if (slugInput) {
-          slugInput.value = generateSlug(titleInput.value)
-        }
+        slugInput.value = generateSlug(titleInput.value)
       } finally {
         setIsGeneratingSlug(false)
       }
