@@ -14,6 +14,7 @@ import Link from 'next/link'
 import { useActionState, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
 import type { PostWithDetails } from '@/lib/posts'
+import { generateUniqueSlugForPost } from '@/lib/slug'
 import { generateSlug } from '@/lib/utils'
 import type { ActionState } from '../actions'
 import { deletePostAction, updatePostAction } from '../actions'
@@ -35,6 +36,7 @@ export function PostForm({ post }: PostFormProps) {
   const [showPublishedAt, setShowPublishedAt] = useState(
     post.status === 'scheduled' || post.status === 'published'
   )
+  const [isGeneratingSlug, setIsGeneratingSlug] = useState(false)
 
   const handleDelete = async () => {
     if (!confirm('本当にこの投稿を削除しますか？この操作は取り消せません。')) {
@@ -67,7 +69,7 @@ export function PostForm({ post }: PostFormProps) {
     setTags(tags.filter((tag) => tag !== tagToRemove))
   }
 
-  const handleGenerateSlug = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleGenerateSlug = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     const form = e.currentTarget.form
     if (!form) return
@@ -78,7 +80,21 @@ export function PostForm({ post }: PostFormProps) {
     const slugInput = form.elements.namedItem('slug') as HTMLInputElement | null
 
     if (titleInput && slugInput && titleInput.value) {
-      slugInput.value = generateSlug(titleInput.value)
+      setIsGeneratingSlug(true)
+      try {
+        // Use server action to generate unique slug, excluding current post
+        const uniqueSlug = await generateUniqueSlugForPost(
+          titleInput.value,
+          post.id
+        )
+        slugInput.value = uniqueSlug
+      } catch (error) {
+        // Fallback to client-side generation if server action fails
+        console.error('Failed to generate unique slug:', error)
+        slugInput.value = generateSlug(titleInput.value)
+      } finally {
+        setIsGeneratingSlug(false)
+      }
     }
   }
 
@@ -137,11 +153,12 @@ export function PostForm({ post }: PostFormProps) {
               type="text"
             />
             <Button
+              disabled={isGeneratingSlug}
               onClick={handleGenerateSlug}
               type="button"
               variant="outline"
             >
-              自動生成
+              {isGeneratingSlug ? '生成中...' : '自動生成'}
             </Button>
           </div>
           <Field.Description>

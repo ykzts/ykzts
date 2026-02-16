@@ -13,6 +13,7 @@ import { Textarea } from '@ykzts/ui/components/textarea'
 import Link from 'next/link'
 import { useActionState, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
+import { generateUniqueSlugForPost } from '@/lib/slug'
 import { generateSlug } from '@/lib/utils'
 import type { ActionState } from './actions'
 import { createPostAction } from './actions'
@@ -26,6 +27,7 @@ export function PostForm() {
   const [tags, setTags] = useState<string[]>([])
   const [tagInput, setTagInput] = useState('')
   const [showPublishedAt, setShowPublishedAt] = useState(false)
+  const [isGeneratingSlug, setIsGeneratingSlug] = useState(false)
 
   const handleAddTag = () => {
     const newTag = tagInput.trim()
@@ -39,7 +41,7 @@ export function PostForm() {
     setTags(tags.filter((tag) => tag !== tagToRemove))
   }
 
-  const handleGenerateSlug = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleGenerateSlug = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     const form = e.currentTarget.form
     if (!form) return
@@ -50,7 +52,18 @@ export function PostForm() {
     const slugInput = form.elements.namedItem('slug') as HTMLInputElement | null
 
     if (titleInput && slugInput && titleInput.value) {
-      slugInput.value = generateSlug(titleInput.value)
+      setIsGeneratingSlug(true)
+      try {
+        // Use server action to generate unique slug
+        const uniqueSlug = await generateUniqueSlugForPost(titleInput.value)
+        slugInput.value = uniqueSlug
+      } catch (error) {
+        // Fallback to client-side generation if server action fails
+        console.error('Failed to generate unique slug:', error)
+        slugInput.value = generateSlug(titleInput.value)
+      } finally {
+        setIsGeneratingSlug(false)
+      }
     }
   }
 
@@ -96,11 +109,12 @@ export function PostForm() {
               type="text"
             />
             <Button
+              disabled={isGeneratingSlug}
               onClick={handleGenerateSlug}
               type="button"
               variant="outline"
             >
-              自動生成
+              {isGeneratingSlug ? '生成中...' : '自動生成'}
             </Button>
           </div>
           <Field.Description>

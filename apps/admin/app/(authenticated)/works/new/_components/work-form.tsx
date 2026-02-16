@@ -5,24 +5,14 @@ import { Input } from '@ykzts/ui/components/input'
 
 import { useActionState, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
+import { generateUniqueSlugForWork } from '@/lib/slug'
+import { generateSlug } from '@/lib/utils'
 import type { ActionState } from '../actions'
 import { createWork } from '../actions'
 
 // Default Portable Text content (empty paragraph)
 const DEFAULT_PORTABLE_TEXT =
   '[{"_type":"block","children":[{"_type":"span","marks":[],"text":""}],"markDefs":[],"style":"normal"}]'
-
-// Note: This function only works with romanized (ASCII) text.
-// For Japanese titles, the slug should be manually edited to use romanized form.
-function generateSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, '') // Remove non-ASCII characters
-    .replace(/\s+/g, '-') // Replace spaces with hyphens
-    .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
-    .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
-}
 
 export function WorkForm() {
   const [state, formAction, isPending] = useActionState<ActionState, FormData>(
@@ -31,14 +21,26 @@ export function WorkForm() {
   )
   const [title, setTitle] = useState('')
   const [slug, setSlug] = useState('')
+  const [isGeneratingSlug, setIsGeneratingSlug] = useState(false)
 
   const handleTitleChange = (value: string) => {
     setTitle(value)
   }
 
-  const handleGenerateSlug = () => {
+  const handleGenerateSlug = async () => {
     if (title) {
-      setSlug(generateSlug(title))
+      setIsGeneratingSlug(true)
+      try {
+        // Use server action to generate unique slug
+        const uniqueSlug = await generateUniqueSlugForWork(title)
+        setSlug(uniqueSlug)
+      } catch (error) {
+        // Fallback to client-side generation if server action fails
+        console.error('Failed to generate unique slug:', error)
+        setSlug(generateSlug(title))
+      } finally {
+        setIsGeneratingSlug(false)
+      }
     }
   }
 
@@ -85,11 +87,12 @@ export function WorkForm() {
               value={slug}
             />
             <Button
+              disabled={isGeneratingSlug}
               onClick={handleGenerateSlug}
               type="button"
               variant="secondary"
             >
-              自動生成
+              {isGeneratingSlug ? '生成中...' : '自動生成'}
             </Button>
           </div>
           <p className="mt-1 text-muted-foreground text-sm">
