@@ -225,28 +225,20 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
     }
   }
 
-  const formatHeading = (
-    headingLevel:
-      | 'paragraph'
-      | 'h2'
-      | 'h3'
-      | 'h4'
-      | 'h5'
-      | 'h6'
-      | 'quote'
-      | 'code'
+  const formatBlockType = (
+    blockType: 'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'quote' | 'code'
   ) => {
     editor.update(() => {
       const selection = $getSelection()
       if ($isRangeSelection(selection)) {
-        if (headingLevel === 'paragraph') {
+        if (blockType === 'paragraph') {
           $setBlocksType(selection, () => $createParagraphNode())
-        } else if (headingLevel === 'quote') {
+        } else if (blockType === 'quote') {
           $setBlocksType(selection, () => $createQuoteNode())
-        } else if (headingLevel === 'code') {
+        } else if (blockType === 'code') {
           $setBlocksType(selection, () => $createCodeNode())
         } else {
-          $setBlocksType(selection, () => $createHeadingNode(headingLevel))
+          $setBlocksType(selection, () => $createHeadingNode(blockType))
         }
       }
     })
@@ -291,7 +283,7 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
               aria-label="ブロックタイプ"
               className="appearance-none rounded border border-border bg-card px-3 py-1 pr-8 text-foreground text-sm transition-colors hover:bg-muted/20"
               onChange={(e) =>
-                formatHeading(
+                formatBlockType(
                   e.target.value as
                     | 'paragraph'
                     | 'h2'
