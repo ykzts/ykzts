@@ -337,7 +337,7 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
           </Select>
           {blockType === 'code' && (
             <Select
-              onValueChange={(value) => updateCodeLanguage(value ?? '')}
+              onValueChange={(value) => updateCodeLanguage(value || '')}
               value={codeLanguage}
             >
               <SelectTrigger aria-label="プログラミング言語" size="sm">
