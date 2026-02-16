@@ -2,6 +2,10 @@ import type { Json } from '@ykzts/supabase'
 import { embed } from 'ai'
 import { extractFirstParagraph } from './portable-text-utils'
 
+// Maximum character limit for embedding input to avoid exceeding token limits
+// text-embedding-3-small has 8191 token limit (~30000 chars ≈ ~7500 tokens)
+const MAX_EMBED_CHARS = 30000
+
 /**
  * Extract text content from Portable Text JSON for embedding generation
  */
@@ -69,8 +73,6 @@ export async function generatePostEmbedding(params: {
   // Combine title, excerpt, and content for embedding
   // Weight title more heavily by including it twice
   // Truncate to safe character limit to avoid exceeding token limits
-  // text-embedding-3-small has 8191 token limit (~30000 chars ≈ ~7500 tokens)
-  const MAX_EMBED_CHARS = 30000
   const combinedText = `${title} ${title} ${excerptText} ${contentText}`
     .replace(/\s+/g, ' ')
     .trim()

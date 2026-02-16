@@ -4,6 +4,23 @@ import { generatePostEmbedding } from '@/lib/embeddings'
 import { createClient } from '@/lib/supabase/server'
 
 /**
+ * Extract content from current_version, handling both array and object responses
+ * Supabase foreign key joins may return arrays even for one-to-one relationships
+ */
+function extractVersionContent(currentVersion: unknown): Json | null {
+  if (!currentVersion || typeof currentVersion !== 'object') {
+    return null
+  }
+
+  if (Array.isArray(currentVersion)) {
+    const firstVersion = currentVersion[0] as { content: Json } | undefined
+    return firstVersion?.content ?? null
+  }
+
+  return (currentVersion as { content: Json }).content
+}
+
+/**
  * Cron endpoint to generate embeddings for posts
  * Should be called periodically by Vercel Cron or similar service
  *
@@ -82,14 +99,7 @@ async function handleCronRequest(request: Request) {
     for (const post of posts) {
       try {
         // Extract content from current version
-        // Handle both array and object responses from Supabase foreign key joins
-        const content =
-          post.current_version && typeof post.current_version === 'object'
-            ? Array.isArray(post.current_version)
-              ? (post.current_version[0] as { content: Json } | undefined)
-                  ?.content
-              : (post.current_version as { content: Json }).content
-            : null
+        const content = extractVersionContent(post.current_version)
 
         if (!content) {
           errors.push({ error: 'No content found', id: post.id })
