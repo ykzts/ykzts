@@ -332,6 +332,19 @@ export type Database = {
         Returns: string
       }
       delete_post: { Args: { p_post_id: string }; Returns: undefined }
+      get_posts_needing_embeddings: {
+        Args: {
+          batch_size?: number
+        }
+        Returns: Array<{
+          id: string
+          title: string | null
+          excerpt: string | null
+          updated_at: string
+          embedding_updated_at: string | null
+          current_version: Json | null
+        }>
+      }
       update_post: {
         Args: {
           p_change_summary?: string
