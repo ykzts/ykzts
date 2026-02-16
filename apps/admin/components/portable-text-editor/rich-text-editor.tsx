@@ -171,14 +171,12 @@ export function RichTextEditor({
   return (
     <div>
       <LexicalComposer initialConfig={initialConfig}>
-        <div
-          className={`grid gap-4 ${showPreview ? 'md:grid-cols-2' : 'grid-cols-1'}`}
-        >
-          <div className="relative rounded border border-border bg-card">
-            <ToolbarPlugin
-              onPreviewToggle={setShowPreview}
-              showPreview={showPreview}
-            />
+        <div className="relative rounded border border-border bg-card">
+          <ToolbarPlugin
+            onPreviewToggle={setShowPreview}
+            showPreview={showPreview}
+          />
+          {!showPreview && (
             <div className="relative">
               <RichTextPlugin
                 contentEditable={
@@ -195,19 +193,18 @@ export function RichTextEditor({
                 }
               />
             </div>
-            <HistoryPlugin />
-            <ListPlugin />
-            <CodeHighlightPlugin />
-            {autoFocus && <AutoFocusPlugin />}
-            <LinkPlugin />
-            <ImagePlugin />
-          </div>
+          )}
           {showPreview && (
-            <div className="rounded border border-border bg-card p-4">
-              <h3 className="mb-3 font-medium text-sm">プレビュー</h3>
+            <div className="min-h-[150px] overflow-auto px-4 py-3">
               <PortableTextPreview value={contentPreview} />
             </div>
           )}
+          <HistoryPlugin />
+          <ListPlugin />
+          <CodeHighlightPlugin />
+          {autoFocus && <AutoFocusPlugin />}
+          <LinkPlugin />
+          <ImagePlugin />
         </div>
         <EditorStatePlugin onChange={handleEditorChange} />
       </LexicalComposer>

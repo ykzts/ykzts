@@ -29,8 +29,6 @@ import {
   Bold,
   ChevronDown,
   Code,
-  Eye,
-  EyeOff,
   FileCode,
   Image,
   Italic,
@@ -271,12 +269,6 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
     })
   }
 
-  const togglePreview = () => {
-    if (onPreviewToggle) {
-      onPreviewToggle(!showPreview)
-    }
-  }
-
   const formatHeading = (
     headingLevel: 'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   ) => {
@@ -293,165 +285,192 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
   }
 
   return (
-    <div className="flex gap-1 border-border border-b bg-muted/5 p-2">
-      <div className="relative">
-        <select
-          aria-label="ブロックタイプ"
-          className="appearance-none rounded border border-border bg-card px-3 py-1 pr-8 text-foreground text-sm transition-colors hover:bg-muted/20"
-          onChange={(e) =>
-            formatHeading(
-              e.target.value as 'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
-            )
-          }
-          value={blockType}
+    <div className="border-border border-b bg-muted/5">
+      <div className="flex gap-0 border-border border-b">
+        <button
+          aria-label="編集"
+          className={`px-4 py-2 text-sm transition-colors ${
+            !showPreview
+              ? 'border-primary border-b-2 font-medium text-foreground'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+          onClick={() => onPreviewToggle?.(false)}
+          type="button"
         >
-          <option value="paragraph">段落</option>
-          <option value="h2">見出し2</option>
-          <option value="h3">見出し3</option>
-          <option value="h4">見出し4</option>
-          <option value="h5">見出し5</option>
-          <option value="h6">見出し6</option>
-        </select>
-        <ChevronDown
-          aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 right-2 size-4 -translate-y-1/2 text-muted-foreground"
-        />
+          Write
+        </button>
+        <button
+          aria-label="プレビュー"
+          className={`px-4 py-2 text-sm transition-colors ${
+            showPreview
+              ? 'border-primary border-b-2 font-medium text-foreground'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+          onClick={() => onPreviewToggle?.(true)}
+          type="button"
+        >
+          Preview
+        </button>
       </div>
-      <div className="mx-1 w-px bg-border" />
-      <button
-        aria-label="太字"
-        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          isBold ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-        }`}
-        onClick={formatBold}
-        type="button"
-      >
-        <Bold className="size-4" />
-      </button>
-      <button
-        aria-label="斜体"
-        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          isItalic ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-        }`}
-        onClick={formatItalic}
-        type="button"
-      >
-        <Italic className="size-4" />
-      </button>
-      <button
-        aria-label="下線"
-        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          isUnderline ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-        }`}
-        onClick={formatUnderline}
-        type="button"
-      >
-        <Underline className="size-4" />
-      </button>
-      <button
-        aria-label="取り消し線"
-        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          isStrikethrough ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-        }`}
-        onClick={formatStrikethrough}
-        type="button"
-      >
-        <Strikethrough className="size-4" />
-      </button>
-      <button
-        aria-label="インラインコード"
-        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          isCode ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-        }`}
-        onClick={formatCode}
-        type="button"
-      >
-        <Code className="size-4" />
-      </button>
-      <div className="mx-1 w-px bg-border" />
-      <button
-        aria-label="リンク"
-        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          isLink ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-        }`}
-        onClick={insertLink}
-        type="button"
-      >
-        <Link2 className="size-4" />
-      </button>
-      <button
-        aria-label="順序なしリスト"
-        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          isBulletList ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-        }`}
-        onClick={formatBulletList}
-        type="button"
-      >
-        <List className="size-4" />
-      </button>
-      <button
-        aria-label="順序付きリスト"
-        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          isNumberedList ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-        }`}
-        onClick={formatNumberedList}
-        type="button"
-      >
-        <ListOrdered className="size-4" />
-      </button>
-      <button
-        aria-label="引用"
-        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          isQuote ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-        }`}
-        onClick={formatQuote}
-        type="button"
-      >
-        <Quote className="size-4" />
-      </button>
-      <button
-        aria-label="コードブロック"
-        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          isCodeBlock ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-        }`}
-        onClick={formatCodeBlock}
-        type="button"
-      >
-        <FileCode className="size-4" />
-      </button>
-      <button
-        aria-label="画像"
-        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          isUploading ? 'cursor-not-allowed opacity-50' : ''
-        } text-muted-foreground`}
-        disabled={isUploading}
-        onClick={triggerImageUpload}
-        type="button"
-      >
-        <Image className="size-4" />
-      </button>
-      <div className="mx-1 w-px bg-border" />
-      <button
-        aria-label={showPreview ? 'プレビューを隠す' : 'プレビューを表示'}
-        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-          showPreview ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-        }`}
-        onClick={togglePreview}
-        type="button"
-      >
-        {showPreview ? (
-          <EyeOff className="size-4" />
-        ) : (
-          <Eye className="size-4" />
-        )}
-      </button>
-      <input
-        accept="image/jpeg,image/png,image/gif,image/webp"
-        className="hidden"
-        onChange={handleImageUpload}
-        ref={fileInputRef}
-        type="file"
-      />
+      {!showPreview && (
+        <div className="flex gap-1 p-2">
+          <div className="relative">
+            <select
+              aria-label="ブロックタイプ"
+              className="appearance-none rounded border border-border bg-card px-3 py-1 pr-8 text-foreground text-sm transition-colors hover:bg-muted/20"
+              onChange={(e) =>
+                formatHeading(
+                  e.target.value as
+                    | 'paragraph'
+                    | 'h2'
+                    | 'h3'
+                    | 'h4'
+                    | 'h5'
+                    | 'h6'
+                )
+              }
+              value={blockType}
+            >
+              <option value="paragraph">段落</option>
+              <option value="h2">見出し2</option>
+              <option value="h3">見出し3</option>
+              <option value="h4">見出し4</option>
+              <option value="h5">見出し5</option>
+              <option value="h6">見出し6</option>
+            </select>
+            <ChevronDown
+              aria-hidden="true"
+              className="pointer-events-none absolute top-1/2 right-2 size-4 -translate-y-1/2 text-muted-foreground"
+            />
+          </div>
+          <div className="mx-1 w-px bg-border" />
+          <button
+            aria-label="太字"
+            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+              isBold ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+            }`}
+            onClick={formatBold}
+            type="button"
+          >
+            <Bold className="size-4" />
+          </button>
+          <button
+            aria-label="斜体"
+            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+              isItalic ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+            }`}
+            onClick={formatItalic}
+            type="button"
+          >
+            <Italic className="size-4" />
+          </button>
+          <button
+            aria-label="下線"
+            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+              isUnderline ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+            }`}
+            onClick={formatUnderline}
+            type="button"
+          >
+            <Underline className="size-4" />
+          </button>
+          <button
+            aria-label="取り消し線"
+            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+              isStrikethrough
+                ? 'bg-muted/30 text-primary'
+                : 'text-muted-foreground'
+            }`}
+            onClick={formatStrikethrough}
+            type="button"
+          >
+            <Strikethrough className="size-4" />
+          </button>
+          <button
+            aria-label="インラインコード"
+            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+              isCode ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+            }`}
+            onClick={formatCode}
+            type="button"
+          >
+            <Code className="size-4" />
+          </button>
+          <div className="mx-1 w-px bg-border" />
+          <button
+            aria-label="リンク"
+            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+              isLink ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+            }`}
+            onClick={insertLink}
+            type="button"
+          >
+            <Link2 className="size-4" />
+          </button>
+          <button
+            aria-label="順序なしリスト"
+            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+              isBulletList
+                ? 'bg-muted/30 text-primary'
+                : 'text-muted-foreground'
+            }`}
+            onClick={formatBulletList}
+            type="button"
+          >
+            <List className="size-4" />
+          </button>
+          <button
+            aria-label="順序付きリスト"
+            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+              isNumberedList
+                ? 'bg-muted/30 text-primary'
+                : 'text-muted-foreground'
+            }`}
+            onClick={formatNumberedList}
+            type="button"
+          >
+            <ListOrdered className="size-4" />
+          </button>
+          <button
+            aria-label="引用"
+            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+              isQuote ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+            }`}
+            onClick={formatQuote}
+            type="button"
+          >
+            <Quote className="size-4" />
+          </button>
+          <button
+            aria-label="コードブロック"
+            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+              isCodeBlock ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+            }`}
+            onClick={formatCodeBlock}
+            type="button"
+          >
+            <FileCode className="size-4" />
+          </button>
+          <button
+            aria-label="画像"
+            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+              isUploading ? 'cursor-not-allowed opacity-50' : ''
+            } text-muted-foreground`}
+            disabled={isUploading}
+            onClick={triggerImageUpload}
+            type="button"
+          >
+            <Image className="size-4" />
+          </button>
+          <input
+            accept="image/jpeg,image/png,image/gif,image/webp"
+            className="hidden"
+            onChange={handleImageUpload}
+            ref={fileInputRef}
+            type="file"
+          />
+        </div>
+      )}
     </div>
   )
 }
