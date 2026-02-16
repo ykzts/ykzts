@@ -98,6 +98,8 @@ export type Database = {
         Row: {
           created_at: string
           current_version_id: string | null
+          embedding: string | null
+          embedding_updated_at: string | null
           excerpt: string | null
           id: string
           profile_id: string | null
@@ -112,6 +114,8 @@ export type Database = {
         Insert: {
           created_at?: string
           current_version_id?: string | null
+          embedding?: string | null
+          embedding_updated_at?: string | null
           excerpt?: string | null
           id?: string
           profile_id?: string | null
@@ -126,6 +130,8 @@ export type Database = {
         Update: {
           created_at?: string
           current_version_id?: string | null
+          embedding?: string | null
+          embedding_updated_at?: string | null
           excerpt?: string | null
           id?: string
           profile_id?: string | null
