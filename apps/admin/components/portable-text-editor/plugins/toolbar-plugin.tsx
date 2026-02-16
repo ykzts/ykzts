@@ -49,13 +49,7 @@ import { uploadImage } from '@/lib/upload-image'
 import { INSERT_IMAGE_COMMAND } from './image-plugin'
 import { LinkDialog } from './link-dialog'
 
-type ToolbarPluginProps = {
-  onPreviewToggle?: (show: boolean) => void
-  showPreview?: boolean
-}
-
-export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
-  const { onPreviewToggle, showPreview = false } = props
+export function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext()
   const [isBold, setIsBold] = useState(false)
   const [isItalic, setIsItalic] = useState(false)
@@ -269,217 +263,183 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
 
   return (
     <div className="border-border border-b bg-muted/5">
-      <div className="flex gap-0 border-border border-b" role="tablist">
-        <button
-          aria-selected={!showPreview}
-          className={`px-4 py-2 text-sm transition-colors ${
-            !showPreview
-              ? 'border-primary border-b-2 font-medium text-foreground'
-              : 'text-muted-foreground hover:text-foreground'
-          }`}
-          onClick={() => onPreviewToggle?.(false)}
-          role="tab"
-          tabIndex={!showPreview ? 0 : -1}
-          type="button"
+      <div className="flex gap-1 p-2">
+        <Select
+          onValueChange={(value) => {
+            if (value) {
+              formatBlockType(
+                value as
+                  | 'paragraph'
+                  | 'h2'
+                  | 'h3'
+                  | 'h4'
+                  | 'h5'
+                  | 'h6'
+                  | 'quote'
+                  | 'code'
+              )
+            }
+          }}
+          value={blockType}
         >
-          編集
-        </button>
-        <button
-          aria-selected={showPreview}
-          className={`px-4 py-2 text-sm transition-colors ${
-            showPreview
-              ? 'border-primary border-b-2 font-medium text-foreground'
-              : 'text-muted-foreground hover:text-foreground'
-          }`}
-          onClick={() => onPreviewToggle?.(true)}
-          role="tab"
-          tabIndex={showPreview ? 0 : -1}
-          type="button"
-        >
-          プレビュー
-        </button>
-      </div>
-      {!showPreview && (
-        <div className="flex gap-1 p-2">
+          <SelectTrigger aria-label="ブロックタイプ" size="sm">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="paragraph">段落</SelectItem>
+            <SelectItem value="h2">見出し2</SelectItem>
+            <SelectItem value="h3">見出し3</SelectItem>
+            <SelectItem value="h4">見出し4</SelectItem>
+            <SelectItem value="h5">見出し5</SelectItem>
+            <SelectItem value="h6">見出し6</SelectItem>
+            <SelectItem value="quote">引用</SelectItem>
+            <SelectItem value="code">コードブロック</SelectItem>
+          </SelectContent>
+        </Select>
+        {blockType === 'code' && (
           <Select
-            onValueChange={(value) => {
-              if (value) {
-                formatBlockType(
-                  value as
-                    | 'paragraph'
-                    | 'h2'
-                    | 'h3'
-                    | 'h4'
-                    | 'h5'
-                    | 'h6'
-                    | 'quote'
-                    | 'code'
-                )
-              }
-            }}
-            value={blockType}
+            onValueChange={(value) => updateCodeLanguage(value || '')}
+            value={codeLanguage}
           >
-            <SelectTrigger aria-label="ブロックタイプ" size="sm">
-              <SelectValue />
+            <SelectTrigger aria-label="プログラミング言語" size="sm">
+              <SelectValue placeholder="言語を選択" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="paragraph">段落</SelectItem>
-              <SelectItem value="h2">見出し2</SelectItem>
-              <SelectItem value="h3">見出し3</SelectItem>
-              <SelectItem value="h4">見出し4</SelectItem>
-              <SelectItem value="h5">見出し5</SelectItem>
-              <SelectItem value="h6">見出し6</SelectItem>
-              <SelectItem value="quote">引用</SelectItem>
-              <SelectItem value="code">コードブロック</SelectItem>
+              <SelectItem value="">言語を選択</SelectItem>
+              <SelectItem value="typescript">TypeScript</SelectItem>
+              <SelectItem value="javascript">JavaScript</SelectItem>
+              <SelectItem value="tsx">TSX</SelectItem>
+              <SelectItem value="jsx">JSX</SelectItem>
+              <SelectItem value="python">Python</SelectItem>
+              <SelectItem value="java">Java</SelectItem>
+              <SelectItem value="go">Go</SelectItem>
+              <SelectItem value="rust">Rust</SelectItem>
+              <SelectItem value="cpp">C++</SelectItem>
+              <SelectItem value="c">C</SelectItem>
+              <SelectItem value="csharp">C#</SelectItem>
+              <SelectItem value="php">PHP</SelectItem>
+              <SelectItem value="ruby">Ruby</SelectItem>
+              <SelectItem value="swift">Swift</SelectItem>
+              <SelectItem value="kotlin">Kotlin</SelectItem>
+              <SelectItem value="bash">Bash</SelectItem>
+              <SelectItem value="shell">Shell</SelectItem>
+              <SelectItem value="sql">SQL</SelectItem>
+              <SelectItem value="json">JSON</SelectItem>
+              <SelectItem value="yaml">YAML</SelectItem>
+              <SelectItem value="xml">XML</SelectItem>
+              <SelectItem value="html">HTML</SelectItem>
+              <SelectItem value="css">CSS</SelectItem>
+              <SelectItem value="scss">SCSS</SelectItem>
+              <SelectItem value="markdown">Markdown</SelectItem>
+              <SelectItem value="plaintext">Plain Text</SelectItem>
             </SelectContent>
           </Select>
-          {blockType === 'code' && (
-            <Select
-              onValueChange={(value) => updateCodeLanguage(value || '')}
-              value={codeLanguage}
-            >
-              <SelectTrigger aria-label="プログラミング言語" size="sm">
-                <SelectValue placeholder="言語を選択" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">言語を選択</SelectItem>
-                <SelectItem value="typescript">TypeScript</SelectItem>
-                <SelectItem value="javascript">JavaScript</SelectItem>
-                <SelectItem value="tsx">TSX</SelectItem>
-                <SelectItem value="jsx">JSX</SelectItem>
-                <SelectItem value="python">Python</SelectItem>
-                <SelectItem value="java">Java</SelectItem>
-                <SelectItem value="go">Go</SelectItem>
-                <SelectItem value="rust">Rust</SelectItem>
-                <SelectItem value="cpp">C++</SelectItem>
-                <SelectItem value="c">C</SelectItem>
-                <SelectItem value="csharp">C#</SelectItem>
-                <SelectItem value="php">PHP</SelectItem>
-                <SelectItem value="ruby">Ruby</SelectItem>
-                <SelectItem value="swift">Swift</SelectItem>
-                <SelectItem value="kotlin">Kotlin</SelectItem>
-                <SelectItem value="bash">Bash</SelectItem>
-                <SelectItem value="shell">Shell</SelectItem>
-                <SelectItem value="sql">SQL</SelectItem>
-                <SelectItem value="json">JSON</SelectItem>
-                <SelectItem value="yaml">YAML</SelectItem>
-                <SelectItem value="xml">XML</SelectItem>
-                <SelectItem value="html">HTML</SelectItem>
-                <SelectItem value="css">CSS</SelectItem>
-                <SelectItem value="scss">SCSS</SelectItem>
-                <SelectItem value="markdown">Markdown</SelectItem>
-                <SelectItem value="plaintext">Plain Text</SelectItem>
-              </SelectContent>
-            </Select>
-          )}
-          <div className="mx-1 w-px bg-border" />
-          <button
-            aria-label="太字"
-            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-              isBold ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-            }`}
-            onClick={formatBold}
-            type="button"
-          >
-            <Bold className="size-4" />
-          </button>
-          <button
-            aria-label="斜体"
-            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-              isItalic ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-            }`}
-            onClick={formatItalic}
-            type="button"
-          >
-            <Italic className="size-4" />
-          </button>
-          <button
-            aria-label="下線"
-            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-              isUnderline ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-            }`}
-            onClick={formatUnderline}
-            type="button"
-          >
-            <Underline className="size-4" />
-          </button>
-          <button
-            aria-label="取り消し線"
-            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-              isStrikethrough
-                ? 'bg-muted/30 text-primary'
-                : 'text-muted-foreground'
-            }`}
-            onClick={formatStrikethrough}
-            type="button"
-          >
-            <Strikethrough className="size-4" />
-          </button>
-          <button
-            aria-label="インラインコード"
-            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-              isCode ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-            }`}
-            onClick={formatCode}
-            type="button"
-          >
-            <Code className="size-4" />
-          </button>
-          <div className="mx-1 w-px bg-border" />
-          <button
-            aria-label="リンク"
-            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-              isLink ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
-            }`}
-            onClick={insertLink}
-            type="button"
-          >
-            <Link2 className="size-4" />
-          </button>
-          <button
-            aria-label="順序なしリスト"
-            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-              isBulletList
-                ? 'bg-muted/30 text-primary'
-                : 'text-muted-foreground'
-            }`}
-            onClick={formatBulletList}
-            type="button"
-          >
-            <List className="size-4" />
-          </button>
-          <button
-            aria-label="順序付きリスト"
-            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-              isNumberedList
-                ? 'bg-muted/30 text-primary'
-                : 'text-muted-foreground'
-            }`}
-            onClick={formatNumberedList}
-            type="button"
-          >
-            <ListOrdered className="size-4" />
-          </button>
-          <button
-            aria-label="画像"
-            className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-              isUploading ? 'cursor-not-allowed opacity-50' : ''
-            } text-muted-foreground`}
-            disabled={isUploading}
-            onClick={triggerImageUpload}
-            type="button"
-          >
-            <Image className="size-4" />
-          </button>
-          <input
-            accept="image/jpeg,image/png,image/gif,image/webp"
-            className="hidden"
-            onChange={handleImageUpload}
-            ref={fileInputRef}
-            type="file"
-          />
-        </div>
-      )}
+        )}
+        <div className="mx-1 w-px bg-border" />
+        <button
+          aria-label="太字"
+          className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+            isBold ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+          }`}
+          onClick={formatBold}
+          type="button"
+        >
+          <Bold className="size-4" />
+        </button>
+        <button
+          aria-label="斜体"
+          className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+            isItalic ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+          }`}
+          onClick={formatItalic}
+          type="button"
+        >
+          <Italic className="size-4" />
+        </button>
+        <button
+          aria-label="下線"
+          className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+            isUnderline ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+          }`}
+          onClick={formatUnderline}
+          type="button"
+        >
+          <Underline className="size-4" />
+        </button>
+        <button
+          aria-label="取り消し線"
+          className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+            isStrikethrough
+              ? 'bg-muted/30 text-primary'
+              : 'text-muted-foreground'
+          }`}
+          onClick={formatStrikethrough}
+          type="button"
+        >
+          <Strikethrough className="size-4" />
+        </button>
+        <button
+          aria-label="インラインコード"
+          className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+            isCode ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+          }`}
+          onClick={formatCode}
+          type="button"
+        >
+          <Code className="size-4" />
+        </button>
+        <div className="mx-1 w-px bg-border" />
+        <button
+          aria-label="リンク"
+          className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+            isLink ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+          }`}
+          onClick={insertLink}
+          type="button"
+        >
+          <Link2 className="size-4" />
+        </button>
+        <button
+          aria-label="順序なしリスト"
+          className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+            isBulletList ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+          }`}
+          onClick={formatBulletList}
+          type="button"
+        >
+          <List className="size-4" />
+        </button>
+        <button
+          aria-label="順序付きリスト"
+          className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+            isNumberedList
+              ? 'bg-muted/30 text-primary'
+              : 'text-muted-foreground'
+          }`}
+          onClick={formatNumberedList}
+          type="button"
+        >
+          <ListOrdered className="size-4" />
+        </button>
+        <button
+          aria-label="画像"
+          className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+            isUploading ? 'cursor-not-allowed opacity-50' : ''
+          } text-muted-foreground`}
+          disabled={isUploading}
+          onClick={triggerImageUpload}
+          type="button"
+        >
+          <Image className="size-4" />
+        </button>
+        <input
+          accept="image/jpeg,image/png,image/gif,image/webp"
+          className="hidden"
+          onChange={handleImageUpload}
+          ref={fileInputRef}
+          type="file"
+        />
+      </div>
       <LinkDialog
         onConfirm={handleLinkConfirm}
         onOpenChange={setShowLinkDialog}
