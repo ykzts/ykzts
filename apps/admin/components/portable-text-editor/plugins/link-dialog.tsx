@@ -1,0 +1,112 @@
+'use client'
+
+import { Button } from '@ykzts/ui/components/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@ykzts/ui/components/dialog'
+import { Input } from '@ykzts/ui/components/input'
+import { Label } from '@ykzts/ui/components/label'
+import { useEffect, useRef, useState } from 'react'
+import { validateUrl } from './link-plugin'
+
+interface LinkDialogProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onConfirm: (url: string) => void
+}
+
+export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
+  const [url, setUrl] = useState('')
+  const [error, setError] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (open) {
+      setUrl('')
+      setError('')
+      // Focus the input when dialog opens
+      setTimeout(() => {
+        inputRef.current?.focus()
+      }, 0)
+    }
+  }, [open])
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!url.trim()) {
+      setError('URLを入力してください')
+      return
+    }
+
+    if (!validateUrl(url)) {
+      setError('有効なURL（http://またはhttps://）を入力してください')
+      return
+    }
+
+    onConfirm(url)
+    onOpenChange(false)
+  }
+
+  const handleCancel = () => {
+    onOpenChange(false)
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      handleCancel()
+    }
+  }
+
+  return (
+    <Dialog onOpenChange={onOpenChange} open={open}>
+      <DialogContent showCloseButton={false}>
+        <form onSubmit={handleSubmit}>
+          <DialogHeader>
+            <DialogTitle>リンクを挿入</DialogTitle>
+            <DialogDescription>リンクのURLを入力してください</DialogDescription>
+          </DialogHeader>
+
+          <div className="py-4">
+            <Label htmlFor="url-input">URL</Label>
+            <Input
+              aria-describedby={error ? 'url-error' : undefined}
+              aria-invalid={!!error}
+              id="url-input"
+              onChange={(e) => {
+                setUrl(e.target.value)
+                setError('')
+              }}
+              onKeyDown={handleKeyDown}
+              placeholder="https://example.com"
+              ref={inputRef}
+              type="url"
+              value={url}
+            />
+            {error && (
+              <p
+                className="mt-1 text-destructive text-sm"
+                id="url-error"
+                role="alert"
+              >
+                {error}
+              </p>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button onClick={handleCancel} type="button" variant="outline">
+              キャンセル
+            </Button>
+            <Button type="submit">挿入</Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}

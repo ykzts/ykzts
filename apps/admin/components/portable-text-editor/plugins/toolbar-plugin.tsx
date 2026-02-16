@@ -40,7 +40,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { uploadImage } from '@/lib/upload-image'
 import { INSERT_IMAGE_COMMAND } from './image-plugin'
-import { validateUrl } from './link-plugin'
+import { LinkDialog } from './link-dialog'
 
 type ToolbarPluginProps = {
   onPreviewToggle?: (show: boolean) => void
@@ -63,6 +63,7 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
   >('paragraph')
   const [codeLanguage, setCodeLanguage] = useState<string>('')
   const [isUploading, setIsUploading] = useState(false)
+  const [showLinkDialog, setShowLinkDialog] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const updateToolbar = useCallback(() => {
@@ -157,22 +158,18 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
 
   const insertLink = useCallback(() => {
     if (!isLink) {
-      // TODO: Replace with custom accessible modal in future enhancement
-      // Using browser prompt for MVP, but should be replaced with:
-      // - Custom modal with proper focus management
-      // - Keyboard navigation support
-      // - Screen reader announcements
-      // - Cancel button
-      const url = prompt(
-        'リンクのURLを入力してください（例: https://example.com）:'
-      )
-      if (url && validateUrl(url)) {
-        editor.dispatchCommand(TOGGLE_LINK_COMMAND, url)
-      }
+      setShowLinkDialog(true)
     } else {
       editor.dispatchCommand(TOGGLE_LINK_COMMAND, null)
     }
   }, [editor, isLink])
+
+  const handleLinkConfirm = useCallback(
+    (url: string) => {
+      editor.dispatchCommand(TOGGLE_LINK_COMMAND, url)
+    },
+    [editor]
+  )
 
   const handleImageUpload = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -485,6 +482,11 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
           />
         </div>
       )}
+      <LinkDialog
+        onConfirm={handleLinkConfirm}
+        onOpenChange={setShowLinkDialog}
+        open={showLinkDialog}
+      />
     </div>
   )
 }
