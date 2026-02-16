@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/cron/generate-embeddings",
+      "path": "/api/cron/posts/embeddings",
       "schedule": "0 */6 * * *"
     }
   ]

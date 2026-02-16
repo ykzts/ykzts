@@ -38,11 +38,12 @@ function extractTextFromPortableText(content: Json): string {
 }
 
 /**
- * Generate embedding vector for text using OpenAI text-embedding-3-small model via Vercel AI SDK
+ * Generate embedding vector for text using Vercel AI SDK
+ * Uses text-embedding-3-small model (1536 dimensions) via AI Gateway
  */
 export async function generateEmbedding(text: string): Promise<number[]> {
   const { embedding } = await embed({
-    model: openai.embedding('text-embedding-3-small', { dimensions: 1536 }),
+    model: openai.embedding('text-embedding-3-small'),
     value: text
   })
 
