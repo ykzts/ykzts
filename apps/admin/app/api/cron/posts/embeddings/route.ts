@@ -1,7 +1,7 @@
 import type { Json } from '@ykzts/supabase'
 import { NextResponse } from 'next/server'
 import { generatePostEmbedding } from '@/lib/embeddings'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceRoleClient } from '@/lib/supabase/service-role'
 
 /**
  * Extract content from current_version returned by database function
@@ -55,7 +55,8 @@ async function handleCronRequest(request: Request) {
   }
 
   try {
-    const supabase = await createClient()
+    // Use service role client to bypass RLS for system operations
+    const supabase = createServiceRoleClient()
 
     // Use RPC function to query posts needing embeddings
     // This function handles column-to-column timestamp comparison on the database side
