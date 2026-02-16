@@ -1,5 +1,5 @@
+import { Toaster } from '@ykzts/ui/components/sonner'
 import type { Metadata } from 'next'
-import { Toaster } from 'sonner'
 import './globals.css'
 
 export const metadata: Metadata = {
