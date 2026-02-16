@@ -1,3 +1,9 @@
+import {
+  $createCodeNode,
+  $isCodeNode,
+  CodeHighlightNode,
+  CodeNode
+} from '@lexical/code'
 import { LinkNode } from '@lexical/link'
 import {
   $createListItemNode,
@@ -133,6 +139,33 @@ describe('Portable Text Serializer', () => {
 
       expect(portableText[0].children[0].marks).toContain('strike-through')
       expect(portableText[0].children[0].text).toBe('strikethrough text')
+    })
+
+    it('should serialize inline code text to Portable Text', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          CodeNode,
+          CodeHighlightNode
+        ]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const paragraph = $createParagraphNode()
+        const codeText = $createTextNode('inline code')
+        codeText.toggleFormat('code')
+        paragraph.append(codeText)
+        root.append(paragraph)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText[0].children[0].marks).toContain('code')
+      expect(portableText[0].children[0].text).toBe('inline code')
     })
 
     it('should serialize combined formatting to Portable Text', () => {
@@ -353,6 +386,49 @@ describe('Portable Text Serializer', () => {
           if ($isTextNode(text)) {
             expect(text.getTextContent()).toBe('strikethrough text')
             expect(text.hasFormat('strikethrough')).toBe(true)
+          }
+        }
+      })
+    })
+
+    it('should deserialize inline code from Portable Text', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          CodeNode,
+          CodeHighlightNode
+        ]
+      })
+
+      const json = JSON.stringify([
+        {
+          _type: 'block',
+          children: [
+            {
+              _type: 'span',
+              marks: ['code'],
+              text: 'inline code'
+            }
+          ],
+          markDefs: [],
+          style: 'normal'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        const paragraph = root.getFirstChild()
+
+        if ($isParagraphNode(paragraph)) {
+          const text = paragraph.getFirstChild()
+          if ($isTextNode(text)) {
+            expect(text.getTextContent()).toBe('inline code')
+            expect(text.hasFormat('code')).toBe(true)
           }
         }
       })
@@ -1253,6 +1329,119 @@ describe('Portable Text Serializer', () => {
           expect(children[1].getTextContent()).toBe('Quote text')
         }
       })
+    })
+  })
+
+  describe('Code Block Support', () => {
+    it('should serialize code block to Portable Text', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode,
+          CodeNode,
+          CodeHighlightNode
+        ]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const code = $createCodeNode()
+        code.append($createTextNode('const x = 42;'))
+        root.append(code)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText).toHaveLength(1)
+      expect(portableText[0]._type).toBe('block')
+      expect(portableText[0].style).toBe('code')
+      expect(portableText[0].children[0].text).toBe('const x = 42;')
+    })
+
+    it('should deserialize code block from Portable Text', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode,
+          CodeNode,
+          CodeHighlightNode
+        ]
+      })
+
+      const json = JSON.stringify([
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'function test() {}' }],
+          markDefs: [],
+          style: 'code'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        const code = root.getFirstChild()
+        expect($isCodeNode(code)).toBe(true)
+
+        if ($isCodeNode(code)) {
+          expect(code.getTextContent()).toBe('function test() {}')
+        }
+      })
+    })
+
+    it('should preserve code block formatting through round-trip', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode,
+          CodeNode,
+          CodeHighlightNode
+        ]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const code = $createCodeNode()
+        code.append($createTextNode('const greeting = "Hello, World!";'))
+        root.append(code)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+      const json = JSON.stringify(portableText)
+
+      const editor2 = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode,
+          CodeNode,
+          CodeHighlightNode
+        ]
+      })
+      initializeEditorWithPortableText(editor2, json)
+
+      const portableText2 = lexicalToPortableText(editor2)
+
+      expect(portableText2[0].style).toBe('code')
+      expect(portableText2[0].children[0].text).toBe(
+        'const greeting = "Hello, World!";'
+      )
     })
   })
 })

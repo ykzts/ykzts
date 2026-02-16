@@ -1,5 +1,6 @@
 'use client'
 
+import { $createCodeNode, $isCodeNode } from '@lexical/code'
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link'
 import {
   INSERT_ORDERED_LIST_COMMAND,
@@ -27,6 +28,8 @@ import {
 import {
   Bold,
   ChevronDown,
+  Code,
+  FileCode,
   Image,
   Italic,
   Link2,
@@ -47,10 +50,12 @@ export function ToolbarPlugin() {
   const [isItalic, setIsItalic] = useState(false)
   const [isUnderline, setIsUnderline] = useState(false)
   const [isStrikethrough, setIsStrikethrough] = useState(false)
+  const [isCode, setIsCode] = useState(false)
   const [isLink, setIsLink] = useState(false)
   const [isBulletList, setIsBulletList] = useState(false)
   const [isNumberedList, setIsNumberedList] = useState(false)
   const [isQuote, setIsQuote] = useState(false)
+  const [isCodeBlock, setIsCodeBlock] = useState(false)
   const [blockType, setBlockType] = useState<
     'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   >('paragraph')
@@ -64,6 +69,7 @@ export function ToolbarPlugin() {
       setIsItalic(selection.hasFormat('italic'))
       setIsUnderline(selection.hasFormat('underline'))
       setIsStrikethrough(selection.hasFormat('strikethrough'))
+      setIsCode(selection.hasFormat('code'))
 
       // Check if we're in a link - check both anchor and focus nodes
       const anchorNode = selection.anchor.getNode()
@@ -99,15 +105,23 @@ export function ToolbarPlugin() {
         const tag = headingNode.getTag()
         setBlockType(tag as 'h2' | 'h3' | 'h4' | 'h5' | 'h6')
         setIsQuote(false)
+        setIsCodeBlock(false)
       } else if ($isParagraphNode(element)) {
         setBlockType('paragraph')
         setIsQuote(false)
+        setIsCodeBlock(false)
       } else if ($isQuoteNode(element)) {
         setBlockType('paragraph')
         setIsQuote(true)
+        setIsCodeBlock(false)
+      } else if ($isCodeNode(element)) {
+        setBlockType('paragraph')
+        setIsQuote(false)
+        setIsCodeBlock(true)
       } else {
         setBlockType('paragraph')
         setIsQuote(false)
+        setIsCodeBlock(false)
       }
     }
   }, [])
@@ -136,6 +150,10 @@ export function ToolbarPlugin() {
 
   const formatStrikethrough = () => {
     editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough')
+  }
+
+  const formatCode = () => {
+    editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code')
   }
 
   const insertLink = useCallback(() => {
@@ -230,6 +248,21 @@ export function ToolbarPlugin() {
     })
   }
 
+  const formatCodeBlock = () => {
+    editor.update(() => {
+      const selection = $getSelection()
+      if ($isRangeSelection(selection)) {
+        if (isCodeBlock) {
+          // Remove code block formatting by converting to paragraph
+          $setBlocksType(selection, () => $createParagraphNode())
+        } else {
+          // Apply code block formatting using $setBlocksType
+          $setBlocksType(selection, () => $createCodeNode())
+        }
+      }
+    })
+  }
+
   const formatHeading = (
     headingLevel: 'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   ) => {
@@ -312,6 +345,17 @@ export function ToolbarPlugin() {
         <Strikethrough className="size-4" />
       </button>
       <button
+        aria-label="インラインコード"
+        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+          isCode ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+        }`}
+        onClick={formatCode}
+        type="button"
+      >
+        <Code className="size-4" />
+      </button>
+      <div className="mx-1 w-px bg-border" />
+      <button
         aria-label="リンク"
         className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
           isLink ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
@@ -350,6 +394,16 @@ export function ToolbarPlugin() {
         type="button"
       >
         <Quote className="size-4" />
+      </button>
+      <button
+        aria-label="コードブロック"
+        className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+          isCodeBlock ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+        }`}
+        onClick={formatCodeBlock}
+        type="button"
+      >
+        <FileCode className="size-4" />
       </button>
       <button
         aria-label="画像"
