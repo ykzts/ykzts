@@ -65,10 +65,7 @@ export async function POST(request: NextRequest) {
   try {
     body = await request.json()
   } catch {
-    return NextResponse.json(
-      { error: 'Invalid JSON body' },
-      { status: 400 }
-    )
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
   }
 
   // Validate request body
@@ -99,10 +96,7 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error('Search error:', error)
-      return NextResponse.json(
-        { error: 'Search failed' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Search failed' }, { status: 500 })
     }
 
     const results = (data as SearchResult[]) || []
