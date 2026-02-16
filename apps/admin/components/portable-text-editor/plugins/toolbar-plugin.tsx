@@ -61,6 +61,7 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
   const [blockType, setBlockType] = useState<
     'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'quote' | 'code'
   >('paragraph')
+  const [codeLanguage, setCodeLanguage] = useState<string>('')
   const [isUploading, setIsUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -106,14 +107,20 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
         const headingNode = element as HeadingNode
         const tag = headingNode.getTag()
         setBlockType(tag as 'h2' | 'h3' | 'h4' | 'h5' | 'h6')
+        setCodeLanguage('')
       } else if ($isParagraphNode(element)) {
         setBlockType('paragraph')
+        setCodeLanguage('')
       } else if ($isQuoteNode(element)) {
         setBlockType('quote')
+        setCodeLanguage('')
       } else if ($isCodeNode(element)) {
         setBlockType('code')
+        const language = element.getLanguage() || ''
+        setCodeLanguage(language)
       } else {
         setBlockType('paragraph')
+        setCodeLanguage('')
       }
     }
   }, [])
@@ -244,6 +251,23 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
     })
   }
 
+  const updateCodeLanguage = (language: string) => {
+    editor.update(() => {
+      const selection = $getSelection()
+      if ($isRangeSelection(selection)) {
+        const anchorNode = selection.anchor.getNode()
+        const element =
+          anchorNode.getKey() === 'root'
+            ? anchorNode
+            : anchorNode.getTopLevelElementOrThrow()
+
+        if ($isCodeNode(element)) {
+          element.setLanguage(language)
+        }
+      }
+    })
+  }
+
   return (
     <div className="border-border border-b bg-muted/5">
       <div className="flex gap-0 border-border border-b" role="tablist">
@@ -311,6 +335,48 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
               className="pointer-events-none absolute top-1/2 right-2 size-4 -translate-y-1/2 text-muted-foreground"
             />
           </div>
+          {blockType === 'code' && (
+            <div className="relative">
+              <select
+                aria-label="プログラミング言語"
+                className="appearance-none rounded border border-border bg-card px-3 py-1 pr-8 text-foreground text-sm transition-colors hover:bg-muted/20"
+                onChange={(e) => updateCodeLanguage(e.target.value)}
+                value={codeLanguage}
+              >
+                <option value="">言語を選択</option>
+                <option value="typescript">TypeScript</option>
+                <option value="javascript">JavaScript</option>
+                <option value="tsx">TSX</option>
+                <option value="jsx">JSX</option>
+                <option value="python">Python</option>
+                <option value="java">Java</option>
+                <option value="go">Go</option>
+                <option value="rust">Rust</option>
+                <option value="cpp">C++</option>
+                <option value="c">C</option>
+                <option value="csharp">C#</option>
+                <option value="php">PHP</option>
+                <option value="ruby">Ruby</option>
+                <option value="swift">Swift</option>
+                <option value="kotlin">Kotlin</option>
+                <option value="bash">Bash</option>
+                <option value="shell">Shell</option>
+                <option value="sql">SQL</option>
+                <option value="json">JSON</option>
+                <option value="yaml">YAML</option>
+                <option value="xml">XML</option>
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+                <option value="scss">SCSS</option>
+                <option value="markdown">Markdown</option>
+                <option value="plaintext">Plain Text</option>
+              </select>
+              <ChevronDown
+                aria-hidden="true"
+                className="pointer-events-none absolute top-1/2 right-2 size-4 -translate-y-1/2 text-muted-foreground"
+              />
+            </div>
+          )}
           <div className="mx-1 w-px bg-border" />
           <button
             aria-label="太字"

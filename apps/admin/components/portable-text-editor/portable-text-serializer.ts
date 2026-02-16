@@ -37,6 +37,7 @@ type PortableTextBlock = {
   _key: string
   _type: 'block'
   children: PortableTextSpan[]
+  language?: string
   listItem?: 'bullet' | 'number'
   level?: number
   markDefs: PortableTextMarkDef[]
@@ -266,6 +267,7 @@ export function lexicalToPortableText(
       } else if ($isCodeNode(child)) {
         // Handle code block nodes - preserve raw text content including newlines
         const textContent = child.getTextContent()
+        const language = child.getLanguage() || undefined
 
         blocks.push({
           _key: crypto.randomUUID(),
@@ -277,6 +279,7 @@ export function lexicalToPortableText(
               text: textContent
             }
           ],
+          language,
           markDefs: [],
           style: 'code'
         })
@@ -469,7 +472,7 @@ export function initializeEditorWithPortableText(
             }
 
             // Create code block node
-            const codeNode = $createCodeNode()
+            const codeNode = $createCodeNode(block.language)
             for (const textNode of textNodes) {
               codeNode.append(textNode)
             }

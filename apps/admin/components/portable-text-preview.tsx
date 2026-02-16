@@ -6,6 +6,7 @@ type PortableTextBlock = {
   _key: string
   _type: 'block'
   children: PortableTextSpan[]
+  language?: string
   markDefs: PortableTextMarkDef[]
   style?: string
 }
@@ -149,12 +150,20 @@ export function PortableTextPreview({ value }: PortableTextPreviewProps) {
             .join('')
 
           return (
-            <pre
-              className="my-2 overflow-x-auto rounded border border-border bg-muted/20 p-4 font-mono text-sm"
-              key={block._key}
-            >
-              <code className="whitespace-pre">{codeText}</code>
-            </pre>
+            <div className="my-2" key={block._key}>
+              {block.language && (
+                <div className="rounded-t border border-border border-b-0 bg-muted/30 px-3 py-1 font-mono text-muted-foreground text-xs">
+                  {block.language}
+                </div>
+              )}
+              <pre
+                className={`overflow-x-auto border border-border bg-muted/20 p-4 font-mono text-sm ${
+                  block.language ? 'rounded-b' : 'rounded'
+                }`}
+              >
+                <code className="whitespace-pre">{codeText}</code>
+              </pre>
+            </div>
           )
         }
 

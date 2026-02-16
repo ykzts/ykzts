@@ -16,9 +16,15 @@ import type {
 import { highlightCode } from '@/lib/shiki'
 
 // Component to handle code block syntax highlighting
-async function CodeBlockHighlighter({ text }: { text: string }) {
+async function CodeBlockHighlighter({
+  language,
+  text
+}: {
+  language?: string
+  text: string
+}) {
   try {
-    const html = await highlightCode(text)
+    const html = await highlightCode(text, language)
 
     return (
       // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki generates safe HTML for syntax highlighting
@@ -47,6 +53,9 @@ const CodeBlockComponent: PortableTextBlockComponent = (props) => {
     })
     .join('')
 
+  // Extract language if available
+  const language = 'language' in props.value ? props.value.language : undefined
+
   return (
     <Suspense
       fallback={
@@ -55,7 +64,7 @@ const CodeBlockComponent: PortableTextBlockComponent = (props) => {
         </pre>
       }
     >
-      <CodeBlockHighlighter text={text} />
+      <CodeBlockHighlighter language={language} text={text} />
     </Suspense>
   )
 }
