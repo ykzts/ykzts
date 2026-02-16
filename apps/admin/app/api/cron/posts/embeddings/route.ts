@@ -7,6 +7,8 @@ import { createClient } from '@/lib/supabase/server'
  * Cron endpoint to generate embeddings for posts
  * Should be called periodically by Vercel Cron or similar service
  *
+ * GET /api/cron/posts/embeddings (default for Vercel Cron)
+ * POST /api/cron/posts/embeddings
  * PUT /api/cron/posts/embeddings
  *
  * Authorization: Bearer <CRON_SECRET>
