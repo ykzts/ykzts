@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     const { postId, all } = body
 
     let postsToProcess: Array<{
-      content: unknown
+      content: Json
       excerpt: string | null
       id: string
       title: string
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
       // Extract content from current version
       const content =
         post.current_version && typeof post.current_version === 'object'
-          ? (post.current_version as { content: unknown }).content
+          ? (post.current_version as { content: Json }).content
           : null
 
       if (!content) {
@@ -116,7 +116,7 @@ export async function POST(request: Request) {
           ?.map((post) => {
             const content =
               post.current_version && typeof post.current_version === 'object'
-                ? (post.current_version as { content: unknown }).content
+                ? (post.current_version as { content: Json }).content
                 : null
 
             if (!content) return null

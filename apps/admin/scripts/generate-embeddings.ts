@@ -41,7 +41,7 @@ const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY)
 /**
  * Extract text content from Portable Text JSON
  */
-function extractTextFromPortableText(content: unknown): string {
+function extractTextFromPortableText(content: Json): string {
   if (!content || typeof content !== 'object') {
     return ''
   }
@@ -89,7 +89,7 @@ async function generateEmbedding(text: string): Promise<number[]> {
  * Generate embedding for a post
  */
 async function generatePostEmbedding(params: {
-  content: unknown
+  content: Json
   excerpt: string | null
   title: string
 }): Promise<number[]> {
@@ -166,7 +166,7 @@ async function main() {
       // Extract content from current version
       const content =
         post.current_version && typeof post.current_version === 'object'
-          ? (post.current_version as { content: unknown }).content
+          ? (post.current_version as { content: Json }).content
           : null
 
       if (!content) {
