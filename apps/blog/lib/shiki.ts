@@ -48,7 +48,6 @@ export async function highlightCode(
   language?: string
 ): Promise<string> {
   'use cache'
-
   const hl = await getHighlighter()
 
   const lang =
