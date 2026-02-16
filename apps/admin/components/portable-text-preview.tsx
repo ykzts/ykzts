@@ -70,54 +70,137 @@ export function PortableTextPreview({ value }: PortableTextPreviewProps) {
           }
         }
 
-        return (
-          <p className="mb-2" key={block._key}>
-            {block.children.map((span) => {
-              if (span._type !== 'span') return null
+        // Render based on block style
+        const style = block.style || 'normal'
 
-              const marks = span.marks || []
-              let content: React.ReactNode = span.text
+        // Process children to build content
+        const renderChildren = () =>
+          block.children.map((span) => {
+            if (span._type !== 'span') return null
 
-              // Apply marks
-              const hasStrong = marks.includes('strong')
-              const hasEm = marks.includes('em')
-              const linkMark = marks.find((mark) => markDefMap.has(mark))
+            const marks = span.marks || []
+            let content: React.ReactNode = span.text
 
-              if (hasStrong) {
-                content = <strong>{content}</strong>
-              }
+            // Apply marks
+            const hasStrong = marks.includes('strong')
+            const hasEm = marks.includes('em')
+            const hasCode = marks.includes('code')
+            const linkMark = marks.find((mark) => markDefMap.has(mark))
 
-              if (hasEm) {
-                content = <em>{content}</em>
-              }
+            if (hasStrong) {
+              content = <strong>{content}</strong>
+            }
 
-              if (linkMark) {
-                const markDef = markDefMap.get(linkMark)
-                if (markDef && markDef._type === 'link' && markDef.href) {
-                  // Sanitize href to prevent XSS attacks
-                  const href = markDef.href
-                  const isSafe =
-                    href.startsWith('http://') ||
-                    href.startsWith('https://') ||
-                    href.startsWith('mailto:')
+            if (hasEm) {
+              content = <em>{content}</em>
+            }
 
-                  if (isSafe) {
-                    content = (
-                      <a
-                        className="text-primary hover:underline"
-                        href={href}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        {content}
-                      </a>
-                    )
-                  }
+            if (hasCode) {
+              content = (
+                <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">
+                  {content}
+                </code>
+              )
+            }
+
+            if (linkMark) {
+              const markDef = markDefMap.get(linkMark)
+              if (markDef && markDef._type === 'link' && markDef.href) {
+                // Sanitize href to prevent XSS attacks
+                const href = markDef.href
+                const isSafe =
+                  href.startsWith('http://') ||
+                  href.startsWith('https://') ||
+                  href.startsWith('mailto:')
+
+                if (isSafe) {
+                  content = (
+                    <a
+                      className="text-primary hover:underline"
+                      href={href}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {content}
+                    </a>
+                  )
                 }
               }
+            }
 
-              return <span key={span._key}>{content}</span>
-            })}
+            return <span key={span._key}>{content}</span>
+          })
+
+        // Code block - needs special handling to preserve line breaks
+        if (style === 'code') {
+          // Extract full text content from all spans, preserving original text
+          const codeText = block.children
+            .map((span) => (span._type === 'span' ? span.text : ''))
+            .join('')
+
+          return (
+            <pre
+              className="my-2 overflow-x-auto rounded border border-border bg-muted/20 p-4 font-mono text-sm"
+              key={block._key}
+            >
+              <code className="whitespace-pre">{codeText}</code>
+            </pre>
+          )
+        }
+
+        // Quote block
+        if (style === 'blockquote') {
+          return (
+            <blockquote
+              className="my-2 border-border border-l-4 pl-4 text-muted-foreground italic"
+              key={block._key}
+            >
+              {renderChildren()}
+            </blockquote>
+          )
+        }
+
+        // Heading blocks
+        if (style === 'h2') {
+          return (
+            <h2 className="mb-3 font-bold text-3xl" key={block._key}>
+              {renderChildren()}
+            </h2>
+          )
+        }
+        if (style === 'h3') {
+          return (
+            <h3 className="mb-2 font-bold text-2xl" key={block._key}>
+              {renderChildren()}
+            </h3>
+          )
+        }
+        if (style === 'h4') {
+          return (
+            <h4 className="mb-2 font-bold text-xl" key={block._key}>
+              {renderChildren()}
+            </h4>
+          )
+        }
+        if (style === 'h5') {
+          return (
+            <h5 className="mb-1 font-bold text-lg" key={block._key}>
+              {renderChildren()}
+            </h5>
+          )
+        }
+        if (style === 'h6') {
+          return (
+            <h6 className="mb-1 font-bold text-base" key={block._key}>
+              {renderChildren()}
+            </h6>
+          )
+        }
+
+        // Default paragraph
+        return (
+          <p className="mb-2" key={block._key}>
+            {renderChildren()}
           </p>
         )
       })}
