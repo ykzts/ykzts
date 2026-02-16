@@ -19,6 +19,13 @@ import {
 import { $setBlocksType } from '@lexical/selection'
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils'
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@ykzts/ui/components/select'
+import {
   $createParagraphNode,
   $getSelection,
   $isParagraphNode,
@@ -27,7 +34,6 @@ import {
 } from 'lexical'
 import {
   Bold,
-  ChevronDown,
   Code,
   Image,
   Italic,
@@ -295,13 +301,11 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
       </div>
       {!showPreview && (
         <div className="flex gap-1 p-2">
-          <div className="relative">
-            <select
-              aria-label="ブロックタイプ"
-              className="appearance-none rounded border border-border bg-card px-3 py-1 pr-8 text-foreground text-sm transition-colors hover:bg-muted/20"
-              onChange={(e) =>
+          <Select
+            onValueChange={(value) => {
+              if (value) {
                 formatBlockType(
-                  e.target.value as
+                  value as
                     | 'paragraph'
                     | 'h2'
                     | 'h3'
@@ -312,63 +316,61 @@ export function ToolbarPlugin(props: ToolbarPluginProps = {}) {
                     | 'code'
                 )
               }
-              value={blockType}
-            >
-              <option value="paragraph">段落</option>
-              <option value="h2">見出し2</option>
-              <option value="h3">見出し3</option>
-              <option value="h4">見出し4</option>
-              <option value="h5">見出し5</option>
-              <option value="h6">見出し6</option>
-              <option value="quote">引用</option>
-              <option value="code">コードブロック</option>
-            </select>
-            <ChevronDown
-              aria-hidden="true"
-              className="pointer-events-none absolute top-1/2 right-2 size-4 -translate-y-1/2 text-muted-foreground"
-            />
-          </div>
+            }}
+            value={blockType}
+          >
+            <SelectTrigger aria-label="ブロックタイプ" size="sm">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="paragraph">段落</SelectItem>
+              <SelectItem value="h2">見出し2</SelectItem>
+              <SelectItem value="h3">見出し3</SelectItem>
+              <SelectItem value="h4">見出し4</SelectItem>
+              <SelectItem value="h5">見出し5</SelectItem>
+              <SelectItem value="h6">見出し6</SelectItem>
+              <SelectItem value="quote">引用</SelectItem>
+              <SelectItem value="code">コードブロック</SelectItem>
+            </SelectContent>
+          </Select>
           {blockType === 'code' && (
-            <div className="relative">
-              <select
-                aria-label="プログラミング言語"
-                className="appearance-none rounded border border-border bg-card px-3 py-1 pr-8 text-foreground text-sm transition-colors hover:bg-muted/20"
-                onChange={(e) => updateCodeLanguage(e.target.value)}
-                value={codeLanguage}
-              >
-                <option value="">言語を選択</option>
-                <option value="typescript">TypeScript</option>
-                <option value="javascript">JavaScript</option>
-                <option value="tsx">TSX</option>
-                <option value="jsx">JSX</option>
-                <option value="python">Python</option>
-                <option value="java">Java</option>
-                <option value="go">Go</option>
-                <option value="rust">Rust</option>
-                <option value="cpp">C++</option>
-                <option value="c">C</option>
-                <option value="csharp">C#</option>
-                <option value="php">PHP</option>
-                <option value="ruby">Ruby</option>
-                <option value="swift">Swift</option>
-                <option value="kotlin">Kotlin</option>
-                <option value="bash">Bash</option>
-                <option value="shell">Shell</option>
-                <option value="sql">SQL</option>
-                <option value="json">JSON</option>
-                <option value="yaml">YAML</option>
-                <option value="xml">XML</option>
-                <option value="html">HTML</option>
-                <option value="css">CSS</option>
-                <option value="scss">SCSS</option>
-                <option value="markdown">Markdown</option>
-                <option value="plaintext">Plain Text</option>
-              </select>
-              <ChevronDown
-                aria-hidden="true"
-                className="pointer-events-none absolute top-1/2 right-2 size-4 -translate-y-1/2 text-muted-foreground"
-              />
-            </div>
+            <Select
+              onValueChange={(value) => updateCodeLanguage(value || '')}
+              value={codeLanguage}
+            >
+              <SelectTrigger aria-label="プログラミング言語" size="sm">
+                <SelectValue placeholder="言語を選択" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">言語を選択</SelectItem>
+                <SelectItem value="typescript">TypeScript</SelectItem>
+                <SelectItem value="javascript">JavaScript</SelectItem>
+                <SelectItem value="tsx">TSX</SelectItem>
+                <SelectItem value="jsx">JSX</SelectItem>
+                <SelectItem value="python">Python</SelectItem>
+                <SelectItem value="java">Java</SelectItem>
+                <SelectItem value="go">Go</SelectItem>
+                <SelectItem value="rust">Rust</SelectItem>
+                <SelectItem value="cpp">C++</SelectItem>
+                <SelectItem value="c">C</SelectItem>
+                <SelectItem value="csharp">C#</SelectItem>
+                <SelectItem value="php">PHP</SelectItem>
+                <SelectItem value="ruby">Ruby</SelectItem>
+                <SelectItem value="swift">Swift</SelectItem>
+                <SelectItem value="kotlin">Kotlin</SelectItem>
+                <SelectItem value="bash">Bash</SelectItem>
+                <SelectItem value="shell">Shell</SelectItem>
+                <SelectItem value="sql">SQL</SelectItem>
+                <SelectItem value="json">JSON</SelectItem>
+                <SelectItem value="yaml">YAML</SelectItem>
+                <SelectItem value="xml">XML</SelectItem>
+                <SelectItem value="html">HTML</SelectItem>
+                <SelectItem value="css">CSS</SelectItem>
+                <SelectItem value="scss">SCSS</SelectItem>
+                <SelectItem value="markdown">Markdown</SelectItem>
+                <SelectItem value="plaintext">Plain Text</SelectItem>
+              </SelectContent>
+            </Select>
           )}
           <div className="mx-1 w-px bg-border" />
           <button
