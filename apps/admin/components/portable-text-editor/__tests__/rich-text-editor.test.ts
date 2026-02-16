@@ -1443,5 +1443,120 @@ describe('Portable Text Serializer', () => {
         'const greeting = "Hello, World!";'
       )
     })
+
+    it('should serialize code block with language to Portable Text', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode,
+          CodeNode,
+          CodeHighlightNode
+        ]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const code = $createCodeNode('typescript')
+        code.append($createTextNode('const x: number = 42;'))
+        root.append(code)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText).toHaveLength(1)
+      expect(portableText[0]._type).toBe('block')
+      expect(portableText[0].style).toBe('code')
+      expect(portableText[0].language).toBe('typescript')
+      expect(portableText[0].children[0].text).toBe('const x: number = 42;')
+    })
+
+    it('should deserialize code block with language from Portable Text', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode,
+          CodeNode,
+          CodeHighlightNode
+        ]
+      })
+
+      const json = JSON.stringify([
+        {
+          _type: 'block',
+          children: [{ _type: 'span', text: 'function test() {}' }],
+          language: 'javascript',
+          markDefs: [],
+          style: 'code'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        const code = root.getFirstChild()
+        expect($isCodeNode(code)).toBe(true)
+
+        if ($isCodeNode(code)) {
+          expect(code.getTextContent()).toBe('function test() {}')
+          expect(code.getLanguage()).toBe('javascript')
+        }
+      })
+    })
+
+    it('should preserve code block language through round-trip', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode,
+          CodeNode,
+          CodeHighlightNode
+        ]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const code = $createCodeNode('python')
+        code.append($createTextNode('def hello():\n    print("Hello")'))
+        root.append(code)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+      const json = JSON.stringify(portableText)
+
+      const editor2 = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode,
+          CodeNode,
+          CodeHighlightNode
+        ]
+      })
+      initializeEditorWithPortableText(editor2, json)
+
+      const portableText2 = lexicalToPortableText(editor2)
+
+      expect(portableText2[0].style).toBe('code')
+      expect(portableText2[0].language).toBe('python')
+      expect(portableText2[0].children[0].text).toBe(
+        'def hello():\n    print("Hello")'
+      )
+    })
   })
 })
