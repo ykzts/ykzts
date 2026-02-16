@@ -266,15 +266,17 @@ export function lexicalToPortableText(
       } else if ($isCodeNode(child)) {
         // Handle code block nodes - preserve raw text content including newlines
         const textContent = child.getTextContent()
-        
+
         blocks.push({
           _key: crypto.randomUUID(),
           _type: 'block',
-          children: [{
-            _key: crypto.randomUUID(),
-            _type: 'span',
-            text: textContent
-          }],
+          children: [
+            {
+              _key: crypto.randomUUID(),
+              _type: 'span',
+              text: textContent
+            }
+          ],
           markDefs: [],
           style: 'code'
         })

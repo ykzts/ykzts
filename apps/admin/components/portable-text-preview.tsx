@@ -85,6 +85,8 @@ export function PortableTextPreview({ value }: PortableTextPreviewProps) {
             const hasStrong = marks.includes('strong')
             const hasEm = marks.includes('em')
             const hasCode = marks.includes('code')
+            const hasUnderline = marks.includes('underline')
+            const hasStrikethrough = marks.includes('strike-through')
             const linkMark = marks.find((mark) => markDefMap.has(mark))
 
             if (hasStrong) {
@@ -101,6 +103,14 @@ export function PortableTextPreview({ value }: PortableTextPreviewProps) {
                   {content}
                 </code>
               )
+            }
+
+            if (hasUnderline) {
+              content = <u>{content}</u>
+            }
+
+            if (hasStrikethrough) {
+              content = <s>{content}</s>
             }
 
             if (linkMark) {
