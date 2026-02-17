@@ -3,6 +3,7 @@
 import {
   Pagination,
   PaginationContent,
+  PaginationDisabled,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
@@ -16,21 +17,6 @@ type BlogPaginationProps = {
   currentPage: number
   totalPages: number
   baseUrl?: string
-}
-
-function DisabledPaginationButton({
-  children,
-  icon
-}: {
-  children: React.ReactNode
-  icon: React.ReactNode
-}) {
-  return (
-    <span className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-transparent px-4 font-medium text-muted-foreground text-sm transition-colors">
-      {icon}
-      {children}
-    </span>
-  )
 }
 
 export default function BlogPagination({
@@ -81,11 +67,11 @@ export default function BlogPagination({
               text="前のページ"
             />
           ) : (
-            <DisabledPaginationButton
+            <PaginationDisabled
               icon={<ChevronLeftIcon data-icon="inline-start" />}
             >
               <span className="hidden sm:block">前のページ</span>
-            </DisabledPaginationButton>
+            </PaginationDisabled>
           )}
         </PaginationItem>
 
@@ -135,11 +121,11 @@ export default function BlogPagination({
               text="次のページ"
             />
           ) : (
-            <DisabledPaginationButton
+            <PaginationDisabled
               icon={<ChevronRightIcon data-icon="inline-end" />}
             >
               <span className="hidden sm:block">次のページ</span>
-            </DisabledPaginationButton>
+            </PaginationDisabled>
           )}
         </PaginationItem>
       </PaginationContent>

@@ -124,9 +124,31 @@ function PaginationEllipsis({
   )
 }
 
+function PaginationDisabled({
+  className,
+  children,
+  icon
+}: React.ComponentProps<"span"> & {
+  icon: React.ReactNode
+}) {
+  return (
+    <span
+      data-slot="pagination-disabled"
+      className={cn(
+        "inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-transparent px-4 font-medium text-muted-foreground text-sm transition-colors",
+        className
+      )}
+    >
+      {icon}
+      {children}
+    </span>
+  )
+}
+
 export {
   Pagination,
   PaginationContent,
+  PaginationDisabled,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
