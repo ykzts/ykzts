@@ -34,9 +34,7 @@ export default function ContactForm() {
   if (state?.success) {
     return (
       <div className="rounded-lg border border-primary/30 bg-primary/10 p-6 text-center">
-        <h3 className="mb-3 font-semibold text-foreground text-xl">
-          送信完了
-        </h3>
+        <h3 className="mb-3 font-semibold text-foreground text-xl">送信完了</h3>
         <p className="mb-3 text-base text-muted-foreground">
           お問い合わせいただきありがとうございます。内容を確認次第、ご返信させていただきます。
         </p>
@@ -55,130 +53,121 @@ export default function ContactForm() {
 
   return (
     <form action={formAction} ref={formRef}>
-        <Field className="mb-5">
-          <FieldLabel htmlFor="name">
-            お名前 <span className="text-red-500">*</span>
-          </FieldLabel>
-          <Input
-            aria-describedby={errors.name ? 'name-error' : undefined}
-            aria-invalid={Boolean(errors.name)}
-            defaultValue={formData.name || ''}
-            id="name"
-            name="name"
-            required
-            type="text"
-          />
-          {errors.name && (
-            <FieldError id="name-error">{errors.name}</FieldError>
-          )}
-        </Field>
+      <Field className="mb-5">
+        <FieldLabel htmlFor="name">
+          お名前 <span className="text-red-500">*</span>
+        </FieldLabel>
+        <Input
+          aria-describedby={errors.name ? 'name-error' : undefined}
+          aria-invalid={Boolean(errors.name)}
+          defaultValue={formData.name || ''}
+          id="name"
+          name="name"
+          required
+          type="text"
+        />
+        {errors.name && <FieldError id="name-error">{errors.name}</FieldError>}
+      </Field>
 
-        <Field className="mb-5">
-          <FieldLabel htmlFor="email">
-            メールアドレス <span className="text-red-500">*</span>
-          </FieldLabel>
-          <Input
-            aria-describedby={errors.email ? 'email-error' : undefined}
-            aria-invalid={Boolean(errors.email)}
-            defaultValue={formData.email || ''}
-            id="email"
-            name="email"
-            required
-            type="email"
-          />
-          {errors.email && (
-            <FieldError id="email-error">{errors.email}</FieldError>
-          )}
-        </Field>
+      <Field className="mb-5">
+        <FieldLabel htmlFor="email">
+          メールアドレス <span className="text-red-500">*</span>
+        </FieldLabel>
+        <Input
+          aria-describedby={errors.email ? 'email-error' : undefined}
+          aria-invalid={Boolean(errors.email)}
+          defaultValue={formData.email || ''}
+          id="email"
+          name="email"
+          required
+          type="email"
+        />
+        {errors.email && (
+          <FieldError id="email-error">{errors.email}</FieldError>
+        )}
+      </Field>
 
-        <Field className="mb-5">
-          <FieldLabel htmlFor="subject">
-            件名 <span className="text-red-500">*</span>
-          </FieldLabel>
-          <Input
-            aria-describedby={errors.subject ? 'subject-error' : undefined}
-            aria-invalid={Boolean(errors.subject)}
-            defaultValue={formData.subject || ''}
-            id="subject"
-            name="subject"
-            required
-            type="text"
-          />
-          {errors.subject && (
-            <FieldError id="subject-error">{errors.subject}</FieldError>
-          )}
-        </Field>
+      <Field className="mb-5">
+        <FieldLabel htmlFor="subject">
+          件名 <span className="text-red-500">*</span>
+        </FieldLabel>
+        <Input
+          aria-describedby={errors.subject ? 'subject-error' : undefined}
+          aria-invalid={Boolean(errors.subject)}
+          defaultValue={formData.subject || ''}
+          id="subject"
+          name="subject"
+          required
+          type="text"
+        />
+        {errors.subject && (
+          <FieldError id="subject-error">{errors.subject}</FieldError>
+        )}
+      </Field>
 
-        <Field className="mb-5">
-          <FieldLabel htmlFor="message">
-            メッセージ <span className="text-red-500">*</span>
-          </FieldLabel>
-          <Textarea
-            aria-describedby={errors.message ? 'message-error' : undefined}
-            aria-invalid={Boolean(errors.message)}
-            defaultValue={formData.message || ''}
-            id="message"
-            name="message"
-            required
-            rows={6}
-          />
-          {errors.message && (
-            <FieldError id="message-error">{errors.message}</FieldError>
-          )}
-        </Field>
+      <Field className="mb-5">
+        <FieldLabel htmlFor="message">
+          メッセージ <span className="text-red-500">*</span>
+        </FieldLabel>
+        <Textarea
+          aria-describedby={errors.message ? 'message-error' : undefined}
+          aria-invalid={Boolean(errors.message)}
+          defaultValue={formData.message || ''}
+          id="message"
+          name="message"
+          required
+          rows={6}
+        />
+        {errors.message && (
+          <FieldError id="message-error">{errors.message}</FieldError>
+        )}
+      </Field>
 
-        <div className="mb-5 flex cursor-pointer items-start gap-2.5 text-base text-muted-foreground">
-          <Checkbox
-            aria-describedby={
-              errors.privacyConsent ? 'privacy-error' : undefined
-            }
-            aria-invalid={Boolean(errors.privacyConsent)}
-            aria-label="プライバシーポリシーに同意"
-            defaultChecked={formData.privacyConsent || false}
-            name="privacyConsent"
-            required
-          />
-          <span>
-            <Link className="text-primary hover:underline" href="/privacy">
-              プライバシーポリシー
-            </Link>
-            に同意します <span className="text-red-500">*</span>
-          </span>
-          {errors.privacyConsent && (
-            <p
-              className="mt-1.5 w-full text-red-500 text-sm"
-              id="privacy-error"
-            >
-              {errors.privacyConsent}
-            </p>
-          )}
-        </div>
+      <div className="mb-5 flex cursor-pointer items-start gap-2.5 text-base text-muted-foreground">
+        <Checkbox
+          aria-describedby={errors.privacyConsent ? 'privacy-error' : undefined}
+          aria-invalid={Boolean(errors.privacyConsent)}
+          aria-label="プライバシーポリシーに同意"
+          defaultChecked={formData.privacyConsent || false}
+          name="privacyConsent"
+          required
+        />
+        <span>
+          <Link className="text-primary hover:underline" href="/privacy">
+            プライバシーポリシー
+          </Link>
+          に同意します <span className="text-red-500">*</span>
+        </span>
+        {errors.privacyConsent && (
+          <p className="mt-1.5 w-full text-red-500 text-sm" id="privacy-error">
+            {errors.privacyConsent}
+          </p>
+        )}
+      </div>
 
-        <div className="mb-4">
-          <Turnstile
-            className="w-full"
-            onSuccess={(token) => {
-              setTurnstileToken(token)
-            }}
-            options={{ size: 'flexible', theme: 'light' }}
-            siteKey={
-              process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
-              '1x00000000000000000000AA'
-            }
-          />
-          <input name="turnstileToken" type="hidden" value={turnstileToken} />
-          {errors.turnstileToken && (
-            <p className="mt-1.5 text-red-500 text-sm">
-              {errors.turnstileToken}
-            </p>
-          )}
-        </div>
+      <div className="mb-4">
+        <Turnstile
+          className="w-full"
+          onSuccess={(token) => {
+            setTurnstileToken(token)
+          }}
+          options={{ size: 'flexible', theme: 'light' }}
+          siteKey={
+            process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
+            '1x00000000000000000000AA'
+          }
+        />
+        <input name="turnstileToken" type="hidden" value={turnstileToken} />
+        {errors.turnstileToken && (
+          <p className="mt-1.5 text-red-500 text-sm">{errors.turnstileToken}</p>
+        )}
+      </div>
 
-        <div className="mt-6">
-          <Button disabled={isPending || !turnstileToken} type="submit">
-            {isPending ? '送信中...' : '送信する'}
-          </Button>
-        </div>
-      </form>
+      <div className="mt-6">
+        <Button disabled={isPending || !turnstileToken} type="submit">
+          {isPending ? '送信中...' : '送信する'}
+        </Button>
+      </div>
+    </form>
   )
 }
