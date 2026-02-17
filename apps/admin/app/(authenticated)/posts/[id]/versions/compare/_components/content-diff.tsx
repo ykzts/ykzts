@@ -76,7 +76,9 @@ export function ContentDiff({
               }
               return (
                 <div key={key}>
-                  <span className="select-none text-muted-foreground"> </span>
+                  <span className="select-none text-muted-foreground">
+                    {'  '}
+                  </span>
                   {line || ' '}
                 </div>
               )
