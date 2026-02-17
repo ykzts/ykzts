@@ -455,10 +455,16 @@ export function initializeEditorWithPortableText(
               if (listStack.length > 0) {
                 // Append to the last item of the parent list
                 const parentList = listStack[listStack.length - 1].list
-                const lastItem = parentList.getLastChild()
-                if ($isListItemNode(lastItem)) {
-                  lastItem.append(newList)
+                let lastItem = parentList.getLastChild()
+
+                // If parent list is empty or last child is not a list item,
+                // create an empty list item to anchor the nested list
+                if (!lastItem || !$isListItemNode(lastItem)) {
+                  lastItem = $createListItemNode()
+                  parentList.append(lastItem)
                 }
+
+                lastItem.append(newList)
               }
 
               listStack.push({ level: newLevel, list: newList, type: listType })
@@ -478,10 +484,16 @@ export function initializeEditorWithPortableText(
               if (listStack.length > 0) {
                 // Append to the last item of the parent list
                 const parentList = listStack[listStack.length - 1].list
-                const lastItem = parentList.getLastChild()
-                if ($isListItemNode(lastItem)) {
-                  lastItem.append(newList)
+                let lastItem = parentList.getLastChild()
+
+                // If parent list is empty or last child is not a list item,
+                // create an empty list item to anchor the nested list
+                if (!lastItem || !$isListItemNode(lastItem)) {
+                  lastItem = $createListItemNode()
+                  parentList.append(lastItem)
                 }
+
+                lastItem.append(newList)
               }
 
               listStack.push({ level, list: newList, type: listType })
