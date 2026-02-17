@@ -66,9 +66,7 @@ export default function SearchForm() {
       }
     } catch (error) {
       console.error('Search error:', error)
-      toast.error(
-        error instanceof Error ? error.message : '検索に失敗しました'
-      )
+      toast.error(error instanceof Error ? error.message : '検索に失敗しました')
       setResults([])
     } finally {
       setIsLoading(false)

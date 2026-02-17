@@ -18,8 +18,8 @@ export default function SearchPage() {
     <>
       <Header />
       <main className="container mx-auto px-4 py-8">
-        <h1 className="font-bold text-3xl mb-6">ブログ記事検索</h1>
-        <p className="text-muted-foreground mb-8">
+        <h1 className="mb-6 font-bold text-3xl">ブログ記事検索</h1>
+        <p className="mb-8 text-muted-foreground">
           キーワードを入力して、関連する記事を検索できます。
         </p>
         <SearchForm />

@@ -47,7 +47,7 @@ function SimilarityBadge({ similarity }: { similarity: number }) {
 
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${colorClass}`}
+      className={`inline-flex items-center rounded-full px-2 py-1 font-medium text-xs ${colorClass}`}
     >
       関連度: {percentage}%
     </span>
@@ -58,14 +58,15 @@ function LoadingSkeleton() {
   return (
     <div className="space-y-6">
       {[...Array(3)].map((_, i) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: Loading skeletons have fixed order and count
         <Card key={i}>
           <CardHeader>
             <Skeleton className="h-6 w-3/4" />
-            <Skeleton className="h-4 w-1/2 mt-2" />
+            <Skeleton className="mt-2 h-4 w-1/2" />
           </CardHeader>
           <CardContent>
             <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-full mt-2" />
+            <Skeleton className="mt-2 h-4 w-full" />
           </CardContent>
         </Card>
       ))}
@@ -83,11 +84,11 @@ export default function SearchResults({
 
   if (results.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-muted-foreground text-lg">
+      <div className="py-12 text-center">
+        <p className="text-lg text-muted-foreground">
           検索結果が見つかりませんでした
         </p>
-        <p className="text-muted-foreground text-sm mt-2">
+        <p className="mt-2 text-muted-foreground text-sm">
           別のキーワードで検索してみてください
         </p>
       </div>
