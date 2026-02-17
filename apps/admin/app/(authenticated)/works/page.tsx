@@ -1,4 +1,3 @@
-import { Card } from '@ykzts/ui/components/card'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { getProfileTimezone, getWorks } from '@/lib/data'
@@ -13,7 +12,7 @@ async function WorksContent() {
   ])
 
   return (
-    <Card className="p-6">
+    <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
       {!works || works.length === 0 ? (
         <p className="text-muted-foreground">作品がありません</p>
       ) : (
@@ -55,7 +54,7 @@ async function WorksContent() {
           </table>
         </div>
       )}
-    </Card>
+    </div>
   )
 }
 
