@@ -402,10 +402,10 @@ export async function getPostCountByTag(tag: string, isDraft = false) {
  * Search posts using vector similarity search
  * @param query - Search query text
  * @param limit - Maximum number of results (default: 10)
- * @param threshold - Minimum similarity threshold (default: 0.78)
+ * @param threshold - Minimum similarity threshold (default: 0.4)
  * @returns Array of search results with similarity scores
  */
-export async function searchPosts(query: string, limit = 10, threshold = 0.78) {
+export async function searchPosts(query: string, limit = 10, threshold = 0.4) {
   cacheTag('posts')
 
   if (!supabase) {

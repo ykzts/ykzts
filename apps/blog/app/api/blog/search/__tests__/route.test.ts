@@ -238,7 +238,7 @@ describe('POST /api/blog/search', () => {
     expect(mockGenerateSearchEmbedding).toHaveBeenCalledWith('test query')
     expect(mockRpc).toHaveBeenCalledWith('search_posts_by_embedding', {
       match_count: 5,
-      match_threshold: 0.78,
+      match_threshold: 0.4,
       query_embedding: JSON.stringify(mockEmbedding)
     })
   })
