@@ -4,9 +4,9 @@ import { Suspense } from 'react'
 import { getProfileTimezone } from '@/lib/data'
 import { getPosts } from '@/lib/posts'
 import { formatDateWithTimezone } from '@/lib/timezones'
+import { AdminPagination } from './_components/admin-pagination'
 import { NewPostButton } from './_components/new-post-button'
 import { PostsFilters } from './_components/posts-filters'
-import { PostsPagination } from './_components/posts-pagination'
 import { PostsSkeleton } from './_components/posts-skeleton'
 
 async function PostsContent({
@@ -93,7 +93,7 @@ async function PostsContent({
       </div>
 
       {result.totalPages > 1 && (
-        <PostsPagination currentPage={page} totalPages={result.totalPages} />
+        <AdminPagination currentPage={page} totalPages={result.totalPages} />
       )}
     </>
   )
