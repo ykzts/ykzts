@@ -26,7 +26,11 @@ export function portableTextToMarkdown(content: Json | undefined): string {
     // Type assertion: Portable Text content should be an array of objects with _type
     return convertToMarkdown(content as PortableTextLike[])
   } catch (error) {
-    console.error('Failed to convert Portable Text to Markdown:', error)
+    const contentType = Array.isArray(content) ? 'array' : typeof content
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    console.error(
+      `Failed to convert Portable Text to Markdown. Content type: ${contentType}, Error: ${errorMessage}`
+    )
     return ''
   }
 }
