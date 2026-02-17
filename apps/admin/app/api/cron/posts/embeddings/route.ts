@@ -101,8 +101,7 @@ async function handleCronRequest(request: Request) {
         })
 
         // Update post with embedding and set timestamp
-        // Don't include updated_at - the trigger will preserve it automatically
-        // when only embedding columns change
+        // No need to preserve updated_at - we now compare with version_date instead
         const { error: updateError } = await supabase
           .from('posts')
           .update({
