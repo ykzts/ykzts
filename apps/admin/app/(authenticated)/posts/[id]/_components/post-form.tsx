@@ -1,10 +1,6 @@
 'use client'
 import { Button } from '@ykzts/ui/components/button'
-import {
-  Field,
-  FieldDescription,
-  FieldLabel
-} from '@ykzts/ui/components/field'
+import { Field, FieldDescription, FieldLabel } from '@ykzts/ui/components/field'
 import { Input } from '@ykzts/ui/components/input'
 import {
   Select,
@@ -289,9 +285,7 @@ export function PostForm({ post }: PostFormProps) {
               }}
               type="datetime-local"
             />
-            <FieldDescription>
-              指定した日時に自動公開されます
-            </FieldDescription>
+            <FieldDescription>指定した日時に自動公開されます</FieldDescription>
           </Field>
         )}
 
