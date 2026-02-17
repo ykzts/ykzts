@@ -441,4 +441,104 @@ export async function searchPosts(query: string, limit = 10, threshold = 0.78) {
   )
 }
 
+/**
+ * Get adjacent posts (previous and next) relative to the current post
+ * @param currentSlug - Slug of the current post
+ * @param isDraft - Whether to include draft posts (default: false)
+ * @returns Object containing previous (older) and next (newer) posts
+ */
+export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
+  cacheTag('posts')
+
+  if (!supabase) {
+    return { nextPost: null, previousPost: null }
+  }
+
+  // First, get only the published_at date of the current post (lightweight query)
+  let currentQuery = supabase
+    .from('posts')
+    .select('published_at')
+    .eq('slug', currentSlug)
+
+  if (!isDraft) {
+    currentQuery = currentQuery
+      .eq('status', 'published')
+      .lte('published_at', new Date().toISOString())
+  }
+
+  const { data: currentData, error: currentError } =
+    await currentQuery.maybeSingle()
+
+  if (currentError) {
+    throw new Error(`Failed to fetch current post: ${currentError.message}`)
+  }
+
+  if (!currentData) {
+    return { nextPost: null, previousPost: null }
+  }
+
+  const currentPublishedAt = currentData.published_at as string
+
+  // Build base filters (apply same filters as getPostBySlug)
+  const buildQuery = () => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    let query = supabase!.from('posts').select(
+      `
+      slug,
+      title,
+      published_at
+    `
+    )
+
+    if (!isDraft) {
+      query = query
+        .eq('status', 'published')
+        .lte('published_at', new Date().toISOString())
+    }
+
+    return query
+  }
+
+  // Get next post (newer, published_at >= current, excluding current post)
+  const { data: nextData, error: nextError } = await buildQuery()
+    .gte('published_at', currentPublishedAt)
+    .neq('slug', currentSlug)
+    .order('published_at', { ascending: true })
+    .limit(1)
+    .maybeSingle()
+
+  if (nextError) {
+    throw new Error(`Failed to fetch next post: ${nextError.message}`)
+  }
+
+  // Get previous post (older, published_at <= current, excluding current post)
+  const { data: prevData, error: prevError } = await buildQuery()
+    .lte('published_at', currentPublishedAt)
+    .neq('slug', currentSlug)
+    .order('published_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  if (prevError) {
+    throw new Error(`Failed to fetch previous post: ${prevError.message}`)
+  }
+
+  return {
+    nextPost: nextData
+      ? {
+          published_at: nextData.published_at as string,
+          slug: nextData.slug as string,
+          title: nextData.title as string
+        }
+      : null,
+    previousPost: prevData
+      ? {
+          published_at: prevData.published_at as string,
+          slug: prevData.slug as string,
+          title: prevData.title as string
+        }
+      : null
+  }
+}
+
 export { POSTS_PER_PAGE }
