@@ -454,32 +454,54 @@ export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
     return { nextPost: null, previousPost: null }
   }
 
-  // First, get the current post to retrieve its published_at date
-  const currentPost = await getPostBySlug(currentSlug, isDraft)
+  // First, get only the published_at date of the current post (lightweight query)
+  let currentQuery = supabase
+    .from('posts')
+    .select('published_at')
+    .eq('slug', currentSlug)
 
-  if (!currentPost) {
-    return { nextPost: null, previousPost: null }
-  }
-
-  // Build base query for adjacent posts
-  let baseQuery = supabase.from('posts').select(
-    `
-      slug,
-      title,
-      published_at
-    `
-  )
-
-  // Apply same filters as getPostBySlug
   if (!isDraft) {
-    baseQuery = baseQuery
+    currentQuery = currentQuery
       .eq('status', 'published')
       .lte('published_at', new Date().toISOString())
   }
 
+  const { data: currentData, error: currentError } =
+    await currentQuery.maybeSingle()
+
+  if (currentError) {
+    throw new Error(`Failed to fetch current post: ${currentError.message}`)
+  }
+
+  if (!currentData) {
+    return { nextPost: null, previousPost: null }
+  }
+
+  const currentPublishedAt = currentData.published_at as string
+
+  // Build base filters (apply same filters as getPostBySlug)
+  const buildQuery = () => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    let query = supabase!.from('posts').select(
+      `
+      slug,
+      title,
+      published_at
+    `
+    )
+
+    if (!isDraft) {
+      query = query
+        .eq('status', 'published')
+        .lte('published_at', new Date().toISOString())
+    }
+
+    return query
+  }
+
   // Get next post (newer, published_at > current)
-  const { data: nextData, error: nextError } = await baseQuery
-    .gt('published_at', currentPost.published_at)
+  const { data: nextData, error: nextError } = await buildQuery()
+    .gt('published_at', currentPublishedAt)
     .order('published_at', { ascending: true })
     .limit(1)
     .maybeSingle()
@@ -489,8 +511,8 @@ export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
   }
 
   // Get previous post (older, published_at < current)
-  const { data: prevData, error: prevError } = await baseQuery
-    .lt('published_at', currentPost.published_at)
+  const { data: prevData, error: prevError } = await buildQuery()
+    .lt('published_at', currentPublishedAt)
     .order('published_at', { ascending: false })
     .limit(1)
     .maybeSingle()

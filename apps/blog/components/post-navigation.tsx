@@ -44,45 +44,41 @@ export default function PostNavigation({
       aria-label="記事ナビゲーション"
       className="mt-12 flex flex-col gap-4 border-gray-200 border-t pt-8 sm:flex-row sm:justify-between"
     >
-      <div className="flex-1">
-        {prevUrl && previousPost ? (
-          <div className="flex flex-col gap-1">
-            <span className="text-muted-foreground text-sm">前の記事</span>
-            <Link
-              className={cn(
-                buttonVariants({ variant: 'outline' }),
-                'h-auto justify-start whitespace-normal p-4 text-left'
-              )}
-              href={prevUrl}
-            >
-              {previousPost.title}
-            </Link>
-          </div>
-        ) : (
-          <div className="invisible" />
-        )}
-      </div>
+      {prevUrl && previousPost ? (
+        <div className="flex flex-1 flex-col gap-1">
+          <span className="text-muted-foreground text-sm">前の記事</span>
+          <Link
+            className={cn(
+              buttonVariants({ variant: 'outline' }),
+              'h-auto justify-start whitespace-normal p-4 text-left'
+            )}
+            href={prevUrl}
+          >
+            {previousPost.title}
+          </Link>
+        </div>
+      ) : (
+        <div className="hidden flex-1 sm:block" />
+      )}
 
-      <div className="flex-1">
-        {nextUrl && nextPost ? (
-          <div className="flex flex-col gap-1">
-            <span className="text-muted-foreground text-sm sm:text-right">
-              次の記事
-            </span>
-            <Link
-              className={cn(
-                buttonVariants({ variant: 'outline' }),
-                'h-auto justify-start whitespace-normal p-4 text-left sm:text-right'
-              )}
-              href={nextUrl}
-            >
-              {nextPost.title}
-            </Link>
-          </div>
-        ) : (
-          <div className="invisible" />
-        )}
-      </div>
+      {nextUrl && nextPost ? (
+        <div className="flex flex-1 flex-col gap-1">
+          <span className="text-muted-foreground text-sm sm:text-right">
+            次の記事
+          </span>
+          <Link
+            className={cn(
+              buttonVariants({ variant: 'outline' }),
+              'h-auto justify-start whitespace-normal p-4 text-left sm:text-right'
+            )}
+            href={nextUrl}
+          >
+            {nextPost.title}
+          </Link>
+        </div>
+      ) : (
+        <div className="hidden flex-1 sm:block" />
+      )}
     </nav>
   )
 }
