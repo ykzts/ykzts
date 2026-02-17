@@ -1,5 +1,4 @@
 import { Button } from '@ykzts/ui/components/button'
-import { Card } from '@ykzts/ui/components/card'
 import { UserCircle } from 'lucide-react'
 import Image from 'next/image'
 import { Suspense } from 'react'
@@ -15,7 +14,7 @@ async function ProfileContent() {
   ])
 
   return (
-    <Card className="p-6">
+    <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
       {!profile ? (
         <div>
           <p className="text-muted-foreground">
@@ -135,7 +134,7 @@ async function ProfileContent() {
           <Button type="submit">編集</Button>
         </form>
       </div>
-    </Card>
+    </div>
   )
 }
 

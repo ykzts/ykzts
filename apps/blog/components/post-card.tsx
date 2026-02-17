@@ -47,11 +47,9 @@ export default function PostCard({ post }: PostCardProps) {
             {post.title}
           </Link>
         </CardTitle>
-        <CardDescription>
-          <div className="flex items-center gap-4">
-            {post.profile?.name && <span>著者: {post.profile.name}</span>}
-            <DateDisplay date={post.published_at} />
-          </div>
+        <CardDescription className="flex items-center gap-4">
+          {post.profile?.name && <span>著者: {post.profile.name}</span>}
+          <DateDisplay date={post.published_at} />
         </CardDescription>
       </CardHeader>
       {post.excerpt && (

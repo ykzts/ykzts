@@ -1,10 +1,8 @@
-import { Card } from '@ykzts/ui/components/card'
-
 export function VersionsSkeleton() {
   return (
     <div className="space-y-6">
       {/* Post Info Skeleton */}
-      <Card className="p-6">
+      <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
         <div className="mb-4 h-6 w-24 animate-pulse rounded bg-muted" />
         <div className="space-y-3">
           <div>
@@ -20,10 +18,10 @@ export function VersionsSkeleton() {
             <div className="h-5 w-16 animate-pulse rounded bg-muted" />
           </div>
         </div>
-      </Card>
+      </div>
 
       {/* Versions List Skeleton */}
-      <Card className="p-6">
+      <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
         <div className="mb-4 h-6 w-24 animate-pulse rounded bg-muted" />
         <div className="space-y-4">
           {[0, 1, 2].map((i) => (
@@ -44,7 +42,7 @@ export function VersionsSkeleton() {
             </div>
           ))}
         </div>
-      </Card>
+      </div>
     </div>
   )
 }

@@ -1,8 +1,6 @@
-import { Card } from '@ykzts/ui/components/card'
-
 export function WorksPageSkeleton() {
   return (
-    <Card className="p-6">
+    <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
@@ -37,6 +35,6 @@ export function WorksPageSkeleton() {
           </tbody>
         </table>
       </div>
-    </Card>
+    </div>
   )
 }

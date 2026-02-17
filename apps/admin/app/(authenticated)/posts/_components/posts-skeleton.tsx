@@ -1,8 +1,6 @@
-import { Card } from '@ykzts/ui/components/card'
-
 export function PostsSkeleton() {
   return (
-    <Card className="p-6">
+    <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
       <div className="space-y-4">
         {/* Table Header Skeleton */}
         <div className="overflow-x-auto">
@@ -51,6 +49,6 @@ export function PostsSkeleton() {
           </table>
         </div>
       </div>
-    </Card>
+    </div>
   )
 }
