@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Suspense } from 'react'
 import { Panel } from '@/components/panel'
 import { getCounts } from '@/lib/data'
+import { DashboardSkeleton } from './_components/dashboard-skeleton'
 
 async function DashboardContent() {
   const counts = await getCounts()
@@ -41,7 +42,7 @@ export default function AdminDashboard() {
   return (
     <div>
       <h1 className="mb-8 font-bold text-3xl">ダッシュボード</h1>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<DashboardSkeleton />}>
         <DashboardContent />
       </Suspense>
     </div>
