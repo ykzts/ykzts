@@ -135,6 +135,9 @@ importers:
       '@ykzts/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      ai:
+        specifier: 6.0.86
+        version: 6.0.86(zod@4.3.6)
       feed:
         specifier: 5.2.0
         version: 5.2.0
