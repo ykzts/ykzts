@@ -32,6 +32,7 @@ export async function getProfile() {
         tagline,
         about,
         email,
+        avatar_url,
         social_links(url, service),
         technologies(name)
       `
