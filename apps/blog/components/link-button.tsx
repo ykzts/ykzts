@@ -1,49 +1,24 @@
 'use client'
 
-import { buttonVariants } from '@ykzts/ui/components/button'
-import { cn } from '@ykzts/ui/lib/utils'
+import { Button } from '@ykzts/ui/components/button'
 import Link from 'next/link'
 import type { ComponentProps } from 'react'
 
-type LinkButtonProps = ComponentProps<typeof Link> & {
-  className?: string
-  variant?:
-    | 'default'
-    | 'outline'
-    | 'secondary'
-    | 'ghost'
-    | 'destructive'
-    | 'link'
-  size?:
-    | 'default'
-    | 'xs'
-    | 'sm'
-    | 'lg'
-    | 'icon'
-    | 'icon-xs'
-    | 'icon-sm'
-    | 'icon-lg'
-}
+type LinkButtonProps = Omit<ComponentProps<typeof Button>, 'render'> &
+  Pick<ComponentProps<typeof Link>, 'href'>
 
 /**
  * A button-styled link component for navigation.
- * Combines Next.js Link functionality with Button styling.
+ * Combines Next.js Link functionality with Button component.
  */
 export default function LinkButton({
   children,
-  className,
-  variant = 'default',
-  size = 'default',
   href,
   ...props
 }: LinkButtonProps) {
   return (
-    <Link
-      className={cn(buttonVariants({ className, size, variant }))}
-      href={href}
-      {...props}
-    >
+    <Button render={<Link href={href} />} {...props}>
       {children}
-    </Link>
+    </Button>
   )
 }
