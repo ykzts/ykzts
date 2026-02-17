@@ -8,6 +8,8 @@ export interface Frontmatter {
     author?: string
     date?: string
   }
+  publishdate?: string // Legacy field for publish date
+  publishDate?: string // Alternative form of publishdate
   tags?: string[]
   title?: string
 }
@@ -86,6 +88,10 @@ function parseFrontmatter(frontmatterText: string): Frontmatter {
         frontmatter.date = value.trim()
       } else if (key === 'lastmod') {
         frontmatter.lastmod = value.trim()
+      } else if (key === 'publishdate') {
+        frontmatter.publishdate = value.trim()
+      } else if (key === 'publishDate') {
+        frontmatter.publishDate = value.trim()
       } else if (key === 'title') {
         // Remove quotes from YAML values (e.g., 'text' -> text, "text" -> text)
         let titleValue = value.trim()

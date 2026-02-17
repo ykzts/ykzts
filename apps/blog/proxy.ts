@@ -45,9 +45,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    // Only process non-standard blog paths that might be legacy redirects
-    // Excludes: API routes, _next, static files, canonical URLs, standard pages
-    '/blog/((?!api|_next|atom\\.xml|sitemap\\.xml|robots\\.txt|page\\/|tags\\/|\\d{4}\\/\\d{2}\\/\\d{2}\\/).+)'
-  ]
+  matcher: '/blog/:path*'
 }
