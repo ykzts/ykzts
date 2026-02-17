@@ -464,7 +464,10 @@ export function initializeEditorWithPortableText(
                   parentList.append(lastItem)
                 }
 
-                lastItem.append(newList)
+                // TypeScript now knows lastItem is a ListItemNode after the guard
+                if ($isListItemNode(lastItem)) {
+                  lastItem.append(newList)
+                }
               }
 
               listStack.push({ level: newLevel, list: newList, type: listType })
@@ -493,7 +496,10 @@ export function initializeEditorWithPortableText(
                   parentList.append(lastItem)
                 }
 
-                lastItem.append(newList)
+                // TypeScript now knows lastItem is a ListItemNode after the guard
+                if ($isListItemNode(lastItem)) {
+                  lastItem.append(newList)
+                }
               }
 
               listStack.push({ level, list: newList, type: listType })
