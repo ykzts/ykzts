@@ -1,11 +1,12 @@
-import { Badge } from '@ykzts/ui/components/badge'
 import { Button } from '@ykzts/ui/components/button'
 import { Card } from '@ykzts/ui/components/card'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
+import { portableTextToMarkdown } from '@/lib/portable-text-to-markdown'
 import { compareVersions, getPostById } from '@/lib/posts'
 import { CompareSkeleton } from './_components/compare-skeleton'
+import { ContentDiff } from './_components/content-diff'
 
 function DiffItem({
   label,
@@ -139,26 +140,12 @@ async function CompareContent({
 
       <Card className="p-6">
         <h3 className="mb-4 font-bold text-lg">コンテンツの変更</h3>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div>
-            <div className="mb-2 flex items-center gap-2">
-              <Badge variant="secondary">v{version1.version_number}</Badge>
-              <span className="font-medium text-sm">古いバージョン</span>
-            </div>
-            <pre className="overflow-auto rounded bg-red-50 p-4 text-xs dark:bg-red-950/20">
-              {JSON.stringify(version1.content, null, 2)}
-            </pre>
-          </div>
-          <div>
-            <div className="mb-2 flex items-center gap-2">
-              <Badge variant="default">v{version2.version_number}</Badge>
-              <span className="font-medium text-sm">新しいバージョン</span>
-            </div>
-            <pre className="overflow-auto rounded bg-green-50 p-4 text-xs dark:bg-green-950/20">
-              {JSON.stringify(version2.content, null, 2)}
-            </pre>
-          </div>
-        </div>
+        <ContentDiff
+          newContent={portableTextToMarkdown(version2.content)}
+          oldContent={portableTextToMarkdown(version1.content)}
+          version1Number={version1.version_number}
+          version2Number={version2.version_number}
+        />
       </Card>
 
       <div className="flex justify-between">
