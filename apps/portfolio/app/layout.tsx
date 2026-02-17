@@ -1,5 +1,6 @@
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
+import { Toaster } from '@ykzts/ui/components/sonner'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
 import { twMerge } from 'tailwind-merge'
@@ -66,6 +67,7 @@ export default function RootLayout({ children, modal }: LayoutProps<'/'>) {
         {children}
         {modal}
 
+        <Toaster />
         <Analytics />
       </body>
     </html>
