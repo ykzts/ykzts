@@ -14,6 +14,12 @@ type PostNavigationProps = {
   nextPost: PostNavigationItem | null
 }
 
+/**
+ * Constructs a date-based URL path for a blog post.
+ * @param slug - The post slug
+ * @param publishedAt - ISO 8601 timestamp of when the post was published
+ * @returns Date-based URL in format /blog/YYYY/MM/DD/slug
+ */
 function getDateBasedUrl(slug: string, publishedAt: string): Route {
   const date = new Date(publishedAt)
   const year = date.getUTCFullYear()
