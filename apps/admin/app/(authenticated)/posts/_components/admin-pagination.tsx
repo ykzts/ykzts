@@ -3,7 +3,6 @@
 import {
   Pagination,
   PaginationContent,
-  PaginationDisabled,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
@@ -17,6 +16,24 @@ import { useRouter, useSearchParams } from 'next/navigation'
 type AdminPaginationProps = {
   currentPage: number
   totalPages: number
+}
+
+function DisabledButton({
+  children,
+  icon
+}: {
+  children: React.ReactNode
+  icon: React.ReactNode
+}) {
+  return (
+    <span
+      aria-disabled="true"
+      className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-transparent px-4 font-medium text-muted-foreground text-sm transition-colors"
+    >
+      {icon}
+      {children}
+    </span>
+  )
 }
 
 export function AdminPagination({
@@ -62,11 +79,9 @@ export function AdminPagination({
               text="前へ"
             />
           ) : (
-            <PaginationDisabled
-              icon={<ChevronLeftIcon data-icon="inline-start" />}
-            >
+            <DisabledButton icon={<ChevronLeftIcon data-icon="inline-start" />}>
               <span className="hidden sm:block">前へ</span>
-            </PaginationDisabled>
+            </DisabledButton>
           )}
         </PaginationItem>
 
@@ -138,11 +153,9 @@ export function AdminPagination({
               text="次へ"
             />
           ) : (
-            <PaginationDisabled
-              icon={<ChevronRightIcon data-icon="inline-end" />}
-            >
+            <DisabledButton icon={<ChevronRightIcon data-icon="inline-end" />}>
               <span className="hidden sm:block">次へ</span>
-            </PaginationDisabled>
+            </DisabledButton>
           )}
         </PaginationItem>
       </PaginationContent>
