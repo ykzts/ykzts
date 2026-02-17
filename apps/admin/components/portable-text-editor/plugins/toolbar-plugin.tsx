@@ -30,7 +30,9 @@ import {
   $getSelection,
   $isParagraphNode,
   $isRangeSelection,
-  FORMAT_TEXT_COMMAND
+  FORMAT_TEXT_COMMAND,
+  INDENT_CONTENT_COMMAND,
+  OUTDENT_CONTENT_COMMAND
 } from 'lexical'
 import {
   Bold,
@@ -228,46 +230,11 @@ export function ToolbarPlugin() {
   }
 
   const handleIndent = () => {
-    editor.update(() => {
-      const selection = $getSelection()
-      if ($isRangeSelection(selection)) {
-        const anchorNode = selection.anchor.getNode()
-        // Check if we're in a list item
-        const listNode = $getNearestNodeOfType(anchorNode, ListNode)
-        if (listNode) {
-          // Dispatch Tab key to trigger Lexical's built-in indent behavior
-          editor.getRootElement()?.dispatchEvent(
-            new KeyboardEvent('keydown', {
-              bubbles: true,
-              cancelable: true,
-              key: 'Tab'
-            })
-          )
-        }
-      }
-    })
+    editor.dispatchCommand(INDENT_CONTENT_COMMAND, undefined)
   }
 
   const handleOutdent = () => {
-    editor.update(() => {
-      const selection = $getSelection()
-      if ($isRangeSelection(selection)) {
-        const anchorNode = selection.anchor.getNode()
-        // Check if we're in a list item
-        const listNode = $getNearestNodeOfType(anchorNode, ListNode)
-        if (listNode) {
-          // Dispatch Shift+Tab key to trigger Lexical's built-in outdent behavior
-          editor.getRootElement()?.dispatchEvent(
-            new KeyboardEvent('keydown', {
-              bubbles: true,
-              cancelable: true,
-              key: 'Tab',
-              shiftKey: true
-            })
-          )
-        }
-      }
-    })
+    editor.dispatchCommand(OUTDENT_CONTENT_COMMAND, undefined)
   }
 
   const formatBlockType = (
