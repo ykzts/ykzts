@@ -5,10 +5,15 @@ import { metadata as layoutMetadata } from '@/app/layout'
 import DateDisplay from '@/components/date-display'
 import Header from '@/components/header'
 import PortableTextBlock from '@/components/portable-text'
+import PostNavigation from '@/components/post-navigation'
 import TagList from '@/components/tag-list'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
 import { isPortableTextValue } from '@/lib/portable-text'
-import { getAllPosts, getPostBySlug } from '@/lib/supabase/posts'
+import {
+  getAdjacentPosts,
+  getAllPosts,
+  getPostBySlug
+} from '@/lib/supabase/posts'
 import { getPublisherProfile } from '@/lib/supabase/profiles'
 
 type PageProps = {
@@ -133,6 +138,9 @@ export default async function PostDetailPage({ params }: PageProps) {
   // Fetch publisher profile dynamically
   const publisherProfile = await getPublisherProfile()
 
+  // Fetch adjacent posts for navigation
+  const { previousPost, nextPost } = await getAdjacentPosts(slug, isDraft)
+
   // JSON-LD structured data for Article schema
   const baseUrl = layoutMetadata.metadataBase?.toString() || 'https://ykzts.com'
   const jsonLd = {
@@ -183,6 +191,7 @@ export default async function PostDetailPage({ params }: PageProps) {
             )}
           </header>
           <PortableTextBlock value={post.content} />
+          <PostNavigation nextPost={nextPost} previousPost={previousPost} />
         </article>
       </main>
     </>

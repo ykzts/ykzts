@@ -441,4 +441,80 @@ export async function searchPosts(query: string, limit = 10, threshold = 0.78) {
   )
 }
 
+/**
+ * Get adjacent posts (previous and next) relative to the current post
+ * @param currentSlug - Slug of the current post
+ * @param isDraft - Whether to include draft posts (default: false)
+ * @returns Object containing previous (older) and next (newer) posts
+ */
+export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
+  cacheTag('posts')
+
+  if (!supabase) {
+    return { nextPost: null, previousPost: null }
+  }
+
+  // First, get the current post to retrieve its published_at date
+  const currentPost = await getPostBySlug(currentSlug, isDraft)
+
+  if (!currentPost) {
+    return { nextPost: null, previousPost: null }
+  }
+
+  // Build base query for adjacent posts
+  let baseQuery = supabase.from('posts').select(
+    `
+      slug,
+      title,
+      published_at
+    `
+  )
+
+  // Apply same filters as getPostBySlug
+  if (!isDraft) {
+    baseQuery = baseQuery
+      .eq('status', 'published')
+      .lte('published_at', new Date().toISOString())
+  }
+
+  // Get next post (newer, published_at > current)
+  const { data: nextData, error: nextError } = await baseQuery
+    .gt('published_at', currentPost.published_at)
+    .order('published_at', { ascending: true })
+    .limit(1)
+    .maybeSingle()
+
+  if (nextError) {
+    throw new Error(`Failed to fetch next post: ${nextError.message}`)
+  }
+
+  // Get previous post (older, published_at < current)
+  const { data: prevData, error: prevError } = await baseQuery
+    .lt('published_at', currentPost.published_at)
+    .order('published_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  if (prevError) {
+    throw new Error(`Failed to fetch previous post: ${prevError.message}`)
+  }
+
+  return {
+    nextPost: nextData
+      ? {
+          published_at: nextData.published_at as string,
+          slug: nextData.slug as string,
+          title: nextData.title as string
+        }
+      : null,
+    previousPost: prevData
+      ? {
+          published_at: prevData.published_at as string,
+          slug: prevData.slug as string,
+          title: prevData.title as string
+        }
+      : null
+  }
+}
+
 export { POSTS_PER_PAGE }
