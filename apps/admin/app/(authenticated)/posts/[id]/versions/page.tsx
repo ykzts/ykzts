@@ -1,6 +1,5 @@
 import { Badge } from '@ykzts/ui/components/badge'
 import { Button } from '@ykzts/ui/components/button'
-import { Card } from '@ykzts/ui/components/card'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
@@ -19,7 +18,7 @@ async function VersionsContent({ postId }: { postId: string }) {
 
   return (
     <div className="space-y-6">
-      <Card className="p-6">
+      <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
         <h2 className="mb-4 font-bold text-xl">投稿情報</h2>
         <dl className="space-y-2">
           <div>
@@ -47,9 +46,9 @@ async function VersionsContent({ postId }: { postId: string }) {
             </dd>
           </div>
         </dl>
-      </Card>
+      </div>
 
-      <Card className="p-6">
+      <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
         <h2 className="mb-4 font-bold text-xl">バージョン履歴</h2>
 
         {versions.length === 0 ? (
@@ -121,7 +120,7 @@ async function VersionsContent({ postId }: { postId: string }) {
             ))}
           </div>
         )}
-      </Card>
+      </div>
 
       <div className="flex justify-between">
         <Button render={<Link href={`/posts/${postId}`} />} variant="outline">

@@ -1,6 +1,5 @@
 import { Badge } from '@ykzts/ui/components/badge'
 import { Button } from '@ykzts/ui/components/button'
-import { Card } from '@ykzts/ui/components/card'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
@@ -28,7 +27,7 @@ async function VersionDetailContent({
 
   return (
     <div className="space-y-6">
-      <Card className="p-6">
+      <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h2 className="font-bold text-xl">
@@ -71,9 +70,9 @@ async function VersionDetailContent({
             </div>
           )}
         </dl>
-      </Card>
+      </div>
 
-      <Card className="p-6">
+      <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
         <h2 className="mb-4 font-bold text-xl">コンテンツ</h2>
 
         <dl className="space-y-4">
@@ -119,7 +118,7 @@ async function VersionDetailContent({
             </pre>
           </dd>
         </dl>
-      </Card>
+      </div>
 
       <div className="flex justify-between">
         <Button

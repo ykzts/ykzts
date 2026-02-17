@@ -1,8 +1,6 @@
-import { Card } from '@ykzts/ui/components/card'
-
 export function CompareSkeleton() {
   return (
-    <Card className="p-6">
+    <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
       <div className="space-y-4">
         <div className="mb-4 flex items-center justify-between">
           <div className="h-6 w-32 animate-pulse rounded bg-muted" />
@@ -31,6 +29,6 @@ export function CompareSkeleton() {
           ))}
         </div>
       </div>
-    </Card>
+    </div>
   )
 }

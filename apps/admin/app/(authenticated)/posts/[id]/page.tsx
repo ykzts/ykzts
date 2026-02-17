@@ -1,4 +1,3 @@
-import { Card } from '@ykzts/ui/components/card'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { getPostById } from '@/lib/posts'
@@ -18,9 +17,9 @@ async function PostEditContent({ id }: { id: string }) {
   }
 
   return (
-    <Card className="p-6">
+    <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
       <PostForm post={post} />
-    </Card>
+    </div>
   )
 }
 
@@ -36,9 +35,9 @@ export default async function EditPostPage({
       <h1 className="mb-6 font-bold text-3xl">投稿編集</h1>
       <Suspense
         fallback={
-          <Card className="p-6">
+          <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
             <PostFormSkeleton />
-          </Card>
+          </div>
         }
       >
         <PostEditContent id={id} />

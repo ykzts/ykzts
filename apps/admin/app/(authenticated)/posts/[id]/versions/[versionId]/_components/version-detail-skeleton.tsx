@@ -1,9 +1,7 @@
-import { Card } from '@ykzts/ui/components/card'
-
 export function VersionDetailSkeleton() {
   return (
     <div className="space-y-6">
-      <Card className="p-6">
+      <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
         <div className="mb-4 h-6 w-32 animate-pulse rounded bg-muted" />
         <div className="space-y-3">
           {[0, 1, 2, 3, 4].map((i) => (
@@ -13,7 +11,7 @@ export function VersionDetailSkeleton() {
             </div>
           ))}
         </div>
-      </Card>
+      </div>
 
       <div className="flex justify-between">
         <div className="h-10 w-24 animate-pulse rounded bg-muted" />
