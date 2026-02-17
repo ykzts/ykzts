@@ -481,8 +481,8 @@ export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
 
   // Build base filters (apply same filters as getPostBySlug)
   const buildQuery = () => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    let query = supabase?.from('posts').select(
+    // biome-ignore lint/style/noNonNullAssertion: supabase is guaranteed to be non-null at this point (checked at function start)
+    let query = supabase!.from('posts').select(
       `
       slug,
       title,
