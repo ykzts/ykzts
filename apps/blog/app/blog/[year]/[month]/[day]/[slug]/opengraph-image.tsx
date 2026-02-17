@@ -66,6 +66,7 @@ export default async function Image({ params }: Props) {
       >
         <div
           style={{
+            display: 'flex',
             fontSize: 64,
             fontWeight: 900,
             lineHeight: 1.3,
@@ -78,6 +79,7 @@ export default async function Image({ params }: Props) {
           <div
             style={{
               color: '#999',
+              display: 'flex',
               fontSize: 32,
               lineHeight: 1.5
             }}
