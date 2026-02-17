@@ -1,4 +1,5 @@
 import { Button } from '@ykzts/ui/components/button'
+import { Panel } from '@ykzts/ui/components/panel'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
@@ -79,7 +80,7 @@ async function CompareContent({
 
   return (
     <div className="space-y-6">
-      <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
+      <Panel>
         <div className="mb-4 flex items-center justify-between">
           <div>
             <h2 className="font-bold text-xl">バージョン比較</h2>
@@ -88,9 +89,9 @@ async function CompareContent({
             </p>
           </div>
         </div>
-      </div>
+      </Panel>
 
-      <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
+      <Panel>
         <h3 className="mb-4 font-bold text-lg">メタデータの変更</h3>
         <div className="space-y-4">
           <DiffItem
@@ -109,9 +110,9 @@ async function CompareContent({
             oldValue={version1.tags}
           />
         </div>
-      </div>
+      </Panel>
 
-      <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
+      <Panel>
         <h3 className="mb-4 font-bold text-lg">変更サマリー</h3>
         <div className="space-y-3">
           {version1.change_summary && (
@@ -135,9 +136,9 @@ async function CompareContent({
             </div>
           )}
         </div>
-      </div>
+      </Panel>
 
-      <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
+      <Panel>
         <h3 className="mb-4 font-bold text-lg">コンテンツの変更</h3>
         <ContentDiff
           newContent={portableTextToMarkdown(version2.content)}
@@ -145,7 +146,7 @@ async function CompareContent({
           version1Number={version1.version_number}
           version2Number={version2.version_number}
         />
-      </div>
+      </Panel>
 
       <div className="flex justify-between">
         <Button
@@ -192,7 +193,7 @@ async function ComparePageContent({
   if (!from || !to) {
     return (
       <div>
-        <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
+        <Panel>
           <p className="text-error">比較するバージョンが指定されていません</p>
           <Button
             className="mt-4"
@@ -201,7 +202,7 @@ async function ComparePageContent({
           >
             履歴に戻る
           </Button>
-        </div>
+        </Panel>
       </div>
     )
   }

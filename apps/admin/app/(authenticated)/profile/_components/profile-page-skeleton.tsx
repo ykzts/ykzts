@@ -1,6 +1,8 @@
+import { Panel } from '@ykzts/ui/components/panel'
+
 export function ProfilePageSkeleton() {
   return (
-    <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
+    <Panel>
       <div className="space-y-4">
         {/* 名前 */}
         <div>
@@ -57,6 +59,6 @@ export function ProfilePageSkeleton() {
       <div className="mt-4 border-border border-t pt-4">
         <div className="h-10 w-16 animate-pulse rounded bg-muted/20" />
       </div>
-    </div>
+    </Panel>
   )
 }

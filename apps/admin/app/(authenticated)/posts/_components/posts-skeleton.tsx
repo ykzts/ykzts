@@ -1,6 +1,8 @@
+import { Panel } from '@ykzts/ui/components/panel'
+
 export function PostsSkeleton() {
   return (
-    <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
+    <Panel>
       <div className="space-y-4">
         {/* Table Header Skeleton */}
         <div className="overflow-x-auto">
@@ -49,6 +51,6 @@ export function PostsSkeleton() {
           </table>
         </div>
       </div>
-    </div>
+    </Panel>
   )
 }
