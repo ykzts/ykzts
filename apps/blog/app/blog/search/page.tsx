@@ -1,19 +1,64 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import Header from '@/components/header'
 import SearchForm from '@/components/search-form'
+import SearchResults from '@/components/search-results'
+import { searchPosts } from '@/lib/supabase/posts'
 
-export const metadata: Metadata = {
-  description: 'ブログ記事を検索',
-  openGraph: {
-    description: 'ブログ記事を検索',
-    title: 'Search | ykzts.com/blog',
-    type: 'website',
-    url: 'https://ykzts.com/blog/search'
-  },
-  title: 'Search'
+type SearchPageProps = {
+  searchParams: Promise<{ q?: string }>
 }
 
-export default function SearchPage() {
+export async function generateMetadata({
+  searchParams
+}: SearchPageProps): Promise<Metadata> {
+  const { q } = await searchParams
+
+  if (q) {
+    return {
+      description: `「${q}」の検索結果`,
+      title: `${q} - 検索結果`
+    }
+  }
+
+  return {
+    description: 'ブログ記事を検索',
+    openGraph: {
+      description: 'ブログ記事を検索',
+      title: 'Search | ykzts.com/blog',
+      type: 'website',
+      url: 'https://ykzts.com/blog/search'
+    },
+    title: 'Search'
+  }
+}
+
+async function SearchContent({ searchParams }: SearchPageProps) {
+  const { q } = await searchParams
+  const query = q?.trim() || ''
+
+  let results: Awaited<ReturnType<typeof searchPosts>> = []
+  let hasSearched = false
+
+  if (query) {
+    hasSearched = true
+    try {
+      results = await searchPosts(query, 10)
+    } catch (error) {
+      console.error('Search error:', error)
+      // Results will be empty array on error
+    }
+  }
+
+  return (
+    <>
+      <SearchForm className="mb-8" defaultQuery={query} />
+      {hasSearched && <SearchResults query={query} results={results} />}
+    </>
+  )
+}
+
+export default async function SearchPage({ searchParams }: SearchPageProps) {
   return (
     <>
       <Header />
@@ -22,7 +67,10 @@ export default function SearchPage() {
         <p className="mb-8 text-muted-foreground">
           キーワードを入力して、関連する記事を検索できます。
         </p>
-        <SearchForm />
+
+        <Suspense fallback={<SearchForm className="mb-8" />}>
+          <SearchContent searchParams={searchParams} />
+        </Suspense>
       </main>
     </>
   )

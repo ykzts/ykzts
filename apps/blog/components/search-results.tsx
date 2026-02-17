@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle
 } from '@ykzts/ui/components/card'
-import { Skeleton } from '@ykzts/ui/components/skeleton'
 import type { Route } from 'next'
 import Link from 'next/link'
 import DateDisplay from './date-display'
@@ -23,7 +22,7 @@ type SearchResult = {
 }
 
 type SearchResultsProps = {
-  isLoading: boolean
+  query: string
   results: SearchResult[]
 }
 
@@ -54,39 +53,12 @@ function SimilarityBadge({ similarity }: { similarity: number }) {
   )
 }
 
-function LoadingSkeleton() {
-  return (
-    <div className="space-y-6">
-      {[...Array(3)].map((_, i) => (
-        // biome-ignore lint/suspicious/noArrayIndexKey: Loading skeletons have fixed order and count
-        <Card key={i}>
-          <CardHeader>
-            <Skeleton className="h-6 w-3/4" />
-            <Skeleton className="mt-2 h-4 w-1/2" />
-          </CardHeader>
-          <CardContent>
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="mt-2 h-4 w-full" />
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  )
-}
-
-export default function SearchResults({
-  isLoading,
-  results
-}: SearchResultsProps) {
-  if (isLoading) {
-    return <LoadingSkeleton />
-  }
-
+export default function SearchResults({ query, results }: SearchResultsProps) {
   if (results.length === 0) {
     return (
       <div className="py-12 text-center">
         <p className="text-lg text-muted-foreground">
-          検索結果が見つかりませんでした
+          「{query}」の検索結果が見つかりませんでした
         </p>
         <p className="mt-2 text-muted-foreground text-sm">
           別のキーワードで検索してみてください

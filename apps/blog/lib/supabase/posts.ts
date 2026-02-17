@@ -398,4 +398,47 @@ export async function getPostCountByTag(tag: string, isDraft = false) {
   return count ?? 0
 }
 
+/**
+ * Search posts using vector similarity search
+ * @param query - Search query text
+ * @param limit - Maximum number of results (default: 10)
+ * @param threshold - Minimum similarity threshold (default: 0.78)
+ * @returns Array of search results with similarity scores
+ */
+export async function searchPosts(query: string, limit = 10, threshold = 0.78) {
+  cacheTag('posts')
+
+  if (!supabase) {
+    // Return empty array when Supabase is not configured
+    return []
+  }
+
+  // Generate embedding for search query
+  const { generateSearchEmbedding } = await import('@/lib/embeddings')
+  const queryEmbedding = await generateSearchEmbedding(query)
+
+  // Call database function to search for similar posts
+  const { data, error } = await supabase.rpc('search_posts_by_embedding', {
+    match_count: limit,
+    match_threshold: threshold,
+    query_embedding: JSON.stringify(queryEmbedding)
+  })
+
+  if (error) {
+    throw new Error(`Failed to search posts: ${error.message}`)
+  }
+
+  return (
+    (data as {
+      excerpt: string | null
+      id: string
+      published_at: string
+      similarity: number
+      slug: string
+      tags: string[] | null
+      title: string
+    }[]) || []
+  )
+}
+
 export { POSTS_PER_PAGE }
