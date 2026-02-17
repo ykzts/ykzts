@@ -1,7 +1,5 @@
-import { buttonVariants } from '@ykzts/ui/components/button'
-import { cn } from '@ykzts/ui/lib/utils'
 import type { Route } from 'next'
-import Link from 'next/link'
+import LinkButton from './link-button'
 
 type PostNavigationItem = {
   slug: string
@@ -53,15 +51,13 @@ export default function PostNavigation({
       {prevUrl && previousPost ? (
         <div className="flex flex-1 flex-col gap-1">
           <span className="text-muted-foreground text-sm">前の記事</span>
-          <Link
-            className={cn(
-              buttonVariants({ variant: 'outline' }),
-              'h-auto justify-start whitespace-normal p-4 text-left'
-            )}
+          <LinkButton
+            className="h-auto justify-start whitespace-normal p-4 text-left"
             href={prevUrl}
+            variant="outline"
           >
             {previousPost.title}
-          </Link>
+          </LinkButton>
         </div>
       ) : (
         <div className="hidden flex-1 sm:block" />
@@ -72,15 +68,13 @@ export default function PostNavigation({
           <span className="text-muted-foreground text-sm sm:text-right">
             次の記事
           </span>
-          <Link
-            className={cn(
-              buttonVariants({ variant: 'outline' }),
-              'h-auto justify-start whitespace-normal p-4 text-left sm:text-right'
-            )}
+          <LinkButton
+            className="h-auto justify-start whitespace-normal p-4 text-left sm:text-right"
             href={nextUrl}
+            variant="outline"
           >
             {nextPost.title}
-          </Link>
+          </LinkButton>
         </div>
       ) : (
         <div className="hidden flex-1 sm:block" />
