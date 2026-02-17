@@ -8,7 +8,7 @@ import { supabase } from '@/lib/supabase/client'
 const searchRequestSchema = z.object({
   limit: z.number().min(1).max(20).optional().default(5),
   query: z.string().trim().min(1, 'Search query must not be empty'),
-  threshold: z.number().min(0).max(1).optional().default(0.78)
+  threshold: z.number().min(0).max(1).optional().default(0.4)
 })
 
 // Type for search result from database function
@@ -30,7 +30,7 @@ type SearchResult = {
  * {
  *   "query": "search query text",
  *   "limit": 5,        // Optional: number of results (1-20, default: 5)
- *   "threshold": 0.78  // Optional: minimum similarity score (0-1, default: 0.78)
+ *   "threshold": 0.4   // Optional: minimum similarity score (0-1, default: 0.4)
  * }
  *
  * Response:
