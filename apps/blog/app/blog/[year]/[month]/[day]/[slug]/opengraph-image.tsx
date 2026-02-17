@@ -23,7 +23,7 @@ export default async function Image({ params }: Props) {
   const { slug } = await params
   const [post, profile] = await Promise.all([
     getPostBySlug(slug),
-    getPublisherProfile()
+    getPublisherProfile().catch(() => null)
   ])
 
   if (!post) {
@@ -200,7 +200,7 @@ export default async function Image({ params }: Props) {
             fontWeight: 500
           }}
         >
-          {profile.name}
+          {profile?.name || 'Blog'}
         </div>
       </div>
     </div>,
