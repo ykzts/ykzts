@@ -35,6 +35,7 @@ export default function SearchForm({
     <form className={className} onSubmit={handleSubmit}>
       <div className="flex gap-2">
         <Input
+          aria-label="検索"
           className="flex-1"
           onChange={(e) => setQuery(e.target.value)}
           placeholder="キーワードを入力..."

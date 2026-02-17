@@ -17,6 +17,12 @@ export async function generateMetadata({
   if (q) {
     return {
       description: `「${q}」の検索結果`,
+      openGraph: {
+        description: `「${q}」の検索結果`,
+        title: `${q} - 検索結果 | ykzts.com/blog`,
+        type: 'website',
+        url: `https://ykzts.com/blog/search?q=${encodeURIComponent(q)}`
+      },
       title: `${q} - 検索結果`
     }
   }
