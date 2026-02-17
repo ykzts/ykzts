@@ -10,6 +10,7 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@ykzts/ui/components/pagination'
+import { getVisiblePages } from '@ykzts/ui/lib/pagination-utils'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import type { Route } from 'next'
 
@@ -28,10 +29,12 @@ export default function BlogPagination({
     return null
   }
 
-  // Derive page 1 URL from baseUrl by removing trailing '/page'
+  // Derive page 1 URL from baseUrl
+  // If baseUrl ends with '/page', strip it; otherwise use baseUrl as-is
+  // This handles both '/blog/page' -> '/blog' and '/blog/tags/foo/page' -> '/blog/tags/foo'
   const baseUrlPage1 = baseUrl.endsWith('/page')
     ? (baseUrl.slice(0, -'/page'.length) as Route)
-    : ('/blog' as Route)
+    : (baseUrl as Route)
 
   const getPageUrl = (page: number): Route => {
     if (page === 1) {
@@ -40,22 +43,11 @@ export default function BlogPagination({
     return `${baseUrl}/${page}` as Route
   }
 
-  // Calculate page numbers to display
-  const pages: number[] = []
-  const maxVisible = 5
-  let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2))
-  const endPage = Math.min(totalPages, startPage + maxVisible - 1)
-
-  if (endPage - startPage + 1 < maxVisible) {
-    startPage = Math.max(1, endPage - maxVisible + 1)
-  }
-
-  for (let i = startPage; i <= endPage; i++) {
-    pages.push(i)
-  }
-
-  const showStartEllipsis = startPage > 1
-  const showEndEllipsis = endPage < totalPages
+  // Calculate page numbers to display using shared utility
+  const { pages, showStartEllipsis, showEndEllipsis } = getVisiblePages(
+    currentPage,
+    totalPages
+  )
 
   return (
     <Pagination>
@@ -80,7 +72,7 @@ export default function BlogPagination({
             <PaginationItem>
               <PaginationLink href={getPageUrl(1)}>1</PaginationLink>
             </PaginationItem>
-            {startPage > 2 && (
+            {pages[0] > 2 && (
               <PaginationItem>
                 <PaginationEllipsis />
               </PaginationItem>
@@ -101,7 +93,7 @@ export default function BlogPagination({
 
         {showEndEllipsis && (
           <>
-            {endPage < totalPages - 1 && (
+            {pages[pages.length - 1] < totalPages - 1 && (
               <PaginationItem>
                 <PaginationEllipsis />
               </PaginationItem>

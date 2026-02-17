@@ -10,6 +10,7 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@ykzts/ui/components/pagination'
+import { getVisiblePages } from '@ykzts/ui/lib/pagination-utils'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -25,6 +26,11 @@ export function AdminPagination({
   const router = useRouter()
   const searchParams = useSearchParams()
 
+  // Early return for single page
+  if (totalPages <= 1) {
+    return null
+  }
+
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(searchParams.toString())
     if (page === 1) {
@@ -32,25 +38,15 @@ export function AdminPagination({
     } else {
       params.set('page', page.toString())
     }
-    router.push(`/posts?${params.toString()}`)
+    const queryString = params.toString()
+    router.push(queryString ? `/posts?${queryString}` : '/posts')
   }
 
-  // Calculate page numbers to display
-  const pages: number[] = []
-  const maxVisible = 5
-  let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2))
-  const endPage = Math.min(totalPages, startPage + maxVisible - 1)
-
-  if (endPage - startPage + 1 < maxVisible) {
-    startPage = Math.max(1, endPage - maxVisible + 1)
-  }
-
-  for (let i = startPage; i <= endPage; i++) {
-    pages.push(i)
-  }
-
-  const showStartEllipsis = startPage > 1
-  const showEndEllipsis = endPage < totalPages
+  // Calculate page numbers to display using shared utility
+  const { pages, showStartEllipsis, showEndEllipsis } = getVisiblePages(
+    currentPage,
+    totalPages
+  )
 
   return (
     <Pagination className="mt-6">
@@ -87,7 +83,7 @@ export function AdminPagination({
                 1
               </PaginationLink>
             </PaginationItem>
-            {startPage > 2 && (
+            {pages[0] > 2 && (
               <PaginationItem>
                 <PaginationEllipsis />
               </PaginationItem>
@@ -112,7 +108,7 @@ export function AdminPagination({
 
         {showEndEllipsis && (
           <>
-            {endPage < totalPages - 1 && (
+            {pages[pages.length - 1] < totalPages - 1 && (
               <PaginationItem>
                 <PaginationEllipsis />
               </PaginationItem>

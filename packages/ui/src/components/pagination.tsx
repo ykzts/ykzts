@@ -127,17 +127,20 @@ function PaginationEllipsis({
 function PaginationDisabled({
   className,
   children,
-  icon
+  icon,
+  ...props
 }: React.ComponentProps<"span"> & {
   icon: React.ReactNode
 }) {
   return (
     <span
+      aria-disabled="true"
       data-slot="pagination-disabled"
       className={cn(
         "inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-transparent px-4 font-medium text-muted-foreground text-sm transition-colors",
         className
       )}
+      {...props}
     >
       {icon}
       {children}

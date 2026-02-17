@@ -21,6 +21,7 @@
     "./components/skeleton": "./src/patches/skeleton.tsx",
     "./components/sonner": "./src/components/sonner.tsx",
     "./components/textarea": "./src/patches/textarea.tsx",
+    "./lib/pagination-utils": "./src/lib/pagination-utils.ts",
     "./lib/utils": "./src/lib/utils.ts"
   },
   "scripts": {
