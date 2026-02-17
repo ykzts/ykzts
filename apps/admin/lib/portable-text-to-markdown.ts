@@ -29,7 +29,7 @@ export function portableTextToMarkdown(content: Json | undefined): string {
     const contentType = Array.isArray(content) ? 'array' : typeof content
     const errorMessage = error instanceof Error ? error.message : String(error)
     console.error(
-      `Failed to convert Portable Text to Markdown. Content type: ${contentType}, Error: ${errorMessage}`
+      `Failed to convert Portable Text to Markdown. Content type: ${contentType}, Error: ${errorMessage}. Expected: Array of Portable Text blocks with _type property.`
     )
     return ''
   }
