@@ -16,6 +16,14 @@ type AdminPaginationProps = {
   totalPages: number
 }
 
+function DisabledPaginationButton({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-transparent px-4 font-medium text-muted-foreground text-sm transition-colors">
+      {children}
+    </span>
+  )
+}
+
 export function AdminPagination({
   currentPage,
   totalPages
@@ -64,9 +72,9 @@ export function AdminPagination({
               text="前へ"
             />
           ) : (
-            <span className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-transparent px-4 font-medium text-muted-foreground text-sm transition-colors">
+            <DisabledPaginationButton>
               <span className="hidden sm:block">前へ</span>
-            </span>
+            </DisabledPaginationButton>
           )}
         </PaginationItem>
 
@@ -138,9 +146,9 @@ export function AdminPagination({
               text="次へ"
             />
           ) : (
-            <span className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-transparent px-4 font-medium text-muted-foreground text-sm transition-colors">
+            <DisabledPaginationButton>
               <span className="hidden sm:block">次へ</span>
-            </span>
+            </DisabledPaginationButton>
           )}
         </PaginationItem>
       </PaginationContent>

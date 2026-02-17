@@ -17,6 +17,14 @@ type BlogPaginationProps = {
   baseUrl?: string
 }
 
+function DisabledPaginationButton({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-transparent px-4 font-medium text-muted-foreground text-sm transition-colors">
+      {children}
+    </span>
+  )
+}
+
 export default function BlogPagination({
   currentPage,
   totalPages,
@@ -65,9 +73,9 @@ export default function BlogPagination({
               text="前のページ"
             />
           ) : (
-            <span className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-transparent px-4 font-medium text-muted-foreground text-sm transition-colors">
+            <DisabledPaginationButton>
               <span className="hidden sm:block">前のページ</span>
-            </span>
+            </DisabledPaginationButton>
           )}
         </PaginationItem>
 
@@ -117,9 +125,9 @@ export default function BlogPagination({
               text="次のページ"
             />
           ) : (
-            <span className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-transparent px-4 font-medium text-muted-foreground text-sm transition-colors">
+            <DisabledPaginationButton>
               <span className="hidden sm:block">次のページ</span>
-            </span>
+            </DisabledPaginationButton>
           )}
         </PaginationItem>
       </PaginationContent>
