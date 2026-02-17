@@ -7,6 +7,7 @@ import Header from '@/components/header'
 import PortableTextBlock from '@/components/portable-text'
 import PostNavigation from '@/components/post-navigation'
 import TagList from '@/components/tag-list'
+import { getDateBasedUrl } from '@/lib/blog-urls'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
 import { isPortableTextValue } from '@/lib/portable-text'
 import {
@@ -95,7 +96,7 @@ export async function generateMetadata({
       publishedTime: post.published_at,
       title: post.title || DEFAULT_POST_TITLE,
       type: 'article',
-      url: `/blog/${year}/${month}/${day}/${slug}`
+      url: getDateBasedUrl(slug, post.published_at)
     },
     title: post.title || DEFAULT_POST_TITLE,
     twitter: {
@@ -135,11 +136,11 @@ export default async function PostDetailPage({ params }: PageProps) {
     notFound()
   }
 
-  // Fetch publisher profile dynamically
-  const publisherProfile = await getPublisherProfile()
-
-  // Fetch adjacent posts for navigation
-  const { previousPost, nextPost } = await getAdjacentPosts(slug, isDraft)
+  // Fetch publisher profile and adjacent posts concurrently
+  const [publisherProfile, { previousPost, nextPost }] = await Promise.all([
+    getPublisherProfile(),
+    getAdjacentPosts(slug, isDraft)
+  ])
 
   // JSON-LD structured data for Article schema
   const baseUrl = layoutMetadata.metadataBase?.toString() || 'https://ykzts.com'

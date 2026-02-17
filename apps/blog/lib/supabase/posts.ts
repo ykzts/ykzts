@@ -499,9 +499,10 @@ export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
     return query
   }
 
-  // Get next post (newer, published_at > current)
+  // Get next post (newer, published_at >= current, excluding current post)
   const { data: nextData, error: nextError } = await buildQuery()
-    .gt('published_at', currentPublishedAt)
+    .gte('published_at', currentPublishedAt)
+    .neq('slug', currentSlug)
     .order('published_at', { ascending: true })
     .limit(1)
     .maybeSingle()
@@ -510,9 +511,10 @@ export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
     throw new Error(`Failed to fetch next post: ${nextError.message}`)
   }
 
-  // Get previous post (older, published_at < current)
+  // Get previous post (older, published_at <= current, excluding current post)
   const { data: prevData, error: prevError } = await buildQuery()
-    .lt('published_at', currentPublishedAt)
+    .lte('published_at', currentPublishedAt)
+    .neq('slug', currentSlug)
     .order('published_at', { ascending: false })
     .limit(1)
     .maybeSingle()
