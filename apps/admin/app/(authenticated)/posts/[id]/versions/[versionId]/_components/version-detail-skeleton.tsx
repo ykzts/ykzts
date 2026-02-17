@@ -1,7 +1,9 @@
+import { Panel } from '@/components/panel'
+
 export function VersionDetailSkeleton() {
   return (
     <div className="space-y-6">
-      <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
+      <Panel>
         <div className="mb-4 h-6 w-32 animate-pulse rounded bg-muted" />
         <div className="space-y-3">
           {[0, 1, 2, 3, 4].map((i) => (
@@ -11,7 +13,7 @@ export function VersionDetailSkeleton() {
             </div>
           ))}
         </div>
-      </div>
+      </Panel>
 
       <div className="flex justify-between">
         <div className="h-10 w-24 animate-pulse rounded bg-muted" />

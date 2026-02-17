@@ -3,6 +3,7 @@ import { Button } from '@ykzts/ui/components/button'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
+import { Panel } from '@/components/panel'
 import { getPostById, getPostVersion } from '@/lib/posts'
 import { RollbackButton } from './_components/rollback-button'
 import { VersionDetailSkeleton } from './_components/version-detail-skeleton'
@@ -27,7 +28,7 @@ async function VersionDetailContent({
 
   return (
     <div className="space-y-6">
-      <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
+      <Panel>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h2 className="font-bold text-xl">
@@ -70,9 +71,9 @@ async function VersionDetailContent({
             </div>
           )}
         </dl>
-      </div>
+      </Panel>
 
-      <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
+      <Panel>
         <h2 className="mb-4 font-bold text-xl">コンテンツ</h2>
 
         <dl className="space-y-4">
@@ -118,7 +119,7 @@ async function VersionDetailContent({
             </pre>
           </dd>
         </dl>
-      </div>
+      </Panel>
 
       <div className="flex justify-between">
         <Button
