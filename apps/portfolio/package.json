@@ -33,6 +33,7 @@
     "@tailwindcss/typography": "0.5.19",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
+    "@testing-library/user-event": "14.6.1",
     "@types/mdx": "2.0.13",
     "@types/node": "22.19.11",
     "@types/react": "19.2.14",
