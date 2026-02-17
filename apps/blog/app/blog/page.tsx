@@ -13,7 +13,9 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://ykzts.com/blog'
   },
-  title: 'Blog'
+  title: {
+    absolute: 'Blog'
+  }
 }
 
 export default async function HomePage() {
