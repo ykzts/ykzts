@@ -125,11 +125,10 @@ describe('WorksList Component', () => {
     expect(screen.getByText('もっと見る')).toBeInTheDocument()
   })
 
-  it('has accessible button with aria-label', () => {
+  it('has accessible button with proper type', () => {
     render(<WorksList initialDisplayCount={5} works={mockWorks} />)
 
     const showMoreButton = screen.getByText('もっと見る')
-    expect(showMoreButton).toHaveAttribute('aria-label', 'もっと見る')
     expect(showMoreButton).toHaveAttribute('type', 'button')
   })
 })

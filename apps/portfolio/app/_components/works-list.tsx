@@ -47,7 +47,6 @@ export default function WorksList({
       {hasMore && !showAll && (
         <div className="mt-8 text-center">
           <button
-            aria-label="もっと見る"
             className="rounded-lg border border-border bg-card px-6 py-3 font-medium text-card-foreground transition-all duration-300 hover:border-primary/50 hover:shadow-md"
             onClick={() => setShowAll(true)}
             type="button"
