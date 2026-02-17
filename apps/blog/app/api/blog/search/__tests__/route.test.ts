@@ -84,6 +84,27 @@ describe('POST /api/blog/search', () => {
     expect(mockRpc).not.toHaveBeenCalled()
   })
 
+  it('should return 400 for whitespace-only query', async () => {
+    const { POST } = await import('../route')
+
+    const request = new NextRequest('http://localhost:3000/api/blog/search', {
+      body: JSON.stringify({ query: '   ' }),
+      headers: {
+        'content-type': 'application/json'
+      },
+      method: 'POST'
+    })
+
+    const response = await POST(request)
+    const data = await response.json()
+
+    expect(response.status).toBe(400)
+    expect(data.error).toBe('Invalid request body')
+    expect(data.issues).toBeDefined()
+    expect(mockGenerateSearchEmbedding).not.toHaveBeenCalled()
+    expect(mockRpc).not.toHaveBeenCalled()
+  })
+
   it('should return 400 for invalid limit (too small)', async () => {
     const { POST } = await import('../route')
 
@@ -323,7 +344,7 @@ describe('POST /api/blog/search', () => {
     const data = await response.json()
 
     expect(response.status).toBe(500)
-    expect(data.error).toBe('Embedding generation failed')
+    expect(data.error).toBe('Search failed')
     expect(mockRpc).not.toHaveBeenCalled()
   })
 
