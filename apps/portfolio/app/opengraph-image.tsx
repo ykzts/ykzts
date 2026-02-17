@@ -120,17 +120,21 @@ export default async function Image() {
           }}
         >
           <div style={{ display: 'flex', paddingRight: 32 }}>
-            {/* biome-ignore lint/performance/noImgElement: `<Image />` is unsupported. Uses @vercel/og to convert restricted JSX to SVG. */}
-            <img
-              alt=""
-              height={128}
-              src={profile.avatar_url || ''}
-              style={{
-                border: '4px solid rgba(255, 255, 255, 0.2)',
-                borderRadius: 64
-              }}
-              width={128}
-            />
+            {profile.avatar_url && (
+              <>
+                {/* biome-ignore lint/performance/noImgElement: `<Image />` is unsupported. Uses @vercel/og to convert restricted JSX to SVG. */}
+                <img
+                  alt=""
+                  height={128}
+                  src={profile.avatar_url}
+                  style={{
+                    border: '4px solid rgba(255, 255, 255, 0.2)',
+                    borderRadius: 64
+                  }}
+                  width={128}
+                />
+              </>
+            )}
           </div>
           <div
             style={{
