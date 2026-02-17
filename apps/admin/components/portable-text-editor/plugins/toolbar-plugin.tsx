@@ -36,10 +36,12 @@ import {
   Bold,
   Code,
   Image,
+  Indent,
   Italic,
   Link2,
   List,
   ListOrdered,
+  Outdent,
   Strikethrough,
   Underline
 } from 'lucide-react'
@@ -223,6 +225,49 @@ export function ToolbarPlugin() {
     } else {
       editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined)
     }
+  }
+
+  const handleIndent = () => {
+    editor.update(() => {
+      const selection = $getSelection()
+      if ($isRangeSelection(selection)) {
+        const anchorNode = selection.anchor.getNode()
+        // Check if we're in a list item
+        const listNode = $getNearestNodeOfType(anchorNode, ListNode)
+        if (listNode) {
+          // Dispatch Tab key to trigger Lexical's built-in indent behavior
+          editor.getRootElement()?.dispatchEvent(
+            new KeyboardEvent('keydown', {
+              bubbles: true,
+              cancelable: true,
+              key: 'Tab'
+            })
+          )
+        }
+      }
+    })
+  }
+
+  const handleOutdent = () => {
+    editor.update(() => {
+      const selection = $getSelection()
+      if ($isRangeSelection(selection)) {
+        const anchorNode = selection.anchor.getNode()
+        // Check if we're in a list item
+        const listNode = $getNearestNodeOfType(anchorNode, ListNode)
+        if (listNode) {
+          // Dispatch Shift+Tab key to trigger Lexical's built-in outdent behavior
+          editor.getRootElement()?.dispatchEvent(
+            new KeyboardEvent('keydown', {
+              bubbles: true,
+              cancelable: true,
+              key: 'Tab',
+              shiftKey: true
+            })
+          )
+        }
+      }
+    })
   }
 
   const formatBlockType = (
@@ -421,6 +466,33 @@ export function ToolbarPlugin() {
         >
           <ListOrdered className="size-4" />
         </button>
+        <button
+          aria-label="インデント"
+          className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+            isBulletList || isNumberedList
+              ? 'text-muted-foreground'
+              : 'cursor-not-allowed text-muted-foreground/50'
+          }`}
+          disabled={!isBulletList && !isNumberedList}
+          onClick={handleIndent}
+          type="button"
+        >
+          <Indent className="size-4" />
+        </button>
+        <button
+          aria-label="アウトデント"
+          className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+            isBulletList || isNumberedList
+              ? 'text-muted-foreground'
+              : 'cursor-not-allowed text-muted-foreground/50'
+          }`}
+          disabled={!isBulletList && !isNumberedList}
+          onClick={handleOutdent}
+          type="button"
+        >
+          <Outdent className="size-4" />
+        </button>
+        <div className="mx-1 w-px bg-border" />
         <button
           aria-label="画像"
           className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${

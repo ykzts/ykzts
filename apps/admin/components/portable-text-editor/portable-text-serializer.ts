@@ -175,6 +175,58 @@ function processTextContent(textNodes: LexicalChildNodes) {
 }
 
 /**
+ * Process list items recursively to handle nested lists
+ */
+function processListItems(
+  listNode: ListNode,
+  level: number,
+  blocks: (PortableTextBlock | PortableTextImage)[]
+): void {
+  const listType = listNode.getListType()
+  const listItems = listNode.getChildren()
+
+  for (const item of listItems) {
+    if ($isListItemNode(item)) {
+      const listItemNode = item as ListItemNode
+      const itemChildren = listItemNode.getChildren()
+
+      // List items might have paragraph children, collect all text
+      let allTextChildren: LexicalChildNodes = []
+      const nestedLists: ListNode[] = []
+      
+      for (const itemChild of itemChildren) {
+        if ($isParagraphNode(itemChild)) {
+          allTextChildren = allTextChildren.concat(itemChild.getChildren())
+        } else if ($isTextNode(itemChild) || $isLinkNode(itemChild)) {
+          allTextChildren.push(itemChild)
+        } else if ($isListNode(itemChild)) {
+          // Store nested lists to process after the current item
+          nestedLists.push(itemChild as ListNode)
+        }
+      }
+
+      // Process the text content of the list item first
+      const { spans, markDefs } = processTextContent(allTextChildren)
+
+      blocks.push({
+        _key: crypto.randomUUID(),
+        _type: 'block',
+        children: spans,
+        level,
+        listItem: listType === 'number' ? 'number' : 'bullet',
+        markDefs,
+        style: 'normal'
+      })
+      
+      // Then process nested lists
+      for (const nestedList of nestedLists) {
+        processListItems(nestedList, level + 1, blocks)
+      }
+    }
+  }
+}
+
+/**
  * Convert Lexical editor state to Portable Text format
  */
 export function lexicalToPortableText(
@@ -199,47 +251,8 @@ export function lexicalToPortableText(
           }
         })
       } else if ($isListNode(child)) {
-        // Handle list nodes
-        const listNode = child as ListNode
-        const listType = listNode.getListType()
-        const listItems = listNode.getChildren()
-
-        for (const item of listItems) {
-          if ($isListItemNode(item)) {
-            const listItemNode = item as ListItemNode
-            const itemChildren = listItemNode.getChildren()
-
-            // List items might have paragraph children, collect all text
-            let allTextChildren: LexicalChildNodes = []
-            for (const itemChild of itemChildren) {
-              if ($isParagraphNode(itemChild)) {
-                allTextChildren = allTextChildren.concat(
-                  itemChild.getChildren()
-                )
-              } else if ($isTextNode(itemChild) || $isLinkNode(itemChild)) {
-                allTextChildren.push(itemChild)
-              } else if ($isListNode(itemChild)) {
-                // TODO: Support nested lists - for now, warn and skip
-                console.warn(
-                  'Nested lists are not yet supported and will be flattened'
-                )
-              }
-            }
-
-            // Process the text content of the list item
-            const { spans, markDefs } = processTextContent(allTextChildren)
-
-            blocks.push({
-              _key: crypto.randomUUID(),
-              _type: 'block',
-              children: spans,
-              level: 1, // TODO: derive from actual nesting depth when nested lists are supported
-              listItem: listType === 'number' ? 'number' : 'bullet',
-              markDefs,
-              style: 'normal'
-            })
-          }
-        }
+        // Handle list nodes with recursive processing for nested lists
+        processListItems(child as ListNode, 1, blocks)
       } else if ($isHeadingNode(child)) {
         // Handle heading nodes
         const headingNode = child as HeadingNode
@@ -329,17 +342,21 @@ export function initializeEditorWithPortableText(
       const root = $getRoot()
       root.clear()
 
-      // Track current list to group consecutive list items
-      let currentList: ListNode | null = null
-      let currentListType: 'bullet' | 'number' | null = null
+      // Track current lists at each nesting level
+      const listStack: Array<{
+        list: ListNode
+        level: number
+        type: 'bullet' | 'number'
+      }> = []
 
       for (const block of portableText) {
         if (block._type === 'image') {
-          // Close any open list
-          if (currentList) {
-            root.append(currentList)
-            currentList = null
-            currentListType = null
+          // Close any open lists
+          while (listStack.length > 0) {
+            const { list } = listStack.pop()!
+            if (listStack.length === 0) {
+              root.append(list)
+            }
           }
 
           // Handle image blocks
@@ -412,33 +429,73 @@ export function initializeEditorWithPortableText(
           // Check if this is a list item
           if (block.listItem) {
             const listType = block.listItem
+            const level = block.level || 1
 
-            // Create or reuse list node
-            if (!currentList || currentListType !== listType) {
-              // Append previous list if exists
-              if (currentList) {
-                root.append(currentList)
+            // Adjust list stack to match the current level
+            while (listStack.length >= level) {
+              const poppedList = listStack.pop()!
+              if (listStack.length === 0) {
+                // This was a top-level list
+                root.append(poppedList.list)
               }
-              // Create new list
-              currentList = $createListNode(listType)
-              currentListType = listType
             }
 
-            // Create list item
+            // Create new lists for levels that don't exist yet
+            while (listStack.length < level) {
+              const newLevel = listStack.length + 1
+              const newList = $createListNode(listType)
+
+              if (listStack.length > 0) {
+                // Append to the last item of the parent list
+                const parentList = listStack[listStack.length - 1].list
+                const lastItem = parentList.getLastChild()
+                if ($isListItemNode(lastItem)) {
+                  lastItem.append(newList)
+                }
+              }
+
+              listStack.push({ level: newLevel, list: newList, type: listType })
+            }
+
+            // Get the current list at this level
+            const currentListInfo = listStack[level - 1]
+
+            // If list type changed at this level, we need to create a new list
+            if (currentListInfo.type !== listType) {
+              // Pop this level
+              listStack.pop()
+
+              // Create new list of correct type
+              const newList = $createListNode(listType)
+
+              if (listStack.length > 0) {
+                // Append to the last item of the parent list
+                const parentList = listStack[listStack.length - 1].list
+                const lastItem = parentList.getLastChild()
+                if ($isListItemNode(lastItem)) {
+                  lastItem.append(newList)
+                }
+              }
+
+              listStack.push({ level, list: newList, type: listType })
+            }
+
+            // Create list item and append to current list
             const listItem = $createListItemNode()
             for (const textNode of textNodes) {
               listItem.append(textNode)
             }
-            currentList.append(listItem)
+            listStack[level - 1].list.append(listItem)
           } else if (
             block.style &&
             ['h2', 'h3', 'h4', 'h5', 'h6'].includes(block.style)
           ) {
-            // Close any open list
-            if (currentList) {
-              root.append(currentList)
-              currentList = null
-              currentListType = null
+            // Close any open lists
+            while (listStack.length > 0) {
+              const { list } = listStack.pop()!
+              if (listStack.length === 0) {
+                root.append(list)
+              }
             }
 
             // Create heading node
@@ -450,11 +507,12 @@ export function initializeEditorWithPortableText(
             }
             root.append(headingNode)
           } else if (block.style === 'blockquote') {
-            // Close any open list
-            if (currentList) {
-              root.append(currentList)
-              currentList = null
-              currentListType = null
+            // Close any open lists
+            while (listStack.length > 0) {
+              const { list } = listStack.pop()!
+              if (listStack.length === 0) {
+                root.append(list)
+              }
             }
 
             // Create quote node
@@ -464,11 +522,12 @@ export function initializeEditorWithPortableText(
             }
             root.append(quoteNode)
           } else if (block.style === 'code') {
-            // Close any open list
-            if (currentList) {
-              root.append(currentList)
-              currentList = null
-              currentListType = null
+            // Close any open lists
+            while (listStack.length > 0) {
+              const { list } = listStack.pop()!
+              if (listStack.length === 0) {
+                root.append(list)
+              }
             }
 
             // Create code block node
@@ -478,11 +537,12 @@ export function initializeEditorWithPortableText(
             }
             root.append(codeNode)
           } else {
-            // Close any open list
-            if (currentList) {
-              root.append(currentList)
-              currentList = null
-              currentListType = null
+            // Close any open lists
+            while (listStack.length > 0) {
+              const { list } = listStack.pop()!
+              if (listStack.length === 0) {
+                root.append(list)
+              }
             }
 
             // Regular paragraph
@@ -495,9 +555,12 @@ export function initializeEditorWithPortableText(
         }
       }
 
-      // Append any remaining list
-      if (currentList) {
-        root.append(currentList)
+      // Append any remaining lists
+      while (listStack.length > 0) {
+        const { list } = listStack.pop()!
+        if (listStack.length === 0) {
+          root.append(list)
+        }
       }
     })
   } catch (error) {

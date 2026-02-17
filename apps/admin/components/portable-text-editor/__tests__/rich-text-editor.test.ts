@@ -1558,5 +1558,395 @@ describe('Portable Text Serializer', () => {
         'def hello():\n    print("Hello")'
       )
     })
+
+    it('should serialize nested bullet list with correct levels', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        
+        // Create a nested bullet list
+        const outerList = $createListNode('bullet')
+        
+        // First item at level 1
+        const item1 = $createListItemNode()
+        item1.append($createTextNode('Item 1'))
+        outerList.append(item1)
+        
+        // Second item at level 1 with nested list
+        const item2 = $createListItemNode()
+        item2.append($createTextNode('Item 2'))
+        
+        // Nested list
+        const nestedList = $createListNode('bullet')
+        const nestedItem1 = $createListItemNode()
+        nestedItem1.append($createTextNode('Nested Item 2.1'))
+        nestedList.append(nestedItem1)
+        
+        const nestedItem2 = $createListItemNode()
+        nestedItem2.append($createTextNode('Nested Item 2.2'))
+        nestedList.append(nestedItem2)
+        
+        item2.append(nestedList)
+        outerList.append(item2)
+        
+        // Third item at level 1
+        const item3 = $createListItemNode()
+        item3.append($createTextNode('Item 3'))
+        outerList.append(item3)
+        
+        root.append(outerList)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      // Should have 5 blocks: 3 at level 1, 2 at level 2
+      expect(portableText).toHaveLength(5)
+      
+      // Check first item
+      expect(portableText[0].listItem).toBe('bullet')
+      expect(portableText[0].level).toBe(1)
+      expect(portableText[0].children[0].text).toBe('Item 1')
+      
+      // Check second item
+      expect(portableText[1].listItem).toBe('bullet')
+      expect(portableText[1].level).toBe(1)
+      expect(portableText[1].children[0].text).toBe('Item 2')
+      
+      // Check first nested item
+      expect(portableText[2].listItem).toBe('bullet')
+      expect(portableText[2].level).toBe(2)
+      expect(portableText[2].children[0].text).toBe('Nested Item 2.1')
+      
+      // Check second nested item
+      expect(portableText[3].listItem).toBe('bullet')
+      expect(portableText[3].level).toBe(2)
+      expect(portableText[3].children[0].text).toBe('Nested Item 2.2')
+      
+      // Check third item
+      expect(portableText[4].listItem).toBe('bullet')
+      expect(portableText[4].level).toBe(1)
+      expect(portableText[4].children[0].text).toBe('Item 3')
+    })
+
+    it('should serialize deeply nested lists with correct levels', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        
+        // Create a deeply nested list (3 levels)
+        const list1 = $createListNode('bullet')
+        
+        const item1 = $createListItemNode()
+        item1.append($createTextNode('Level 1'))
+        
+        const list2 = $createListNode('bullet')
+        const item2 = $createListItemNode()
+        item2.append($createTextNode('Level 2'))
+        
+        const list3 = $createListNode('bullet')
+        const item3 = $createListItemNode()
+        item3.append($createTextNode('Level 3'))
+        list3.append(item3)
+        
+        item2.append(list3)
+        list2.append(item2)
+        item1.append(list2)
+        list1.append(item1)
+        
+        root.append(list1)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText).toHaveLength(3)
+      expect(portableText[0].level).toBe(1)
+      expect(portableText[0].children[0].text).toBe('Level 1')
+      expect(portableText[1].level).toBe(2)
+      expect(portableText[1].children[0].text).toBe('Level 2')
+      expect(portableText[2].level).toBe(3)
+      expect(portableText[2].children[0].text).toBe('Level 3')
+    })
+
+    it('should serialize nested numbered list with correct levels', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        
+        const outerList = $createListNode('number')
+        
+        const item1 = $createListItemNode()
+        item1.append($createTextNode('First'))
+        outerList.append(item1)
+        
+        const item2 = $createListItemNode()
+        item2.append($createTextNode('Second'))
+        
+        const nestedList = $createListNode('number')
+        const nestedItem = $createListItemNode()
+        nestedItem.append($createTextNode('Second.1'))
+        nestedList.append(nestedItem)
+        
+        item2.append(nestedList)
+        outerList.append(item2)
+        
+        root.append(outerList)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText).toHaveLength(3)
+      expect(portableText[0].listItem).toBe('number')
+      expect(portableText[0].level).toBe(1)
+      expect(portableText[1].listItem).toBe('number')
+      expect(portableText[1].level).toBe(1)
+      expect(portableText[2].listItem).toBe('number')
+      expect(portableText[2].level).toBe(2)
+    })
+
+    it('should deserialize nested bullet list correctly', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
+      })
+
+      const json = JSON.stringify([
+        {
+          _key: '1',
+          _type: 'block',
+          children: [{ _key: 's1', _type: 'span', text: 'Item 1' }],
+          level: 1,
+          listItem: 'bullet',
+          markDefs: [],
+          style: 'normal'
+        },
+        {
+          _key: '2',
+          _type: 'block',
+          children: [{ _key: 's2', _type: 'span', text: 'Item 2' }],
+          level: 1,
+          listItem: 'bullet',
+          markDefs: [],
+          style: 'normal'
+        },
+        {
+          _key: '3',
+          _type: 'block',
+          children: [{ _key: 's3', _type: 'span', text: 'Nested 2.1' }],
+          level: 2,
+          listItem: 'bullet',
+          markDefs: [],
+          style: 'normal'
+        },
+        {
+          _key: '4',
+          _type: 'block',
+          children: [{ _key: 's4', _type: 'span', text: 'Item 3' }],
+          level: 1,
+          listItem: 'bullet',
+          markDefs: [],
+          style: 'normal'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      editor.read(() => {
+        const root = $getRoot()
+        const list = root.getFirstChild()
+        
+        expect($isListNode(list)).toBe(true)
+        
+        if ($isListNode(list)) {
+          const items = list.getChildren()
+          expect(items.length).toBe(3)
+          
+          // First item
+          const item1 = items[0]
+          expect($isListItemNode(item1)).toBe(true)
+          if ($isListItemNode(item1)) {
+            expect(item1.getTextContent()).toBe('Item 1')
+          }
+          
+          // Second item with nested list
+          const item2 = items[1]
+          expect($isListItemNode(item2)).toBe(true)
+          if ($isListItemNode(item2)) {
+            const item2Children = item2.getChildren()
+            // Should have text and nested list
+            expect(item2Children.length).toBe(2)
+            
+            const nestedList = item2Children.find((child) => $isListNode(child))
+            expect(nestedList).toBeDefined()
+            
+            if (nestedList && $isListNode(nestedList)) {
+              const nestedItems = nestedList.getChildren()
+              expect(nestedItems.length).toBe(1)
+              if ($isListItemNode(nestedItems[0])) {
+                expect(nestedItems[0].getTextContent()).toBe('Nested 2.1')
+              }
+            }
+          }
+          
+          // Third item
+          const item3 = items[2]
+          expect($isListItemNode(item3)).toBe(true)
+          if ($isListItemNode(item3)) {
+            expect(item3.getTextContent()).toBe('Item 3')
+          }
+        }
+      })
+    })
+
+    it('should round-trip nested lists correctly', () => {
+      const editor1 = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
+      })
+
+      editor1.update(() => {
+        const root = $getRoot()
+        
+        const list = $createListNode('bullet')
+        
+        const item1 = $createListItemNode()
+        item1.append($createTextNode('Outer 1'))
+        list.append(item1)
+        
+        const item2 = $createListItemNode()
+        item2.append($createTextNode('Outer 2'))
+        
+        const nestedList = $createListNode('bullet')
+        const nestedItem = $createListItemNode()
+        nestedItem.append($createTextNode('Inner 2.1'))
+        nestedList.append(nestedItem)
+        
+        item2.append(nestedList)
+        list.append(item2)
+        
+        root.append(list)
+      })
+
+      const portableText1 = lexicalToPortableText(editor1)
+      const json = JSON.stringify(portableText1)
+
+      const editor2 = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
+      })
+      initializeEditorWithPortableText(editor2, json)
+
+      const portableText2 = lexicalToPortableText(editor2)
+
+      expect(portableText2).toHaveLength(3)
+      expect(portableText2[0].level).toBe(1)
+      expect(portableText2[0].children[0].text).toBe('Outer 1')
+      expect(portableText2[1].level).toBe(1)
+      expect(portableText2[1].children[0].text).toBe('Outer 2')
+      expect(portableText2[2].level).toBe(2)
+      expect(portableText2[2].children[0].text).toBe('Inner 2.1')
+    })
+
+    it('should handle mixed list types in nested structure', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          HeadingNode,
+          QuoteNode
+        ]
+      })
+
+      const json = JSON.stringify([
+        {
+          _key: '1',
+          _type: 'block',
+          children: [{ _key: 's1', _type: 'span', text: 'Bullet 1' }],
+          level: 1,
+          listItem: 'bullet',
+          markDefs: [],
+          style: 'normal'
+        },
+        {
+          _key: '2',
+          _type: 'block',
+          children: [{ _key: 's2', _type: 'span', text: 'Number 1.1' }],
+          level: 2,
+          listItem: 'number',
+          markDefs: [],
+          style: 'normal'
+        },
+        {
+          _key: '3',
+          _type: 'block',
+          children: [{ _key: 's3', _type: 'span', text: 'Bullet 2' }],
+          level: 1,
+          listItem: 'bullet',
+          markDefs: [],
+          style: 'normal'
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, json)
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText).toHaveLength(3)
+      expect(portableText[0].listItem).toBe('bullet')
+      expect(portableText[0].level).toBe(1)
+      expect(portableText[1].listItem).toBe('number')
+      expect(portableText[1].level).toBe(2)
+      expect(portableText[2].listItem).toBe('bullet')
+      expect(portableText[2].level).toBe(1)
+    })
   })
 })
