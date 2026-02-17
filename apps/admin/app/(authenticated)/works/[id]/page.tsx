@@ -1,6 +1,6 @@
-import { Panel } from '@ykzts/ui/components/panel'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
+import { Panel } from '@/components/panel'
 import { getWork } from '@/lib/data'
 import { WorkForm } from './work-form'
 import { WorkFormSkeleton } from './work-form-skeleton'

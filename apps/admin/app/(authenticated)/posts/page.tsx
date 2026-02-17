@@ -1,7 +1,7 @@
 import { Badge } from '@ykzts/ui/components/badge'
-import { Panel } from '@ykzts/ui/components/panel'
 import Link from 'next/link'
 import { Suspense } from 'react'
+import { Panel } from '@/components/panel'
 import { getProfileTimezone } from '@/lib/data'
 import { getPosts } from '@/lib/posts'
 import { formatDateWithTimezone } from '@/lib/timezones'

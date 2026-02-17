@@ -1,4 +1,4 @@
-import { Panel } from '@ykzts/ui/components/panel'
+import { Panel } from '@/components/panel'
 
 export function PostsSkeleton() {
   return (

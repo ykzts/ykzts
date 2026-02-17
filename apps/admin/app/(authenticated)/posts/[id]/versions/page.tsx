@@ -1,9 +1,9 @@
 import { Badge } from '@ykzts/ui/components/badge'
 import { Button } from '@ykzts/ui/components/button'
-import { Panel } from '@ykzts/ui/components/panel'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
+import { Panel } from '@/components/panel'
 import { getPostById, getPostVersions } from '@/lib/posts'
 import { VersionsSkeleton } from './_components/versions-skeleton'
 

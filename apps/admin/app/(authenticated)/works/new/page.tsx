@@ -1,4 +1,4 @@
-import { Panel } from '@ykzts/ui/components/panel'
+import { Panel } from '@/components/panel'
 import { WorkForm } from './_components/work-form'
 
 export default function NewWorkPage() {

@@ -1,6 +1,6 @@
-import { Panel } from '@ykzts/ui/components/panel'
 import Link from 'next/link'
 import { Suspense } from 'react'
+import { Panel } from '@/components/panel'
 import { getProfileTimezone, getWorks } from '@/lib/data'
 import { formatDateOnly } from '@/lib/timezones'
 import { NewWorkButton } from './_components/new-work-button'

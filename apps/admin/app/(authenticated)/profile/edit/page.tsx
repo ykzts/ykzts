@@ -1,5 +1,5 @@
-import { Panel } from '@ykzts/ui/components/panel'
 import { Suspense } from 'react'
+import { Panel } from '@/components/panel'
 import { getProfile, getSocialLinks, getTechnologies } from '@/lib/data'
 import ProfileForm from './_components/profile-form'
 import ProfileEditSkeleton from './_components/skeleton'

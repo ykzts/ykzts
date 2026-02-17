@@ -1,4 +1,4 @@
-import { Panel } from '@ykzts/ui/components/panel'
+import { Panel } from '@/components/panel'
 import { PostForm } from './post-form'
 
 export default function NewPostPage() {

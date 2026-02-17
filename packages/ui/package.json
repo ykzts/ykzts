@@ -14,7 +14,6 @@
     "./components/field": "./src/components/field.tsx",
     "./components/input": "./src/patches/input.tsx",
     "./components/label": "./src/components/label.tsx",
-    "./components/panel": "./src/components/panel.tsx",
     "./components/select": "./src/components/select.tsx",
     "./components/separator": "./src/components/separator.tsx",
     "./components/sheet": "./src/components/sheet.tsx",
