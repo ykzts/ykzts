@@ -213,7 +213,7 @@ async function resolveDuplicateSlugs(
     if (!slugMap.has(slug)) {
       slugMap.set(slug, [])
     }
-    slugMap.get(slug)!.push({ dateParts, filePath, originalSlug: slug })
+    slugMap.get(slug)?.push({ dateParts, filePath, originalSlug: slug })
   }
 
   const result = new Map<
@@ -299,7 +299,7 @@ async function resolveDuplicateSlugs(
               title
             })
           }
-        } catch (error) {
+        } catch (_error) {
           console.warn(
             `Warning: Could not parse ${file.filePath} for duplicate resolution`
           )

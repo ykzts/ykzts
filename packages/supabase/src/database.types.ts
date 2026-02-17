@@ -333,33 +333,31 @@ export type Database = {
       }
       delete_post: { Args: { p_post_id: string }; Returns: undefined }
       get_posts_needing_embeddings: {
-        Args: {
-          batch_size?: number
-        }
-        Returns: Array<{
+        Args: { batch_size?: number }
+        Returns: {
+          current_version: Json
+          embedding_updated_at: string
+          excerpt: string
           id: string
-          title: string | null
-          excerpt: string | null
+          title: string
           updated_at: string
-          embedding_updated_at: string | null
-          current_version: Json | null
-        }>
+        }[]
       }
       search_posts_by_embedding: {
         Args: {
-          query_embedding: string
-          match_threshold?: number
           match_count?: number
+          match_threshold?: number
+          query_embedding: string
         }
-        Returns: Array<{
+        Returns: {
+          excerpt: string
           id: string
-          title: string
-          slug: string
-          excerpt: string | null
           published_at: string
-          tags: string[] | null
           similarity: number
-        }>
+          slug: string
+          tags: string[]
+          title: string
+        }[]
       }
       update_post: {
         Args: {
