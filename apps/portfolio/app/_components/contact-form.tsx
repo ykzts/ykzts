@@ -8,7 +8,7 @@ import { Input } from '@ykzts/ui/components/input'
 import { Textarea } from '@ykzts/ui/components/textarea'
 import Link from 'next/link'
 import { useActionState, useEffect, useRef, useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
+import { toast } from 'sonner'
 import { submitContactForm } from '../_actions/contact'
 
 export default function ContactForm() {
@@ -27,32 +27,26 @@ export default function ContactForm() {
   // Show toast for general errors
   useEffect(() => {
     if (state?.error) {
-      toast.error(state.error, {
-        duration: 5000,
-        position: 'bottom-center'
-      })
+      toast.error(state.error)
     }
   }, [state?.error])
 
   if (state?.success) {
     return (
-      <>
-        <Toaster />
-        <div className="rounded-lg border border-primary/30 bg-primary/10 p-6 text-center">
-          <h3 className="mb-3 font-semibold text-foreground text-xl">
-            送信完了
-          </h3>
-          <p className="mb-3 text-base text-muted-foreground">
-            お問い合わせいただきありがとうございます。内容を確認次第、ご返信させていただきます。
-          </p>
-          <p className="mb-5 text-base text-muted-foreground">
-            通常、2〜3営業日以内にご返信いたします。
-          </p>
-          <Button onClick={() => window.location.reload()} type="button">
-            新しいお問い合わせを送信
-          </Button>
-        </div>
-      </>
+      <div className="rounded-lg border border-primary/30 bg-primary/10 p-6 text-center">
+        <h3 className="mb-3 font-semibold text-foreground text-xl">
+          送信完了
+        </h3>
+        <p className="mb-3 text-base text-muted-foreground">
+          お問い合わせいただきありがとうございます。内容を確認次第、ご返信させていただきます。
+        </p>
+        <p className="mb-5 text-base text-muted-foreground">
+          通常、2〜3営業日以内にご返信いたします。
+        </p>
+        <Button onClick={() => window.location.reload()} type="button">
+          新しいお問い合わせを送信
+        </Button>
+      </div>
     )
   }
 
@@ -60,9 +54,7 @@ export default function ContactForm() {
   const formData = state?.formData || {}
 
   return (
-    <>
-      <Toaster />
-      <form action={formAction} ref={formRef}>
+    <form action={formAction} ref={formRef}>
         <Field className="mb-5">
           <FieldLabel htmlFor="name">
             お名前 <span className="text-red-500">*</span>
@@ -188,6 +180,5 @@ export default function ContactForm() {
           </Button>
         </div>
       </form>
-    </>
   )
 }
