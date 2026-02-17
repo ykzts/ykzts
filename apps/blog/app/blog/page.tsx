@@ -9,11 +9,11 @@ export const metadata: Metadata = {
   description: 'ykztsの技術ブログ',
   openGraph: {
     description: 'ykztsの技術ブログ',
-    title: 'ykzts.com/blog',
+    title: 'Blog',
     type: 'website',
     url: 'https://ykzts.com/blog'
   },
-  title: 'ykzts.com/blog'
+  title: 'Blog'
 }
 
 export default async function HomePage() {
