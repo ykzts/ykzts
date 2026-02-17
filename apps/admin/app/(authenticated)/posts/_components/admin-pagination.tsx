@@ -1,5 +1,6 @@
 'use client'
 
+import { getVisiblePages } from '@ykzts/pagination-utils'
 import {
   Pagination,
   PaginationContent,
@@ -59,21 +60,10 @@ export function AdminPagination({
   }
 
   // Calculate page numbers to display
-  const pages: number[] = []
-  const maxVisible = 5
-  let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2))
-  const endPage = Math.min(totalPages, startPage + maxVisible - 1)
-
-  if (endPage - startPage + 1 < maxVisible) {
-    startPage = Math.max(1, endPage - maxVisible + 1)
-  }
-
-  for (let i = startPage; i <= endPage; i++) {
-    pages.push(i)
-  }
-
-  const showStartEllipsis = startPage > 1
-  const showEndEllipsis = endPage < totalPages
+  const { pages, showStartEllipsis, showEndEllipsis } = getVisiblePages(
+    currentPage,
+    totalPages
+  )
 
   return (
     <Pagination className="mt-6">
