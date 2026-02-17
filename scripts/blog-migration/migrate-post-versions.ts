@@ -34,6 +34,7 @@ import {
   convertMDXToPortableText,
   extractExcerpt
 } from './lib/mdx-to-portable-text.ts'
+import { parseMDX } from './lib/parse-mdx.ts'
 import {
   createImageMappings,
   transformMDXContent
@@ -233,16 +234,19 @@ async function resolveDuplicateSlugs(
       })
     } else {
       // Has duplicates - need to resolve
-      // Sort by date (oldest first)
+      // Sort by date (oldest first), pushing entries without dates to the end
       files.sort((a, b) => {
-        if (!a.dateParts || !b.dateParts) return 0
+        if (!a.dateParts && !b.dateParts) return 0
+        if (!a.dateParts) return 1
+        if (!b.dateParts) return -1
         const dateA = `${a.dateParts.year}-${a.dateParts.month}-${a.dateParts.day}`
         const dateB = `${b.dateParts.year}-${b.dateParts.month}-${b.dateParts.day}`
         return dateA.localeCompare(dateB)
       })
 
-      // Read titles from files to extract version info
-      const { parseMDX } = await import('./lib/parse-mdx.ts')
+      // Track used slugs to avoid duplicates
+      const usedSlugs = new Set<string>()
+      usedSlugs.add(originalSlug) // First occurrence uses original slug
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
@@ -272,6 +276,16 @@ async function resolveDuplicateSlugs(
               newSlug = `${originalSlug}-${i + 1}`
             }
 
+            // Handle slug collision - ensure uniqueness
+            let finalSlug = newSlug
+            let counter = 2
+            while (usedSlugs.has(finalSlug)) {
+              finalSlug = `${originalSlug}-${version || i + 1}-${counter}`
+              counter++
+            }
+            newSlug = finalSlug
+            usedSlugs.add(newSlug)
+
             // Generate redirect_from path
             if (file.dateParts) {
               const { year, month, day } = file.dateParts
@@ -292,6 +306,17 @@ async function resolveDuplicateSlugs(
           // Fallback to sequential numbering
           if (i > 0) {
             newSlug = `${originalSlug}-${i + 1}`
+
+            // Handle slug collision - ensure uniqueness
+            let finalSlug = newSlug
+            let counter = 2
+            while (usedSlugs.has(finalSlug)) {
+              finalSlug = `${originalSlug}-${i + 1}-${counter}`
+              counter++
+            }
+            newSlug = finalSlug
+            usedSlugs.add(newSlug)
+
             if (file.dateParts) {
               const { year, month, day } = file.dateParts
               redirectFrom = [`/blog/${year}/${month}/${day}/${originalSlug}`]
@@ -574,6 +599,7 @@ async function migrate(dryRun = false) {
             current_version_id: currentVersion.id,
             excerpt: postExcerpt,
             published_at: publishedAt,
+            redirect_from: redirectFrom.length > 0 ? redirectFrom : null,
             status: 'published',
             tags: latestVersion.frontmatter.tags || null,
             title: latestVersion.frontmatter.title || null
