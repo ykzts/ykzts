@@ -19,7 +19,7 @@ export async function generateMetadata({
       description: `「${q}」の検索結果`,
       openGraph: {
         description: `「${q}」の検索結果`,
-        title: `${q} - 検索結果 | ykzts.com/blog`,
+        title: `${q} - 検索結果 | Blog`,
         type: 'website',
         url: `https://ykzts.com/blog/search?q=${encodeURIComponent(q)}`
       },
@@ -31,7 +31,7 @@ export async function generateMetadata({
     description: 'ブログ記事を検索',
     openGraph: {
       description: 'ブログ記事を検索',
-      title: 'Search | ykzts.com/blog',
+      title: 'Search | Blog',
       type: 'website',
       url: 'https://ykzts.com/blog/search'
     },

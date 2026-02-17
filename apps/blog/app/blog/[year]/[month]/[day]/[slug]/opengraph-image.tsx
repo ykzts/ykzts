@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og'
 import { DEFAULT_POST_TITLE, MAX_EXCERPT_LENGTH } from '@/lib/constants'
 import { getPostBySlug } from '@/lib/supabase/posts'
 
-export const alt = 'ykzts.com/blog'
+export const alt = 'Blog'
 export const size = {
   height: 630,
   width: 1200
@@ -35,7 +35,7 @@ export default async function Image({ params }: Props) {
           width: '100%'
         }}
       >
-        <div style={{ fontSize: 96, fontWeight: 900 }}>ykzts.com/blog</div>
+        <div style={{ fontSize: 96, fontWeight: 900 }}>Blog</div>
       </div>,
       {
         ...size
@@ -96,7 +96,7 @@ export default async function Image({ params }: Props) {
           paddingTop: 32
         }}
       >
-        <div style={{ fontSize: 40, fontWeight: 700 }}>ykzts.com/blog</div>
+        <div style={{ fontSize: 40, fontWeight: 700 }}>Blog</div>
         <div style={{ color: '#999', fontSize: 32 }}>Yamagishi Kazutoshi</div>
       </div>
     </div>,

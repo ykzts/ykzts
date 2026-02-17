@@ -7,8 +7,8 @@ import DraftModeBannerClient from '@/components/draft-mode-banner-client'
 export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com'),
   title: {
-    default: 'ykzts.com/blog',
-    template: '%s | ykzts.com/blog'
+    default: 'Blog',
+    template: '%s | Blog'
   }
 }
 

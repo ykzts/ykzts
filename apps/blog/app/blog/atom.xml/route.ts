@@ -18,14 +18,14 @@ export async function GET() {
       name: 'Yamagishi Kazutoshi'
     },
     copyright: `Copyright © ${new Date().getFullYear()} Yamagishi Kazutoshi`,
-    description: 'ykzts.com/blog',
+    description: 'Blog',
     favicon: new URL('/favicon.ico', metadata.metadataBase).toString(),
     feedLinks: {
       atom: new URL('/blog/atom.xml', metadata.metadataBase).toString()
     },
     id: baseUrl,
     link: baseUrl,
-    title: 'ykzts.com/blog'
+    title: 'Blog'
   })
 
   for (const post of posts) {
