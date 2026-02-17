@@ -193,7 +193,7 @@ function processListItems(
       // List items might have paragraph children, collect all text
       let allTextChildren: LexicalChildNodes = []
       const nestedLists: ListNode[] = []
-      
+
       for (const itemChild of itemChildren) {
         if ($isParagraphNode(itemChild)) {
           allTextChildren = allTextChildren.concat(itemChild.getChildren())
@@ -217,7 +217,7 @@ function processListItems(
         markDefs,
         style: 'normal'
       })
-      
+
       // Then process nested lists
       for (const nestedList of nestedLists) {
         processListItems(nestedList, level + 1, blocks)
@@ -349,15 +349,20 @@ export function initializeEditorWithPortableText(
         type: 'bullet' | 'number'
       }> = []
 
+      // Helper function to close all open lists
+      const closeAllLists = () => {
+        while (listStack.length > 0) {
+          const item = listStack.pop()
+          if (item && listStack.length === 0) {
+            root.append(item.list)
+          }
+        }
+      }
+
       for (const block of portableText) {
         if (block._type === 'image') {
           // Close any open lists
-          while (listStack.length > 0) {
-            const { list } = listStack.pop()!
-            if (listStack.length === 0) {
-              root.append(list)
-            }
-          }
+          closeAllLists()
 
           // Handle image blocks
           if (!block.asset?.url) {
@@ -433,8 +438,8 @@ export function initializeEditorWithPortableText(
 
             // Adjust list stack to match the current level
             while (listStack.length >= level) {
-              const poppedList = listStack.pop()!
-              if (listStack.length === 0) {
+              const poppedList = listStack.pop()
+              if (poppedList && listStack.length === 0) {
                 // This was a top-level list
                 root.append(poppedList.list)
               }
@@ -491,12 +496,7 @@ export function initializeEditorWithPortableText(
             ['h2', 'h3', 'h4', 'h5', 'h6'].includes(block.style)
           ) {
             // Close any open lists
-            while (listStack.length > 0) {
-              const { list } = listStack.pop()!
-              if (listStack.length === 0) {
-                root.append(list)
-              }
-            }
+            closeAllLists()
 
             // Create heading node
             const headingNode = $createHeadingNode(
@@ -508,12 +508,7 @@ export function initializeEditorWithPortableText(
             root.append(headingNode)
           } else if (block.style === 'blockquote') {
             // Close any open lists
-            while (listStack.length > 0) {
-              const { list } = listStack.pop()!
-              if (listStack.length === 0) {
-                root.append(list)
-              }
-            }
+            closeAllLists()
 
             // Create quote node
             const quoteNode = $createQuoteNode()
@@ -523,12 +518,7 @@ export function initializeEditorWithPortableText(
             root.append(quoteNode)
           } else if (block.style === 'code') {
             // Close any open lists
-            while (listStack.length > 0) {
-              const { list } = listStack.pop()!
-              if (listStack.length === 0) {
-                root.append(list)
-              }
-            }
+            closeAllLists()
 
             // Create code block node
             const codeNode = $createCodeNode(block.language)
@@ -538,12 +528,7 @@ export function initializeEditorWithPortableText(
             root.append(codeNode)
           } else {
             // Close any open lists
-            while (listStack.length > 0) {
-              const { list } = listStack.pop()!
-              if (listStack.length === 0) {
-                root.append(list)
-              }
-            }
+            closeAllLists()
 
             // Regular paragraph
             const paragraph = $createParagraphNode()
@@ -556,12 +541,7 @@ export function initializeEditorWithPortableText(
       }
 
       // Append any remaining lists
-      while (listStack.length > 0) {
-        const { list } = listStack.pop()!
-        if (listStack.length === 0) {
-          root.append(list)
-        }
-      }
+      closeAllLists()
     })
   } catch (error) {
     console.error('Failed to initialize editor with Portable Text:', error)
