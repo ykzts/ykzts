@@ -353,6 +353,7 @@ export function initializeEditorWithPortableText(
       const closeAllLists = () => {
         while (listStack.length > 0) {
           const item = listStack.pop()
+          // Only append to root if this was the top-level list
           if (item && listStack.length === 0) {
             root.append(item.list)
           }
@@ -437,6 +438,7 @@ export function initializeEditorWithPortableText(
             const level = block.level || 1
 
             // Adjust list stack to match the current level
+            // Use >= to pop items at or above current level, creating a clean slate for the new level
             while (listStack.length >= level) {
               const poppedList = listStack.pop()
               if (poppedList && listStack.length === 0) {
