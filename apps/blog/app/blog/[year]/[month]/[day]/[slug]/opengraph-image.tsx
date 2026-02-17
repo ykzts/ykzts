@@ -1,7 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { DEFAULT_POST_TITLE, MAX_EXCERPT_LENGTH } from '@/lib/constants'
 import { getPostBySlug } from '@/lib/supabase/posts'
-import { getPublisherProfile } from '@/lib/supabase/profiles'
 
 export const alt = 'Blog'
 export const size = {
@@ -21,10 +20,7 @@ type Props = {
 
 export default async function Image({ params }: Props) {
   const { slug } = await params
-  const [post, profile] = await Promise.all([
-    getPostBySlug(slug),
-    getPublisherProfile().catch(() => null)
-  ])
+  const post = await getPostBySlug(slug)
 
   if (!post) {
     return new ImageResponse(
@@ -200,7 +196,7 @@ export default async function Image({ params }: Props) {
             fontWeight: 500
           }}
         >
-          {profile?.name || 'Blog'}
+          {post.profile?.name || 'Blog'}
         </div>
       </div>
     </div>,

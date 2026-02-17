@@ -9,7 +9,7 @@ export const size = {
 export const contentType = 'image/png'
 
 export default async function Image() {
-  const profile = await getProfile().catch(() => null)
+  const profile = await getProfile()
 
   return new ImageResponse(
     <div
@@ -84,7 +84,7 @@ export default async function Image() {
         >
           ykzts.com
         </div>
-        {profile?.tagline && (
+        {profile.tagline && (
           <div
             style={{
               color: 'rgba(255, 255, 255, 0.8)',
@@ -124,7 +124,7 @@ export default async function Image() {
             <img
               alt=""
               height={128}
-              src="https://www.gravatar.com/avatar/b9025074d487cd0328f1dc816e5ac50a?s=128"
+              src={profile.avatar_url || ''}
               style={{
                 border: '4px solid rgba(255, 255, 255, 0.2)',
                 borderRadius: 64
@@ -140,20 +140,8 @@ export default async function Image() {
             }}
           >
             <div style={{ fontSize: 36, fontWeight: 700, marginBottom: 8 }}>
-              {profile?.name || 'Portfolio'}
+              {profile.name}
             </div>
-            {profile?.email && (
-              <div
-                style={{
-                  color: 'rgba(255, 255, 255, 0.8)',
-                  display: 'flex',
-                  fontSize: 24,
-                  fontWeight: 400
-                }}
-              >
-                {profile.email}
-              </div>
-            )}
           </div>
         </div>
       </div>
