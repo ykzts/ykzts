@@ -101,11 +101,14 @@ async function handleCronRequest(request: Request) {
         })
 
         // Update post with embedding and set timestamp
+        // Preserve existing updated_at to prevent trigger from advancing it
+        // This prevents infinite loop where embedding_updated_at < updated_at
         const { error: updateError } = await supabase
           .from('posts')
           .update({
             embedding: JSON.stringify(embedding),
-            embedding_updated_at: new Date().toISOString()
+            embedding_updated_at: new Date().toISOString(),
+            updated_at: post.updated_at
           })
           .eq('id', post.id)
 
