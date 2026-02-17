@@ -9,6 +9,7 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@ykzts/ui/components/pagination'
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 type AdminPaginationProps = {
@@ -16,9 +17,16 @@ type AdminPaginationProps = {
   totalPages: number
 }
 
-function DisabledPaginationButton({ children }: { children: React.ReactNode }) {
+function DisabledPaginationButton({
+  children,
+  icon
+}: {
+  children: React.ReactNode
+  icon: React.ReactNode
+}) {
   return (
     <span className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-transparent px-4 font-medium text-muted-foreground text-sm transition-colors">
+      {icon}
       {children}
     </span>
   )
@@ -72,7 +80,9 @@ export function AdminPagination({
               text="前へ"
             />
           ) : (
-            <DisabledPaginationButton>
+            <DisabledPaginationButton
+              icon={<ChevronLeftIcon data-icon="inline-start" />}
+            >
               <span className="hidden sm:block">前へ</span>
             </DisabledPaginationButton>
           )}
@@ -146,7 +156,9 @@ export function AdminPagination({
               text="次へ"
             />
           ) : (
-            <DisabledPaginationButton>
+            <DisabledPaginationButton
+              icon={<ChevronRightIcon data-icon="inline-end" />}
+            >
               <span className="hidden sm:block">次へ</span>
             </DisabledPaginationButton>
           )}
