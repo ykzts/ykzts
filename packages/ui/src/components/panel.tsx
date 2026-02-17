@@ -2,6 +2,28 @@ import * as React from 'react'
 
 import { cn } from '@ykzts/ui/lib/utils'
 
+/**
+ * Panel component for reusable card containers with standardized styling.
+ * 
+ * Provides a consistent rounded container with card background, padding, and subtle ring.
+ * Use this component for simple card-like containers that don't require semantic structure
+ * (CardHeader, CardTitle, CardContent, CardFooter). For semantic cards, use the Card component instead.
+ * 
+ * @example
+ * ```tsx
+ * <Panel>
+ *   <h2>Title</h2>
+ *   <p>Content</p>
+ * </Panel>
+ * ```
+ * 
+ * @example With custom className
+ * ```tsx
+ * <Panel className="transition-shadow hover:shadow-md">
+ *   <h2>Interactive Card</h2>
+ * </Panel>
+ * ```
+ */
 function Panel({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
