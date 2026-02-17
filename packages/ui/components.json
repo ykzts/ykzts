@@ -9,7 +9,7 @@
   },
   "iconLibrary": "lucide",
   "registries": {},
-  "rsc": false,
+  "rsc": true,
   "rtl": false,
   "style": "base-nova",
   "tailwind": {

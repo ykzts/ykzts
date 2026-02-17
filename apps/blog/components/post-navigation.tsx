@@ -1,4 +1,3 @@
-import type { Route } from 'next'
 import { getDateBasedUrl } from '@/lib/blog-urls'
 import LinkButton from './link-button'
 

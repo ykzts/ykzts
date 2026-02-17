@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '@ykzts/ui/components/button'
-import { Field } from '@ykzts/ui/components/field'
+import { Field, FieldDescription, FieldLabel } from '@ykzts/ui/components/field'
 import { Input } from '@ykzts/ui/components/input'
 import {
   Select,
@@ -80,9 +80,9 @@ export function PostForm() {
 
         {/* Title */}
         <Field>
-          <Field.Label htmlFor="title">
+          <FieldLabel htmlFor="title">
             タイトル <span className="text-error">*</span>
-          </Field.Label>
+          </FieldLabel>
           <Input
             id="title"
             maxLength={256}
@@ -91,14 +91,14 @@ export function PostForm() {
             required
             type="text"
           />
-          <Field.Description>必須、256文字以内</Field.Description>
+          <FieldDescription>必須、256文字以内</FieldDescription>
         </Field>
 
         {/* Slug */}
         <Field>
-          <Field.Label htmlFor="slug">
+          <FieldLabel htmlFor="slug">
             スラッグ <span className="text-error">*</span>
-          </Field.Label>
+          </FieldLabel>
           <div className="flex gap-2">
             <Input
               id="slug"
@@ -117,26 +117,26 @@ export function PostForm() {
               {isGeneratingSlug ? '生成中...' : '自動生成'}
             </Button>
           </div>
-          <Field.Description>
+          <FieldDescription>
             URL用の識別子（手動入力またはボタンで自動生成）
-          </Field.Description>
+          </FieldDescription>
         </Field>
 
         {/* Excerpt */}
         <Field>
-          <Field.Label htmlFor="excerpt">抜粋</Field.Label>
+          <FieldLabel htmlFor="excerpt">抜粋</FieldLabel>
           <Textarea
             id="excerpt"
             name="excerpt"
             placeholder="投稿の簡単な説明（任意）"
             rows={3}
           />
-          <Field.Description>投稿の要約や説明文</Field.Description>
+          <FieldDescription>投稿の要約や説明文</FieldDescription>
         </Field>
 
         {/* Content */}
         <Field>
-          <Field.Label htmlFor="content">コンテンツ</Field.Label>
+          <FieldLabel htmlFor="content">コンテンツ</FieldLabel>
           <RichTextEditor
             id="content"
             name="content"
@@ -146,7 +146,7 @@ export function PostForm() {
 
         {/* Tags */}
         <Field>
-          <Field.Label>タグ</Field.Label>
+          <FieldLabel>タグ</FieldLabel>
           <div className="flex gap-2">
             <Input
               onChange={(e) => setTagInput(e.target.value)}
@@ -187,7 +187,7 @@ export function PostForm() {
 
         {/* Status */}
         <Field>
-          <Field.Label htmlFor="status">ステータス</Field.Label>
+          <FieldLabel htmlFor="status">ステータス</FieldLabel>
           <Select
             defaultValue="draft"
             name="status"
@@ -209,7 +209,7 @@ export function PostForm() {
         {/* Published At */}
         {showPublishedAt && (
           <Field>
-            <Field.Label htmlFor="published_at_display">公開日時</Field.Label>
+            <FieldLabel htmlFor="published_at_display">公開日時</FieldLabel>
             {/* Hidden input that holds the ISO 8601 value actually submitted */}
             <input id="published_at" name="published_at" type="hidden" />
             {/* Visible datetime-local input for user interaction */}
@@ -229,9 +229,7 @@ export function PostForm() {
               }}
               type="datetime-local"
             />
-            <Field.Description>
-              指定した日時に自動公開されます
-            </Field.Description>
+            <FieldDescription>指定した日時に自動公開されます</FieldDescription>
           </Field>
         )}
 
