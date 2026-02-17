@@ -1,5 +1,9 @@
 import { ImageResponse } from 'next/og'
-import { DEFAULT_POST_TITLE, MAX_EXCERPT_LENGTH } from '@/lib/constants'
+import {
+  AUTHOR_NAME,
+  DEFAULT_POST_TITLE,
+  MAX_EXCERPT_LENGTH
+} from '@/lib/constants'
 import { getPostBySlug } from '@/lib/supabase/posts'
 
 export const alt = 'Blog'
@@ -27,7 +31,7 @@ export default async function Image({ params }: Props) {
       <div
         style={{
           alignItems: 'center',
-          backgroundColor: '#000',
+          background: 'linear-gradient(135deg, #1a1a2e 0%, #2563eb 100%)',
           color: '#fff',
           display: 'flex',
           height: '100%',
@@ -46,7 +50,7 @@ export default async function Image({ params }: Props) {
   return new ImageResponse(
     <div
       style={{
-        backgroundColor: '#000',
+        background: 'linear-gradient(135deg, #1a1a2e 0%, #2563eb 100%)',
         color: '#fff',
         display: 'flex',
         flexDirection: 'column',
@@ -78,7 +82,7 @@ export default async function Image({ params }: Props) {
         {post.excerpt && (
           <div
             style={{
-              color: '#999',
+              color: 'rgba(255, 255, 255, 0.7)',
               display: 'flex',
               fontSize: 32,
               lineHeight: 1.5
@@ -92,14 +96,16 @@ export default async function Image({ params }: Props) {
       <div
         style={{
           alignItems: 'center',
-          borderTop: '4px solid #333',
+          borderTop: '4px solid rgba(255, 255, 255, 0.2)',
           display: 'flex',
           justifyContent: 'space-between',
           paddingTop: 32
         }}
       >
         <div style={{ fontSize: 40, fontWeight: 700 }}>Blog</div>
-        <div style={{ color: '#999', fontSize: 32 }}>Yamagishi Kazutoshi</div>
+        <div style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: 32 }}>
+          {AUTHOR_NAME}
+        </div>
       </div>
     </div>,
     {

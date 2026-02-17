@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import { AUTHOR_EMAIL, AUTHOR_NAME } from '@/lib/constants'
 
 export const alt = 'ykzts.com'
 export const size = {
@@ -11,7 +12,7 @@ export default function Image() {
   return new ImageResponse(
     <div
       style={{
-        backgroundColor: '#000',
+        background: 'linear-gradient(135deg, #1a1a2e 0%, #2563eb 100%)',
         color: '#fff',
         display: 'flex',
         height: '100%',
@@ -56,10 +57,8 @@ export default function Image() {
               justifyContent: 'center'
             }}
           >
-            <div style={{ fontSize: 32, fontWeight: 700 }}>
-              Yamagishi Kazutoshi
-            </div>
-            <div style={{ fontSize: 24 }}>ykzts@desire.sh</div>
+            <div style={{ fontSize: 32, fontWeight: 700 }}>{AUTHOR_NAME}</div>
+            <div style={{ fontSize: 24 }}>{AUTHOR_EMAIL}</div>
           </div>
         </div>
       </div>
