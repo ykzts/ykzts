@@ -247,9 +247,16 @@ export async function generateVersionsFromHistory(filePath: string): Promise<
 
   // Version 1: Initial commit with date field as version_date
   const firstCommit = chronological[0]
-  const initialDate = firstCommit.frontmatter.date
-    ? new Date(firstCommit.frontmatter.date)
-    : firstCommit.date
+  const initialDate =
+    firstCommit.frontmatter.date ||
+    firstCommit.frontmatter.publishdate ||
+    firstCommit.frontmatter.publishDate
+      ? new Date(
+          firstCommit.frontmatter.date ||
+            firstCommit.frontmatter.publishdate ||
+            firstCommit.frontmatter.publishDate
+        )
+      : firstCommit.date
 
   versions.push({
     commitHash: firstCommit.hash,

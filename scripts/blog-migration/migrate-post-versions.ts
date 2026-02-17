@@ -14,8 +14,8 @@
  *   --dry-run  データベースに書き込まずに実行（デバッグ用）
  *
  * Environment:
- *   MIGRATION_PROFILE_ID  post_versions.created_byに使うprofiles.id
- *   MIGRATION_USER_ID     画像アップロード先パスに使うauth.users.id
+ *   MIGRATION_USER_ID      (Required) auth.users.idとして使用。画像アップロード先パスとprofile_id解決に使用
+ *   MIGRATION_PROFILE_ID   (Optional) 明示的に指定する場合のprofiles.id。未指定時はMIGRATION_USER_IDから自動取得
  */
 
 import { execFile } from 'node:child_process'
@@ -137,6 +137,182 @@ function extractSlug(filePath: string): string {
 }
 
 /**
+ * Extract date parts (year, month, day) from file path
+ * Example: apps/blog-legacy/blog/2022/11/03/bought-ps5/index.mdx -> { year: '2022', month: '11', day: '03' }
+ */
+function extractDateFromPath(
+  filePath: string
+): { year: string; month: string; day: string } | null {
+  const relativePath = relative(BLOG_LEGACY_DIR, filePath)
+  const normalizedPath = relativePath.split(sep).join('/')
+  const parts = normalizedPath.split('/')
+
+  // Expected format: YYYY/MM/DD/slug/index.mdx
+  if (parts.length >= 5 && parts[4] === 'index.mdx') {
+    return {
+      day: parts[2],
+      month: parts[1],
+      year: parts[0]
+    }
+  }
+
+  return null
+}
+
+/**
+ * Extract version number from title
+ * Examples:
+ *   "w3c-xmlhttprequest v3.0.0をリリースしました" -> "v3"
+ *   "Version 2.1.0 Released" -> "v2"
+ *   "Something 1.0" -> "v1"
+ */
+function extractVersionFromTitle(title: string): string | null {
+  // Match patterns like "v3.0.0", "version 2.1", "1.0.0", etc.
+  const patterns = [
+    /\bv(\d+)\.\d+/i, // v3.0.0, v2.1
+    /\bversion\s+(\d+)\.\d+/i, // version 3.0, Version 2.1
+    /\b(\d+)\.\d+\.\d+/i // 3.0.0, 2.1.0
+  ]
+
+  for (const pattern of patterns) {
+    const match = title.match(pattern)
+    if (match) {
+      return `v${match[1]}`
+    }
+  }
+
+  return null
+}
+
+/**
+ * Detect and resolve slug duplicates
+ */
+async function resolveDuplicateSlugs(
+  mdxFiles: string[]
+): Promise<
+  Map<
+    string,
+    { slug: string; redirectFrom: string[]; filePath: string; title: string }
+  >
+> {
+  const slugMap = new Map<
+    string,
+    Array<{
+      filePath: string
+      dateParts: { year: string; month: string; day: string } | null
+      originalSlug: string
+    }>
+  >()
+
+  // Group files by slug
+  for (const filePath of mdxFiles) {
+    const slug = extractSlug(filePath)
+    const dateParts = extractDateFromPath(filePath)
+
+    if (!slugMap.has(slug)) {
+      slugMap.set(slug, [])
+    }
+    slugMap.get(slug)!.push({ dateParts, filePath, originalSlug: slug })
+  }
+
+  const result = new Map<
+    string,
+    { slug: string; redirectFrom: string[]; filePath: string; title: string }
+  >()
+
+  // Process each slug group
+  for (const [originalSlug, files] of slugMap.entries()) {
+    if (files.length === 1) {
+      // No duplicates
+      const file = files[0]
+      result.set(file.filePath, {
+        filePath: file.filePath,
+        redirectFrom: [],
+        slug: originalSlug,
+        title: ''
+      })
+    } else {
+      // Has duplicates - need to resolve
+      // Sort by date (oldest first)
+      files.sort((a, b) => {
+        if (!a.dateParts || !b.dateParts) return 0
+        const dateA = `${a.dateParts.year}-${a.dateParts.month}-${a.dateParts.day}`
+        const dateB = `${b.dateParts.year}-${b.dateParts.month}-${b.dateParts.day}`
+        return dateA.localeCompare(dateB)
+      })
+
+      // Read titles from files to extract version info
+      const { parseMDX } = await import('./lib/parse-mdx.ts')
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i]
+        let newSlug = originalSlug
+        let redirectFrom: string[] = []
+
+        try {
+          const parsed = await parseMDX(file.filePath)
+          const title = parsed.frontmatter.title || ''
+
+          if (i === 0) {
+            // First occurrence keeps original slug
+            result.set(file.filePath, {
+              filePath: file.filePath,
+              redirectFrom: [],
+              slug: originalSlug,
+              title
+            })
+          } else {
+            // Try to extract version from title
+            const version = extractVersionFromTitle(title)
+
+            if (version) {
+              newSlug = `${originalSlug}-${version}`
+            } else {
+              // Use sequential numbering
+              newSlug = `${originalSlug}-${i + 1}`
+            }
+
+            // Generate redirect_from path
+            if (file.dateParts) {
+              const { year, month, day } = file.dateParts
+              redirectFrom = [`/blog/${year}/${month}/${day}/${originalSlug}`]
+            }
+
+            result.set(file.filePath, {
+              filePath: file.filePath,
+              redirectFrom,
+              slug: newSlug,
+              title
+            })
+          }
+        } catch (error) {
+          console.warn(
+            `Warning: Could not parse ${file.filePath} for duplicate resolution`
+          )
+          // Fallback to sequential numbering
+          if (i > 0) {
+            newSlug = `${originalSlug}-${i + 1}`
+            if (file.dateParts) {
+              const { year, month, day } = file.dateParts
+              redirectFrom = [`/blog/${year}/${month}/${day}/${originalSlug}`]
+            }
+          }
+
+          result.set(file.filePath, {
+            filePath: file.filePath,
+            redirectFrom,
+            slug: newSlug,
+            title: ''
+          })
+        }
+      }
+    }
+  }
+
+  return result
+}
+
+/**
  * Main migration function
  */
 async function migrate(dryRun = false) {
@@ -145,8 +321,8 @@ async function migrate(dryRun = false) {
     supabase = initSupabase()
   }
 
-  let profileId = process.env.MIGRATION_PROFILE_ID
   const userId = process.env.MIGRATION_USER_ID
+  let profileId = process.env.MIGRATION_PROFILE_ID
   const uploadedUrls = new Map<string, string>()
 
   if (!dryRun) {
@@ -155,7 +331,16 @@ async function migrate(dryRun = false) {
       process.exit(1)
     }
 
-    if (!profileId && userId) {
+    if (!userId) {
+      console.error('Error: MIGRATION_USER_ID is required')
+      console.error(
+        'Please set MIGRATION_USER_ID to the auth.users.id for this migration'
+      )
+      process.exit(1)
+    }
+
+    // Auto-fetch profile_id from user_id if not explicitly provided
+    if (!profileId) {
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('id')
@@ -166,25 +351,28 @@ async function migrate(dryRun = false) {
         throw profileError
       }
 
-      profileId = profile?.id
-    }
+      if (!profile) {
+        console.error(
+          `Error: No profile found for MIGRATION_USER_ID: ${userId}`
+        )
+        console.error(
+          'Please ensure the user has a corresponding profile in the profiles table'
+        )
+        process.exit(1)
+      }
 
-    if (!profileId) {
-      console.error(
-        'Error: MIGRATION_PROFILE_ID is required (or MIGRATION_USER_ID mapped to a profile)'
-      )
-      process.exit(1)
-    }
-
-    if (!userId) {
-      console.error('Error: MIGRATION_USER_ID is required for image uploads')
-      process.exit(1)
+      profileId = profile.id
+      console.log(`ℹ️  Auto-detected profile_id: ${profileId}`)
     }
   }
 
   console.log('🔍 Scanning for MDX files...')
   const mdxFiles = await findMDXFiles(BLOG_LEGACY_DIR)
   console.log(`Found ${mdxFiles.length} MDX files\n`)
+
+  console.log('🔍 Resolving slug duplicates...')
+  const slugResolutionMap = await resolveDuplicateSlugs(mdxFiles)
+  console.log('✅ Slug resolution complete\n')
 
   let totalVersions = 0
   let filesWithMultipleVersions = 0
@@ -193,11 +381,23 @@ async function migrate(dryRun = false) {
 
   for (const filePath of mdxFiles) {
     const relativePath = relative(REPO_ROOT, filePath)
-    const slug = extractSlug(filePath)
+    const resolution = slugResolutionMap.get(filePath)
+
+    if (!resolution) {
+      console.warn(`⚠️  No slug resolution found for ${relativePath}`)
+      continue
+    }
+
+    const { slug, redirectFrom } = resolution
+    const originalSlug = extractSlug(filePath)
 
     try {
       console.log(`\n📄 Processing: ${relativePath}`)
       console.log(`   Slug: ${slug}`)
+      if (slug !== originalSlug) {
+        console.log(`   Original slug: ${originalSlug} (adjusted)`)
+        console.log(`   Redirect from: ${redirectFrom.join(', ')}`)
+      }
 
       // Generate versions from Git history
       const versions = await generateVersionsFromHistory(relativePath)
@@ -257,6 +457,7 @@ async function migrate(dryRun = false) {
               excerpt: postExcerpt,
               profile_id: profileId,
               published_at: publishedAt,
+              redirect_from: redirectFrom.length > 0 ? redirectFrom : null,
               slug,
               status: 'published',
               tags: latestVersion.frontmatter.tags || null,
