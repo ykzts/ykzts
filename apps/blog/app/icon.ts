@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { NextResponse } from 'next/server'
-import { getProfile } from '@/lib/supabase'
+import { getPublisherProfile } from '@/lib/supabase/profiles'
 
 export const size = {
   height: 256,
@@ -9,7 +9,7 @@ export const size = {
 export const contentType = 'image/png'
 
 export default async function Icon() {
-  const profile = await getProfile()
+  const profile = await getPublisherProfile()
 
   if (!profile.avatar_url) {
     notFound()
