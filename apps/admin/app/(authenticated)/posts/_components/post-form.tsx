@@ -231,9 +231,10 @@ export function PostForm({
 
             {/* Tags */}
             <Field>
-              <FieldLabel>タグ</FieldLabel>
+              <FieldLabel htmlFor="tag-input">タグ</FieldLabel>
               <div className="flex gap-2">
                 <Input
+                  id="tag-input"
                   onChange={(e) => setTagInput(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
@@ -258,6 +259,7 @@ export function PostForm({
                     >
                       {tag}
                       <button
+                        aria-label={`"${tag}" タグを削除`}
                         className="text-muted-foreground hover:text-foreground"
                         onClick={() => handleRemoveTag(tag)}
                         type="button"
@@ -311,7 +313,14 @@ export function PostForm({
                 <Input
                   defaultValue={
                     post?.published_at
-                      ? new Date(post.published_at).toISOString().slice(0, 16)
+                      ? (() => {
+                          const d = new Date(post.published_at)
+                          return new Date(
+                            d.getTime() - d.getTimezoneOffset() * 60 * 1000
+                          )
+                            .toISOString()
+                            .slice(0, 16)
+                        })()
                       : ''
                   }
                   id="published_at_display"
