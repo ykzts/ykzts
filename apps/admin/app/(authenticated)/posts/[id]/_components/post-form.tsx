@@ -137,6 +137,17 @@ export function PostForm({ post }: PostFormProps) {
           <FieldDescription>必須、256文字以内</FieldDescription>
         </Field>
 
+        {/* Content */}
+        <Field>
+          <FieldLabel htmlFor="content">コンテンツ</FieldLabel>
+          <RichTextEditor
+            id="content"
+            initialValue={initialContent}
+            name="content"
+            placeholder="投稿の本文を入力..."
+          />
+        </Field>
+
         {/* Slug */}
         <Field>
           <FieldLabel htmlFor="slug">
@@ -177,17 +188,6 @@ export function PostForm({ post }: PostFormProps) {
             rows={3}
           />
           <FieldDescription>投稿の要約や説明文</FieldDescription>
-        </Field>
-
-        {/* Content */}
-        <Field>
-          <FieldLabel htmlFor="content">コンテンツ</FieldLabel>
-          <RichTextEditor
-            id="content"
-            initialValue={initialContent}
-            name="content"
-            placeholder="投稿の本文を入力..."
-          />
         </Field>
 
         {/* Tags */}
