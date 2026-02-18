@@ -2,6 +2,7 @@ import { Badge } from '@ykzts/ui/components/badge'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { AdminPagination } from '@/components/admin-pagination'
+import { Panel } from '@/components/panel'
 import { getProfileTimezone } from '@/lib/data'
 import { getPosts } from '@/lib/posts'
 import { formatDateWithTimezone } from '@/lib/timezones'
@@ -27,7 +28,7 @@ async function PostsContent({
 
   return (
     <>
-      <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
+      <Panel>
         {!result.data || result.data.length === 0 ? (
           <p className="text-muted-foreground">投稿がありません</p>
         ) : (
@@ -90,7 +91,7 @@ async function PostsContent({
             </table>
           </div>
         )}
-      </div>
+      </Panel>
 
       {result.totalPages > 1 && (
         <AdminPagination currentPage={page} totalPages={result.totalPages} />

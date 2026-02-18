@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Suspense } from 'react'
+import { Panel } from '@/components/panel'
 import { getProfileTimezone, getWorks } from '@/lib/data'
 import { formatDateOnly } from '@/lib/timezones'
 import { NewWorkButton } from './_components/new-work-button'
@@ -12,7 +13,7 @@ async function WorksContent() {
   ])
 
   return (
-    <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
+    <Panel>
       {!works || works.length === 0 ? (
         <p className="text-muted-foreground">作品がありません</p>
       ) : (
@@ -54,7 +55,7 @@ async function WorksContent() {
           </table>
         </div>
       )}
-    </div>
+    </Panel>
   )
 }
 

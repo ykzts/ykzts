@@ -1,6 +1,8 @@
+import { Panel } from '@/components/panel'
+
 export function WorksPageSkeleton() {
   return (
-    <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
+    <Panel>
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
@@ -35,6 +37,6 @@ export function WorksPageSkeleton() {
           </tbody>
         </table>
       </div>
-    </div>
+    </Panel>
   )
 }

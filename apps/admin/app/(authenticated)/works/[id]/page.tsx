@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
+import { Panel } from '@/components/panel'
 import { getWork } from '@/lib/data'
 import { WorkForm } from './work-form'
 import { WorkFormSkeleton } from './work-form-skeleton'
@@ -17,9 +18,9 @@ async function WorkEditContent({ id }: { id: string }) {
   }
 
   return (
-    <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
+    <Panel>
       <WorkForm work={work} />
-    </div>
+    </Panel>
   )
 }
 
@@ -35,9 +36,9 @@ export default async function EditWorkPage({
       <h1 className="mb-6 font-bold text-3xl">作品編集</h1>
       <Suspense
         fallback={
-          <div className="rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10">
+          <Panel>
             <WorkFormSkeleton />
-          </div>
+          </Panel>
         }
       >
         <WorkEditContent id={id} />
