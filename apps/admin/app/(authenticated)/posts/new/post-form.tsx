@@ -196,7 +196,16 @@ export function PostForm() {
             }}
           >
             <SelectTrigger className="w-full" id="status">
-              <SelectValue />
+              <SelectValue>
+                {(value) => {
+                  const labels: Record<string, string> = {
+                    draft: '下書き',
+                    published: '公開',
+                    scheduled: '予約公開'
+                  }
+                  return labels[value as string] || value
+                }}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="draft">下書き</SelectItem>
