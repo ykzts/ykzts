@@ -2,10 +2,8 @@ import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { metadata as layoutMetadata } from '@/app/layout'
-import ArticleHeader from '@/components/article-header'
+import ArticleContent from '@/components/article-content'
 import Header from '@/components/header'
-import PortableTextBlock from '@/components/portable-text'
-import PostNavigation from '@/components/post-navigation'
 import TableOfContents from '@/components/table-of-contents'
 import { getDateBasedUrl } from '@/lib/blog-urls'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
@@ -180,24 +178,17 @@ export default async function PostDetailPage({ params }: PageProps) {
           <div className="mx-auto max-w-7xl">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
               {/* Main content */}
-              <article className="min-w-0 max-w-3xl">
-                <ArticleHeader
-                  authorName={post.profile.name}
-                  publishedAt={post.published_at}
-                  tags={post.tags}
-                  title={post.title}
-                  versionDate={post.version_date}
-                />
-                {/* Mobile ToC - only visible on mobile */}
-                <div className="lg:hidden">
-                  <TableOfContents headings={headings} variant="mobile" />
-                </div>
-                <PortableTextBlock value={post.content} />
-                <PostNavigation
-                  nextPost={nextPost}
-                  previousPost={previousPost}
-                />
-              </article>
+              <ArticleContent
+                authorName={post.profile.name}
+                content={post.content}
+                headings={headings}
+                nextPost={nextPost}
+                previousPost={previousPost}
+                publishedAt={post.published_at}
+                tags={post.tags}
+                title={post.title}
+                versionDate={post.version_date}
+              />
 
               {/* Desktop ToC sidebar */}
               <div className="hidden lg:block">
@@ -206,17 +197,17 @@ export default async function PostDetailPage({ params }: PageProps) {
             </div>
           </div>
         ) : (
-          <article className="mx-auto max-w-3xl">
-            <ArticleHeader
-              authorName={post.profile.name}
-              publishedAt={post.published_at}
-              tags={post.tags}
-              title={post.title}
-              versionDate={post.version_date}
-            />
-            <PortableTextBlock value={post.content} />
-            <PostNavigation nextPost={nextPost} previousPost={previousPost} />
-          </article>
+          <ArticleContent
+            authorName={post.profile.name}
+            content={post.content}
+            headings={headings}
+            nextPost={nextPost}
+            previousPost={previousPost}
+            publishedAt={post.published_at}
+            tags={post.tags}
+            title={post.title}
+            versionDate={post.version_date}
+          />
         )}
       </main>
     </>
