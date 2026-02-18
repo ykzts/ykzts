@@ -6,9 +6,20 @@ export default function Header() {
     <header className="border-border border-b">
       <div className="container mx-auto px-4 py-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <Link className="font-bold text-2xl hover:text-primary" href="/blog">
-            Blog
-          </Link>
+          <div className="flex items-center gap-6">
+            <Link
+              className="font-bold text-2xl hover:text-primary"
+              href="/blog"
+            >
+              Blog
+            </Link>
+            <Link
+              className="text-muted-foreground hover:text-primary"
+              href="/blog/archive"
+            >
+              Archive
+            </Link>
+          </div>
           <SearchForm className="w-full md:max-w-md" />
         </div>
       </div>

@@ -584,4 +584,142 @@ export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
   }
 }
 
+/**
+ * Get the latest post's publication date
+ * @param isDraft - Whether to include draft posts (default: false)
+ * @returns The latest post's published_at date or null if no posts exist
+ */
+export async function getLatestPostDate(isDraft = false) {
+  cacheTag('posts')
+
+  if (!supabase) {
+    return null
+  }
+
+  let query = supabase
+    .from('posts')
+    .select('published_at')
+    .order('published_at', { ascending: false })
+    .limit(1)
+
+  if (!isDraft) {
+    query = query
+      .eq('status', 'published')
+      .lte('published_at', new Date().toISOString())
+  }
+
+  const { data, error } = await query.maybeSingle()
+
+  if (error) {
+    throw new Error(`Failed to fetch latest post date: ${error.message}`)
+  }
+
+  return data ? (data.published_at as string) : null
+}
+
+/**
+ * Get posts published in a specific year
+ * @param year - The year to filter posts by
+ * @param isDraft - Whether to include draft posts (default: false)
+ * @returns Array of posts published in the specified year
+ */
+export async function getPostsByYear(year: number, isDraft = false) {
+  cacheTag('posts')
+
+  if (!supabase) {
+    return []
+  }
+
+  const yearStart = `${year}-01-01T00:00:00.000Z`
+  const yearEnd = `${year}-12-31T23:59:59.999Z`
+
+  let query = supabase
+    .from('posts')
+    .select(
+      `
+      id,
+      slug,
+      title,
+      excerpt,
+      tags,
+      published_at,
+      profile:profiles!posts_profile_id_fkey(
+        id,
+        name
+      ),
+      current_version:post_versions!posts_current_version_id_fkey(
+        content,
+        version_date
+      )
+    `
+    )
+    .gte('published_at', yearStart)
+    .lte('published_at', yearEnd)
+
+  if (!isDraft) {
+    query = query
+      .eq('status', 'published')
+      .lte('published_at', new Date().toISOString())
+  }
+
+  const { data, error } = await query.order('published_at', {
+    ascending: false
+  })
+
+  if (error) {
+    throw new Error(`Failed to fetch posts by year: ${error.message}`)
+  }
+
+  return data.map((post) => ({
+    content: Array.isArray(post.current_version)
+      ? (post.current_version[0]?.content ?? null)
+      : (post.current_version?.content ?? null),
+    excerpt: post.excerpt,
+    id: post.id,
+    profile: normalizeProfile(post),
+    published_at: post.published_at as string,
+    slug: post.slug as string,
+    tags: post.tags,
+    title: post.title as string,
+    version_date: extractVersionDate(post.current_version)
+  }))
+}
+
+/**
+ * Get the number of posts published in a specific year
+ * @param year - The year to count posts for
+ * @param isDraft - Whether to include draft posts (default: false)
+ * @returns The number of posts published in the specified year
+ */
+export async function getPostCountByYear(year: number, isDraft = false) {
+  cacheTag('posts')
+
+  if (!supabase) {
+    return 0
+  }
+
+  const yearStart = `${year}-01-01T00:00:00.000Z`
+  const yearEnd = `${year}-12-31T23:59:59.999Z`
+
+  let query = supabase
+    .from('posts')
+    .select('*', { count: 'exact', head: true })
+    .gte('published_at', yearStart)
+    .lte('published_at', yearEnd)
+
+  if (!isDraft) {
+    query = query
+      .eq('status', 'published')
+      .lte('published_at', new Date().toISOString())
+  }
+
+  const { count, error } = await query
+
+  if (error) {
+    throw new Error(`Failed to count posts by year: ${error.message}`)
+  }
+
+  return count ?? 0
+}
+
 export { POSTS_PER_PAGE }
