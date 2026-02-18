@@ -66,7 +66,6 @@ export async function generateSlugWithAI(params: {
   const truncatedContent = contentText.slice(0, 500)
 
   const result = await generateText({
-    maxSteps: 5,
     messages: [
       {
         content:
@@ -79,7 +78,6 @@ export async function generateSlugWithAI(params: {
       }
     ],
     model: openai('gpt-4o-mini'),
-    toolChoice: 'required',
     tools: {
       checkSlugAvailability: {
         description:
@@ -108,7 +106,7 @@ export async function generateSlugWithAI(params: {
               : 'This slug is already taken. Try a different variation (e.g., add a descriptive word, use synonym, or rephrase).'
           }
         },
-        parameters: z.object({
+        inputSchema: z.object({
           slug: z
             .string()
             .describe(
