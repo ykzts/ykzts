@@ -12,7 +12,7 @@ import PostCard from '@/components/post-card'
 import { getYearData } from './actions'
 
 type Post = {
-  content: unknown
+  content: string | null
   excerpt: string | null
   id: string
   profile: {
@@ -52,14 +52,21 @@ export default function ArchiveList({ initialYearData }: ArchiveListProps) {
 
     startTransition(async () => {
       try {
-        const data = await getYearData(nextYear)
+        let yearToTry = nextYear
+        let data = await getYearData(yearToTry)
 
-        if (!data.posts || data.posts.length === 0) {
+        // Skip years with no posts (gap years) until a lower bound
+        while (data.posts.length === 0 && yearToTry > 2000) {
+          yearToTry -= 1
+          data = await getYearData(yearToTry)
+        }
+
+        if (data.posts.length === 0) {
           setHasMore(false)
           return
         }
 
-        currentYearRef.current = nextYear
+        currentYearRef.current = yearToTry
         setYearDataList((prev) => [...prev, data])
       } catch (error) {
         console.error('Failed to load year data:', error)

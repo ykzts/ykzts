@@ -630,10 +630,8 @@ export async function getPostsByYear(year: number, isDraft = false) {
     return []
   }
 
-  const yearStart = new Date(Date.UTC(year, 0, 1, 0, 0, 0, 0)).toISOString()
-  const yearEnd = new Date(
-    Date.UTC(year, 11, 31, 23, 59, 59, 999)
-  ).toISOString()
+  const yearStart = new Date(Date.UTC(year, 0, 1)).toISOString()
+  const yearEnd = new Date(Date.UTC(year + 1, 0, 1)).toISOString()
 
   let query = supabase
     .from('posts')
@@ -656,7 +654,7 @@ export async function getPostsByYear(year: number, isDraft = false) {
     `
     )
     .gte('published_at', yearStart)
-    .lte('published_at', yearEnd)
+    .lt('published_at', yearEnd)
 
   if (!isDraft) {
     query = query
@@ -700,16 +698,14 @@ export async function getPostCountByYear(year: number, isDraft = false) {
     return 0
   }
 
-  const yearStart = new Date(Date.UTC(year, 0, 1, 0, 0, 0, 0)).toISOString()
-  const yearEnd = new Date(
-    Date.UTC(year, 11, 31, 23, 59, 59, 999)
-  ).toISOString()
+  const yearStart = new Date(Date.UTC(year, 0, 1)).toISOString()
+  const yearEnd = new Date(Date.UTC(year + 1, 0, 1)).toISOString()
 
   let query = supabase
     .from('posts')
     .select('*', { count: 'exact', head: true })
     .gte('published_at', yearStart)
-    .lte('published_at', yearEnd)
+    .lt('published_at', yearEnd)
 
   if (!isDraft) {
     query = query
