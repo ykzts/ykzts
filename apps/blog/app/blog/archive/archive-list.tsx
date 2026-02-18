@@ -8,8 +8,8 @@ import {
 } from '@ykzts/ui/components/card'
 import { Skeleton } from '@ykzts/ui/components/skeleton'
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
-import type { PortableTextValue } from '@/lib/portable-text'
 import PostCard from '@/components/post-card'
+import type { PortableTextValue } from '@/lib/portable-text'
 import { getYearData } from './actions'
 
 type Post = {
