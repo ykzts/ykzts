@@ -3,6 +3,11 @@ import { Button } from '@ykzts/ui/components/button'
 import { Field, FieldDescription, FieldLabel } from '@ykzts/ui/components/field'
 import { Input } from '@ykzts/ui/components/input'
 import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput
+} from '@ykzts/ui/components/input-group'
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -67,6 +72,7 @@ export function PostForm({
     post?.status === 'scheduled' || post?.status === 'published' || false
   )
   const [isGeneratingSlug, setIsGeneratingSlug] = useState(false)
+  const [slugValue, setSlugValue] = useState(post?.slug || '')
 
   const handleDelete = async () => {
     if (!deleteAction || !post) return
@@ -128,6 +134,7 @@ export function PostForm({
           title: titleInput.value
         })
         slugInput.value = uniqueSlug
+        setSlugValue(uniqueSlug)
       } catch (error) {
         // Ultimate fallback to client-side generation if all else fails
         console.error('Failed to generate unique slug:', error)
@@ -137,9 +144,12 @@ export function PostForm({
             post?.id
           )
           slugInput.value = uniqueSlug
+          setSlugValue(uniqueSlug)
         } catch (fallbackError) {
           console.error('Fallback slug generation also failed:', fallbackError)
-          slugInput.value = generateSlug(titleInput.value)
+          const fallbackSlug = generateSlug(titleInput.value)
+          slugInput.value = fallbackSlug
+          setSlugValue(fallbackSlug)
         }
       } finally {
         setIsGeneratingSlug(false)
@@ -209,25 +219,30 @@ export function PostForm({
               <FieldLabel htmlFor="slug">
                 スラッグ <span className="text-error">*</span>
               </FieldLabel>
-              <div className="flex gap-2">
-                <Input
-                  defaultValue={post?.slug || ''}
-                  id="slug"
-                  maxLength={256}
-                  name="slug"
-                  placeholder="url-friendly-slug"
-                  required
-                  type="text"
-                />
-                <Button
-                  disabled={isGeneratingSlug}
-                  onClick={handleGenerateSlug}
-                  type="button"
-                  variant="outline"
-                >
-                  {isGeneratingSlug ? '生成中...' : '自動生成'}
-                </Button>
-              </div>
+              <InputGroup className="gap-2">
+                <InputGroupInput>
+                  <Input
+                    defaultValue={post?.slug || ''}
+                    id="slug"
+                    maxLength={256}
+                    name="slug"
+                    onChange={(e) => setSlugValue(e.target.value)}
+                    placeholder="url-friendly-slug"
+                    required
+                    type="text"
+                  />
+                </InputGroupInput>
+                <InputGroupAddon>
+                  <Button
+                    disabled={isGeneratingSlug || slugValue.trim() !== ''}
+                    onClick={handleGenerateSlug}
+                    type="button"
+                    variant="outline"
+                  >
+                    {isGeneratingSlug ? '生成中...' : '自動生成'}
+                  </Button>
+                </InputGroupAddon>
+              </InputGroup>
               <FieldDescription>
                 URL用の識別子（手動入力またはボタンで自動生成）
               </FieldDescription>

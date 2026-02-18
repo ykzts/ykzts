@@ -2,6 +2,11 @@
 import { Alert, AlertDescription } from '@ykzts/ui/components/alert'
 import { Button } from '@ykzts/ui/components/button'
 import { Input } from '@ykzts/ui/components/input'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput
+} from '@ykzts/ui/components/input-group'
 import type { MouseEvent } from 'react'
 import { useActionState, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
@@ -89,9 +94,8 @@ export function WorkForm({
           if (slugInput) {
             slugInput.value = uniqueSlug
           }
-        } else {
-          setSlug(uniqueSlug)
         }
+        setSlug(uniqueSlug)
       } catch (error) {
         // Fallback to client-side generation if server action fails
         console.error('Failed to generate unique slug:', error)
@@ -103,9 +107,8 @@ export function WorkForm({
           if (slugInput) {
             slugInput.value = fallbackSlug
           }
-        } else {
-          setSlug(fallbackSlug)
         }
+        setSlug(fallbackSlug)
       } finally {
         setIsGeneratingSlug(false)
       }
@@ -185,30 +188,32 @@ export function WorkForm({
           <label className="mb-2 block font-medium" htmlFor="slug">
             スラッグ <span className="text-error">*</span>
           </label>
-          <div className="flex gap-2">
-            <Input
-              className={isEditMode ? 'flex-1 font-mono' : 'flex-1'}
-              defaultValue={work?.slug}
-              id="slug"
-              name="slug"
-              onChange={
-                !isEditMode ? (e) => setSlug(e.target.value) : undefined
-              }
-              pattern={isEditMode ? '^[a-zA-Z0-9\\-_]+$' : '^[a-z0-9-]+$'}
-              placeholder={!isEditMode ? '例: my-awesome-project' : undefined}
-              required
-              type="text"
-              value={!isEditMode ? slug : undefined}
-            />
-            <Button
-              disabled={isGeneratingSlug}
-              onClick={handleGenerateSlug}
-              type="button"
-              variant="secondary"
-            >
-              {isGeneratingSlug ? '生成中...' : '自動生成'}
-            </Button>
-          </div>
+          <InputGroup className="gap-2">
+            <InputGroupInput>
+              <Input
+                className={isEditMode ? 'font-mono' : ''}
+                defaultValue={work?.slug}
+                id="slug"
+                name="slug"
+                onChange={(e) => setSlug(e.target.value)}
+                pattern={isEditMode ? '^[a-zA-Z0-9\\-_]+$' : '^[a-z0-9-]+$'}
+                placeholder={!isEditMode ? '例: my-awesome-project' : undefined}
+                required
+                type="text"
+                value={!isEditMode ? slug : undefined}
+              />
+            </InputGroupInput>
+            <InputGroupAddon>
+              <Button
+                disabled={isGeneratingSlug || slug.trim() !== ''}
+                onClick={handleGenerateSlug}
+                type="button"
+                variant="secondary"
+              >
+                {isGeneratingSlug ? '生成中...' : '自動生成'}
+              </Button>
+            </InputGroupAddon>
+          </InputGroup>
           <p className="mt-1 text-muted-foreground text-sm">
             {isEditMode
               ? '英数字、ハイフン、アンダースコアのみ使用可能'
