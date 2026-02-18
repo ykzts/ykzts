@@ -630,8 +630,10 @@ export async function getPostsByYear(year: number, isDraft = false) {
     return []
   }
 
-  const yearStart = `${year}-01-01T00:00:00.000Z`
-  const yearEnd = `${year}-12-31T23:59:59.999Z`
+  const yearStart = new Date(Date.UTC(year, 0, 1, 0, 0, 0, 0)).toISOString()
+  const yearEnd = new Date(
+    Date.UTC(year, 11, 31, 23, 59, 59, 999)
+  ).toISOString()
 
   let query = supabase
     .from('posts')
@@ -698,8 +700,10 @@ export async function getPostCountByYear(year: number, isDraft = false) {
     return 0
   }
 
-  const yearStart = `${year}-01-01T00:00:00.000Z`
-  const yearEnd = `${year}-12-31T23:59:59.999Z`
+  const yearStart = new Date(Date.UTC(year, 0, 1, 0, 0, 0, 0)).toISOString()
+  const yearEnd = new Date(
+    Date.UTC(year, 11, 31, 23, 59, 59, 999)
+  ).toISOString()
 
   let query = supabase
     .from('posts')

@@ -1,7 +1,8 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 import PostCard from '@/components/post-card'
+import { getYearData } from './actions'
 
 type Post = {
   content: unknown
@@ -32,46 +33,38 @@ export default function ArchiveList({ initialYearData }: ArchiveListProps) {
   const [yearDataList, setYearDataList] = useState<YearData[]>([
     initialYearData
   ])
-  const [isLoading, setIsLoading] = useState(false)
+  const [isPending, startTransition] = useTransition()
   const [hasMore, setHasMore] = useState(true)
   const observerTarget = useRef<HTMLDivElement>(null)
   const currentYearRef = useRef(initialYearData.year)
 
-  const loadNextYear = useCallback(async () => {
-    if (isLoading || !hasMore) return
-
-    setIsLoading(true)
+  const loadNextYear = useCallback(() => {
+    if (isPending || !hasMore) return
 
     const nextYear = currentYearRef.current - 1
 
-    try {
-      const response = await fetch(`/blog/archive/api?year=${nextYear}`)
-      if (!response.ok) {
+    startTransition(async () => {
+      try {
+        const data = await getYearData(nextYear)
+
+        if (!data.posts || data.posts.length === 0) {
+          setHasMore(false)
+          return
+        }
+
+        currentYearRef.current = nextYear
+        setYearDataList((prev) => [...prev, data])
+      } catch (error) {
+        console.error('Failed to load year data:', error)
         setHasMore(false)
-        return
       }
-
-      const data: YearData = await response.json()
-
-      if (!data.posts || data.posts.length === 0) {
-        setHasMore(false)
-        return
-      }
-
-      currentYearRef.current = nextYear
-      setYearDataList((prev) => [...prev, data])
-    } catch (error) {
-      console.error('Failed to load year data:', error)
-      setHasMore(false)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [isLoading, hasMore])
+    })
+  }, [isPending, hasMore])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMore && !isLoading) {
+        if (entries[0].isIntersecting && hasMore && !isPending) {
           loadNextYear()
         }
       },
@@ -88,7 +81,7 @@ export default function ArchiveList({ initialYearData }: ArchiveListProps) {
         observer.unobserve(currentTarget)
       }
     }
-  }, [hasMore, isLoading, loadNextYear])
+  }, [hasMore, isPending, loadNextYear])
 
   return (
     <div className="space-y-12">
@@ -107,7 +100,7 @@ export default function ArchiveList({ initialYearData }: ArchiveListProps) {
 
       {hasMore && (
         <div className="py-8 text-center" ref={observerTarget}>
-          {isLoading ? (
+          {isPending ? (
             <p className="text-muted-foreground">読み込み中...</p>
           ) : (
             <p className="text-muted-foreground">スクロールで続きを読み込み</p>
