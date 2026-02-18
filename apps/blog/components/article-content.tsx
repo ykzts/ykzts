@@ -11,6 +11,7 @@ import TableOfContents from './table-of-contents'
 
 interface ArticleContentProps {
   authorName: string
+  className?: string
   content: PortableTextValue
   headings: Heading[]
   nextPost: { slug: string; title: string; published_at: string } | null
@@ -23,19 +24,20 @@ interface ArticleContentProps {
 }
 
 export default function ArticleContent({
-  title,
   authorName,
-  publishedAt,
-  versionDate,
-  tags,
+  className,
   content,
   headings,
   nextPost,
+  postId,
   previousPost,
-  postId
+  publishedAt,
+  tags,
+  title,
+  versionDate
 }: ArticleContentProps) {
   return (
-    <article className="min-w-0 max-w-3xl">
+    <article className={className}>
       <ArticleHeader
         authorName={authorName}
         publishedAt={publishedAt}

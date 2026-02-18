@@ -180,6 +180,7 @@ export default async function PostDetailPage({ params }: PageProps) {
               {/* Main content */}
               <ArticleContent
                 authorName={post.profile.name}
+                className="min-w-0 max-w-3xl"
                 content={post.content}
                 headings={headings}
                 nextPost={nextPost}
@@ -200,6 +201,7 @@ export default async function PostDetailPage({ params }: PageProps) {
         ) : (
           <ArticleContent
             authorName={post.profile.name}
+            className="mx-auto max-w-3xl"
             content={post.content}
             headings={headings}
             nextPost={nextPost}
