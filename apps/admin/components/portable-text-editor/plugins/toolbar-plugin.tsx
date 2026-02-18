@@ -277,6 +277,7 @@ export function ToolbarPlugin() {
     <div className="border-border border-b bg-muted/5">
       <div className="flex gap-1 p-2">
         <Select
+          // items prop maps values to display labels, enabling SelectValue to show labels instead of raw values
           items={{
             code: 'コードブロック',
             h2: '見出し2',
@@ -320,6 +321,7 @@ export function ToolbarPlugin() {
         </Select>
         {blockType === 'code' && (
           <Select
+            // items prop maps values to display labels, enabling SelectValue to show labels instead of raw values
             items={{
               '': '言語を選択',
               bash: 'Bash',

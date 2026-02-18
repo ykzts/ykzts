@@ -236,6 +236,7 @@ export function PostForm({ post }: PostFormProps) {
           <FieldLabel htmlFor="status">ステータス</FieldLabel>
           <Select
             defaultValue={post.status || 'draft'}
+            // items prop maps values to display labels, enabling SelectValue to show labels instead of raw values
             items={{
               draft: '下書き',
               published: '公開',
