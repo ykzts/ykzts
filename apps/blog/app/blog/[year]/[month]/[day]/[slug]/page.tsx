@@ -2,12 +2,11 @@ import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { metadata as layoutMetadata } from '@/app/layout'
-import DateDisplay from '@/components/date-display'
+import ArticleHeader from '@/components/article-header'
 import Header from '@/components/header'
 import PortableTextBlock from '@/components/portable-text'
 import PostNavigation from '@/components/post-navigation'
 import TableOfContents from '@/components/table-of-contents'
-import TagList from '@/components/tag-list'
 import { getDateBasedUrl } from '@/lib/blog-urls'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
 import { extractHeadings } from '@/lib/extract-headings'
@@ -182,30 +181,17 @@ export default async function PostDetailPage({ params }: PageProps) {
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
               {/* Main content */}
               <article className="min-w-0 max-w-3xl">
-                <header className="mb-8">
-                  <h1 className="mb-4 font-bold text-4xl">{post.title}</h1>
-                  <div className="flex flex-col gap-2 text-muted-foreground text-sm">
-                    <div className="flex items-center gap-4">
-                      <span>著者: {post.profile.name}</span>
-                      <DateDisplay date={post.published_at} />
-                    </div>
-                    {post.version_date &&
-                      post.version_date !== post.published_at && (
-                        <div>
-                          更新: <DateDisplay date={post.version_date} />
-                        </div>
-                      )}
-                  </div>
-                  {post.tags && post.tags.length > 0 && (
-                    <div className="mt-4">
-                      <TagList
-                        className="flex flex-wrap gap-2"
-                        tags={post.tags}
-                      />
-                    </div>
-                  )}
-                </header>
-                <TableOfContents headings={headings} />
+                <ArticleHeader
+                  authorName={post.profile.name}
+                  publishedAt={post.published_at}
+                  tags={post.tags}
+                  title={post.title}
+                  versionDate={post.version_date}
+                />
+                {/* Mobile ToC - only visible on mobile */}
+                <div className="lg:hidden">
+                  <TableOfContents headings={headings} variant="mobile" />
+                </div>
                 <PortableTextBlock value={post.content} />
                 <PostNavigation
                   nextPost={nextPost}
@@ -215,32 +201,19 @@ export default async function PostDetailPage({ params }: PageProps) {
 
               {/* Desktop ToC sidebar */}
               <div className="hidden lg:block">
-                <TableOfContents headings={headings} />
+                <TableOfContents headings={headings} variant="desktop" />
               </div>
             </div>
           </div>
         ) : (
           <article className="mx-auto max-w-3xl">
-            <header className="mb-8">
-              <h1 className="mb-4 font-bold text-4xl">{post.title}</h1>
-              <div className="flex flex-col gap-2 text-muted-foreground text-sm">
-                <div className="flex items-center gap-4">
-                  <span>著者: {post.profile.name}</span>
-                  <DateDisplay date={post.published_at} />
-                </div>
-                {post.version_date &&
-                  post.version_date !== post.published_at && (
-                    <div>
-                      更新: <DateDisplay date={post.version_date} />
-                    </div>
-                  )}
-              </div>
-              {post.tags && post.tags.length > 0 && (
-                <div className="mt-4">
-                  <TagList className="flex flex-wrap gap-2" tags={post.tags} />
-                </div>
-              )}
-            </header>
+            <ArticleHeader
+              authorName={post.profile.name}
+              publishedAt={post.published_at}
+              tags={post.tags}
+              title={post.title}
+              versionDate={post.version_date}
+            />
             <PortableTextBlock value={post.content} />
             <PostNavigation nextPost={nextPost} previousPost={previousPost} />
           </article>

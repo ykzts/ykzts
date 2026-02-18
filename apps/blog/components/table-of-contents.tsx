@@ -6,9 +6,13 @@ import type { Heading } from '@/lib/extract-headings'
 
 interface TableOfContentsProps {
   headings: Heading[]
+  variant?: 'mobile' | 'desktop'
 }
 
-export default function TableOfContents({ headings }: TableOfContentsProps) {
+export default function TableOfContents({
+  headings,
+  variant = 'desktop'
+}: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>('')
   const [isOpen, setIsOpen] = useState(false)
 
@@ -63,10 +67,10 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
     return null
   }
 
-  return (
-    <>
-      {/* Mobile: Collapsible accordion */}
-      <div className="mb-8 lg:hidden">
+  // Mobile variant: Collapsible accordion
+  if (variant === 'mobile') {
+    return (
+      <div className="mb-8">
         <button
           aria-controls="toc-content"
           aria-expanded={isOpen}
@@ -110,36 +114,35 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
           </nav>
         )}
       </div>
+    )
+  }
 
-      {/* Desktop: Fixed sidebar */}
-      <aside
-        aria-label="目次"
-        className="sticky top-20 hidden max-h-[calc(100vh-6rem)] overflow-y-auto lg:block"
-      >
-        <nav>
-          <p className="mb-4 font-semibold text-foreground text-sm">目次</p>
-          <ol className="space-y-2 border-border border-l-2 pl-4">
-            {headings.map((heading) => (
-              <li
-                className={heading.level === 3 ? 'ml-4' : ''}
-                key={heading.id}
+  // Desktop variant: Fixed sidebar
+  return (
+    <aside
+      aria-label="目次"
+      className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto"
+    >
+      <nav>
+        <p className="mb-4 font-semibold text-foreground text-sm">目次</p>
+        <ol className="space-y-2 border-border border-l-2 pl-4">
+          {headings.map((heading) => (
+            <li className={heading.level === 3 ? 'ml-4' : ''} key={heading.id}>
+              <button
+                className={`block text-left text-sm transition-colors hover:text-primary ${
+                  activeId === heading.id
+                    ? 'font-medium text-primary'
+                    : 'text-muted-foreground'
+                }`}
+                onClick={() => scrollToHeading(heading.id)}
+                type="button"
               >
-                <button
-                  className={`block text-left text-sm transition-colors hover:text-primary ${
-                    activeId === heading.id
-                      ? 'font-medium text-primary'
-                      : 'text-muted-foreground'
-                  }`}
-                  onClick={() => scrollToHeading(heading.id)}
-                  type="button"
-                >
-                  {heading.text}
-                </button>
-              </li>
-            ))}
-          </ol>
-        </nav>
-      </aside>
-    </>
+                {heading.text}
+              </button>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </aside>
   )
 }
