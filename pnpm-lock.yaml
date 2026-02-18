@@ -144,6 +144,9 @@ importers:
       '@ykzts/pagination-utils':
         specifier: workspace:*
         version: link:../../packages/pagination-utils
+      '@ykzts/portable-text-utils':
+        specifier: workspace:*
+        version: link:../../packages/portable-text-utils
       '@ykzts/supabase':
         specifier: workspace:*
         version: link:../../packages/supabase
@@ -419,6 +422,19 @@ importers:
         version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@22.19.11)(jiti@2.6.1)(jsdom@28.0.0)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2)
 
   packages/pagination-utils:
+    devDependencies:
+      '@ykzts/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+
+  packages/portable-text-utils:
+    dependencies:
+      '@portabletext/types':
+        specifier: 4.0.1
+        version: 4.0.1
     devDependencies:
       '@ykzts/tsconfig':
         specifier: workspace:*

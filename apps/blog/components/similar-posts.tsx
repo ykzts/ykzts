@@ -1,3 +1,4 @@
+import { extractFirstParagraph } from '@ykzts/portable-text-utils'
 import {
   Card,
   CardContent,
@@ -9,7 +10,6 @@ import {
 import Link from 'next/link'
 import { getDateBasedUrl } from '@/lib/blog-urls'
 import type { PortableTextValue } from '@/lib/portable-text'
-import { extractFirstParagraph } from '@/lib/portable-text-utils'
 import DateDisplay from './date-display'
 import TagList from './tag-list'
 

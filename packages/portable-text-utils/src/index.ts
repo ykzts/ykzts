@@ -1,5 +1,4 @@
 import type { PortableTextBlock } from '@portabletext/types'
-import type { PortableTextValue } from './portable-text'
 
 /**
  * Extracts plain text from a PortableText block's children
@@ -26,7 +25,7 @@ function extractTextFromBlock(block: PortableTextBlock): string {
  * @returns Extracted text or empty string
  */
 export function extractFirstParagraph(
-  content: PortableTextValue | null | undefined,
+  content: PortableTextBlock[] | null | undefined,
   maxLength = 150
 ): string {
   if (!content || !Array.isArray(content)) {
