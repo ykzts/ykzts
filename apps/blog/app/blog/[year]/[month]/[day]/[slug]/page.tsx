@@ -2,13 +2,12 @@ import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { metadata as layoutMetadata } from '@/app/layout'
-import DateDisplay from '@/components/date-display'
+import ArticleContent from '@/components/article-content'
 import Header from '@/components/header'
-import PortableTextBlock from '@/components/portable-text'
-import PostNavigation from '@/components/post-navigation'
-import TagList from '@/components/tag-list'
+import TableOfContents from '@/components/table-of-contents'
 import { getDateBasedUrl } from '@/lib/blog-urls'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
+import { extractHeadings } from '@/lib/extract-headings'
 import { isPortableTextValue } from '@/lib/portable-text'
 import {
   getAdjacentPosts,
@@ -162,6 +161,10 @@ export default async function PostDetailPage({ params }: PageProps) {
     }
   }
 
+  // Extract headings for Table of Contents
+  const headings = extractHeadings(post.content)
+  const hasHeadings = headings.length > 0
+
   return (
     <>
       <script
@@ -171,29 +174,41 @@ export default async function PostDetailPage({ params }: PageProps) {
       />
       <Header />
       <main className="container mx-auto px-4 py-8">
-        <article className="mx-auto max-w-3xl">
-          <header className="mb-8">
-            <h1 className="mb-4 font-bold text-4xl">{post.title}</h1>
-            <div className="flex flex-col gap-2 text-muted-foreground text-sm">
-              <div className="flex items-center gap-4">
-                <span>著者: {post.profile.name}</span>
-                <DateDisplay date={post.published_at} />
+        {hasHeadings ? (
+          <div className="mx-auto max-w-7xl">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
+              {/* Main content */}
+              <ArticleContent
+                authorName={post.profile.name}
+                content={post.content}
+                headings={headings}
+                nextPost={nextPost}
+                previousPost={previousPost}
+                publishedAt={post.published_at}
+                tags={post.tags}
+                title={post.title}
+                versionDate={post.version_date}
+              />
+
+              {/* Desktop ToC sidebar */}
+              <div className="hidden lg:block">
+                <TableOfContents headings={headings} variant="desktop" />
               </div>
-              {post.version_date && post.version_date !== post.published_at && (
-                <div>
-                  更新: <DateDisplay date={post.version_date} />
-                </div>
-              )}
             </div>
-            {post.tags && post.tags.length > 0 && (
-              <div className="mt-4">
-                <TagList className="flex flex-wrap gap-2" tags={post.tags} />
-              </div>
-            )}
-          </header>
-          <PortableTextBlock value={post.content} />
-          <PostNavigation nextPost={nextPost} previousPost={previousPost} />
-        </article>
+          </div>
+        ) : (
+          <ArticleContent
+            authorName={post.profile.name}
+            content={post.content}
+            headings={headings}
+            nextPost={nextPost}
+            previousPost={previousPost}
+            publishedAt={post.published_at}
+            tags={post.tags}
+            title={post.title}
+            versionDate={post.version_date}
+          />
+        )}
       </main>
     </>
   )
