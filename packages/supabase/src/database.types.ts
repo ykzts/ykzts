@@ -343,6 +343,22 @@ export type Database = {
           updated_at: string
         }[]
       }
+      get_similar_posts: {
+        Args: {
+          match_count?: number
+          match_threshold?: number
+          post_id: string
+        }
+        Returns: {
+          excerpt: string
+          id: string
+          published_at: string
+          similarity: number
+          slug: string
+          tags: string[]
+          title: string
+        }[]
+      }
       search_posts_by_embedding: {
         Args: {
           match_count?: number
