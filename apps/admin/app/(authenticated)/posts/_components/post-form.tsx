@@ -16,8 +16,6 @@ import { RichTextEditor } from '@/components/portable-text-editor'
 import type { PostWithDetails } from '@/lib/posts'
 import { generateUniqueSlugForPost } from '@/lib/slug'
 import { generateSlug } from '@/lib/utils'
-import type { ActionState } from '../actions'
-import { deletePostAction, updatePostAction } from '../actions'
 
 const POST_STATUSES = [
   { label: '下書き', value: 'draft' },
@@ -25,26 +23,54 @@ const POST_STATUSES = [
   { label: '公開', value: 'published' }
 ] as const
 
+type ActionState = {
+  error?: string
+  success?: boolean
+} | null
+
 type PostFormProps = {
-  post: PostWithDetails
+  post?: PostWithDetails
+  createAction?: (
+    prevState: ActionState,
+    formData: FormData
+  ) => Promise<ActionState>
+  updateAction?: (
+    prevState: ActionState,
+    formData: FormData
+  ) => Promise<ActionState>
+  deleteAction?: (id: string) => Promise<void>
 }
 
-export function PostForm({ post }: PostFormProps) {
-  const [state, formAction, isPending] = useActionState<ActionState, FormData>(
-    updatePostAction,
-    null
-  )
+export function PostForm({
+  post,
+  createAction,
+  updateAction,
+  deleteAction
+}: PostFormProps) {
+  const isEditMode = !!post
+  const formAction = isEditMode ? updateAction : createAction
+
+  if (!formAction) {
+    throw new Error('Either createAction or updateAction must be provided')
+  }
+
+  const [state, submitAction, isPending] = useActionState<
+    ActionState,
+    FormData
+  >(formAction, null)
   const [isDeleting, setIsDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
 
-  const [tags, setTags] = useState<string[]>(post.tags || [])
+  const [tags, setTags] = useState<string[]>(post?.tags || [])
   const [tagInput, setTagInput] = useState('')
   const [showPublishedAt, setShowPublishedAt] = useState(
-    post.status === 'scheduled' || post.status === 'published'
+    post?.status === 'scheduled' || post?.status === 'published' || false
   )
   const [isGeneratingSlug, setIsGeneratingSlug] = useState(false)
 
   const handleDelete = async () => {
+    if (!deleteAction || !post) return
+
     if (!confirm('本当にこの投稿を削除しますか？この操作は取り消せません。')) {
       return
     }
@@ -53,8 +79,8 @@ export function PostForm({ post }: PostFormProps) {
     setDeleteError(null)
 
     try {
-      await deletePostAction(post.id)
-      // If successful, deletePostAction will redirect
+      await deleteAction(post.id)
+      // If successful, deleteAction will redirect
     } catch (error) {
       setIsDeleting(false)
       setDeleteError(
@@ -88,10 +114,10 @@ export function PostForm({ post }: PostFormProps) {
     if (titleInput && slugInput && titleInput.value) {
       setIsGeneratingSlug(true)
       try {
-        // Use server action to generate unique slug, excluding current post
+        // Use server action to generate unique slug, excluding current post in edit mode
         const uniqueSlug = await generateUniqueSlugForPost(
           titleInput.value,
-          post.id
+          post?.id
         )
         slugInput.value = uniqueSlug
       } catch (error) {
@@ -104,14 +130,14 @@ export function PostForm({ post }: PostFormProps) {
     }
   }
 
-  const initialContent = post.current_version?.content
+  const initialContent = post?.current_version?.content
     ? JSON.stringify(post.current_version.content)
     : undefined
 
   return (
     <div>
-      <form action={formAction} className="space-y-6">
-        <input name="id" type="hidden" value={post.id} />
+      <form action={submitAction} className="space-y-6">
+        {isEditMode && <input name="id" type="hidden" value={post.id} />}
         <input name="tags" type="hidden" value={JSON.stringify(tags)} />
 
         {state?.error && (
@@ -132,7 +158,7 @@ export function PostForm({ post }: PostFormProps) {
             タイトル <span className="text-error">*</span>
           </FieldLabel>
           <Input
-            defaultValue={post.title || ''}
+            defaultValue={post?.title || ''}
             id="title"
             maxLength={256}
             name="title"
@@ -161,7 +187,7 @@ export function PostForm({ post }: PostFormProps) {
           </FieldLabel>
           <div className="flex gap-2">
             <Input
-              defaultValue={post.slug || ''}
+              defaultValue={post?.slug || ''}
               id="slug"
               maxLength={256}
               name="slug"
@@ -187,7 +213,7 @@ export function PostForm({ post }: PostFormProps) {
         <Field>
           <FieldLabel htmlFor="excerpt">抜粋</FieldLabel>
           <Textarea
-            defaultValue={post.excerpt || ''}
+            defaultValue={post?.excerpt || ''}
             id="excerpt"
             name="excerpt"
             placeholder="投稿の簡単な説明（任意）"
@@ -241,7 +267,7 @@ export function PostForm({ post }: PostFormProps) {
         <Field>
           <FieldLabel htmlFor="status">ステータス</FieldLabel>
           <Select
-            defaultValue={post.status || 'draft'}
+            defaultValue={post?.status || 'draft'}
             items={POST_STATUSES}
             name="status"
             onValueChange={(value) => {
@@ -267,7 +293,7 @@ export function PostForm({ post }: PostFormProps) {
             <FieldLabel htmlFor="published_at_display">公開日時</FieldLabel>
             {/* Hidden input that holds the ISO 8601 value actually submitted */}
             <input
-              defaultValue={post.published_at ?? ''}
+              defaultValue={post?.published_at ?? ''}
               id="published_at"
               name="published_at"
               type="hidden"
@@ -275,7 +301,7 @@ export function PostForm({ post }: PostFormProps) {
             {/* Visible datetime-local input for user interaction */}
             <Input
               defaultValue={
-                post.published_at
+                post?.published_at
                   ? new Date(post.published_at).toISOString().slice(0, 16)
                   : ''
               }
@@ -298,27 +324,44 @@ export function PostForm({ post }: PostFormProps) {
           </Field>
         )}
 
-        {/* Version History Link */}
-        <div>
-          <Link
-            className="text-primary text-sm hover:underline"
-            href={`/posts/${post.id}/versions`}
-          >
-            バージョン履歴を表示
-          </Link>
-        </div>
+        {/* Version History Link - only in edit mode */}
+        {isEditMode && (
+          <div>
+            <Link
+              className="text-primary text-sm hover:underline"
+              href={`/posts/${post.id}/versions`}
+            >
+              バージョン履歴を表示
+            </Link>
+          </div>
+        )}
 
         {/* Action Buttons */}
-        <div className="flex justify-between gap-4">
-          <Button
-            disabled={isPending || isDeleting}
-            onClick={handleDelete}
-            type="button"
-            variant="destructive"
-          >
-            {isDeleting ? '削除中...' : '削除'}
-          </Button>
-          <div className="flex gap-2">
+        {isEditMode ? (
+          <div className="flex justify-between gap-4">
+            <Button
+              disabled={isPending || isDeleting}
+              onClick={handleDelete}
+              type="button"
+              variant="destructive"
+            >
+              {isDeleting ? '削除中...' : '削除'}
+            </Button>
+            <div className="flex gap-2">
+              <Button
+                render={<Link href="/posts" />}
+                type="button"
+                variant="outline"
+              >
+                キャンセル
+              </Button>
+              <Button disabled={isPending || isDeleting} type="submit">
+                {isPending ? '保存中...' : '保存'}
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex justify-end gap-2">
             <Button
               render={<Link href="/posts" />}
               type="button"
@@ -326,11 +369,11 @@ export function PostForm({ post }: PostFormProps) {
             >
               キャンセル
             </Button>
-            <Button disabled={isPending || isDeleting} type="submit">
-              {isPending ? '保存中...' : '保存'}
+            <Button disabled={isPending} type="submit">
+              {isPending ? '作成中...' : '作成'}
             </Button>
           </div>
-        </div>
+        )}
       </form>
     </div>
   )
