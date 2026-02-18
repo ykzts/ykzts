@@ -1,6 +1,7 @@
 'use client'
 import { Alert, AlertDescription } from '@ykzts/ui/components/alert'
 import { Button } from '@ykzts/ui/components/button'
+import { Field, FieldDescription, FieldLabel } from '@ykzts/ui/components/field'
 import { Input } from '@ykzts/ui/components/input'
 import {
   InputGroup,
@@ -163,87 +164,114 @@ export function WorkForm({
           </Alert>
         )}
 
-        <div>
-          <label className="mb-2 block font-medium" htmlFor="title">
-            タイトル <span className="text-error">*</span>
-          </label>
-          <Input
-            defaultValue={work?.title}
-            id="title"
-            maxLength={256}
-            name="title"
-            onChange={
-              !isEditMode ? (e) => handleTitleChange(e.target.value) : undefined
-            }
-            placeholder={!isEditMode ? 'タイトルを入力' : undefined}
-            required
-            type="text"
-            value={!isEditMode ? title : undefined}
-          />
-          <p className="mt-1 text-muted-foreground text-sm">
-            {isEditMode ? '1〜256文字' : '必須、1〜256文字'}
-          </p>
-        </div>
+        {/* Two-column layout: Main content on left, metadata on right */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px]">
+          {/* Left Column - Main Content */}
+          <div className="space-y-6">
+            {/* Title */}
+            <Field>
+              <FieldLabel htmlFor="title">
+                タイトル{' '}
+                <span aria-hidden="true" className="text-error">
+                  *
+                </span>
+              </FieldLabel>
+              <Input
+                defaultValue={work?.title}
+                id="title"
+                maxLength={256}
+                name="title"
+                onChange={
+                  !isEditMode
+                    ? (e) => handleTitleChange(e.target.value)
+                    : undefined
+                }
+                placeholder={!isEditMode ? 'タイトルを入力' : undefined}
+                required
+                type="text"
+                value={!isEditMode ? title : undefined}
+              />
+              <FieldDescription>
+                {isEditMode ? '1〜256文字' : '必須、1〜256文字'}
+              </FieldDescription>
+            </Field>
 
-        <div>
-          <label className="mb-2 block font-medium" htmlFor="slug">
-            スラッグ <span className="text-error">*</span>
-          </label>
-          <InputGroup>
-            <InputGroupInput
-              className={isEditMode ? 'font-mono' : ''}
-              defaultValue={work?.slug}
-              id="slug"
-              name="slug"
-              onChange={(e) => setSlug(e.target.value)}
-              pattern={isEditMode ? '^[a-zA-Z0-9\\-_]+$' : '^[a-z0-9-]+$'}
-              placeholder={!isEditMode ? '例: my-awesome-project' : undefined}
-              required
-              type="text"
-              value={!isEditMode ? slug : undefined}
-            />
-            <InputGroupAddon align="inline-end">
-              <InputGroupButton
-                disabled={isGeneratingSlug || slug.trim() !== ''}
-                onClick={handleGenerateSlug}
-                variant="secondary"
-              >
-                {isGeneratingSlug ? '生成中...' : '自動生成'}
-              </InputGroupButton>
-            </InputGroupAddon>
-          </InputGroup>
-          <p className="mt-1 text-muted-foreground text-sm">
-            {isEditMode
-              ? '英数字、ハイフン、アンダースコアのみ使用可能'
-              : '必須、URL-safe形式（小文字英数字とハイフン）、一意性制約あり。自動生成は英数字のみ対応、日本語タイトルの場合は手動でローマ字に変換してください。'}
-          </p>
-        </div>
+            {/* Content */}
+            <Field>
+              <FieldLabel htmlFor="content">
+                コンテンツ{' '}
+                <span aria-hidden="true" className="text-error">
+                  *
+                </span>
+              </FieldLabel>
+              <RichTextEditor
+                id="content"
+                initialValue={contentString}
+                name="content"
+              />
+            </Field>
+          </div>
 
-        <div>
-          <label className="mb-2 block font-medium" htmlFor="starts_at">
-            開始日 <span className="text-error">*</span>
-          </label>
-          <Input
-            defaultValue={work?.starts_at}
-            id="starts_at"
-            name="starts_at"
-            required
-            type="date"
-          />
-          {!isEditMode && (
-            <p className="mt-1 text-muted-foreground text-sm">必須</p>
-          )}
-        </div>
+          {/* Right Column - Metadata Sidebar */}
+          <div className="space-y-6">
+            {/* Slug */}
+            <Field>
+              <FieldLabel htmlFor="slug">
+                スラッグ{' '}
+                <span aria-hidden="true" className="text-error">
+                  *
+                </span>
+              </FieldLabel>
+              <InputGroup>
+                <InputGroupInput
+                  className={isEditMode ? 'font-mono' : ''}
+                  defaultValue={work?.slug}
+                  id="slug"
+                  name="slug"
+                  onChange={(e) => setSlug(e.target.value)}
+                  pattern={isEditMode ? '^[a-zA-Z0-9\\-_]+$' : '^[a-z0-9-]+$'}
+                  placeholder={
+                    !isEditMode ? '例: my-awesome-project' : undefined
+                  }
+                  required
+                  type="text"
+                  value={!isEditMode ? slug : undefined}
+                />
+                <InputGroupAddon align="inline-end">
+                  <InputGroupButton
+                    disabled={isGeneratingSlug || slug.trim() !== ''}
+                    onClick={handleGenerateSlug}
+                    variant="secondary"
+                  >
+                    {isGeneratingSlug ? '生成中...' : '自動生成'}
+                  </InputGroupButton>
+                </InputGroupAddon>
+              </InputGroup>
+              <FieldDescription>
+                {isEditMode
+                  ? '英数字、ハイフン、アンダースコアのみ使用可能'
+                  : '必須、URL-safe形式（小文字英数字とハイフン）、一意性制約あり。自動生成は英数字のみ対応、日本語タイトルの場合は手動でローマ字に変換してください。'}
+              </FieldDescription>
+            </Field>
 
-        <div>
-          <label className="mb-2 block font-medium" htmlFor="content">
-            コンテンツ <span className="text-error">*</span>
-          </label>
-          <RichTextEditor
-            id="content"
-            initialValue={contentString}
-            name="content"
-          />
+            {/* Start Date */}
+            <Field>
+              <FieldLabel htmlFor="starts_at">
+                開始日{' '}
+                <span aria-hidden="true" className="text-error">
+                  *
+                </span>
+              </FieldLabel>
+              <Input
+                defaultValue={work?.starts_at}
+                id="starts_at"
+                name="starts_at"
+                required
+                type="date"
+              />
+              {!isEditMode && <FieldDescription>必須</FieldDescription>}
+            </Field>
+          </div>
         </div>
 
         <div
