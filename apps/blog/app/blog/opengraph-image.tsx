@@ -20,7 +20,7 @@ export default async function Image() {
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         padding: 64,
         position: 'relative',
         width: '100%'
@@ -57,6 +57,7 @@ export default async function Image() {
         style={{
           alignItems: 'center',
           display: 'flex',
+          flex: 1,
           flexDirection: 'column',
           justifyContent: 'center',
           zIndex: 1
@@ -97,6 +98,47 @@ export default async function Image() {
             {profile.tagline}
           </div>
         )}
+      </div>
+
+      {/* Footer */}
+      <div
+        style={{
+          alignItems: 'center',
+          borderTop: '2px solid rgba(255, 255, 255, 0.2)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          paddingTop: 32,
+          zIndex: 1
+        }}
+      >
+        <div
+          style={{
+            alignItems: 'center',
+            display: 'flex',
+            gap: 16
+          }}
+        >
+          <div
+            style={{
+              background: 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)',
+              borderRadius: 8,
+              display: 'flex',
+              height: 12,
+              width: 12
+            }}
+          />
+          <div style={{ fontSize: 40, fontWeight: 700 }}>Blog</div>
+        </div>
+        <div
+          style={{
+            color: 'rgba(255, 255, 255, 0.9)',
+            display: 'flex',
+            fontSize: 32,
+            fontWeight: 500
+          }}
+        >
+          {profile.name}
+        </div>
       </div>
     </div>,
     {
