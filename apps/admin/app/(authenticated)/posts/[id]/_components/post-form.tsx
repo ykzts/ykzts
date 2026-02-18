@@ -242,9 +242,7 @@ export function PostForm({ post }: PostFormProps) {
           <FieldLabel htmlFor="status">ステータス</FieldLabel>
           <Select
             defaultValue={post.status || 'draft'}
-            items={Object.fromEntries(
-              POST_STATUSES.map((status) => [status.value, status.label])
-            )}
+            items={POST_STATUSES}
             name="status"
             onValueChange={(value) => {
               setShowPublishedAt(value === 'scheduled' || value === 'published')

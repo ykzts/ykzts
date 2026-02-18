@@ -317,9 +317,7 @@ export function ToolbarPlugin() {
     <div className="border-border border-b bg-muted/5">
       <div className="flex gap-1 p-2">
         <Select
-          items={Object.fromEntries(
-            BLOCK_TYPES.map((type) => [type.value, type.label])
-          )}
+          items={BLOCK_TYPES}
           onValueChange={(value) => {
             if (value) {
               formatBlockType(
@@ -350,9 +348,7 @@ export function ToolbarPlugin() {
         </Select>
         {blockType === 'code' && (
           <Select
-            items={Object.fromEntries(
-              CODE_LANGUAGES.map((lang) => [lang.value, lang.label])
-            )}
+            items={CODE_LANGUAGES}
             onValueChange={(value) => updateCodeLanguage(value || '')}
             value={codeLanguage}
           >
