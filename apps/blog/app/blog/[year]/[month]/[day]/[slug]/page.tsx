@@ -166,6 +166,7 @@ export default async function PostDetailPage({ params }: PageProps) {
 
   // Extract headings for Table of Contents
   const headings = extractHeadings(post.content)
+  const hasHeadings = headings.length > 0
 
   return (
     <>
@@ -176,44 +177,74 @@ export default async function PostDetailPage({ params }: PageProps) {
       />
       <Header />
       <main className="container mx-auto px-4 py-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
-            {/* Main content */}
-            <article className="min-w-0 max-w-3xl">
-              <header className="mb-8">
-                <h1 className="mb-4 font-bold text-4xl">{post.title}</h1>
-                <div className="flex flex-col gap-2 text-muted-foreground text-sm">
-                  <div className="flex items-center gap-4">
-                    <span>著者: {post.profile.name}</span>
-                    <DateDisplay date={post.published_at} />
+        {hasHeadings ? (
+          <div className="mx-auto max-w-7xl">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
+              {/* Main content */}
+              <article className="min-w-0 max-w-3xl">
+                <header className="mb-8">
+                  <h1 className="mb-4 font-bold text-4xl">{post.title}</h1>
+                  <div className="flex flex-col gap-2 text-muted-foreground text-sm">
+                    <div className="flex items-center gap-4">
+                      <span>著者: {post.profile.name}</span>
+                      <DateDisplay date={post.published_at} />
+                    </div>
+                    {post.version_date &&
+                      post.version_date !== post.published_at && (
+                        <div>
+                          更新: <DateDisplay date={post.version_date} />
+                        </div>
+                      )}
                   </div>
-                  {post.version_date &&
-                    post.version_date !== post.published_at && (
-                      <div>
-                        更新: <DateDisplay date={post.version_date} />
-                      </div>
-                    )}
-                </div>
-                {post.tags && post.tags.length > 0 && (
-                  <div className="mt-4">
-                    <TagList
-                      className="flex flex-wrap gap-2"
-                      tags={post.tags}
-                    />
-                  </div>
-                )}
-              </header>
-              <TableOfContents headings={headings} />
-              <PortableTextBlock value={post.content} />
-              <PostNavigation nextPost={nextPost} previousPost={previousPost} />
-            </article>
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="mt-4">
+                      <TagList
+                        className="flex flex-wrap gap-2"
+                        tags={post.tags}
+                      />
+                    </div>
+                  )}
+                </header>
+                <TableOfContents headings={headings} />
+                <PortableTextBlock value={post.content} />
+                <PostNavigation
+                  nextPost={nextPost}
+                  previousPost={previousPost}
+                />
+              </article>
 
-            {/* Desktop ToC sidebar */}
-            <div className="hidden lg:block">
-              <TableOfContents headings={headings} />
+              {/* Desktop ToC sidebar */}
+              <div className="hidden lg:block">
+                <TableOfContents headings={headings} />
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <article className="mx-auto max-w-3xl">
+            <header className="mb-8">
+              <h1 className="mb-4 font-bold text-4xl">{post.title}</h1>
+              <div className="flex flex-col gap-2 text-muted-foreground text-sm">
+                <div className="flex items-center gap-4">
+                  <span>著者: {post.profile.name}</span>
+                  <DateDisplay date={post.published_at} />
+                </div>
+                {post.version_date &&
+                  post.version_date !== post.published_at && (
+                    <div>
+                      更新: <DateDisplay date={post.version_date} />
+                    </div>
+                  )}
+              </div>
+              {post.tags && post.tags.length > 0 && (
+                <div className="mt-4">
+                  <TagList className="flex flex-wrap gap-2" tags={post.tags} />
+                </div>
+              )}
+            </header>
+            <PortableTextBlock value={post.content} />
+            <PostNavigation nextPost={nextPost} previousPost={previousPost} />
+          </article>
+        )}
       </main>
     </>
   )
