@@ -183,6 +183,7 @@ export default async function PostDetailPage({ params }: PageProps) {
                 content={post.content}
                 headings={headings}
                 nextPost={nextPost}
+                postId={post.id}
                 previousPost={previousPost}
                 publishedAt={post.published_at}
                 tags={post.tags}
@@ -202,6 +203,7 @@ export default async function PostDetailPage({ params }: PageProps) {
             content={post.content}
             headings={headings}
             nextPost={nextPost}
+            postId={post.id}
             previousPost={previousPost}
             publishedAt={post.published_at}
             tags={post.tags}
