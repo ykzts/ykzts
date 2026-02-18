@@ -2,7 +2,7 @@
 
 import { openai } from '@ai-sdk/openai'
 import type { Json } from '@ykzts/supabase'
-import { generateText } from 'ai'
+import { generateText, stepCountIs } from 'ai'
 import { z } from 'zod'
 import { createClient } from './supabase/server'
 
@@ -78,6 +78,7 @@ export async function generateSlugWithAI(params: {
       }
     ],
     model: openai('gpt-4o-mini'),
+    stopWhen: stepCountIs(5),
     tools: {
       checkSlugAvailability: {
         description:
@@ -94,7 +95,16 @@ export async function generateSlugWithAI(params: {
             query = query.neq('id', excludeId)
           }
 
-          const { data } = await query.maybeSingle()
+          const { data, error } = await query.maybeSingle()
+
+          if (error) {
+            return {
+              available: false,
+              exists: false,
+              message: `Failed to check slug availability: ${error.message}. Assume unavailable and try a different slug.`
+            }
+          }
+
           const available = !data
           const exists = !!data
 
