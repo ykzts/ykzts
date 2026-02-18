@@ -6,6 +6,7 @@ import DateDisplay from '@/components/date-display'
 import Header from '@/components/header'
 import PortableTextBlock from '@/components/portable-text'
 import PostNavigation from '@/components/post-navigation'
+import SimilarPosts from '@/components/similar-posts'
 import TagList from '@/components/tag-list'
 import { getDateBasedUrl } from '@/lib/blog-urls'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
@@ -13,7 +14,8 @@ import { isPortableTextValue } from '@/lib/portable-text'
 import {
   getAdjacentPosts,
   getAllPosts,
-  getPostBySlug
+  getPostBySlug,
+  getSimilarPosts
 } from '@/lib/supabase/posts'
 import { getPublisherProfile } from '@/lib/supabase/profiles'
 
@@ -136,11 +138,13 @@ export default async function PostDetailPage({ params }: PageProps) {
     notFound()
   }
 
-  // Fetch publisher profile and adjacent posts concurrently
-  const [publisherProfile, { previousPost, nextPost }] = await Promise.all([
-    getPublisherProfile(),
-    getAdjacentPosts(slug, isDraft)
-  ])
+  // Fetch publisher profile, adjacent posts, and similar posts concurrently
+  const [publisherProfile, { previousPost, nextPost }, similarPosts] =
+    await Promise.all([
+      getPublisherProfile(),
+      getAdjacentPosts(slug, isDraft),
+      getSimilarPosts(post.id, 5, 0.5)
+    ])
 
   // JSON-LD structured data for Article schema
   const baseUrl = layoutMetadata.metadataBase?.toString() || 'https://ykzts.com'
@@ -193,6 +197,7 @@ export default async function PostDetailPage({ params }: PageProps) {
           </header>
           <PortableTextBlock value={post.content} />
           <PostNavigation nextPost={nextPost} previousPost={previousPost} />
+          <SimilarPosts posts={similarPosts} />
         </article>
       </main>
     </>

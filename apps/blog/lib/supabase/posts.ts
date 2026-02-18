@@ -442,6 +442,49 @@ export async function searchPosts(query: string, limit = 10, threshold = 0.4) {
 }
 
 /**
+ * Get similar posts based on vector embedding similarity
+ * @param postId - ID of the current post
+ * @param limit - Maximum number of results (default: 5)
+ * @param threshold - Minimum similarity threshold (default: 0.5)
+ * @returns Array of similar posts with similarity scores
+ */
+export async function getSimilarPosts(
+  postId: string,
+  limit = 5,
+  threshold = 0.5
+) {
+  cacheTag('posts')
+
+  if (!supabase) {
+    // Return empty array when Supabase is not configured
+    return []
+  }
+
+  // Call database function to get similar posts
+  const { data, error } = await supabase.rpc('get_similar_posts', {
+    match_count: limit,
+    match_threshold: threshold,
+    post_id: postId
+  })
+
+  if (error) {
+    throw new Error(`Failed to get similar posts: ${error.message}`)
+  }
+
+  return (
+    (data as {
+      excerpt: string | null
+      id: string
+      published_at: string
+      similarity: number
+      slug: string
+      tags: string[] | null
+      title: string
+    }[]) || []
+  )
+}
+
+/**
  * Get adjacent posts (previous and next) relative to the current post
  * @param currentSlug - Slug of the current post
  * @param isDraft - Whether to include draft posts (default: false)
