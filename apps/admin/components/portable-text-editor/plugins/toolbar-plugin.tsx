@@ -277,6 +277,16 @@ export function ToolbarPlugin() {
     <div className="border-border border-b bg-muted/5">
       <div className="flex gap-1 p-2">
         <Select
+          items={{
+            code: 'コードブロック',
+            h2: '見出し2',
+            h3: '見出し3',
+            h4: '見出し4',
+            h5: '見出し5',
+            h6: '見出し6',
+            paragraph: '段落',
+            quote: '引用'
+          }}
           onValueChange={(value) => {
             if (value) {
               formatBlockType(
@@ -310,6 +320,35 @@ export function ToolbarPlugin() {
         </Select>
         {blockType === 'code' && (
           <Select
+            items={{
+              '': '言語を選択',
+              bash: 'Bash',
+              c: 'C',
+              cpp: 'C++',
+              csharp: 'C#',
+              css: 'CSS',
+              go: 'Go',
+              html: 'HTML',
+              java: 'Java',
+              javascript: 'JavaScript',
+              json: 'JSON',
+              jsx: 'JSX',
+              kotlin: 'Kotlin',
+              markdown: 'Markdown',
+              php: 'PHP',
+              plaintext: 'Plain Text',
+              python: 'Python',
+              ruby: 'Ruby',
+              rust: 'Rust',
+              scss: 'SCSS',
+              shell: 'Shell',
+              sql: 'SQL',
+              swift: 'Swift',
+              tsx: 'TSX',
+              typescript: 'TypeScript',
+              xml: 'XML',
+              yaml: 'YAML'
+            }}
             onValueChange={(value) => updateCodeLanguage(value || '')}
             value={codeLanguage}
           >

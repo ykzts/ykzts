@@ -190,22 +190,18 @@ export function PostForm() {
           <FieldLabel htmlFor="status">ステータス</FieldLabel>
           <Select
             defaultValue="draft"
+            items={{
+              draft: '下書き',
+              published: '公開',
+              scheduled: '予約公開'
+            }}
             name="status"
             onValueChange={(value) => {
               setShowPublishedAt(value === 'scheduled' || value === 'published')
             }}
           >
             <SelectTrigger className="w-full" id="status">
-              <SelectValue>
-                {(value) => {
-                  const labels: Record<string, string> = {
-                    draft: '下書き',
-                    published: '公開',
-                    scheduled: '予約公開'
-                  }
-                  return labels[value as string] || value
-                }}
-              </SelectValue>
+              <SelectValue />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="draft">下書き</SelectItem>
