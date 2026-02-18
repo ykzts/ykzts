@@ -1,13 +1,6 @@
-import { Panel } from '@/components/panel'
+import { NewResourcePage } from '@/components/resource-pages'
 import { PostForm } from './post-form'
 
 export default function NewPostPage() {
-  return (
-    <div>
-      <h1 className="mb-6 font-bold text-3xl">投稿新規作成</h1>
-      <Panel>
-        <PostForm />
-      </Panel>
-    </div>
-  )
+  return <NewResourcePage FormComponent={PostForm} title="投稿新規作成" />
 }

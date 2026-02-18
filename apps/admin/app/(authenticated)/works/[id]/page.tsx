@@ -1,6 +1,4 @@
-import { notFound } from 'next/navigation'
-import { Suspense } from 'react'
-import { Panel } from '@/components/panel'
+import { EditResourcePage } from '@/components/resource-pages'
 import { getWork } from '@/lib/data'
 import { WorkForm } from './work-form'
 import { WorkFormSkeleton } from './work-form-skeleton'
@@ -8,20 +6,6 @@ import { WorkFormSkeleton } from './work-form-skeleton'
 export function generateStaticParams() {
   // Return dummy param for build-time validation with Cache Components
   return [{ id: '_' }]
-}
-
-async function WorkEditContent({ id }: { id: string }) {
-  const work = await getWork(id)
-
-  if (!work) {
-    notFound()
-  }
-
-  return (
-    <Panel>
-      <WorkForm work={work} />
-    </Panel>
-  )
 }
 
 export default async function EditWorkPage({
@@ -32,17 +16,13 @@ export default async function EditWorkPage({
   const { id } = await params
 
   return (
-    <div>
-      <h1 className="mb-6 font-bold text-3xl">作品編集</h1>
-      <Suspense
-        fallback={
-          <Panel>
-            <WorkFormSkeleton />
-          </Panel>
-        }
-      >
-        <WorkEditContent id={id} />
-      </Suspense>
-    </div>
+    <EditResourcePage
+      FormComponent={WorkForm}
+      getResource={getWork}
+      id={id}
+      resourcePropName="work"
+      SkeletonComponent={WorkFormSkeleton}
+      title="作品編集"
+    />
   )
 }
