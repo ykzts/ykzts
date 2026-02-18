@@ -2,8 +2,9 @@ import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { Panel } from '@/components/panel'
 import { getWork } from '@/lib/data'
-import { WorkForm } from './work-form'
-import { WorkFormSkeleton } from './work-form-skeleton'
+import { WorkForm } from '../_components/work-form'
+import { WorkFormSkeleton } from '../_components/work-form-skeleton'
+import { deleteWork, updateWork } from './actions'
 
 export function generateStaticParams() {
   // Return dummy param for build-time validation with Cache Components
@@ -19,7 +20,11 @@ async function WorkEditContent({ id }: { id: string }) {
 
   return (
     <Panel>
-      <WorkForm work={work} />
+      <WorkForm
+        deleteAction={deleteWork}
+        updateAction={updateWork}
+        work={work}
+      />
     </Panel>
   )
 }
