@@ -18,6 +18,12 @@ import { generateSlug } from '@/lib/utils'
 import type { ActionState } from './actions'
 import { createPostAction } from './actions'
 
+const POST_STATUSES = [
+  { label: '下書き', value: 'draft' },
+  { label: '予約公開', value: 'scheduled' },
+  { label: '公開', value: 'published' }
+] as const
+
 export function PostForm() {
   const [state, formAction, isPending] = useActionState<ActionState, FormData>(
     createPostAction,
@@ -190,6 +196,7 @@ export function PostForm() {
           <FieldLabel htmlFor="status">ステータス</FieldLabel>
           <Select
             defaultValue="draft"
+            items={POST_STATUSES}
             name="status"
             onValueChange={(value) => {
               setShowPublishedAt(value === 'scheduled' || value === 'published')
@@ -199,9 +206,11 @@ export function PostForm() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="draft">下書き</SelectItem>
-              <SelectItem value="scheduled">予約公開</SelectItem>
-              <SelectItem value="published">公開</SelectItem>
+              {POST_STATUSES.map((status) => (
+                <SelectItem key={status.value} value={status.value}>
+                  {status.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </Field>
