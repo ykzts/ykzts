@@ -1,9 +1,13 @@
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
 import { metadata as layoutMetadata } from '@/app/layout'
 import ArticleContent from '@/components/article-content'
 import Header from '@/components/header'
+import PostNavigation from '@/components/post-navigation'
+import SimilarPosts from '@/components/similar-posts'
+import SimilarPostsSkeleton from '@/components/similar-posts-skeleton'
 import TableOfContents from '@/components/table-of-contents'
 import { getDateBasedUrl } from '@/lib/blog-urls'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
@@ -12,7 +16,8 @@ import { isPortableTextValue } from '@/lib/portable-text'
 import {
   getAdjacentPosts,
   getAllPosts,
-  getPostBySlug
+  getPostBySlug,
+  getSimilarPosts
 } from '@/lib/supabase/posts'
 import { getPublisherProfile } from '@/lib/supabase/profiles'
 
@@ -174,8 +179,9 @@ export default async function PostDetailPage({ params }: PageProps) {
       />
       <Header />
       <main className="container mx-auto px-4 py-8">
-        {hasHeadings ? (
-          <div className="mx-auto max-w-7xl">
+        {/* Grid layout: article body + ToC */}
+        <div className="mx-auto max-w-7xl">
+          {hasHeadings ? (
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
               {/* Main content */}
               <ArticleContent
@@ -183,9 +189,6 @@ export default async function PostDetailPage({ params }: PageProps) {
                 className="min-w-0 max-w-3xl"
                 content={post.content}
                 headings={headings}
-                nextPost={nextPost}
-                postId={post.id}
-                previousPost={previousPost}
                 publishedAt={post.published_at}
                 tags={post.tags}
                 title={post.title}
@@ -197,23 +200,52 @@ export default async function PostDetailPage({ params }: PageProps) {
                 <TableOfContents headings={headings} variant="desktop" />
               </div>
             </div>
+          ) : (
+            <ArticleContent
+              authorName={post.profile.name}
+              className="mx-auto max-w-3xl"
+              content={post.content}
+              headings={headings}
+              publishedAt={post.published_at}
+              tags={post.tags}
+              title={post.title}
+              versionDate={post.version_date}
+            />
+          )}
+        </div>
+
+        {/* Full width: article navigation */}
+        <div className="mx-auto max-w-7xl">
+          <PostNavigation nextPost={nextPost} previousPost={previousPost} />
+        </div>
+
+        {/* Full width: related articles */}
+        <div className="mx-auto max-w-7xl">
+          <div aria-atomic="false" aria-live="polite">
+            <Suspense fallback={<SimilarPostsSkeleton />}>
+              <SimilarPostsSection postId={post.id} />
+            </Suspense>
           </div>
-        ) : (
-          <ArticleContent
-            authorName={post.profile.name}
-            className="mx-auto max-w-3xl"
-            content={post.content}
-            headings={headings}
-            nextPost={nextPost}
-            postId={post.id}
-            previousPost={previousPost}
-            publishedAt={post.published_at}
-            tags={post.tags}
-            title={post.title}
-            versionDate={post.version_date}
-          />
-        )}
+        </div>
       </main>
     </>
   )
+}
+
+const SIMILAR_POSTS_LIMIT = 3
+const SIMILAR_POSTS_THRESHOLD = 0.5
+
+async function SimilarPostsSection({ postId }: { postId: string }) {
+  try {
+    const similarPosts = await getSimilarPosts(
+      postId,
+      SIMILAR_POSTS_LIMIT,
+      SIMILAR_POSTS_THRESHOLD
+    )
+    return <SimilarPosts posts={similarPosts} />
+  } catch {
+    // Silently fail if similar posts can't be fetched
+    // This is a non-critical feature and shouldn't break the article page
+    return null
+  }
 }
