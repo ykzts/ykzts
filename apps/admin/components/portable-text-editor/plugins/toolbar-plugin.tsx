@@ -365,7 +365,7 @@ export function ToolbarPlugin() {
             </SelectContent>
           </Select>
         )}
-        <div className="mx-1 w-px bg-border" />
+        <div className="mx-1 h-6 w-px self-center bg-border" />
         <button
           aria-label="太字"
           className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
@@ -418,7 +418,7 @@ export function ToolbarPlugin() {
         >
           <Code className="size-4" />
         </button>
-        <div className="mx-1 w-px bg-border" />
+        <div className="mx-1 h-6 w-px self-center bg-border" />
         <button
           aria-label="リンク"
           className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
@@ -477,7 +477,7 @@ export function ToolbarPlugin() {
         >
           <Outdent className="size-4" />
         </button>
-        <div className="mx-1 w-px bg-border" />
+        <div className="mx-1 h-6 w-px self-center bg-border" />
         <button
           aria-label="画像"
           className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
