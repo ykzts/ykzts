@@ -1,5 +1,12 @@
 'use client'
 
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader
+} from '@ykzts/ui/components/card'
+import { Skeleton } from '@ykzts/ui/components/skeleton'
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 import PostCard from '@/components/post-card'
 import { getYearData } from './actions'
@@ -99,11 +106,36 @@ export default function ArchiveList({ initialYearData }: ArchiveListProps) {
       ))}
 
       {hasMore && (
-        <div className="py-8 text-center" ref={observerTarget}>
+        <div ref={observerTarget}>
           {isPending ? (
-            <p className="text-muted-foreground">読み込み中...</p>
+            <section>
+              <Skeleton className="mb-6 h-8 w-48" />
+              <div className="space-y-6">
+                {[1, 2, 3].map((i) => (
+                  <Card aria-hidden="true" key={`skeleton-${i}`}>
+                    <CardHeader>
+                      <Skeleton className="mb-2 h-6 w-3/4" />
+                      <Skeleton className="h-4 w-1/4" />
+                    </CardHeader>
+                    <CardContent>
+                      <Skeleton className="h-4 w-full" />
+                    </CardContent>
+                    <CardFooter>
+                      <div className="flex flex-wrap gap-2">
+                        <Skeleton className="h-6 w-16" />
+                        <Skeleton className="h-6 w-20" />
+                      </div>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            </section>
           ) : (
-            <p className="text-muted-foreground">スクロールで続きを読み込み</p>
+            <div className="py-8 text-center">
+              <p className="text-muted-foreground">
+                スクロールで続きを読み込み
+              </p>
+            </div>
           )}
         </div>
       )}
