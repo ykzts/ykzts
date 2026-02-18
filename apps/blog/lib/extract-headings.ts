@@ -14,6 +14,7 @@ export interface Heading {
  */
 export function extractHeadings(content: PortableTextValue): Heading[] {
   const headings: Heading[] = []
+  const idCounts = new Map<string, number>()
 
   for (const block of content) {
     // Check if this is a block with a heading style
@@ -28,7 +29,12 @@ export function extractHeadings(content: PortableTextValue): Heading[] {
 
       if (text) {
         const level = Number.parseInt(block.style.charAt(1), 10)
-        const id = generateHeadingId(text)
+        let id = generateHeadingId(text)
+        const count = idCounts.get(id) ?? 0
+        idCounts.set(id, count + 1)
+        if (count > 0) {
+          id = `${id}-${count}`
+        }
 
         headings.push({
           id,
@@ -64,7 +70,7 @@ function extractTextFromBlock(block: PortableTextBlock): string {
  * Generates a URL-safe ID from heading text
  * Converts to lowercase, replaces spaces/special chars with hyphens
  */
-function generateHeadingId(text: string): string {
+export function generateHeadingId(text: string): string {
   return text
     .toLowerCase()
     .trim()

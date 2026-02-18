@@ -20,16 +20,22 @@ export default function TableOfContents({
   useEffect(() => {
     if (headings.length === 0) return
 
+    const visibleIds = new Set<string>()
+
     const observer = new IntersectionObserver(
       (entries) => {
-        // Find all visible headings
-        const visibleHeadings = entries
-          .filter((entry) => entry.isIntersecting)
-          .map((entry) => entry.target.id)
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            visibleIds.add(entry.target.id)
+          } else {
+            visibleIds.delete(entry.target.id)
+          }
+        }
 
-        // Set the first visible heading as active, or keep current if none visible
-        if (visibleHeadings.length > 0) {
-          setActiveId(visibleHeadings[0])
+        // Pick the first visible heading in document order
+        const firstVisible = headings.find((h) => visibleIds.has(h.id))
+        if (firstVisible) {
+          setActiveId(firstVisible.id)
         }
       },
       {

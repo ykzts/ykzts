@@ -195,4 +195,37 @@ describe('extractHeadings', () => {
     expect(headings[0].id).toBe('what-is-react')
     expect(headings[1].id).toBe('c-vs-c')
   })
+
+  it('should handle duplicate heading text by appending counter', () => {
+    const content: PortableTextValue = [
+      {
+        _key: '1',
+        _type: 'block',
+        children: [{ _key: '1-1', _type: 'span', marks: [], text: 'Example' }],
+        markDefs: [],
+        style: 'h2'
+      },
+      {
+        _key: '2',
+        _type: 'block',
+        children: [{ _key: '2-1', _type: 'span', marks: [], text: 'Example' }],
+        markDefs: [],
+        style: 'h2'
+      },
+      {
+        _key: '3',
+        _type: 'block',
+        children: [{ _key: '3-1', _type: 'span', marks: [], text: 'Example' }],
+        markDefs: [],
+        style: 'h3'
+      }
+    ]
+
+    const headings = extractHeadings(content)
+
+    expect(headings).toHaveLength(3)
+    expect(headings[0].id).toBe('example')
+    expect(headings[1].id).toBe('example-1')
+    expect(headings[2].id).toBe('example-2')
+  })
 })

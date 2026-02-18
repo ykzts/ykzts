@@ -8,6 +8,7 @@ import Image from 'next/image'
 import type React from 'react'
 import { type ComponentProps, Suspense } from 'react'
 import Link from '@/components/link'
+import { generateHeadingId } from '@/lib/extract-headings'
 import type {
   CodeBlock,
   ImageBlock,
@@ -55,17 +56,6 @@ function extractTextFromBlock(children: unknown): string {
       return ''
     })
     .join('')
-}
-
-// Helper function to generate heading ID
-function generateHeadingId(text: string): string {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\p{L}\p{N}\s-]/gu, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
 }
 
 // Named component for code blocks
