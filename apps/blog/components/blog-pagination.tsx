@@ -1,5 +1,3 @@
-'use client'
-
 import { getVisiblePages } from '@ykzts/pagination-utils'
 import {
   Pagination,
