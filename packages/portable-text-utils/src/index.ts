@@ -50,8 +50,10 @@ export function extractFirstParagraph(
 
       if (trimmedText) {
         // Truncate to maxLength and add ellipsis if needed
-        if (trimmedText.length > maxLength) {
-          return `${trimmedText.slice(0, maxLength)}...`
+        // Use spreading to handle Unicode code points correctly (emoji, surrogate pairs)
+        const codePoints = [...trimmedText]
+        if (codePoints.length > maxLength) {
+          return `${codePoints.slice(0, maxLength).join('')}...`
         }
         return trimmedText
       }

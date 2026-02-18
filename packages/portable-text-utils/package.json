@@ -8,10 +8,9 @@
     ".": "./src/index.ts"
   },
   "scripts": {},
-  "dependencies": {
-    "@portabletext/types": "4.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@portabletext/types": "4.0.1",
     "@ykzts/tsconfig": "workspace:*",
     "typescript": "5.9.3"
   }

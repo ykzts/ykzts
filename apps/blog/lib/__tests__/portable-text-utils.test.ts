@@ -256,7 +256,48 @@ describe('extractFirstParagraph', () => {
     ]
 
     const result = extractFirstParagraph(content, 50)
-    expect(result).toBe(`${japaneseText.slice(0, 50)}...`)
+    expect(result).toBe(`${[...japaneseText].slice(0, 50).join('')}...`)
     expect(result.length).toBe(53) // 50 + 3 for ellipsis
+  })
+
+  it('should not split emoji surrogate pairs when truncating', () => {
+    // Each emoji is 2 UTF-16 code units but 1 code point
+    const emojiText = '🎉'.repeat(100) // 100 emoji (200 UTF-16 code units)
+    const content: PortableTextValue = [
+      {
+        _key: '1',
+        _type: 'block',
+        children: [{ _key: '1-1', _type: 'span', marks: [], text: emojiText }],
+        markDefs: [],
+        style: 'normal'
+      }
+    ]
+
+    const result = extractFirstParagraph(content, 10)
+    // Should contain exactly 10 complete emoji, not a broken surrogate
+    const resultWithoutEllipsis = result.replace('...', '')
+    expect([...resultWithoutEllipsis]).toHaveLength(10)
+    expect(result.endsWith('...')).toBe(true)
+    // Verify no broken surrogates by checking all characters are valid emoji
+    expect(resultWithoutEllipsis).toBe('🎉'.repeat(10))
+  })
+
+  it('should handle mixed text with emoji correctly', () => {
+    const mixedText = 'Hello 👋 World 🌍 with emoji 🎉'
+    const content: PortableTextValue = [
+      {
+        _key: '1',
+        _type: 'block',
+        children: [{ _key: '1-1', _type: 'span', marks: [], text: mixedText }],
+        markDefs: [],
+        style: 'normal'
+      }
+    ]
+
+    const result = extractFirstParagraph(content, 15)
+    // Count code points, not UTF-16 code units
+    const codePoints = [...result.replace('...', '')]
+    expect(codePoints.length).toBe(15)
+    expect(result.endsWith('...')).toBe(true)
   })
 })
