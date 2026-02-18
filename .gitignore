@@ -133,4 +133,3 @@ dist
 # turbo
 .turbo
 package-lock.json
-apps/blog/.env.local

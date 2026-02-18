@@ -98,6 +98,8 @@ export type Database = {
         Row: {
           created_at: string
           current_version_id: string | null
+          embedding: string | null
+          embedding_updated_at: string | null
           excerpt: string | null
           id: string
           profile_id: string | null
@@ -112,6 +114,8 @@ export type Database = {
         Insert: {
           created_at?: string
           current_version_id?: string | null
+          embedding?: string | null
+          embedding_updated_at?: string | null
           excerpt?: string | null
           id?: string
           profile_id?: string | null
@@ -126,6 +130,8 @@ export type Database = {
         Update: {
           created_at?: string
           current_version_id?: string | null
+          embedding?: string | null
+          embedding_updated_at?: string | null
           excerpt?: string | null
           id?: string
           profile_id?: string | null
@@ -157,6 +163,7 @@ export type Database = {
       profiles: {
         Row: {
           about: Json | null
+          avatar_url: string | null
           created_at: string
           email: string | null
           id: string
@@ -168,6 +175,7 @@ export type Database = {
         }
         Insert: {
           about?: Json | null
+          avatar_url?: string | null
           created_at?: string
           email?: string | null
           id?: string
@@ -179,6 +187,7 @@ export type Database = {
         }
         Update: {
           about?: Json | null
+          avatar_url?: string | null
           created_at?: string
           email?: string | null
           id?: string
@@ -309,32 +318,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      create_post:
-        | {
-            Args: {
-              p_content: Json
-              p_excerpt: string
-              p_published_at?: string
-              p_slug: string
-              p_status?: string
-              p_tags?: string[]
-              p_title: string
-            }
-            Returns: string
-          }
-        | {
-            Args: {
-              p_content: Json
-              p_excerpt: string
-              p_published_at?: string
-              p_slug: string
-              p_status?: string
-              p_tags?: string[]
-              p_title: string
-              p_version_date?: string
-            }
-            Returns: string
-          }
+      create_post: {
+        Args: {
+          p_content: Json
+          p_excerpt: string
+          p_published_at?: string
+          p_slug: string
+          p_status?: string
+          p_tags?: string[]
+          p_title: string
+          p_version_date?: string
+        }
+        Returns: string
+      }
       delete_post: { Args: { p_post_id: string }; Returns: undefined }
       get_posts_needing_embeddings: {
         Args: { batch_size?: number }
@@ -379,36 +375,21 @@ export type Database = {
           title: string
         }[]
       }
-      update_post:
-        | {
-            Args: {
-              p_change_summary?: string
-              p_content?: Json
-              p_excerpt?: string
-              p_post_id: string
-              p_published_at?: string
-              p_slug?: string
-              p_status?: string
-              p_tags?: string[]
-              p_title?: string
-            }
-            Returns: string
-          }
-        | {
-            Args: {
-              p_change_summary?: string
-              p_content?: Json
-              p_excerpt?: string
-              p_post_id: string
-              p_published_at?: string
-              p_slug?: string
-              p_status?: string
-              p_tags?: string[]
-              p_title?: string
-              p_version_date?: string
-            }
-            Returns: string
-          }
+      update_post: {
+        Args: {
+          p_change_summary?: string
+          p_content?: Json
+          p_excerpt?: string
+          p_post_id: string
+          p_published_at?: string
+          p_slug?: string
+          p_status?: string
+          p_tags?: string[]
+          p_title?: string
+          p_version_date?: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
