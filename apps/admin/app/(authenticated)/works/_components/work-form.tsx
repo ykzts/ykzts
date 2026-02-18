@@ -2,6 +2,7 @@
 import { Alert, AlertDescription } from '@ykzts/ui/components/alert'
 import { Button } from '@ykzts/ui/components/button'
 import { Input } from '@ykzts/ui/components/input'
+import type { MouseEvent } from 'react'
 import { useActionState, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
 import { generateUniqueSlugForWork } from '@/lib/slug'
@@ -66,9 +67,7 @@ export function WorkForm({
     setTitle(value)
   }
 
-  const handleGenerateSlug = async (
-    e?: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleGenerateSlug = async (e?: MouseEvent<HTMLButtonElement>) => {
     if (e) {
       e.preventDefault()
     }
@@ -138,7 +137,9 @@ export function WorkForm({
   const contentString = work
     ? typeof work.content === 'string'
       ? work.content
-      : JSON.stringify(work.content ?? '')
+      : work.content != null
+        ? JSON.stringify(work.content)
+        : DEFAULT_PORTABLE_TEXT
     : DEFAULT_PORTABLE_TEXT
 
   return (
