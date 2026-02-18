@@ -171,7 +171,10 @@ export function WorkForm({
             {/* Title */}
             <Field>
               <FieldLabel htmlFor="title">
-                タイトル <span className="text-error">*</span>
+                タイトル{' '}
+                <span aria-hidden="true" className="text-error">
+                  *
+                </span>
               </FieldLabel>
               <Input
                 defaultValue={work?.title}
@@ -196,7 +199,10 @@ export function WorkForm({
             {/* Content */}
             <Field>
               <FieldLabel htmlFor="content">
-                コンテンツ <span className="text-error">*</span>
+                コンテンツ{' '}
+                <span aria-hidden="true" className="text-error">
+                  *
+                </span>
               </FieldLabel>
               <RichTextEditor
                 id="content"
@@ -211,7 +217,10 @@ export function WorkForm({
             {/* Slug */}
             <Field>
               <FieldLabel htmlFor="slug">
-                スラッグ <span className="text-error">*</span>
+                スラッグ{' '}
+                <span aria-hidden="true" className="text-error">
+                  *
+                </span>
               </FieldLabel>
               <InputGroup>
                 <InputGroupInput
@@ -248,7 +257,10 @@ export function WorkForm({
             {/* Start Date */}
             <Field>
               <FieldLabel htmlFor="starts_at">
-                開始日 <span className="text-error">*</span>
+                開始日{' '}
+                <span aria-hidden="true" className="text-error">
+                  *
+                </span>
               </FieldLabel>
               <Input
                 defaultValue={work?.starts_at}
