@@ -431,11 +431,10 @@ importers:
         version: 5.9.3
 
   packages/portable-text-utils:
-    dependencies:
+    devDependencies:
       '@portabletext/types':
         specifier: 4.0.1
         version: 4.0.1
-    devDependencies:
       '@ykzts/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
