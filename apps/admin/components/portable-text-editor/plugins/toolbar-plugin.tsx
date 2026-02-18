@@ -53,6 +53,46 @@ import { uploadImage } from '@/lib/upload-image'
 import { INSERT_IMAGE_COMMAND } from './image-plugin'
 import { LinkDialog } from './link-dialog'
 
+const BLOCK_TYPES = [
+  { label: '段落', value: 'paragraph' },
+  { label: '見出し2', value: 'h2' },
+  { label: '見出し3', value: 'h3' },
+  { label: '見出し4', value: 'h4' },
+  { label: '見出し5', value: 'h5' },
+  { label: '見出し6', value: 'h6' },
+  { label: '引用', value: 'quote' },
+  { label: 'コードブロック', value: 'code' }
+] as const
+
+const CODE_LANGUAGES = [
+  { label: 'TypeScript', value: 'typescript' },
+  { label: 'JavaScript', value: 'javascript' },
+  { label: 'TSX', value: 'tsx' },
+  { label: 'JSX', value: 'jsx' },
+  { label: 'Python', value: 'python' },
+  { label: 'Java', value: 'java' },
+  { label: 'Go', value: 'go' },
+  { label: 'Rust', value: 'rust' },
+  { label: 'C++', value: 'cpp' },
+  { label: 'C', value: 'c' },
+  { label: 'C#', value: 'csharp' },
+  { label: 'PHP', value: 'php' },
+  { label: 'Ruby', value: 'ruby' },
+  { label: 'Swift', value: 'swift' },
+  { label: 'Kotlin', value: 'kotlin' },
+  { label: 'Bash', value: 'bash' },
+  { label: 'Shell', value: 'shell' },
+  { label: 'SQL', value: 'sql' },
+  { label: 'JSON', value: 'json' },
+  { label: 'YAML', value: 'yaml' },
+  { label: 'XML', value: 'xml' },
+  { label: 'HTML', value: 'html' },
+  { label: 'CSS', value: 'css' },
+  { label: 'SCSS', value: 'scss' },
+  { label: 'Markdown', value: 'markdown' },
+  { label: 'Plain Text', value: 'plaintext' }
+] as const
+
 export function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext()
   const [isBold, setIsBold] = useState(false)
@@ -277,17 +317,9 @@ export function ToolbarPlugin() {
     <div className="border-border border-b bg-muted/5">
       <div className="flex gap-1 p-2">
         <Select
-          // items prop maps values to display labels, enabling SelectValue to show labels instead of raw values
-          items={{
-            code: 'コードブロック',
-            h2: '見出し2',
-            h3: '見出し3',
-            h4: '見出し4',
-            h5: '見出し5',
-            h6: '見出し6',
-            paragraph: '段落',
-            quote: '引用'
-          }}
+          items={Object.fromEntries(
+            BLOCK_TYPES.map((type) => [type.value, type.label])
+          )}
           onValueChange={(value) => {
             if (value) {
               formatBlockType(
@@ -309,48 +341,18 @@ export function ToolbarPlugin() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="paragraph">段落</SelectItem>
-            <SelectItem value="h2">見出し2</SelectItem>
-            <SelectItem value="h3">見出し3</SelectItem>
-            <SelectItem value="h4">見出し4</SelectItem>
-            <SelectItem value="h5">見出し5</SelectItem>
-            <SelectItem value="h6">見出し6</SelectItem>
-            <SelectItem value="quote">引用</SelectItem>
-            <SelectItem value="code">コードブロック</SelectItem>
+            {BLOCK_TYPES.map((type) => (
+              <SelectItem key={type.value} value={type.value}>
+                {type.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
         {blockType === 'code' && (
           <Select
-            // items prop maps values to display labels, enabling SelectValue to show labels instead of raw values
-            items={{
-              '': '言語を選択',
-              bash: 'Bash',
-              c: 'C',
-              cpp: 'C++',
-              csharp: 'C#',
-              css: 'CSS',
-              go: 'Go',
-              html: 'HTML',
-              java: 'Java',
-              javascript: 'JavaScript',
-              json: 'JSON',
-              jsx: 'JSX',
-              kotlin: 'Kotlin',
-              markdown: 'Markdown',
-              php: 'PHP',
-              plaintext: 'Plain Text',
-              python: 'Python',
-              ruby: 'Ruby',
-              rust: 'Rust',
-              scss: 'SCSS',
-              shell: 'Shell',
-              sql: 'SQL',
-              swift: 'Swift',
-              tsx: 'TSX',
-              typescript: 'TypeScript',
-              xml: 'XML',
-              yaml: 'YAML'
-            }}
+            items={Object.fromEntries(
+              CODE_LANGUAGES.map((lang) => [lang.value, lang.label])
+            )}
             onValueChange={(value) => updateCodeLanguage(value || '')}
             value={codeLanguage}
           >
@@ -359,32 +361,11 @@ export function ToolbarPlugin() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="">言語を選択</SelectItem>
-              <SelectItem value="typescript">TypeScript</SelectItem>
-              <SelectItem value="javascript">JavaScript</SelectItem>
-              <SelectItem value="tsx">TSX</SelectItem>
-              <SelectItem value="jsx">JSX</SelectItem>
-              <SelectItem value="python">Python</SelectItem>
-              <SelectItem value="java">Java</SelectItem>
-              <SelectItem value="go">Go</SelectItem>
-              <SelectItem value="rust">Rust</SelectItem>
-              <SelectItem value="cpp">C++</SelectItem>
-              <SelectItem value="c">C</SelectItem>
-              <SelectItem value="csharp">C#</SelectItem>
-              <SelectItem value="php">PHP</SelectItem>
-              <SelectItem value="ruby">Ruby</SelectItem>
-              <SelectItem value="swift">Swift</SelectItem>
-              <SelectItem value="kotlin">Kotlin</SelectItem>
-              <SelectItem value="bash">Bash</SelectItem>
-              <SelectItem value="shell">Shell</SelectItem>
-              <SelectItem value="sql">SQL</SelectItem>
-              <SelectItem value="json">JSON</SelectItem>
-              <SelectItem value="yaml">YAML</SelectItem>
-              <SelectItem value="xml">XML</SelectItem>
-              <SelectItem value="html">HTML</SelectItem>
-              <SelectItem value="css">CSS</SelectItem>
-              <SelectItem value="scss">SCSS</SelectItem>
-              <SelectItem value="markdown">Markdown</SelectItem>
-              <SelectItem value="plaintext">Plain Text</SelectItem>
+              {CODE_LANGUAGES.map((lang) => (
+                <SelectItem key={lang.value} value={lang.value}>
+                  {lang.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         )}
