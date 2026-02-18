@@ -15,6 +15,7 @@ interface ArticleContentProps {
   headings: Heading[]
   nextPost: { slug: string; title: string; published_at: string } | null
   previousPost: { slug: string; title: string; published_at: string } | null
+  className?: string
 }
 
 export default function ArticleContent({
@@ -26,10 +27,11 @@ export default function ArticleContent({
   content,
   headings,
   nextPost,
-  previousPost
+  previousPost,
+  className
 }: ArticleContentProps) {
   return (
-    <article className="min-w-0 max-w-3xl">
+    <article className={className}>
       <ArticleHeader
         authorName={authorName}
         publishedAt={publishedAt}
