@@ -41,17 +41,37 @@ async function CodeBlockHighlighter({
   }
 }
 
-// Named component for code blocks
-const CodeBlockComponent: PortableTextBlockComponent = (props) => {
-  // Extract text from the block's children spans
-  const text = props.value.children
+// Helper function to extract text from block children
+function extractTextFromBlock(children: unknown): string {
+  if (!Array.isArray(children)) {
+    return ''
+  }
+
+  return children
     .map((child) => {
-      if ('text' in child) {
-        return child.text
+      if (typeof child === 'object' && child !== null && 'text' in child) {
+        return String(child.text)
       }
       return ''
     })
     .join('')
+}
+
+// Helper function to generate heading ID
+function generateHeadingId(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\p{L}\p{N}\s-]/gu, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
+// Named component for code blocks
+const CodeBlockComponent: PortableTextBlockComponent = (props) => {
+  // Extract text from the block's children spans
+  const text = extractTextFromBlock(props.value.children)
 
   // Extract language if available
   const language =
@@ -72,9 +92,27 @@ const CodeBlockComponent: PortableTextBlockComponent = (props) => {
   )
 }
 
+// Heading components with IDs for ToC
+const createHeadingComponent = (
+  Tag: 'h2' | 'h3'
+): PortableTextBlockComponent => {
+  return (props) => {
+    const text = extractTextFromBlock(props.value.children)
+    const id = generateHeadingId(text)
+
+    return (
+      <Tag className="scroll-mt-20" id={id}>
+        {props.children}
+      </Tag>
+    )
+  }
+}
+
 const portableTextComponents = {
   block: {
-    code: CodeBlockComponent
+    code: CodeBlockComponent,
+    h2: createHeadingComponent('h2'),
+    h3: createHeadingComponent('h3')
   },
   marks: {
     code({ children }: { children: React.ReactNode }) {

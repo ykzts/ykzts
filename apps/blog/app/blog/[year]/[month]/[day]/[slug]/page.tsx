@@ -6,9 +6,11 @@ import DateDisplay from '@/components/date-display'
 import Header from '@/components/header'
 import PortableTextBlock from '@/components/portable-text'
 import PostNavigation from '@/components/post-navigation'
+import TableOfContents from '@/components/table-of-contents'
 import TagList from '@/components/tag-list'
 import { getDateBasedUrl } from '@/lib/blog-urls'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
+import { extractHeadings } from '@/lib/extract-headings'
 import { isPortableTextValue } from '@/lib/portable-text'
 import {
   getAdjacentPosts,
@@ -162,6 +164,9 @@ export default async function PostDetailPage({ params }: PageProps) {
     }
   }
 
+  // Extract headings for Table of Contents
+  const headings = extractHeadings(post.content)
+
   return (
     <>
       <script
@@ -171,29 +176,44 @@ export default async function PostDetailPage({ params }: PageProps) {
       />
       <Header />
       <main className="container mx-auto px-4 py-8">
-        <article className="mx-auto max-w-3xl">
-          <header className="mb-8">
-            <h1 className="mb-4 font-bold text-4xl">{post.title}</h1>
-            <div className="flex flex-col gap-2 text-muted-foreground text-sm">
-              <div className="flex items-center gap-4">
-                <span>著者: {post.profile.name}</span>
-                <DateDisplay date={post.published_at} />
-              </div>
-              {post.version_date && post.version_date !== post.published_at && (
-                <div>
-                  更新: <DateDisplay date={post.version_date} />
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
+            {/* Main content */}
+            <article className="min-w-0 max-w-3xl">
+              <header className="mb-8">
+                <h1 className="mb-4 font-bold text-4xl">{post.title}</h1>
+                <div className="flex flex-col gap-2 text-muted-foreground text-sm">
+                  <div className="flex items-center gap-4">
+                    <span>著者: {post.profile.name}</span>
+                    <DateDisplay date={post.published_at} />
+                  </div>
+                  {post.version_date &&
+                    post.version_date !== post.published_at && (
+                      <div>
+                        更新: <DateDisplay date={post.version_date} />
+                      </div>
+                    )}
                 </div>
-              )}
+                {post.tags && post.tags.length > 0 && (
+                  <div className="mt-4">
+                    <TagList
+                      className="flex flex-wrap gap-2"
+                      tags={post.tags}
+                    />
+                  </div>
+                )}
+              </header>
+              <TableOfContents headings={headings} />
+              <PortableTextBlock value={post.content} />
+              <PostNavigation nextPost={nextPost} previousPost={previousPost} />
+            </article>
+
+            {/* Desktop ToC sidebar */}
+            <div className="hidden lg:block">
+              <TableOfContents headings={headings} />
             </div>
-            {post.tags && post.tags.length > 0 && (
-              <div className="mt-4">
-                <TagList className="flex flex-wrap gap-2" tags={post.tags} />
-              </div>
-            )}
-          </header>
-          <PortableTextBlock value={post.content} />
-          <PostNavigation nextPost={nextPost} previousPost={previousPost} />
-        </article>
+          </div>
+        </div>
       </main>
     </>
   )
