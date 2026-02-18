@@ -87,7 +87,7 @@ describe('SimilarPosts', () => {
 
   it('returns null when posts is undefined', () => {
     const { container } = render(
-      <SimilarPosts posts={undefined as unknown as SimilarPost[]} />
+      <SimilarPosts posts={undefined as unknown as typeof mockPosts} />
     )
 
     expect(container.firstChild).toBeNull()

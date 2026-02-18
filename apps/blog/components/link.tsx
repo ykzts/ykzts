@@ -31,7 +31,6 @@ export default function Link({
   }
 
   return (
-    // @ts-expect-error - href is a valid string but Next.js Link expects a specific type
     <NextLink href={href} {...props}>
       {children}
     </NextLink>
