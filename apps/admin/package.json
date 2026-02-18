@@ -1,6 +1,7 @@
 {
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
+    "@ai-sdk/openai": "3.0.29",
     "@dnd-kit/core": "6.3.1",
     "@dnd-kit/sortable": "10.0.0",
     "@dnd-kit/utilities": "3.2.2",
@@ -15,6 +16,7 @@
     "@supabase/ssr": "0.8.0",
     "@supabase/supabase-js": "2.95.3",
     "@vercel/microfrontends": "2.3.0",
+    "@ykzts/pagination-utils": "workspace:*",
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
     "ai": "6.0.86",
@@ -26,8 +28,7 @@
     "react-dom": "19.2.4",
     "slugify": "1.6.6",
     "sonner": "2.0.7",
-    "zod": "4.3.6",
-    "@ykzts/pagination-utils": "workspace:*"
+    "zod": "4.3.6"
   },
   "description": "Admin application for content management",
   "devDependencies": {

@@ -110,3 +110,28 @@ export async function generateUniqueSlugForWork(
 ): Promise<string> {
   return generateUniqueSlug(title, 'works', excludeWorkId)
 }
+
+/**
+ * Smart slug generation using AI with fallback to traditional slugify
+ * This is the recommended method for new implementations
+ */
+export async function generateSlugSmart(params: {
+  title: string
+  content: string
+  table: 'posts' | 'works'
+  excludeId?: string
+}): Promise<string> {
+  try {
+    // Try AI-powered generation first
+    const { generateSlugWithAI } = await import('./generate-slug-with-ai')
+    return await generateSlugWithAI(params)
+  } catch (error) {
+    // Fallback to traditional slugify method
+    console.error('AI slug generation failed, falling back to slugify:', error)
+    return await generateUniqueSlug(
+      params.title,
+      params.table,
+      params.excludeId
+    )
+  }
+}

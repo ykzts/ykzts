@@ -14,7 +14,7 @@ import Link from 'next/link'
 import { useActionState, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
 import type { PostWithDetails } from '@/lib/posts'
-import { generateUniqueSlugForPost } from '@/lib/slug'
+import { generateSlugSmart, generateUniqueSlugForPost } from '@/lib/slug'
 import { generateSlug } from '@/lib/utils'
 
 const POST_STATUSES = [
@@ -110,20 +110,37 @@ export function PostForm({
       'title'
     ) as HTMLInputElement | null
     const slugInput = form.elements.namedItem('slug') as HTMLInputElement | null
+    const contentInput = form.elements.namedItem(
+      'content'
+    ) as HTMLInputElement | null
 
     if (titleInput && slugInput && titleInput.value) {
       setIsGeneratingSlug(true)
       try {
-        // Use server action to generate unique slug, excluding current post in edit mode
-        const uniqueSlug = await generateUniqueSlugForPost(
-          titleInput.value,
-          post?.id
-        )
+        // Get content from the hidden input (PortableText JSON)
+        const content = contentInput?.value || '[]'
+
+        // Use AI-powered slug generation with fallback, excluding current post
+        const uniqueSlug = await generateSlugSmart({
+          content,
+          excludeId: post?.id,
+          table: 'posts',
+          title: titleInput.value
+        })
         slugInput.value = uniqueSlug
       } catch (error) {
-        // Fallback to client-side generation if server action fails
+        // Ultimate fallback to client-side generation if all else fails
         console.error('Failed to generate unique slug:', error)
-        slugInput.value = generateSlug(titleInput.value)
+        try {
+          const uniqueSlug = await generateUniqueSlugForPost(
+            titleInput.value,
+            post?.id
+          )
+          slugInput.value = uniqueSlug
+        } catch (fallbackError) {
+          console.error('Fallback slug generation also failed:', fallbackError)
+          slugInput.value = generateSlug(titleInput.value)
+        }
       } finally {
         setIsGeneratingSlug(false)
       }
