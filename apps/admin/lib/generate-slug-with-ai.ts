@@ -1,43 +1,61 @@
 'use server'
 
-import { openai } from '@ai-sdk/openai'
 import type { Json } from '@ykzts/supabase'
-import { generateText, stepCountIs } from 'ai'
+import { generateText, stepCountIs, tool } from 'ai'
 import { z } from 'zod'
+import { portableTextToMarkdown } from './portable-text-to-markdown'
+import { cleanSlug } from './slug-utils'
 import { createClient } from './supabase/server'
 
 /**
- * Extract text content from Portable Text JSON
+ * Create a tool for checking slug availability in the database
+ * @param table - Database table to check ('posts' or 'works')
+ * @param excludeId - Optional ID to exclude from the check (for updates)
  */
-function extractTextFromPortableText(content: Json): string {
-  if (!content || typeof content !== 'object') {
-    return ''
-  }
+function createSlugAvailabilityTool(
+  table: 'posts' | 'works',
+  excludeId?: string
+) {
+  return tool({
+    description:
+      'Check if a slug is already in use in the database. You MUST call this tool before returning any slug to ensure uniqueness. If the slug is taken, try a different variation.',
+    execute: async ({ slug }) => {
+      const supabase = await createClient()
+      let query = supabase.from(table).select('slug').eq('slug', slug).limit(1)
 
-  const blocks = Array.isArray(content) ? content : [content]
-  const texts: string[] = []
+      if (excludeId) {
+        query = query.neq('id', excludeId)
+      }
 
-  for (const block of blocks) {
-    if (
-      typeof block === 'object' &&
-      block !== null &&
-      'children' in block &&
-      Array.isArray(block.children)
-    ) {
-      for (const child of block.children) {
-        if (
-          typeof child === 'object' &&
-          child !== null &&
-          'text' in child &&
-          typeof child.text === 'string'
-        ) {
-          texts.push(child.text)
+      const { data, error } = await query.maybeSingle()
+
+      if (error) {
+        return {
+          available: false,
+          exists: false,
+          message: `Failed to check slug availability: ${error.message}. Assume unavailable and try a different slug.`
         }
       }
-    }
-  }
 
-  return texts.join(' ').trim()
+      const available = !data
+      const exists = !!data
+
+      return {
+        available,
+        exists,
+        message: available
+          ? 'This slug is available and can be used.'
+          : 'This slug is already taken. Try a different variation (e.g., add a descriptive word, use synonym, or rephrase).'
+      }
+    },
+    inputSchema: z.object({
+      slug: z
+        .string()
+        .describe(
+          'The URL slug to check (lowercase, hyphens only, no special characters)'
+        )
+    })
+  })
 }
 
 /**
@@ -52,11 +70,11 @@ export async function generateSlugWithAI(params: {
 }): Promise<string> {
   const { title, content, table, excludeId } = params
 
-  // Extract text from content if it's JSON
+  // Convert PortableText to markdown for better context
   let contentText = content
   try {
     const parsedContent = JSON.parse(content) as Json
-    contentText = extractTextFromPortableText(parsedContent)
+    contentText = portableTextToMarkdown(parsedContent)
   } catch {
     // If parsing fails, assume it's already plain text
     contentText = content
@@ -77,63 +95,15 @@ export async function generateSlugWithAI(params: {
         role: 'user'
       }
     ],
-    model: openai('gpt-4o-mini'),
+    model: 'openai/gpt-4o-mini',
     stopWhen: stepCountIs(5),
     tools: {
-      checkSlugAvailability: {
-        description:
-          'Check if a slug is already in use in the database. You MUST call this tool before returning any slug to ensure uniqueness. If the slug is taken, try a different variation.',
-        execute: async ({ slug }) => {
-          const supabase = await createClient()
-          let query = supabase
-            .from(table)
-            .select('slug')
-            .eq('slug', slug)
-            .limit(1)
-
-          if (excludeId) {
-            query = query.neq('id', excludeId)
-          }
-
-          const { data, error } = await query.maybeSingle()
-
-          if (error) {
-            return {
-              available: false,
-              exists: false,
-              message: `Failed to check slug availability: ${error.message}. Assume unavailable and try a different slug.`
-            }
-          }
-
-          const available = !data
-          const exists = !!data
-
-          return {
-            available,
-            exists,
-            message: available
-              ? 'This slug is available and can be used.'
-              : 'This slug is already taken. Try a different variation (e.g., add a descriptive word, use synonym, or rephrase).'
-          }
-        },
-        inputSchema: z.object({
-          slug: z
-            .string()
-            .describe(
-              'The URL slug to check (lowercase, hyphens only, no special characters)'
-            )
-        })
-      }
+      checkSlugAvailability: createSlugAvailabilityTool(table, excludeId)
     }
   })
 
   // Extract and clean the slug from the response
-  const slug = result.text
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9-]/g, '-') // Replace invalid chars with hyphens
-    .replace(/-+/g, '-') // Replace multiple hyphens with single
-    .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+  const slug = cleanSlug(result.text)
 
   if (!slug) {
     throw new Error('AI failed to generate a valid slug')
