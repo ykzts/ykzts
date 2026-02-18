@@ -14,7 +14,7 @@ export default function SimilarPostsSkeleton({
   count = 3
 }: SimilarPostsSkeletonProps) {
   return (
-    <div aria-live="polite" className="mt-16">
+    <div className="mt-16">
       <Skeleton className="mb-6 h-8 w-32" />
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: count }).map((_, index) => (

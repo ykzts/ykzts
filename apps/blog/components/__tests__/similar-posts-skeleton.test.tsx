@@ -20,13 +20,6 @@ describe('SimilarPostsSkeleton', () => {
   it('has proper ARIA attributes for loading state', () => {
     const { container } = render(<SimilarPostsSkeleton />)
 
-    const loadingContainer = container.querySelector('[aria-live="polite"]')
-    expect(loadingContainer).toBeInTheDocument()
-  })
-
-  it('marks skeleton cards as aria-hidden', () => {
-    const { container } = render(<SimilarPostsSkeleton />)
-
     const cards = container.querySelectorAll('[aria-hidden="true"]')
     expect(cards.length).toBeGreaterThan(0)
   })

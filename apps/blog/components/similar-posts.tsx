@@ -6,8 +6,8 @@ import {
   CardHeader,
   CardTitle
 } from '@ykzts/ui/components/card'
-import type { Route } from 'next'
 import Link from 'next/link'
+import { getDateBasedUrl } from '@/lib/blog-urls'
 import DateDisplay from './date-display'
 import TagList from './tag-list'
 
@@ -23,15 +23,6 @@ type SimilarPost = {
 
 type SimilarPostsProps = {
   posts: SimilarPost[]
-}
-
-function getDateBasedUrl(slug: string, publishedAt: string): Route {
-  const date = new Date(publishedAt)
-  const year = date.getUTCFullYear()
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0')
-  const day = String(date.getUTCDate()).padStart(2, '0')
-
-  return `/blog/${year}/${month}/${day}/${slug}` as Route
 }
 
 export default function SimilarPosts({ posts }: SimilarPostsProps) {
