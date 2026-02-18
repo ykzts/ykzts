@@ -35,14 +35,14 @@ export default function ArchiveList({ initialYearData }: ArchiveListProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const observerTarget = useRef<HTMLDivElement>(null)
+  const currentYearRef = useRef(initialYearData.year)
 
   const loadNextYear = useCallback(async () => {
     if (isLoading || !hasMore) return
 
     setIsLoading(true)
 
-    const lastYear = yearDataList[yearDataList.length - 1].year
-    const nextYear = lastYear - 1
+    const nextYear = currentYearRef.current - 1
 
     try {
       const response = await fetch(`/blog/archive/api?year=${nextYear}`)
@@ -58,6 +58,7 @@ export default function ArchiveList({ initialYearData }: ArchiveListProps) {
         return
       }
 
+      currentYearRef.current = nextYear
       setYearDataList((prev) => [...prev, data])
     } catch (error) {
       console.error('Failed to load year data:', error)
@@ -65,7 +66,7 @@ export default function ArchiveList({ initialYearData }: ArchiveListProps) {
     } finally {
       setIsLoading(false)
     }
-  }, [isLoading, hasMore, yearDataList])
+  }, [isLoading, hasMore])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
