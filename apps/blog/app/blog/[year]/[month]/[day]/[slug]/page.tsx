@@ -174,8 +174,8 @@ export default async function PostDetailPage({ params }: PageProps) {
       />
       <Header />
       <main className="container mx-auto px-4 py-8">
-        {hasHeadings ? (
-          <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-7xl">
+          {hasHeadings ? (
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
               {/* Main content */}
               <ArticleContent
@@ -195,20 +195,20 @@ export default async function PostDetailPage({ params }: PageProps) {
                 <TableOfContents headings={headings} variant="desktop" />
               </div>
             </div>
-          </div>
-        ) : (
-          <ArticleContent
-            authorName={post.profile.name}
-            content={post.content}
-            headings={headings}
-            nextPost={nextPost}
-            previousPost={previousPost}
-            publishedAt={post.published_at}
-            tags={post.tags}
-            title={post.title}
-            versionDate={post.version_date}
-          />
-        )}
+          ) : (
+            <ArticleContent
+              authorName={post.profile.name}
+              content={post.content}
+              headings={headings}
+              nextPost={nextPost}
+              previousPost={previousPost}
+              publishedAt={post.published_at}
+              tags={post.tags}
+              title={post.title}
+              versionDate={post.version_date}
+            />
+          )}
+        </div>
       </main>
     </>
   )
