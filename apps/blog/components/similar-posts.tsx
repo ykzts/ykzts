@@ -1,5 +1,5 @@
-import { getDateBasedUrl } from '@/lib/blog-urls'
 import Link from 'next/link'
+import { getDateBasedUrl } from '@/lib/blog-urls'
 import DateDisplay from './date-display'
 import TagList from './tag-list'
 
