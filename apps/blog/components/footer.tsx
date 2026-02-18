@@ -8,7 +8,7 @@ export default function Footer() {
           className="transition-colors duration-200 hover:text-primary"
           href="/privacy"
         >
-          Privacy Policy
+          プライバシーポリシー
         </Link>
       </div>
     </footer>
