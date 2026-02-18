@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
+import BlogPagination from '@/components/blog-pagination'
 import Header from '@/components/header'
-import Pagination from '@/components/pagination'
 import PostCard from '@/components/post-card'
 import {
   getPostCountByTag,
@@ -83,7 +83,7 @@ export default async function TagPaginationPage({ params }: PageProps) {
           ))}
         </div>
         <div className="mt-8">
-          <Pagination
+          <BlogPagination
             baseUrl={`/blog/tags/${encodeURIComponent(decodedTag)}/page`}
             currentPage={pageNum}
             totalPages={totalPages}

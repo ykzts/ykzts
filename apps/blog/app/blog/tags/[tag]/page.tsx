@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
+import BlogPagination from '@/components/blog-pagination'
 import Header from '@/components/header'
-import Pagination from '@/components/pagination'
 import PostCard from '@/components/post-card'
 import {
   getAllTags,
@@ -70,7 +70,7 @@ export default async function TagArchivePage({ params }: PageProps) {
         </div>
         {totalPages > 1 && (
           <div className="mt-8">
-            <Pagination
+            <BlogPagination
               baseUrl={`/blog/tags/${encodeURIComponent(decodedTag)}/page`}
               currentPage={1}
               totalPages={totalPages}

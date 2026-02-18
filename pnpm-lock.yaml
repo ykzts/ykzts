@@ -59,6 +59,9 @@ importers:
       '@vercel/microfrontends':
         specifier: 2.3.0
         version: 2.3.0(@vercel/analytics@1.6.1(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4))(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vite@7.3.1(@types/node@22.19.11)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2))
+      '@ykzts/pagination-utils':
+        specifier: workspace:*
+        version: link:../../packages/pagination-utils
       '@ykzts/supabase':
         specifier: workspace:*
         version: link:../../packages/supabase
@@ -135,6 +138,9 @@ importers:
       '@vercel/microfrontends':
         specifier: 2.3.0
         version: 2.3.0(@vercel/analytics@1.6.1(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4))(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vite@7.3.1(@types/node@22.19.11)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2))
+      '@ykzts/pagination-utils':
+        specifier: workspace:*
+        version: link:../../packages/pagination-utils
       '@ykzts/supabase':
         specifier: workspace:*
         version: link:../../packages/supabase
@@ -408,6 +414,15 @@ importers:
       vitest:
         specifier: 4.0.18
         version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@22.19.11)(jiti@2.6.1)(jsdom@28.0.0)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2)
+
+  packages/pagination-utils:
+    devDependencies:
+      '@ykzts/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/supabase:
     devDependencies:
