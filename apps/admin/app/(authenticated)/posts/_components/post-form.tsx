@@ -152,177 +152,199 @@ export function PostForm({
           </div>
         )}
 
-        {/* Title */}
-        <Field>
-          <FieldLabel htmlFor="title">
-            タイトル <span className="text-error">*</span>
-          </FieldLabel>
-          <Input
-            defaultValue={post?.title || ''}
-            id="title"
-            maxLength={256}
-            name="title"
-            placeholder="投稿のタイトルを入力"
-            required
-            type="text"
-          />
-          <FieldDescription>必須、256文字以内</FieldDescription>
-        </Field>
+        {/* Two-column layout: Main content on left, metadata on right */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px]">
+          {/* Left Column - Main Content */}
+          <div className="space-y-6">
+            {/* Title */}
+            <Field>
+              <FieldLabel htmlFor="title">
+                タイトル <span className="text-error">*</span>
+              </FieldLabel>
+              <Input
+                defaultValue={post?.title || ''}
+                id="title"
+                maxLength={256}
+                name="title"
+                placeholder="投稿のタイトルを入力"
+                required
+                type="text"
+              />
+              <FieldDescription>必須、256文字以内</FieldDescription>
+            </Field>
 
-        {/* Content */}
-        <Field>
-          <FieldLabel htmlFor="content">コンテンツ</FieldLabel>
-          <RichTextEditor
-            id="content"
-            initialValue={initialContent}
-            name="content"
-            placeholder="投稿の本文を入力..."
-          />
-        </Field>
-
-        {/* Slug */}
-        <Field>
-          <FieldLabel htmlFor="slug">
-            スラッグ <span className="text-error">*</span>
-          </FieldLabel>
-          <div className="flex gap-2">
-            <Input
-              defaultValue={post?.slug || ''}
-              id="slug"
-              maxLength={256}
-              name="slug"
-              placeholder="url-friendly-slug"
-              required
-              type="text"
-            />
-            <Button
-              disabled={isGeneratingSlug}
-              onClick={handleGenerateSlug}
-              type="button"
-              variant="outline"
-            >
-              {isGeneratingSlug ? '生成中...' : '自動生成'}
-            </Button>
+            {/* Content */}
+            <Field>
+              <FieldLabel htmlFor="content">コンテンツ</FieldLabel>
+              <RichTextEditor
+                id="content"
+                initialValue={initialContent}
+                name="content"
+                placeholder="投稿の本文を入力..."
+              />
+            </Field>
           </div>
-          <FieldDescription>
-            URL用の識別子（手動入力またはボタンで自動生成）
-          </FieldDescription>
-        </Field>
 
-        {/* Excerpt */}
-        <Field>
-          <FieldLabel htmlFor="excerpt">抜粋</FieldLabel>
-          <Textarea
-            defaultValue={post?.excerpt || ''}
-            id="excerpt"
-            name="excerpt"
-            placeholder="投稿の簡単な説明（任意）"
-            rows={3}
-          />
-          <FieldDescription>投稿の要約や説明文</FieldDescription>
-        </Field>
-
-        {/* Tags */}
-        <Field>
-          <FieldLabel>タグ</FieldLabel>
-          <div className="flex gap-2">
-            <Input
-              onChange={(e) => setTagInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault()
-                  handleAddTag()
-                }
-              }}
-              placeholder="タグを入力してEnter"
-              type="text"
-              value={tagInput}
-            />
-            <Button onClick={handleAddTag} type="button" variant="outline">
-              追加
-            </Button>
-          </div>
-          {tags.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-2">
-              {tags.map((tag) => (
-                <span
-                  className="inline-flex items-center gap-1 rounded bg-secondary px-3 py-1 text-sm"
-                  key={tag}
+          {/* Right Column - Metadata Sidebar */}
+          <div className="space-y-6">
+            {/* Slug */}
+            <Field>
+              <FieldLabel htmlFor="slug">
+                スラッグ <span className="text-error">*</span>
+              </FieldLabel>
+              <div className="flex gap-2">
+                <Input
+                  defaultValue={post?.slug || ''}
+                  id="slug"
+                  maxLength={256}
+                  name="slug"
+                  placeholder="url-friendly-slug"
+                  required
+                  type="text"
+                />
+                <Button
+                  disabled={isGeneratingSlug}
+                  onClick={handleGenerateSlug}
+                  type="button"
+                  variant="outline"
                 >
-                  {tag}
-                  <button
-                    className="text-muted-foreground hover:text-foreground"
-                    onClick={() => handleRemoveTag(tag)}
-                    type="button"
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
-            </div>
-          )}
-        </Field>
+                  {isGeneratingSlug ? '生成中...' : '自動生成'}
+                </Button>
+              </div>
+              <FieldDescription>
+                URL用の識別子（手動入力またはボタンで自動生成）
+              </FieldDescription>
+            </Field>
 
-        {/* Status */}
-        <Field>
-          <FieldLabel htmlFor="status">ステータス</FieldLabel>
-          <Select
-            defaultValue={post?.status || 'draft'}
-            items={POST_STATUSES}
-            name="status"
-            onValueChange={(value) => {
-              setShowPublishedAt(value === 'scheduled' || value === 'published')
-            }}
-          >
-            <SelectTrigger className="w-full" id="status">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {POST_STATUSES.map((status) => (
-                <SelectItem key={status.value} value={status.value}>
-                  {status.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </Field>
+            {/* Excerpt */}
+            <Field>
+              <FieldLabel htmlFor="excerpt">抜粋</FieldLabel>
+              <Textarea
+                defaultValue={post?.excerpt || ''}
+                id="excerpt"
+                name="excerpt"
+                placeholder="投稿の簡単な説明（任意）"
+                rows={3}
+              />
+              <FieldDescription>投稿の要約や説明文</FieldDescription>
+            </Field>
 
-        {/* Published At */}
-        {showPublishedAt && (
-          <Field>
-            <FieldLabel htmlFor="published_at_display">公開日時</FieldLabel>
-            {/* Hidden input that holds the ISO 8601 value actually submitted */}
-            <input
-              defaultValue={post?.published_at ?? ''}
-              id="published_at"
-              name="published_at"
-              type="hidden"
-            />
-            {/* Visible datetime-local input for user interaction */}
-            <Input
-              defaultValue={
-                post?.published_at
-                  ? new Date(post.published_at).toISOString().slice(0, 16)
-                  : ''
-              }
-              id="published_at_display"
-              name="published_at_display"
-              onChange={(e) => {
-                const form = e.currentTarget.form
-                const hidden = form?.elements.namedItem(
-                  'published_at'
-                ) as HTMLInputElement | null
-                if (hidden) {
-                  hidden.value = e.currentTarget.value
-                    ? new Date(e.currentTarget.value).toISOString()
-                    : ''
-                }
-              }}
-              type="datetime-local"
-            />
-            <FieldDescription>指定した日時に自動公開されます</FieldDescription>
-          </Field>
-        )}
+            {/* Tags */}
+            <Field>
+              <FieldLabel htmlFor="tag-input">タグ</FieldLabel>
+              <div className="flex gap-2">
+                <Input
+                  id="tag-input"
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+                      handleAddTag()
+                    }
+                  }}
+                  placeholder="タグを入力してEnter"
+                  type="text"
+                  value={tagInput}
+                />
+                <Button onClick={handleAddTag} type="button" variant="outline">
+                  追加
+                </Button>
+              </div>
+              {tags.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {tags.map((tag) => (
+                    <span
+                      className="inline-flex items-center gap-1 rounded bg-secondary px-3 py-1 text-sm"
+                      key={tag}
+                    >
+                      {tag}
+                      <button
+                        aria-label={`"${tag}" タグを削除`}
+                        className="text-muted-foreground hover:text-foreground"
+                        onClick={() => handleRemoveTag(tag)}
+                        type="button"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+            </Field>
+
+            {/* Status */}
+            <Field>
+              <FieldLabel htmlFor="status">ステータス</FieldLabel>
+              <Select
+                defaultValue={post?.status || 'draft'}
+                items={POST_STATUSES}
+                name="status"
+                onValueChange={(value) => {
+                  setShowPublishedAt(
+                    value === 'scheduled' || value === 'published'
+                  )
+                }}
+              >
+                <SelectTrigger className="w-full" id="status">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {POST_STATUSES.map((status) => (
+                    <SelectItem key={status.value} value={status.value}>
+                      {status.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </Field>
+
+            {/* Published At */}
+            {showPublishedAt && (
+              <Field>
+                <FieldLabel htmlFor="published_at_display">公開日時</FieldLabel>
+                {/* Hidden input that holds the ISO 8601 value actually submitted */}
+                <input
+                  defaultValue={post?.published_at ?? ''}
+                  id="published_at"
+                  name="published_at"
+                  type="hidden"
+                />
+                {/* Visible datetime-local input for user interaction */}
+                <Input
+                  defaultValue={
+                    post?.published_at
+                      ? (() => {
+                          const d = new Date(post.published_at)
+                          return new Date(
+                            d.getTime() - d.getTimezoneOffset() * 60 * 1000
+                          )
+                            .toISOString()
+                            .slice(0, 16)
+                        })()
+                      : ''
+                  }
+                  id="published_at_display"
+                  name="published_at_display"
+                  onChange={(e) => {
+                    const form = e.currentTarget.form
+                    const hidden = form?.elements.namedItem(
+                      'published_at'
+                    ) as HTMLInputElement | null
+                    if (hidden) {
+                      hidden.value = e.currentTarget.value
+                        ? new Date(e.currentTarget.value).toISOString()
+                        : ''
+                    }
+                  }}
+                  type="datetime-local"
+                />
+                <FieldDescription>
+                  指定した日時に自動公開されます
+                </FieldDescription>
+              </Field>
+            )}
+          </div>
+        </div>
 
         {/* Version History Link - only in edit mode */}
         {isEditMode && (
