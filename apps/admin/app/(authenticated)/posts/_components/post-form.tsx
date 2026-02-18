@@ -5,6 +5,7 @@ import { Input } from '@ykzts/ui/components/input'
 import {
   InputGroup,
   InputGroupAddon,
+  InputGroupButton,
   InputGroupInput
 } from '@ykzts/ui/components/input-group'
 import {
@@ -219,28 +220,25 @@ export function PostForm({
               <FieldLabel htmlFor="slug">
                 スラッグ <span className="text-error">*</span>
               </FieldLabel>
-              <InputGroup className="gap-2">
-                <InputGroupInput>
-                  <Input
-                    defaultValue={post?.slug || ''}
-                    id="slug"
-                    maxLength={256}
-                    name="slug"
-                    onChange={(e) => setSlugValue(e.target.value)}
-                    placeholder="url-friendly-slug"
-                    required
-                    type="text"
-                  />
-                </InputGroupInput>
-                <InputGroupAddon>
-                  <Button
+              <InputGroup>
+                <InputGroupInput
+                  defaultValue={post?.slug || ''}
+                  id="slug"
+                  maxLength={256}
+                  name="slug"
+                  onChange={(e) => setSlugValue(e.target.value)}
+                  placeholder="url-friendly-slug"
+                  required
+                  type="text"
+                />
+                <InputGroupAddon align="inline-end">
+                  <InputGroupButton
                     disabled={isGeneratingSlug || slugValue.trim() !== ''}
                     onClick={handleGenerateSlug}
-                    type="button"
-                    variant="outline"
+                    variant="secondary"
                   >
                     {isGeneratingSlug ? '生成中...' : '自動生成'}
-                  </Button>
+                  </InputGroupButton>
                 </InputGroupAddon>
               </InputGroup>
               <FieldDescription>

@@ -5,6 +5,7 @@ import { Input } from '@ykzts/ui/components/input'
 import {
   InputGroup,
   InputGroupAddon,
+  InputGroupButton,
   InputGroupInput
 } from '@ykzts/ui/components/input-group'
 import type { MouseEvent } from 'react'
@@ -188,30 +189,27 @@ export function WorkForm({
           <label className="mb-2 block font-medium" htmlFor="slug">
             スラッグ <span className="text-error">*</span>
           </label>
-          <InputGroup className="gap-2">
-            <InputGroupInput>
-              <Input
-                className={isEditMode ? 'font-mono' : ''}
-                defaultValue={work?.slug}
-                id="slug"
-                name="slug"
-                onChange={(e) => setSlug(e.target.value)}
-                pattern={isEditMode ? '^[a-zA-Z0-9\\-_]+$' : '^[a-z0-9-]+$'}
-                placeholder={!isEditMode ? '例: my-awesome-project' : undefined}
-                required
-                type="text"
-                value={!isEditMode ? slug : undefined}
-              />
-            </InputGroupInput>
-            <InputGroupAddon>
-              <Button
+          <InputGroup>
+            <InputGroupInput
+              className={isEditMode ? 'font-mono' : ''}
+              defaultValue={work?.slug}
+              id="slug"
+              name="slug"
+              onChange={(e) => setSlug(e.target.value)}
+              pattern={isEditMode ? '^[a-zA-Z0-9\\-_]+$' : '^[a-z0-9-]+$'}
+              placeholder={!isEditMode ? '例: my-awesome-project' : undefined}
+              required
+              type="text"
+              value={!isEditMode ? slug : undefined}
+            />
+            <InputGroupAddon align="inline-end">
+              <InputGroupButton
                 disabled={isGeneratingSlug || slug.trim() !== ''}
                 onClick={handleGenerateSlug}
-                type="button"
                 variant="secondary"
               >
                 {isGeneratingSlug ? '生成中...' : '自動生成'}
-              </Button>
+              </InputGroupButton>
             </InputGroupAddon>
           </InputGroup>
           <p className="mt-1 text-muted-foreground text-sm">
