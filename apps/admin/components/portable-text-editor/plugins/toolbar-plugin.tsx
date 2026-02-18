@@ -315,7 +315,7 @@ export function ToolbarPlugin() {
 
   return (
     <div className="border-border border-b bg-muted/5">
-      <div className="flex gap-1 p-2">
+      <div className="flex flex-wrap gap-1 p-2">
         <Select
           items={BLOCK_TYPES}
           onValueChange={(value) => {
