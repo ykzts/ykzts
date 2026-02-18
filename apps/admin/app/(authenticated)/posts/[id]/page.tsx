@@ -2,8 +2,9 @@ import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { Panel } from '@/components/panel'
 import { getPostById } from '@/lib/posts'
-import { PostForm } from './_components/post-form'
+import { PostForm } from '../_components/post-form'
 import { PostFormSkeleton } from './_components/post-form-skeleton'
+import { deletePostAction, updatePostAction } from './actions'
 
 export function generateStaticParams() {
   // Return dummy param for build-time validation with Cache Components
@@ -19,7 +20,11 @@ async function PostEditContent({ id }: { id: string }) {
 
   return (
     <Panel>
-      <PostForm post={post} />
+      <PostForm
+        deleteAction={deletePostAction}
+        post={post}
+        updateAction={updatePostAction}
+      />
     </Panel>
   )
 }
