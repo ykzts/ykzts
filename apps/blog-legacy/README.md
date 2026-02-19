@@ -43,7 +43,6 @@ pnpm typegen    # Generate Next.js route types
 
 - `next.config.ts`: Next.js runtime configuration and redirect mapping
 - `redirects.ts`: Source of truth for legacy redirect rules
-- `vercel.json`: Platform-level minimal settings (`trailingSlash`)
 - `app/layout.tsx`: Minimal app shell
 - `app/not-found.tsx`: Fallback response
 
@@ -77,4 +76,4 @@ When adding or adjusting redirects:
 
 - **Base URL**: `https://ykzts.com` (configured in `next.config.ts`)
 - **Redirect Policy**: Permanent redirects (`301`)
-- **Trailing Slash**: Disabled (`trailingSlash: false`)
+- **Trailing Slash**: Disabled (`trailingSlash: false` in `next.config.ts`)

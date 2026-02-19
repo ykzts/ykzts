@@ -10,7 +10,7 @@
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
-  "description": "Docusaurus-based blog application featuring Japanese technical content and modern web development topics",
+  "description": "Next.js redirect gateway for legacy blog domains",
   "devDependencies": {
     "@types/node": "22.19.11",
     "@types/react": "19.2.14",
@@ -37,5 +37,6 @@
     "test": "vitest --run",
     "typegen": "next typegen"
   },
+  "type": "module",
   "version": "1.0.0"
 }
