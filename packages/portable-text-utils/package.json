@@ -8,7 +8,9 @@
     ".": "./src/index.ts"
   },
   "scripts": {},
-  "dependencies": {},
+  "dependencies": {
+    "@portabletext/to-html": "5.0.1"
+  },
   "devDependencies": {
     "@portabletext/types": "4.0.1",
     "@ykzts/tsconfig": "workspace:*",

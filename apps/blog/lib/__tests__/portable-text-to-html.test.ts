@@ -1,5 +1,5 @@
+import { portableTextToHTML } from '@ykzts/portable-text-utils'
 import { describe, expect, test } from 'vitest'
-import { portableTextToHTML } from '../portable-text-to-html'
 
 describe('portableTextToHTML', () => {
   test('should convert simple PortableText to HTML', () => {

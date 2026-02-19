@@ -135,9 +135,6 @@ importers:
       '@portabletext/react':
         specifier: 6.0.2
         version: 6.0.2(react@19.2.4)
-      '@portabletext/to-html':
-        specifier: 5.0.1
-        version: 5.0.1
       '@supabase/supabase-js':
         specifier: 2.95.3
         version: 2.95.3
@@ -434,6 +431,10 @@ importers:
         version: 5.9.3
 
   packages/portable-text-utils:
+    dependencies:
+      '@portabletext/to-html':
+        specifier: 5.0.1
+        version: 5.0.1
     devDependencies:
       '@portabletext/types':
         specifier: 4.0.1

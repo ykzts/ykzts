@@ -2,7 +2,6 @@
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
     "@portabletext/react": "6.0.2",
-    "@portabletext/to-html": "5.0.1",
     "@supabase/supabase-js": "2.95.3",
     "@vercel/microfrontends": "2.3.0",
     "@ykzts/pagination-utils": "workspace:*",
