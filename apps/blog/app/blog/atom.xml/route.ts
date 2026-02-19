@@ -1,3 +1,4 @@
+import { portableTextToHTML } from '@ykzts/portable-text-utils'
 import { Feed } from 'feed'
 import { metadata } from '@/app/layout'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
@@ -39,6 +40,7 @@ export async function GET() {
     ).toString()
 
     feed.addItem({
+      content: portableTextToHTML(post.content),
       date: new Date(post.published_at),
       description: post.excerpt || undefined,
       id: postUrl,
