@@ -36,20 +36,12 @@ async function FooterImpl() {
             </ExternalLink>
           </span>
         </div>
-        <div className="flex gap-6">
-          <a
-            className="transition-colors duration-200 hover:text-primary"
-            href="/blog"
-          >
-            Blog
-          </a>
-          <Link
-            className="transition-colors duration-200 hover:text-primary"
-            href="/privacy"
-          >
-            Privacy Policy
-          </Link>
-        </div>
+        <Link
+          className="transition-colors duration-200 hover:text-primary"
+          href="/privacy"
+        >
+          Privacy Policy
+        </Link>
       </div>
     </footer>
   )

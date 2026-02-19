@@ -82,31 +82,3 @@ export async function getWorks() {
     content: isPortableTextValue(work.content) ? work.content : null
   }))
 }
-
-export async function getRecentPosts(limit = 3) {
-  'use cache'
-
-  cacheTag('posts')
-
-  if (!supabase) {
-    // Return empty array when Supabase is not configured
-    return []
-  }
-
-  const { data, error } = await supabase
-    .from('posts')
-    .select('id, slug, title, published_at')
-    .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
-    .order('published_at', { ascending: false })
-    .limit(limit)
-
-  if (error) {
-    throw new Error(`Failed to fetch recent posts: ${error.message}`)
-  }
-
-  return data.filter(
-    (post): post is typeof post & { published_at: string; slug: string } =>
-      post.published_at != null && post.slug != null
-  )
-}
