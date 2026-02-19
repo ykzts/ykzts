@@ -4,6 +4,7 @@ import About from './_components/about'
 import Contact from './_components/contact'
 import Footer from './_components/footer'
 import Hero from './_components/hero'
+import Navigation from './_components/navigation'
 import Works from './_components/works'
 
 const description = [
@@ -38,32 +39,7 @@ export default function HomePage(_props: PageProps<'/'>) {
           <Link className="font-semibold text-foreground text-lg" href="/">
             ykzts.com
           </Link>
-          <div className="flex gap-8 text-base text-muted-foreground">
-            <a
-              className="rounded transition-colors duration-200 hover:text-primary focus:outline-2 focus:outline-accent focus:outline-offset-2"
-              href="#about"
-            >
-              About
-            </a>
-            <a
-              className="rounded transition-colors duration-200 hover:text-primary focus:outline-2 focus:outline-accent focus:outline-offset-2"
-              href="#works"
-            >
-              Works
-            </a>
-            <a
-              className="rounded transition-colors duration-200 hover:text-primary focus:outline-2 focus:outline-accent focus:outline-offset-2"
-              href="/blog"
-            >
-              Blog
-            </a>
-            <a
-              className="rounded transition-colors duration-200 hover:text-primary focus:outline-2 focus:outline-accent focus:outline-offset-2"
-              href="#contact"
-            >
-              Contact
-            </a>
-          </div>
+          <Navigation />
         </div>
       </nav>
 
