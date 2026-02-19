@@ -10,7 +10,7 @@ import {
 
 export default function Navigation() {
   return (
-    <NavigationMenu>
+    <NavigationMenu aria-label="Main navigation">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuLink
