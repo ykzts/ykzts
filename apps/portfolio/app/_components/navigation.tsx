@@ -30,7 +30,7 @@ export default function Navigation() {
   const [open, setOpen] = useState(false)
 
   return (
-    <>
+    <div className="flex items-center">
       {/* Desktop Navigation */}
       <NavigationMenu aria-label="Main navigation" className="hidden md:flex">
         <NavigationMenuList aria-orientation={undefined}>
@@ -81,6 +81,6 @@ export default function Navigation() {
           </nav>
         </SheetContent>
       </Sheet>
-    </>
+    </div>
   )
 }
