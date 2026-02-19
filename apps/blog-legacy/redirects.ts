@@ -1,4 +1,6 @@
-export const legacyRedirects: [source: string, destination: string][] = [
+export type LegacyRedirectTuple = [source: string, destination: string]
+
+export const legacyRedirects: LegacyRedirectTuple[] = [
   ['/([Aa]uthor|about)', '/'],
   ['/(feed/?|index.xml|rss)', '/blog/atom.xml'],
   ['/post/20308520977', '/blog/2012/04/01/custom-http-header-on-nginx'],
@@ -27,3 +29,18 @@ export const legacyRedirects: [source: string, destination: string][] = [
   ['/post/147704551073', '/blog/2016/07/20/goodbye-fetch-api'],
   ['/:path*', '/blog/:path*']
 ]
+
+export function createLegacyRedirects(
+  baseUrl: string,
+  redirects: LegacyRedirectTuple[] = legacyRedirects
+) {
+  const normalizedBaseUrl = baseUrl.endsWith('/')
+    ? baseUrl.slice(0, -1)
+    : baseUrl
+
+  return redirects.map(([source, destination]) => ({
+    destination: `${normalizedBaseUrl}${destination}`,
+    source,
+    statusCode: 301 as const
+  }))
+}

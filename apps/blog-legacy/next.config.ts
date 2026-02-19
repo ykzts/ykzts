@@ -1,5 +1,5 @@
 import type { NextConfig } from 'next'
-import { legacyRedirects } from './redirects'
+import { createLegacyRedirects } from './redirects'
 
 const baseUrl = 'https://ykzts.com'
 
@@ -12,11 +12,7 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   reactStrictMode: true,
   redirects() {
-    return legacyRedirects.map(([source, destination]) => ({
-      destination: `${baseUrl}${destination}`,
-      source,
-      statusCode: 301
-    }))
+    return createLegacyRedirects(baseUrl)
   },
   typedRoutes: true
 }
