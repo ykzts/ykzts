@@ -147,7 +147,8 @@ export default async function PostDetailPage({ params }: PageProps) {
   ])
 
   // JSON-LD structured data for Article schema
-  const baseUrl = layoutMetadata.metadataBase?.toString() || 'https://ykzts.com'
+  const baseUrl =
+    layoutMetadata.metadataBase?.toString() || 'https://example.com'
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
