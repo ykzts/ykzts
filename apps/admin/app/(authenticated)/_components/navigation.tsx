@@ -51,7 +51,7 @@ export default function Navigation() {
         <SheetTrigger
           render={
             <Button
-              aria-label="メニューを開く"
+              aria-label={open ? 'メニューを閉じる' : 'メニューを開く'}
               className="sm:hidden"
               size="icon-sm"
               variant="ghost"
@@ -64,7 +64,10 @@ export default function Navigation() {
           <SheetHeader>
             <SheetTitle>管理画面</SheetTitle>
           </SheetHeader>
-          <nav className="mt-6 flex flex-col gap-2">
+          <nav
+            aria-label="モバイルナビゲーション"
+            className="mt-6 flex flex-col gap-2"
+          >
             {navItems.map((item) => (
               <Link
                 className="rounded-md px-4 py-3 font-medium text-foreground text-lg transition-colors hover:bg-accent hover:text-accent-foreground"

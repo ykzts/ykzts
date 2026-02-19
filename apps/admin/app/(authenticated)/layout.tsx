@@ -62,7 +62,7 @@ async function AuthGuard({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <nav className="border-border border-b bg-card">
+      <header className="border-border border-b bg-card">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-4">
@@ -76,7 +76,7 @@ async function AuthGuard({ children }: { children: React.ReactNode }) {
             </Suspense>
           </div>
         </div>
-      </nav>
+      </header>
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {children}
       </main>
