@@ -10,7 +10,7 @@ import {
 
 export default function Navigation() {
   return (
-    <NavigationMenu aria-label="Main navigation">
+    <NavigationMenu aria-label="Main navigation" className="hidden md:flex">
       <NavigationMenuList aria-orientation={undefined}>
         <NavigationMenuItem>
           <NavigationMenuLink

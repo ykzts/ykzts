@@ -34,14 +34,14 @@ export const metadata: Metadata = {
 export default function HomePage(_props: PageProps<'/'>) {
   return (
     <div className="min-h-screen">
-      <nav className="sticky top-0 z-10 border-border border-b bg-background/90 px-6 backdrop-blur-sm md:px-12 lg:px-24">
+      <header className="sticky top-0 z-10 border-border border-b bg-background/90 px-6 backdrop-blur-sm md:px-12 lg:px-24">
         <div className="mx-auto flex h-14 max-w-4xl items-center justify-between">
           <Link className="font-semibold text-foreground text-lg" href="/">
             ykzts.com
           </Link>
           <Navigation />
         </div>
-      </nav>
+      </header>
 
       <Hero />
 

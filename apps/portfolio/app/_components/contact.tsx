@@ -19,7 +19,7 @@ export default function Contact() {
         <ContactForm />
       </div>
 
-      {/* Links */}
+      {/* Social */}
       <div className="mt-12">
         <h3 className="mb-4 font-medium text-foreground text-lg">Social</h3>
         <SocialLinks />
