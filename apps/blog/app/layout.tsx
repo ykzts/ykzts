@@ -5,6 +5,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
 import DraftModeBannerClient from '@/components/draft-mode-banner-client'
 import Footer from '@/components/footer'
+import ThemeProvider from '@/components/theme-provider'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com'),
@@ -19,7 +20,10 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#fafafa'
+  themeColor: [
+    { color: '#fafafa', media: '(prefers-color-scheme: light)' },
+    { color: '#1a1a2e', media: '(prefers-color-scheme: dark)' }
+  ]
 }
 
 const inter = Inter({
@@ -57,13 +61,21 @@ export default function RootLayout({
         notoSansJp.variable
       )}
       lang="ja"
+      suppressHydrationWarning
     >
       <head />
       <body>
-        <DraftModeBannerClient />
-        {children}
-        <Footer />
-        <Analytics />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
+          enableSystem
+        >
+          <DraftModeBannerClient />
+          {children}
+          <Footer />
+          <Analytics />
+        </ThemeProvider>
       </body>
     </html>
   )
