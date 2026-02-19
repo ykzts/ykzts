@@ -9,10 +9,11 @@ import {
 import { Skeleton } from '@ykzts/ui/components/skeleton'
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 import PostCard from '@/components/post-card'
+import type { PortableTextValue } from '@/lib/portable-text'
 import { getYearData } from './actions'
 
 type Post = {
-  content: string | null
+  content: PortableTextValue | null
   excerpt: string | null
   id: string
   profile: {

@@ -1,3 +1,4 @@
+import { extractFirstParagraph } from '@ykzts/portable-text-utils'
 import {
   Card,
   CardContent,
@@ -8,11 +9,13 @@ import {
 } from '@ykzts/ui/components/card'
 import type { Route } from 'next'
 import Link from 'next/link'
+import type { PortableTextValue } from '@/lib/portable-text'
 import DateDisplay from './date-display'
 import TagList from './tag-list'
 
 type SearchResult = {
   excerpt: string | null
+  content?: PortableTextValue | null
   id: string
   published_at: string
   similarity: number
@@ -74,6 +77,8 @@ export default function SearchResults({ query, results }: SearchResultsProps) {
       </p>
       {results.map((result) => {
         const url = getDateBasedUrl(result.slug, result.published_at)
+        const previewText =
+          result.excerpt || extractFirstParagraph(result.content)
 
         return (
           <Card key={result.id}>
@@ -90,9 +95,9 @@ export default function SearchResults({ query, results }: SearchResultsProps) {
                 <DateDisplay date={result.published_at} />
               </CardDescription>
             </CardHeader>
-            {result.excerpt && (
+            {previewText && (
               <CardContent>
-                <p className="text-muted-foreground">{result.excerpt}</p>
+                <p className="text-muted-foreground">{previewText}</p>
               </CardContent>
             )}
             {result.tags && result.tags.length > 0 && (

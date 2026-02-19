@@ -144,6 +144,9 @@ importers:
       '@ykzts/pagination-utils':
         specifier: workspace:*
         version: link:../../packages/pagination-utils
+      '@ykzts/portable-text-utils':
+        specifier: workspace:*
+        version: link:../../packages/portable-text-utils
       '@ykzts/supabase':
         specifier: workspace:*
         version: link:../../packages/supabase
@@ -420,6 +423,18 @@ importers:
 
   packages/pagination-utils:
     devDependencies:
+      '@ykzts/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+
+  packages/portable-text-utils:
+    devDependencies:
+      '@portabletext/types':
+        specifier: 4.0.1
+        version: 4.0.1
       '@ykzts/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig

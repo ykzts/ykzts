@@ -4,6 +4,8 @@
     "@portabletext/react": "6.0.2",
     "@supabase/supabase-js": "2.95.3",
     "@vercel/microfrontends": "2.3.0",
+    "@ykzts/pagination-utils": "workspace:*",
+    "@ykzts/portable-text-utils": "workspace:*",
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
     "ai": "6.0.86",
@@ -14,8 +16,7 @@
     "react-dom": "19.2.4",
     "shiki": "3.22.0",
     "tailwind-merge": "3.4.0",
-    "zod": "4.3.6",
-    "@ykzts/pagination-utils": "workspace:*"
+    "zod": "4.3.6"
   },
   "description": "Next.js blog application for ykzts.blog",
   "devDependencies": {

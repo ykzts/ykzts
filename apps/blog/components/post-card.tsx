@@ -1,3 +1,4 @@
+import { extractFirstParagraph } from '@ykzts/portable-text-utils'
 import {
   Card,
   CardContent,
@@ -8,6 +9,7 @@ import {
 } from '@ykzts/ui/components/card'
 import type { Route } from 'next'
 import Link from 'next/link'
+import type { PortableTextValue } from '@/lib/portable-text'
 import DateDisplay from './date-display'
 import TagList from './tag-list'
 
@@ -15,6 +17,7 @@ type Post = {
   slug: string
   title: string
   excerpt: string | null
+  content?: PortableTextValue | null
   published_at: string
   tags: string[] | null
   profile?: {
@@ -38,6 +41,7 @@ function getDateBasedUrl(slug: string, publishedAt: string): Route {
 
 export default function PostCard({ post }: PostCardProps) {
   const url = getDateBasedUrl(post.slug, post.published_at)
+  const previewText = post.excerpt || extractFirstParagraph(post.content)
 
   return (
     <Card>
@@ -52,9 +56,9 @@ export default function PostCard({ post }: PostCardProps) {
           <DateDisplay date={post.published_at} />
         </CardDescription>
       </CardHeader>
-      {post.excerpt && (
+      {previewText && (
         <CardContent>
-          <p className="text-muted-foreground">{post.excerpt}</p>
+          <p className="text-muted-foreground">{previewText}</p>
         </CardContent>
       )}
       {post.tags && post.tags.length > 0 && (
