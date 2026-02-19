@@ -1,6 +1,7 @@
 import { Feed } from 'feed'
 import { metadata } from '@/app/layout'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
+import { portableTextToHTML } from '@/lib/portable-text-to-html'
 import { getPostsForFeed } from '@/lib/supabase/posts'
 
 export async function GET() {
@@ -39,6 +40,7 @@ export async function GET() {
     ).toString()
 
     feed.addItem({
+      content: portableTextToHTML(post.content),
       date: new Date(post.published_at),
       description: post.excerpt || undefined,
       id: postUrl,

@@ -313,6 +313,7 @@ export async function getPostsForFeed(limit = 20) {
       excerpt,
       published_at,
       current_version:post_versions!posts_current_version_id_fkey(
+        content,
         version_date
       )
     `
@@ -328,6 +329,9 @@ export async function getPostsForFeed(limit = 20) {
   }
 
   return data.map((post) => ({
+    content: Array.isArray(post.current_version)
+      ? (post.current_version[0]?.content ?? null)
+      : (post.current_version?.content ?? null),
     excerpt: post.excerpt,
     published_at: post.published_at as string,
     slug: post.slug as string,
