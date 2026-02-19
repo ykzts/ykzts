@@ -64,10 +64,10 @@ export default function Navigation() {
           <SheetHeader>
             <SheetTitle>Menu</SheetTitle>
           </SheetHeader>
-          <nav className="mt-6 flex flex-col gap-4">
+          <nav className="mt-6 flex flex-col gap-2">
             {navItems.map((item) => (
               <a
-                className="text-foreground text-lg hover:text-foreground/80"
+                className="rounded-md px-4 py-3 font-medium text-foreground text-lg transition-colors hover:bg-accent hover:text-accent-foreground"
                 href={item.href}
                 key={item.href}
                 onClick={() => setOpen(false)}
