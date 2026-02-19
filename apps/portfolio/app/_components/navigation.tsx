@@ -13,31 +13,35 @@ export default function Navigation() {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuLink asChild>
-            <a className={navigationMenuTriggerStyle()} href="#about">
-              About
-            </a>
+          <NavigationMenuLink
+            className={navigationMenuTriggerStyle()}
+            href="#about"
+          >
+            About
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink asChild>
-            <a className={navigationMenuTriggerStyle()} href="#works">
-              Works
-            </a>
+          <NavigationMenuLink
+            className={navigationMenuTriggerStyle()}
+            href="#works"
+          >
+            Works
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink asChild>
-            <a className={navigationMenuTriggerStyle()} href="/blog">
-              Blog
-            </a>
+          <NavigationMenuLink
+            className={navigationMenuTriggerStyle()}
+            href="/blog"
+          >
+            Blog
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink asChild>
-            <a className={navigationMenuTriggerStyle()} href="#contact">
-              Contact
-            </a>
+          <NavigationMenuLink
+            className={navigationMenuTriggerStyle()}
+            href="#contact"
+          >
+            Contact
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
