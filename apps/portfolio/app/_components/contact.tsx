@@ -1,5 +1,4 @@
 import { ArrowUpRight } from 'lucide-react'
-import Link from '@/components/link'
 import ContactForm from './contact-form'
 import SocialLinks from './social-links'
 
@@ -25,13 +24,13 @@ export default function Contact() {
       <div className="mt-12 flex flex-col gap-8 sm:flex-row sm:gap-16">
         <div>
           <h3 className="mb-4 font-medium text-foreground text-lg">Blog</h3>
-          <Link
+          <a
             className="inline-flex items-center gap-2 text-base text-primary transition-colors duration-200 hover:text-primary/80"
-            href="https://ykzts.blog/"
+            href="/blog"
           >
             ykzts.blog
             <ArrowUpRight aria-hidden="true" className="size-4" />
-          </Link>
+          </a>
         </div>
 
         <div>

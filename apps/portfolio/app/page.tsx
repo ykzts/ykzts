@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import About from './_components/about'
 import Contact from './_components/contact'
 import Footer from './_components/footer'
 import Hero from './_components/hero'
+import RecentPosts from './_components/recent-posts'
 import Works from './_components/works'
 
 const description = [
@@ -35,9 +35,9 @@ export default function HomePage(_props: PageProps<'/'>) {
     <div className="min-h-screen">
       <nav className="sticky top-0 z-10 border-border border-b bg-background/90 px-6 backdrop-blur-sm md:px-12 lg:px-24">
         <div className="mx-auto flex h-14 max-w-4xl items-center justify-between">
-          <Link className="font-semibold text-foreground text-lg" href="/">
+          <a className="font-semibold text-foreground text-lg" href="/">
             ykzts.com
-          </Link>
+          </a>
           <div className="flex gap-8 text-base text-muted-foreground">
             <a
               className="rounded transition-colors duration-200 hover:text-primary focus:outline-2 focus:outline-accent focus:outline-offset-2"
@@ -53,6 +53,12 @@ export default function HomePage(_props: PageProps<'/'>) {
             </a>
             <a
               className="rounded transition-colors duration-200 hover:text-primary focus:outline-2 focus:outline-accent focus:outline-offset-2"
+              href="/blog"
+            >
+              Blog
+            </a>
+            <a
+              className="rounded transition-colors duration-200 hover:text-primary focus:outline-2 focus:outline-accent focus:outline-offset-2"
               href="#contact"
             >
               Contact
@@ -65,6 +71,7 @@ export default function HomePage(_props: PageProps<'/'>) {
 
       <main className="px-6 md:px-12 lg:px-24" id="content">
         <About />
+        <RecentPosts />
         <Works />
         <Contact />
       </main>
