@@ -214,8 +214,11 @@ export function ToolbarPlugin() {
   }, [editor, isLink])
 
   const handleLinkConfirm = useCallback(
-    (url: string) => {
-      editor.dispatchCommand(TOGGLE_LINK_COMMAND, url)
+    (url: string, title: string) => {
+      editor.dispatchCommand(TOGGLE_LINK_COMMAND, {
+        title: title || null,
+        url
+      })
     },
     [editor]
   )

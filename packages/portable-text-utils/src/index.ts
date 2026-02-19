@@ -1,4 +1,4 @@
-import { toHTML } from '@portabletext/to-html'
+import { escapeHTML, toHTML, uriLooksSafe } from '@portabletext/to-html'
 import type { PortableTextBlock } from '@portabletext/types'
 
 /**
@@ -76,5 +76,17 @@ export function portableTextToHTML(
     return ''
   }
 
-  return toHTML(content)
+  return toHTML(content, {
+    components: {
+      marks: {
+        link: ({ children, value }) => {
+          const href = value?.href as string | undefined
+          const title = value?.title as string | undefined
+          if (!href || !uriLooksSafe(href)) return children
+          const titleAttr = title ? ` title="${escapeHTML(title)}"` : ''
+          return `<a href="${escapeHTML(href)}"${titleAttr}>${children}</a>`
+        }
+      }
+    }
+  })
 }

@@ -65,6 +65,7 @@ type PortableTextMarkDef = {
   _key: string
   _type: string
   href?: string
+  title?: string
 }
 
 type PortableTextValue = (PortableTextBlock | PortableTextImage)[]
@@ -112,15 +113,20 @@ function processTextContent(textNodes: LexicalChildNodes) {
     } else if ($isLinkNode(node)) {
       const linkNode = node as LinkNode
       const url = linkNode.getURL()
+      const linkTitle = linkNode.getTitle()
 
       // Generate a unique key for the mark definition
       const markKey = `link-${crypto.randomUUID()}`
 
-      markDefs.push({
+      const markDef: PortableTextMarkDef = {
         _key: markKey,
         _type: 'link',
         href: url
-      })
+      }
+      if (linkTitle) {
+        markDef.title = linkTitle
+      }
+      markDefs.push(markDef)
 
       // Create separate spans for each child to preserve per-child formatting
       const linkChildren = linkNode.getChildren()
@@ -415,7 +421,9 @@ export function initializeEditorWithPortableText(
                 if (format) {
                   textNode.setFormat(format)
                 }
-                const linkNode = $createLinkNode(markDef.href)
+                const linkNode = $createLinkNode(markDef.href, {
+                  title: markDef.title ?? null
+                })
                 linkNode.append(textNode)
                 currentNode = linkNode
               }
