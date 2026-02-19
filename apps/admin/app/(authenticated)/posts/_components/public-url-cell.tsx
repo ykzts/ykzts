@@ -28,7 +28,7 @@ export function PublicUrlCell({
   return (
     <div className="flex items-center gap-2">
       <a
-        className="text-primary hover:underline flex items-center gap-1 text-sm truncate max-w-[200px]"
+        className="flex max-w-[200px] items-center gap-1 truncate text-primary text-sm hover:underline"
         href={url}
         rel="noopener noreferrer"
         target="_blank"
