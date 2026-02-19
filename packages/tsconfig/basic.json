@@ -2,12 +2,12 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "allowJs": true,
-    "lib": ["dom", "dom.iterable", "es2022"],
-    "module": "node16",
-    "moduleResolution": "node16",
+    "lib": ["dom", "dom.iterable", "es2023"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "noEmit": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es2022"
+    "target": "es2023"
   }
 }

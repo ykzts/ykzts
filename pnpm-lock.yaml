@@ -445,9 +445,15 @@ importers:
       '@types/node':
         specifier: 22.19.11
         version: 22.19.11
+      '@ykzts/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       next:
         specifier: 16.1.6
         version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/tsconfig: {}
 

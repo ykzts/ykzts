@@ -19,8 +19,10 @@ Import the appropriate configuration preset in your project's `tsconfig.json`:
 ```
 
 Used by:
-- `@ykzts/portfolio`: Portfolio website
-- `@ykzts/studio`: Sanity CMS studio
+- `@ykzts/admin`
+- `@ykzts/blog`
+- `@ykzts/blog-legacy`
+- `@ykzts/portfolio`
 
 ### For Node.js Projects
 
@@ -31,7 +33,7 @@ Used by:
 ```
 
 Used by:
-- `@ykzts/schemas`: Schema definitions package
+- `@ykzts/supabase`
 
 ### For React Component Libraries
 
@@ -41,24 +43,29 @@ Used by:
 }
 ```
 
+Used by:
+- `@ykzts/pagination-utils`
+- `@ykzts/portable-text-utils`
+- `@ykzts/ui`
+
 ## Available Configurations
 
 ### `basic.json`
-- Target: ES2022
-- Module: Node16 with Node16 module resolution
+- Target: ES2023
+- Module: NodeNext with NodeNext module resolution
 - Strict mode enabled
-- Library support: DOM, DOM iterable, ES2022
-- Optimized for Node.js environments
+- Library support: DOM, DOM iterable, ES2023
+- Optimized for Node.js and modern ESM-compatible environments
 
 ### `react-library.json`
-- Target: ES2022
+- Target: ES2023
 - Module: ESNext with bundler module resolution
 - JSX: react-jsx (for component libraries)
 - Strict mode enabled
-- Library support: DOM, DOM iterable, ES2022
+- Library support: DOM, DOM iterable, ES2023
 
 ### `next.json`
-- Target: ES2022
+- Target: ES2023
 - Module: ESNext with bundler module resolution
 - JSX: preserve (for React components)
 - Includes incremental compilation and isolated modules
@@ -77,5 +84,5 @@ None - provides configuration only
 - Consistent TypeScript settings across the monorepo
 - Optimized configurations for different runtime environments
 - Strict type checking enabled by default
-- Modern ES2022 target for better performance
+- Modern ES2023 target for better performance
 - JSON schema validation support
