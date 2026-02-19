@@ -14,6 +14,7 @@ import { HeadingNode, QuoteNode } from '@lexical/rich-text'
 import type { EditorState, LexicalEditor } from 'lexical'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ImageNode } from './nodes/image-node'
+import { CodeExitPlugin } from './plugins/code-exit-plugin'
 import { CodeHighlightPlugin } from './plugins/code-highlight-plugin'
 import { EditorStatePlugin } from './plugins/editor-state-plugin'
 import { ImagePlugin } from './plugins/image-plugin'
@@ -59,11 +60,11 @@ const editorTheme = {
     variable: 'text-orange-600'
   },
   heading: {
-    h2: 'text-3xl font-bold mb-3',
-    h3: 'text-2xl font-bold mb-2',
-    h4: 'text-xl font-bold mb-2',
-    h5: 'text-lg font-bold mb-1',
-    h6: 'text-base font-bold mb-1'
+    h2: 'text-3xl font-bold mb-3 leading-snug',
+    h3: 'text-2xl font-bold mb-2 leading-snug',
+    h4: 'text-xl font-bold mb-2 leading-snug',
+    h5: 'text-lg font-bold mb-1 leading-normal',
+    h6: 'text-base font-bold mb-1 leading-normal'
   },
   link: 'text-primary hover:underline',
   list: {
@@ -74,7 +75,7 @@ const editorTheme = {
     ol: 'list-decimal',
     ul: 'list-disc'
   },
-  paragraph: 'mb-1',
+  paragraph: 'mb-4 leading-relaxed',
   quote: 'border-l-4 border-border pl-4 italic text-muted-foreground',
   text: {
     bold: 'font-bold',
@@ -182,6 +183,7 @@ export function RichTextEditor({
           <HistoryPlugin />
           <ListPlugin />
           <CodeHighlightPlugin />
+          <CodeExitPlugin />
           {autoFocus && <AutoFocusPlugin />}
           <LinkPlugin />
           <ImagePlugin />

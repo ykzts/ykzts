@@ -50,6 +50,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { uploadImage } from '@/lib/upload-image'
+import { ImageAltDialog } from './image-alt-dialog'
 import { INSERT_IMAGE_COMMAND } from './image-plugin'
 import { LinkDialog } from './link-dialog'
 
@@ -109,6 +110,9 @@ export function ToolbarPlugin() {
   const [codeLanguage, setCodeLanguage] = useState<string>('')
   const [isUploading, setIsUploading] = useState(false)
   const [showLinkDialog, setShowLinkDialog] = useState(false)
+  const [showAltDialog, setShowAltDialog] = useState(false)
+  const [pendingImageUrl, setPendingImageUrl] = useState<string | null>(null)
+  const [pendingImageAlt, setPendingImageAlt] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const updateToolbar = useCallback(() => {
@@ -230,10 +234,10 @@ export function ToolbarPlugin() {
         if (result.error) {
           toast.error(result.error)
         } else if (result.url) {
-          editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
-            altText: file.name.replace(/\.[^/.]+$/, ''),
-            src: result.url
-          })
+          // Show the alt text dialog so the user can set/confirm the alt attribute
+          setPendingImageUrl(result.url)
+          setPendingImageAlt(file.name.replace(/\.[^/.]+$/, ''))
+          setShowAltDialog(true)
         }
       } catch (error) {
         console.error('Image upload error:', error)
@@ -246,8 +250,30 @@ export function ToolbarPlugin() {
         }
       }
     },
-    [editor]
+    []
   )
+
+  const handleAltConfirm = useCallback(
+    (alt: string) => {
+      if (pendingImageUrl) {
+        editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
+          altText: alt,
+          src: pendingImageUrl
+        })
+        setPendingImageUrl(null)
+        setPendingImageAlt('')
+      }
+    },
+    [editor, pendingImageUrl]
+  )
+
+  const handleAltDialogOpenChange = useCallback((isOpen: boolean) => {
+    setShowAltDialog(isOpen)
+    if (!isOpen) {
+      setPendingImageUrl(null)
+      setPendingImageAlt('')
+    }
+  }, [])
 
   const triggerImageUpload = () => {
     fileInputRef.current?.click()
@@ -501,6 +527,12 @@ export function ToolbarPlugin() {
         onConfirm={handleLinkConfirm}
         onOpenChange={setShowLinkDialog}
         open={showLinkDialog}
+      />
+      <ImageAltDialog
+        initialAlt={pendingImageAlt}
+        onConfirm={handleAltConfirm}
+        onOpenChange={handleAltDialogOpenChange}
+        open={showAltDialog}
       />
     </div>
   )

@@ -1,5 +1,6 @@
 'use client'
 
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import type {
   DOMConversionMap,
   DOMConversionOutput,
@@ -10,8 +11,10 @@ import type {
   SerializedLexicalNode,
   Spread
 } from 'lexical'
-import { DecoratorNode } from 'lexical'
+import { $getNodeByKey, DecoratorNode } from 'lexical'
 import type { ReactElement } from 'react'
+import { useState } from 'react'
+import { ImageAltDialog } from '../plugins/image-alt-dialog'
 
 export type SerializedImageNode = Spread<
   {
@@ -22,6 +25,65 @@ export type SerializedImageNode = Spread<
   },
   SerializedLexicalNode
 >
+
+type ImageComponentProps = {
+  altText: string
+  height?: number
+  nodeKey: NodeKey
+  src: string
+  width?: number
+}
+
+function ImageComponent({
+  altText,
+  height,
+  nodeKey,
+  src,
+  width
+}: ImageComponentProps) {
+  const [editor] = useLexicalComposerContext()
+  const [showAltDialog, setShowAltDialog] = useState(false)
+
+  const handleAltConfirm = (newAlt: string) => {
+    editor.update(() => {
+      const node = $getNodeByKey(nodeKey)
+      if ($isImageNode(node)) {
+        node.setAltText(newAlt)
+      }
+    })
+  }
+
+  return (
+    <>
+      <button
+        aria-label={
+          altText
+            ? `${altText}（クリックしてalt属性を編集）`
+            : 'クリックしてalt属性を編集'
+        }
+        className="cursor-pointer border-0 bg-transparent p-0"
+        onClick={() => setShowAltDialog(true)}
+        title="クリックしてalt属性を編集"
+        type="button"
+      >
+        {/* biome-ignore lint/performance/noImgElement: next/image is not suitable for user-uploaded content in the editor */}
+        <img
+          alt={altText}
+          className="my-2 h-auto max-w-full"
+          height={height}
+          src={src}
+          width={width}
+        />
+      </button>
+      <ImageAltDialog
+        initialAlt={altText}
+        onConfirm={handleAltConfirm}
+        onOpenChange={setShowAltDialog}
+        open={showAltDialog}
+      />
+    </>
+  )
+}
 
 export class ImageNode extends DecoratorNode<ReactElement> {
   __src: string
@@ -125,10 +187,10 @@ export class ImageNode extends DecoratorNode<ReactElement> {
 
   decorate(): ReactElement {
     return (
-      <img
-        alt={this.__altText}
-        className="my-2 h-auto max-w-full"
+      <ImageComponent
+        altText={this.__altText}
         height={this.__height}
+        nodeKey={this.__key}
         src={this.__src}
         width={this.__width}
       />
