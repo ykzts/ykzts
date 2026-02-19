@@ -48,10 +48,17 @@ export default function Navigation() {
 
       {/* Mobile Navigation */}
       <Sheet onOpenChange={setOpen} open={open}>
-        <SheetTrigger asChild className="md:hidden">
-          <Button aria-label="Open menu" size="icon" variant="ghost">
-            <Menu className="h-5 w-5" />
-          </Button>
+        <SheetTrigger
+          render={
+            <Button
+              aria-label="Open menu"
+              className="md:hidden"
+              size="icon"
+              variant="ghost"
+            />
+          }
+        >
+          <Menu className="h-5 w-5" />
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>
