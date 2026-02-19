@@ -3,6 +3,7 @@
   "dependencies": {
     "@portabletext/react": "6.0.2",
     "@supabase/supabase-js": "2.95.3",
+    "@vercel/analytics": "1.6.1",
     "@vercel/microfrontends": "2.3.0",
     "@ykzts/pagination-utils": "workspace:*",
     "@ykzts/portable-text-utils": "workspace:*",

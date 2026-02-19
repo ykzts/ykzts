@@ -1,4 +1,5 @@
 import './globals.css'
+import { Analytics } from '@vercel/analytics/react'
 import { cn } from '@ykzts/ui/lib/utils'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
@@ -58,6 +59,7 @@ export default function RootLayout({
         <DraftModeBannerClient />
         {children}
         <Footer />
+        <Analytics />
       </body>
     </html>
   )
