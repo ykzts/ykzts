@@ -70,4 +70,4 @@ npx supabase gen types typescript --linked > packages/supabase/src/database.type
 
 ## Internal Dependencies
 
-This package has no dependencies and can be used by any application in the monorepo.
+- `@ykzts/tsconfig` (dev dependency for TypeScript configuration)
