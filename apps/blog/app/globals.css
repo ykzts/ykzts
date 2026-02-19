@@ -40,40 +40,11 @@
     @apply bg-background text-foreground;
   }
 
-  a:not([class], :is(.prose *)) {
-    @apply text-primary border-b border-primary/30 transition-all duration-200 ease-in-out hover:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary;
+  :root {
+    color-scheme: light;
   }
 
-  ::selection {
-    @apply bg-primary/20 text-foreground;
-  }
-
-  /* Shiki code block styling */
-  pre.shiki {
-    @apply rounded-lg p-4 overflow-x-auto;
-  }
-
-  pre.shiki code {
-    @apply font-mono text-sm;
-  }
-
-  /* Hide dark theme in light mode */
-  @media (prefers-color-scheme: light) {
-    pre.shiki span[data-theme='github-dark'] {
-      display: none;
-    }
-  }
-
-  /* Hide light theme in dark mode */
-  @media (prefers-color-scheme: dark) {
-    pre.shiki span[data-theme='github-light'] {
-      display: none;
-    }
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  @theme inline {
+  .dark {
     --color-background: #1a1a2e;
     --color-foreground: #f0f0f0;
     --color-card: #242438;
@@ -93,5 +64,34 @@
     --color-border: #374151;
     --color-input: #374151;
     --color-ring: #3b82f6;
+
+    color-scheme: dark;
+  }
+
+  a:not([class], :is(.prose *)) {
+    @apply text-primary border-b border-primary/30 transition-all duration-200 ease-in-out hover:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary;
+  }
+
+  ::selection {
+    @apply bg-primary/20 text-foreground;
+  }
+
+  /* Shiki code block styling */
+  pre.shiki {
+    @apply rounded-lg p-4 overflow-x-auto;
+  }
+
+  pre.shiki code {
+    @apply font-mono text-sm;
+  }
+
+  /* Hide dark theme in light mode (class-based and system-based) */
+  :not(.dark) pre.shiki span[data-theme='github-dark'] {
+    display: none;
+  }
+
+  /* Hide light theme in dark mode (class-based and system-based) */
+  .dark pre.shiki span[data-theme='github-light'] {
+    display: none;
   }
 }

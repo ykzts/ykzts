@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Navigation from './navigation'
 import SearchForm from './search-form'
+import ThemeToggle from './theme-toggle'
 
 export default function Header() {
   return (
@@ -16,7 +17,10 @@ export default function Header() {
             </Link>
             <Navigation />
           </div>
-          <SearchForm className="w-full md:max-w-md" />
+          <div className="flex items-center gap-2">
+            <SearchForm className="w-full md:max-w-md" />
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </header>
