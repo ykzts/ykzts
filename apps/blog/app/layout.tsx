@@ -8,6 +8,10 @@ import Footer from '@/components/footer'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com'),
+  other: {
+    'fediverse:creator': 'ykzts@ykzts.technology',
+    'Hatena::Bookmark': 'nocomment'
+  },
   title: {
     default: 'Blog',
     template: '%s | Blog'

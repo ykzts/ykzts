@@ -9,7 +9,8 @@ import SVGSymbols from './_components/svg-symbols'
 export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com/'),
   other: {
-    'fediverse:creator': 'ykzts@ykzts.technology'
+    'fediverse:creator': 'ykzts@ykzts.technology',
+    'Hatena::Bookmark': 'nocomment'
   },
   title: {
     default: 'ykzts.com',
