@@ -2,19 +2,20 @@ import type { MetadataRoute } from 'next'
 import { metadata } from '@/app/layout'
 
 export default function robots(): MetadataRoute.Robots {
+  const { metadataBase: baseUrl } = metadata
+  const sitemap = baseUrl
+    ? ['/sitemap.xml', '/blog/sitemap.xml'].map((path) =>
+        new URL(path, baseUrl).toString()
+      )
+    : []
+
   return {
     rules: [
-      {
-        disallow: ['/blog', '/blog/'],
-        userAgent: '*'
-      },
       {
         allow: '/',
         userAgent: '*'
       }
     ],
-    sitemap: metadata.metadataBase
-      ? new URL('/sitemap.xml', metadata.metadataBase).toString()
-      : undefined
+    sitemap
   }
 }
