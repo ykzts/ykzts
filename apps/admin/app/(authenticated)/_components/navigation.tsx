@@ -37,7 +37,7 @@ export default function Navigation() {
             <NavigationMenuItem key={item.href}>
               <NavigationMenuLink
                 className={navigationMenuTriggerStyle()}
-                href={item.href}
+                render={<Link href={item.href} />}
               >
                 {item.label}
               </NavigationMenuLink>
