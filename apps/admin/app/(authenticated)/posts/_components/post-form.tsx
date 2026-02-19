@@ -1,4 +1,5 @@
 'use client'
+
 import { Button } from '@ykzts/ui/components/button'
 import { Field, FieldDescription, FieldLabel } from '@ykzts/ui/components/field'
 import { Input } from '@ykzts/ui/components/input'
@@ -22,6 +23,7 @@ import { RichTextEditor } from '@/components/portable-text-editor'
 import type { PostWithDetails } from '@/lib/posts'
 import { generateSlugSmart, generateUniqueSlugForPost } from '@/lib/slug'
 import { generateSlug } from '@/lib/utils'
+import { PublicUrlField } from './public-url-field'
 
 const POST_STATUSES = [
   { label: '下書き', value: 'draft' },
@@ -74,6 +76,12 @@ export function PostForm({
   )
   const [isGeneratingSlug, setIsGeneratingSlug] = useState(false)
   const [slugValue, setSlugValue] = useState(post?.slug || '')
+  const [statusValue, setStatusValue] = useState<
+    'draft' | 'scheduled' | 'published'
+  >((post?.status as 'draft' | 'scheduled' | 'published') || 'draft')
+  const [publishedAtValue, setPublishedAtValue] = useState<string | null>(
+    post?.published_at || null
+  )
 
   const handleDelete = async () => {
     if (!deleteAction || !post) return
@@ -310,8 +318,10 @@ export function PostForm({
                 items={POST_STATUSES}
                 name="status"
                 onValueChange={(value) => {
+                  const newStatus = value as 'draft' | 'scheduled' | 'published'
+                  setStatusValue(newStatus)
                   setShowPublishedAt(
-                    value === 'scheduled' || value === 'published'
+                    newStatus === 'scheduled' || newStatus === 'published'
                   )
                 }}
               >
@@ -360,11 +370,13 @@ export function PostForm({
                     const hidden = form?.elements.namedItem(
                       'published_at'
                     ) as HTMLInputElement | null
+                    const newValue = e.currentTarget.value
+                      ? new Date(e.currentTarget.value).toISOString()
+                      : ''
                     if (hidden) {
-                      hidden.value = e.currentTarget.value
-                        ? new Date(e.currentTarget.value).toISOString()
-                        : ''
+                      hidden.value = newValue
                     }
+                    setPublishedAtValue(newValue || null)
                   }}
                   type="datetime-local"
                 />
@@ -372,6 +384,15 @@ export function PostForm({
                   指定した日時に自動公開されます
                 </FieldDescription>
               </Field>
+            )}
+
+            {/* Public URL - Only show in edit mode */}
+            {isEditMode && (
+              <PublicUrlField
+                publishedAt={publishedAtValue}
+                slug={slugValue}
+                status={statusValue}
+              />
             )}
           </div>
         </div>

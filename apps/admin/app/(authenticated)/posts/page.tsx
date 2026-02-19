@@ -9,6 +9,7 @@ import { formatDateWithTimezone } from '@/lib/timezones'
 import { NewPostButton } from './_components/new-post-button'
 import { PostsFilters } from './_components/posts-filters'
 import { PostsSkeleton } from './_components/posts-skeleton'
+import { PublicUrlCell } from './_components/public-url-cell'
 
 async function PostsContent({
   page,
@@ -38,6 +39,7 @@ async function PostsContent({
                 <tr className="border-border border-b">
                   <th className="px-4 py-3 text-left">タイトル</th>
                   <th className="px-4 py-3 text-left">ステータス</th>
+                  <th className="px-4 py-3 text-left">公開URL</th>
                   <th className="px-4 py-3 text-left">公開日時</th>
                   <th className="px-4 py-3 text-left">更新日時</th>
                   <th className="px-4 py-3 text-left">作成者</th>
@@ -60,6 +62,19 @@ async function PostsContent({
                       {post.status === 'scheduled' && (
                         <Badge variant="outline">予約</Badge>
                       )}
+                    </td>
+                    <td className="px-4 py-3">
+                      <PublicUrlCell
+                        publishedAt={post.published_at}
+                        slug={post.slug}
+                        status={
+                          post.status as
+                            | 'draft'
+                            | 'scheduled'
+                            | 'published'
+                            | null
+                        }
+                      />
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">
                       {post.published_at
