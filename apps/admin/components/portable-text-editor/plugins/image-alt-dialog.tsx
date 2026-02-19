@@ -9,10 +9,10 @@ import {
   DialogHeader,
   DialogTitle
 } from '@ykzts/ui/components/dialog'
+import { Field, FieldDescription, FieldLabel } from '@ykzts/ui/components/field'
 import { Input } from '@ykzts/ui/components/input'
-import { Label } from '@ykzts/ui/components/label'
 import type { FormEvent } from 'react'
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface ImageAltDialogProps {
   initialAlt?: string
@@ -30,8 +30,6 @@ export function ImageAltDialog({
   const [alt, setAlt] = useState(initialAlt)
   const [warning, setWarning] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
-  const inputId = useId()
-  const warningId = useId()
 
   useEffect(() => {
     let rafId: number
@@ -83,28 +81,27 @@ export function ImageAltDialog({
           </DialogHeader>
 
           <div className="py-4">
-            <Label htmlFor={inputId}>代替テキスト（alt）</Label>
-            <Input
-              aria-describedby={warning ? warningId : undefined}
-              id={inputId}
-              onChange={(e) => {
-                setAlt(e.target.value)
-                setWarning('')
-              }}
-              placeholder="画像の内容を説明するテキスト"
-              ref={inputRef}
-              type="text"
-              value={alt}
-            />
-            {warning && (
-              <p
-                className="mt-1 text-sm text-yellow-600"
-                id={warningId}
-                role="alert"
-              >
-                {warning}
-              </p>
-            )}
+            <Field>
+              <FieldLabel htmlFor="image-alt-input">
+                代替テキスト（alt）
+              </FieldLabel>
+              <Input
+                id="image-alt-input"
+                onChange={(e) => {
+                  setAlt(e.target.value)
+                  setWarning('')
+                }}
+                placeholder="画像の内容を説明するテキスト"
+                ref={inputRef}
+                type="text"
+                value={alt}
+              />
+              {warning && (
+                <FieldDescription className="text-yellow-600" role="alert">
+                  {warning}
+                </FieldDescription>
+              )}
+            </Field>
           </div>
 
           <DialogFooter>
