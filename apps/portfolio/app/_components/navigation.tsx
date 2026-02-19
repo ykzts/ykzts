@@ -11,7 +11,7 @@ import {
 export default function Navigation() {
   return (
     <NavigationMenu aria-label="Main navigation">
-      <NavigationMenuList>
+      <NavigationMenuList aria-orientation={undefined}>
         <NavigationMenuItem>
           <NavigationMenuLink
             className={navigationMenuTriggerStyle()}
