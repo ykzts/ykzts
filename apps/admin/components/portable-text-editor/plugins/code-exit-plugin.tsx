@@ -68,14 +68,20 @@ export function CodeExitPlugin() {
         // We're on an empty line — exit the code block
         event?.preventDefault()
 
-        // Remove the trailing newline character that created this empty line
+        // Remove the trailing newline character that created this empty line,
+        // or remove the entire code block if it is completely empty.
         if (lastNL >= 0) {
           selection.deleteCharacter(true)
+        } else {
+          // The code block has no content at all; remove it
+          topElement.remove()
         }
 
         // Insert a new paragraph after the code block and move the cursor there
         const newParagraph = $createParagraphNode()
-        topElement.insertAfter(newParagraph)
+        if (topElement.isAttached()) {
+          topElement.insertAfter(newParagraph)
+        }
         newParagraph.select()
 
         return true

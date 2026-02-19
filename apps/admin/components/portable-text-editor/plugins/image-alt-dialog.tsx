@@ -34,13 +34,17 @@ export function ImageAltDialog({
   const warningId = useId()
 
   useEffect(() => {
+    let rafId: number
     if (open) {
       setAlt(initialAlt)
       setWarning('')
-      requestAnimationFrame(() => {
+      rafId = requestAnimationFrame(() => {
         inputRef.current?.focus()
         inputRef.current?.select()
       })
+    }
+    return () => {
+      cancelAnimationFrame(rafId)
     }
   }, [open, initialAlt])
 
@@ -48,13 +52,17 @@ export function ImageAltDialog({
     e.preventDefault()
 
     if (!alt.trim()) {
-      setWarning(
-        'alt属性が空です。アクセシビリティのため、画像の内容を説明するテキストを入力することを推奨します。'
-      )
-    } else {
-      setWarning('')
+      if (!warning) {
+        // First submission with empty alt: show warning and keep dialog open
+        setWarning(
+          'alt属性が空です。アクセシビリティのため、画像の内容を説明するテキストを入力することを推奨します。'
+        )
+        return
+      }
+      // Warning already visible — user acknowledged it; proceed
     }
 
+    setWarning('')
     onConfirm(alt)
     onOpenChange(false)
   }

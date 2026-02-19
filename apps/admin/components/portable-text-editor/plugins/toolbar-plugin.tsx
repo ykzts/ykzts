@@ -267,6 +267,14 @@ export function ToolbarPlugin() {
     [editor, pendingImageUrl]
   )
 
+  const handleAltDialogOpenChange = useCallback((isOpen: boolean) => {
+    setShowAltDialog(isOpen)
+    if (!isOpen) {
+      setPendingImageUrl(null)
+      setPendingImageAlt('')
+    }
+  }, [])
+
   const triggerImageUpload = () => {
     fileInputRef.current?.click()
   }
@@ -523,7 +531,7 @@ export function ToolbarPlugin() {
       <ImageAltDialog
         initialAlt={pendingImageAlt}
         onConfirm={handleAltConfirm}
-        onOpenChange={setShowAltDialog}
+        onOpenChange={handleAltDialogOpenChange}
         open={showAltDialog}
       />
     </div>

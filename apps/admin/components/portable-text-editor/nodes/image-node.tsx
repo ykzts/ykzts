@@ -56,6 +56,11 @@ function ImageComponent({
   return (
     <>
       <button
+        aria-label={
+          altText
+            ? `${altText}（クリックしてalt属性を編集）`
+            : 'クリックしてalt属性を編集'
+        }
         className="cursor-pointer border-0 bg-transparent p-0"
         onClick={() => setShowAltDialog(true)}
         title="クリックしてalt属性を編集"
