@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     description: 'ykztsの技術ブログ',
     title: 'Blog',
     type: 'website',
-    url: 'https://ykzts.com/blog'
+    url: `${process.env.NEXT_PUBLIC_SITE_ORIGIN ?? 'https://ykzts.com'}/blog`
   },
   title: {
     absolute: 'Blog'

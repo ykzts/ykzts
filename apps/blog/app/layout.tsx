@@ -8,7 +8,9 @@ import Footer from '@/components/footer'
 import ThemeProvider from '@/components/theme-provider'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://ykzts.com'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_ORIGIN ?? 'https://ykzts.com'
+  ),
   other: {
     'fediverse:creator': 'ykzts@ykzts.technology',
     'Hatena::Bookmark': 'nocomment'

@@ -8,14 +8,16 @@ import SVGSymbols from './_components/svg-symbols'
 import ThemeProvider from './_components/theme-provider'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://ykzts.com/'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_ORIGIN ?? 'https://ykzts.com'
+  ),
   other: {
     'fediverse:creator': 'ykzts@ykzts.technology',
     'Hatena::Bookmark': 'nocomment'
   },
   title: {
-    default: 'ykzts.com',
-    template: '%s | ykzts.com'
+    default: process.env.NEXT_PUBLIC_SITE_NAME ?? 'ykzts.com',
+    template: `%s | ${process.env.NEXT_PUBLIC_SITE_NAME ?? 'ykzts.com'}`
   }
 }
 
