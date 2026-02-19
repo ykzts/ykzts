@@ -85,13 +85,13 @@
     @apply font-mono text-sm;
   }
 
-  /* Hide dark theme in light mode (class-based and system-based) */
-  :not(.dark) pre.shiki span[data-theme='github-dark'] {
+  /* Hide dark theme in light mode */
+  html:not(.dark) pre.shiki span[data-theme='github-dark'] {
     display: none;
   }
 
-  /* Hide light theme in dark mode (class-based and system-based) */
-  .dark pre.shiki span[data-theme='github-light'] {
+  /* Hide light theme in dark mode */
+  html.dark pre.shiki span[data-theme='github-light'] {
     display: none;
   }
 }
