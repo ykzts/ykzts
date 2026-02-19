@@ -1,0 +1,112 @@
+'use client'
+
+import { Button } from '@ykzts/ui/components/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@ykzts/ui/components/dialog'
+import { Input } from '@ykzts/ui/components/input'
+import { Label } from '@ykzts/ui/components/label'
+import type { FormEvent } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
+
+interface ImageAltDialogProps {
+  initialAlt?: string
+  open: boolean
+  onConfirm: (alt: string) => void
+  onOpenChange: (open: boolean) => void
+}
+
+export function ImageAltDialog({
+  initialAlt = '',
+  open,
+  onConfirm,
+  onOpenChange
+}: ImageAltDialogProps) {
+  const [alt, setAlt] = useState(initialAlt)
+  const [warning, setWarning] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
+  const inputId = useId()
+  const warningId = useId()
+
+  useEffect(() => {
+    if (open) {
+      setAlt(initialAlt)
+      setWarning('')
+      requestAnimationFrame(() => {
+        inputRef.current?.focus()
+        inputRef.current?.select()
+      })
+    }
+  }, [open, initialAlt])
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+
+    if (!alt.trim()) {
+      setWarning(
+        'alt属性が空です。アクセシビリティのため、画像の内容を説明するテキストを入力することを推奨します。'
+      )
+    } else {
+      setWarning('')
+    }
+
+    onConfirm(alt)
+    onOpenChange(false)
+  }
+
+  const handleCancel = () => {
+    onOpenChange(false)
+  }
+
+  return (
+    <Dialog onOpenChange={onOpenChange} open={open}>
+      <DialogContent showCloseButton={false}>
+        <form noValidate onSubmit={handleSubmit}>
+          <DialogHeader>
+            <DialogTitle>画像のalt属性</DialogTitle>
+            <DialogDescription>
+              画像の代替テキスト（alt属性）を入力してください
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="py-4">
+            <Label htmlFor={inputId}>代替テキスト（alt）</Label>
+            <Input
+              aria-describedby={warning ? warningId : undefined}
+              id={inputId}
+              onChange={(e) => {
+                setAlt(e.target.value)
+                setWarning('')
+              }}
+              placeholder="画像の内容を説明するテキスト"
+              ref={inputRef}
+              type="text"
+              value={alt}
+            />
+            {warning && (
+              <p
+                className="mt-1 text-sm text-yellow-600"
+                id={warningId}
+                role="alert"
+              >
+                {warning}
+              </p>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button onClick={handleCancel} type="button" variant="outline">
+              キャンセル
+            </Button>
+            <Button type="submit">確定</Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
