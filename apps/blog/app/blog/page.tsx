@@ -6,6 +6,11 @@ import PostCard from '@/components/post-card'
 import { getPosts, getTotalPages } from '@/lib/supabase/posts'
 
 export const metadata: Metadata = {
+  alternates: {
+    types: {
+      'application/atom+xml': '/blog/atom.xml'
+    }
+  },
   description: 'ykztsの技術ブログ',
   openGraph: {
     description: 'ykztsの技術ブログ',
