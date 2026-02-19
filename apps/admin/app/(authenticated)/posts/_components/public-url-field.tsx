@@ -7,7 +7,7 @@ import {
   InputGroupButton,
   InputGroupInput
 } from '@ykzts/ui/components/input-group'
-import { Copy, ExternalLink } from 'lucide-react'
+import { Check, Copy, ExternalLink } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { getBlogPostUrl } from '@/lib/blog-urls'
@@ -110,7 +110,7 @@ export function PublicUrlField({
             type="button"
             variant="ghost"
           >
-            {copied ? <Copy className="fill-current" /> : <Copy />}
+            {copied ? <Check /> : <Copy />}
           </InputGroupButton>
         </InputGroupAddon>
       </InputGroup>
