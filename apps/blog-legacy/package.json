@@ -5,21 +5,17 @@
     "url": "https://github.com/ykzts/ykzts/issues"
   },
   "dependencies": {
-    "@docusaurus/core": "3.9.2",
-    "@docusaurus/faster": "3.9.2",
-    "@docusaurus/plugin-vercel-analytics": "3.9.2",
-    "@docusaurus/preset-classic": "3.9.2",
-    "prism-react-renderer": "2.4.1",
+    "@vercel/analytics": "1.6.1",
+    "next": "16.1.6",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "description": "Docusaurus-based blog application featuring Japanese technical content and modern web development topics",
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.9.2",
-    "@docusaurus/tsconfig": "3.9.2",
-    "@docusaurus/types": "3.9.2",
+    "@types/node": "22.19.11",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
+    "@ykzts/tsconfig": "workspace:*",
     "typescript": "5.9.3"
   },
   "homepage": "https://ykzts.blog/",
@@ -34,14 +30,11 @@
     "url": "https://github.com/ykzts/ykzts.git"
   },
   "scripts": {
-    "build": "docusaurus build",
-    "clear": "docusaurus clear",
-    "deploy": "docusaurus deploy",
-    "serve": "docusaurus serve",
-    "start": "docusaurus start",
-    "swizzle": "docusaurus swizzle",
-    "write-heading-ids": "docusaurus write-heading-ids",
-    "write-translations": "docusaurus write-translations"
+    "build": "next build",
+    "dev": "next dev --port 3003",
+    "start": "next start",
+    "test": "vitest --run",
+    "typegen": "next typegen"
   },
   "version": "1.0.0"
 }

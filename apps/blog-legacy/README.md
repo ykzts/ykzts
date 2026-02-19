@@ -1,10 +1,24 @@
 # @ykzts/blog-legacy
 
-Docusaurus-based blog application featuring Japanese technical content and modern web development topics.
+Legacy URL redirect application for the historical blog domains.
 
 ## Purpose
 
-This application powers [ykzts.blog](https://ykzts.blog/), a technical blog focused on software development, open source contributions, and web technologies. Built with Docusaurus 3, it provides a fast, accessible, and SEO-optimized platform for sharing knowledge and insights about modern web development.
+`blog-legacy` is a lightweight Next.js application that exists to preserve old inbound links and permanently redirect them to the current site structure.
+
+This app is assigned to legacy domains such as:
+
+- `overknee.info`
+- `memo.overknee.info`
+- `blog.desire.sh`
+- `ykzts.blog`
+
+Redirect targets are primarily under:
+
+- `https://ykzts.com/`
+- `https://ykzts.com/blog`
+
+All redirects are handled as `301` and are defined in TypeScript.
 
 ## Usage
 
@@ -13,47 +27,54 @@ This application powers [ykzts.blog](https://ykzts.blog/), a technical blog focu
 ```bash
 pnpm dev        # Start development server
 pnpm build      # Build for production
-pnpm serve      # Serve built files locally
+pnpm start      # Start production server
+pnpm typegen    # Generate Next.js route types
 ```
 
-### Features
+## How Redirects Work
 
-- **Japanese Localization**: Native support for Japanese content and formatting
-- **Algolia Search**: Integrated search functionality for easy content discovery
-- **RSS Feeds**: Automatic generation of Atom feeds for content syndication
-- **Dark Mode**: Responsive theme with automatic dark mode support
-- **Vercel Analytics**: Integrated analytics for performance monitoring
+- Redirect rules are defined in `redirects.ts` as tuples:
+	- `[source, destination]`
+- `next.config.ts` maps these rules to Next.js `redirects()` and applies status code `301`.
+- `destination` values are path-based and resolved against `baseUrl`.
+- A catch-all rule forwards unknown legacy paths to `/blog/:path*`.
 
-### Content Management
+## Files
 
-Blog posts are authored in MDX format in the `blog/` directory with automatic:
-- Date-based URL routing
-- Reading time estimation
-- Last update tracking
-- Archive page generation
+- `next.config.ts`: Next.js runtime configuration and redirect mapping
+- `redirects.ts`: Source of truth for legacy redirect rules
+- `vercel.json`: Platform-level minimal settings (`trailingSlash`)
+- `app/layout.tsx`: Minimal app shell
+- `app/not-found.tsx`: Fallback response
+
+## Maintenance
+
+When adding or adjusting redirects:
+
+1. Edit `redirects.ts`
+2. Keep redirects permanent (`301`) unless there is a strong reason otherwise
+3. Run `pnpm typegen`
+4. Verify expected behavior in local dev or preview deployment
 
 ## Dependencies
 
 ### Internal Dependencies
-None - this is a standalone application
+- `@ykzts/tsconfig`
 
 ### External Dependencies
-- `@docusaurus/core`: Core Docusaurus framework (v3.8.1)
-- `@docusaurus/preset-classic`: Classic theme and plugins
-- `@docusaurus/faster`: Performance optimizations
-- `@docusaurus/plugin-vercel-analytics`: Analytics integration
-- `react`: UI framework (v19.0.0)
-- `prism-react-renderer`: Syntax highlighting for code blocks
+- `next`
+- `react`
+- `react-dom`
+- `@vercel/analytics`
 
 ### Dev Dependencies
-- `typescript`: Type checking and development tooling
-- `@docusaurus/types`: TypeScript definitions for Docusaurus
-- `@types/react`: React type definitions
+- `typescript`
+- `@types/node`
+- `@types/react`
+- `@types/react-dom`
 
 ## Configuration
 
-- **Base URL**: `/` (root domain)
-- **Language**: Japanese (ja) as default locale
-- **Search**: Powered by Algolia with index `posts`
-- **Analytics**: Google Analytics (UA-97395750-2) and Vercel Analytics
-- **Theme**: Light/dark mode with system preference detection
+- **Base URL**: `https://ykzts.com` (configured in `next.config.ts`)
+- **Redirect Policy**: Permanent redirects (`301`)
+- **Trailing Slash**: Disabled (`trailingSlash: false`)
