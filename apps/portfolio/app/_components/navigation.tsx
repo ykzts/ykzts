@@ -17,6 +17,7 @@ import {
 } from '@ykzts/ui/components/sheet'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
+import ThemeToggle from './theme-toggle'
 
 const navItems = [
   { href: '#about', label: 'About' },
@@ -29,7 +30,7 @@ export default function Navigation() {
   const [open, setOpen] = useState(false)
 
   return (
-    <>
+    <div className="flex items-center">
       {/* Desktop Navigation */}
       <NavigationMenu aria-label="Main navigation" className="hidden md:flex">
         <NavigationMenuList aria-orientation={undefined}>
@@ -45,6 +46,8 @@ export default function Navigation() {
           ))}
         </NavigationMenuList>
       </NavigationMenu>
+
+      <ThemeToggle />
 
       {/* Mobile Navigation */}
       <Sheet onOpenChange={setOpen} open={open}>
@@ -78,6 +81,6 @@ export default function Navigation() {
           </nav>
         </SheetContent>
       </Sheet>
-    </>
+    </div>
   )
 }
