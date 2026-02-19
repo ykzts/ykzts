@@ -17,6 +17,7 @@ import {
 } from '@ykzts/ui/components/sheet'
 import { Menu } from 'lucide-react'
 import { useState } from 'react'
+import ThemeToggle from './theme-toggle'
 
 const navItems = [
   { href: '#about', label: 'About' },
@@ -45,6 +46,8 @@ export default function Navigation() {
           ))}
         </NavigationMenuList>
       </NavigationMenu>
+
+      <ThemeToggle />
 
       {/* Mobile Navigation */}
       <Sheet onOpenChange={setOpen} open={open}>

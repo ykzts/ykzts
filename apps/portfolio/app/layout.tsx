@@ -5,6 +5,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
 import { twMerge } from 'tailwind-merge'
 import SVGSymbols from './_components/svg-symbols'
+import ThemeProvider from './_components/theme-provider'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ykzts.com/'),
@@ -19,7 +20,10 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#fafafa'
+  themeColor: [
+    { color: '#fafafa', media: '(prefers-color-scheme: light)' },
+    { color: '#0f0f1a', media: '(prefers-color-scheme: dark)' }
+  ]
 }
 
 const inter = Inter({
@@ -53,23 +57,31 @@ export default function RootLayout({ children, modal }: LayoutProps<'/'>) {
         notoSansJp.variable
       )}
       lang="ja"
+      suppressHydrationWarning
     >
       <head />
       <body>
-        <a
-          className="absolute -top-20 left-2 z-1000 rounded bg-primary px-4 py-2 text-primary-foreground no-underline transition-[top] duration-300 focus-visible:top-2"
-          href="#content"
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
+          enableSystem
         >
-          メインコンテンツにスキップ
-        </a>
+          <a
+            className="absolute -top-20 left-2 z-1000 rounded bg-primary px-4 py-2 text-primary-foreground no-underline transition-[top] duration-300 focus-visible:top-2"
+            href="#content"
+          >
+            メインコンテンツにスキップ
+          </a>
 
-        <SVGSymbols />
+          <SVGSymbols />
 
-        {children}
-        {modal}
+          {children}
+          {modal}
 
-        <Toaster />
-        <Analytics />
+          <Toaster />
+          <Analytics />
+        </ThemeProvider>
       </body>
     </html>
   )
