@@ -51,12 +51,12 @@ export default function HomePage(_props: PageProps<'/'>) {
             >
               Works
             </a>
-            <Link
+            <a
               className="rounded transition-colors duration-200 hover:text-primary focus:outline-2 focus:outline-accent focus:outline-offset-2"
               href="/blog"
             >
               Blog
-            </Link>
+            </a>
             <a
               className="rounded transition-colors duration-200 hover:text-primary focus:outline-2 focus:outline-accent focus:outline-offset-2"
               href="#contact"
