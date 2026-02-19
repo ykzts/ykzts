@@ -1,6 +1,7 @@
 'use client'
 
 import { Field, FieldDescription, FieldLabel } from '@ykzts/ui/components/field'
+import { Input } from '@ykzts/ui/components/input'
 import {
   InputGroup,
   InputGroupAddon,
@@ -8,7 +9,7 @@ import {
   InputGroupInput
 } from '@ykzts/ui/components/input-group'
 import { Check, Copy, ExternalLink } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { getBlogPostUrl } from '@/lib/blog-urls'
 
@@ -24,16 +25,19 @@ export function PublicUrlField({
   status
 }: PublicUrlFieldProps) {
   const [copied, setCopied] = useState(false)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
+  }, [])
 
   if (!slug) {
     return (
       <Field>
         <FieldLabel>公開URL</FieldLabel>
-        <InputGroupInput
-          disabled
-          type="text"
-          value="スラッグが設定されていません"
-        />
+        <Input disabled type="text" value="スラッグが設定されていません" />
         <FieldDescription>
           スラッグを設定すると、URLが表示されます
         </FieldDescription>
@@ -47,11 +51,7 @@ export function PublicUrlField({
     return (
       <Field>
         <FieldLabel>公開URL</FieldLabel>
-        <InputGroupInput
-          disabled
-          type="text"
-          value="公開日時が設定されていません"
-        />
+        <Input disabled type="text" value="公開日時が設定されていません" />
         <FieldDescription>
           {status === 'draft'
             ? '下書き状態のため、公開URLはありません'
@@ -70,7 +70,8 @@ export function PublicUrlField({
       setCopied(true)
       toast.success('URLをコピーしました')
 
-      setTimeout(() => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+      timerRef.current = setTimeout(() => {
         setCopied(false)
       }, 2000)
     } catch (error) {
@@ -97,6 +98,7 @@ export function PublicUrlField({
         />
         <InputGroupAddon align="inline-end">
           <InputGroupButton
+            aria-label="新しいタブで開く"
             onClick={handleOpenInNewTab}
             title="新しいタブで開く"
             type="button"
@@ -105,6 +107,7 @@ export function PublicUrlField({
             <ExternalLink />
           </InputGroupButton>
           <InputGroupButton
+            aria-label="URLをコピー"
             onClick={handleCopy}
             title="URLをコピー"
             type="button"

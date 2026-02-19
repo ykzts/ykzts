@@ -46,4 +46,14 @@ describe('getBlogPostUrl', () => {
     const url = getBlogPostUrl('new-year-post', '2024-01-01T00:00:00.000Z')
     expect(url).toBe('https://ykzts.com/blog/2024/01/01/new-year-post')
   })
+
+  it('should return null when slug is whitespace only', () => {
+    const url = getBlogPostUrl('   ', '2024-02-15T10:30:00.000Z')
+    expect(url).toBeNull()
+  })
+
+  it('should encode special characters in slug', () => {
+    const url = getBlogPostUrl('my awesome post', '2024-02-15T10:30:00.000Z')
+    expect(url).toBe('https://ykzts.com/blog/2024/02/15/my%20awesome%20post')
+  })
 })

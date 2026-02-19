@@ -2,7 +2,7 @@
 
 import { Button } from '@ykzts/ui/components/button'
 import { Check, Copy, ExternalLink } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 type CopyUrlButtonProps = {
@@ -21,6 +21,13 @@ export function CopyUrlButton({
   size = 'sm'
 }: CopyUrlButtonProps) {
   const [copied, setCopied] = useState(false)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
+  }, [])
 
   const handleCopy = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -31,8 +38,8 @@ export function CopyUrlButton({
       setCopied(true)
       toast.success('URLをコピーしました')
 
-      // Reset copied state after 2 seconds
-      setTimeout(() => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+      timerRef.current = setTimeout(() => {
         setCopied(false)
       }, 2000)
     } catch (error) {
@@ -51,6 +58,7 @@ export function CopyUrlButton({
     return (
       <div className="flex gap-1">
         <Button
+          aria-label={label ?? 'URLをコピー'}
           onClick={handleCopy}
           size={size}
           title="URLをコピー"
@@ -65,6 +73,7 @@ export function CopyUrlButton({
           {label && <span className="ml-1">{label}</span>}
         </Button>
         <Button
+          aria-label="新しいタブで開く"
           onClick={handleOpenInNewTab}
           size={size}
           title="新しいタブで開く"
@@ -79,6 +88,7 @@ export function CopyUrlButton({
 
   return (
     <Button
+      aria-label={label ?? 'URLをコピー'}
       onClick={handleCopy}
       size={size}
       title="URLをコピー"

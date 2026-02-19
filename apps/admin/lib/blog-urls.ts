@@ -1,9 +1,3 @@
-/**
- * Constructs a date-based URL for a blog post.
- * @param slug - The post slug
- * @param publishedAt - ISO 8601 timestamp of when the post was published
- * @returns Full URL to the public blog post (returns null if publishedAt is invalid)
- */
 function sanitizeSlugForUrl(slug: string): string | null {
   const trimmed = slug.trim()
   if (!trimmed) {
@@ -15,6 +9,12 @@ function sanitizeSlugForUrl(slug: string): string | null {
   return encodeURIComponent(trimmed)
 }
 
+/**
+ * Constructs a date-based URL for a blog post.
+ * @param slug - The post slug
+ * @param publishedAt - ISO 8601 timestamp of when the post was published
+ * @returns Full URL to the public blog post (returns null if publishedAt is invalid)
+ */
 export function getBlogPostUrl(
   slug: string,
   publishedAt: string | null
