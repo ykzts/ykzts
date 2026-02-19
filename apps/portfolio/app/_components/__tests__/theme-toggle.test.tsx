@@ -1,9 +1,13 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockSetTheme = vi.fn()
 let mockResolvedTheme = 'light'
+
+beforeEach(() => {
+  mockSetTheme.mockClear()
+})
 
 vi.mock('next-themes', () => ({
   useTheme: () => ({
@@ -26,7 +30,9 @@ describe('ThemeToggle', () => {
     mockResolvedTheme = 'light'
     render(<ThemeToggle />)
 
-    const button = screen.getByRole('button', { name: 'ダークモードに切り替える' })
+    const button = screen.getByRole('button', {
+      name: 'ダークモードに切り替える'
+    })
     expect(button).toBeInTheDocument()
   })
 
@@ -34,7 +40,9 @@ describe('ThemeToggle', () => {
     mockResolvedTheme = 'dark'
     render(<ThemeToggle />)
 
-    const button = screen.getByRole('button', { name: 'ライトモードに切り替える' })
+    const button = screen.getByRole('button', {
+      name: 'ライトモードに切り替える'
+    })
     expect(button).toBeInTheDocument()
   })
 
@@ -43,7 +51,9 @@ describe('ThemeToggle', () => {
     const user = userEvent.setup()
     render(<ThemeToggle />)
 
-    const button = screen.getByRole('button', { name: 'ダークモードに切り替える' })
+    const button = screen.getByRole('button', {
+      name: 'ダークモードに切り替える'
+    })
     await user.click(button)
 
     expect(mockSetTheme).toHaveBeenCalledWith('dark')
@@ -54,7 +64,9 @@ describe('ThemeToggle', () => {
     const user = userEvent.setup()
     render(<ThemeToggle />)
 
-    const button = screen.getByRole('button', { name: 'ライトモードに切り替える' })
+    const button = screen.getByRole('button', {
+      name: 'ライトモードに切り替える'
+    })
     await user.click(button)
 
     expect(mockSetTheme).toHaveBeenCalledWith('light')
