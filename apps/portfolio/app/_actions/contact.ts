@@ -92,7 +92,7 @@ export async function submitContactForm(
     }
 
     const emailResult = await resend.emails.send({
-      from: `${validatedData.name} via ${process.env.MAIL_FROM_NAME ?? 'ykzts.com'} <${process.env.MAIL_FROM_ADDRESS ?? 'no-reply@ykzts.com'}>`,
+      from: `${validatedData.name} via ${process.env.NEXT_PUBLIC_SITE_NAME ?? 'ykzts.com'} <${process.env.MAIL_FROM_ADDRESS ?? 'no-reply@ykzts.com'}>`,
       replyTo: `${validatedData.name} <${validatedData.email}>`,
       subject: `[お問い合わせ] ${validatedData.subject}`,
       text: validatedData.message,

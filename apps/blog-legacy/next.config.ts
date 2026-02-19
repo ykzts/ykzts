@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next'
 import { createLegacyRedirects } from './redirects'
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_ORIGIN ?? 'https://ykzts.com'
+const baseUrl = process.env.NEXT_PUBLIC_SITE_ORIGIN ?? 'https://example.com'
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
