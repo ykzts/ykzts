@@ -1,3 +1,4 @@
+import type { Route } from 'next'
 import type { Heading } from '@/lib/extract-headings'
 import type { PortableTextValue } from '@/lib/portable-text'
 import ArticleHeader from './article-header'
@@ -9,6 +10,7 @@ interface ArticleContentProps {
   className?: string
   content: PortableTextValue
   headings: Heading[]
+  historyUrl?: Route
   publishedAt: string
   tags?: string[] | null
   title: string
@@ -20,6 +22,7 @@ export default function ArticleContent({
   className,
   content,
   headings,
+  historyUrl,
   publishedAt,
   tags,
   title,
@@ -29,6 +32,7 @@ export default function ArticleContent({
     <article className={className}>
       <ArticleHeader
         authorName={authorName}
+        historyUrl={historyUrl}
         publishedAt={publishedAt}
         tags={tags}
         title={title}

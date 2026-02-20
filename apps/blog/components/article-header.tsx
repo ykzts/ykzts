@@ -1,9 +1,12 @@
+import type { Route } from 'next'
+import Link from 'next/link'
 import DateDisplay from './date-display'
 import TagList from './tag-list'
 
 interface ArticleHeaderProps {
   title: string
   authorName: string
+  historyUrl?: Route
   publishedAt: string
   versionDate?: string | null
   tags?: string[] | null
@@ -12,6 +15,7 @@ interface ArticleHeaderProps {
 export default function ArticleHeader({
   title,
   authorName,
+  historyUrl,
   publishedAt,
   versionDate,
   tags
@@ -25,8 +29,18 @@ export default function ArticleHeader({
           <DateDisplay date={publishedAt} />
         </div>
         {versionDate && versionDate !== publishedAt && (
-          <div>
-            更新: <DateDisplay date={versionDate} />
+          <div className="flex items-center gap-2">
+            <span>
+              更新: <DateDisplay date={versionDate} />
+            </span>
+            {historyUrl && (
+              <Link
+                className="text-muted-foreground hover:underline"
+                href={historyUrl}
+              >
+                編集履歴
+              </Link>
+            )}
           </div>
         )}
       </div>

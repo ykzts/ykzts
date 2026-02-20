@@ -1,5 +1,5 @@
 import { getSiteOrigin } from '@ykzts/site-config'
-import type { Metadata } from 'next'
+import type { Metadata, Route } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
@@ -146,6 +146,9 @@ export default async function PostDetailPage({ params }: PageProps) {
     getAdjacentPosts(slug, isDraft)
   ])
 
+  const historyUrl =
+    `${getDateBasedUrl(slug, post.published_at)}/history` as Route
+
   // JSON-LD structured data for Article schema
   const baseUrl = getSiteOrigin().origin
   const jsonLd = {
@@ -189,6 +192,7 @@ export default async function PostDetailPage({ params }: PageProps) {
                 className="min-w-0 max-w-3xl"
                 content={post.content}
                 headings={headings}
+                historyUrl={historyUrl}
                 publishedAt={post.published_at}
                 tags={post.tags}
                 title={post.title}
@@ -206,6 +210,7 @@ export default async function PostDetailPage({ params }: PageProps) {
               className="mx-auto max-w-3xl"
               content={post.content}
               headings={headings}
+              historyUrl={historyUrl}
               publishedAt={post.published_at}
               tags={post.tags}
               title={post.title}
