@@ -547,7 +547,13 @@ export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
     return { nextPost: null, previousPost: null }
   }
 
-  const currentPublishedAt = currentData.published_at as string
+  // Draft posts have no published_at; adjacent posts are date-ordered so
+  // there is nothing meaningful to navigate to.
+  if (!currentData.published_at) {
+    return { nextPost: null, previousPost: null }
+  }
+
+  const currentPublishedAt = currentData.published_at
 
   // Build base filters (apply same filters as getPostBySlug)
   const buildQuery = () => {
