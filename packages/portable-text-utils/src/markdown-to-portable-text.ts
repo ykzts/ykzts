@@ -13,6 +13,7 @@ type PortableTextCodeBlock = {
 }
 
 type PortableTextSpan = {
+  _key?: string
   _type: 'span'
   text?: string
 }
