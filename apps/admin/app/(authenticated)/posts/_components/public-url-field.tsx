@@ -11,20 +11,20 @@ import {
 import { Check, Copy, ExternalLink } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
-import { getBlogPostUrl, getDraftPreviewUrl } from '@/lib/blog-urls'
+import { getBlogPostUrl } from '@/lib/blog-urls'
 
 type PublicUrlFieldProps = {
   slug: string | null
   publishedAt: string | null
   status: 'draft' | 'scheduled' | 'published'
-  draftSecret?: string | null
+  draftPreviewUrl?: string | null
 }
 
 export function PublicUrlField({
   slug,
   publishedAt,
   status,
-  draftSecret
+  draftPreviewUrl
 }: PublicUrlFieldProps) {
   const [copied, setCopied] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -48,12 +48,9 @@ export function PublicUrlField({
   }
 
   const url = getBlogPostUrl(slug, publishedAt)
-  const draftPreviewUrl =
-    !url && status === 'draft' && slug && draftSecret
-      ? getDraftPreviewUrl(slug, draftSecret)
-      : null
+  const displayUrl = url ?? draftPreviewUrl ?? null
 
-  if (!url && !draftPreviewUrl) {
+  if (!displayUrl) {
     return (
       <Field>
         <FieldLabel>公開URL</FieldLabel>
@@ -66,8 +63,6 @@ export function PublicUrlField({
       </Field>
     )
   }
-
-  const displayUrl = (url ?? draftPreviewUrl) as string
 
   const handleCopy = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -126,7 +121,7 @@ export function PublicUrlField({
         </InputGroupAddon>
       </InputGroup>
       <FieldDescription>
-        {draftPreviewUrl
+        {!url && draftPreviewUrl
           ? 'ドラフトプレビュー用のURL（公開前の確認に使用）'
           : status === 'scheduled'
             ? '予約公開のURL（指定日時に自動公開されます）'

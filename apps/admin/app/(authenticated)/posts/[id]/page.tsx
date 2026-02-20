@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { Panel } from '@/components/panel'
+import { getDraftPreviewUrl } from '@/lib/blog-urls'
 import { getPostById } from '@/lib/posts'
 import { PostForm } from '../_components/post-form'
 import { PostFormSkeleton } from './_components/post-form-skeleton'
@@ -18,13 +19,16 @@ async function PostEditContent({ id }: { id: string }) {
     notFound()
   }
 
-  const draftSecret = process.env.DRAFT_SECRET ?? null
+  const draftPreviewUrl =
+    post.status === 'draft' && post.slug
+      ? getDraftPreviewUrl(post.slug, process.env.DRAFT_SECRET ?? '')
+      : null
 
   return (
     <Panel>
       <PostForm
         deleteAction={deletePostAction}
-        draftSecret={draftSecret}
+        draftPreviewUrl={draftPreviewUrl}
         post={post}
         updateAction={updatePostAction}
       />
