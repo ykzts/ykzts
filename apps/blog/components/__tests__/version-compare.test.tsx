@@ -100,7 +100,9 @@ describe('VersionCompare', () => {
     await user.click(checkboxes[0])
     await user.click(checkboxes[2])
 
-    const resetButton = screen.getByRole('button', { name: '比較をリセット' })
+    const resetButton = screen.getByRole('button', {
+      name: 'バージョン比較をリセット'
+    })
     await user.click(resetButton)
 
     expect(

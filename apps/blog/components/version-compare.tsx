@@ -134,7 +134,11 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-start gap-3">
                 <input
-                  aria-label={`バージョン ${version.version_number} を比較対象として選択`}
+                  aria-label={
+                    isChecked(version.id)
+                      ? `バージョン ${version.version_number} の比較対象選択を解除`
+                      : `バージョン ${version.version_number} を比較対象として選択`
+                  }
                   checked={isChecked(version.id)}
                   className="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-primary"
                   id={`version-${version.id}`}
@@ -228,6 +232,7 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
             </pre>
           </div>
           <button
+            aria-label="バージョン比較をリセット"
             className="mt-4 text-muted-foreground text-sm underline-offset-2 hover:text-foreground hover:underline"
             onClick={() => setSelectedIds(null)}
             type="button"
