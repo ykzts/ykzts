@@ -327,7 +327,6 @@ export type Database = {
           p_status?: string
           p_tags?: string[]
           p_title: string
-          p_version_date?: string
         }
         Returns: string
       }
