@@ -1,6 +1,6 @@
 import { markdownToPortableText as convertFromMarkdown } from '@portabletext/markdown'
 
-type MarkdownPostParseResult = {
+export type MarkdownPostParseResult = {
   title: string
   contentJson: string
 }

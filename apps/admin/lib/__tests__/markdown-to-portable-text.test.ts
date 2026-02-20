@@ -1,5 +1,5 @@
+import { parseMarkdownForPost } from '@ykzts/portable-text-utils'
 import { describe, expect, it } from 'vitest'
-import { parseMarkdownForPost } from '../markdown-to-portable-text'
 
 describe('parseMarkdownForPost', () => {
   it('should extract title from first h1 heading', () => {

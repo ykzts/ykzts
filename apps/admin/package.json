@@ -17,6 +17,7 @@
     "@supabase/supabase-js": "2.95.3",
     "@vercel/microfrontends": "2.3.0",
     "@ykzts/pagination-utils": "workspace:*",
+    "@ykzts/portable-text-utils": "workspace:*",
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
     "ai": "6.0.86",
