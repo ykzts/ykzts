@@ -1,8 +1,7 @@
-export const dynamic = 'force-dynamic'
-
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
+import { connection } from 'next/server'
 import { Suspense } from 'react'
 import ArticleContent from '@/components/article-content'
 import Header from '@/components/header'
@@ -29,6 +28,7 @@ type PageProps = {
 export async function generateMetadata({
   params
 }: PageProps): Promise<Metadata> {
+  await connection()
   const { slug } = await params
   const draft = await draftMode()
 
@@ -52,6 +52,7 @@ export async function generateMetadata({
 }
 
 export default async function DraftPostPage({ params }: PageProps) {
+  await connection()
   const { slug } = await params
   const draft = await draftMode()
 
