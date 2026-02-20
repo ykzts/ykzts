@@ -7,7 +7,11 @@ import Header from '@/components/header'
 import LinkButton from '@/components/link-button'
 import { getDateBasedUrl } from '@/lib/blog-urls'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
-import { getPostBySlug, getPostVersions } from '@/lib/supabase/posts'
+import {
+  getAllPosts,
+  getPostBySlug,
+  getPostVersions
+} from '@/lib/supabase/posts'
 
 type PageProps = {
   params: Promise<{
@@ -16,6 +20,31 @@ type PageProps = {
     day: string
     slug: string
   }>
+}
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts()
+
+  if (posts.length === 0) {
+    return [
+      {
+        day: '01',
+        month: '01',
+        slug: '_placeholder',
+        year: '2024'
+      }
+    ]
+  }
+
+  return posts.map((post) => {
+    const date = new Date(post.published_at)
+    return {
+      day: String(date.getUTCDate()).padStart(2, '0'),
+      month: String(date.getUTCMonth() + 1).padStart(2, '0'),
+      slug: post.slug,
+      year: String(date.getUTCFullYear())
+    }
+  })
 }
 
 export async function generateMetadata({
