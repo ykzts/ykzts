@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Suspense } from 'react'
 import { AdminPagination } from '@/components/admin-pagination'
 import { Panel } from '@/components/panel'
+import { getDraftPreviewUrl } from '@/lib/blog-urls'
 import { getProfileTimezone } from '@/lib/data'
 import { getPosts } from '@/lib/posts'
 import { formatDateWithTimezone } from '@/lib/timezones'
@@ -26,6 +27,8 @@ async function PostsContent({
     getPosts({ page, perPage, search, status }),
     getProfileTimezone()
   ])
+
+  const draftSecret = process.env.DRAFT_SECRET ?? null
 
   return (
     <>
@@ -65,6 +68,11 @@ async function PostsContent({
                     </td>
                     <td className="px-4 py-3">
                       <PublicUrlCell
+                        draftPreviewUrl={
+                          post.status === 'draft' && post.slug && draftSecret
+                            ? getDraftPreviewUrl(post.slug, draftSecret)
+                            : null
+                        }
                         publishedAt={post.published_at}
                         slug={post.slug}
                         status={
