@@ -1,5 +1,6 @@
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
+import { getSiteOrigin } from '@ykzts/site-config'
 import { cn } from '@ykzts/ui/lib/utils'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
@@ -8,15 +9,7 @@ import Footer from '@/components/footer'
 import ThemeProvider from '@/components/theme-provider'
 
 export const metadata: Metadata = {
-  metadataBase: (() => {
-    try {
-      return new URL(
-        process.env.NEXT_PUBLIC_SITE_ORIGIN ?? 'https://example.com'
-      )
-    } catch {
-      return new URL('https://example.com')
-    }
-  })(),
+  metadataBase: getSiteOrigin(),
   other: {
     'fediverse:creator': 'ykzts@ykzts.technology',
     'Hatena::Bookmark': 'nocomment'

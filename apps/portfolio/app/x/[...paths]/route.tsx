@@ -1,13 +1,5 @@
+import { getSiteHost } from '@ykzts/site-config'
 import Html from './_components/html'
-
-function getSiteHost(): string {
-  try {
-    return new URL(process.env.NEXT_PUBLIC_SITE_ORIGIN ?? 'https://example.com')
-      .host
-  } catch {
-    return 'example.com'
-  }
-}
 
 const SITE_HOST = getSiteHost()
 

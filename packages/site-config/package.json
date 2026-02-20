@@ -1,0 +1,16 @@
+{
+  "name": "@ykzts/site-config",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared site configuration utilities",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {
+    "@ykzts/tsconfig": "workspace:*",
+    "typescript": "5.9.3"
+  }
+}
