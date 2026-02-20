@@ -82,6 +82,9 @@ export function PostForm({
   deleteAction
 }: PostFormProps) {
   const isEditMode = !!post
+  const isSlugEditable =
+    !isEditMode ||
+    (post?.status !== 'published' && post?.status !== 'scheduled')
   const formAction = isEditMode ? updateAction : createAction
 
   if (!formAction) {
@@ -358,6 +361,7 @@ export function PostForm({
               <InputGroup>
                 <InputGroupInput
                   defaultValue={post?.slug || ''}
+                  disabled={!isSlugEditable}
                   id="slug"
                   maxLength={256}
                   name="slug"
@@ -368,7 +372,11 @@ export function PostForm({
                 />
                 <InputGroupAddon align="inline-end">
                   <InputGroupButton
-                    disabled={isGeneratingSlug || slugValue.trim() !== ''}
+                    disabled={
+                      !isSlugEditable ||
+                      isGeneratingSlug ||
+                      slugValue.trim() !== ''
+                    }
                     onClick={handleGenerateSlug}
                     variant="secondary"
                   >
