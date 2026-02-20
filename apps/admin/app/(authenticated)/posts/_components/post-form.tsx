@@ -18,13 +18,15 @@ import {
   SelectValue
 } from '@ykzts/ui/components/select'
 import { Textarea } from '@ykzts/ui/components/textarea'
-import { Clipboard } from 'lucide-react'
+import { Clipboard, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { useActionState, useState } from 'react'
 import { toast } from 'sonner'
 import { RichTextEditor } from '@/components/portable-text-editor'
+import { generateTagsWithAI } from '@/lib/generate-tags-with-ai'
 import type { PostWithDetails } from '@/lib/posts'
 import { generateSlugSmart, generateUniqueSlugForPost } from '@/lib/slug'
+import { getAllExistingTags } from '@/lib/tags'
 import { generateSlug } from '@/lib/utils'
 import { PublicUrlField } from './public-url-field'
 
@@ -94,6 +96,8 @@ export function PostForm({
   )
   const [isGeneratingSlug, setIsGeneratingSlug] = useState(false)
   const [slugValue, setSlugValue] = useState(post?.slug || '')
+  const [isGeneratingTags, setIsGeneratingTags] = useState(false)
+  const [suggestedTags, setSuggestedTags] = useState<string[]>([])
   const [statusValue, setStatusValue] = useState<'draft' | 'published'>(
     post?.status === 'published' || post?.status === 'scheduled'
       ? 'published'
@@ -223,6 +227,53 @@ export function PostForm({
     }
   }
 
+  const handleSuggestTags = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    const form = e.currentTarget.form
+    if (!form) return
+
+    const titleInput = form.elements.namedItem(
+      'title'
+    ) as HTMLInputElement | null
+    const contentInput = form.elements.namedItem(
+      'content'
+    ) as HTMLInputElement | null
+
+    if (!titleInput?.value) {
+      toast.error('タイトルを入力してください')
+      return
+    }
+
+    setIsGeneratingTags(true)
+    setSuggestedTags([])
+    try {
+      const content = contentInput?.value || '[]'
+      const existingTags = await getAllExistingTags()
+      const generated = await generateTagsWithAI({
+        content,
+        existingTags,
+        title: titleInput.value
+      })
+      const newSuggestions = generated.filter((tag) => !tags.includes(tag))
+      if (newSuggestions.length === 0 && generated.length > 0) {
+        toast.info('提案されたタグはすでにすべて追加されています')
+      }
+      setSuggestedTags(newSuggestions)
+    } catch (error) {
+      console.error('Failed to generate tags:', error)
+      toast.error('タグの生成に失敗しました')
+    } finally {
+      setIsGeneratingTags(false)
+    }
+  }
+
+  const handleAddSuggestedTag = (tag: string) => {
+    if (!tags.includes(tag)) {
+      setTags([...tags, tag])
+    }
+    setSuggestedTags((prev) => prev.filter((t) => t !== tag))
+  }
+
   return (
     <div>
       <form action={submitAction} className="space-y-6">
@@ -339,7 +390,20 @@ export function PostForm({
 
             {/* Tags */}
             <Field>
-              <FieldLabel htmlFor="tag-input">タグ</FieldLabel>
+              <div className="flex items-center justify-between">
+                <FieldLabel htmlFor="tag-input">タグ</FieldLabel>
+                <Button
+                  aria-label="AIでタグを自動提案する"
+                  disabled={isGeneratingTags}
+                  onClick={handleSuggestTags}
+                  size="sm"
+                  type="button"
+                  variant="outline"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  {isGeneratingTags ? '生成中...' : 'AIサジェスト'}
+                </Button>
+              </div>
               <div className="flex gap-2">
                 <Input
                   id="tag-input"
@@ -376,6 +440,25 @@ export function PostForm({
                       </button>
                     </span>
                   ))}
+                </div>
+              )}
+              {suggestedTags.length > 0 && (
+                <div className="mt-2">
+                  <p className="mb-1 text-muted-foreground text-xs">
+                    AIの提案（クリックで追加）:
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {suggestedTags.map((tag) => (
+                      <button
+                        className="inline-flex items-center gap-1 rounded border border-dashed px-3 py-1 text-sm hover:bg-secondary"
+                        key={tag}
+                        onClick={() => handleAddSuggestedTag(tag)}
+                        type="button"
+                      >
+                        + {tag}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </Field>
