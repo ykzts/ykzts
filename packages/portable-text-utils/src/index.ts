@@ -111,7 +111,7 @@ type PortableTextLike = {
  * @returns Markdown string or empty string if conversion fails
  */
 export function portableTextToMarkdown(content: unknown): string {
-  if (!content || !Array.isArray(content)) {
+  if (!content || !Array.isArray(content) || content.length === 0) {
     return ''
   }
 

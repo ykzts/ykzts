@@ -93,14 +93,6 @@ export default async function PostHistoryPage({ params }: PageProps) {
 
   const postUrl = getDateBasedUrl(slug, post.published_at)
 
-  const versionsWithText = versions.map((version) => ({
-    change_summary: version.change_summary,
-    id: version.id,
-    markdownText: portableTextToMarkdown(version.content),
-    version_date: version.version_date,
-    version_number: version.version_number
-  }))
-
   return (
     <>
       <Header />
@@ -151,7 +143,15 @@ export default async function PostHistoryPage({ params }: PageProps) {
               <p className="mb-4 text-muted-foreground text-sm">
                 比較したい2つのバージョンを選択してください。
               </p>
-              <VersionCompare versions={versionsWithText} />
+              <VersionCompare
+                versions={versions.map((version) => ({
+                  change_summary: version.change_summary,
+                  id: version.id,
+                  markdownText: portableTextToMarkdown(version.content),
+                  version_date: version.version_date,
+                  version_number: version.version_number
+                }))}
+              />
             </>
           )}
 

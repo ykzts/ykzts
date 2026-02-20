@@ -136,6 +136,52 @@ describe('VersionCompare', () => {
     expect(screen.getByText('Line three old')).toBeInTheDocument()
   })
 
+  it('clicking a version checkbox while a pair is selected clears the pair and starts a new selection', async () => {
+    const user = userEvent.setup()
+    render(<VersionCompare versions={versions} />)
+
+    const checkboxes = screen.getAllByRole('checkbox')
+    // Select v3 and v1 to form a pair
+    await user.click(checkboxes[0]) // v3
+    await user.click(checkboxes[2]) // v1
+
+    expect(
+      screen.getByRole('region', { name: 'バージョン比較結果' })
+    ).toBeInTheDocument()
+
+    // Now click v2 — should clear the pair and start fresh with v2 as pending
+    await user.click(checkboxes[1]) // v2
+
+    expect(
+      screen.queryByRole('region', { name: 'バージョン比較結果' })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByText('比較するもう一つのバージョンを選択してください。')
+    ).toBeInTheDocument()
+  })
+
+  it('clicking a selected version while a pair is active deselects it and keeps the other pending', async () => {
+    const user = userEvent.setup()
+    render(<VersionCompare versions={versions} />)
+
+    const checkboxes = screen.getAllByRole('checkbox')
+    // Select v3 and v1 to form a pair
+    await user.click(checkboxes[0]) // v3
+    await user.click(checkboxes[2]) // v1
+
+    // Click v3 again — should deselect v3 and keep v1 as the pending selection
+    await user.click(checkboxes[0]) // v3 again
+
+    expect(
+      screen.queryByRole('region', { name: 'バージョン比較結果' })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByText('比較するもう一つのバージョンを選択してください。')
+    ).toBeInTheDocument()
+    // v1 checkbox should still be checked as the pending selection
+    expect(checkboxes[2]).toBeChecked()
+  })
+
   it('renders with empty versions array gracefully', () => {
     render(<VersionCompare versions={[]} />)
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import DateDisplay from './date-display'
 
 type Version = {
@@ -83,8 +83,11 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
   const handleSelect = useCallback(
     (id: string) => {
       if (selectedIds) {
+        // If clicking one of the two selected versions, deselect just that one
+        // and keep the other as the pending pick
+        const otherId = selectedIds.find((x) => x !== id)
         setSelectedIds(null)
-        setPendingId(id)
+        setPendingId(otherId ?? id)
         return
       }
       if (pendingId === null) {
@@ -108,23 +111,21 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
     [pendingId, selectedIds]
   )
 
-  const diffResult =
-    selectedIds !== null
-      ? (() => {
-          const vA = versions.find((v) => v.id === selectedIds[0])
-          const vB = versions.find((v) => v.id === selectedIds[1])
-          if (!vA || !vB) return null
+  const diffResult = useMemo(() => {
+    if (selectedIds === null) return null
+    const vA = versions.find((v) => v.id === selectedIds[0])
+    const vB = versions.find((v) => v.id === selectedIds[1])
+    if (!vA || !vB) return null
 
-          const [older, newer] =
-            vA.version_number < vB.version_number ? [vA, vB] : [vB, vA]
+    const [older, newer] =
+      vA.version_number < vB.version_number ? [vA, vB] : [vB, vA]
 
-          return {
-            diff: computeDiff(older.markdownText, newer.markdownText),
-            newerVersion: newer,
-            olderVersion: older
-          }
-        })()
-      : null
+    return {
+      diff: computeDiff(older.markdownText, newer.markdownText),
+      newerVersion: newer,
+      olderVersion: older
+    }
+  }, [selectedIds, versions])
 
   return (
     <div>
@@ -204,7 +205,7 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
                 <DateDisplay date={diffResult.newerVersion.version_date} />)
               </span>
             </div>
-            <pre className="overflow-x-auto p-0 text-sm">
+            <div className="overflow-x-auto whitespace-pre-wrap p-0 font-mono text-sm">
               {diffResult.diff.map((line) => (
                 <div
                   className={
@@ -229,7 +230,7 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
                   <span className="px-2">{line.text}</span>
                 </div>
               ))}
-            </pre>
+            </div>
           </div>
           <button
             aria-label="バージョン比較をリセット"
