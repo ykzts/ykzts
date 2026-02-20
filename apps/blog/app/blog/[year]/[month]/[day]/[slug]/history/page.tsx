@@ -96,9 +96,7 @@ export default async function PostHistoryPage({ params }: PageProps) {
   const versionsWithText = versions.map((version) => ({
     change_summary: version.change_summary,
     id: version.id,
-    markdownText: portableTextToMarkdown(
-      version.content as unknown[] | null | undefined
-    ),
+    markdownText: portableTextToMarkdown(version.content),
     version_date: version.version_date,
     version_number: version.version_number
   }))

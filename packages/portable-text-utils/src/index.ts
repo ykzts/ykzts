@@ -110,9 +110,7 @@ type PortableTextLike = {
  * @param content - PortableText content (array of blocks)
  * @returns Markdown string or empty string if conversion fails
  */
-export function portableTextToMarkdown(
-  content: unknown[] | null | undefined
-): string {
+export function portableTextToMarkdown(content: unknown): string {
   if (!content || !Array.isArray(content)) {
     return ''
   }
