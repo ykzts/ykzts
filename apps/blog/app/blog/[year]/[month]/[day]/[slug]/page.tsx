@@ -1,8 +1,8 @@
+import { getSiteOrigin } from '@ykzts/site-config'
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
-import { metadata as layoutMetadata } from '@/app/layout'
 import ArticleContent from '@/components/article-content'
 import Header from '@/components/header'
 import PostNavigation from '@/components/post-navigation'
@@ -147,7 +147,7 @@ export default async function PostDetailPage({ params }: PageProps) {
   ])
 
   // JSON-LD structured data for Article schema
-  const baseUrl = layoutMetadata.metadataBase?.toString() || 'https://ykzts.com'
+  const baseUrl = getSiteOrigin().origin
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',

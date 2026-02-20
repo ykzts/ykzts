@@ -19,12 +19,12 @@ export const metadata: Metadata = {
   description,
   openGraph: {
     description,
-    title: 'ykzts.com',
+    title: process.env.NEXT_PUBLIC_SITE_NAME ?? 'example.com',
     type: 'website',
     url: '/'
   },
   title: {
-    absolute: 'ykzts.com - ソフトウェア開発者 山岸和利のポートフォリオ'
+    absolute: `${process.env.NEXT_PUBLIC_SITE_NAME ?? 'example.com'} - ソフトウェア開発者 山岸和利のポートフォリオ`
   },
   twitter: {
     card: 'summary_large_image'
@@ -37,7 +37,7 @@ export default function HomePage(_props: PageProps<'/'>) {
       <header className="sticky top-0 z-10 border-border border-b bg-background/90 px-6 backdrop-blur-sm md:px-12 lg:px-24">
         <div className="mx-auto flex h-14 max-w-4xl items-center justify-between">
           <Link className="font-semibold text-foreground text-lg" href="/">
-            ykzts.com
+            {process.env.NEXT_PUBLIC_SITE_NAME ?? 'example.com'}
           </Link>
           <Navigation />
         </div>

@@ -21,7 +21,7 @@ export async function generateMetadata({
         description: `「${q}」の検索結果`,
         title: `${q} - 検索結果 | Blog`,
         type: 'website',
-        url: `https://ykzts.com/blog/search?q=${encodeURIComponent(q)}`
+        url: `/blog/search?q=${encodeURIComponent(q)}`
       },
       title: `${q} - 検索結果`
     }
@@ -33,7 +33,7 @@ export async function generateMetadata({
       description: 'ブログ記事を検索',
       title: 'Search | Blog',
       type: 'website',
-      url: 'https://ykzts.com/blog/search'
+      url: '/blog/search'
     },
     title: 'Search'
   }

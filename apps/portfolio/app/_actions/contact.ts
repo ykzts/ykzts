@@ -1,5 +1,6 @@
 'use server'
 
+import { getSiteName } from '@ykzts/site-config'
 import { Resend } from 'resend'
 import * as z from 'zod'
 import { getProfile } from '@/lib/supabase'
@@ -91,8 +92,11 @@ export async function submitContactForm(
       }
     }
 
+    const siteName = getSiteName()
+    const fromAddress = process.env.MAIL_FROM_ADDRESS ?? 'no-reply@example.com'
+
     const emailResult = await resend.emails.send({
-      from: `${validatedData.name} via ykzts.com <no-reply@ykzts.com>`,
+      from: `${validatedData.name} via ${siteName} <${fromAddress}>`,
       replyTo: `${validatedData.name} <${validatedData.email}>`,
       subject: `[お問い合わせ] ${validatedData.subject}`,
       text: validatedData.message,

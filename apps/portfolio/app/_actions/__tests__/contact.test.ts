@@ -3,6 +3,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 // Mock environment variables
 vi.stubEnv('RESEND_API_KEY', 'test_api_key')
 vi.stubEnv('TURNSTILE_SECRET_KEY', 'test_turnstile_key')
+vi.stubEnv('NEXT_PUBLIC_SITE_NAME', 'example.com')
+vi.stubEnv('MAIL_FROM_ADDRESS', 'no-reply@example.com')
 
 // Mock getProfile from Supabase
 vi.mock('@/lib/supabase', () => ({
@@ -105,7 +107,7 @@ describe('Contact form action', () => {
       expect(mockSend).toHaveBeenCalled()
     })
 
-    it('should format sender name with "via ykzts.com" suffix', async () => {
+    it('should format sender name with "via example.com" suffix', async () => {
       // Mock successful Turnstile verification
       ;(global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
         json: async () => ({ success: true })
@@ -132,7 +134,7 @@ describe('Contact form action', () => {
       // Verify mockSend was called with the correct format
       expect(mockSend).toHaveBeenCalledWith(
         expect.objectContaining({
-          from: 'Test User via ykzts.com <no-reply@ykzts.com>'
+          from: 'Test User via example.com <no-reply@example.com>'
         })
       )
     })
