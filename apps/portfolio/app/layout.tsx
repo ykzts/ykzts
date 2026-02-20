@@ -8,9 +8,15 @@ import SVGSymbols from './_components/svg-symbols'
 import ThemeProvider from './_components/theme-provider'
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_ORIGIN ?? 'https://example.com'
-  ),
+  metadataBase: (() => {
+    try {
+      return new URL(
+        process.env.NEXT_PUBLIC_SITE_ORIGIN ?? 'https://example.com'
+      )
+    } catch {
+      return new URL('https://example.com')
+    }
+  })(),
   other: {
     'fediverse:creator': 'ykzts@ykzts.technology',
     'Hatena::Bookmark': 'nocomment'

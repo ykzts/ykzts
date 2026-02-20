@@ -1,5 +1,16 @@
 import Html from './_components/html'
 
+function getSiteHost(): string {
+  try {
+    return new URL(process.env.NEXT_PUBLIC_SITE_ORIGIN ?? 'https://example.com')
+      .host
+  } catch {
+    return 'example.com'
+  }
+}
+
+const SITE_HOST = getSiteHost()
+
 const AVAILABLE_PACKAGES = [
   {
     githubBaseURL: 'https://github.com/ykzts/go-mirakurun',
@@ -23,7 +34,7 @@ export async function GET(
   const stream = await renderToReadableStream(
     <Html
       githubBaseURL={pkg.githubBaseURL}
-      packageName={`${new URL(process.env.NEXT_PUBLIC_SITE_ORIGIN ?? 'https://example.com').host}/x/${pkg.path}`}
+      packageName={`${SITE_HOST}/x/${pkg.path}`}
     />
   )
 
