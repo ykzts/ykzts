@@ -5,6 +5,12 @@ import { cacheTag } from 'next/cache'
 import { supabase, supabaseAdmin } from './client'
 
 function getClient(isDraft = false) {
+  if (isDraft && !supabaseAdmin) {
+    console.warn(
+      '[supabase] Draft mode is active but SUPABASE_SERVICE_ROLE_KEY is not set. ' +
+        'Draft posts will not be visible.'
+    )
+  }
   return isDraft ? (supabaseAdmin ?? supabase) : supabase
 }
 

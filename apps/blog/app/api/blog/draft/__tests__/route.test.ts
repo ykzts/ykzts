@@ -20,7 +20,8 @@ const mockSupabase = {
 }
 
 vi.mock('@/lib/supabase/client', () => ({
-  supabase: mockSupabase
+  supabase: mockSupabase,
+  supabaseAdmin: null
 }))
 
 describe('GET /api/blog/draft', () => {

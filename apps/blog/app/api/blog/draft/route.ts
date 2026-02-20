@@ -20,10 +20,6 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  // Enable draft mode
-  const draft = await draftMode()
-  draft.enable()
-
   // Use service role client to query draft posts (bypasses RLS)
   const client = supabaseAdmin ?? supabase
 
@@ -31,6 +27,10 @@ export async function GET(request: NextRequest) {
     // If Supabase is not configured, redirect to blog homepage
     return NextResponse.redirect(new URL('/blog', request.url))
   }
+
+  // Enable draft mode
+  const draft = await draftMode()
+  draft.enable()
 
   try {
     const { data: post } = await client
