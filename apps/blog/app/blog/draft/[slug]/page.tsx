@@ -35,6 +35,11 @@ export async function generateMetadata({
   params
 }: PageProps): Promise<Metadata> {
   const { slug } = await params
+
+  if (slug === '_placeholder') {
+    return { title: 'Not Found' }
+  }
+
   const draft = await draftMode()
 
   if (!draft.isEnabled) {
@@ -58,6 +63,11 @@ export async function generateMetadata({
 
 export default async function DraftPostPage({ params }: PageProps) {
   const { slug } = await params
+
+  if (slug === '_placeholder') {
+    notFound()
+  }
+
   const draft = await draftMode()
 
   // Draft posts are only accessible in draft mode
