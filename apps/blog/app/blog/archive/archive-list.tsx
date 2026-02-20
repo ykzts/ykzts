@@ -20,7 +20,7 @@ type Post = {
     id: string
     name: string
   } | null
-  published_at: string
+  published_at: string | null
   slug: string
   tags: string[] | null
   title: string

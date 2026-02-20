@@ -14,3 +14,16 @@ export function getDateBasedUrl(slug: string, publishedAt: string): Route {
 
   return `/blog/${year}/${month}/${day}/${slug}` as Route
 }
+
+/**
+ * Constructs a URL path for a blog post, handling draft posts with no published date.
+ * @param slug - The post slug
+ * @param publishedAt - ISO 8601 timestamp of when the post was published, or null for drafts
+ * @returns Date-based URL for published posts, or /blog/draft/slug for draft posts
+ */
+export function getPostUrl(slug: string, publishedAt: string | null): Route {
+  if (!publishedAt) {
+    return `/blog/draft/${slug}` as Route
+  }
+  return getDateBasedUrl(slug, publishedAt)
+}

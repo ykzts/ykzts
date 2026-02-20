@@ -1,10 +1,10 @@
-import { getDateBasedUrl } from '@/lib/blog-urls'
+import { getPostUrl } from '@/lib/blog-urls'
 import LinkButton from './link-button'
 
 type PostNavigationItem = {
   slug: string
   title: string
-  published_at: string
+  published_at: string | null
 }
 
 type PostNavigationProps = {
@@ -22,10 +22,10 @@ export default function PostNavigation({
   }
 
   const prevUrl = previousPost
-    ? getDateBasedUrl(previousPost.slug, previousPost.published_at)
+    ? getPostUrl(previousPost.slug, previousPost.published_at)
     : null
   const nextUrl = nextPost
-    ? getDateBasedUrl(nextPost.slug, nextPost.published_at)
+    ? getPostUrl(nextPost.slug, nextPost.published_at)
     : null
 
   return (

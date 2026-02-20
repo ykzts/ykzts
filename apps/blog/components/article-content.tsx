@@ -11,7 +11,7 @@ interface ArticleContentProps {
   content: PortableTextValue
   headings: Heading[]
   historyUrl?: Route
-  publishedAt: string
+  publishedAt: string | null
   tags?: string[] | null
   title: string
   versionDate?: string | null

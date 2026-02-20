@@ -7,7 +7,7 @@ interface ArticleHeaderProps {
   title: string
   authorName: string
   historyUrl?: Route
-  publishedAt: string
+  publishedAt: string | null
   versionDate?: string | null
   tags?: string[] | null
 }

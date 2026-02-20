@@ -8,7 +8,7 @@ import {
   CardTitle
 } from '@ykzts/ui/components/card'
 import Link from 'next/link'
-import { getDateBasedUrl } from '@/lib/blog-urls'
+import { getPostUrl } from '@/lib/blog-urls'
 import type { PortableTextValue } from '@/lib/portable-text'
 import DateDisplay from './date-display'
 import TagList from './tag-list'
@@ -19,7 +19,7 @@ type SimilarPost = {
   title: string
   excerpt: string | null
   content?: PortableTextValue | null
-  published_at: string
+  published_at: string | null
   tags: string[] | null
   similarity: number
 }
@@ -41,7 +41,7 @@ export default function SimilarPosts({ posts }: SimilarPostsProps) {
       </h2>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => {
-          const url = getDateBasedUrl(post.slug, post.published_at)
+          const url = getPostUrl(post.slug, post.published_at)
           const previewText =
             post.excerpt || extractFirstParagraph(post.content)
           return (

@@ -55,6 +55,11 @@ export async function GET(request: NextRequest) {
         new URL(`/blog/${year}/${month}/${day}/${slug}`, request.url)
       )
     }
+
+    if (post && !post.published_at) {
+      // Draft post with no published_at: redirect to draft route
+      return NextResponse.redirect(new URL(`/blog/draft/${slug}`, request.url))
+    }
   } catch (error) {
     console.error('Error fetching post for draft mode:', error)
   }
