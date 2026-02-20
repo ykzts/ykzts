@@ -33,11 +33,16 @@ export async function GET(request: NextRequest) {
   draft.enable()
 
   try {
-    const { data: post } = await client
+    const { data: post, error: postError } = await client
       .from('posts')
       .select('slug, published_at')
       .eq('slug', slug)
       .maybeSingle()
+
+    if (postError) {
+      console.error('Error fetching draft post:', postError.message)
+      return NextResponse.redirect(new URL('/blog', request.url))
+    }
 
     if (post?.published_at) {
       // Construct the full date-based URL

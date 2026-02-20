@@ -1,3 +1,5 @@
+import 'server-only'
+
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '@ykzts/supabase'
 
@@ -12,5 +14,11 @@ export const supabase =
 
 export const supabaseAdmin =
   supabaseUrl && supabaseServiceRoleKey
-    ? createClient<Database>(supabaseUrl, supabaseServiceRoleKey)
+    ? createClient<Database>(supabaseUrl, supabaseServiceRoleKey, {
+        auth: {
+          autoRefreshToken: false,
+          detectSessionInUrl: false,
+          persistSession: false
+        }
+      })
     : null
