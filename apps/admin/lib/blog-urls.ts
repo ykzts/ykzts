@@ -41,7 +41,10 @@ export function getBlogPostUrl(
     const month = String(date.getUTCMonth() + 1).padStart(2, '0')
     const day = String(date.getUTCDate()).padStart(2, '0')
 
-    return `${getSiteOrigin().origin}/blog/${year}/${month}/${day}/${safeSlug}`
+    return new URL(
+      `/blog/${year}/${month}/${day}/${safeSlug}`,
+      getSiteOrigin()
+    ).toString()
   } catch {
     return null
   }

@@ -1,8 +1,13 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createLegacyRedirects, legacyRedirects } from './redirects'
+
+afterEach(() => {
+  vi.unstubAllEnvs()
+})
 
 describe('createLegacyRedirects', () => {
   it('maps tuple redirects to permanent redirect objects', () => {
+    vi.stubEnv('NEXT_PUBLIC_SITE_ORIGIN', 'https://example.com')
     const redirects = createLegacyRedirects('https://example.com')
 
     expect(redirects).toHaveLength(legacyRedirects.length)
@@ -19,6 +24,7 @@ describe('createLegacyRedirects', () => {
   })
 
   it('normalizes trailing slash in baseUrl', () => {
+    vi.stubEnv('NEXT_PUBLIC_SITE_ORIGIN', 'https://example.com')
     const redirects = createLegacyRedirects('https://example.com/')
 
     expect(redirects[1]).toEqual({
@@ -29,6 +35,7 @@ describe('createLegacyRedirects', () => {
   })
 
   it('supports custom redirect tuples', () => {
+    vi.stubEnv('NEXT_PUBLIC_SITE_ORIGIN', 'https://example.com')
     const redirects = createLegacyRedirects('https://example.com', [
       ['/old', '/new']
     ])

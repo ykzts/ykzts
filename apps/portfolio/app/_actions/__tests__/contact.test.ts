@@ -3,6 +3,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 // Mock environment variables
 vi.stubEnv('RESEND_API_KEY', 'test_api_key')
 vi.stubEnv('TURNSTILE_SECRET_KEY', 'test_turnstile_key')
+vi.stubEnv('NEXT_PUBLIC_SITE_NAME', 'example.com')
+vi.stubEnv('MAIL_FROM_ADDRESS', 'no-reply@example.com')
 
 // Mock getProfile from Supabase
 vi.mock('@/lib/supabase', () => ({

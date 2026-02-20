@@ -1,7 +1,6 @@
+import { getSiteOrigin } from '@ykzts/site-config'
 import type { NextConfig } from 'next'
 import { createLegacyRedirects } from './redirects'
-
-const baseUrl = process.env.NEXT_PUBLIC_SITE_ORIGIN ?? 'https://example.com'
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
@@ -12,7 +11,7 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   reactStrictMode: true,
   redirects() {
-    return createLegacyRedirects(baseUrl)
+    return createLegacyRedirects(getSiteOrigin().origin)
   },
   typedRoutes: true
 }

@@ -1,4 +1,5 @@
 const FALLBACK_ORIGIN = 'https://example.com'
+const FALLBACK_NAME = 'example.com'
 
 /**
  * Returns the site origin as a URL object.
@@ -19,4 +20,12 @@ export function getSiteOrigin(): URL {
  */
 export function getSiteHost(): string {
   return getSiteOrigin().host
+}
+
+/**
+ * Returns the human-readable site/brand name.
+ * Reads `NEXT_PUBLIC_SITE_NAME` and falls back to `example.com` if absent.
+ */
+export function getSiteName(): string {
+  return process.env.NEXT_PUBLIC_SITE_NAME ?? FALLBACK_NAME
 }
