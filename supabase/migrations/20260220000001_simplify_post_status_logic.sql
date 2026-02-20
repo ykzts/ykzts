@@ -109,7 +109,6 @@ DECLARE
   v_db_published_at TIMESTAMPTZ;
   v_final_published_at TIMESTAMPTZ;
   v_final_status TEXT;
-  v_resolved_published_at TIMESTAMPTZ;
   v_version_date TIMESTAMPTZ;
   v_current_content JSONB;
 BEGIN
@@ -149,23 +148,26 @@ BEGIN
 
   -- Determine final status and published_at
   IF p_status IS NULL THEN
-    -- No status change requested: keep current status and published_at
+    -- No status change requested: preserve current status and published_at.
+    -- Used by rollbackToVersion() which omits both p_status and p_published_at
+    -- intentionally so that only content/metadata is restored.
     v_final_status := v_current_status;
     v_final_published_at := COALESCE(p_published_at, v_db_published_at);
   ELSIF p_status = 'draft' THEN
     v_final_status := 'draft';
     v_final_published_at := COALESCE(p_published_at, v_db_published_at);
   ELSE
-    -- p_status = 'published': determine actual status based on published_at
-    v_resolved_published_at := COALESCE(p_published_at, v_db_published_at);
-    IF v_resolved_published_at IS NULL THEN
+    -- p_status = 'published': determine actual status based on p_published_at.
+    -- NULL p_published_at means "publish immediately" (do not fall back to the
+    -- existing DB value, because the UI caller explicitly cleared the date).
+    IF p_published_at IS NULL THEN
       v_final_published_at := CURRENT_TIMESTAMP;
       v_final_status := 'published';
-    ELSIF v_resolved_published_at > CURRENT_TIMESTAMP THEN
-      v_final_published_at := v_resolved_published_at;
+    ELSIF p_published_at > CURRENT_TIMESTAMP THEN
+      v_final_published_at := p_published_at;
       v_final_status := 'scheduled';
     ELSE
-      v_final_published_at := v_resolved_published_at;
+      v_final_published_at := p_published_at;
       v_final_status := 'published';
     END IF;
   END IF;
