@@ -23,7 +23,7 @@ export async function GET(
   const stream = await renderToReadableStream(
     <Html
       githubBaseURL={pkg.githubBaseURL}
-      packageName={`${process.env.NEXT_PUBLIC_SITE_NAME ?? 'example.com'}/x/${pkg.path}`}
+      packageName={`${new URL(process.env.NEXT_PUBLIC_SITE_ORIGIN ?? 'https://example.com').host}/x/${pkg.path}`}
     />
   )
 
