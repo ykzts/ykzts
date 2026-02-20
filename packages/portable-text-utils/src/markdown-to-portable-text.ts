@@ -6,7 +6,7 @@ export type MarkdownPostParseResult = {
 }
 
 type PortableTextCodeBlock = {
-  _key: string
+  _key?: string
   _type: 'code'
   language?: string
   code?: string
@@ -87,6 +87,7 @@ export function parseMarkdownForPost(
     console.error(
       `Failed to convert Markdown to Portable Text: ${errorMessage}`
     )
+    throw error
   }
 
   let title = ''

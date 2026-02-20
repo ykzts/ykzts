@@ -40,7 +40,7 @@ describe('parseMarkdownForPost', () => {
     expect(codeBlock).toBeDefined()
     expect(codeBlock._type).toBe('block')
     expect(codeBlock.language).toBe('javascript')
-    expect(codeBlock.children[0].text).toContain('console.log')
+    expect(codeBlock.children?.[0]?.text).toContain('console.log')
   })
 
   it('should handle markdown with no content after title', () => {
@@ -79,7 +79,7 @@ describe('parseMarkdownForPost', () => {
     const blocks = JSON.parse(contentJson)
     const h2Block = blocks.find((b: { style?: string }) => b.style === 'h2')
     expect(h2Block).toBeDefined()
-    expect(h2Block.children[0].text).toBe('Section')
+    expect(h2Block.children?.[0]?.text).toBe('Section')
   })
 
   it('should only extract the first h1 heading as title', () => {
