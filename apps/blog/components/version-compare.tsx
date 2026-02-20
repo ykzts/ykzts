@@ -6,7 +6,7 @@ import DateDisplay from './date-display'
 type Version = {
   change_summary: string | null
   id: string
-  plainText: string
+  markdownText: string
   version_date: string
   version_number: number
 }
@@ -119,7 +119,7 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
             vA.version_number < vB.version_number ? [vA, vB] : [vB, vA]
 
           return {
-            diff: computeDiff(older.plainText, newer.plainText),
+            diff: computeDiff(older.markdownText, newer.markdownText),
             newerVersion: newer,
             olderVersion: older
           }

@@ -1,3 +1,4 @@
+import { portableTextToMarkdown } from '@ykzts/portable-text-utils'
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import Link from 'next/link'
@@ -8,7 +9,6 @@ import LinkButton from '@/components/link-button'
 import VersionCompare from '@/components/version-compare'
 import { getDateBasedUrl } from '@/lib/blog-urls'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
-import { portableTextToPlainText } from '@/lib/portable-text'
 import {
   getAllPosts,
   getPostBySlug,
@@ -96,7 +96,7 @@ export default async function PostHistoryPage({ params }: PageProps) {
   const versionsWithText = versions.map((version) => ({
     change_summary: version.change_summary,
     id: version.id,
-    plainText: portableTextToPlainText(
+    markdownText: portableTextToMarkdown(
       version.content as unknown[] | null | undefined
     ),
     version_date: version.version_date,

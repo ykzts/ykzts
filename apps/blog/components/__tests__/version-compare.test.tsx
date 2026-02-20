@@ -7,21 +7,21 @@ const versions = [
   {
     change_summary: 'Updated introduction',
     id: 'v3',
-    plainText: 'Line one\nLine two\nLine three new',
+    markdownText: 'Line one\nLine two\nLine three new',
     version_date: '2024-03-01T00:00:00Z',
     version_number: 3
   },
   {
     change_summary: null,
     id: 'v2',
-    plainText: 'Line one\nLine two\nLine three old',
+    markdownText: 'Line one\nLine two\nLine three old',
     version_date: '2024-02-01T00:00:00Z',
     version_number: 2
   },
   {
     change_summary: 'Initial version',
     id: 'v1',
-    plainText: 'Line one\nLine two',
+    markdownText: 'Line one\nLine two',
     version_date: '2024-01-01T00:00:00Z',
     version_number: 1
   }
