@@ -115,6 +115,10 @@ BEGIN
       WHERE post_id = p_post_id AND id = (
         SELECT current_version_id FROM posts WHERE id = p_post_id
       );
+
+      IF v_current_content IS NULL THEN
+        RAISE EXCEPTION 'Content is required when no existing version is found';
+      END IF;
     ELSE
       v_current_content := p_content;
     END IF;
