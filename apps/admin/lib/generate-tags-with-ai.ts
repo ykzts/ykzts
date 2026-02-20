@@ -1,8 +1,19 @@
 'use server'
 
 import type { Json } from '@ykzts/supabase'
-import { generateText } from 'ai'
+import { generateText, Output } from 'ai'
+import { z } from 'zod'
 import { portableTextToMarkdown } from './portable-text-to-markdown'
+
+const tagsSchema = z.object({
+  tags: z
+    .array(z.string())
+    .min(3)
+    .max(5)
+    .describe(
+      'List of 3 to 5 lowercase English tags that describe the post content'
+    )
+})
 
 /**
  * Generate tag suggestions for a post using AI
@@ -29,42 +40,24 @@ export async function generateTagsWithAI(params: {
 
   const existingTagsSection =
     existingTags.length > 0
-      ? `\n\n既存のタグ（類似のものがあれば優先して使用してください）:\n${existingTags.join(', ')}`
+      ? `\n\nExisting tags (prefer reusing similar ones): ${existingTags.join(', ')}`
       : ''
 
   const result = await generateText({
     messages: [
       {
         content:
-          'あなたはブログ記事のタグ生成AIです。タイトルと本文を分析し、3〜5個のタグをJSON配列形式のみで返してください。既存のタグと類似したものがあれば、それを優先してください。タグは簡潔で記事の内容を適切に表すものにしてください。必ずJSON配列のみを返してください。例: ["JavaScript", "React", "TypeScript"]',
+          'You are a blog post tag generator. Analyze the title and content and suggest 3 to 5 tags. Tags must be lowercase English words or hyphenated phrases (e.g. "javascript", "react", "web-development"). If existing tags are provided, reuse them when they closely match the content.',
         role: 'system'
       },
       {
-        content: `タイトル: ${title}\n\n本文: ${truncatedContent}${existingTagsSection}`,
+        content: `Title: ${title}\n\nContent: ${truncatedContent}${existingTagsSection}`,
         role: 'user'
       }
     ],
-    model: 'openai/gpt-4o-mini'
+    model: 'openai/gpt-4o-mini',
+    output: Output.object({ schema: tagsSchema })
   })
 
-  try {
-    const parsed = JSON.parse(result.text.trim()) as unknown
-    if (
-      Array.isArray(parsed) &&
-      parsed.every((tag) => typeof tag === 'string')
-    ) {
-      return (parsed as string[]).slice(0, 5)
-    }
-    console.error(
-      'AI tag response is not a valid string array. Received:',
-      result.text
-    )
-  } catch {
-    console.error(
-      'Failed to parse AI tag response as JSON array. Received:',
-      result.text
-    )
-  }
-
-  return []
+  return result.output.tags
 }
