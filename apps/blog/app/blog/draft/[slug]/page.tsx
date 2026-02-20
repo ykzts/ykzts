@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
