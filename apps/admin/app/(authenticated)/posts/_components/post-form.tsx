@@ -54,6 +54,7 @@ type ActionState = {
 
 type PostFormProps = {
   post?: PostWithDetails
+  draftSecret?: string | null
   createAction?: (
     prevState: ActionState,
     formData: FormData
@@ -67,6 +68,7 @@ type PostFormProps = {
 
 export function PostForm({
   post,
+  draftSecret,
   createAction,
   updateAction,
   deleteAction
@@ -468,6 +470,7 @@ export function PostForm({
             {/* Public URL - Only show in edit mode */}
             {isEditMode && (
               <PublicUrlField
+                draftSecret={draftSecret}
                 publishedAt={publishedAtValue}
                 slug={slugValue}
                 status={statusValue}

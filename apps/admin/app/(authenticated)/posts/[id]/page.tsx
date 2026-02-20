@@ -18,10 +18,13 @@ async function PostEditContent({ id }: { id: string }) {
     notFound()
   }
 
+  const draftSecret = process.env.DRAFT_SECRET ?? null
+
   return (
     <Panel>
       <PostForm
         deleteAction={deletePostAction}
+        draftSecret={draftSecret}
         post={post}
         updateAction={updatePostAction}
       />

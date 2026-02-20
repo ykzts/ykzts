@@ -12,6 +12,31 @@ function sanitizeSlugForUrl(slug: string): string | null {
 }
 
 /**
+ * Constructs a draft preview URL for a blog post.
+ * @param slug - The post slug
+ * @param draftSecret - The draft mode secret token
+ * @returns Full URL to the draft preview endpoint (returns null if inputs are invalid)
+ */
+export function getDraftPreviewUrl(
+  slug: string,
+  draftSecret: string
+): string | null {
+  const trimmed = slug.trim()
+  if (!trimmed || !draftSecret) {
+    return null
+  }
+
+  try {
+    const url = new URL('/api/blog/draft', getSiteOrigin())
+    url.searchParams.set('secret', draftSecret)
+    url.searchParams.set('slug', trimmed)
+    return url.toString()
+  } catch {
+    return null
+  }
+}
+
+/**
  * Constructs a date-based URL for a blog post.
  * @param slug - The post slug
  * @param publishedAt - ISO 8601 timestamp of when the post was published

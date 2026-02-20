@@ -11,18 +11,20 @@ import {
 import { Check, Copy, ExternalLink } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
-import { getBlogPostUrl } from '@/lib/blog-urls'
+import { getBlogPostUrl, getDraftPreviewUrl } from '@/lib/blog-urls'
 
 type PublicUrlFieldProps = {
   slug: string | null
   publishedAt: string | null
   status: 'draft' | 'scheduled' | 'published'
+  draftSecret?: string | null
 }
 
 export function PublicUrlField({
   slug,
   publishedAt,
-  status
+  status,
+  draftSecret
 }: PublicUrlFieldProps) {
   const [copied, setCopied] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -46,8 +48,12 @@ export function PublicUrlField({
   }
 
   const url = getBlogPostUrl(slug, publishedAt)
+  const draftPreviewUrl =
+    !url && status === 'draft' && slug && draftSecret
+      ? getDraftPreviewUrl(slug, draftSecret)
+      : null
 
-  if (!url) {
+  if (!url && !draftPreviewUrl) {
     return (
       <Field>
         <FieldLabel>公開URL</FieldLabel>
@@ -61,12 +67,14 @@ export function PublicUrlField({
     )
   }
 
+  const displayUrl = (url ?? draftPreviewUrl) as string
+
   const handleCopy = async (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
 
     try {
-      await navigator.clipboard.writeText(url)
+      await navigator.clipboard.writeText(displayUrl)
       setCopied(true)
       toast.success('URLをコピーしました')
 
@@ -83,7 +91,7 @@ export function PublicUrlField({
   const handleOpenInNewTab = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    window.open(url, '_blank', 'noopener,noreferrer')
+    window.open(displayUrl, '_blank', 'noopener,noreferrer')
   }
 
   return (
@@ -94,7 +102,7 @@ export function PublicUrlField({
           onClick={(e) => e.currentTarget.select()}
           readOnly
           type="text"
-          value={url}
+          value={displayUrl}
         />
         <InputGroupAddon align="inline-end">
           <InputGroupButton
@@ -118,9 +126,11 @@ export function PublicUrlField({
         </InputGroupAddon>
       </InputGroup>
       <FieldDescription>
-        {status === 'scheduled'
-          ? '予約公開のURL（指定日時に自動公開されます）'
-          : 'この投稿の公開URL'}
+        {draftPreviewUrl
+          ? 'ドラフトプレビュー用のURL（公開前の確認に使用）'
+          : status === 'scheduled'
+            ? '予約公開のURL（指定日時に自動公開されます）'
+            : 'この投稿の公開URL'}
       </FieldDescription>
     </Field>
   )
