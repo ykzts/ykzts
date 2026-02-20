@@ -728,3 +728,33 @@ export async function getPostCountByYear(year: number, isDraft = false) {
 }
 
 export { POSTS_PER_PAGE }
+
+export async function getPostVersions(postId: string) {
+  cacheTag('posts')
+
+  if (!supabase) {
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from('post_versions')
+    .select(
+      `
+      id,
+      version_number,
+      version_date,
+      change_summary,
+      title
+    `
+    )
+    .eq('post_id', postId)
+    .order('version_number', { ascending: false })
+
+  if (error) {
+    throw new Error(
+      `Failed to fetch post versions for post ${postId}: ${error.message}`
+    )
+  }
+
+  return data
+}
