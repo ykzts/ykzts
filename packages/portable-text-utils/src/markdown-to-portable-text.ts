@@ -12,9 +12,16 @@ type PortableTextCodeBlock = {
   code?: string
 }
 
+type PortableTextSpan = {
+  _type: 'span'
+  text?: string
+}
+
 type PortableTextBlock = {
   _key?: string
   _type: string
+  style?: string
+  children?: PortableTextSpan[]
   [key: string]: unknown
 }
 
@@ -51,45 +58,57 @@ function transformBlock(block: PortableTextBlock): PortableTextBlock {
 }
 
 /**
+ * Extract plain text from a Portable Text block's span children.
+ */
+function extractBlockText(block: PortableTextBlock): string {
+  if (!Array.isArray(block.children)) {
+    return ''
+  }
+  return block.children
+    .map((span) => (span._type === 'span' ? (span.text ?? '') : ''))
+    .join('')
+}
+
+/**
  * Parse a markdown string and extract the title and body content.
- * The first `# Heading` line is extracted as the title.
- * The remaining content is converted to Portable Text JSON string.
+ * Converts the entire markdown to Portable Text first, then extracts the
+ * first h1 block as the title and returns the remaining blocks as body content.
  */
 export function parseMarkdownForPost(
   markdown: string
 ): MarkdownPostParseResult {
-  const lines = markdown.split('\n')
-  let title = ''
-  let titleIndex = -1
-
-  for (let i = 0; i < lines.length; i++) {
-    const match = lines[i].match(/^#\s+(.+)$/)
-    if (match) {
-      title = match[1].trim()
-      titleIndex = i
-      break
-    }
-  }
-
-  const bodyLines =
-    titleIndex >= 0
-      ? [...lines.slice(0, titleIndex), ...lines.slice(titleIndex + 1)]
-      : lines
-
-  const bodyMarkdown = bodyLines.join('\n').trim()
-
-  let portableText: PortableTextBlock[] = []
+  let allBlocks: PortableTextBlock[] = []
   try {
-    const converted = convertFromMarkdown(bodyMarkdown)
-    portableText = converted.map((block) =>
-      transformBlock(block as PortableTextBlock)
-    )
+    const converted = convertFromMarkdown(markdown)
+    allBlocks = converted as PortableTextBlock[]
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error)
     console.error(
       `Failed to convert Markdown to Portable Text: ${errorMessage}`
     )
   }
+
+  let title = ''
+  let titleBlockIndex = -1
+
+  for (let i = 0; i < allBlocks.length; i++) {
+    const block = allBlocks[i]
+    if (block._type === 'block' && block.style === 'h1') {
+      title = extractBlockText(block)
+      titleBlockIndex = i
+      break
+    }
+  }
+
+  const bodyBlocks =
+    titleBlockIndex >= 0
+      ? [
+          ...allBlocks.slice(0, titleBlockIndex),
+          ...allBlocks.slice(titleBlockIndex + 1)
+        ]
+      : allBlocks
+
+  const portableText = bodyBlocks.map(transformBlock)
 
   return {
     contentJson: JSON.stringify(portableText),
