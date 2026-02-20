@@ -3,8 +3,6 @@ import { getSiteName, getSiteOrigin } from '@ykzts/site-config'
 import { getPostsForLlms, getWorks } from '@/lib/supabase'
 
 export async function GET() {
-  'use cache'
-
   const [works, posts] = await Promise.all([getWorks(), getPostsForLlms()])
 
   const siteOrigin = getSiteOrigin()
