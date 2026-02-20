@@ -7,7 +7,19 @@ import { portableTextToMarkdown } from './portable-text-to-markdown'
 
 const tagsSchema = z.object({
   tags: z
-    .array(z.string())
+    .string()
+    .trim()
+    .toLowerCase()
+    .transform((val) => val.replaceAll(/\s+/g, '-'))
+    .pipe(
+      z
+        .string()
+        .regex(
+          /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
+          'Tag must be lowercase alphanumeric with hyphens, starting and ending with alphanumeric'
+        )
+    )
+    .array()
     .min(3)
     .max(5)
     .describe(
