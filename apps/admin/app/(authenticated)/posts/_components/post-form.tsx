@@ -30,9 +30,22 @@ import { PublicUrlField } from './public-url-field'
 
 const POST_STATUSES = [
   { label: '下書き', value: 'draft' },
-  { label: '予約公開', value: 'scheduled' },
   { label: '公開', value: 'published' }
 ] as const
+
+function formatPublishedAt(dateString: string): string {
+  try {
+    return new Intl.DateTimeFormat('ja-JP', {
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      month: 'numeric',
+      year: 'numeric'
+    }).format(new Date(dateString))
+  } catch {
+    return dateString
+  }
+}
 
 type ActionState = {
   error?: string
@@ -79,9 +92,11 @@ export function PostForm({
   )
   const [isGeneratingSlug, setIsGeneratingSlug] = useState(false)
   const [slugValue, setSlugValue] = useState(post?.slug || '')
-  const [statusValue, setStatusValue] = useState<
-    'draft' | 'scheduled' | 'published'
-  >((post?.status as 'draft' | 'scheduled' | 'published') || 'draft')
+  const [statusValue, setStatusValue] = useState<'draft' | 'published'>(
+    post?.status === 'published' || post?.status === 'scheduled'
+      ? 'published'
+      : 'draft'
+  )
   const [publishedAtValue, setPublishedAtValue] = useState<string | null>(
     post?.published_at || null
   )
@@ -367,15 +382,17 @@ export function PostForm({
             <Field>
               <FieldLabel htmlFor="status">ステータス</FieldLabel>
               <Select
-                defaultValue={post?.status || 'draft'}
+                defaultValue={
+                  post?.status === 'published' || post?.status === 'scheduled'
+                    ? 'published'
+                    : 'draft'
+                }
                 items={POST_STATUSES}
                 name="status"
                 onValueChange={(value) => {
-                  const newStatus = value as 'draft' | 'scheduled' | 'published'
+                  const newStatus = value as 'draft' | 'published'
                   setStatusValue(newStatus)
-                  setShowPublishedAt(
-                    newStatus === 'scheduled' || newStatus === 'published'
-                  )
+                  setShowPublishedAt(newStatus === 'published')
                 }}
               >
                 <SelectTrigger className="w-full" id="status">
@@ -437,6 +454,15 @@ export function PostForm({
                   指定した日時に自動公開されます
                 </FieldDescription>
               </Field>
+            )}
+
+            {/* Publication status message */}
+            {statusValue === 'published' && (
+              <p className="text-muted-foreground text-sm">
+                {publishedAtValue && new Date(publishedAtValue) > new Date()
+                  ? `この投稿は ${formatPublishedAt(publishedAtValue)} に自動公開されます`
+                  : 'この投稿はすぐに公開されます'}
+              </p>
             )}
 
             {/* Public URL - Only show in edit mode */}

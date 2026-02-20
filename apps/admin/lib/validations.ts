@@ -22,7 +22,7 @@ export const postSchema = z.object({
     .trim()
     .min(1, 'スラッグは必須です')
     .max(256, 'スラッグは256文字以内で入力してください'),
-  status: z.enum(['draft', 'scheduled', 'published']).optional(),
+  status: z.enum(['draft', 'published']).optional(),
   tags: z.string().optional(),
   title: z
     .string()
