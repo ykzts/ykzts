@@ -9,28 +9,28 @@ import {
   DialogHeader,
   DialogTitle
 } from '@ykzts/ui/components/dialog'
+import { Field, FieldDescription, FieldLabel } from '@ykzts/ui/components/field'
 import { Input } from '@ykzts/ui/components/input'
-import { Label } from '@ykzts/ui/components/label'
 import type { FormEvent } from 'react'
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { validateUrl } from './link-plugin'
 
 interface LinkDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  onConfirm: (url: string) => void
+  onConfirm: (url: string, title: string) => void
 }
 
 export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
   const [url, setUrl] = useState('')
+  const [title, setTitle] = useState('')
   const [error, setError] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
-  const inputId = useId()
-  const errorId = useId()
 
   useEffect(() => {
     if (open) {
       setUrl('')
+      setTitle('')
       setError('')
       requestAnimationFrame(() => {
         inputRef.current?.focus()
@@ -51,7 +51,7 @@ export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
       return
     }
 
-    onConfirm(url)
+    onConfirm(url, title)
     onOpenChange(false)
   }
 
@@ -65,33 +65,54 @@ export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
         <form noValidate onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>リンクを挿入</DialogTitle>
-            <DialogDescription>リンクのURLを入力してください</DialogDescription>
+            <DialogDescription>
+              リンクのURLとtitle属性を入力してください
+            </DialogDescription>
           </DialogHeader>
 
-          <div className="py-4">
-            <Label htmlFor={inputId}>URL</Label>
-            <Input
-              aria-describedby={error ? errorId : undefined}
-              aria-invalid={!!error}
-              id={inputId}
-              onChange={(e) => {
-                setUrl(e.target.value)
-                setError('')
-              }}
-              placeholder="https://example.com"
-              ref={inputRef}
-              type="url"
-              value={url}
-            />
-            {error && (
-              <p
-                className="mt-1 text-destructive text-sm"
-                id={errorId}
-                role="alert"
-              >
-                {error}
-              </p>
-            )}
+          <div className="flex flex-col gap-4 py-4">
+            <Field>
+              <FieldLabel htmlFor="link-url-input">URL</FieldLabel>
+              <Input
+                aria-describedby={error ? 'link-url-error' : undefined}
+                aria-invalid={!!error}
+                id="link-url-input"
+                onChange={(e) => {
+                  setUrl(e.target.value)
+                  setError('')
+                }}
+                placeholder="https://example.com"
+                ref={inputRef}
+                type="url"
+                value={url}
+              />
+              {error && (
+                <FieldDescription
+                  className="text-destructive"
+                  id="link-url-error"
+                  role="alert"
+                >
+                  {error}
+                </FieldDescription>
+              )}
+            </Field>
+
+            <Field>
+              <FieldLabel htmlFor="link-title-input">
+                title属性（任意）
+              </FieldLabel>
+              <Input
+                aria-describedby="link-title-description"
+                id="link-title-input"
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="リンクのタイトル"
+                type="text"
+                value={title}
+              />
+              <FieldDescription id="link-title-description">
+                ツールチップやスクリーンリーダーで使用されます
+              </FieldDescription>
+            </Field>
           </div>
 
           <DialogFooter>
