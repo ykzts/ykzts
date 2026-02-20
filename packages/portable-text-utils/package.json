@@ -9,6 +9,7 @@
   },
   "scripts": {},
   "dependencies": {
+    "@portabletext/markdown": "1.1.2",
     "@portabletext/to-html": "5.0.1"
   },
   "devDependencies": {

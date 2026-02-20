@@ -65,6 +65,9 @@ importers:
       '@ykzts/pagination-utils':
         specifier: workspace:*
         version: link:../../packages/pagination-utils
+      '@ykzts/portable-text-utils':
+        specifier: workspace:*
+        version: link:../../packages/portable-text-utils
       '@ykzts/site-config':
         specifier: workspace:*
         version: link:../../packages/site-config
@@ -444,6 +447,9 @@ importers:
 
   packages/portable-text-utils:
     dependencies:
+      '@portabletext/markdown':
+        specifier: 1.1.2
+        version: 1.1.2
       '@portabletext/to-html':
         specifier: 5.0.1
         version: 5.0.1

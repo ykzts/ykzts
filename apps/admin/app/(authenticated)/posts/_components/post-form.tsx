@@ -1,5 +1,6 @@
 'use client'
 
+import { parseMarkdownForPost } from '@ykzts/portable-text-utils'
 import { Button } from '@ykzts/ui/components/button'
 import { Field, FieldDescription, FieldLabel } from '@ykzts/ui/components/field'
 import { Input } from '@ykzts/ui/components/input'
@@ -17,8 +18,10 @@ import {
   SelectValue
 } from '@ykzts/ui/components/select'
 import { Textarea } from '@ykzts/ui/components/textarea'
+import { Clipboard } from 'lucide-react'
 import Link from 'next/link'
 import { useActionState, useState } from 'react'
+import { toast } from 'sonner'
 import { RichTextEditor } from '@/components/portable-text-editor'
 import type { PostWithDetails } from '@/lib/posts'
 import { generateSlugSmart, generateUniqueSlugForPost } from '@/lib/slug'
@@ -82,6 +85,43 @@ export function PostForm({
   const [publishedAtValue, setPublishedAtValue] = useState<string | null>(
     post?.published_at || null
   )
+  const [titleValue, setTitleValue] = useState(post?.title || '')
+  const [editorKey, setEditorKey] = useState(0)
+  const [isLoadingClipboard, setIsLoadingClipboard] = useState(false)
+
+  const initialContent = post?.current_version?.content
+    ? JSON.stringify(post.current_version.content)
+    : undefined
+  const [editorContent, setEditorContent] = useState<string | undefined>(
+    initialContent
+  )
+
+  const handleLoadFromClipboard = async () => {
+    setIsLoadingClipboard(true)
+    try {
+      const text = await navigator.clipboard.readText()
+      if (!text.trim()) {
+        toast.error('クリップボードにテキストがありません')
+        return
+      }
+      const { title, contentJson } = parseMarkdownForPost(text)
+      if (title) {
+        setTitleValue(title)
+      }
+      setEditorContent(contentJson)
+      setEditorKey((prev) => prev + 1)
+      toast.success('クリップボードから読み込みました')
+    } catch (error) {
+      console.error('Failed to read from clipboard:', error)
+      if (error instanceof DOMException && error.name === 'NotAllowedError') {
+        toast.error('クリップボードへのアクセスが拒否されました')
+      } else {
+        toast.error('クリップボードの読み込みに失敗しました')
+      }
+    } finally {
+      setIsLoadingClipboard(false)
+    }
+  }
 
   const handleDelete = async () => {
     if (!deleteAction || !post) return
@@ -166,10 +206,6 @@ export function PostForm({
     }
   }
 
-  const initialContent = post?.current_version?.content
-    ? JSON.stringify(post.current_version.content)
-    : undefined
-
   return (
     <div>
       <form action={submitAction} className="space-y-6">
@@ -198,23 +234,40 @@ export function PostForm({
                 タイトル <span className="text-error">*</span>
               </FieldLabel>
               <Input
-                defaultValue={post?.title || ''}
                 id="title"
                 maxLength={256}
                 name="title"
+                onChange={(e) => setTitleValue(e.target.value)}
                 placeholder="投稿のタイトルを入力"
                 required
                 type="text"
+                value={titleValue}
               />
               <FieldDescription>必須、256文字以内</FieldDescription>
             </Field>
 
             {/* Content */}
             <Field>
-              <FieldLabel htmlFor="content">コンテンツ</FieldLabel>
+              <div className="flex items-center justify-between">
+                <FieldLabel htmlFor="content">コンテンツ</FieldLabel>
+                <Button
+                  aria-label="クリップボードからマークダウンを読み込む"
+                  disabled={isLoadingClipboard}
+                  onClick={handleLoadFromClipboard}
+                  size="sm"
+                  type="button"
+                  variant="outline"
+                >
+                  <Clipboard className="h-4 w-4" />
+                  {isLoadingClipboard
+                    ? '読み込み中...'
+                    : 'クリップボードから読み込む'}
+                </Button>
+              </div>
               <RichTextEditor
                 id="content"
-                initialValue={initialContent}
+                initialValue={editorContent}
+                key={editorKey}
                 name="content"
                 placeholder="投稿の本文を入力..."
               />
