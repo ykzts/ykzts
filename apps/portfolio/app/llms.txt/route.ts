@@ -1,5 +1,6 @@
 import { extractFirstParagraph } from '@ykzts/portable-text-utils'
 import { getSiteName, getSiteOrigin } from '@ykzts/site-config'
+import { buildPostUrl } from '@/lib/llms'
 import { getPostsForLlms, getWorks } from '@/lib/supabase'
 
 export async function GET() {
@@ -29,14 +30,7 @@ export async function GET() {
   lines.push('', '## Articles', '')
 
   for (const post of posts) {
-    const publishedDate = new Date(post.published_at)
-    const year = String(publishedDate.getUTCFullYear())
-    const month = String(publishedDate.getUTCMonth() + 1).padStart(2, '0')
-    const day = String(publishedDate.getUTCDate()).padStart(2, '0')
-    const url = new URL(
-      `/blog/${year}/${month}/${day}/${encodeURIComponent(post.slug)}`,
-      siteOrigin
-    ).toString()
+    const url = buildPostUrl(post.slug, post.published_at)
     const suffix = post.excerpt ? `: ${post.excerpt}` : ''
     lines.push(`- [${post.title}](${url})${suffix}`)
   }

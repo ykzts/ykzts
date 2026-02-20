@@ -64,9 +64,7 @@ export async function getWorks() {
   cacheTag('works')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    return []
   }
 
   const { data, error } = await supabase
@@ -97,8 +95,9 @@ export async function getPostsForLlms() {
     .from('posts')
     .select('slug, title, excerpt, published_at')
     .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
     .not('slug', 'is', null)
+    .not('title', 'is', null)
+    .not('published_at', 'is', null)
     .order('published_at', { ascending: false })
 
   if (error) {
@@ -136,8 +135,9 @@ export async function getPostsForLlmsFull() {
     `
     )
     .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
     .not('slug', 'is', null)
+    .not('title', 'is', null)
+    .not('published_at', 'is', null)
     .order('published_at', { ascending: false })
 
   if (error) {
