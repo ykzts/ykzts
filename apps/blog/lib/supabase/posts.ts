@@ -2,7 +2,11 @@
 
 import type { PortableTextBlock } from '@portabletext/types'
 import { cacheTag } from 'next/cache'
-import { supabase } from './client'
+import { supabase, supabaseAdmin } from './client'
+
+function getClient(isDraft = false) {
+  return isDraft ? (supabaseAdmin ?? supabase) : supabase
+}
 
 const POSTS_PER_PAGE = 10
 
@@ -46,7 +50,9 @@ function extractVersionDate(currentVersion: unknown): string | null {
 export async function getPosts(page = 1, isDraft = false) {
   cacheTag('posts')
 
-  if (!supabase) {
+  const client = getClient(isDraft)
+
+  if (!client) {
     // Return empty array when Supabase is not configured (e.g., during build without env vars)
     return []
   }
@@ -57,7 +63,7 @@ export async function getPosts(page = 1, isDraft = false) {
       : 1
   const offset = (safePage - 1) * POSTS_PER_PAGE
 
-  let query = supabase.from('posts').select(
+  let query = client.from('posts').select(
     `
       id,
       slug,
@@ -110,12 +116,14 @@ export async function getPosts(page = 1, isDraft = false) {
 export async function getPostBySlug(slug: string, isDraft = false) {
   cacheTag('posts')
 
-  if (!supabase) {
+  const client = getClient(isDraft)
+
+  if (!client) {
     // Return null when Supabase is not configured (e.g., during build without env vars)
     return null
   }
 
-  let query = supabase
+  let query = client
     .from('posts')
     .select(
       `
@@ -173,7 +181,9 @@ export async function getPostBySlug(slug: string, isDraft = false) {
 export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
   cacheTag('posts')
 
-  if (!supabase) {
+  const client = getClient(isDraft)
+
+  if (!client) {
     // Return empty array when Supabase is not configured (e.g., during build without env vars)
     return []
   }
@@ -184,7 +194,7 @@ export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
       : 1
   const offset = (safePage - 1) * POSTS_PER_PAGE
 
-  let query = supabase
+  let query = client
     .from('posts')
     .select(
       `
@@ -344,12 +354,14 @@ export async function getPostsForFeed(limit = 20) {
 export async function getTotalPostCount(isDraft = false) {
   cacheTag('posts')
 
-  if (!supabase) {
+  const client = getClient(isDraft)
+
+  if (!client) {
     // Return 0 when Supabase is not configured (e.g., during build without env vars)
     return 0
   }
 
-  let query = supabase.from('posts').select('*', { count: 'exact', head: true })
+  let query = client.from('posts').select('*', { count: 'exact', head: true })
 
   // In draft mode, count all posts
   // In normal mode, only count published posts that are not in the future
@@ -376,12 +388,14 @@ export async function getTotalPages(isDraft = false) {
 export async function getPostCountByTag(tag: string, isDraft = false) {
   cacheTag('posts')
 
-  if (!supabase) {
+  const client = getClient(isDraft)
+
+  if (!client) {
     // Return 0 when Supabase is not configured (e.g., during build without env vars)
     return 0
   }
 
-  let query = supabase
+  let query = client
     .from('posts')
     .select('*', { count: 'exact', head: true })
     .contains('tags', [tag])
@@ -498,12 +512,14 @@ export async function getSimilarPosts(
 export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
   cacheTag('posts')
 
-  if (!supabase) {
+  const client = getClient(isDraft)
+
+  if (!client) {
     return { nextPost: null, previousPost: null }
   }
 
   // First, get only the published_at date of the current post (lightweight query)
-  let currentQuery = supabase
+  let currentQuery = client
     .from('posts')
     .select('published_at')
     .eq('slug', currentSlug)
@@ -529,8 +545,7 @@ export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
 
   // Build base filters (apply same filters as getPostBySlug)
   const buildQuery = () => {
-    // biome-ignore lint/style/noNonNullAssertion: supabase is guaranteed to be non-null at this point (checked at function start)
-    let query = supabase!.from('posts').select(
+    let query = client.from('posts').select(
       `
       slug,
       title,
@@ -597,11 +612,13 @@ export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
 export async function getLatestPostDate(isDraft = false) {
   cacheTag('posts')
 
-  if (!supabase) {
+  const client = getClient(isDraft)
+
+  if (!client) {
     return null
   }
 
-  let query = supabase
+  let query = client
     .from('posts')
     .select('published_at')
     .order('published_at', { ascending: false })
@@ -631,14 +648,16 @@ export async function getLatestPostDate(isDraft = false) {
 export async function getPostsByYear(year: number, isDraft = false) {
   cacheTag('posts')
 
-  if (!supabase) {
+  const client = getClient(isDraft)
+
+  if (!client) {
     return []
   }
 
   const yearStart = new Date(Date.UTC(year, 0, 1)).toISOString()
   const yearEnd = new Date(Date.UTC(year + 1, 0, 1)).toISOString()
 
-  let query = supabase
+  let query = client
     .from('posts')
     .select(
       `
@@ -699,14 +718,16 @@ export async function getPostsByYear(year: number, isDraft = false) {
 export async function getPostCountByYear(year: number, isDraft = false) {
   cacheTag('posts')
 
-  if (!supabase) {
+  const client = getClient(isDraft)
+
+  if (!client) {
     return 0
   }
 
   const yearStart = new Date(Date.UTC(year, 0, 1)).toISOString()
   const yearEnd = new Date(Date.UTC(year + 1, 0, 1)).toISOString()
 
-  let query = supabase
+  let query = client
     .from('posts')
     .select('*', { count: 'exact', head: true })
     .gte('published_at', yearStart)
