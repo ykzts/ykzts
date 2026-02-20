@@ -84,7 +84,11 @@ export function portableTextToHTML(
           const title = value?.title as string | undefined
           if (!href || !uriLooksSafe(href)) return children
           const titleAttr = title ? ` title="${escapeHTML(title)}"` : ''
-          return `<a href="${escapeHTML(href)}"${titleAttr}>${children}</a>`
+          const rel =
+            href.startsWith('/') || href.startsWith('#')
+              ? ''
+              : ' rel="noreferrer noopener"'
+          return `<a href="${escapeHTML(href)}"${titleAttr}${rel}>${children}</a>`
         }
       }
     }

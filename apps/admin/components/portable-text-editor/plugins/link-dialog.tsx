@@ -65,7 +65,9 @@ export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
         <form noValidate onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>リンクを挿入</DialogTitle>
-            <DialogDescription>リンクのURLを入力してください</DialogDescription>
+            <DialogDescription>
+              リンクのURLとtitle属性を入力してください
+            </DialogDescription>
           </DialogHeader>
 
           <div className="flex flex-col gap-4 py-4">
@@ -100,13 +102,14 @@ export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
                 title属性（任意）
               </FieldLabel>
               <Input
+                aria-describedby="link-title-description"
                 id="link-title-input"
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="リンクのタイトル"
                 type="text"
                 value={title}
               />
-              <FieldDescription>
+              <FieldDescription id="link-title-description">
                 ツールチップやスクリーンリーダーで使用されます
               </FieldDescription>
             </Field>
