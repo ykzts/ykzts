@@ -34,3 +34,53 @@ export function isPortableTextValue(
     return typeof type === 'string'
   })
 }
+
+/**
+ * Converts PortableText content to a plain text string for comparison purposes.
+ * Each block is converted to a line of text.
+ */
+export function portableTextToPlainText(
+  value: unknown[] | null | undefined
+): string {
+  if (!value || !Array.isArray(value)) {
+    return ''
+  }
+
+  return value
+    .map((block) => {
+      if (!block || typeof block !== 'object') {
+        return ''
+      }
+
+      const b = block as Record<string, unknown>
+
+      if (b._type === 'code') {
+        const code = typeof b.code === 'string' ? b.code : ''
+        const lang = typeof b.language === 'string' ? b.language : ''
+        return lang ? `[code:${lang}]\n${code}` : `[code]\n${code}`
+      }
+
+      if (b._type === 'image') {
+        const alt = typeof b.alt === 'string' ? b.alt : ''
+        return alt ? `[image: ${alt}]` : '[image]'
+      }
+
+      if (b._type === 'block' && Array.isArray(b.children)) {
+        return b.children
+          .map((child) => {
+            if (
+              child &&
+              typeof child === 'object' &&
+              'text' in (child as object)
+            ) {
+              return String((child as { text: unknown }).text)
+            }
+            return ''
+          })
+          .join('')
+      }
+
+      return ''
+    })
+    .join('\n')
+}

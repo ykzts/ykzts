@@ -5,8 +5,10 @@ import { notFound } from 'next/navigation'
 import DateDisplay from '@/components/date-display'
 import Header from '@/components/header'
 import LinkButton from '@/components/link-button'
+import VersionCompare from '@/components/version-compare'
 import { getDateBasedUrl } from '@/lib/blog-urls'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
+import { portableTextToPlainText } from '@/lib/portable-text'
 import {
   getAllPosts,
   getPostBySlug,
@@ -91,6 +93,16 @@ export default async function PostHistoryPage({ params }: PageProps) {
 
   const postUrl = getDateBasedUrl(slug, post.published_at)
 
+  const versionsWithText = versions.map((version) => ({
+    change_summary: version.change_summary,
+    id: version.id,
+    plainText: portableTextToPlainText(
+      version.content as unknown[] | null | undefined
+    ),
+    version_date: version.version_date,
+    version_number: version.version_number
+  }))
+
   return (
     <>
       <Header />
@@ -105,7 +117,7 @@ export default async function PostHistoryPage({ params }: PageProps) {
 
           {versions.length === 0 ? (
             <p className="text-muted-foreground">編集履歴がありません。</p>
-          ) : (
+          ) : versions.length === 1 ? (
             <ol className="space-y-4">
               {versions.map((version, index) => (
                 <li
@@ -136,6 +148,13 @@ export default async function PostHistoryPage({ params }: PageProps) {
                 </li>
               ))}
             </ol>
+          ) : (
+            <>
+              <p className="mb-4 text-muted-foreground text-sm">
+                比較したい2つのバージョンを選択してください。
+              </p>
+              <VersionCompare versions={versionsWithText} />
+            </>
           )}
 
           <div className="mt-8">
