@@ -105,7 +105,7 @@ describe('Contact form action', () => {
       expect(mockSend).toHaveBeenCalled()
     })
 
-    it('should format sender name with "via ykzts.com" suffix', async () => {
+    it('should format sender name with "via example.com" suffix', async () => {
       // Mock successful Turnstile verification
       ;(global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
         json: async () => ({ success: true })
@@ -132,7 +132,7 @@ describe('Contact form action', () => {
       // Verify mockSend was called with the correct format
       expect(mockSend).toHaveBeenCalledWith(
         expect.objectContaining({
-          from: 'Test User via ykzts.com <no-reply@ykzts.com>'
+          from: 'Test User via example.com <no-reply@example.com>'
         })
       )
     })

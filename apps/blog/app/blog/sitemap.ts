@@ -8,7 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const baseUrl = metadata.metadataBase
     ? new URL('/blog', metadata.metadataBase).toString()
-    : 'https://ykzts.com/blog'
+    : 'https://example.com/blog'
 
   // Homepage entry
   const homepageEntry: MetadataRoute.Sitemap[number] = {

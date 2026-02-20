@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og'
 import { getProfile } from '@/lib/supabase'
 
-export const alt = process.env.NEXT_PUBLIC_SITE_NAME ?? 'ykzts.com'
+export const alt = process.env.NEXT_PUBLIC_SITE_NAME ?? 'example.com'
 export const size = {
   height: 630,
   width: 1200
@@ -82,7 +82,7 @@ export default async function Image() {
             letterSpacing: -2
           }}
         >
-          {process.env.NEXT_PUBLIC_SITE_NAME ?? 'ykzts.com'}
+          {process.env.NEXT_PUBLIC_SITE_NAME ?? 'example.com'}
         </div>
         {profile.tagline && (
           <div

@@ -16,8 +16,8 @@ export const metadata: Metadata = {
     'Hatena::Bookmark': 'nocomment'
   },
   title: {
-    default: process.env.NEXT_PUBLIC_SITE_NAME ?? 'ykzts.com',
-    template: `%s | ${process.env.NEXT_PUBLIC_SITE_NAME ?? 'ykzts.com'}`
+    default: process.env.NEXT_PUBLIC_SITE_NAME ?? 'example.com',
+    template: `%s | ${process.env.NEXT_PUBLIC_SITE_NAME ?? 'example.com'}`
   }
 }
 

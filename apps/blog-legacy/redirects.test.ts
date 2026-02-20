@@ -3,26 +3,26 @@ import { createLegacyRedirects, legacyRedirects } from './redirects'
 
 describe('createLegacyRedirects', () => {
   it('maps tuple redirects to permanent redirect objects', () => {
-    const redirects = createLegacyRedirects('https://ykzts.com')
+    const redirects = createLegacyRedirects('https://example.com')
 
     expect(redirects).toHaveLength(legacyRedirects.length)
     expect(redirects[0]).toEqual({
-      destination: 'https://ykzts.com/',
+      destination: 'https://example.com/',
       source: '/([Aa]uthor|about)',
       statusCode: 301
     })
     expect(redirects.at(-1)).toEqual({
-      destination: 'https://ykzts.com/blog/:path*',
+      destination: 'https://example.com/blog/:path*',
       source: '/:path*',
       statusCode: 301
     })
   })
 
   it('normalizes trailing slash in baseUrl', () => {
-    const redirects = createLegacyRedirects('https://ykzts.com/')
+    const redirects = createLegacyRedirects('https://example.com/')
 
     expect(redirects[1]).toEqual({
-      destination: 'https://ykzts.com/blog/atom.xml',
+      destination: 'https://example.com/blog/atom.xml',
       source: '/(feed/?|index.xml|rss)',
       statusCode: 301
     })

@@ -39,7 +39,7 @@ export function getBlogPostUrl(
     const month = String(date.getUTCMonth() + 1).padStart(2, '0')
     const day = String(date.getUTCDate()).padStart(2, '0')
 
-    return `https://ykzts.com/blog/${year}/${month}/${day}/${safeSlug}`
+    return `${process.env.NEXT_PUBLIC_SITE_ORIGIN ?? 'https://example.com'}/blog/${year}/${month}/${day}/${safeSlug}`
   } catch {
     return null
   }
