@@ -35,6 +35,12 @@ const POST_STATUSES = [
   { label: '公開', value: 'published' }
 ] as const
 
+function toLocalDateTimeString(date: Date): string {
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000)
+    .toISOString()
+    .slice(0, 16)
+}
+
 function formatPublishedAt(dateString: string): string {
   try {
     return new Intl.DateTimeFormat('ja-JP', {
@@ -508,17 +514,11 @@ export function PostForm({
                 <Input
                   defaultValue={
                     post?.published_at
-                      ? (() => {
-                          const d = new Date(post.published_at)
-                          return new Date(
-                            d.getTime() - d.getTimezoneOffset() * 60 * 1000
-                          )
-                            .toISOString()
-                            .slice(0, 16)
-                        })()
+                      ? toLocalDateTimeString(new Date(post.published_at))
                       : ''
                   }
                   id="published_at_display"
+                  min={toLocalDateTimeString(new Date())}
                   name="published_at_display"
                   onChange={(e) => {
                     const form = e.currentTarget.form
