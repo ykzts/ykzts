@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     description: 'ykztsの技術ブログ',
     title: 'Blog',
     type: 'website',
-    url: 'https://ykzts.com/blog'
+    url: '/blog'
   },
   title: {
     absolute: 'Blog'

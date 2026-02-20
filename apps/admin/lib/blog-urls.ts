@@ -1,3 +1,5 @@
+import { getSiteOrigin } from '@ykzts/site-config'
+
 function sanitizeSlugForUrl(slug: string): string | null {
   const trimmed = slug.trim()
   if (!trimmed) {
@@ -39,7 +41,10 @@ export function getBlogPostUrl(
     const month = String(date.getUTCMonth() + 1).padStart(2, '0')
     const day = String(date.getUTCDate()).padStart(2, '0')
 
-    return `https://ykzts.com/blog/${year}/${month}/${day}/${safeSlug}`
+    return new URL(
+      `/blog/${year}/${month}/${day}/${safeSlug}`,
+      getSiteOrigin()
+    ).toString()
   } catch {
     return null
   }

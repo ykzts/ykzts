@@ -1,14 +1,12 @@
+import { getSiteOrigin } from '@ykzts/site-config'
 import type { MetadataRoute } from 'next'
-import { metadata } from '@/app/layout'
 import { getAllPosts, getAllTags } from '@/lib/supabase/posts'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getAllPosts()
   const tags = await getAllTags()
 
-  const baseUrl = metadata.metadataBase
-    ? new URL('/blog', metadata.metadataBase).toString()
-    : 'https://ykzts.com/blog'
+  const baseUrl = new URL('/blog', getSiteOrigin()).toString()
 
   // Homepage entry
   const homepageEntry: MetadataRoute.Sitemap[number] = {

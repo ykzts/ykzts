@@ -1,5 +1,6 @@
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
+import { getSiteOrigin } from '@ykzts/site-config'
 import { Toaster } from '@ykzts/ui/components/sonner'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
@@ -8,14 +9,14 @@ import SVGSymbols from './_components/svg-symbols'
 import ThemeProvider from './_components/theme-provider'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://ykzts.com/'),
+  metadataBase: getSiteOrigin(),
   other: {
     'fediverse:creator': 'ykzts@ykzts.technology',
     'Hatena::Bookmark': 'nocomment'
   },
   title: {
-    default: 'ykzts.com',
-    template: '%s | ykzts.com'
+    default: process.env.NEXT_PUBLIC_SITE_NAME ?? 'example.com',
+    template: `%s | ${process.env.NEXT_PUBLIC_SITE_NAME ?? 'example.com'}`
   }
 }
 

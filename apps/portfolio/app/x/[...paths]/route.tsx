@@ -1,4 +1,7 @@
+import { getSiteHost } from '@ykzts/site-config'
 import Html from './_components/html'
+
+const SITE_HOST = getSiteHost()
 
 const AVAILABLE_PACKAGES = [
   {
@@ -23,7 +26,7 @@ export async function GET(
   const stream = await renderToReadableStream(
     <Html
       githubBaseURL={pkg.githubBaseURL}
-      packageName={`ykzts.com/x/${pkg.path}`}
+      packageName={`${SITE_HOST}/x/${pkg.path}`}
     />
   )
 

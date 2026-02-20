@@ -9,6 +9,7 @@
     "@supabase/supabase-js": "2.95.3",
     "@vercel/analytics": "1.6.1",
     "@vercel/microfrontends": "2.3.0",
+    "@ykzts/site-config": "workspace:*",
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
     "lucide-react": "0.563.0",
