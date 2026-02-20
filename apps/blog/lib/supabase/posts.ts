@@ -771,7 +771,8 @@ export async function getPostVersions(postId: string) {
       version_number,
       version_date,
       change_summary,
-      title
+      title,
+      content
     `
     )
     .eq('post_id', postId)

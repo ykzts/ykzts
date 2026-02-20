@@ -7,7 +7,9 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "vitest --run"
+  },
   "dependencies": {
     "@portabletext/markdown": "1.1.2",
     "@portabletext/to-html": "5.0.1"
@@ -15,6 +17,7 @@
   "devDependencies": {
     "@portabletext/types": "4.0.1",
     "@ykzts/tsconfig": "workspace:*",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "4.0.18"
   }
 }

@@ -1,3 +1,4 @@
+import { portableTextToMarkdown as convertToMarkdown } from '@portabletext/markdown'
 import { escapeHTML, toHTML, uriLooksSafe } from '@portabletext/to-html'
 import type { PortableTextBlock } from '@portabletext/types'
 
@@ -96,4 +97,27 @@ export function portableTextToHTML(
       }
     }
   })
+}
+
+// Simple type for Portable Text blocks accepted by @portabletext/markdown
+type PortableTextLike = {
+  _type: string
+  [key: string]: unknown
+}
+
+/**
+ * Convert PortableText to Markdown string
+ * @param content - PortableText content (array of blocks)
+ * @returns Markdown string or empty string if conversion fails
+ */
+export function portableTextToMarkdown(content: unknown): string {
+  if (!content || !Array.isArray(content) || content.length === 0) {
+    return ''
+  }
+
+  try {
+    return convertToMarkdown(content as PortableTextLike[])
+  } catch {
+    return ''
+  }
 }
