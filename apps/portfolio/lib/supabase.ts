@@ -1,3 +1,4 @@
+import type { PortableTextBlock } from '@portabletext/types'
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '@ykzts/supabase'
 import { cacheTag } from 'next/cache'
@@ -63,9 +64,7 @@ export async function getWorks() {
   cacheTag('works')
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    return []
   }
 
   const { data, error } = await supabase
@@ -80,5 +79,78 @@ export async function getWorks() {
   return data.map((work) => ({
     ...work,
     content: isPortableTextValue(work.content) ? work.content : null
+  }))
+}
+
+export async function getPostsForLlms() {
+  'use cache'
+
+  cacheTag('posts')
+
+  if (!supabase) {
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select('slug, title, excerpt, published_at')
+    .eq('status', 'published')
+    .not('slug', 'is', null)
+    .not('title', 'is', null)
+    .not('published_at', 'is', null)
+    .order('published_at', { ascending: false })
+
+  if (error) {
+    throw new Error(`Failed to fetch posts: ${error.message}`)
+  }
+
+  return data.map((post) => ({
+    excerpt: post.excerpt,
+    published_at: post.published_at as string,
+    slug: post.slug as string,
+    title: post.title as string
+  }))
+}
+
+export async function getPostsForLlmsFull() {
+  'use cache'
+
+  cacheTag('posts')
+
+  if (!supabase) {
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select(
+      `
+      slug,
+      title,
+      excerpt,
+      published_at,
+      current_version:post_versions!posts_current_version_id_fkey(
+        content
+      )
+    `
+    )
+    .eq('status', 'published')
+    .not('slug', 'is', null)
+    .not('title', 'is', null)
+    .not('published_at', 'is', null)
+    .order('published_at', { ascending: false })
+
+  if (error) {
+    throw new Error(`Failed to fetch posts: ${error.message}`)
+  }
+
+  return data.map((post) => ({
+    content: (Array.isArray(post.current_version)
+      ? (post.current_version[0]?.content ?? null)
+      : (post.current_version?.content ?? null)) as PortableTextBlock[] | null,
+    excerpt: post.excerpt,
+    published_at: post.published_at as string,
+    slug: post.slug as string,
+    title: post.title as string
   }))
 }
