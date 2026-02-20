@@ -1,7 +1,7 @@
 import { draftMode } from 'next/headers'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase/client'
+import { supabase, supabaseAdmin } from '@/lib/supabase/client'
 
 export async function GET(request: NextRequest) {
   // Verify secret token
@@ -20,22 +20,29 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  // Enable draft mode
-  const draft = await draftMode()
-  draft.enable()
+  // Use service role client to query draft posts (bypasses RLS)
+  const client = supabaseAdmin ?? supabase
 
-  // Query the post to get its published_at date for the URL
-  if (!supabase) {
+  if (!client) {
     // If Supabase is not configured, redirect to blog homepage
     return NextResponse.redirect(new URL('/blog', request.url))
   }
 
+  // Enable draft mode
+  const draft = await draftMode()
+  draft.enable()
+
   try {
-    const { data: post } = await supabase
+    const { data: post, error: postError } = await client
       .from('posts')
       .select('slug, published_at')
       .eq('slug', slug)
       .maybeSingle()
+
+    if (postError) {
+      console.error('Error fetching draft post:', postError.message)
+      return NextResponse.redirect(new URL('/blog', request.url))
+    }
 
     if (post?.published_at) {
       // Construct the full date-based URL
