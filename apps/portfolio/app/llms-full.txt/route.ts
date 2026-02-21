@@ -5,9 +5,7 @@ import { getPostsForLlmsFull, getWorks } from '@/lib/supabase'
 export async function GET() {
   const [works, posts] = await Promise.all([getWorks(), getPostsForLlmsFull()])
 
-  const sections: string[] = getLlmsHeaderLines()
-
-  sections.push('', '## Works', '')
+  const sections: string[] = [...getLlmsHeaderLines(), '', '## Works', '']
 
   for (const work of works) {
     const url = buildWorkUrl(work.slug)

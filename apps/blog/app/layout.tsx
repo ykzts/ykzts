@@ -15,8 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const profile = await getPublisherProfile()
     fediverseCreator = profile.fediverse_creator?.trim() || null
-  } catch {
-    console.error('Failed to load profile for blog layout metadata')
+  } catch (error) {
+    console.error('Failed to load profile for blog layout metadata:', error)
   }
 
   return {

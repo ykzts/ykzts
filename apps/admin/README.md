@@ -50,8 +50,8 @@ CRON_SECRET=your-cron-secret
 DRAFT_SECRET=your-draft-secret
 
 # Site Identity
-NEXT_PUBLIC_SITE_ORIGIN=http://localhost:3024
 NEXT_PUBLIC_SITE_NAME=example.com
+NEXT_PUBLIC_SITE_ORIGIN=http://localhost:3024
 
 # Optional AI provider key (depending on your AI Gateway/provider setup)
 OPENAI_API_KEY=

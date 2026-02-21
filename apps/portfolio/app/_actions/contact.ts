@@ -81,7 +81,7 @@ export async function submitContactForm(
       }
 
       if (!contactEmail) {
-        console.error('CONTACT_EMAIL is not configured.')
+        console.error('contactEmail in profile is not configured.')
       }
 
       return {

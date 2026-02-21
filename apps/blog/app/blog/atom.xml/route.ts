@@ -6,20 +6,34 @@ import { getPostsForFeed } from '@/lib/supabase/posts'
 import { getPublisherProfile } from '@/lib/supabase/profiles'
 
 export async function GET() {
-  const [posts, profile] = await Promise.all([
-    getPostsForFeed(20),
-    getPublisherProfile()
-  ])
+  const posts = await getPostsForFeed(20)
+
+  let profileName: string | null = null
+  try {
+    const profile = await getPublisherProfile()
+    if (profile.name?.trim()) {
+      profileName = profile.name.trim()
+    }
+  } catch (error) {
+    console.error('Failed to load publisher profile for atom feed:', error)
+  }
 
   const siteOrigin = getSiteOrigin()
   const baseUrl = new URL('/blog', siteOrigin).toString()
-  const profileName = profile.name
+
+  const feedAuthor = profileName
+    ? {
+        name: profileName
+      }
+    : undefined
+
+  const feedCopyright = profileName
+    ? `Copyright © ${new Date().getFullYear()} ${profileName}`
+    : undefined
 
   const feed = new Feed({
-    author: {
-      name: profileName
-    },
-    copyright: `Copyright © ${new Date().getFullYear()} ${profileName}`,
+    author: feedAuthor,
+    copyright: feedCopyright,
     description: 'Blog',
     favicon: new URL('/favicon.ico', siteOrigin).toString(),
     feedLinks: {

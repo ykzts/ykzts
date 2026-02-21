@@ -108,10 +108,6 @@ See `.env.example` for a complete list of required environment variables.
 - `@tailwindcss/typography`: Typography plugin for Tailwind CSS
 - `postcss`: CSS transformation tool
 - `autoprefixer`: PostCSS plugin for vendor prefixes
-- `@lhci/cli`: Lighthouse CI for automated performance auditing
-- `@playwright/test`: End-to-end and accessibility testing
-- `@axe-core/playwright`: Accessibility testing integration
-- `vitest`: Fast unit testing framework
 
 ## Architecture
 

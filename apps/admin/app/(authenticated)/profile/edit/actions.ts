@@ -1,5 +1,7 @@
 'use server'
 
+import { lookup } from 'node:dns/promises'
+import { isIP } from 'node:net'
 import type { Json } from '@ykzts/supabase'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
@@ -60,6 +62,11 @@ function parseFediverseCreator(value: string): {
 
   const username = match[1]
   const domain = match[2].toLowerCase()
+
+  if (!isValidPublicHostname(domain)) {
+    return null
+  }
+
   const acct = `${username}@${domain}`
 
   return {
@@ -69,11 +76,122 @@ function parseFediverseCreator(value: string): {
   }
 }
 
+function isValidPublicHostname(domain: string): boolean {
+  if (domain.length > 253 || domain === 'localhost') {
+    return false
+  }
+
+  if (!domain.includes('.')) {
+    return false
+  }
+
+  return /^[a-z0-9.-]+$/i.test(domain)
+}
+
+function isPrivateIPv4(address: string): boolean {
+  const octets = address.split('.').map((segment) => Number(segment))
+
+  if (octets.length !== 4 || octets.some((octet) => Number.isNaN(octet))) {
+    return true
+  }
+
+  if (octets[0] === 10) {
+    return true
+  }
+
+  if (octets[0] === 127) {
+    return true
+  }
+
+  if (octets[0] === 169 && octets[1] === 254) {
+    return true
+  }
+
+  if (octets[0] === 172 && octets[1] >= 16 && octets[1] <= 31) {
+    return true
+  }
+
+  if (octets[0] === 192 && octets[1] === 168) {
+    return true
+  }
+
+  if (address === '169.254.169.254') {
+    return true
+  }
+
+  return false
+}
+
+function isPrivateIPv6(address: string): boolean {
+  const normalized = address.toLowerCase()
+
+  if (normalized === '::1') {
+    return true
+  }
+
+  if (normalized.startsWith('fc') || normalized.startsWith('fd')) {
+    return true
+  }
+
+  if (
+    normalized.startsWith('fe8') ||
+    normalized.startsWith('fe9') ||
+    normalized.startsWith('fea') ||
+    normalized.startsWith('feb')
+  ) {
+    return true
+  }
+
+  if (normalized.startsWith('::ffff:')) {
+    const mappedAddress = normalized.replace('::ffff:', '')
+    return isPrivateIPv4(mappedAddress)
+  }
+
+  return false
+}
+
+function isPublicIpAddress(address: string): boolean {
+  const ipVersion = isIP(address)
+
+  if (ipVersion === 4) {
+    return !isPrivateIPv4(address)
+  }
+
+  if (ipVersion === 6) {
+    return !isPrivateIPv6(address)
+  }
+
+  return false
+}
+
+async function isSafeWebFingerDomain(domain: string): Promise<boolean> {
+  try {
+    const resolvedAddresses = await lookup(domain, {
+      all: true,
+      verbatim: true
+    })
+
+    if (resolvedAddresses.length === 0) {
+      return false
+    }
+
+    return resolvedAddresses.every((entry) => isPublicIpAddress(entry.address))
+  } catch {
+    return false
+  }
+}
+
 async function verifyFediverseCreatorWithWebFinger(
   acct: string,
   domain: string
 ): Promise<boolean> {
   try {
+    const isSafeDomain = await isSafeWebFingerDomain(domain)
+
+    if (!isSafeDomain) {
+      return false
+    }
+
     const webfingerUrl = new URL(`https://${domain}/.well-known/webfinger`)
     webfingerUrl.searchParams.set('resource', `acct:${acct}`)
 
@@ -88,21 +206,31 @@ async function verifyFediverseCreatorWithWebFinger(
       return false
     }
 
-    const data = (await response.json()) as {
-      subject?: string
-      aliases?: string[]
+    const data = (await response.json()) as unknown
+
+    if (!data || typeof data !== 'object') {
+      return false
     }
 
+    const subjectValue =
+      'subject' in data && typeof data.subject === 'string'
+        ? data.subject
+        : undefined
+
+    const aliasesValue =
+      'aliases' in data && Array.isArray(data.aliases)
+        ? data.aliases.filter(
+            (alias): alias is string => typeof alias === 'string'
+          )
+        : []
+
     const expectedSubject = `acct:${acct}`.toLowerCase()
-    const subject = data.subject?.toLowerCase()
+    const subject = subjectValue?.toLowerCase()
     if (subject === expectedSubject) {
       return true
     }
 
-    return (
-      Array.isArray(data.aliases) &&
-      data.aliases.some((alias) => alias.toLowerCase() === expectedSubject)
-    )
+    return aliasesValue.some((alias) => alias.toLowerCase() === expectedSubject)
   } catch {
     return false
   }
