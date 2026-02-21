@@ -359,12 +359,15 @@ export function PostForm({
                 スラッグ <span className="text-error">*</span>
               </FieldLabel>
               <InputGroup>
+                {!isSlugEditable && (
+                  <input name="slug" type="hidden" value={slugValue} />
+                )}
                 <InputGroupInput
                   defaultValue={post?.slug || ''}
                   disabled={!isSlugEditable}
                   id="slug"
                   maxLength={256}
-                  name="slug"
+                  name={isSlugEditable ? 'slug' : undefined}
                   onChange={(e) => setSlugValue(e.target.value)}
                   placeholder="url-friendly-slug"
                   required
@@ -385,7 +388,9 @@ export function PostForm({
                 </InputGroupAddon>
               </InputGroup>
               <FieldDescription>
-                URL用の識別子（手動入力またはボタンで自動生成）
+                {isSlugEditable
+                  ? 'URL用の識別子（手動入力またはボタンで自動生成）'
+                  : '公開済み・予約済み投稿のスラッグは変更できません（SEO保護）'}
               </FieldDescription>
             </Field>
 
