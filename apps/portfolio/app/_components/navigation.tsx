@@ -19,15 +19,23 @@ import { Menu } from 'lucide-react'
 import { useState } from 'react'
 import ThemeToggle from './theme-toggle'
 
-const navItems = [
+const allNavItems = [
   { href: '#about', label: 'About' },
   { href: '#works', label: 'Works' },
   { href: '/blog', label: 'Blog' },
   { href: '#contact', label: 'Contact' }
 ]
 
-export default function Navigation() {
+type Props = {
+  hasWorks?: boolean
+}
+
+export default function Navigation({ hasWorks = true }: Props) {
   const [open, setOpen] = useState(false)
+
+  const navItems = hasWorks
+    ? allNavItems
+    : allNavItems.filter((item) => item.href !== '#works')
 
   return (
     <div className="flex items-center">

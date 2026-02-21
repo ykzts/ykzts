@@ -1,7 +1,7 @@
 import { getPortfolioDescription, getSiteName } from '@ykzts/site-config'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getProfile } from '@/lib/supabase'
+import { getProfile, getWorks } from '@/lib/supabase'
 import About from './_components/about'
 import Contact from './_components/contact'
 import Footer from './_components/footer'
@@ -47,7 +47,16 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default function HomePage(_props: PageProps<'/'>) {
+export default async function HomePage(_props: PageProps<'/'>) {
+  let hasWorks = true
+
+  try {
+    const works = await getWorks()
+    hasWorks = works.length > 0
+  } catch (error) {
+    console.error('Failed to load works for navigation:', error)
+  }
+
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-10 border-border border-b bg-background/90 px-6 backdrop-blur-sm md:px-12 lg:px-24">
@@ -55,7 +64,7 @@ export default function HomePage(_props: PageProps<'/'>) {
           <Link className="font-semibold text-foreground text-lg" href="/">
             {siteName}
           </Link>
-          <Navigation />
+          <Navigation hasWorks={hasWorks} />
         </div>
       </header>
 
