@@ -530,8 +530,13 @@ export function PostForm({
                       ? toLocalDateTimeString(new Date(post.published_at))
                       : ''
                   }
+                  disabled={isEditMode && !!post?.published_at}
                   id="published_at_display"
-                  min={toLocalDateTimeString(new Date())}
+                  min={
+                    !post?.published_at
+                      ? toLocalDateTimeString(new Date())
+                      : undefined
+                  }
                   name="published_at_display"
                   onChange={(e) => {
                     const form = e.currentTarget.form
