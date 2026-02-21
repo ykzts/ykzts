@@ -1,26 +1,14 @@
 import { portableTextToMarkdown } from '@ykzts/portable-text-utils'
-import { getSiteName, getSiteOrigin } from '@ykzts/site-config'
-import { buildPostUrl } from '@/lib/llms'
+import { buildPostUrl, buildWorkUrl, getLlmsHeaderLines } from '@/lib/llms'
 import { getPostsForLlmsFull, getWorks } from '@/lib/supabase'
 
 export async function GET() {
   const [works, posts] = await Promise.all([getWorks(), getPostsForLlmsFull()])
 
-  const siteOrigin = getSiteOrigin()
-  const siteName = getSiteName()
-
-  const sections: string[] = [
-    `# ${siteName}`,
-    '',
-    '> ポートフォリオと技術ブログ。JavaScriptやRubyといったプログラミング言語を用いたウェブアプリケーションの開発を得意とするソフトウェア開発者 山岸和利のサイトです。',
-    '',
-    'このサイトは、ポートフォリオと技術ブログを統合したサービスです。'
-  ]
-
-  sections.push('', '## Works', '')
+  const sections: string[] = [...getLlmsHeaderLines(), '', '## Works', '']
 
   for (const work of works) {
-    const url = new URL(`/#${work.slug}`, siteOrigin).toString()
+    const url = buildWorkUrl(work.slug)
     sections.push(`### [${work.title}](${url})`, '')
     const content = portableTextToMarkdown(work.content)
     if (content) {

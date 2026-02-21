@@ -104,6 +104,7 @@ export async function generateMetadata({
   }
 
   const authorName = post.profile.name
+  const fediverseCreator = post.profile.fediverse_creator?.trim()
 
   return {
     authors: [{ name: authorName }],
@@ -115,6 +116,9 @@ export async function generateMetadata({
       title: post.title || DEFAULT_POST_TITLE,
       type: 'article',
       url: getDateBasedUrl(slug, post.published_at)
+    },
+    other: {
+      ...(fediverseCreator ? { 'fediverse:creator': fediverseCreator } : {})
     },
     title: post.title || DEFAULT_POST_TITLE,
     twitter: {

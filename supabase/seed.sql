@@ -81,6 +81,8 @@ INSERT INTO profiles (
   tagline,
   about,
   email,
+  occupation,
+  fediverse_creator,
   created_at,
   updated_at
 ) VALUES (
@@ -135,6 +137,8 @@ INSERT INTO profiles (
     }
   ]'::jsonb,
   NULL,
+  'Software Developer',
+  'testuser@example.com',
   NOW(),
   NOW()
 )
@@ -144,6 +148,8 @@ ON CONFLICT (id) DO UPDATE SET
   tagline = EXCLUDED.tagline,
   about = EXCLUDED.about,
   email = EXCLUDED.email,
+  occupation = EXCLUDED.occupation,
+  fediverse_creator = EXCLUDED.fediverse_creator,
   updated_at = NOW();
 
 -- Insert social links for test user

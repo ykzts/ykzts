@@ -1,27 +1,14 @@
 import { extractFirstParagraph } from '@ykzts/portable-text-utils'
-import { getSiteName, getSiteOrigin } from '@ykzts/site-config'
-import { buildPostUrl } from '@/lib/llms'
+import { buildPostUrl, buildWorkUrl, getLlmsHeaderLines } from '@/lib/llms'
 import { getPostsForLlms, getWorks } from '@/lib/supabase'
 
 export async function GET() {
   const [works, posts] = await Promise.all([getWorks(), getPostsForLlms()])
 
-  const siteOrigin = getSiteOrigin()
-  const siteName = getSiteName()
-
-  const lines: string[] = [
-    `# ${siteName}`,
-    '',
-    '> ポートフォリオと技術ブログ。JavaScriptやRubyといったプログラミング言語を用いたウェブアプリケーションの開発を得意とするソフトウェア開発者 山岸和利のサイトです。',
-    '',
-    'このサイトは、ポートフォリオと技術ブログを統合したサービスです。',
-    '',
-    '## Works',
-    ''
-  ]
+  const lines: string[] = [...getLlmsHeaderLines(), '', '## Works', '']
 
   for (const work of works) {
-    const url = new URL(`/#${work.slug}`, siteOrigin).toString()
+    const url = buildWorkUrl(work.slug)
     const description = extractFirstParagraph(work.content)
     const suffix = description ? `: ${description}` : ''
     lines.push(`- [${work.title}](${url})${suffix}`)

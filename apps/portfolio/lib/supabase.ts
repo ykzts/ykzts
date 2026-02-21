@@ -30,9 +30,11 @@ export async function getProfile() {
       `
         id,
         name,
+        occupation,
         tagline,
         about,
         email,
+        fediverse_creator,
         avatar_url,
         social_links(url, service),
         technologies(name)

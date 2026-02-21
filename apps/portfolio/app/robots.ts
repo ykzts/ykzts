@@ -1,13 +1,11 @@
+import { getSiteOrigin } from '@ykzts/site-config'
 import type { MetadataRoute } from 'next'
-import { metadata } from '@/app/layout'
 
 export default function robots(): MetadataRoute.Robots {
-  const { metadataBase: baseUrl } = metadata
-  const sitemap = baseUrl
-    ? ['/sitemap.xml', '/blog/sitemap.xml'].map((path) =>
-        new URL(path, baseUrl).toString()
-      )
-    : []
+  const siteOrigin = getSiteOrigin()
+  const sitemap = ['/sitemap.xml', '/blog/sitemap.xml'].map((path) =>
+    new URL(path, siteOrigin).toString()
+  )
 
   return {
     rules: [

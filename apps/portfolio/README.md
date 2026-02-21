@@ -48,17 +48,27 @@ pnpm lighthouse # Run Lighthouse CI performance audit
 The application requires the following environment variables:
 
 ```bash
-# Resend API Configuration
-RESEND_API_KEY=your_resend_api_key_here
-CONTACT_EMAIL="John Doe <test@example.com>"
-
-# Cloudflare Turnstile Configuration
-NEXT_PUBLIC_TURNSTILE_SITE_KEY=your_turnstile_site_key_here
-TURNSTILE_SECRET_KEY=your_turnstile_secret_key_here
-
 # Supabase Configuration
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+
+# Cache Revalidation
+REVALIDATE_SECRET=your-secret-key
+
+# Site Identity
+NEXT_PUBLIC_SITE_ORIGIN=http://localhost:3024
+NEXT_PUBLIC_SITE_NAME=example.com
+
+# Optional: portfolio top page description for SEO
+NEXT_PUBLIC_PORTFOLIO_DESCRIPTION=
+
+# Mail Sender (Resend)
+RESEND_API_KEY=your-resend-api-key
+MAIL_FROM_ADDRESS=no-reply@example.com
+
+# Cloudflare Turnstile
+NEXT_PUBLIC_TURNSTILE_SITE_KEY=your-turnstile-site-key
+TURNSTILE_SECRET_KEY=your-turnstile-secret-key
 ```
 
 See `.env.example` for a complete list of required environment variables.
@@ -98,10 +108,6 @@ See `.env.example` for a complete list of required environment variables.
 - `@tailwindcss/typography`: Typography plugin for Tailwind CSS
 - `postcss`: CSS transformation tool
 - `autoprefixer`: PostCSS plugin for vendor prefixes
-- `@lhci/cli`: Lighthouse CI for automated performance auditing
-- `@playwright/test`: End-to-end and accessibility testing
-- `@axe-core/playwright`: Accessibility testing integration
-- `vitest`: Fast unit testing framework
 
 ## Architecture
 

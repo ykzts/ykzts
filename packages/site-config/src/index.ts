@@ -1,5 +1,7 @@
 const FALLBACK_ORIGIN = 'https://example.com'
 const FALLBACK_NAME = 'example.com'
+const FALLBACK_PORTFOLIO_DESCRIPTION =
+  'ウェブアプリケーション開発の実績や制作物を掲載したポートフォリオです。過去の実績、作品、各種ソーシャルネットワーキングサービスへのリンクなどの連絡先情報をまとめています。'
 
 /**
  * Returns the site origin as a URL object.
@@ -28,4 +30,15 @@ export function getSiteHost(): string {
  */
 export function getSiteName(): string {
   return process.env.NEXT_PUBLIC_SITE_NAME ?? FALLBACK_NAME
+}
+
+/**
+ * Returns the portfolio description text for metadata.
+ * Reads `NEXT_PUBLIC_PORTFOLIO_DESCRIPTION` and falls back to a default copy.
+ */
+export function getPortfolioDescription(): string {
+  return (
+    process.env.NEXT_PUBLIC_PORTFOLIO_DESCRIPTION ??
+    FALLBACK_PORTFOLIO_DESCRIPTION
+  )
 }
