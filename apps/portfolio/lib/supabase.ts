@@ -48,6 +48,12 @@ export async function getProfile() {
     throw new Error('Profile not found')
   }
 
+  if (profileData.about !== null && !isPortableTextValue(profileData.about)) {
+    throw new Error(
+      `Invalid Portable Text format for profile.about: expected array, got ${typeof profileData.about}`
+    )
+  }
+
   const about = isPortableTextValue(profileData.about)
     ? profileData.about
     : null

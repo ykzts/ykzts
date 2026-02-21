@@ -1,5 +1,6 @@
 'use server'
 
+import type { Json } from '@ykzts/supabase'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
@@ -76,22 +77,21 @@ export async function updateProfile(
     const { name, tagline, email, about, timezone } = profileValidation.data
 
     // Handle about field (JSONB)
-    let aboutValue: string | null = null
+    let aboutValue: Json | null = null
     if (about && about.trim() !== '') {
       try {
-        // Try to parse as JSON
-        JSON.parse(about.trim())
-        aboutValue = about.trim()
+        // Try to parse as JSON and store the parsed object
+        aboutValue = JSON.parse(about.trim()) as Json
       } catch {
         // If it's not valid JSON, treat it as plain text and wrap in simple Portable Text structure
-        aboutValue = JSON.stringify([
+        aboutValue = [
           {
             _type: 'block',
             children: [{ _type: 'span', text: about.trim() }],
             markDefs: [],
             style: 'normal'
           }
-        ])
+        ] as Json
       }
     }
 
