@@ -1,28 +1,29 @@
 import { portableTextToHTML } from '@ykzts/portable-text-utils'
+import { getSiteOrigin } from '@ykzts/site-config'
 import { Feed } from 'feed'
-import { metadata } from '@/app/layout'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
 import { getPostsForFeed } from '@/lib/supabase/posts'
+import { getPublisherProfile } from '@/lib/supabase/profiles'
 
 export async function GET() {
-  const posts = await getPostsForFeed(20)
+  const [posts, profile] = await Promise.all([
+    getPostsForFeed(20),
+    getPublisherProfile()
+  ])
 
-  if (!metadata.metadataBase) {
-    return new Response('Feed configuration error', { status: 500 })
-  }
-
-  const baseUrl = new URL('/blog', metadata.metadataBase).toString()
+  const siteOrigin = getSiteOrigin()
+  const baseUrl = new URL('/blog', siteOrigin).toString()
+  const profileName = profile.name
 
   const feed = new Feed({
     author: {
-      email: 'ykzts@desire.sh',
-      name: 'Yamagishi Kazutoshi'
+      name: profileName
     },
-    copyright: `Copyright © ${new Date().getFullYear()} Yamagishi Kazutoshi`,
+    copyright: `Copyright © ${new Date().getFullYear()} ${profileName}`,
     description: 'Blog',
-    favicon: new URL('/favicon.ico', metadata.metadataBase).toString(),
+    favicon: new URL('/favicon.ico', siteOrigin).toString(),
     feedLinks: {
-      atom: new URL('/blog/atom.xml', metadata.metadataBase).toString()
+      atom: new URL('/blog/atom.xml', siteOrigin).toString()
     },
     id: baseUrl,
     link: baseUrl,
@@ -36,7 +37,7 @@ export async function GET() {
     const day = String(publishedDate.getUTCDate()).padStart(2, '0')
     const postUrl = new URL(
       `/blog/${year}/${month}/${day}/${encodeURIComponent(post.slug)}`,
-      metadata.metadataBase
+      siteOrigin
     ).toString()
 
     feed.addItem({

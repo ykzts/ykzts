@@ -1,21 +1,19 @@
+import { getSiteOrigin } from '@ykzts/site-config'
 import type { MetadataRoute } from 'next'
-import { metadata } from '@/app/layout'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  if (!metadata.metadataBase) {
-    return []
-  }
+  const siteOrigin = getSiteOrigin()
 
   return [
     {
       changeFrequency: 'monthly',
       priority: 0.8,
-      url: new URL('/', metadata.metadataBase).toString()
+      url: new URL('/', siteOrigin).toString()
     },
     {
       changeFrequency: 'yearly',
       priority: 0.1,
-      url: new URL('/privacy', metadata.metadataBase).toString()
+      url: new URL('/privacy', siteOrigin).toString()
     }
   ]
 }

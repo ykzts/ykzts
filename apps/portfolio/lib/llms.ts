@@ -1,4 +1,26 @@
-import { getSiteOrigin } from '@ykzts/site-config'
+import {
+  getPortfolioDescription,
+  getSiteName,
+  getSiteOrigin
+} from '@ykzts/site-config'
+
+export function getLlmsHeaderLines(): string[] {
+  const siteName = getSiteName()
+  const portfolioDescription = getPortfolioDescription()
+
+  return [
+    `# ${siteName}`,
+    '',
+    `> ${portfolioDescription}`,
+    '',
+    'このサイトは、ポートフォリオと技術ブログを統合したサービスです。'
+  ]
+}
+
+export function buildWorkUrl(slug: string): string {
+  const siteOrigin = getSiteOrigin()
+  return new URL(`/#${slug}`, siteOrigin).toString()
+}
 
 export function buildPostUrl(slug: string, publishedAt: string): string {
   const siteOrigin = getSiteOrigin()

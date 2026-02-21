@@ -17,7 +17,9 @@ const profileSchema = z.object({
     .email('メールアドレスの形式が正しくありません。')
     .optional()
     .or(z.literal('')),
+  fediverse_creator: z.string().optional().or(z.literal('')),
   name: z.string().min(1, '名前は必須項目です。'),
+  occupation: z.string().optional(),
   tagline: z.string().optional(),
   timezone: z
     .string()
@@ -44,6 +46,68 @@ const technologySchema = z.object({
   name: z.string().min(1)
 })
 
+function parseFediverseCreator(value: string): {
+  normalized: string
+  acct: string
+  domain: string
+} | null {
+  const trimmed = value.trim()
+  const match = trimmed.match(/^@?([^@\s]+)@([^@\s]+)$/)
+
+  if (!match) {
+    return null
+  }
+
+  const username = match[1]
+  const domain = match[2].toLowerCase()
+  const acct = `${username}@${domain}`
+
+  return {
+    acct,
+    domain,
+    normalized: `@${acct}`
+  }
+}
+
+async function verifyFediverseCreatorWithWebFinger(
+  acct: string,
+  domain: string
+): Promise<boolean> {
+  try {
+    const webfingerUrl = new URL(`https://${domain}/.well-known/webfinger`)
+    webfingerUrl.searchParams.set('resource', `acct:${acct}`)
+
+    const response = await fetch(webfingerUrl.toString(), {
+      headers: {
+        Accept: 'application/jrd+json, application/json'
+      },
+      signal: AbortSignal.timeout(5000)
+    })
+
+    if (!response.ok) {
+      return false
+    }
+
+    const data = (await response.json()) as {
+      subject?: string
+      aliases?: string[]
+    }
+
+    const expectedSubject = `acct:${acct}`.toLowerCase()
+    const subject = data.subject?.toLowerCase()
+    if (subject === expectedSubject) {
+      return true
+    }
+
+    return (
+      Array.isArray(data.aliases) &&
+      data.aliases.some((alias) => alias.toLowerCase() === expectedSubject)
+    )
+  } catch {
+    return false
+  }
+}
+
 export async function updateProfile(
   _prevState: { error: string } | null,
   formData: FormData
@@ -61,7 +125,9 @@ export async function updateProfile(
     const rawProfileData = {
       about: formData.get('about') ?? undefined,
       email: formData.get('email') ?? '',
+      fediverse_creator: formData.get('fediverse_creator') ?? '',
       name: formData.get('name') ?? '',
+      occupation: formData.get('occupation') ?? undefined,
       tagline: formData.get('tagline') ?? undefined,
       timezone: formData.get('timezone') ?? DEFAULT_TIMEZONE
     }
@@ -74,7 +140,41 @@ export async function updateProfile(
       }
     }
 
-    const { name, tagline, email, about, timezone } = profileValidation.data
+    const {
+      name,
+      occupation,
+      tagline,
+      email,
+      fediverse_creator,
+      about,
+      timezone
+    } = profileValidation.data
+
+    let normalizedFediverseCreator: string | null = null
+    if (fediverse_creator && fediverse_creator.trim() !== '') {
+      const parsedFediverseCreator = parseFediverseCreator(fediverse_creator)
+
+      if (!parsedFediverseCreator) {
+        return {
+          error:
+            'fediverse:creator は @user@example.com または user@example.com 形式で入力してください。'
+        }
+      }
+
+      const isValidFediverseCreator = await verifyFediverseCreatorWithWebFinger(
+        parsedFediverseCreator.acct,
+        parsedFediverseCreator.domain
+      )
+
+      if (!isValidFediverseCreator) {
+        return {
+          error:
+            'fediverse:creator の検証に失敗しました。.well-known/webfinger で確認できるアカウントを指定してください。'
+        }
+      }
+
+      normalizedFediverseCreator = parsedFediverseCreator.normalized
+    }
 
     // Handle about field (JSONB)
     let aboutValue: Json | null = null
@@ -113,7 +213,10 @@ export async function updateProfile(
     const profileData = {
       about: aboutValue,
       email: email && email.trim() !== '' ? email.trim() : null,
+      fediverse_creator: normalizedFediverseCreator,
       name: name.trim(),
+      occupation:
+        occupation && occupation.trim() !== '' ? occupation.trim() : null,
       tagline: tagline && tagline.trim() !== '' ? tagline.trim() : null,
       timezone,
       user_id: user.id

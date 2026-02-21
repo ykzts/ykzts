@@ -1,5 +1,7 @@
+import { getPortfolioDescription, getSiteName } from '@ykzts/site-config'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { getProfile } from '@/lib/supabase'
 import About from './_components/about'
 import Contact from './_components/contact'
 import Footer from './_components/footer'
@@ -7,27 +9,41 @@ import Hero from './_components/hero'
 import Navigation from './_components/navigation'
 import Works from './_components/works'
 
-const description = [
-  'JavaScriptやRubyといったプログラミング言語を用いたウェブアプリケーションの開発を得意とするソフトウェア開発者 山岸和利のポートフォリオです。',
-  '山岸和利による過去の実績や作品の掲載、各種ソーシャルネットワーキングサービスのアカウントへのリンクなどの連絡先への参照があります。'
-].join('')
+const siteName = getSiteName()
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: '/'
-  },
-  description,
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const description = getPortfolioDescription()
+  const fallbackTitle = `${siteName} - ポートフォリオ`
+  let absoluteTitle = fallbackTitle
+
+  try {
+    const profile = await getProfile()
+    const occupation = profile.occupation?.trim()
+    const titleSuffix = [occupation, profile.name].filter(Boolean).join(' ')
+    absoluteTitle = titleSuffix
+      ? `${siteName} - ${titleSuffix}のポートフォリオ`
+      : fallbackTitle
+  } catch (error) {
+    console.error('Failed to load profile for portfolio metadata:', error)
+  }
+
+  return {
+    alternates: {
+      canonical: '/'
+    },
     description,
-    title: process.env.NEXT_PUBLIC_SITE_NAME ?? 'example.com',
-    type: 'website',
-    url: '/'
-  },
-  title: {
-    absolute: `${process.env.NEXT_PUBLIC_SITE_NAME ?? 'example.com'} - ソフトウェア開発者 山岸和利のポートフォリオ`
-  },
-  twitter: {
-    card: 'summary_large_image'
+    openGraph: {
+      description,
+      title: siteName,
+      type: 'website',
+      url: '/'
+    },
+    title: {
+      absolute: absoluteTitle
+    },
+    twitter: {
+      card: 'summary_large_image'
+    }
   }
 }
 
@@ -37,7 +53,7 @@ export default function HomePage(_props: PageProps<'/'>) {
       <header className="sticky top-0 z-10 border-border border-b bg-background/90 px-6 backdrop-blur-sm md:px-12 lg:px-24">
         <div className="mx-auto flex h-14 max-w-4xl items-center justify-between">
           <Link className="font-semibold text-foreground text-lg" href="/">
-            {process.env.NEXT_PUBLIC_SITE_NAME ?? 'example.com'}
+            {siteName}
           </Link>
           <Navigation />
         </div>

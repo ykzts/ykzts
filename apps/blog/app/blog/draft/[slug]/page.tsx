@@ -56,7 +56,12 @@ export async function generateMetadata({
     }
   }
 
+  const fediverseCreator = post.profile?.fediverse_creator?.trim()
+
   return {
+    other: {
+      ...(fediverseCreator ? { 'fediverse:creator': fediverseCreator } : {})
+    },
     title: post.title || DEFAULT_POST_TITLE
   }
 }

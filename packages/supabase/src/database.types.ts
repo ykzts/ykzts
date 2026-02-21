@@ -166,8 +166,10 @@ export type Database = {
           avatar_url: string | null
           created_at: string
           email: string | null
+          fediverse_creator: string | null
           id: string
           name: string
+          occupation: string | null
           tagline: string | null
           timezone: string
           updated_at: string
@@ -178,8 +180,10 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           email?: string | null
+          fediverse_creator?: string | null
           id?: string
           name: string
+          occupation?: string | null
           tagline?: string | null
           timezone?: string
           updated_at?: string
@@ -190,8 +194,10 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           email?: string | null
+          fediverse_creator?: string | null
           id?: string
           name?: string
+          occupation?: string | null
           tagline?: string | null
           timezone?: string
           updated_at?: string

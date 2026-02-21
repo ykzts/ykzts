@@ -7,16 +7,28 @@ import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
 import DraftModeBannerClient from '@/components/draft-mode-banner-client'
 import Footer from '@/components/footer'
 import ThemeProvider from '@/components/theme-provider'
+import { getPublisherProfile } from '@/lib/supabase/profiles'
 
-export const metadata: Metadata = {
-  metadataBase: getSiteOrigin(),
-  other: {
-    'fediverse:creator': 'ykzts@ykzts.technology',
-    'Hatena::Bookmark': 'nocomment'
-  },
-  title: {
-    default: 'Blog',
-    template: '%s | Blog'
+export async function generateMetadata(): Promise<Metadata> {
+  let fediverseCreator: string | null = null
+
+  try {
+    const profile = await getPublisherProfile()
+    fediverseCreator = profile.fediverse_creator?.trim() || null
+  } catch {
+    console.error('Failed to load profile for blog layout metadata')
+  }
+
+  return {
+    metadataBase: getSiteOrigin(),
+    other: {
+      ...(fediverseCreator ? { 'fediverse:creator': fediverseCreator } : {}),
+      'Hatena::Bookmark': 'nocomment'
+    },
+    title: {
+      default: 'Blog',
+      template: '%s | Blog'
+    }
   }
 }
 

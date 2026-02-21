@@ -62,12 +62,30 @@ async function ProfileContent() {
             </div>
           )}
 
+          {profile.occupation && (
+            <div>
+              <div className="mb-1 block font-medium text-sm">
+                職種・専門領域
+              </div>
+              <p>{profile.occupation}</p>
+            </div>
+          )}
+
           {profile.email && (
             <div>
               <div className="mb-1 block font-medium text-sm">
                 メールアドレス
               </div>
               <p>{profile.email}</p>
+            </div>
+          )}
+
+          {profile.fediverse_creator && (
+            <div>
+              <div className="mb-1 block font-medium text-sm">
+                fediverse:creator
+              </div>
+              <p>{profile.fediverse_creator}</p>
             </div>
           )}
 

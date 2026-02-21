@@ -16,7 +16,11 @@ function getClient(isDraft = false) {
 
 const POSTS_PER_PAGE = 10
 
-type Profile = { id: string; name: string } | null
+type Profile = {
+  fediverse_creator?: string | null
+  id: string
+  name: string
+} | null
 
 /**
  * Normalizes profile data from Supabase query results.
@@ -79,7 +83,8 @@ export async function getPosts(page = 1, isDraft = false) {
       published_at,
       profile:profiles!posts_profile_id_fkey(
         id,
-        name
+        name,
+        fediverse_creator
       ),
       current_version:post_versions!posts_current_version_id_fkey(
         content,
@@ -141,7 +146,8 @@ export async function getPostBySlug(slug: string, isDraft = false) {
       published_at,
       profile:profiles!posts_profile_id_fkey(
         id,
-        name
+        name,
+        fediverse_creator
       ),
       current_version:post_versions!posts_current_version_id_fkey(
         content,
@@ -212,7 +218,8 @@ export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
       published_at,
       profile:profiles!posts_profile_id_fkey(
         id,
-        name
+        name,
+        fediverse_creator
       ),
       current_version:post_versions!posts_current_version_id_fkey(
         content,
@@ -681,7 +688,8 @@ export async function getPostsByYear(year: number, isDraft = false) {
       published_at,
       profile:profiles!posts_profile_id_fkey(
         id,
-        name
+        name,
+        fediverse_creator
       ),
       current_version:post_versions!posts_current_version_id_fkey(
         content,

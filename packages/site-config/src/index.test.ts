@@ -1,5 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { getSiteHost, getSiteName, getSiteOrigin } from './index'
+import {
+  getPortfolioDescription,
+  getSiteHost,
+  getSiteName,
+  getSiteOrigin
+} from './index'
 
 afterEach(() => {
   vi.unstubAllEnvs()
@@ -43,5 +48,17 @@ describe('getSiteName', () => {
   it('returns the name from NEXT_PUBLIC_SITE_NAME when set', () => {
     vi.stubEnv('NEXT_PUBLIC_SITE_NAME', 'ykzts.com')
     expect(getSiteName()).toBe('ykzts.com')
+  })
+})
+
+describe('getPortfolioDescription', () => {
+  it('returns the fallback description when env is not set', () => {
+    vi.stubEnv('NEXT_PUBLIC_PORTFOLIO_DESCRIPTION', undefined)
+    expect(getPortfolioDescription()).toContain('ポートフォリオ')
+  })
+
+  it('returns the description from NEXT_PUBLIC_PORTFOLIO_DESCRIPTION when set', () => {
+    vi.stubEnv('NEXT_PUBLIC_PORTFOLIO_DESCRIPTION', 'SEO向けの説明文です。')
+    expect(getPortfolioDescription()).toBe('SEO向けの説明文です。')
   })
 })
