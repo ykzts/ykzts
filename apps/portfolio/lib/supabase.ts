@@ -48,9 +48,17 @@ export async function getProfile() {
     throw new Error('Profile not found')
   }
 
-  const about = isPortableTextValue(profileData.about)
-    ? profileData.about
-    : null
+  let aboutRaw = profileData.about
+
+  if (typeof aboutRaw === 'string') {
+    try {
+      aboutRaw = JSON.parse(aboutRaw)
+    } catch {
+      aboutRaw = null
+    }
+  }
+
+  const about = isPortableTextValue(aboutRaw) ? aboutRaw : null
 
   return {
     ...profileData,
