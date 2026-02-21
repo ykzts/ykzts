@@ -7,8 +7,8 @@ import {
   CardHeader,
   CardTitle
 } from '@ykzts/ui/components/card'
-import type { Route } from 'next'
 import Link from 'next/link'
+import { getPostUrl } from '@/lib/blog-urls'
 import type { PortableTextValue } from '@/lib/portable-text'
 import DateDisplay from './date-display'
 import TagList from './tag-list'
@@ -17,7 +17,7 @@ type SearchResult = {
   excerpt: string | null
   content?: PortableTextValue | null
   id: string
-  published_at: string
+  published_at: string | null
   similarity: number
   slug: string
   tags: string[] | null
@@ -27,15 +27,6 @@ type SearchResult = {
 type SearchResultsProps = {
   query: string
   results: SearchResult[]
-}
-
-function getDateBasedUrl(slug: string, publishedAt: string): Route {
-  const date = new Date(publishedAt)
-  const year = date.getUTCFullYear()
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0')
-  const day = String(date.getUTCDate()).padStart(2, '0')
-
-  return `/blog/${year}/${month}/${day}/${slug}` as Route
 }
 
 function SimilarityBadge({ similarity }: { similarity: number }) {
@@ -76,7 +67,7 @@ export default function SearchResults({ query, results }: SearchResultsProps) {
         {results.length}件の記事が見つかりました
       </p>
       {results.map((result) => {
-        const url = getDateBasedUrl(result.slug, result.published_at)
+        const url = getPostUrl(result.slug, result.published_at)
         const previewText =
           result.excerpt || extractFirstParagraph(result.content)
 

@@ -80,12 +80,24 @@ export default async function PostHistoryPage({ params }: PageProps) {
   }
 
   // Validate URL date components match the post's published_at date
-  const publishedDate = new Date(post.published_at)
-  const expectedYear = String(publishedDate.getUTCFullYear())
-  const expectedMonth = String(publishedDate.getUTCMonth() + 1).padStart(2, '0')
-  const expectedDay = String(publishedDate.getUTCDate()).padStart(2, '0')
+  if (post.published_at) {
+    const publishedDate = new Date(post.published_at)
+    const expectedYear = String(publishedDate.getUTCFullYear())
+    const expectedMonth = String(publishedDate.getUTCMonth() + 1).padStart(
+      2,
+      '0'
+    )
+    const expectedDay = String(publishedDate.getUTCDate()).padStart(2, '0')
 
-  if (year !== expectedYear || month !== expectedMonth || day !== expectedDay) {
+    if (
+      year !== expectedYear ||
+      month !== expectedMonth ||
+      day !== expectedDay
+    ) {
+      notFound()
+    }
+  } else {
+    // Draft posts with no published_at cannot be accessed via date-based URL
     notFound()
   }
 

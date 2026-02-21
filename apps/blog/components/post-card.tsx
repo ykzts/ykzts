@@ -7,8 +7,8 @@ import {
   CardHeader,
   CardTitle
 } from '@ykzts/ui/components/card'
-import type { Route } from 'next'
 import Link from 'next/link'
+import { getPostUrl } from '@/lib/blog-urls'
 import type { PortableTextValue } from '@/lib/portable-text'
 import DateDisplay from './date-display'
 import TagList from './tag-list'
@@ -18,7 +18,7 @@ type Post = {
   title: string
   excerpt: string | null
   content?: PortableTextValue | null
-  published_at: string
+  published_at: string | null
   tags: string[] | null
   profile?: {
     id: string
@@ -30,17 +30,8 @@ type PostCardProps = {
   post: Post
 }
 
-function getDateBasedUrl(slug: string, publishedAt: string): Route {
-  const date = new Date(publishedAt)
-  const year = date.getUTCFullYear()
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0')
-  const day = String(date.getUTCDate()).padStart(2, '0')
-
-  return `/blog/${year}/${month}/${day}/${slug}` as Route
-}
-
 export default function PostCard({ post }: PostCardProps) {
-  const url = getDateBasedUrl(post.slug, post.published_at)
+  const url = getPostUrl(post.slug, post.published_at)
   const previewText = post.excerpt || extractFirstParagraph(post.content)
 
   return (

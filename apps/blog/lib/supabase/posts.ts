@@ -111,7 +111,7 @@ export async function getPosts(page = 1, isDraft = false) {
     excerpt: post.excerpt,
     id: post.id,
     profile: normalizeProfile(post),
-    published_at: post.published_at as string,
+    published_at: post.published_at as string | null,
     slug: post.slug as string,
     tags: post.tags,
     title: post.title as string,
@@ -176,7 +176,7 @@ export async function getPostBySlug(slug: string, isDraft = false) {
     excerpt: data.excerpt,
     id: data.id,
     profile: normalizeProfile(data),
-    published_at: data.published_at as string,
+    published_at: data.published_at as string | null,
     slug: data.slug as string,
     tags: data.tags,
     title: data.title as string,
@@ -245,7 +245,7 @@ export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
     excerpt: post.excerpt,
     id: post.id,
     profile: normalizeProfile(post),
-    published_at: post.published_at as string,
+    published_at: post.published_at as string | null,
     slug: post.slug as string,
     tags: post.tags,
     title: post.title as string,
@@ -547,7 +547,13 @@ export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
     return { nextPost: null, previousPost: null }
   }
 
-  const currentPublishedAt = currentData.published_at as string
+  // Draft posts have no published_at; adjacent posts are date-ordered so
+  // there is nothing meaningful to navigate to.
+  if (!currentData.published_at) {
+    return { nextPost: null, previousPost: null }
+  }
+
+  const currentPublishedAt = currentData.published_at
 
   // Build base filters (apply same filters as getPostBySlug)
   const buildQuery = () => {
@@ -707,7 +713,7 @@ export async function getPostsByYear(year: number, isDraft = false) {
     excerpt: post.excerpt,
     id: post.id,
     profile: normalizeProfile(post),
-    published_at: post.published_at as string,
+    published_at: post.published_at as string | null,
     slug: post.slug as string,
     tags: post.tags,
     title: post.title as string,
