@@ -1,6 +1,7 @@
 import { draftMode } from 'next/headers'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
+import { getPostUrl } from '@/lib/blog-urls'
 import { supabase, supabaseAdmin } from '@/lib/supabase/client'
 
 export async function GET(request: NextRequest) {
@@ -44,21 +45,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL('/blog', request.url))
     }
 
-    if (post?.published_at) {
-      // Construct the full date-based URL
-      const publishedDate = new Date(post.published_at)
-      const year = String(publishedDate.getUTCFullYear())
-      const month = String(publishedDate.getUTCMonth() + 1).padStart(2, '0')
-      const day = String(publishedDate.getUTCDate()).padStart(2, '0')
-
+    if (post) {
       return NextResponse.redirect(
-        new URL(`/blog/${year}/${month}/${day}/${slug}`, request.url)
+        new URL(
+          getPostUrl(post.slug as string, post.published_at ?? null),
+          request.url
+        )
       )
-    }
-
-    if (post && !post.published_at) {
-      // Draft post with no published_at: redirect to draft route
-      return NextResponse.redirect(new URL(`/blog/draft/${slug}`, request.url))
     }
   } catch (error) {
     console.error('Error fetching post for draft mode:', error)

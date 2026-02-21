@@ -601,14 +601,14 @@ export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
   return {
     nextPost: nextData
       ? {
-          published_at: nextData.published_at as string | null,
+          published_at: nextData.published_at as string,
           slug: nextData.slug as string,
           title: nextData.title as string
         }
       : null,
     previousPost: prevData
       ? {
-          published_at: prevData.published_at as string | null,
+          published_at: prevData.published_at as string,
           slug: prevData.slug as string,
           title: prevData.title as string
         }
