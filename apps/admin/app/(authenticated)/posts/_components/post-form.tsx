@@ -518,10 +518,10 @@ export function PostForm({
                 <FieldLabel htmlFor="published_at_display">公開日時</FieldLabel>
                 {/* Hidden input that holds the ISO 8601 value actually submitted */}
                 <input
-                  defaultValue={post?.published_at ?? ''}
                   id="published_at"
                   name="published_at"
                   type="hidden"
+                  value={publishedAtValue ?? ''}
                 />
                 {/* Visible datetime-local input for user interaction */}
                 <Input
