@@ -6,7 +6,7 @@ import About from './_components/about'
 import Contact from './_components/contact'
 import Footer from './_components/footer'
 import Hero from './_components/hero'
-import Navigation from './_components/navigation'
+import NavigationWrapper from './_components/navigation-wrapper'
 import Works from './_components/works'
 
 const siteName = getSiteName()
@@ -55,7 +55,7 @@ export default function HomePage(_props: PageProps<'/'>) {
           <Link className="font-semibold text-foreground text-lg" href="/">
             {siteName}
           </Link>
-          <Navigation />
+          <NavigationWrapper />
         </div>
       </header>
 
