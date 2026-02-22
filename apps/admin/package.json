@@ -14,7 +14,7 @@
     "@lexical/utils": "0.40.0",
     "@portabletext/markdown": "1.1.2",
     "@supabase/ssr": "0.8.0",
-    "@supabase/supabase-js": "2.95.3",
+    "@supabase/supabase-js": "2.97.0",
     "@vercel/microfrontends": "2.3.0",
     "@ykzts/pagination-utils": "workspace:*",
     "@ykzts/portable-text-utils": "workspace:*",
