@@ -28,7 +28,7 @@
     "includes": [
       "**",
       "!packages/supabase/src/database.types.ts",
-      "!packages/ui/src/components/**/*.tsx"
+      "!packages/ui/src/components/**/*.{ts,tsx}"
     ]
   },
   "formatter": {
