@@ -11,7 +11,7 @@
     "test": "vitest --run"
   },
   "dependencies": {
-    "@portabletext/markdown": "1.1.2",
+    "@portabletext/markdown": "1.1.3",
     "@portabletext/to-html": "5.0.1"
   },
   "devDependencies": {
