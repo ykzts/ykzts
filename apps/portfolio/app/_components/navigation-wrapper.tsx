@@ -1,8 +1,16 @@
-import { getWorks } from '@/lib/supabase'
+import { getProfile, getWorks } from '@/lib/supabase'
 import Navigation from './navigation'
 
 async function NavigationImpl() {
+  let hasAbout = true
   let hasWorks = true
+
+  try {
+    const profile = await getProfile()
+    hasAbout = !!profile.about
+  } catch (error) {
+    console.error('Failed to load profile for navigation:', error)
+  }
 
   try {
     const works = await getWorks()
@@ -11,7 +19,7 @@ async function NavigationImpl() {
     console.error('Failed to load works for navigation:', error)
   }
 
-  return <Navigation hasWorks={hasWorks} />
+  return <Navigation hasAbout={hasAbout} hasWorks={hasWorks} />
 }
 
 export default NavigationImpl

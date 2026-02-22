@@ -27,15 +27,21 @@ const allNavItems = [
 ]
 
 type Props = {
+  hasAbout?: boolean
   hasWorks?: boolean
 }
 
-export default function Navigation({ hasWorks = true }: Props) {
+export default function Navigation({
+  hasAbout = true,
+  hasWorks = true
+}: Props) {
   const [open, setOpen] = useState(false)
 
-  const navItems = hasWorks
-    ? allNavItems
-    : allNavItems.filter((item) => item.href !== '#works')
+  const navItems = allNavItems.filter((item) => {
+    if (item.href === '#about') return hasAbout
+    if (item.href === '#works') return hasWorks
+    return true
+  })
 
   return (
     <div className="flex items-center">

@@ -29,10 +29,27 @@ describe('Navigation', () => {
     expect(screen.getAllByText('Works').length).toBeGreaterThan(0)
   })
 
-  it('always shows About and Contact links regardless of hasWorks', () => {
-    render(<Navigation hasWorks={false} />)
+  it('shows About link when hasAbout is true', () => {
+    render(<Navigation hasAbout={true} />)
 
     expect(screen.getAllByText('About').length).toBeGreaterThan(0)
+  })
+
+  it('hides About link when hasAbout is false', () => {
+    render(<Navigation hasAbout={false} />)
+
+    expect(screen.queryByText('About')).not.toBeInTheDocument()
+  })
+
+  it('shows About link by default when hasAbout is not provided', () => {
+    render(<Navigation />)
+
+    expect(screen.getAllByText('About').length).toBeGreaterThan(0)
+  })
+
+  it('always shows Contact link regardless of hasAbout and hasWorks', () => {
+    render(<Navigation hasAbout={false} hasWorks={false} />)
+
     expect(screen.getAllByText('Contact').length).toBeGreaterThan(0)
   })
 })
