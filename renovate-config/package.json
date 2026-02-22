@@ -3,7 +3,7 @@
   "dependencies": {},
   "description": "Shared Renovate configuration for repository maintenance and dependency updates",
   "devDependencies": {
-    "renovate": "43.10.2"
+    "renovate": "43.25.8"
   },
   "license": "MIT",
   "name": "@ykzts/renovate-config",
