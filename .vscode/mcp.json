@@ -1,13 +1,16 @@
 {
   "servers": {
     "github": {
+      "type": "http",
       "url": "https://api.githubcopilot.com/mcp/"
     },
     "next-devtools": {
+      "args": ["-y", "next-devtools-mcp@latest"],
       "command": "npx",
-      "args": ["-y", "next-devtools-mcp@latest"]
+      "type": "stdio"
     },
     "supabase": {
+      "type": "http",
       "url": "http://localhost:54321/mcp"
     }
   }
