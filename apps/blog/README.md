@@ -1,10 +1,10 @@
 # @ykzts/blog
 
-Next.js blog application powering ykzts.blog.
+Next.js blog application serving the blog section of ykzts.com.
 
 ## Purpose
 
-This application powers [ykzts.blog](https://ykzts.blog/), a personal technical blog. Built with Next.js App Router and Supabase, it delivers pre-rendered pages via React Server Components, integrates Vercel AI SDK for embedding-based recommendations, and follows WCAG-aligned accessibility practices throughout.
+This application powers the blog section at [ykzts.com/blog](https://ykzts.com/blog/), a personal technical blog. Built with Next.js App Router and Supabase, it delivers pre-rendered pages via React Server Components, integrates Vercel AI SDK for embedding-based recommendations, and follows WCAG-aligned accessibility practices throughout.
 
 ## Features
 
