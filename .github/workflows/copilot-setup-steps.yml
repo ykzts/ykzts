@@ -49,3 +49,6 @@ jobs:
 
       - name: Start Supabase local stack
         run: supabase start
+
+      - name: Setup environment
+        run: ./scripts/setup-env.sh
