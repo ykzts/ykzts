@@ -91,7 +91,7 @@ See `.env.example` for a complete list of required environment variables.
 
 - **App Router**: Pages and layouts under `app/` following Next.js App Router conventions
 - **Cache Components**: `cacheComponents: true` for improved rendering performance; pages with dynamic segments require `generateStaticParams`
-- **React Compiler**: Enabled for automatic memoisation and performance optimisation
+- **React Compiler**: Enabled for automatic memoization and performance optimization
 - **Typed Routes**: `typedRoutes: true` ensures route strings are type-checked at compile time
 - **CSS Modules / Tailwind CSS**: Component-scoped styles with Tailwind v4 utility classes
 - **Server Components**: Data fetching happens in React Server Components; client interactivity is isolated to `'use client'` components
