@@ -1,7 +1,8 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 chat:
   art: false
-language: en-US
+early_access: true
+language: ja-JP
 reviews:
   poem: false
   profile: chill
