@@ -85,9 +85,9 @@ for app_dir in "$ROOT_DIR"/apps/*/; do
   fi
 
   cp "${app_dir}.env.example" "$env_file"
-  sed_inplace "s|<SUPABASE_URL>|${SUPABASE_URL}|g" "$env_file"
-  sed_inplace "s|<SUPABASE_ANON_KEY>|${SUPABASE_ANON_KEY}|g" "$env_file"
-  sed_inplace "s|<SUPABASE_SERVICE_ROLE_KEY>|${SUPABASE_SERVICE_ROLE_KEY}|g" "$env_file"
+  sed_inplace "s|^\(NEXT_PUBLIC_SUPABASE_URL=\).*|\1${SUPABASE_URL}|" "$env_file"
+  sed_inplace "s|^\(NEXT_PUBLIC_SUPABASE_ANON_KEY=\).*|\1${SUPABASE_ANON_KEY}|" "$env_file"
+  sed_inplace "s|^\(SUPABASE_SERVICE_ROLE_KEY=\).*|\1${SUPABASE_SERVICE_ROLE_KEY}|" "$env_file"
   echo "✓ Generated $env_file"
 
   # Collect any remaining unfilled placeholders (values starting with "your-")
