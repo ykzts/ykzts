@@ -1,5 +1,5 @@
 import './globals.css'
-import { Analytics } from '@vercel/analytics/react'
+import { Analytics } from '@vercel/analytics/next'
 import { getSiteOrigin } from '@ykzts/site-config'
 import { cn } from '@ykzts/ui/lib/utils'
 import type { Metadata, Viewport } from 'next'
