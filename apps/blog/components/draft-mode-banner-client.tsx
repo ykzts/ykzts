@@ -1,18 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-
-export default function DraftModeBannerClient() {
-  const [isDraftMode, setIsDraftMode] = useState(false)
-
-  useEffect(() => {
-    // Check if draft mode is enabled by checking for the draft mode cookie
-    const hasDraftModeCookie = document.cookie
-      .split('; ')
-      .some((cookie) => cookie.startsWith('__prerender_bypass='))
-    setIsDraftMode(hasDraftModeCookie)
-  }, [])
-
+export default function DraftModeBannerClient({
+  isDraftMode
+}: {
+  isDraftMode: boolean
+}) {
   if (!isDraftMode) {
     return null
   }

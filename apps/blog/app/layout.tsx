@@ -4,7 +4,8 @@ import { getSiteOrigin } from '@ykzts/site-config'
 import { cn } from '@ykzts/ui/lib/utils'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
-import DraftModeBannerClient from '@/components/draft-mode-banner-client'
+import { Suspense } from 'react'
+import DraftModeBanner from '@/components/draft-mode-banner'
 import Footer from '@/components/footer'
 import ThemeProvider from '@/components/theme-provider'
 import { getPublisherProfile } from '@/lib/supabase/profiles'
@@ -84,7 +85,9 @@ export default function RootLayout({
           disableTransitionOnChange
           enableSystem
         >
-          <DraftModeBannerClient />
+          <Suspense fallback={null}>
+            <DraftModeBanner />
+          </Suspense>
           {children}
           <Footer />
           <Analytics />
