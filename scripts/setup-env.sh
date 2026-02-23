@@ -17,9 +17,9 @@ done
 
 # Detect supabase CLI
 if command -v supabase &>/dev/null; then
-  SUPABASE_CMD="supabase"
+  SUPABASE_CMD=(supabase)
 elif command -v npx &>/dev/null; then
-  SUPABASE_CMD="npx supabase"
+  SUPABASE_CMD=(npx supabase)
 else
   echo "Error: supabase CLI not found. Install it or ensure npx is available." >&2
   exit 1
@@ -33,18 +33,27 @@ fi
 
 # Fetch Supabase credentials
 echo "Fetching Supabase credentials..."
-SUPABASE_STATUS=$($SUPABASE_CMD status -o json 2>/dev/null) || {
+SUPABASE_STATUS=$("${SUPABASE_CMD[@]}" status -o json 2>/dev/null) || {
   echo "Error: Failed to get Supabase status. Make sure Local Supabase is running." >&2
-  echo "Start it with: ${SUPABASE_CMD} start" >&2
+  echo "Start it with: ${SUPABASE_CMD[*]} start" >&2
   exit 1
 }
 
-SUPABASE_URL=$(echo "$SUPABASE_STATUS" | jq -r '.API_URL')
-SUPABASE_ANON_KEY=$(echo "$SUPABASE_STATUS" | jq -r '.ANON_KEY')
-SUPABASE_SERVICE_ROLE_KEY=$(echo "$SUPABASE_STATUS" | jq -r '.SERVICE_ROLE_KEY')
+# Support both flat (.API_URL) and nested (.api.url) JSON formats across CLI versions
+SUPABASE_URL=$(echo "$SUPABASE_STATUS" | jq -r '.API_URL // .api.url // empty')
+SUPABASE_ANON_KEY=$(echo "$SUPABASE_STATUS" | jq -r '.ANON_KEY // .api.anon_key // empty')
+SUPABASE_SERVICE_ROLE_KEY=$(echo "$SUPABASE_STATUS" | jq -r '.SERVICE_ROLE_KEY // .api.service_role_key // empty')
 
-if [ "$SUPABASE_URL" = "null" ] || [ -z "$SUPABASE_URL" ]; then
+if [ -z "$SUPABASE_URL" ]; then
   echo "Error: Could not retrieve Supabase URL from status output." >&2
+  exit 1
+fi
+if [ -z "$SUPABASE_ANON_KEY" ]; then
+  echo "Error: Could not retrieve Supabase Anon Key from status output." >&2
+  exit 1
+fi
+if [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+  echo "Error: Could not retrieve Supabase Service Role Key from status output." >&2
   exit 1
 fi
 
@@ -68,7 +77,7 @@ for app_dir in "$ROOT_DIR"/apps/*/; do
   env_file="${app_dir}.env"
 
   if [ -f "$env_file" ] && [ "$FORCE" = false ]; then
-    read -r -p "⚠  ${env_file} already exists. Overwrite? [y/N] " confirm
+    read -r -p "⚠  ${env_file} already exists. Overwrite? [y/N] " confirm || true
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
       echo "Skipped ${env_file}"
       continue
