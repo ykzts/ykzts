@@ -8,7 +8,7 @@
   },
   "license": "MIT",
   "name": "@ykzts/monorepo",
-  "packageManager": "pnpm@10.30.0",
+  "packageManager": "pnpm@10.30.1",
   "private": true,
   "repository": {
     "type": "git",
