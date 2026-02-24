@@ -1,4 +1,10 @@
-import { Button } from '@ykzts/ui/components/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@ykzts/ui/components/dropdown-menu'
 import { User as UserIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -13,8 +19,8 @@ async function UserInfo() {
   const profile = await getProfile()
 
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-muted">
+    <DropdownMenu>
+      <DropdownMenuTrigger className="flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-muted transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
         {profile?.avatar_url ? (
           <Image
             alt={`${profile?.name ?? 'ユーザー'}のプロフィール画像`}
@@ -27,27 +33,28 @@ async function UserInfo() {
         ) : (
           <UserIcon className="h-4 w-4 text-muted-foreground" />
         )}
-      </div>
-      <form action={logout}>
-        <Button className="hidden sm:flex" type="submit" variant="secondary">
-          ログアウト
-        </Button>
-      </form>
-    </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem render={<Link href="/profile" />}>
+          プロフィール
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <form action={logout}>
+          <DropdownMenuItem
+            render={<button className="w-full text-left" type="submit" />}
+          >
+            ログアウト
+          </DropdownMenuItem>
+        </form>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 
 function UserInfoFallback() {
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
-        <UserIcon className="h-4 w-4 text-muted-foreground" />
-      </div>
-      <form action={logout}>
-        <Button className="hidden sm:flex" type="submit" variant="secondary">
-          ログアウト
-        </Button>
-      </form>
+    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
+      <UserIcon className="h-4 w-4 text-muted-foreground" />
     </div>
   )
 }

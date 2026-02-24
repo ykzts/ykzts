@@ -8,17 +8,7 @@ async function DashboardContent() {
   const counts = await getCounts()
 
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-      <Link className="block" href="/profile">
-        <Panel className="transition-shadow hover:shadow-md">
-          <h2 className="mb-2 font-semibold text-xl">Profile</h2>
-          <p className="font-bold text-3xl text-primary">{counts.profiles}</p>
-          <p className="mt-2 text-muted-foreground text-sm">
-            プロフィール情報を管理
-          </p>
-        </Panel>
-      </Link>
-
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
       <Link className="block" href="/works">
         <Panel className="transition-shadow hover:shadow-md">
           <h2 className="mb-2 font-semibold text-xl">Works</h2>
