@@ -80,7 +80,8 @@ export async function updatePostAction(
       publishedAt: validatedData.published_at,
       slug: validatedData.slug,
       status: validatedData.status,
-      tags
+      tags,
+      title: validatedData.title
     })
 
     revalidateTag('posts', 'max')
