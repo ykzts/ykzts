@@ -28,13 +28,13 @@ async function CodeBlockHighlighter({
 
     return (
       // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki generates safe HTML for syntax highlighting
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <div className="not-prose" dangerouslySetInnerHTML={{ __html: html }} />
     )
   } catch (error) {
     // If highlighting fails, fall back to plain code block
     console.error('Failed to highlight code block:', error)
     return (
-      <pre className="overflow-x-auto rounded-lg bg-muted p-4">
+      <pre className="not-prose overflow-x-auto rounded-lg bg-muted p-4">
         <code>{text}</code>
       </pre>
     )
@@ -71,7 +71,7 @@ const CodeBlockComponent: PortableTextBlockComponent = (props) => {
   return (
     <Suspense
       fallback={
-        <pre className="overflow-x-auto rounded-lg bg-muted p-4">
+        <pre className="not-prose overflow-x-auto rounded-lg bg-muted p-4">
           <code>{text}</code>
         </pre>
       }
