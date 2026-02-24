@@ -5,7 +5,6 @@ import {
   type PortableTextReactComponents
 } from '@portabletext/react'
 import Image from 'next/image'
-import type React from 'react'
 import { type ComponentProps, Suspense } from 'react'
 import Link from '@/components/link'
 import { generateHeadingId } from '@/lib/extract-headings'
@@ -105,13 +104,6 @@ const portableTextComponents = {
     h3: createHeadingComponent('h3')
   },
   marks: {
-    code({ children }: { children: React.ReactNode }) {
-      return (
-        <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">
-          {children}
-        </code>
-      )
-    },
     link({
       children,
       value
@@ -173,7 +165,7 @@ export default function PortableTextBlock({
   ...props
 }: PortableTextProps) {
   return (
-    <div className="prose max-w-none text-foreground prose-a:text-primary prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
+    <div className="prose max-w-none prose-code:rounded prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-a:text-primary prose-code:text-foreground prose-code:text-sm text-foreground prose-p:leading-relaxed prose-a:no-underline prose-code:before:content-none prose-code:after:content-none prose-a:hover:underline">
       <PortableText
         {...props}
         components={portableTextComponents}
