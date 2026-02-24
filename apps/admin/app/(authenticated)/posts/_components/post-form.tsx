@@ -530,7 +530,7 @@ export function PostForm({
                       ? toLocalDateTimeString(new Date(post.published_at))
                       : ''
                   }
-                  disabled={isEditMode && !!post?.published_at}
+                  disabled={isEditMode && post?.status === 'published'}
                   id="published_at_display"
                   min={
                     !post?.published_at
