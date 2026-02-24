@@ -20,7 +20,7 @@ async function PostEditContent({ id }: { id: string }) {
   }
 
   const draftPreviewUrl =
-    post.status === 'draft' && post.slug
+    (post.status === 'draft' || post.status === 'scheduled') && post.slug
       ? getDraftPreviewUrl(post.slug, process.env.DRAFT_SECRET ?? '')
       : null
 
