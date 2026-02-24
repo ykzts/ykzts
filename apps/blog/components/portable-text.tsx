@@ -173,7 +173,7 @@ export default function PortableTextBlock({
   ...props
 }: PortableTextProps) {
   return (
-    <div className="prose max-w-none prose-a:text-primary prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
+    <div className="prose max-w-none text-foreground prose-a:text-primary prose-headings:text-foreground prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
       <PortableText
         {...props}
         components={portableTextComponents}
