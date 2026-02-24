@@ -45,7 +45,10 @@ export default async function ArchivePage() {
       <Header />
       <main className="container mx-auto px-4 py-8">
         <h1 className="mb-8 font-bold text-3xl">アーカイブ</h1>
-        <ArchiveList initialYearData={{ count, posts, year: latestYear }} />
+        <ArchiveList
+          initialYearData={{ count, posts, year: latestYear }}
+          isDraft={isDraft}
+        />
       </main>
     </>
   )

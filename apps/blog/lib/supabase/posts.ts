@@ -80,6 +80,7 @@ export async function getPosts(page = 1, isDraft = false) {
       title,
       excerpt,
       tags,
+      status,
       published_at,
       profile:profiles!posts_profile_id_fkey(
         id,
@@ -118,6 +119,7 @@ export async function getPosts(page = 1, isDraft = false) {
     profile: normalizeProfile(post),
     published_at: post.published_at as string | null,
     slug: post.slug as string,
+    status: post.status as string,
     tags: post.tags,
     title: post.title as string,
     version_date: extractVersionDate(post.current_version)
@@ -215,6 +217,7 @@ export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
       title,
       excerpt,
       tags,
+      status,
       published_at,
       profile:profiles!posts_profile_id_fkey(
         id,
@@ -254,6 +257,7 @@ export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
     profile: normalizeProfile(post),
     published_at: post.published_at as string | null,
     slug: post.slug as string,
+    status: post.status as string,
     tags: post.tags,
     title: post.title as string,
     version_date: extractVersionDate(post.current_version)
@@ -685,6 +689,7 @@ export async function getPostsByYear(year: number, isDraft = false) {
       title,
       excerpt,
       tags,
+      status,
       published_at,
       profile:profiles!posts_profile_id_fkey(
         id,
@@ -723,6 +728,7 @@ export async function getPostsByYear(year: number, isDraft = false) {
     profile: normalizeProfile(post),
     published_at: post.published_at as string | null,
     slug: post.slug as string,
+    status: post.status as string,
     tags: post.tags,
     title: post.title as string,
     version_date: extractVersionDate(post.current_version)

@@ -1,4 +1,5 @@
 import { extractFirstParagraph } from '@ykzts/portable-text-utils'
+import { Badge } from '@ykzts/ui/components/badge'
 import {
   Card,
   CardContent,
@@ -19,6 +20,7 @@ type Post = {
   excerpt: string | null
   content?: PortableTextValue | null
   published_at: string | null
+  status?: string | null
   tags: string[] | null
   profile?: {
     id: string
@@ -27,20 +29,40 @@ type Post = {
 }
 
 type PostCardProps = {
+  isDraft?: boolean
   post: Post
 }
 
-export default function PostCard({ post }: PostCardProps) {
+function getPostStatusBadge(
+  status: string | null | undefined,
+  publishedAt: string | null
+): { label: string; variant: 'secondary' | 'outline' } | null {
+  if (status === 'draft') {
+    return { label: '下書き', variant: 'secondary' }
+  }
+  if (publishedAt && new Date(publishedAt) > new Date()) {
+    return { label: '予約投稿', variant: 'outline' }
+  }
+  return null
+}
+
+export default function PostCard({ isDraft = false, post }: PostCardProps) {
   const url = getPostUrl(post.slug, post.published_at)
   const previewText = post.excerpt || extractFirstParagraph(post.content)
+  const statusBadge = isDraft
+    ? getPostStatusBadge(post.status, post.published_at)
+    : null
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>
+        <CardTitle className="flex items-center gap-2">
           <Link className="hover:underline" href={url}>
             {post.title}
           </Link>
+          {statusBadge && (
+            <Badge variant={statusBadge.variant}>{statusBadge.label}</Badge>
+          )}
         </CardTitle>
         <CardDescription className="flex items-center gap-4">
           {post.profile?.name && <span>著者: {post.profile.name}</span>}
