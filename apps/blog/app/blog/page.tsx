@@ -47,7 +47,7 @@ export default async function HomePage() {
       <main className="container mx-auto px-4 py-8">
         <div className="space-y-6">
           {posts.map((post) => (
-            <PostCard key={post.id} post={post} />
+            <PostCard isDraft={isDraft} key={post.id} post={post} />
           ))}
         </div>
         {totalPages > 1 && (
