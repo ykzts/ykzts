@@ -15,6 +15,7 @@ export type PostWithDetails = Post & {
   profile?: {
     name: string | null
   } | null
+  version_count?: number | null
 }
 
 export type PostsFilter = {
@@ -167,7 +168,21 @@ export async function getPostById(id: string): Promise<PostWithDetails | null> {
     throw new Error(`投稿の取得に失敗しました: ${error.message}`)
   }
 
-  return data
+  if (!data) {
+    return null
+  }
+
+  // Count all versions for this post
+  const { count: versionCount, error: countError } = await supabase
+    .from('post_versions')
+    .select('*', { count: 'exact', head: true })
+    .eq('post_id', id)
+
+  if (countError) {
+    throw new Error(`バージョン数の取得に失敗しました: ${countError.message}`)
+  }
+
+  return { ...data, version_count: versionCount }
 }
 
 /**
