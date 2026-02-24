@@ -4,6 +4,96 @@ chat:
 early_access: true
 language: ja-JP
 reviews:
+  auto_apply_labels: true
+  labeling_instructions:
+    - label: 'scope: blog'
+      instructions: |
+        apps/blog/** 配下のファイルが変更された場合、またはPRタイトル/本文に「blog」が含まれる場合に付与。
+    - label: 'scope: portfolio'
+      instructions: |
+        apps/portfolio/** 配下の変更に付与。
+    - label: 'scope: admin'
+      instructions: |
+        apps/admin/** 配下の変更に付与。
+    - label: 'scope: packages'
+      instructions: |
+        packages/** 配下の共通パッケージ変更に付与。
+    - label: 'scope: infrastructure'
+      instructions: |
+        CI/CD・運用・インフラ関連の変更（.github/**, supabase/**, infra/** 等）に付与。
+    - label: 'type: documentation'
+      instructions: |
+        Markdown/ドキュメントの変更（*.md, docs/** など）の場合に付与。
+    - label: 'type: config'
+      instructions: |
+        設定ファイルのみの変更（*.yml, *.yaml, *.json, .env* など）の場合に付与。
+    - label: 'type: refactor'
+      instructions: |
+        仕様変更を伴わないリファクタリング（リネーム、責務の分割、不要コード削除 等）の場合に付与。
+    - label: 'type: a11y'
+      instructions: |
+        アクセシビリティに関する変更（ARIA属性、フォーカス管理、コントラスト、キーボード操作 等）に付与。
+    - label: 'type: performance'
+      instructions: |
+        パフォーマンス改善（キャッシュ、メモ化、N+1/Index最適化、画像最適化 等）の場合に付与。
+    - label: 'priority: high'
+      instructions: |
+        緊急度が高い修正（本番障害、セキュリティ修正、顧客影響が大きい不具合修正 等）の場合に付与。
+    - label: 'priority: low'
+      instructions: |
+        低優先の改善やメンテナンスの場合に付与。
+    - label: 'size: small'
+      instructions: |
+        変更規模が小さい場合（目安: ~100行、~5ファイル以内）に付与。
+    - label: 'size: large'
+      instructions: |
+        大規模変更（目安: 500行超や多数ファイル）に付与。
   poem: false
   profile: chill
   request_changes_workflow: true
+issue_enrichment:
+  labeling:
+    auto_apply_labels: true
+    labeling_instructions:
+      - label: 'scope: blog'
+        instructions: |
+          Issueの本文/タイトル、または貼付けパスに「apps/blog」が含まれる場合に付与。
+      - label: 'scope: portfolio'
+        instructions: |
+          「apps/portfolio」に関する課題に付与。
+      - label: 'scope: admin'
+        instructions: |
+          「apps/admin」に関する課題に付与。
+      - label: 'scope: packages'
+        instructions: |
+          共通パッケージ（packages/**）に関する課題に付与。
+      - label: 'scope: infrastructure'
+        instructions: |
+          CI/CD・運用・インフラ（.github/**, supabase/** 等）に関する課題に付与。
+      - label: 'type: documentation'
+        instructions: |
+          ドキュメントの追加・修正依頼、文章の改善、誤字修正 等に付与。
+      - label: 'type: config'
+        instructions: |
+          設定/ビルド/CIの変更依頼に付与。
+      - label: 'type: refactor'
+        instructions: |
+          実装の構造改善や責務の見直しに関する課題に付与。
+      - label: 'type: a11y'
+        instructions: |
+          画面読み上げ、キーボード操作、コントラスト等の改善依頼に付与。
+      - label: 'type: performance'
+        instructions: |
+          レイテンシ/スループット改善、重い処理の最適化に関する課題に付与。
+      - label: 'priority: high'
+        instructions: |
+          「至急」「緊急」「P0」「重大」「セキュリティ」等の語が含まれる場合に付与。
+      - label: 'priority: low'
+        instructions: |
+          低優先で対応可能な改善提案に付与。
+      - label: 'size: small'
+        instructions: |
+          影響範囲が限定的で、実装見積りが小さい課題に付与。
+      - label: 'size: large'
+        instructions: |
+          大きな影響範囲や複数アプリ横断の課題に付与。
