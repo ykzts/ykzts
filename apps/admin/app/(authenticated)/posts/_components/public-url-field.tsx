@@ -86,9 +86,7 @@ export function PublicUrlField({
   const handleOpenDraftPreview = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    if (draftPreviewUrl) {
-      window.open(draftPreviewUrl, '_blank', 'noopener,noreferrer')
-    }
+    window.open(draftPreviewUrl ?? '', '_blank', 'noopener,noreferrer')
   }
 
   const handleOpenInNewTab = (e: React.MouseEvent) => {
