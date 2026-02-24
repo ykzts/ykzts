@@ -6,10 +6,10 @@ export function DashboardSkeleton() {
     <div
       aria-label="読み込み中..."
       aria-live="polite"
-      className="grid grid-cols-1 gap-6 md:grid-cols-3"
+      className="grid grid-cols-1 gap-6 md:grid-cols-2"
       role="status"
     >
-      {[0, 1, 2].map((i) => (
+      {[0, 1].map((i) => (
         <Panel key={`skeleton-panel-${i}`}>
           <div
             aria-hidden="true"

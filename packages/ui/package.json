@@ -10,6 +10,7 @@
     "./components/card": "./src/patches/card.tsx",
     "./components/checkbox": "./src/components/checkbox.tsx",
     "./components/dialog": "./src/components/dialog.tsx",
+    "./components/dropdown-menu": "./src/components/dropdown-menu.tsx",
     "./components/empty": "./src/patches/empty.tsx",
     "./components/field": "./src/components/field.tsx",
     "./components/input": "./src/patches/input.tsx",
