@@ -580,8 +580,8 @@ export function PostForm({
           </div>
         </div>
 
-        {/* Version History Link - only in edit mode */}
-        {isEditMode && (
+        {/* Version History Link - only in edit mode with multiple versions */}
+        {isEditMode && (post.version_count ?? 0) > 1 && (
           <div>
             <Link
               className="text-primary text-sm hover:underline"
