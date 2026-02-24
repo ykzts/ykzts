@@ -8,7 +8,7 @@ import {
   InputGroupButton,
   InputGroupInput
 } from '@ykzts/ui/components/input-group'
-import { Check, Copy, ExternalLink } from 'lucide-react'
+import { Check, Copy, ExternalLink, Eye } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { getBlogPostUrl } from '@/lib/blog-urls'
@@ -83,6 +83,12 @@ export function PublicUrlField({
     }
   }
 
+  const handleOpenDraftPreview = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    window.open(draftPreviewUrl ?? '', '_blank', 'noopener,noreferrer')
+  }
+
   const handleOpenInNewTab = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
@@ -100,6 +106,17 @@ export function PublicUrlField({
           value={displayUrl}
         />
         <InputGroupAddon align="inline-end">
+          {url && draftPreviewUrl && (
+            <InputGroupButton
+              aria-label="ドラフトプレビューを開く"
+              onClick={handleOpenDraftPreview}
+              title="ドラフトプレビューを開く"
+              type="button"
+              variant="ghost"
+            >
+              <Eye />
+            </InputGroupButton>
+          )}
           <InputGroupButton
             aria-label="新しいタブで開く"
             onClick={handleOpenInNewTab}
@@ -123,8 +140,8 @@ export function PublicUrlField({
       <FieldDescription>
         {!url && draftPreviewUrl
           ? 'ドラフトプレビュー用のURL（公開前の確認に使用）'
-          : status === 'scheduled'
-            ? '予約公開のURL（指定日時に自動公開されます）'
+          : url && draftPreviewUrl
+            ? '予約公開のURL（目のアイコンでドラフトプレビューを確認できます）'
             : 'この投稿の公開URL'}
       </FieldDescription>
     </Field>
