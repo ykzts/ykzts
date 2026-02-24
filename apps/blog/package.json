@@ -10,7 +10,7 @@
     "@ykzts/site-config": "workspace:*",
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
-    "ai": "6.0.96",
+    "ai": "6.0.97",
     "feed": "5.2.0",
     "lucide-react": "0.575.0",
     "next": "16.1.6",
