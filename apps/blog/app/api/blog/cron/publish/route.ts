@@ -1,7 +1,7 @@
 import { revalidateTag } from 'next/cache'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase/client'
+import { supabaseAdmin } from '@/lib/supabase/client'
 
 export async function GET(request: NextRequest) {
   // Verify Vercel Cron Secret
@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
   }
 
-  if (!supabase) {
+  if (!supabaseAdmin) {
     return NextResponse.json(
       { message: 'Supabase not configured' },
       { status: 500 }
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
   try {
     // Find scheduled posts that should be published now
     const now = new Date().toISOString()
-    const { data: scheduledPosts, error: queryError } = await supabase
+    const { data: scheduledPosts, error: queryError } = await supabaseAdmin
       .from('posts')
       .select('id, slug, title')
       .eq('status', 'scheduled')
@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
 
     // Update posts to published status
     const postIds = scheduledPosts.map((post) => post.id)
-    const { error: updateError } = await supabase
+    const { error: updateError } = await supabaseAdmin
       .from('posts')
       .update({ status: 'published' })
       .in('id', postIds)

@@ -10,13 +10,13 @@ vi.mock('next/cache', () => ({
   revalidateTag: mockRevalidateTag
 }))
 
-// Mock Supabase client
+// Mock Supabase admin client
 const mockSupabase = {
   from: vi.fn()
 }
 
 vi.mock('@/lib/supabase/client', () => ({
-  supabase: mockSupabase
+  supabaseAdmin: mockSupabase
 }))
 
 describe('GET /api/cron/publish', () => {
