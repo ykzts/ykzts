@@ -78,8 +78,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       ai:
-        specifier: 6.0.95
-        version: 6.0.95(zod@4.3.6)
+        specifier: 6.0.96
+        version: 6.0.96(zod@4.3.6)
       diff:
         specifier: 8.0.3
         version: 8.0.3
@@ -166,8 +166,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       ai:
-        specifier: 6.0.95
-        version: 6.0.95(zod@4.3.6)
+        specifier: 6.0.96
+        version: 6.0.96(zod@4.3.6)
       feed:
         specifier: 5.2.0
         version: 5.2.0
@@ -2851,8 +2851,8 @@ packages:
     resolution: {integrity: sha512-kja8j7PjmncONqaTsB8fQ+wE2mSU2DJ9D4XKoJ5PFWIdRMa6SLSN1ff4mOr4jCbfRSsxR4keIiySJU0N9T5hIQ==}
     engines: {node: '>= 8.0.0'}
 
-  ai@6.0.95:
-    resolution: {integrity: sha512-10emBqMtiAqyR0xyVdVw2/mZgKWKSWagUHdkE54BNd9b5KSW9ez1BtAmO78nyOtLbOiDfLHUWSUtcJ276/fiKA==}
+  ai@6.0.96:
+    resolution: {integrity: sha512-Y5TTTZw7hkkb5M3h5ohSGg2ILh24MU6y/w5N8dVtU7KB+csjRqeNoE6BQmjo29nhR+IMnuO4vHEYVrv7aQC8Rg==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -9806,7 +9806,7 @@ snapshots:
     dependencies:
       humanize-ms: 1.2.1
 
-  ai@6.0.95(zod@4.3.6):
+  ai@6.0.96(zod@4.3.6):
     dependencies:
       '@ai-sdk/gateway': 3.0.53(zod@4.3.6)
       '@ai-sdk/provider': 3.0.8
