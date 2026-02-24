@@ -37,7 +37,7 @@ function getPostStatusBadge(
   status: string | null | undefined,
   publishedAt: string | null
 ): { label: string; variant: 'secondary' | 'outline' } | null {
-  if (status !== 'published') {
+  if (status === 'draft') {
     return { label: '下書き', variant: 'secondary' }
   }
   if (publishedAt && new Date(publishedAt) > new Date()) {
