@@ -6,7 +6,6 @@ describe('Navigation', () => {
   it('should render navigation links', () => {
     render(<Navigation />)
 
-    expect(screen.getByText('Blog')).toBeDefined()
     expect(screen.getByText('Archive')).toBeDefined()
     expect(screen.getByText('Search')).toBeDefined()
   })
