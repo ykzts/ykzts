@@ -20,7 +20,6 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 const navItems = [
-  { href: '/blog', label: 'Blog' },
   { href: '/blog/archive', label: 'Archive' },
   { href: '/blog/search', label: 'Search' }
 ] as const
