@@ -5,7 +5,6 @@ import {
   type PortableTextReactComponents
 } from '@portabletext/react'
 import Image from 'next/image'
-import type React from 'react'
 import { type ComponentProps, Suspense } from 'react'
 import Link from '@/components/link'
 import { generateHeadingId } from '@/lib/extract-headings'
@@ -29,13 +28,13 @@ async function CodeBlockHighlighter({
 
     return (
       // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki generates safe HTML for syntax highlighting
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <div className="not-prose" dangerouslySetInnerHTML={{ __html: html }} />
     )
   } catch (error) {
     // If highlighting fails, fall back to plain code block
     console.error('Failed to highlight code block:', error)
     return (
-      <pre className="overflow-x-auto rounded-lg bg-muted p-4">
+      <pre className="not-prose overflow-x-auto rounded-lg bg-muted p-4">
         <code>{text}</code>
       </pre>
     )
@@ -72,7 +71,7 @@ const CodeBlockComponent: PortableTextBlockComponent = (props) => {
   return (
     <Suspense
       fallback={
-        <pre className="overflow-x-auto rounded-lg bg-muted p-4">
+        <pre className="not-prose overflow-x-auto rounded-lg bg-muted p-4">
           <code>{text}</code>
         </pre>
       }
@@ -105,13 +104,6 @@ const portableTextComponents = {
     h3: createHeadingComponent('h3')
   },
   marks: {
-    code({ children }: { children: React.ReactNode }) {
-      return (
-        <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">
-          {children}
-        </code>
-      )
-    },
     link({
       children,
       value
@@ -173,7 +165,7 @@ export default function PortableTextBlock({
   ...props
 }: PortableTextProps) {
   return (
-    <div className="prose max-w-none prose-a:text-primary prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
+    <div className="prose max-w-none prose-code:rounded prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-a:text-primary prose-bullets:text-foreground prose-code:text-foreground prose-code:text-sm prose-counters:text-foreground prose-headings:text-foreground prose-lead:text-foreground prose-quotes:text-foreground prose-strong:text-foreground text-foreground prose-p:leading-relaxed prose-a:no-underline prose-code:before:content-none prose-code:after:content-none prose-a:hover:underline">
       <PortableText
         {...props}
         components={portableTextComponents}
