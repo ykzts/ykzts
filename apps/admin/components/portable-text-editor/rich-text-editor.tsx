@@ -134,19 +134,17 @@ export function RichTextEditor({
   }
 
   const handleEditorChange = useCallback(
-    (editorState: EditorState, editor: LexicalEditor) => {
-      editorState.read(() => {
-        const portableText = lexicalToPortableText(editor)
-        const jsonString = JSON.stringify(portableText)
+    (_editorState: EditorState, editor: LexicalEditor) => {
+      const portableText = lexicalToPortableText(editor)
+      const jsonString = JSON.stringify(portableText)
 
-        if (hiddenInputRef.current) {
-          hiddenInputRef.current.value = jsonString
-        }
+      if (hiddenInputRef.current) {
+        hiddenInputRef.current.value = jsonString
+      }
 
-        if (onChange) {
-          onChange(jsonString)
-        }
-      })
+      if (onChange) {
+        onChange(jsonString)
+      }
     },
     [onChange]
   )
