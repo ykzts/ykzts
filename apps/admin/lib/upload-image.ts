@@ -102,12 +102,17 @@ export async function uploadImage({
       data: { publicUrl }
     } = supabase.storage.from('images').getPublicUrl(filePath)
 
-    const dimensions = await getImageDimensions(file)
+    const dimensions = await getImageDimensions(file).catch(
+      (dimensionError) => {
+        console.warn('Failed to read image dimensions:', dimensionError)
+        return undefined
+      }
+    )
 
     return {
-      height: dimensions.height,
+      height: dimensions?.height,
       url: publicUrl,
-      width: dimensions.width
+      width: dimensions?.width
     }
   } catch (error) {
     console.error('Upload error:', error)
@@ -121,12 +126,16 @@ async function getImageDimensions(
   file: File
 ): Promise<{ height: number; width: number }> {
   return new Promise((resolve, reject) => {
+    const objectUrl = URL.createObjectURL(file)
     const img = new Image()
     img.onload = () => {
       resolve({ height: img.height, width: img.width })
-      URL.revokeObjectURL(img.src)
+      URL.revokeObjectURL(objectUrl)
     }
-    img.onerror = reject
-    img.src = URL.createObjectURL(file)
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl)
+      reject(new Error('Failed to load image for dimension extraction'))
+    }
+    img.src = objectUrl
   })
 }

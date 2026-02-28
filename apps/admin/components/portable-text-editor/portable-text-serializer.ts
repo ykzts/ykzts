@@ -381,9 +381,15 @@ export function initializeEditorWithPortableText(
           }
           const imageNode = $createImageNode({
             altText: block.alt || '',
-            height: block.height,
+            height:
+              typeof block.height === 'number' && Number.isFinite(block.height)
+                ? block.height
+                : undefined,
             src: block.asset.url,
-            width: block.width
+            width:
+              typeof block.width === 'number' && Number.isFinite(block.width)
+                ? block.width
+                : undefined
           })
           root.append(imageNode)
         } else if (block._type === 'block') {
