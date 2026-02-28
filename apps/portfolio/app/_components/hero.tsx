@@ -4,7 +4,6 @@ import { Suspense } from 'react'
 import Skeleton from '@/components/skeleton'
 import range from '@/lib/range'
 import { getProfile } from '@/lib/supabase'
-import keyVisual from '../_assets/key-visual.jpg'
 
 function HeroSkeleton() {
   return (
@@ -27,6 +26,9 @@ function HeroSkeleton() {
 
 async function HeroImpl() {
   const profile = await getProfile()
+  const kv = Array.isArray(profile.key_visual)
+    ? profile.key_visual[0]
+    : profile.key_visual
 
   return (
     <header className="px-6 py-20 md:px-12 lg:px-24 lg:py-28">
@@ -49,16 +51,18 @@ async function HeroImpl() {
           </div>
         </div>
 
-        <div className="shrink-0">
-          <Image
-            alt={profile.name}
-            className="rounded-2xl shadow-lg"
-            height={320}
-            placeholder="blur"
-            priority
-            src={keyVisual}
-            width={320}
-          />
+        <div className="w-full shrink-0 md:w-1/3">
+          {kv && (
+            <Image
+              alt={kv.alt_text ?? profile.name}
+              className="h-auto w-full rounded-2xl shadow-lg"
+              height={kv.height}
+              priority
+              sizes="(min-width: 768px) 33vw, 100vw"
+              src={kv.url}
+              width={kv.width}
+            />
+          )}
         </div>
       </div>
     </header>

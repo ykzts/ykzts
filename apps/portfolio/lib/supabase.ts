@@ -37,7 +37,8 @@ export async function getProfile() {
         fediverse_creator,
         avatar_url,
         social_links(url, service),
-        technologies(name)
+        technologies(name),
+        key_visual:key_visuals(id, url, width, height, artist_name, artist_url, attribution, alt_text)
       `
     )
     .maybeSingle()

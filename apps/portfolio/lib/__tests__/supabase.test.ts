@@ -34,6 +34,7 @@ describe('Supabase utilities', () => {
         ],
         email: 'test@example.com',
         id: 'test-id',
+        key_visual: null,
         name: 'Test User',
         social_links: [
           {
