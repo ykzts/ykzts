@@ -48,6 +48,19 @@ const technologySchema = z.object({
   name: z.string().min(1)
 })
 
+const keyVisualSchema = z.object({
+  alt_text: z.string().optional(),
+  artist_name: z.string().optional(),
+  artist_url: z
+    .url('アーティストURLの形式が正しくありません。')
+    .optional()
+    .or(z.literal('')),
+  attribution: z.string().optional(),
+  height: z.number().int().positive('高さは正の整数である必要があります。'),
+  url: z.url('キービジュアルURLの形式が正しくありません。'),
+  width: z.number().int().positive('幅は正の整数である必要があります。')
+})
+
 function parseFediverseCreator(value: string): {
   normalized: string
   acct: string
@@ -328,7 +341,7 @@ export async function updateProfile(
     // Get or create profile for current user
     const { data: existingProfile, error: profileFetchError } = await supabase
       .from('profiles')
-      .select('id')
+      .select('id, key_visual_id')
       .eq('user_id', user.id)
       .maybeSingle()
 
@@ -379,6 +392,117 @@ export async function updateProfile(
         }
       }
       profileId = newProfile.id
+    }
+
+    // Handle key visual
+    const keyVisualUrl = formData.get('key_visual_url') as string | null
+
+    if (keyVisualUrl && keyVisualUrl.trim() !== '') {
+      const keyVisualWidthStr = formData.get('key_visual_width') as string
+      const keyVisualHeightStr = formData.get('key_visual_height') as string
+
+      const rawKeyVisualData = {
+        alt_text: (formData.get('key_visual_alt_text') as string) || undefined,
+        artist_name:
+          (formData.get('key_visual_artist_name') as string) || undefined,
+        artist_url:
+          (formData.get('key_visual_artist_url') as string) || undefined,
+        attribution:
+          (formData.get('key_visual_attribution') as string) || undefined,
+        height: Number.parseInt(keyVisualHeightStr, 10),
+        url: keyVisualUrl.trim(),
+        width: Number.parseInt(keyVisualWidthStr, 10)
+      }
+
+      const keyVisualValidation = keyVisualSchema.safeParse(rawKeyVisualData)
+      if (!keyVisualValidation.success) {
+        return {
+          error: `キービジュアル: ${keyVisualValidation.error.issues[0].message}`
+        }
+      }
+
+      const {
+        url,
+        width,
+        height,
+        alt_text,
+        artist_name,
+        artist_url,
+        attribution
+      } = keyVisualValidation.data
+
+      const keyVisualData = {
+        alt_text: alt_text && alt_text.trim() !== '' ? alt_text.trim() : null,
+        artist_name:
+          artist_name && artist_name.trim() !== '' ? artist_name.trim() : null,
+        artist_url:
+          artist_url && artist_url.trim() !== '' ? artist_url.trim() : null,
+        attribution:
+          attribution && attribution.trim() !== '' ? attribution.trim() : null,
+        height,
+        url,
+        width
+      }
+
+      if (existingProfile?.key_visual_id) {
+        // Update existing key_visual record
+        const { error: kvUpdateError } = await supabase
+          .from('key_visuals')
+          .update(keyVisualData)
+          .eq('id', existingProfile.key_visual_id)
+
+        if (kvUpdateError) {
+          return {
+            error: `キービジュアルの更新に失敗しました: ${kvUpdateError.message}`
+          }
+        }
+      } else {
+        // Insert new key_visual record and update profiles.key_visual_id
+        const { data: newKeyVisual, error: kvInsertError } = await supabase
+          .from('key_visuals')
+          .insert(keyVisualData)
+          .select('id')
+          .single()
+
+        if (kvInsertError) {
+          return {
+            error: `キービジュアルの保存に失敗しました: ${kvInsertError.message}`
+          }
+        }
+
+        const { error: profileKvUpdateError } = await supabase
+          .from('profiles')
+          .update({ key_visual_id: newKeyVisual.id })
+          .eq('id', profileId)
+
+        if (profileKvUpdateError) {
+          return {
+            error: `プロフィールの更新に失敗しました: ${profileKvUpdateError.message}`
+          }
+        }
+      }
+    } else if (existingProfile?.key_visual_id) {
+      // No key visual URL provided but one exists — clear it
+      const { error: profileKvClearError } = await supabase
+        .from('profiles')
+        .update({ key_visual_id: null })
+        .eq('id', profileId)
+
+      if (profileKvClearError) {
+        return {
+          error: `プロフィールの更新に失敗しました: ${profileKvClearError.message}`
+        }
+      }
+
+      const { error: kvDeleteError } = await supabase
+        .from('key_visuals')
+        .delete()
+        .eq('id', existingProfile.key_visual_id)
+
+      if (kvDeleteError) {
+        console.error('Failed to delete key visual record:', kvDeleteError)
+        // Continue even if deletion fails
+      }
     }
 
     // Handle social links
