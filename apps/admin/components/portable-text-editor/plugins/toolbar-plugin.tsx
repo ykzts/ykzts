@@ -17,6 +17,7 @@ import {
   type HeadingNode
 } from '@lexical/rich-text'
 import { $setBlocksType } from '@lexical/selection'
+import { INSERT_TABLE_COMMAND } from '@lexical/table'
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils'
 import {
   Select,
@@ -45,6 +46,7 @@ import {
   ListOrdered,
   Outdent,
   Strikethrough,
+  Table,
   Underline
 } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -53,6 +55,7 @@ import { uploadImage } from '@/lib/upload-image'
 import { ImageAltDialog } from './image-alt-dialog'
 import { INSERT_IMAGE_COMMAND } from './image-plugin'
 import { LinkDialog } from './link-dialog'
+import { TableDialog } from './table-dialog'
 
 const BLOCK_TYPES = [
   { label: '段落', value: 'paragraph' },
@@ -111,6 +114,7 @@ export function ToolbarPlugin() {
   const [isUploading, setIsUploading] = useState(false)
   const [showLinkDialog, setShowLinkDialog] = useState(false)
   const [showAltDialog, setShowAltDialog] = useState(false)
+  const [showTableDialog, setShowTableDialog] = useState(false)
   const [pendingImageUrl, setPendingImageUrl] = useState<string | null>(null)
   const [pendingImageAlt, setPendingImageAlt] = useState('')
   const [pendingImageWidth, setPendingImageWidth] = useState<
@@ -295,6 +299,16 @@ export function ToolbarPlugin() {
   const triggerImageUpload = () => {
     fileInputRef.current?.click()
   }
+
+  const insertTable = useCallback(
+    (rows: number, columns: number) => {
+      editor.dispatchCommand(INSERT_TABLE_COMMAND, {
+        columns: String(columns),
+        rows: String(rows)
+      })
+    },
+    [editor]
+  )
 
   const formatBulletList = () => {
     if (isBulletList) {
@@ -532,6 +546,14 @@ export function ToolbarPlugin() {
         >
           <Image className="size-4" />
         </button>
+        <button
+          aria-label="テーブル"
+          className="rounded px-3 py-1 text-muted-foreground text-sm transition-colors hover:bg-muted/20"
+          onClick={() => setShowTableDialog(true)}
+          type="button"
+        >
+          <Table className="size-4" />
+        </button>
         <input
           accept="image/jpeg,image/png,image/gif,image/webp"
           className="hidden"
@@ -550,6 +572,11 @@ export function ToolbarPlugin() {
         onConfirm={handleAltConfirm}
         onOpenChange={handleAltDialogOpenChange}
         open={showAltDialog}
+      />
+      <TableDialog
+        onConfirm={insertTable}
+        onOpenChange={setShowTableDialog}
+        open={showTableDialog}
       />
     </div>
   )

@@ -87,6 +87,49 @@ const portableTextComponents = {
 
       return <Link href={href}>{children}</Link>
     }
+  },
+  types: {
+    table({
+      value
+    }: {
+      value: {
+        _key: string
+        rows: Array<{
+          _key: string
+          cells: Array<{ _key: string; content: string; isHeader: boolean }>
+        }>
+      }
+    }) {
+      return (
+        <div className="my-6 overflow-x-auto">
+          <table className="w-full border-collapse border border-border text-sm">
+            <tbody>
+              {value.rows.map((row) => (
+                <tr key={row._key}>
+                  {row.cells.map((cell) =>
+                    cell.isHeader ? (
+                      <th
+                        className="border border-border bg-muted/50 px-4 py-2 text-left font-semibold"
+                        key={cell._key}
+                      >
+                        {cell.content}
+                      </th>
+                    ) : (
+                      <td
+                        className="border border-border px-4 py-2"
+                        key={cell._key}
+                      >
+                        {cell.content}
+                      </td>
+                    )
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    }
   }
 } satisfies Partial<PortableTextReactComponents>
 

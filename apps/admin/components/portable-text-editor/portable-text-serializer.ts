@@ -18,6 +18,13 @@ import {
   type HeadingNode
 } from '@lexical/rich-text'
 import {
+  $createTableNodeWithDimensions,
+  $isTableCellNode,
+  $isTableNode,
+  $isTableRowNode,
+  TableCellHeaderStates
+} from '@lexical/table'
+import {
   $createParagraphNode,
   $createTextNode,
   $getRoot,
@@ -56,6 +63,23 @@ type PortableTextImage = {
   width?: number
 }
 
+type PortableTextTableCell = {
+  _key: string
+  content: string
+  isHeader: boolean
+}
+
+type PortableTextTableRow = {
+  _key: string
+  cells: PortableTextTableCell[]
+}
+
+type PortableTextTable = {
+  _key: string
+  _type: 'table'
+  rows: PortableTextTableRow[]
+}
+
 type PortableTextSpan = {
   _key: string
   _type: 'span'
@@ -70,7 +94,11 @@ type PortableTextMarkDef = {
   title?: string
 }
 
-type PortableTextValue = (PortableTextBlock | PortableTextImage)[]
+type PortableTextValue = (
+  | PortableTextBlock
+  | PortableTextImage
+  | PortableTextTable
+)[]
 
 /**
  * Process text content from a paragraph or list item
@@ -241,7 +269,11 @@ export function lexicalToPortableText(
   editor: LexicalEditor
 ): PortableTextValue {
   return editor.read(() => {
-    const blocks: (PortableTextBlock | PortableTextImage)[] = []
+    const blocks: (
+      | PortableTextBlock
+      | PortableTextImage
+      | PortableTextTable
+    )[] = []
 
     const root = $getRoot()
     const children = root.getChildren()
@@ -260,6 +292,32 @@ export function lexicalToPortableText(
           height: child.getHeight(),
           width: child.getWidth()
         })
+      } else if ($isTableNode(child)) {
+        // Handle table nodes
+        const rows: PortableTextTableRow[] = []
+
+        for (const rowChild of child.getChildren()) {
+          if (!$isTableRowNode(rowChild)) continue
+
+          const cells: PortableTextTableCell[] = []
+
+          for (const cellChild of rowChild.getChildren()) {
+            if (!$isTableCellNode(cellChild)) continue
+
+            const isHeader = cellChild.hasHeaderState(TableCellHeaderStates.ROW)
+            const textContent = cellChild.getTextContent()
+
+            cells.push({
+              _key: crypto.randomUUID(),
+              content: textContent,
+              isHeader
+            })
+          }
+
+          rows.push({ _key: crypto.randomUUID(), cells })
+        }
+
+        blocks.push({ _key: crypto.randomUUID(), _type: 'table', rows })
       } else if ($isListNode(child)) {
         // Handle list nodes with recursive processing for nested lists
         processListItems(child as ListNode, 1, blocks)
@@ -392,6 +450,50 @@ export function initializeEditorWithPortableText(
                 : undefined
           })
           root.append(imageNode)
+        } else if (block._type === 'table') {
+          // Close any open lists
+          closeAllLists()
+
+          // Handle table blocks
+          if (block.rows.length === 0) continue
+
+          const tableNode = $createTableNodeWithDimensions(
+            block.rows.length,
+            block.rows[0].cells.length || 1,
+            false
+          )
+
+          const tableRows = tableNode.getChildren()
+          for (let rowIndex = 0; rowIndex < block.rows.length; rowIndex++) {
+            const portableRow = block.rows[rowIndex]
+            const tableRowNode = tableRows[rowIndex]
+            if (!$isTableRowNode(tableRowNode)) continue
+
+            const tableCells = tableRowNode.getChildren()
+            for (
+              let cellIndex = 0;
+              cellIndex < portableRow.cells.length;
+              cellIndex++
+            ) {
+              const portableCell = portableRow.cells[cellIndex]
+              const tableCellNode = tableCells[cellIndex]
+              if (!$isTableCellNode(tableCellNode)) continue
+
+              if (portableCell.isHeader) {
+                tableCellNode.setHeaderStyles(TableCellHeaderStates.ROW)
+              }
+
+              const paragraph = $createParagraphNode()
+              const textNode = $createTextNode(portableCell.content)
+              paragraph.append(textNode)
+
+              // Clear existing content and append our text
+              tableCellNode.clear()
+              tableCellNode.append(paragraph)
+            }
+          }
+
+          root.append(tableNode)
         } else if (block._type === 'block') {
           // Create a map of mark definitions
           const markDefMap = new Map<string, PortableTextMarkDef>()

@@ -24,7 +24,24 @@ type PortableTextMarkDef = {
   href?: string
 }
 
-type PortableTextValue = PortableTextBlock[]
+type PortableTextTableCell = {
+  _key: string
+  content: string
+  isHeader: boolean
+}
+
+type PortableTextTableRow = {
+  _key: string
+  cells: PortableTextTableCell[]
+}
+
+type PortableTextTable = {
+  _key: string
+  _type: 'table'
+  rows: PortableTextTableRow[]
+}
+
+type PortableTextValue = (PortableTextBlock | PortableTextTable)[]
 
 type PortableTextPreviewProps = {
   value?: string
@@ -61,6 +78,39 @@ export function PortableTextPreview({ value }: PortableTextPreviewProps) {
   return (
     <div className="prose prose-sm dark:prose-invert max-w-none">
       {blocks.map((block) => {
+        if (block._type === 'table') {
+          const tableBlock = block as PortableTextTable
+          return (
+            <div className="my-2 overflow-x-auto" key={tableBlock._key}>
+              <table className="w-full border-collapse border border-border text-sm">
+                <tbody>
+                  {tableBlock.rows.map((row) => (
+                    <tr key={row._key}>
+                      {row.cells.map((cell) =>
+                        cell.isHeader ? (
+                          <th
+                            className="border border-border bg-muted/30 px-3 py-2 text-left font-semibold"
+                            key={cell._key}
+                          >
+                            {cell.content}
+                          </th>
+                        ) : (
+                          <td
+                            className="border border-border px-3 py-2"
+                            key={cell._key}
+                          >
+                            {cell.content}
+                          </td>
+                        )
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )
+        }
+
         if (block._type !== 'block') return null
 
         // Create a map of mark definitions
