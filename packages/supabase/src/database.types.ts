@@ -34,6 +34,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      key_visuals: {
+        Row: {
+          alt_text: string | null
+          artist_name: string | null
+          artist_url: string | null
+          attribution: string | null
+          created_at: string
+          height: number
+          id: string
+          updated_at: string
+          url: string
+          width: number
+        }
+        Insert: {
+          alt_text?: string | null
+          artist_name?: string | null
+          artist_url?: string | null
+          attribution?: string | null
+          created_at?: string
+          height: number
+          id?: string
+          updated_at?: string
+          url: string
+          width: number
+        }
+        Update: {
+          alt_text?: string | null
+          artist_name?: string | null
+          artist_url?: string | null
+          attribution?: string | null
+          created_at?: string
+          height?: number
+          id?: string
+          updated_at?: string
+          url?: string
+          width?: number
+        }
+        Relationships: []
+      }
       post_versions: {
         Row: {
           change_summary: string | null
@@ -168,6 +207,7 @@ export type Database = {
           email: string | null
           fediverse_creator: string | null
           id: string
+          key_visual_id: string | null
           name: string
           occupation: string | null
           tagline: string | null
@@ -182,6 +222,7 @@ export type Database = {
           email?: string | null
           fediverse_creator?: string | null
           id?: string
+          key_visual_id?: string | null
           name: string
           occupation?: string | null
           tagline?: string | null
@@ -196,6 +237,7 @@ export type Database = {
           email?: string | null
           fediverse_creator?: string | null
           id?: string
+          key_visual_id?: string | null
           name?: string
           occupation?: string | null
           tagline?: string | null
@@ -203,7 +245,15 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_key_visual_id_fkey"
+            columns: ["key_visual_id"]
+            isOneToOne: false
+            referencedRelation: "key_visuals"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       social_links: {
         Row: {
