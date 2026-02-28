@@ -22,6 +22,16 @@ import {
   QuoteNode
 } from '@lexical/rich-text'
 import {
+  $createTableNodeWithDimensions,
+  $isTableCellNode,
+  $isTableNode,
+  $isTableRowNode,
+  TableCellHeaderStates,
+  TableCellNode,
+  TableNode,
+  TableRowNode
+} from '@lexical/table'
+import {
   $createParagraphNode,
   $createTextNode,
   $getRoot,
@@ -2009,6 +2019,159 @@ describe('Portable Text Serializer', () => {
       expect(portableText2[0].children[0].text).toBe(
         'def hello():\n    print("Hello")'
       )
+    })
+
+    it('should serialize a table to Portable Text', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          TableNode,
+          TableCellNode,
+          TableRowNode
+        ]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const tableNode = $createTableNodeWithDimensions(2, 2, false)
+        root.append(tableNode)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+
+      expect(portableText).toHaveLength(1)
+      expect(portableText[0]._type).toBe('table')
+      if (portableText[0]._type === 'table') {
+        expect(portableText[0].rows).toHaveLength(2)
+        expect(portableText[0].rows[0].cells).toHaveLength(2)
+      }
+    })
+
+    it('should deserialize a table from Portable Text', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          TableNode,
+          TableCellNode,
+          TableRowNode
+        ]
+      })
+
+      const portableText = JSON.stringify([
+        {
+          _key: 'table1',
+          _type: 'table',
+          rows: [
+            {
+              _key: 'row1',
+              cells: [
+                { _key: 'cell1', content: 'Name', isHeader: true },
+                { _key: 'cell2', content: 'Value', isHeader: true }
+              ]
+            },
+            {
+              _key: 'row2',
+              cells: [
+                { _key: 'cell3', content: 'foo', isHeader: false },
+                { _key: 'cell4', content: 'bar', isHeader: false }
+              ]
+            }
+          ]
+        }
+      ])
+
+      initializeEditorWithPortableText(editor, portableText)
+
+      editor.read(() => {
+        const root = $getRoot()
+        const tableNode = root.getFirstChild()
+        expect($isTableNode(tableNode)).toBe(true)
+
+        if ($isTableNode(tableNode)) {
+          const rows = tableNode.getChildren()
+          expect(rows).toHaveLength(2)
+
+          const firstRow = rows[0]
+          expect($isTableRowNode(firstRow)).toBe(true)
+
+          if ($isTableRowNode(firstRow)) {
+            const cells = firstRow.getChildren()
+            expect(cells).toHaveLength(2)
+
+            const firstCell = cells[0]
+            expect($isTableCellNode(firstCell)).toBe(true)
+
+            if ($isTableCellNode(firstCell)) {
+              expect(firstCell.hasHeaderState(TableCellHeaderStates.ROW)).toBe(
+                true
+              )
+              expect(firstCell.getTextContent()).toBe('Name')
+            }
+          }
+
+          const secondRow = rows[1]
+          if ($isTableRowNode(secondRow)) {
+            const cells = secondRow.getChildren()
+            const firstCell = cells[0]
+            if ($isTableCellNode(firstCell)) {
+              expect(firstCell.hasHeaderState(TableCellHeaderStates.ROW)).toBe(
+                false
+              )
+              expect(firstCell.getTextContent()).toBe('foo')
+            }
+          }
+        }
+      })
+    })
+
+    it('should round-trip a table through serialization', () => {
+      const editor = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          TableNode,
+          TableCellNode,
+          TableRowNode
+        ]
+      })
+
+      editor.update(() => {
+        const root = $getRoot()
+        const tableNode = $createTableNodeWithDimensions(2, 3, false)
+        root.append(tableNode)
+      })
+
+      const portableText = lexicalToPortableText(editor)
+      const json = JSON.stringify(portableText)
+
+      const editor2 = createEditor({
+        nodes: [
+          LinkNode,
+          ImageNode,
+          ListNode,
+          ListItemNode,
+          TableNode,
+          TableCellNode,
+          TableRowNode
+        ]
+      })
+      initializeEditorWithPortableText(editor2, json)
+
+      const portableText2 = lexicalToPortableText(editor2)
+
+      expect(portableText2[0]._type).toBe('table')
+      if (portableText2[0]._type === 'table') {
+        expect(portableText2[0].rows).toHaveLength(2)
+        expect(portableText2[0].rows[0].cells).toHaveLength(3)
+      }
     })
   })
 })

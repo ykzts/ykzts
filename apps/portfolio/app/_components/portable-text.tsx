@@ -4,6 +4,14 @@ import {
   type PortableTextMarkComponentProps,
   type PortableTextReactComponents
 } from '@portabletext/react'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@ykzts/ui/components/table'
 import type React from 'react'
 import { type ComponentProps, Suspense } from 'react'
 import Link from '@/components/link'
@@ -86,6 +94,47 @@ const portableTextComponents = {
       const href = value?.href
 
       return <Link href={href}>{children}</Link>
+    }
+  },
+  types: {
+    table({
+      value
+    }: {
+      value: {
+        _key: string
+        rows: Array<{
+          _key: string
+          cells: Array<{ _key: string; content: string; isHeader: boolean }>
+        }>
+      }
+    }) {
+      const hasHeader = value.rows[0]?.cells.every((cell) => cell.isHeader)
+      const headerRow = hasHeader ? value.rows[0] : null
+      const bodyRows = hasHeader ? value.rows.slice(1) : value.rows
+      return (
+        <div className="my-6">
+          <Table>
+            {headerRow && (
+              <TableHeader>
+                <TableRow>
+                  {headerRow.cells.map((cell) => (
+                    <TableHead key={cell._key}>{cell.content}</TableHead>
+                  ))}
+                </TableRow>
+              </TableHeader>
+            )}
+            <TableBody>
+              {bodyRows.map((row) => (
+                <TableRow key={row._key}>
+                  {row.cells.map((cell) => (
+                    <TableCell key={cell._key}>{cell.content}</TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      )
     }
   }
 } satisfies Partial<PortableTextReactComponents>

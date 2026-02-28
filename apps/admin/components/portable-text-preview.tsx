@@ -1,5 +1,13 @@
 'use client'
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@ykzts/ui/components/table'
 import { useEffect, useState } from 'react'
 
 type PortableTextBlock = {
@@ -24,7 +32,24 @@ type PortableTextMarkDef = {
   href?: string
 }
 
-type PortableTextValue = PortableTextBlock[]
+type PortableTextTableCell = {
+  _key: string
+  content: string
+  isHeader: boolean
+}
+
+type PortableTextTableRow = {
+  _key: string
+  cells: PortableTextTableCell[]
+}
+
+type PortableTextTable = {
+  _key: string
+  _type: 'table'
+  rows: PortableTextTableRow[]
+}
+
+type PortableTextValue = (PortableTextBlock | PortableTextTable)[]
 
 type PortableTextPreviewProps = {
   value?: string
@@ -61,6 +86,39 @@ export function PortableTextPreview({ value }: PortableTextPreviewProps) {
   return (
     <div className="prose prose-sm dark:prose-invert max-w-none">
       {blocks.map((block) => {
+        if (block._type === 'table') {
+          const tableBlock = block as PortableTextTable
+          const hasHeader = tableBlock.rows[0]?.cells.every(
+            (cell) => cell.isHeader
+          )
+          const headerRow = hasHeader ? tableBlock.rows[0] : null
+          const bodyRows = hasHeader
+            ? tableBlock.rows.slice(1)
+            : tableBlock.rows
+          return (
+            <Table key={tableBlock._key}>
+              {headerRow && (
+                <TableHeader>
+                  <TableRow>
+                    {headerRow.cells.map((cell) => (
+                      <TableHead key={cell._key}>{cell.content}</TableHead>
+                    ))}
+                  </TableRow>
+                </TableHeader>
+              )}
+              <TableBody>
+                {bodyRows.map((row) => (
+                  <TableRow key={row._key}>
+                    {row.cells.map((cell) => (
+                      <TableCell key={cell._key}>{cell.content}</TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )
+        }
+
         if (block._type !== 'block') return null
 
         // Create a map of mark definitions

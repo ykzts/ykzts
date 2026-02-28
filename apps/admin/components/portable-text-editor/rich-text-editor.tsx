@@ -11,6 +11,7 @@ import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { HeadingNode, QuoteNode } from '@lexical/rich-text'
+import { TableCellNode, TableNode, TableRowNode } from '@lexical/table'
 import type { EditorState, LexicalEditor } from 'lexical'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ImageNode } from './nodes/image-node'
@@ -19,6 +20,7 @@ import { CodeHighlightPlugin } from './plugins/code-highlight-plugin'
 import { EditorStatePlugin } from './plugins/editor-state-plugin'
 import { ImagePlugin } from './plugins/image-plugin'
 import { LinkPlugin } from './plugins/link-plugin'
+import { TablePlugin } from './plugins/table-plugin'
 import { ToolbarPlugin } from './plugins/toolbar-plugin'
 import {
   initializeEditorWithPortableText,
@@ -125,7 +127,10 @@ export function RichTextEditor({
       ListNode,
       ListItemNode,
       HeadingNode,
-      QuoteNode
+      QuoteNode,
+      TableNode,
+      TableCellNode,
+      TableRowNode
     ],
     onError: (error: Error) => {
       console.error('Lexical error:', error)
@@ -185,6 +190,7 @@ export function RichTextEditor({
           {autoFocus && <AutoFocusPlugin />}
           <LinkPlugin />
           <ImagePlugin />
+          <TablePlugin />
         </div>
         <EditorStatePlugin onChange={handleEditorChange} />
       </LexicalComposer>
