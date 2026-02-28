@@ -1,26 +1,26 @@
-import Link from 'next/link'
-import Navigation from './navigation'
+import { getSiteName } from '@ykzts/site-config'
+import { Suspense } from 'react'
+import NavigationWrapper from './navigation-wrapper'
 import SearchForm from './search-form'
-import ThemeToggle from './theme-toggle'
+
+const siteName = getSiteName()
 
 export default function Header() {
   return (
-    <header className="border-border border-b">
-      <div className="container mx-auto px-4 py-6">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center justify-between gap-6">
-            <Link
-              className="font-bold text-2xl hover:text-primary"
-              href="/blog"
-            >
-              Blog
-            </Link>
-            <Navigation />
-          </div>
-          <div className="flex items-center gap-2">
-            <SearchForm className="w-full md:max-w-md" />
-            <ThemeToggle />
-          </div>
+    <header className="sticky top-0 z-10 border-border border-b bg-background/90 px-6 backdrop-blur-sm md:px-12 lg:px-24">
+      <div className="mx-auto flex h-14 max-w-4xl items-center justify-between">
+        <a className="font-semibold text-foreground text-lg" href="/">
+          {siteName}
+        </a>
+        <div className="flex items-center gap-2">
+          <SearchForm className="hidden md:block md:w-48 lg:w-64" />
+          <Suspense
+            fallback={
+              <div className="h-9 w-32 animate-pulse rounded-md bg-muted" />
+            }
+          >
+            <NavigationWrapper />
+          </Suspense>
         </div>
       </div>
     </header>

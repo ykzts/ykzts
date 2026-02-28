@@ -4,6 +4,7 @@
     "jsx": "react-jsx",
     "paths": {
       "@/*": ["./*"],
+      "@ykzts/layout/*": ["../../packages/layout/src/*"],
       "@ykzts/ui/*": ["../../packages/ui/src/*"]
     },
     "plugins": [

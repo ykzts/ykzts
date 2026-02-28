@@ -14,7 +14,7 @@ export async function getPublisherProfile() {
 
   const { data: profileData, error: profileError } = await supabase
     .from('profiles')
-    .select('id, name, avatar_url, tagline, fediverse_creator')
+    .select('id, name, avatar_url, tagline, fediverse_creator, about')
     .maybeSingle()
 
   if (profileError) {

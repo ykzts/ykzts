@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+@source '../node_modules/@ykzts/layout';
 @source '../node_modules/@ykzts/ui';
 
 @theme {

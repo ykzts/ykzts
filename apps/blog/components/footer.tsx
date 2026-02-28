@@ -1,9 +1,26 @@
+import Footer from '@ykzts/layout/components/footer'
+import { Suspense } from 'react'
 import Link from '@/components/link'
+import { getPublisherProfile } from '@/lib/supabase/profiles'
 
-export default function Footer() {
+async function FooterImpl() {
+  const profile = await getPublisherProfile()
+
   return (
-    <footer className="border-border border-t px-6 py-12 md:px-12 lg:px-24">
-      <div className="mx-auto flex max-w-4xl items-center justify-end text-base text-muted-foreground">
+    <Footer>
+      <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+        <div className="flex flex-col items-center gap-1 md:items-start">
+          <span>© {profile.name}</span>
+          <span className="text-sm">
+            Artwork by{' '}
+            <Link
+              className="text-primary transition-colors duration-200 hover:text-primary/80"
+              href="https://x.com/diru_k1005"
+            >
+              Kannazuki Diru
+            </Link>
+          </span>
+        </div>
         <Link
           className="transition-colors duration-200 hover:text-primary"
           href="/privacy"
@@ -11,6 +28,25 @@ export default function Footer() {
           プライバシーポリシー
         </Link>
       </div>
-    </footer>
+    </Footer>
+  )
+}
+
+function FooterSkeleton() {
+  return (
+    <Footer>
+      <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+        <div className="h-10 w-48 animate-pulse rounded bg-muted" />
+        <div className="h-5 w-32 animate-pulse rounded bg-muted" />
+      </div>
+    </Footer>
+  )
+}
+
+export default function BlogFooter() {
+  return (
+    <Suspense fallback={<FooterSkeleton />}>
+      <FooterImpl />
+    </Suspense>
   )
 }
