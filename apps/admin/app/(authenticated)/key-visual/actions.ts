@@ -38,6 +38,13 @@ export async function saveKeyVisual(
     const keyVisualWidthStr = formData.get('key_visual_width') as string
     const keyVisualHeightStr = formData.get('key_visual_height') as string
 
+    const parsedWidth = Number.parseInt(keyVisualWidthStr, 10)
+    const parsedHeight = Number.parseInt(keyVisualHeightStr, 10)
+
+    if (Number.isNaN(parsedWidth) || Number.isNaN(parsedHeight)) {
+      return { error: '画像の寸法が正しく取得できませんでした。' }
+    }
+
     const rawData = {
       alt_text: (formData.get('key_visual_alt_text') as string) || undefined,
       artist_name:
@@ -46,9 +53,9 @@ export async function saveKeyVisual(
         (formData.get('key_visual_artist_url') as string) || undefined,
       attribution:
         (formData.get('key_visual_attribution') as string) || undefined,
-      height: Number.parseInt(keyVisualHeightStr, 10),
+      height: parsedHeight,
       url: keyVisualUrl.trim(),
-      width: Number.parseInt(keyVisualWidthStr, 10)
+      width: parsedWidth
     }
 
     const validation = keyVisualSchema.safeParse(rawData)
