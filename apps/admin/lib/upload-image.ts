@@ -9,7 +9,9 @@ export type ImageUploadOptions = {
 
 export type ImageUploadResult = {
   error?: string
+  height?: number
   url?: string
+  width?: number
 }
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
@@ -100,11 +102,31 @@ export async function uploadImage({
       data: { publicUrl }
     } = supabase.storage.from('images').getPublicUrl(filePath)
 
-    return { url: publicUrl }
+    const dimensions = await getImageDimensions(file)
+
+    return {
+      height: dimensions.height,
+      url: publicUrl,
+      width: dimensions.width
+    }
   } catch (error) {
     console.error('Upload error:', error)
     return {
       error: 'アップロード中にエラーが発生しました。'
     }
   }
+}
+
+async function getImageDimensions(
+  file: File
+): Promise<{ height: number; width: number }> {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => {
+      resolve({ height: img.height, width: img.width })
+      URL.revokeObjectURL(img.src)
+    }
+    img.onerror = reject
+    img.src = URL.createObjectURL(file)
+  })
 }
