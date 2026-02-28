@@ -9,6 +9,7 @@
     "@supabase/supabase-js": "2.97.0",
     "@vercel/analytics": "1.6.1",
     "@vercel/microfrontends": "2.3.1",
+    "@ykzts/layout": "workspace:*",
     "@ykzts/portable-text-utils": "workspace:*",
     "@ykzts/site-config": "workspace:*",
     "@ykzts/supabase": "workspace:*",

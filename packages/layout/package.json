@@ -1,0 +1,39 @@
+{
+  "name": "@ykzts/layout",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./components/footer": "./src/components/footer.tsx",
+    "./components/navigation": "./src/components/navigation.tsx",
+    "./components/theme-toggle": "./src/components/theme-toggle.tsx"
+  },
+  "scripts": {
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "@ykzts/ui": "workspace:*",
+    "lucide-react": "0.575.0",
+    "next-themes": "0.4.6"
+  },
+  "peerDependencies": {
+    "next": "^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@ykzts/tsconfig": "workspace:*",
+    "next": "16.1.6",
+    "typescript": "5.9.3"
+  },
+  "author": "Yamagishi Kazutoshi",
+  "description": "Shared layout components (Navigation, ThemeToggle, Footer) for ykzts applications",
+  "license": "MIT",
+  "repository": {
+    "directory": "packages/layout",
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.git"
+  }
+}

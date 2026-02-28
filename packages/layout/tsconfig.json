@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "paths": {
+      "@ykzts/layout/*": ["./src/*"],
+      "@ykzts/ui/*": ["../ui/src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"],
+  "extends": "@ykzts/tsconfig/react-library.json",
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
+}

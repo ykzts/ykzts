@@ -1,3 +1,4 @@
+import Footer from '@ykzts/layout/components/footer'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import ExternalLink from '@/components/link'
@@ -6,15 +7,15 @@ import { getProfile } from '@/lib/supabase'
 
 function FooterSkeleton() {
   return (
-    <footer className="border-border border-t px-6 py-12 md:px-12 lg:px-24">
-      <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-base text-muted-foreground md:flex-row">
+    <Footer>
+      <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
         <div className="flex flex-col items-center gap-1 md:items-start">
           <Skeleton className="h-5 w-32" />
           <Skeleton className="h-4 w-48" />
         </div>
         <Skeleton className="h-5 w-32" />
       </div>
-    </footer>
+    </Footer>
   )
 }
 
@@ -22,8 +23,8 @@ async function FooterImpl() {
   const profile = await getProfile()
 
   return (
-    <footer className="border-border border-t px-6 py-12 md:px-12 lg:px-24">
-      <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 text-base text-muted-foreground md:flex-row">
+    <Footer>
+      <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
         <div className="flex flex-col items-center gap-1 md:items-start">
           <span>© {profile.name}</span>
           <span className="text-sm">
@@ -43,11 +44,11 @@ async function FooterImpl() {
           Privacy Policy
         </Link>
       </div>
-    </footer>
+    </Footer>
   )
 }
 
-export default function Footer() {
+export default function PortfolioFooter() {
   return (
     <Suspense fallback={<FooterSkeleton />}>
       <FooterImpl />
