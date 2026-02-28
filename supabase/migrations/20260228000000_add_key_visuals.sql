@@ -7,9 +7,9 @@
 -- Create key_visuals table
 CREATE TABLE IF NOT EXISTS key_visuals (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  url TEXT NOT NULL CHECK (char_length(url) >= 1),
-  width INTEGER NOT NULL,
-  height INTEGER NOT NULL,
+  url TEXT NOT NULL CHECK (char_length(btrim(url)) >= 1),
+  width INTEGER NOT NULL CHECK (width > 0),
+  height INTEGER NOT NULL CHECK (height > 0),
   artist_name TEXT,
   artist_url TEXT,
   attribution TEXT,
