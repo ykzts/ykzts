@@ -15,6 +15,8 @@ export interface ImageBlock extends TypedObject {
     _type: 'reference'
     url: string
   }
+  height?: number
+  width?: number
 }
 
 export function isPortableTextValue(

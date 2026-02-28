@@ -124,22 +124,34 @@ const portableTextComponents = {
       )
     },
     image({ value }: { value: ImageBlock }) {
-      const { alt, asset } = value
+      const { alt, asset, height, width } = value
       const imageUrl = asset?.url
 
       if (!imageUrl) {
         return null
       }
 
+      const normalizeDimension = (
+        dimension: number | undefined,
+        fallback: number
+      ) =>
+        Number.isFinite(dimension) && (dimension as number) > 0
+          ? Math.round(dimension as number)
+          : fallback
+
+      const normalizedHeight = normalizeDimension(height, 900)
+      const normalizedWidth = normalizeDimension(width, 1600)
+
       return (
         <figure className="my-8">
-          <div className="relative aspect-[4/3] w-full">
+          <div className="w-full">
             <Image
               alt={alt || ''}
-              className="rounded-lg object-contain"
-              fill
+              className="h-auto w-full rounded-lg"
+              height={normalizedHeight}
               sizes="(min-width: 1024px) 800px, 100vw"
               src={imageUrl}
+              width={normalizedWidth}
             />
           </div>
           {alt && (
