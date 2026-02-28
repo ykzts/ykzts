@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
 vi.mock('next-themes', () => ({
@@ -19,12 +20,17 @@ describe('Navigation', () => {
     expect(screen.getAllByText('Contact').length).toBeGreaterThan(0)
   })
 
-  it('renders Blog as a trigger with sub-items (Archive, Search)', () => {
+  it('renders Blog as a trigger with sub-items (Archive, Search)', async () => {
     render(<Navigation />)
 
-    // "Blog" should be a button (trigger), not a link, because it has children
     const blogTrigger = screen.getByRole('button', { name: /blog/i })
-    expect(blogTrigger).toBeDefined()
+    expect(blogTrigger).toBeInTheDocument()
+
+    const menuButton = screen.getByRole('button', { name: 'メニューを開く' })
+    await userEvent.click(menuButton)
+
+    expect(screen.getAllByText('Archive').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Search').length).toBeGreaterThan(0)
   })
 
   it('shows Works link when hasWorks is true', () => {
@@ -54,8 +60,8 @@ describe('Navigation', () => {
   it('should have accessible menu button for mobile', () => {
     render(<Navigation />)
 
-    const menuButton = screen.getByRole('button', { name: 'Open menu' })
-    expect(menuButton).toBeDefined()
+    const menuButton = screen.getByRole('button', { name: 'メニューを開く' })
+    expect(menuButton).toBeInTheDocument()
   })
 
   it('should have aria-label for main navigation', () => {

@@ -3,12 +3,12 @@ import { getWorks } from '@/lib/supabase/works'
 import Navigation from './navigation'
 
 async function NavigationWrapper() {
-  let hasAbout = true
-  let hasWorks = true
+  let hasAbout = false
+  let hasWorks = false
 
   try {
     const profile = await getPublisherProfile()
-    hasAbout = !!profile.about
+    hasAbout = Boolean(profile.about?.trim())
   } catch (error) {
     console.error('Failed to load profile for navigation:', error)
   }

@@ -34,6 +34,7 @@ export default function ThemeToggle() {
       aria-label={
         isDark ? 'ライトモードに切り替える' : 'ダークモードに切り替える'
       }
+      aria-pressed={isDark}
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       size="icon"
       type="button"

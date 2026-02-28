@@ -14,7 +14,11 @@ export default function Header() {
         </a>
         <div className="flex items-center gap-2">
           <SearchForm className="hidden md:block md:w-48 lg:w-64" />
-          <Suspense>
+          <Suspense
+            fallback={
+              <div className="h-9 w-32 animate-pulse rounded-md bg-muted" />
+            }
+          >
             <NavigationWrapper />
           </Suspense>
         </div>

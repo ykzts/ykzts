@@ -44,7 +44,7 @@ export default function Navigation({ actions, navItems }: Props) {
     <div className="flex items-center">
       {/* Desktop Navigation */}
       <NavigationMenu aria-label="Main navigation" className="hidden md:flex">
-        <NavigationMenuList aria-orientation={undefined}>
+        <NavigationMenuList>
           {navItems.map((item) =>
             item.children ? (
               <NavigationMenuItem key={item.href}>
@@ -82,7 +82,7 @@ export default function Navigation({ actions, navItems }: Props) {
         <SheetTrigger
           render={
             <Button
-              aria-label="Open menu"
+              aria-label="メニューを開く"
               className="md:hidden"
               size="icon"
               variant="ghost"

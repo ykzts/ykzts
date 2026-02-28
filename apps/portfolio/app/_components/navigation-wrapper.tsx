@@ -2,12 +2,12 @@ import { getProfile, getWorks } from '@/lib/supabase'
 import Navigation from './navigation'
 
 async function NavigationImpl() {
-  let hasAbout = true
-  let hasWorks = true
+  let hasAbout = false
+  let hasWorks = false
 
   try {
     const profile = await getProfile()
-    hasAbout = !!profile.about
+    hasAbout = Boolean(profile.about?.trim())
   } catch (error) {
     console.error('Failed to load profile for navigation:', error)
   }
