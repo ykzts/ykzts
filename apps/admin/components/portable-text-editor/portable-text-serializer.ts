@@ -216,7 +216,7 @@ function processTextContent(textNodes: LexicalChildNodes) {
 function processListItems(
   listNode: ListNode,
   level: number,
-  blocks: (PortableTextBlock | PortableTextImage)[]
+  blocks: (PortableTextBlock | PortableTextImage | PortableTextTable)[]
 ): void {
   const listType = listNode.getListType()
   const listItems = listNode.getChildren()
