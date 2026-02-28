@@ -1,5 +1,5 @@
-import type { BundledLanguage, BundledTheme, Highlighter } from 'shiki'
-import { createHighlighter } from 'shiki'
+import type { BundledLanguage, Highlighter } from 'shiki'
+import { createCssVariablesTheme, createHighlighter } from 'shiki'
 
 let highlighterPromise: Promise<Highlighter> | null = null
 
@@ -31,13 +31,13 @@ const languages: BundledLanguage[] = [
   'markdown'
 ]
 
-const themes: BundledTheme[] = ['github-light', 'github-dark']
+const cssVariablesTheme = createCssVariablesTheme()
 
 function getHighlighter() {
   if (!highlighterPromise) {
     highlighterPromise = createHighlighter({
       langs: languages,
-      themes
+      themes: [cssVariablesTheme]
     })
   }
   return highlighterPromise
@@ -57,9 +57,6 @@ export async function highlightCode(
 
   return hl.codeToHtml(code, {
     lang,
-    themes: {
-      dark: 'github-dark',
-      light: 'github-light'
-    }
+    theme: 'css-variables'
   })
 }

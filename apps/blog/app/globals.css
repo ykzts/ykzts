@@ -41,6 +41,17 @@
   }
 
   :root {
+    --shiki-foreground: #1a1a2e;
+    --shiki-background: #f3f4f6;
+    --shiki-token-constant: #0369a1;
+    --shiki-token-string: #166534;
+    --shiki-token-comment: #5a6270;
+    --shiki-token-keyword: #1e40af;
+    --shiki-token-parameter: #c2410c;
+    --shiki-token-function: #7c3aed;
+    --shiki-token-string-expression: #15803d;
+    --shiki-token-punctuation: #374151;
+    --shiki-token-link: #2563eb;
     color-scheme: light;
   }
 
@@ -65,6 +76,18 @@
     --color-input: #374151;
     --color-ring: #3b82f6;
 
+    --shiki-foreground: #f0f0f0;
+    --shiki-background: #1f2937;
+    --shiki-token-constant: #7dd3fc;
+    --shiki-token-string: #86efac;
+    --shiki-token-comment: #9ca3af;
+    --shiki-token-keyword: #93c5fd;
+    --shiki-token-parameter: #fdba74;
+    --shiki-token-function: #c084fc;
+    --shiki-token-string-expression: #6ee7b7;
+    --shiki-token-punctuation: #d1d5db;
+    --shiki-token-link: #3b82f6;
+
     color-scheme: dark;
   }
 
@@ -83,15 +106,5 @@
 
   pre.shiki code {
     @apply font-mono text-sm;
-  }
-
-  /* Hide dark theme in light mode */
-  html:not(.dark) pre.shiki span[data-theme='github-dark'] {
-    display: none;
-  }
-
-  /* Hide light theme in dark mode */
-  html.dark pre.shiki span[data-theme='github-light'] {
-    display: none;
   }
 }
