@@ -4,7 +4,15 @@ import ThemeToggle from './theme-toggle'
 const allNavItems = [
   { href: '/#about', label: 'About' },
   { href: '/#works', label: 'Works' },
-  { href: '/blog', label: 'Blog' },
+  {
+    children: [
+      { href: '/blog', label: 'Blog' },
+      { href: '/blog/archive', label: 'Archive' },
+      { href: '/blog/search', label: 'Search' }
+    ],
+    href: '/blog',
+    label: 'Blog'
+  },
   { href: '/#contact', label: 'Contact' }
 ]
 

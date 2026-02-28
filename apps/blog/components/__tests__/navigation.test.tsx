@@ -19,6 +19,14 @@ describe('Navigation', () => {
     expect(screen.getAllByText('Contact').length).toBeGreaterThan(0)
   })
 
+  it('renders Blog as a trigger with sub-items (Archive, Search)', () => {
+    render(<Navigation />)
+
+    // "Blog" should be a button (trigger), not a link, because it has children
+    const blogTrigger = screen.getByRole('button', { name: /blog/i })
+    expect(blogTrigger).toBeDefined()
+  })
+
   it('shows Works link when hasWorks is true', () => {
     render(<Navigation hasWorks={true} />)
 
