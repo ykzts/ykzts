@@ -12,7 +12,9 @@ import { $createImageNode } from '../nodes/image-node'
 
 export const INSERT_IMAGE_COMMAND = createCommand<{
   altText: string
+  height?: number
   src: string
+  width?: number
 }>('INSERT_IMAGE_COMMAND')
 
 export function ImagePlugin() {
@@ -24,7 +26,9 @@ export function ImagePlugin() {
       (payload) => {
         const imageNode = $createImageNode({
           altText: payload.altText,
-          src: payload.src
+          height: payload.height,
+          src: payload.src,
+          width: payload.width
         })
         $insertNodes([imageNode])
         // If the image ended up inside a non-root element (e.g. a code block),

@@ -113,6 +113,12 @@ export function ToolbarPlugin() {
   const [showAltDialog, setShowAltDialog] = useState(false)
   const [pendingImageUrl, setPendingImageUrl] = useState<string | null>(null)
   const [pendingImageAlt, setPendingImageAlt] = useState('')
+  const [pendingImageWidth, setPendingImageWidth] = useState<
+    number | undefined
+  >(undefined)
+  const [pendingImageHeight, setPendingImageHeight] = useState<
+    number | undefined
+  >(undefined)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const updateToolbar = useCallback(() => {
@@ -240,6 +246,8 @@ export function ToolbarPlugin() {
           // Show the alt text dialog so the user can set/confirm the alt attribute
           setPendingImageUrl(result.url)
           setPendingImageAlt(file.name.replace(/\.[^/.]+$/, ''))
+          setPendingImageWidth(result.width)
+          setPendingImageHeight(result.height)
           setShowAltDialog(true)
         }
       } catch (error) {
@@ -261,13 +269,17 @@ export function ToolbarPlugin() {
       if (pendingImageUrl) {
         editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
           altText: alt,
-          src: pendingImageUrl
+          height: pendingImageHeight,
+          src: pendingImageUrl,
+          width: pendingImageWidth
         })
         setPendingImageUrl(null)
         setPendingImageAlt('')
+        setPendingImageWidth(undefined)
+        setPendingImageHeight(undefined)
       }
     },
-    [editor, pendingImageUrl]
+    [editor, pendingImageUrl, pendingImageWidth, pendingImageHeight]
   )
 
   const handleAltDialogOpenChange = useCallback((isOpen: boolean) => {
@@ -275,6 +287,8 @@ export function ToolbarPlugin() {
     if (!isOpen) {
       setPendingImageUrl(null)
       setPendingImageAlt('')
+      setPendingImageWidth(undefined)
+      setPendingImageHeight(undefined)
     }
   }, [])
 

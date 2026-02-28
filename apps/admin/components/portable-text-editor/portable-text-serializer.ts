@@ -52,6 +52,8 @@ type PortableTextImage = {
     _type: 'reference'
     url: string
   }
+  height?: number
+  width?: number
 }
 
 type PortableTextSpan = {
@@ -254,7 +256,9 @@ export function lexicalToPortableText(
           asset: {
             _type: 'reference',
             url: child.getSrc()
-          }
+          },
+          height: child.getHeight(),
+          width: child.getWidth()
         })
       } else if ($isListNode(child)) {
         // Handle list nodes with recursive processing for nested lists
@@ -377,7 +381,15 @@ export function initializeEditorWithPortableText(
           }
           const imageNode = $createImageNode({
             altText: block.alt || '',
-            src: block.asset.url
+            height:
+              typeof block.height === 'number' && Number.isFinite(block.height)
+                ? block.height
+                : undefined,
+            src: block.asset.url,
+            width:
+              typeof block.width === 'number' && Number.isFinite(block.width)
+                ? block.width
+                : undefined
           })
           root.append(imageNode)
         } else if (block._type === 'block') {

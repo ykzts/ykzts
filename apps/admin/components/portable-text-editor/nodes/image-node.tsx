@@ -180,6 +180,14 @@ export class ImageNode extends DecoratorNode<ReactElement> {
     return this.__altText
   }
 
+  getWidth(): number | undefined {
+    return this.__width
+  }
+
+  getHeight(): number | undefined {
+    return this.__height
+  }
+
   setAltText(altText: string): void {
     const writable = this.getWritable()
     writable.__altText = altText
