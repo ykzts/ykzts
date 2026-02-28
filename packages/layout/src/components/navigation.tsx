@@ -44,7 +44,7 @@ export default function Navigation({ actions, navItems }: Props) {
     <div className="flex items-center">
       {/* Desktop Navigation */}
       <NavigationMenu aria-label="Main navigation" className="hidden md:flex">
-        <NavigationMenuList>
+        <NavigationMenuList aria-orientation={undefined}>
           {navItems.map((item) =>
             item.children ? (
               <NavigationMenuItem key={item.href}>
