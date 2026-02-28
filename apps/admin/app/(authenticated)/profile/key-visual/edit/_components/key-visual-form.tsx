@@ -5,9 +5,13 @@ import { Input } from '@ykzts/ui/components/input'
 import { ImageOff, Upload, X } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from 'react'
+import { useActionState, useRef, useState } from 'react'
 import { getImageDimensions } from '@/lib/get-image-dimensions'
 import { deleteKeyVisual, uploadKeyVisual } from '@/lib/upload-key-visual'
+import { saveKeyVisual } from '../actions'
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
 
 type KeyVisualData = {
   alt_text: string | null
@@ -20,13 +24,14 @@ type KeyVisualData = {
   width: number
 }
 
-type KeyVisualEditorProps = {
+type KeyVisualFormProps = {
   currentKeyVisual?: KeyVisualData | null
 }
 
-export function KeyVisualEditor({ currentKeyVisual }: KeyVisualEditorProps) {
+export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [state, formAction, isPending] = useActionState(saveKeyVisual, null)
 
   const [currentUrl, setCurrentUrl] = useState<string | null>(
     currentKeyVisual?.url ?? null
@@ -45,35 +50,33 @@ export function KeyVisualEditor({ currentKeyVisual }: KeyVisualEditorProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
   const [deleting, setDeleting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [uploadError, setUploadError] = useState<string | null>(null)
   const [dragActive, setDragActive] = useState(false)
 
   const handleFileChange = async (file: File | null) => {
     if (!file) {
       setPreview(currentUrl)
       setSelectedFile(null)
-      setError(null)
+      setUploadError(null)
       return
     }
 
     // Client-side validation
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
-    if (!allowedTypes.includes(file.type)) {
-      setError(
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setUploadError(
         'サポートされていない画像形式です。JPEG、PNG、GIF、WebPのみアップロード可能です。'
       )
       return
     }
 
-    const maxSize = 5 * 1024 * 1024 // 5MB
-    if (file.size > maxSize) {
-      setError(
+    if (file.size > MAX_FILE_SIZE) {
+      setUploadError(
         'ファイルサイズが大きすぎます。5MB以下の画像をアップロードしてください。'
       )
       return
     }
 
-    setError(null)
+    setUploadError(null)
     setSelectedFile(file)
 
     // Show preview
@@ -94,12 +97,12 @@ export function KeyVisualEditor({ currentKeyVisual }: KeyVisualEditorProps) {
 
   const handleUpload = async () => {
     if (!selectedFile) {
-      setError('ファイルを選択してください。')
+      setUploadError('ファイルを選択してください。')
       return
     }
 
     setUploading(true)
-    setError(null)
+    setUploadError(null)
 
     try {
       const formData = new FormData()
@@ -108,7 +111,7 @@ export function KeyVisualEditor({ currentKeyVisual }: KeyVisualEditorProps) {
       const result = await uploadKeyVisual(formData)
 
       if (result.error) {
-        setError(result.error)
+        setUploadError(result.error)
         setPreview(currentUrl)
       } else if (result.url) {
         setCurrentUrl(result.url)
@@ -119,7 +122,7 @@ export function KeyVisualEditor({ currentKeyVisual }: KeyVisualEditorProps) {
         }
       }
     } catch (_err) {
-      setError('アップロード中にエラーが発生しました。')
+      setUploadError('アップロード中にエラーが発生しました。')
       setPreview(currentUrl)
     } finally {
       setUploading(false)
@@ -128,13 +131,13 @@ export function KeyVisualEditor({ currentKeyVisual }: KeyVisualEditorProps) {
 
   const handleDelete = async () => {
     setDeleting(true)
-    setError(null)
+    setUploadError(null)
 
     try {
       const result = await deleteKeyVisual()
 
       if (result.error) {
-        setError(result.error)
+        setUploadError(result.error)
       } else {
         setCurrentUrl(null)
         setPreview(null)
@@ -146,7 +149,7 @@ export function KeyVisualEditor({ currentKeyVisual }: KeyVisualEditorProps) {
         router.refresh()
       }
     } catch (_err) {
-      setError('削除中にエラーが発生しました。')
+      setUploadError('削除中にエラーが発生しました。')
     } finally {
       setDeleting(false)
     }
@@ -181,8 +184,12 @@ export function KeyVisualEditor({ currentKeyVisual }: KeyVisualEditorProps) {
   const hasNewFile = !!selectedFile
 
   return (
-    <div className="space-y-4">
-      <div className="mb-2 block font-medium">キービジュアル</div>
+    <form action={formAction} className="space-y-6">
+      {state?.error && (
+        <div className="rounded border border-error bg-error/10 p-4 text-error">
+          {state.error}
+        </div>
+      )}
 
       <div className="space-y-3">
         {/* Preview */}
@@ -201,6 +208,7 @@ export function KeyVisualEditor({ currentKeyVisual }: KeyVisualEditorProps) {
         {/* Upload area */}
         <button
           aria-describedby="key-visual-upload-help"
+          aria-label="キービジュアルをアップロード"
           className={`flex min-h-32 w-full flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors ${
             dragActive
               ? 'border-primary bg-primary/5'
@@ -224,7 +232,7 @@ export function KeyVisualEditor({ currentKeyVisual }: KeyVisualEditorProps) {
             JPEG、PNG、GIF、WebP（最大5MB）
           </p>
           <input
-            accept="image/jpeg,image/png,image/gif,image/webp"
+            accept={ALLOWED_TYPES.join(',')}
             aria-label="キービジュアルファイル"
             className="sr-only"
             onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
@@ -233,7 +241,7 @@ export function KeyVisualEditor({ currentKeyVisual }: KeyVisualEditorProps) {
           />
         </button>
 
-        {/* Action buttons */}
+        {/* Upload/Delete action buttons */}
         <div className="flex gap-2">
           {hasNewFile && (
             <Button
@@ -264,6 +272,22 @@ export function KeyVisualEditor({ currentKeyVisual }: KeyVisualEditorProps) {
             </Button>
           )}
         </div>
+
+        {uploadError && (
+          <div
+            className="rounded border border-error bg-error/10 p-3 text-error text-sm"
+            role="alert"
+          >
+            {uploadError}
+          </div>
+        )}
+
+        {!currentUrl && (
+          <div className="flex items-center gap-2 text-muted-foreground text-sm">
+            <ImageOff className="h-4 w-4" />
+            <span>キービジュアルが設定されていません</span>
+          </div>
+        )}
       </div>
 
       {/* Hidden fields for form submission */}
@@ -287,9 +311,9 @@ export function KeyVisualEditor({ currentKeyVisual }: KeyVisualEditorProps) {
         </>
       )}
 
-      {/* Metadata fields (only shown when there is a key visual) */}
+      {/* Metadata fields */}
       {currentUrl && (
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div>
             <label
               className="mb-2 block font-medium"
@@ -356,25 +380,26 @@ export function KeyVisualEditor({ currentKeyVisual }: KeyVisualEditorProps) {
         </div>
       )}
 
-      {error && (
-        <div
-          className="mt-2 rounded border border-error bg-error/10 p-3 text-error text-sm"
-          role="alert"
-        >
-          {error}
-        </div>
-      )}
-
-      {!currentUrl && (
-        <div className="flex items-center gap-2 text-muted-foreground text-sm">
-          <ImageOff className="h-4 w-4" />
-          <span>キービジュアルが設定されていません</span>
-        </div>
-      )}
-
       <p className="text-muted-foreground text-sm">
         プロフィールページのヘッダーに表示される背景画像です。
       </p>
-    </div>
+
+      <div className="flex gap-4">
+        {currentUrl && (
+          <Button disabled={isPending || uploading || deleting} type="submit">
+            {isPending ? '保存中...' : '保存'}
+          </Button>
+        )}
+        <Button
+          onClick={() => {
+            router.push('/profile')
+          }}
+          type="button"
+          variant="secondary"
+        >
+          戻る
+        </Button>
+      </div>
+    </form>
   )
 }

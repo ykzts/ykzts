@@ -149,9 +149,16 @@ async function ProfileContent() {
       )}
 
       <div className="mt-4 border-border border-t pt-4">
-        <form action="/profile/edit" method="get">
-          <Button type="submit">編集</Button>
-        </form>
+        <div className="flex gap-3">
+          <form action="/profile/edit" method="get">
+            <Button type="submit">編集</Button>
+          </form>
+          <form action="/profile/key-visual/edit" method="get">
+            <Button type="submit" variant="secondary">
+              キービジュアル編集
+            </Button>
+          </form>
+        </div>
       </div>
     </Panel>
   )

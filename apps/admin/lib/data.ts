@@ -20,7 +20,7 @@ export async function getProfile() {
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      'id, name, occupation, tagline, email, fediverse_creator, about, timezone, avatar_url, created_at, updated_at, key_visuals(id, url, width, height, alt_text, artist_name, artist_url, attribution)'
+      'id, name, occupation, tagline, email, fediverse_creator, about, timezone, avatar_url, created_at, updated_at'
     )
     .eq('user_id', user.id)
     .maybeSingle()
@@ -59,6 +59,33 @@ export async function getProfileTimezone(): Promise<string> {
   }
 
   return data.timezone ?? DEFAULT_TIMEZONE
+}
+
+export async function getKeyVisual() {
+  'use cache: private'
+  cacheTag('profile')
+
+  const user = await getCurrentUser()
+
+  if (!user) {
+    throw new Error('認証されていません')
+  }
+
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select(
+      'key_visuals(id, url, width, height, alt_text, artist_name, artist_url, attribution)'
+    )
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (error) {
+    throw new Error(`キービジュアルの取得に失敗しました: ${error.message}`)
+  }
+
+  return data?.key_visuals ?? null
 }
 
 export async function getSocialLinks() {

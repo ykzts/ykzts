@@ -24,7 +24,6 @@ import { RichTextEditor } from '@/components/portable-text-editor'
 import { DEFAULT_TIMEZONE, getCommonTimezones } from '@/lib/timezones'
 import { updateProfile } from '../actions'
 import { AvatarUpload } from './avatar-upload'
-import { KeyVisualEditor } from './key-visual-editor'
 import { SortableItem } from './sortable-item'
 
 type ProfileFormProps = {
@@ -33,16 +32,6 @@ type ProfileFormProps = {
     avatar_url: string | null
     email: string | null
     fediverse_creator: string | null
-    key_visuals: {
-      alt_text: string | null
-      artist_name: string | null
-      artist_url: string | null
-      attribution: string | null
-      height: number
-      id: string
-      url: string
-      width: number
-    } | null
     name: string
     occupation: string | null
     tagline: string | null
@@ -183,9 +172,6 @@ export default function ProfileForm({
 
       {/* Avatar Upload */}
       <AvatarUpload currentAvatarUrl={initialData?.avatar_url} />
-
-      {/* Key Visual Editor */}
-      <KeyVisualEditor currentKeyVisual={initialData?.key_visuals ?? null} />
 
       <div>
         <label className="mb-2 block font-medium" htmlFor="name">
