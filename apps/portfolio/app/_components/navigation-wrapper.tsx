@@ -7,7 +7,7 @@ async function NavigationImpl() {
 
   try {
     const profile = await getProfile()
-    hasAbout = Boolean(profile.about?.trim())
+    hasAbout = !!profile.about
   } catch (error) {
     console.error('Failed to load profile for navigation:', error)
   }

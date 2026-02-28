@@ -8,7 +8,7 @@ async function NavigationWrapper() {
 
   try {
     const profile = await getPublisherProfile()
-    hasAbout = Boolean(profile.about?.trim())
+    hasAbout = !!profile.about
   } catch (error) {
     console.error('Failed to load profile for navigation:', error)
   }
