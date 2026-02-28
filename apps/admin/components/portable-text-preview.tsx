@@ -1,5 +1,13 @@
 'use client'
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@ykzts/ui/components/table'
 import { useEffect, useState } from 'react'
 
 type PortableTextBlock = {
@@ -80,34 +88,34 @@ export function PortableTextPreview({ value }: PortableTextPreviewProps) {
       {blocks.map((block) => {
         if (block._type === 'table') {
           const tableBlock = block as PortableTextTable
+          const hasHeader = tableBlock.rows.some((row) =>
+            row.cells.some((cell) => cell.isHeader)
+          )
+          const headerRow = hasHeader ? tableBlock.rows[0] : null
+          const bodyRows = hasHeader
+            ? tableBlock.rows.slice(1)
+            : tableBlock.rows
           return (
-            <div className="my-2 overflow-x-auto" key={tableBlock._key}>
-              <table className="w-full border-collapse border border-border text-sm">
-                <tbody>
-                  {tableBlock.rows.map((row) => (
-                    <tr key={row._key}>
-                      {row.cells.map((cell) =>
-                        cell.isHeader ? (
-                          <th
-                            className="border border-border bg-muted/30 px-3 py-2 text-left font-semibold"
-                            key={cell._key}
-                          >
-                            {cell.content}
-                          </th>
-                        ) : (
-                          <td
-                            className="border border-border px-3 py-2"
-                            key={cell._key}
-                          >
-                            {cell.content}
-                          </td>
-                        )
-                      )}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <Table key={tableBlock._key}>
+              {headerRow && (
+                <TableHeader>
+                  <TableRow>
+                    {headerRow.cells.map((cell) => (
+                      <TableHead key={cell._key}>{cell.content}</TableHead>
+                    ))}
+                  </TableRow>
+                </TableHeader>
+              )}
+              <TableBody>
+                {bodyRows.map((row) => (
+                  <TableRow key={row._key}>
+                    {row.cells.map((cell) => (
+                      <TableCell key={cell._key}>{cell.content}</TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           )
         }
 
