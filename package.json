@@ -4,7 +4,7 @@
   "description": "",
   "devDependencies": {
     "@biomejs/biome": "2.4.4",
-    "turbo": "2.8.10"
+    "turbo": "2.8.11"
   },
   "license": "MIT",
   "name": "@ykzts/monorepo",
