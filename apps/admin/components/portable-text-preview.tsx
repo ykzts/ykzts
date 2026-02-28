@@ -88,8 +88,8 @@ export function PortableTextPreview({ value }: PortableTextPreviewProps) {
       {blocks.map((block) => {
         if (block._type === 'table') {
           const tableBlock = block as PortableTextTable
-          const hasHeader = tableBlock.rows.some((row) =>
-            row.cells.some((cell) => cell.isHeader)
+          const hasHeader = tableBlock.rows[0]?.cells.every(
+            (cell) => cell.isHeader
           )
           const headerRow = hasHeader ? tableBlock.rows[0] : null
           const bodyRows = hasHeader

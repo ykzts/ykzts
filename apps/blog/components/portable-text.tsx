@@ -4,6 +4,14 @@ import {
   type PortableTextMarkComponentProps,
   type PortableTextReactComponents
 } from '@portabletext/react'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@ykzts/ui/components/table'
 import Image from 'next/image'
 import { type ComponentProps, Suspense } from 'react'
 import Link from '@/components/link'
@@ -173,33 +181,31 @@ const portableTextComponents = {
         }>
       }
     }) {
+      const hasHeader = value.rows[0]?.cells.every((cell) => cell.isHeader)
+      const headerRow = hasHeader ? value.rows[0] : null
+      const bodyRows = hasHeader ? value.rows.slice(1) : value.rows
       return (
-        <div className="not-prose my-6 overflow-x-auto">
-          <table className="w-full border-collapse border border-border text-sm">
-            <tbody>
-              {value.rows.map((row) => (
-                <tr key={row._key}>
-                  {row.cells.map((cell) =>
-                    cell.isHeader ? (
-                      <th
-                        className="border border-border bg-muted/50 px-4 py-2 text-left font-semibold"
-                        key={cell._key}
-                      >
-                        {cell.content}
-                      </th>
-                    ) : (
-                      <td
-                        className="border border-border px-4 py-2"
-                        key={cell._key}
-                      >
-                        {cell.content}
-                      </td>
-                    )
-                  )}
-                </tr>
+        <div className="not-prose my-6">
+          <Table>
+            {headerRow && (
+              <TableHeader>
+                <TableRow>
+                  {headerRow.cells.map((cell) => (
+                    <TableHead key={cell._key}>{cell.content}</TableHead>
+                  ))}
+                </TableRow>
+              </TableHeader>
+            )}
+            <TableBody>
+              {bodyRows.map((row) => (
+                <TableRow key={row._key}>
+                  {row.cells.map((cell) => (
+                    <TableCell key={cell._key}>{cell.content}</TableCell>
+                  ))}
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )
     }
