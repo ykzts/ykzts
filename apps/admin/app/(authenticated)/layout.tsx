@@ -38,6 +38,9 @@ async function UserInfo() {
         <DropdownMenuItem render={<Link href="/profile" />}>
           プロフィール
         </DropdownMenuItem>
+        <DropdownMenuItem render={<Link href="/profile/key-visual" />}>
+          キービジュアル
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <form action={logout}>
           <DropdownMenuItem

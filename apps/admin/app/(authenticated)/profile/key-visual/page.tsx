@@ -9,10 +9,10 @@ async function KeyVisualFormWrapper() {
   return <KeyVisualForm currentKeyVisual={keyVisual} />
 }
 
-export default function EditKeyVisualPage() {
+export default function KeyVisualPage() {
   return (
     <div>
-      <h1 className="mb-6 font-bold text-3xl">キービジュアル編集</h1>
+      <h1 className="mb-6 font-bold text-3xl">キービジュアル</h1>
       <Panel>
         <Suspense
           fallback={

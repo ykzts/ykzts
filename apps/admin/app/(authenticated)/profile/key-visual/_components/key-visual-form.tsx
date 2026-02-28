@@ -6,7 +6,7 @@ import { ImageOff, Upload, X } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useActionState, useRef, useState } from 'react'
-import { getImageDimensions } from '@/lib/get-image-dimensions'
+import { getImageDimensions } from '@/lib/upload-image'
 import { deleteKeyVisual, uploadKeyVisual } from '@/lib/upload-key-visual'
 import { saveKeyVisual } from '../actions'
 

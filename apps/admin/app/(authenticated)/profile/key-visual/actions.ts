@@ -134,12 +134,12 @@ export async function saveKeyVisual(
 
     await invalidateCaches('profile')
     revalidatePath('/profile')
-    revalidatePath('/profile/key-visual/edit')
+    revalidatePath('/profile/key-visual')
   } catch (error) {
     return {
       error: `エラーが発生しました: ${error instanceof Error ? error.message : '不明なエラー'}`
     }
   }
 
-  redirect('/profile')
+  redirect('/profile/key-visual')
 }
