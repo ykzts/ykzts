@@ -21,21 +21,33 @@ function FooterSkeleton() {
 
 async function FooterImpl() {
   const profile = await getProfile()
+  const kv = Array.isArray(profile.key_visual)
+    ? profile.key_visual[0]
+    : profile.key_visual
+
+  const artworkText = kv?.artist_name
+    ? (kv.attribution ?? `Artwork by ${kv.artist_name}`)
+    : null
 
   return (
     <Footer>
       <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
         <div className="flex flex-col items-center gap-1 md:items-start">
           <span>© {profile.name}</span>
-          <span className="text-sm">
-            Artwork by{' '}
-            <ExternalLink
-              className="text-primary transition-colors duration-200 hover:text-primary/80"
-              href="https://x.com/diru_k1005"
-            >
-              Kannazuki Diru
-            </ExternalLink>
-          </span>
+          {artworkText && (
+            <span className="text-sm">
+              {kv?.artist_url ? (
+                <ExternalLink
+                  className="text-primary transition-colors duration-200 hover:text-primary/80"
+                  href={kv.artist_url}
+                >
+                  {artworkText}
+                </ExternalLink>
+              ) : (
+                artworkText
+              )}
+            </span>
+          )}
         </div>
         <Link
           className="transition-colors duration-200 hover:text-primary"
