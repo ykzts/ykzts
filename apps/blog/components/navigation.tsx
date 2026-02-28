@@ -1,10 +1,27 @@
 import Navigation from '@ykzts/layout/components/navigation'
+import ThemeToggle from './theme-toggle'
 
-const navItems = [
-  { href: '/blog/archive', label: 'Archive' },
-  { href: '/blog/search', label: 'Search' }
-] as const
+const allNavItems = [
+  { href: '/#about', label: 'About' },
+  { href: '/#works', label: 'Works' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/#contact', label: 'Contact' }
+]
 
-export default function BlogNavigation() {
-  return <Navigation navItems={navItems} />
+type Props = {
+  hasAbout?: boolean
+  hasWorks?: boolean
+}
+
+export default function BlogNavigation({
+  hasAbout = true,
+  hasWorks = true
+}: Props) {
+  const navItems = allNavItems.filter((item) => {
+    if (item.href === '/#about') return hasAbout
+    if (item.href === '/#works') return hasWorks
+    return true
+  })
+
+  return <Navigation actions={<ThemeToggle />} navItems={navItems} />
 }

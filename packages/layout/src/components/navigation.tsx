@@ -16,7 +16,6 @@ import {
   SheetTrigger
 } from '@ykzts/ui/components/sheet'
 import { Menu } from 'lucide-react'
-import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
 
@@ -43,7 +42,6 @@ export default function Navigation({ actions, navItems }: Props) {
               <NavigationMenuLink
                 className={navigationMenuTriggerStyle()}
                 href={item.href}
-                render={<Link href={item.href} />}
               >
                 {item.label}
               </NavigationMenuLink>
@@ -74,14 +72,14 @@ export default function Navigation({ actions, navItems }: Props) {
           </SheetHeader>
           <nav className="mt-6 flex flex-col gap-2">
             {navItems.map((item) => (
-              <Link
+              <a
                 className="rounded-md px-4 py-3 font-medium text-foreground text-lg transition-colors hover:bg-accent hover:text-accent-foreground"
                 href={item.href}
                 key={item.href}
                 onClick={() => setOpen(false)}
               >
                 {item.label}
-              </Link>
+              </a>
             ))}
           </nav>
         </SheetContent>
