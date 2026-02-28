@@ -51,11 +51,11 @@ async function HeroImpl() {
           </div>
         </div>
 
-        <div className="shrink-0">
+        <div className="w-full shrink-0 lg:w-1/3">
           {kv && (
             <Image
               alt={kv.alt_text ?? profile.name}
-              className="rounded-2xl shadow-lg"
+              className="h-auto w-full rounded-2xl shadow-lg"
               height={kv.height}
               priority
               src={kv.url}
