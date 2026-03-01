@@ -12,7 +12,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "22.19.11",
+    "@types/node": "22.19.12",
     "@ykzts/tsconfig": "workspace:*",
     "typescript": "5.9.3",
     "vitest": "4.0.18"
