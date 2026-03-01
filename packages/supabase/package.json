@@ -2,7 +2,7 @@
   "author": "Yamagishi Kazutoshi",
   "description": "Supabase database type definitions for ykzts applications",
   "devDependencies": {
-    "@types/node": "22.19.12",
+    "@types/node": "22.19.13",
     "@ykzts/tsconfig": "workspace:*",
     "next": "16.1.6",
     "typescript": "5.9.3"
