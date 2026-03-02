@@ -112,7 +112,9 @@ export async function generateMetadata({
     openGraph: {
       authors: [authorName],
       description: post.excerpt || undefined,
+      modifiedTime: post.version_date || post.published_at,
       publishedTime: post.published_at,
+      tags: post.tags ?? undefined,
       title: post.title || DEFAULT_POST_TITLE,
       type: 'article',
       url: getDateBasedUrl(slug, post.published_at)
