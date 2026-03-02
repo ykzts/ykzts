@@ -8,6 +8,7 @@ import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { getCurrentUser } from '@/lib/auth'
 import LoginForm from './login-form'
+import { LoginSkeleton } from './login-skeleton'
 
 async function LoginContent() {
   const user = await getCurrentUser()
@@ -33,7 +34,7 @@ async function LoginContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoginSkeleton />}>
       <LoginContent />
     </Suspense>
   )
