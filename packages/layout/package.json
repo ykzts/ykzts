@@ -6,7 +6,8 @@
   "exports": {
     "./components/footer": "./src/components/footer.tsx",
     "./components/navigation": "./src/components/navigation.tsx",
-    "./components/theme-toggle": "./src/components/theme-toggle.tsx"
+    "./components/theme-toggle": "./src/components/theme-toggle.tsx",
+    "./styles/styles.css": "./src/styles/styles.css"
   },
   "scripts": {
     "lint": "biome check ."

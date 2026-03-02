@@ -34,12 +34,15 @@
   "description": "Admin application for content management",
   "devDependencies": {
     "@tailwindcss/postcss": "4.2.1",
+    "@tailwindcss/typography": "0.5.19",
     "@types/node": "24.11.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@ykzts/tsconfig": "workspace:*",
     "postcss": "8.5.6",
+    "shadcn": "3.8.5",
     "tailwindcss": "4.2.1",
+    "tw-animate-css": "1.4.0",
     "typescript": "5.9.3",
     "vitest": "4.0.18"
   },
