@@ -7,11 +7,13 @@ import { Field, FieldError, FieldLabel } from '@ykzts/ui/components/field'
 import { Input } from '@ykzts/ui/components/input'
 import { Textarea } from '@ykzts/ui/components/textarea'
 import Link from 'next/link'
+import { useTheme } from 'next-themes'
 import { useActionState, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { submitContactForm } from '../_actions/contact'
 
 export default function ContactForm() {
+  const { resolvedTheme } = useTheme()
   const [state, formAction, isPending] = useActionState(submitContactForm, null)
   const [turnstileToken, setTurnstileToken] = useState<string>('')
   const formRef = useRef<HTMLFormElement>(null)
@@ -151,7 +153,10 @@ export default function ContactForm() {
           onSuccess={(token) => {
             setTurnstileToken(token)
           }}
-          options={{ size: 'flexible', theme: 'light' }}
+          options={{
+            size: 'flexible',
+            theme: resolvedTheme === 'dark' ? 'dark' : 'light'
+          }}
           siteKey={
             process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
             '1x00000000000000000000AA'
