@@ -13,7 +13,7 @@
   },
   "description": "Next.js redirect gateway for legacy blog domains",
   "devDependencies": {
-    "@types/node": "22.19.12",
+    "@types/node": "24.11.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@ykzts/tsconfig": "workspace:*",
