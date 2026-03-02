@@ -4,14 +4,6 @@ import {
   type PortableTextMarkComponentProps,
   type PortableTextReactComponents
 } from '@portabletext/react'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@ykzts/ui/components/table'
 import Image from 'next/image'
 import { type ComponentProps, Suspense } from 'react'
 import Link from '@/components/link'
@@ -185,28 +177,26 @@ const portableTextComponents = {
       const headerRow = hasHeader ? value.rows[0] : null
       const bodyRows = hasHeader ? value.rows.slice(1) : value.rows
       return (
-        <div className="not-prose my-6">
-          <Table>
-            {headerRow && (
-              <TableHeader>
-                <TableRow>
-                  {headerRow.cells.map((cell) => (
-                    <TableHead key={cell._key}>{cell.content}</TableHead>
-                  ))}
-                </TableRow>
-              </TableHeader>
-            )}
-            <TableBody>
-              {bodyRows.map((row) => (
-                <TableRow key={row._key}>
-                  {row.cells.map((cell) => (
-                    <TableCell key={cell._key}>{cell.content}</TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <table>
+          {headerRow && (
+            <thead>
+              <tr>
+                {headerRow.cells.map((cell) => (
+                  <th key={cell._key}>{cell.content}</th>
+                ))}
+              </tr>
+            </thead>
+          )}
+          <tbody>
+            {bodyRows.map((row) => (
+              <tr key={row._key}>
+                {row.cells.map((cell) => (
+                  <td key={cell._key}>{cell.content}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )
     }
   }
@@ -224,7 +214,7 @@ export default function PortableTextBlock({
   ...props
 }: PortableTextProps) {
   return (
-    <div className="prose max-w-none prose-code:rounded prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-a:text-primary prose-bullets:text-foreground prose-code:text-foreground prose-code:text-sm prose-counters:text-foreground prose-headings:text-foreground prose-lead:text-foreground prose-quotes:text-foreground prose-strong:text-foreground text-foreground prose-p:leading-relaxed prose-a:no-underline prose-code:before:content-none prose-code:after:content-none prose-a:hover:underline">
+    <div className="prose prose-theme max-w-none prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
       <PortableText
         {...props}
         components={portableTextComponents}

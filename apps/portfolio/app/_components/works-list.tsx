@@ -37,7 +37,7 @@ export default function WorksList({
               {work.title}
             </h3>
             {work.content && (
-              <div className="prose prose-base max-w-none prose-a:text-primary prose-p:text-base prose-p:text-muted-foreground prose-strong:text-foreground prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
+              <div className="prose prose-theme prose-base max-w-none prose-p:text-base prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
                 <PortableTextBlock value={work.content} />
               </div>
             )}
