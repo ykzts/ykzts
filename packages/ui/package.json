@@ -23,7 +23,8 @@
     "./components/sonner": "./src/components/sonner.tsx",
     "./components/table": "./src/components/table.tsx",
     "./components/textarea": "./src/patches/textarea.tsx",
-    "./lib/utils": "./src/lib/utils.ts"
+    "./lib/utils": "./src/lib/utils.ts",
+    "./styles/theme.css": "./src/styles/theme.css"
   },
   "scripts": {
     "lint": "biome check ."
