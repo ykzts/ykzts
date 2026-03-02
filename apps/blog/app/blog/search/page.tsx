@@ -1,9 +1,12 @@
+import { getSiteName } from '@ykzts/site-config'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import Header from '@/components/header'
 import SearchForm from '@/components/search-form'
 import SearchResults from '@/components/search-results'
 import { searchPosts } from '@/lib/supabase/posts'
+
+const siteName = getSiteName()
 
 type SearchPageProps = {
   searchParams: Promise<{ q?: string }>
@@ -19,7 +22,7 @@ export async function generateMetadata({
       description: `「${q}」の検索結果`,
       openGraph: {
         description: `「${q}」の検索結果`,
-        title: `${q} - 検索結果 | Blog`,
+        title: `${q} - 検索結果 | Blog | ${siteName}`,
         type: 'website',
         url: `/blog/search?q=${encodeURIComponent(q)}`
       },
@@ -31,7 +34,7 @@ export async function generateMetadata({
     description: 'ブログ記事を検索',
     openGraph: {
       description: 'ブログ記事を検索',
-      title: 'Search | Blog',
+      title: `Search | Blog | ${siteName}`,
       type: 'website',
       url: '/blog/search'
     },

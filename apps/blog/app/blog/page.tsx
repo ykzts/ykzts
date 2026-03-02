@@ -1,3 +1,4 @@
+import { getSiteName } from '@ykzts/site-config'
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import BlogPagination from '@/components/blog-pagination'
@@ -5,6 +6,8 @@ import Header from '@/components/header'
 import PostCard from '@/components/post-card'
 import { getPosts, getTotalPages } from '@/lib/supabase/posts'
 import { getPublisherProfile } from '@/lib/supabase/profiles'
+
+const siteName = getSiteName()
 
 function buildDescription(profileName: string): string {
   return `${profileName}の個人ブログ。さまざまなトピックについて発信しています。`
@@ -24,12 +27,12 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     openGraph: {
       description,
-      title: 'Blog',
+      title: `Blog | ${siteName}`,
       type: 'website',
       url: '/blog'
     },
     title: {
-      absolute: 'Blog'
+      absolute: `Blog | ${siteName}`
     }
   }
 }

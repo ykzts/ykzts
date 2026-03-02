@@ -1,6 +1,6 @@
 import './globals.css'
 import { Analytics } from '@vercel/analytics/next'
-import { getSiteOrigin } from '@ykzts/site-config'
+import { getSiteName, getSiteOrigin } from '@ykzts/site-config'
 import { cn } from '@ykzts/ui/lib/utils'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
@@ -9,6 +9,8 @@ import DraftModeBanner from '@/components/draft-mode-banner'
 import Footer from '@/components/footer'
 import ThemeProvider from '@/components/theme-provider'
 import { getPublisherProfile } from '@/lib/supabase/profiles'
+
+const siteName = getSiteName()
 
 export async function generateMetadata(): Promise<Metadata> {
   let fediverseCreator: string | null = null
@@ -27,8 +29,8 @@ export async function generateMetadata(): Promise<Metadata> {
       'Hatena::Bookmark': 'nocomment'
     },
     title: {
-      default: 'Blog',
-      template: '%s | Blog'
+      default: `Blog | ${siteName}`,
+      template: `%s | Blog | ${siteName}`
     }
   }
 }

@@ -1,5 +1,5 @@
 import { portableTextToHTML } from '@ykzts/portable-text-utils'
-import { getSiteOrigin } from '@ykzts/site-config'
+import { getSiteName, getSiteOrigin } from '@ykzts/site-config'
 import { Feed } from 'feed'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
 import { getPostsForFeed } from '@/lib/supabase/posts'
@@ -41,7 +41,7 @@ export async function GET() {
     },
     id: baseUrl,
     link: baseUrl,
-    title: 'Blog'
+    title: `Blog | ${getSiteName()}`
   })
 
   for (const post of posts) {
