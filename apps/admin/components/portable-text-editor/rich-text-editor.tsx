@@ -27,64 +27,40 @@ import {
   lexicalToPortableText
 } from './portable-text-serializer'
 
+// Minimal theme - @tailwindcss/typography handles most styling
 const editorTheme = {
-  code: 'block bg-muted/20 border border-border rounded p-4 font-mono text-sm my-2 overflow-x-auto whitespace-pre',
+  code: 'block overflow-x-auto whitespace-pre font-mono text-sm not-prose bg-muted/20 border border-border rounded p-4 my-2',
   codeHighlight: {
-    atrule: 'text-purple-600',
-    attr: 'text-blue-600',
-    boolean: 'text-orange-600',
-    builtin: 'text-cyan-600',
-    cdata: 'text-gray-600',
-    char: 'text-green-600',
-    class: 'text-yellow-600',
-    'class-name': 'text-yellow-600',
-    comment: 'text-gray-500 italic',
-    constant: 'text-orange-600',
-    deleted: 'text-red-600',
-    doctype: 'text-gray-600',
-    entity: 'text-orange-600',
-    function: 'text-blue-600',
-    important: 'text-red-600 font-bold',
-    inserted: 'text-green-600',
-    keyword: 'text-purple-600',
-    namespace: 'text-cyan-600',
-    number: 'text-orange-600',
-    operator: 'text-gray-700',
-    prolog: 'text-gray-600',
-    property: 'text-blue-600',
-    punctuation: 'text-gray-700',
-    regex: 'text-green-600',
-    selector: 'text-green-600',
-    string: 'text-green-600',
-    symbol: 'text-orange-600',
-    tag: 'text-red-600',
-    url: 'text-blue-600',
-    variable: 'text-orange-600'
-  },
-  heading: {
-    h2: 'text-3xl font-bold mb-3 leading-snug',
-    h3: 'text-2xl font-bold mb-2 leading-snug',
-    h4: 'text-xl font-bold mb-2 leading-snug',
-    h5: 'text-lg font-bold mb-1 leading-normal',
-    h6: 'text-base font-bold mb-1 leading-normal'
-  },
-  link: 'text-primary hover:underline',
-  list: {
-    listitem: 'ml-8',
-    nested: {
-      listitem: 'list-none'
-    },
-    ol: 'list-decimal',
-    ul: 'list-disc'
-  },
-  paragraph: 'mb-4 leading-relaxed',
-  quote: 'border-l-4 border-border pl-4 italic text-muted-foreground',
-  text: {
-    bold: 'font-bold',
-    code: 'bg-muted/50 px-1.5 py-0.5 rounded font-mono text-sm',
-    italic: 'italic',
-    strikethrough: 'line-through',
-    underline: 'underline'
+    atrule: 'text-purple-600 dark:text-purple-400',
+    attr: 'text-blue-600 dark:text-blue-400',
+    boolean: 'text-orange-600 dark:text-orange-400',
+    builtin: 'text-cyan-600 dark:text-cyan-400',
+    cdata: 'text-gray-600 dark:text-gray-400',
+    char: 'text-green-600 dark:text-green-400',
+    class: 'text-yellow-600 dark:text-yellow-400',
+    'class-name': 'text-yellow-600 dark:text-yellow-400',
+    comment: 'text-gray-500 dark:text-gray-400 italic',
+    constant: 'text-orange-600 dark:text-orange-400',
+    deleted: 'text-red-600 dark:text-red-400',
+    doctype: 'text-gray-600 dark:text-gray-400',
+    entity: 'text-orange-600 dark:text-orange-400',
+    function: 'text-blue-600 dark:text-blue-400',
+    important: 'text-red-600 dark:text-red-400 font-bold',
+    inserted: 'text-green-600 dark:text-green-400',
+    keyword: 'text-purple-600 dark:text-purple-400',
+    namespace: 'text-cyan-600 dark:text-cyan-400',
+    number: 'text-orange-600 dark:text-orange-400',
+    operator: 'text-gray-700 dark:text-gray-300',
+    prolog: 'text-gray-600 dark:text-gray-400',
+    property: 'text-blue-600 dark:text-blue-400',
+    punctuation: 'text-gray-700 dark:text-gray-300',
+    regex: 'text-green-600 dark:text-green-400',
+    selector: 'text-green-600 dark:text-green-400',
+    string: 'text-green-600 dark:text-green-400',
+    symbol: 'text-orange-600 dark:text-orange-400',
+    tag: 'text-red-600 dark:text-red-400',
+    url: 'text-blue-600 dark:text-blue-400',
+    variable: 'text-orange-600 dark:text-orange-400'
   }
 }
 
@@ -171,7 +147,7 @@ export function RichTextEditor({
             <RichTextPlugin
               contentEditable={
                 <ContentEditable
-                  className="min-h-[150px] overflow-auto px-4 py-3 text-foreground outline-none"
+                  className="prose prose-theme prose-sm min-h-37.5 max-w-none overflow-auto px-4 py-3 text-foreground outline-none"
                   id={id}
                 />
               }
