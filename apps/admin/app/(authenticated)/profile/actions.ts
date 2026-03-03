@@ -97,24 +97,38 @@ export async function updateProfile(
       }
     }
 
-    // Fetch existing social link IDs for change detection
-    let existingSocialLinkIds = new Set<string>()
+    // Fetch existing social links (id + url) for change detection
+    let existingSocialLinks = new Map<string, string>()
     if (existingProfile) {
       const { data: existingLinks } = await supabase
         .from('social_links')
-        .select('id')
+        .select('id, url')
         .eq('profile_id', existingProfile.id)
-      existingSocialLinkIds = new Set((existingLinks ?? []).map((l) => l.id))
+      existingSocialLinks = new Map(
+        (existingLinks ?? []).map((l) => [l.id, (l.url ?? '').trim()])
+      )
+    }
+
+    // Parse and validate social_links_count early before any loops
+    const socialLinksCountStr = formData.get('social_links_count') as string
+    const socialLinksCount = Number.parseInt(socialLinksCountStr, 10)
+    if (
+      Number.isNaN(socialLinksCount) ||
+      socialLinksCount < 0 ||
+      socialLinksCount > 50
+    ) {
+      return {
+        error: 'ソーシャルリンクの件数が不正です。'
+      }
     }
 
     // Determine fediverse_creator from social links
     let normalizedFediverseCreator: string | null = null
 
-    const socialLinksCountStr = formData.get('social_links_count') as string
-    const socialLinksCount = Number.parseInt(socialLinksCountStr, 10)
-    if (!Number.isNaN(socialLinksCount) && socialLinksCount > 0) {
-      // Determine whether social links have changed (new or deleted)
+    if (socialLinksCount > 0) {
+      // Determine whether social links have changed (new, deleted, or URL-updated)
       let hasNewLinks = false
+      let hasUpdatedLinks = false
       const submittedLinkIds = new Set<string>()
       for (let i = 0; i < socialLinksCount; i++) {
         const id = formData.get(`social_link_id_${i}`) as string
@@ -122,15 +136,24 @@ export async function updateProfile(
         if (!url || url.trim() === '') continue
         if (id) {
           submittedLinkIds.add(id)
+          const previousUrl = existingSocialLinks.get(id)
+          if (previousUrl !== url.trim()) {
+            hasUpdatedLinks = true
+          }
         } else {
           hasNewLinks = true
         }
       }
-      const hasDeletedLinks = [...existingSocialLinkIds].some(
+      const hasDeletedLinks = [...existingSocialLinks.keys()].some(
         (id) => !submittedLinkIds.has(id)
       )
 
-      if (!hasNewLinks && !hasDeletedLinks && existingProfile) {
+      if (
+        !hasNewLinks &&
+        !hasDeletedLinks &&
+        !hasUpdatedLinks &&
+        existingProfile
+      ) {
         // Social links unchanged - reuse existing fediverse_creator without WebFinger
         normalizedFediverseCreator = existingProfile.fediverse_creator
       } else {
@@ -213,16 +236,6 @@ export async function updateProfile(
     }
 
     // Handle social links
-    if (
-      Number.isNaN(socialLinksCount) ||
-      socialLinksCount < 0 ||
-      socialLinksCount > 50
-    ) {
-      return {
-        error: 'ソーシャルリンクの件数が不正です。'
-      }
-    }
-
     const socialLinksToKeep = new Set<string>()
 
     for (let i = 0; i < socialLinksCount; i++) {
@@ -282,13 +295,13 @@ export async function updateProfile(
     }
 
     // Delete removed social links
-    const { data: existingSocialLinks } = await supabase
+    const { data: currentSocialLinks } = await supabase
       .from('social_links')
       .select('id')
       .eq('profile_id', profileId)
 
-    if (existingSocialLinks) {
-      const idsToDelete = existingSocialLinks
+    if (currentSocialLinks) {
+      const idsToDelete = currentSocialLinks
         .map((link) => link.id)
         .filter((id) => !socialLinksToKeep.has(id))
 

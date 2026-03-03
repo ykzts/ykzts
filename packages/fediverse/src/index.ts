@@ -28,12 +28,22 @@ function isPrivateIPv4(address: string): boolean {
     return true
   }
 
-  if (octets[0] === 10) return true
-  if (octets[0] === 127) return true
-  if (octets[0] === 169 && octets[1] === 254) return true
-  if (octets[0] === 172 && octets[1] >= 16 && octets[1] <= 31) return true
-  if (octets[0] === 192 && octets[1] === 168) return true
-  if (address === '169.254.169.254') return true
+  const [a, b, c] = octets
+
+  if (a === 0) return true // 0.0.0.0/8 - "This" network
+  if (a === 10) return true // 10.0.0.0/8 - Private
+  if (a === 100 && b >= 64 && b <= 127) return true // 100.64.0.0/10 - Shared (CGNAT)
+  if (a === 127) return true // 127.0.0.0/8 - Loopback
+  if (a === 169 && b === 254) return true // 169.254.0.0/16 - Link-local
+  if (a === 172 && b >= 16 && b <= 31) return true // 172.16.0.0/12 - Private
+  if (a === 192 && b === 0 && c === 0) return true // 192.0.0.0/24 - IETF Protocol Assignments
+  if (a === 192 && b === 0 && c === 2) return true // 192.0.2.0/24 - TEST-NET-1
+  if (a === 192 && b === 88 && c === 99) return true // 192.88.99.0/24 - 6to4 Relay Anycast
+  if (a === 192 && b === 168) return true // 192.168.0.0/16 - Private
+  if (a === 198 && b >= 18 && b <= 19) return true // 198.18.0.0/15 - Benchmarking
+  if (a === 198 && b === 51 && c === 100) return true // 198.51.100.0/24 - TEST-NET-2
+  if (a === 203 && b === 0 && c === 113) return true // 203.0.113.0/24 - TEST-NET-3
+  if (a >= 224) return true // 224.0.0.0/4 Multicast and 240.0.0.0/4 Reserved
 
   return false
 }
@@ -41,9 +51,11 @@ function isPrivateIPv4(address: string): boolean {
 function isPrivateIPv6(address: string): boolean {
   const normalized = address.toLowerCase()
 
-  if (normalized === '::1') return true
+  if (normalized === '::') return true // Unspecified address
 
-  if (normalized.startsWith('fc') || normalized.startsWith('fd')) return true
+  if (normalized === '::1') return true // Loopback
+
+  if (normalized.startsWith('fc') || normalized.startsWith('fd')) return true // Unique local
 
   if (
     normalized.startsWith('fe8') ||
@@ -51,8 +63,10 @@ function isPrivateIPv6(address: string): boolean {
     normalized.startsWith('fea') ||
     normalized.startsWith('feb')
   ) {
-    return true
+    return true // Link-local
   }
+
+  if (normalized.startsWith('ff')) return true // Multicast
 
   if (normalized.startsWith('::ffff:')) {
     return isPrivateIPv4(normalized.replace('::ffff:', ''))
@@ -101,8 +115,13 @@ async function fetchWebFinger(
 
     const response = await fetch(url.toString(), {
       headers: { Accept: 'application/jrd+json, application/json' },
+      redirect: 'manual',
       signal: AbortSignal.timeout(5000)
     })
+
+    if (response.status >= 300 && response.status < 400) {
+      return null
+    }
 
     if (!response.ok) {
       return null

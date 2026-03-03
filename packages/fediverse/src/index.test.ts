@@ -13,7 +13,7 @@ const mockLookup = vi.mocked(dns.lookup)
 
 /** Return a public IP address from the DNS mock */
 function mockPublicDns() {
-  mockLookup.mockResolvedValue([{ address: '203.0.113.1', family: 4 }] as never)
+  mockLookup.mockResolvedValue([{ address: '1.1.1.1', family: 4 }] as never)
 }
 
 beforeEach(() => {
