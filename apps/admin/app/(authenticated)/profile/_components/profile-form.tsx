@@ -237,7 +237,8 @@ export default function ProfileForm({
         />
         <p className="mt-2 text-muted-foreground text-sm">
           記事やサイトのメタデータに出力する識別子です (例: @user@example.com /
-          user@example.com)
+          user@example.com)。ソーシャルリンクに Mastodon などの Fediverse
+          アカウントの URL を登録している場合は自動的に設定されます。
         </p>
       </div>
 

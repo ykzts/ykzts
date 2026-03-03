@@ -13,6 +13,27 @@ const KNOWN_SERVICES: Record<string, string> = {
 }
 
 /**
+ * Extract fediverse creator handle from a Fediverse URL
+ * Returns @user@domain format or null if not extractable
+ */
+export function extractFediverseCreatorFromURL(
+  urlString: string
+): string | null {
+  try {
+    const url = new URL(urlString)
+    const match = url.pathname.match(/^\/@([^/]+)/)
+
+    if (!match?.[1]) {
+      return null
+    }
+
+    return `@${match[1]}@${url.hostname.toLowerCase()}`
+  } catch {
+    return null
+  }
+}
+
+/**
  * Detect social service from URL hostname
  */
 export async function detectServiceFromURL(

@@ -1,8 +1,52 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { detectServiceFromURL } from '../social-service-detector'
+import {
+  detectServiceFromURL,
+  extractFediverseCreatorFromURL
+} from '../social-service-detector'
 
 // Mock fetch for NodeInfo tests
 global.fetch = vi.fn()
+
+describe('extractFediverseCreatorFromURL', () => {
+  it('should extract fediverse creator from Mastodon URL', () => {
+    const result = extractFediverseCreatorFromURL(
+      'https://mastodon.social/@username'
+    )
+    expect(result).toBe('@username@mastodon.social')
+  })
+
+  it('should extract fediverse creator from Mastodon URL with trailing path', () => {
+    const result = extractFediverseCreatorFromURL(
+      'https://mastodon.social/@username/123456'
+    )
+    expect(result).toBe('@username@mastodon.social')
+  })
+
+  it('should extract fediverse creator from other fediverse instance', () => {
+    const result = extractFediverseCreatorFromURL('https://fedibird.com/@ykzts')
+    expect(result).toBe('@ykzts@fedibird.com')
+  })
+
+  it('should return null for URLs without /@username pattern', () => {
+    const result = extractFediverseCreatorFromURL('https://github.com/username')
+    expect(result).toBeNull()
+  })
+
+  it('should return null for invalid URL', () => {
+    const result = extractFediverseCreatorFromURL('not-a-url')
+    expect(result).toBeNull()
+  })
+
+  it('should return null for empty string', () => {
+    const result = extractFediverseCreatorFromURL('')
+    expect(result).toBeNull()
+  })
+
+  it('should return null for URL with only slash path', () => {
+    const result = extractFediverseCreatorFromURL('https://example.com/')
+    expect(result).toBeNull()
+  })
+})
 
 describe('detectServiceFromURL', () => {
   beforeEach(() => {
