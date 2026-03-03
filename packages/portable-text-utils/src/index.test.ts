@@ -173,6 +173,19 @@ describe('portableTextToMarkdown', () => {
     expect(result).not.toMatch(/^## Section/m)
   })
 
+  it('clamps headings at h1 when headingOffset is negative', () => {
+    const content = [
+      {
+        _type: 'block',
+        children: [{ _type: 'span', text: 'Lower bound heading' }],
+        style: 'h2'
+      }
+    ]
+    const result = portableTextToMarkdown(content, { headingOffset: -5 })
+    expect(result).toContain('# Lower bound heading')
+    expect(result).not.toMatch(/^## Lower bound heading/m)
+  })
+
   it('clamps headings at h6 when offset exceeds max', () => {
     const content = [
       {

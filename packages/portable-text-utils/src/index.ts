@@ -133,8 +133,14 @@ export function portableTextToMarkdown(
   const headingOffset = options?.headingOffset ?? 0
 
   const makeHeadingRenderer = (level: number): PortableTextBlockRenderer => {
-    const adjustedLevel = Math.min(level + headingOffset, 6)
+    const adjustedLevel = Math.min(Math.max(level + headingOffset, 1), 6)
     return ({ children }) => `${'#'.repeat(adjustedLevel)} ${children}`
+  }
+
+  const getFence = (code: string): string => {
+    const runs = code.match(/`+/g) ?? []
+    const maxRun = runs.reduce((max, run) => Math.max(max, run.length), 0)
+    return '`'.repeat(Math.max(3, maxRun + 1))
   }
 
   try {
@@ -144,7 +150,9 @@ export function portableTextToMarkdown(
           const language = (value as unknown as PortableTextLike).language as
             | string
             | undefined
-          return `\`\`\`${language ?? ''}\n${children}\n\`\`\``
+          const code = String(children)
+          const fence = getFence(code)
+          return `${fence}${language ?? ''}\n${code}\n${fence}`
         },
         h1: makeHeadingRenderer(1),
         h2: makeHeadingRenderer(2),
@@ -158,7 +166,8 @@ export function portableTextToMarkdown(
           const v = value as PortableTextLike
           const language = (v.language as string | null | undefined) ?? ''
           const code = (v.code as string | undefined) ?? ''
-          return `\`\`\`${language}\n${code}\n\`\`\``
+          const fence = getFence(code)
+          return `${fence}${language}\n${code}\n${fence}`
         },
         image: ({ value }) => {
           const v = value as PortableTextLike
