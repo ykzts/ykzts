@@ -156,7 +156,6 @@ export async function uploadAvatar(
     // Invalidate cache and revalidate paths
     await invalidateCaches('profile')
     revalidatePath('/profile')
-    revalidatePath('/profile/edit')
 
     return { url: publicUrl }
   } catch (error) {
@@ -219,7 +218,6 @@ export async function deleteAvatar(): Promise<{ error?: string }> {
     // Invalidate cache and revalidate paths
     await invalidateCaches('profile')
     revalidatePath('/profile')
-    revalidatePath('/profile/edit')
 
     return {}
   } catch (error) {
