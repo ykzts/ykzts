@@ -31,7 +31,6 @@ type ProfileFormProps = {
     about: Json | null
     avatar_url: string | null
     email: string | null
-    fediverse_creator: string | null
     name: string
     occupation: string | null
     tagline: string | null
@@ -222,23 +221,6 @@ export default function ProfileForm({
           name="email"
           type="email"
         />
-      </div>
-
-      <div>
-        <label className="mb-2 block font-medium" htmlFor="fediverse_creator">
-          fediverse:creator
-        </label>
-        <Input
-          defaultValue={initialData?.fediverse_creator ?? ''}
-          id="fediverse_creator"
-          name="fediverse_creator"
-          placeholder="@user@example.com"
-          type="text"
-        />
-        <p className="mt-2 text-muted-foreground text-sm">
-          記事やサイトのメタデータに出力する識別子です (例: @user@example.com /
-          user@example.com)
-        </p>
       </div>
 
       <div>
