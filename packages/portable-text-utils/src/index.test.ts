@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { portableTextToMarkdown } from './index'
+import { parseMarkdownForPost, portableTextToMarkdown } from './index'
 
 describe('portableTextToMarkdown', () => {
   it('returns empty string for null input', () => {
@@ -210,8 +210,6 @@ describe('portableTextToMarkdown', () => {
     expect(result).toContain('# Normal heading')
   })
 })
-
-import { parseMarkdownForPost } from './index'
 
 describe('parseMarkdownForPost', () => {
   it('parses markdown without frontmatter using h1 as title', () => {

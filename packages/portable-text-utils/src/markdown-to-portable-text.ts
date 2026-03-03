@@ -80,7 +80,10 @@ function extractBlockText(block: PortableTextBlock): string {
  */
 function parseTags(raw: unknown): string[] {
   if (Array.isArray(raw)) {
-    return raw.filter((t) => typeof t === 'string' && t.trim()).map(String)
+    return raw
+      .filter((t): t is string => typeof t === 'string')
+      .map((t) => t.trim())
+      .filter(Boolean)
   }
   if (typeof raw === 'string' && raw.trim()) {
     return raw
@@ -96,7 +99,7 @@ function parseTags(raw: unknown): string[] {
  * Returns null when the value is absent or cannot be parsed.
  */
 function parsePublishedAt(raw: unknown): string | null {
-  if (!raw) {
+  if (raw === null || raw === undefined || raw === '') {
     return null
   }
   if (raw instanceof Date) {
