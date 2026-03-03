@@ -154,6 +154,12 @@ export function portableTextToMarkdown(
         h6: makeHeadingRenderer(6)
       },
       types: {
+        code: ({ value }) => {
+          const v = value as PortableTextLike
+          const language = (v.language as string | null | undefined) ?? ''
+          const code = (v.code as string | undefined) ?? ''
+          return `\`\`\`${language}\n${code}\n\`\`\``
+        },
         image: ({ value }) => {
           const v = value as PortableTextLike
           const alt = (v.alt as string | undefined) ?? ''

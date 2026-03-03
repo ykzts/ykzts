@@ -62,6 +62,34 @@ describe('portableTextToMarkdown', () => {
     expect(portableTextToMarkdown({ invalid: 'object' })).toBe('')
   })
 
+  it('converts _type code block to fenced code block', () => {
+    const content = [
+      {
+        _key: 'key_12',
+        _type: 'code',
+        code: 'server {\n  listen 80;\n}',
+        language: 'nginx'
+      }
+    ]
+    const result = portableTextToMarkdown(content)
+    expect(result).toContain('```nginx')
+    expect(result).toContain('server {')
+    expect(result).toContain('```')
+  })
+
+  it('converts _type code block with null language to fenced code block', () => {
+    const content = [
+      {
+        _key: 'key_12',
+        _type: 'code',
+        code: 'console.log("hello")',
+        language: null
+      }
+    ]
+    const result = portableTextToMarkdown(content)
+    expect(result).toContain('```\nconsole.log("hello")\n```')
+  })
+
   it('converts code block (style: code) to fenced code block', () => {
     const content = [
       {
