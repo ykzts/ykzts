@@ -1,8 +1,12 @@
 import { markdownToPortableText as convertFromMarkdown } from '@portabletext/markdown'
+import matter from 'gray-matter'
 
 export type MarkdownPostParseResult = {
   title: string
   contentJson: string
+  tags: string[]
+  excerpt: string
+  publishedAt: string | null
 }
 
 type PortableTextCodeBlock = {
@@ -71,16 +75,55 @@ function extractBlockText(block: PortableTextBlock): string {
 }
 
 /**
+ * Parse frontmatter tags value into a string array.
+ * Accepts a YAML sequence (string[]) or a comma-separated string.
+ */
+function parseTags(raw: unknown): string[] {
+  if (Array.isArray(raw)) {
+    return raw.filter((t) => typeof t === 'string' && t.trim()).map(String)
+  }
+  if (typeof raw === 'string' && raw.trim()) {
+    return raw
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean)
+  }
+  return []
+}
+
+/**
+ * Parse a frontmatter date/datetime value into an ISO 8601 string.
+ * Returns null when the value is absent or cannot be parsed.
+ */
+function parsePublishedAt(raw: unknown): string | null {
+  if (!raw) {
+    return null
+  }
+  if (raw instanceof Date) {
+    return Number.isNaN(raw.getTime()) ? null : raw.toISOString()
+  }
+  if (typeof raw === 'string' || typeof raw === 'number') {
+    const d = new Date(raw)
+    return Number.isNaN(d.getTime()) ? null : d.toISOString()
+  }
+  return null
+}
+
+/**
  * Parse a markdown string and extract the title and body content.
- * Converts the entire markdown to Portable Text first, then extracts the
- * first h1 block as the title and returns the remaining blocks as body content.
+ * Strips frontmatter first (using gray-matter), then converts the remaining
+ * markdown to Portable Text. The first h1 block is used as the title when no
+ * frontmatter title is present. Frontmatter fields title, tags, excerpt, and
+ * date/published_at are extracted into the result.
  */
 export function parseMarkdownForPost(
   markdown: string
 ): MarkdownPostParseResult {
+  const { data: frontmatter, content: body } = matter(markdown)
+
   let allBlocks: PortableTextBlock[] = []
   try {
-    const converted = convertFromMarkdown(markdown)
+    const converted = convertFromMarkdown(body)
     allBlocks = converted as PortableTextBlock[]
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error)
@@ -90,15 +133,18 @@ export function parseMarkdownForPost(
     throw error
   }
 
-  let title = ''
+  let title =
+    typeof frontmatter.title === 'string' ? frontmatter.title.trim() : ''
   let titleBlockIndex = -1
 
-  for (let i = 0; i < allBlocks.length; i++) {
-    const block = allBlocks[i]
-    if (block._type === 'block' && block.style === 'h1') {
-      title = extractBlockText(block)
-      titleBlockIndex = i
-      break
+  if (!title) {
+    for (let i = 0; i < allBlocks.length; i++) {
+      const block = allBlocks[i]
+      if (block._type === 'block' && block.style === 'h1') {
+        title = extractBlockText(block)
+        titleBlockIndex = i
+        break
+      }
     }
   }
 
@@ -112,8 +158,18 @@ export function parseMarkdownForPost(
 
   const portableText = bodyBlocks.map(transformBlock)
 
+  const tags = parseTags(frontmatter.tags)
+  const excerpt =
+    typeof frontmatter.excerpt === 'string' ? frontmatter.excerpt.trim() : ''
+  const publishedAt =
+    parsePublishedAt(frontmatter.published_at) ??
+    parsePublishedAt(frontmatter.date)
+
   return {
     contentJson: JSON.stringify(portableText),
+    excerpt,
+    publishedAt,
+    tags,
     title
   }
 }

@@ -210,3 +210,89 @@ describe('portableTextToMarkdown', () => {
     expect(result).toContain('# Normal heading')
   })
 })
+
+import { parseMarkdownForPost } from './index'
+
+describe('parseMarkdownForPost', () => {
+  it('parses markdown without frontmatter using h1 as title', () => {
+    const md = '# My Title\n\nSome content.'
+    const result = parseMarkdownForPost(md)
+    expect(result.title).toBe('My Title')
+    expect(result.tags).toEqual([])
+    expect(result.excerpt).toBe('')
+    expect(result.publishedAt).toBeNull()
+    const blocks = JSON.parse(result.contentJson)
+    expect(blocks.some((b: { style?: string }) => b.style === 'h1')).toBe(false)
+  })
+
+  it('extracts title from frontmatter', () => {
+    const md = '---\ntitle: Frontmatter Title\n---\n\nContent here.'
+    const result = parseMarkdownForPost(md)
+    expect(result.title).toBe('Frontmatter Title')
+  })
+
+  it('frontmatter title takes precedence over h1', () => {
+    const md = '---\ntitle: FM Title\n---\n\n# H1 Title\n\nContent.'
+    const result = parseMarkdownForPost(md)
+    expect(result.title).toBe('FM Title')
+    const blocks = JSON.parse(result.contentJson)
+    expect(blocks.some((b: { style?: string }) => b.style === 'h1')).toBe(true)
+  })
+
+  it('extracts tags from frontmatter YAML sequence', () => {
+    const md = '---\ntags:\n  - TypeScript\n  - React\n---\n\nContent.'
+    const result = parseMarkdownForPost(md)
+    expect(result.tags).toEqual(['TypeScript', 'React'])
+  })
+
+  it('extracts tags from frontmatter comma-separated string', () => {
+    const md = '---\ntags: TypeScript, React\n---\n\nContent.'
+    const result = parseMarkdownForPost(md)
+    expect(result.tags).toEqual(['TypeScript', 'React'])
+  })
+
+  it('extracts excerpt from frontmatter', () => {
+    const md = '---\nexcerpt: This is a summary.\n---\n\nContent.'
+    const result = parseMarkdownForPost(md)
+    expect(result.excerpt).toBe('This is a summary.')
+  })
+
+  it('extracts publishedAt from frontmatter date field', () => {
+    const md = '---\ndate: 2026-03-03\n---\n\nContent.'
+    const result = parseMarkdownForPost(md)
+    expect(result.publishedAt).not.toBeNull()
+    expect(result.publishedAt).toMatch(/^2026-03-03/)
+  })
+
+  it('extracts publishedAt from frontmatter published_at field', () => {
+    const md = '---\npublished_at: 2026-03-03T12:00:00Z\n---\n\nContent.'
+    const result = parseMarkdownForPost(md)
+    expect(result.publishedAt).toBe('2026-03-03T12:00:00.000Z')
+  })
+
+  it('published_at takes precedence over date', () => {
+    const md =
+      '---\npublished_at: 2026-06-01T00:00:00Z\ndate: 2026-01-01\n---\n\nContent.'
+    const result = parseMarkdownForPost(md)
+    expect(result.publishedAt).toBe('2026-06-01T00:00:00.000Z')
+  })
+
+  it('returns null publishedAt when no date fields are present', () => {
+    const md = '---\ntitle: No Date\n---\n\nContent.'
+    const result = parseMarkdownForPost(md)
+    expect(result.publishedAt).toBeNull()
+  })
+
+  it('strips frontmatter from body content', () => {
+    const md =
+      '---\ntitle: Test\ntags: [a, b]\n---\n\nParagraph after frontmatter.'
+    const result = parseMarkdownForPost(md)
+    const blocks = JSON.parse(result.contentJson)
+    const texts = blocks
+      .flatMap((b: { children?: Array<{ text?: string }> }) => b.children ?? [])
+      .map((c: { text?: string }) => c.text ?? '')
+      .join(' ')
+    expect(texts).toContain('Paragraph after frontmatter')
+    expect(texts).not.toContain('---')
+  })
+})
