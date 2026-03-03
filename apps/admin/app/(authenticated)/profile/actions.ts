@@ -2,8 +2,7 @@
 
 import {
   extractFediverseHandleFromURL,
-  parseFediverseHandle,
-  verifyFediverseHandle
+  parseFediverseHandle
 } from '@ykzts/fediverse'
 import type { Json } from '@ykzts/supabase'
 import { revalidateTag } from 'next/cache'
@@ -21,7 +20,6 @@ const profileSchema = z.object({
     .email('メールアドレスの形式が正しくありません。')
     .optional()
     .or(z.literal('')),
-  fediverse_creator: z.string().optional().or(z.literal('')),
   name: z.string().min(1, '名前は必須項目です。'),
   occupation: z.string().optional(),
   tagline: z.string().optional(),
@@ -67,7 +65,6 @@ export async function updateProfile(
     const rawProfileData = {
       about: formData.get('about') ?? undefined,
       email: formData.get('email') ?? '',
-      fediverse_creator: formData.get('fediverse_creator') ?? '',
       name: formData.get('name') ?? '',
       occupation: formData.get('occupation') ?? undefined,
       tagline: formData.get('tagline') ?? undefined,
@@ -82,49 +79,62 @@ export async function updateProfile(
       }
     }
 
-    const {
-      name,
-      occupation,
-      tagline,
-      email,
-      fediverse_creator,
-      about,
-      timezone
-    } = profileValidation.data
+    const { name, occupation, tagline, email, about, timezone } =
+      profileValidation.data
 
-    const isManual = !!(fediverse_creator && fediverse_creator.trim() !== '')
+    const supabase = await createClient()
 
+    // Get or create profile for current user
+    const { data: existingProfile, error: profileFetchError } = await supabase
+      .from('profiles')
+      .select('id, fediverse_creator')
+      .eq('user_id', user.id)
+      .maybeSingle()
+
+    if (profileFetchError) {
+      return {
+        error: `プロフィールの取得に失敗しました: ${profileFetchError.message}`
+      }
+    }
+
+    // Fetch existing social link IDs for change detection
+    let existingSocialLinkIds = new Set<string>()
+    if (existingProfile) {
+      const { data: existingLinks } = await supabase
+        .from('social_links')
+        .select('id')
+        .eq('profile_id', existingProfile.id)
+      existingSocialLinkIds = new Set((existingLinks ?? []).map((l) => l.id))
+    }
+
+    // Determine fediverse_creator from social links
     let normalizedFediverseCreator: string | null = null
 
-    if (isManual) {
-      // Validate and verify manually provided fediverse_creator via WebFinger
-      const parsedFediverseCreator = parseFediverseHandle(fediverse_creator)
-
-      if (!parsedFediverseCreator) {
-        return {
-          error:
-            'fediverse:creator は @user@example.com または user@example.com 形式で入力してください。'
+    const socialLinksCountStr = formData.get('social_links_count') as string
+    const socialLinksCount = Number.parseInt(socialLinksCountStr, 10)
+    if (!Number.isNaN(socialLinksCount) && socialLinksCount > 0) {
+      // Determine whether social links have changed (new or deleted)
+      let hasNewLinks = false
+      const submittedLinkIds = new Set<string>()
+      for (let i = 0; i < socialLinksCount; i++) {
+        const id = formData.get(`social_link_id_${i}`) as string
+        const url = formData.get(`social_link_url_${i}`) as string
+        if (!url || url.trim() === '') continue
+        if (id) {
+          submittedLinkIds.add(id)
+        } else {
+          hasNewLinks = true
         }
       }
-
-      const isValid = await verifyFediverseHandle(
-        parsedFediverseCreator.acct,
-        parsedFediverseCreator.domain
+      const hasDeletedLinks = [...existingSocialLinkIds].some(
+        (id) => !submittedLinkIds.has(id)
       )
 
-      if (!isValid) {
-        return {
-          error:
-            'fediverse:creator の検証に失敗しました。.well-known/webfinger で確認できるアカウントを指定してください。'
-        }
-      }
-
-      normalizedFediverseCreator = parsedFediverseCreator.normalized
-    } else {
-      // Try to auto-extract from social links using WebFinger
-      const socialLinksCountStr = formData.get('social_links_count') as string
-      const socialLinksCount = Number.parseInt(socialLinksCountStr, 10)
-      if (!Number.isNaN(socialLinksCount) && socialLinksCount > 0) {
+      if (!hasNewLinks && !hasDeletedLinks && existingProfile) {
+        // Social links unchanged - reuse existing fediverse_creator without WebFinger
+        normalizedFediverseCreator = existingProfile.fediverse_creator
+      } else {
+        // Links changed - run WebFinger to re-determine fediverse_creator
         for (let i = 0; i < socialLinksCount; i++) {
           const url = formData.get(`social_link_url_${i}`) as string
           if (!url || url.trim() === '') continue
@@ -156,21 +166,6 @@ export async function updateProfile(
             style: 'normal'
           }
         ] as Json
-      }
-    }
-
-    const supabase = await createClient()
-
-    // Get or create profile for current user
-    const { data: existingProfile, error: profileFetchError } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('user_id', user.id)
-      .maybeSingle()
-
-    if (profileFetchError) {
-      return {
-        error: `プロフィールの取得に失敗しました: ${profileFetchError.message}`
       }
     }
 
@@ -218,9 +213,6 @@ export async function updateProfile(
     }
 
     // Handle social links
-    const socialLinksCountStr = formData.get('social_links_count') as string
-    const socialLinksCount = Number.parseInt(socialLinksCountStr, 10)
-
     if (
       Number.isNaN(socialLinksCount) ||
       socialLinksCount < 0 ||
