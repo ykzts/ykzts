@@ -4,7 +4,6 @@ import { lookup } from 'node:dns/promises'
 import { isIP } from 'node:net'
 import type { Json } from '@ykzts/supabase'
 import { revalidateTag } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { getCurrentUser } from '@/lib/auth'
 import { invalidateCaches } from '@/lib/revalidate'
@@ -237,9 +236,9 @@ async function verifyFediverseCreatorWithWebFinger(
 }
 
 export async function updateProfile(
-  _prevState: { error: string } | null,
+  _prevState: { error: string } | { success: true } | null,
   formData: FormData
-) {
+): Promise<{ error: string } | { success: true } | null> {
   try {
     // Get current user
     const user = await getCurrentUser()
@@ -575,7 +574,7 @@ export async function updateProfile(
     }
 
     // Invalidate cache
-    revalidateTag('profile')
+    revalidateTag('profile', 'max')
     await invalidateCaches('profile')
   } catch (error) {
     return {
@@ -583,6 +582,5 @@ export async function updateProfile(
     }
   }
 
-  // Redirect to profile page
-  redirect('/profile')
+  return { success: true }
 }

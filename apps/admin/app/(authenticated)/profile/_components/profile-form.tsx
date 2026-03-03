@@ -18,8 +18,8 @@ import {
 import type { Json } from '@ykzts/supabase'
 import { Button } from '@ykzts/ui/components/button'
 import { Input } from '@ykzts/ui/components/input'
-import { useRouter } from 'next/navigation'
-import { useActionState, useCallback, useState } from 'react'
+import { useActionState, useCallback, useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { RichTextEditor } from '@/components/portable-text-editor'
 import { DEFAULT_TIMEZONE, getCommonTimezones } from '@/lib/timezones'
 import { updateProfile } from '../actions'
@@ -57,8 +57,16 @@ export default function ProfileForm({
   initialSocialLinks = [],
   initialTechnologies = []
 }: ProfileFormProps) {
-  const router = useRouter()
   const [state, formAction, isPending] = useActionState(updateProfile, null)
+
+  useEffect(() => {
+    if (!state) return
+    if ('success' in state) {
+      toast.success('プロフィールを保存しました')
+    } else if ('error' in state) {
+      toast.error(state.error)
+    }
+  }, [state])
 
   // Social links state
   const [socialLinks, setSocialLinks] = useState(
@@ -164,12 +172,6 @@ export default function ProfileForm({
 
   return (
     <form action={formAction} className="space-y-6">
-      {state?.error && (
-        <div className="rounded border border-error bg-error/10 p-4 text-error">
-          {state.error}
-        </div>
-      )}
-
       {/* Avatar Upload */}
       <AvatarUpload currentAvatarUrl={initialData?.avatar_url} />
 
@@ -408,15 +410,6 @@ export default function ProfileForm({
       <div className="flex gap-4">
         <Button disabled={isPending} type="submit">
           {isPending ? '保存中...' : '保存'}
-        </Button>
-        <Button
-          onClick={() => {
-            router.push('/')
-          }}
-          type="button"
-          variant="secondary"
-        >
-          キャンセル
         </Button>
       </div>
     </form>
