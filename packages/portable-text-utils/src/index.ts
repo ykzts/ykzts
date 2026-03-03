@@ -1,4 +1,7 @@
-import { portableTextToMarkdown as convertToMarkdown } from '@portabletext/markdown'
+import {
+  portableTextToMarkdown as convertToMarkdown,
+  type PortableTextBlockRenderer
+} from '@portabletext/markdown'
 import { escapeHTML, toHTML, uriLooksSafe } from '@portabletext/to-html'
 import type { PortableTextBlock } from '@portabletext/types'
 
@@ -105,18 +108,76 @@ type PortableTextLike = {
   [key: string]: unknown
 }
 
+export type PortableTextToMarkdownOptions = {
+  /**
+   * Number of heading levels to offset.
+   * For example, 3 shifts h1→h4, h2→h5, h3→h6. Default: 0
+   */
+  headingOffset?: number
+}
+
 /**
  * Convert PortableText to Markdown string
  * @param content - PortableText content (array of blocks)
+ * @param options - Conversion options
  * @returns Markdown string or empty string if conversion fails
  */
-export function portableTextToMarkdown(content: unknown): string {
+export function portableTextToMarkdown(
+  content: unknown,
+  options?: PortableTextToMarkdownOptions
+): string {
   if (!content || !Array.isArray(content) || content.length === 0) {
     return ''
   }
 
+  const headingOffset = options?.headingOffset ?? 0
+
+  const makeHeadingRenderer = (level: number): PortableTextBlockRenderer => {
+    const adjustedLevel = Math.min(Math.max(level + headingOffset, 1), 6)
+    return ({ children }) => `${'#'.repeat(adjustedLevel)} ${children}`
+  }
+
+  const getFence = (code: string): string => {
+    const runs = code.match(/`+/g) ?? []
+    const maxRun = runs.reduce((max, run) => Math.max(max, run.length), 0)
+    return '`'.repeat(Math.max(3, maxRun + 1))
+  }
+
   try {
-    return convertToMarkdown(content as PortableTextLike[])
+    return convertToMarkdown(content as PortableTextLike[], {
+      block: {
+        code: ({ value, children }) => {
+          const language = (value as unknown as PortableTextLike).language as
+            | string
+            | undefined
+          const code = String(children)
+          const fence = getFence(code)
+          return `${fence}${language ?? ''}\n${code}\n${fence}`
+        },
+        h1: makeHeadingRenderer(1),
+        h2: makeHeadingRenderer(2),
+        h3: makeHeadingRenderer(3),
+        h4: makeHeadingRenderer(4),
+        h5: makeHeadingRenderer(5),
+        h6: makeHeadingRenderer(6)
+      },
+      types: {
+        code: ({ value }) => {
+          const v = value as PortableTextLike
+          const language = (v.language as string | null | undefined) ?? ''
+          const code = (v.code as string | undefined) ?? ''
+          const fence = getFence(code)
+          return `${fence}${language}\n${code}\n${fence}`
+        },
+        image: ({ value }) => {
+          const v = value as PortableTextLike
+          const alt = (v.alt as string | undefined) ?? ''
+          const asset = v.asset as { url?: string } | undefined
+          const src = asset?.url ?? ''
+          return src ? `![${alt}](${src})` : ''
+        }
+      }
+    })
   } catch {
     return ''
   }

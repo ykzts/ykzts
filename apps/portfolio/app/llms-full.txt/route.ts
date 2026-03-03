@@ -10,7 +10,7 @@ export async function GET() {
   for (const work of works) {
     const url = buildWorkUrl(work.slug)
     sections.push(`### [${work.title}](${url})`, '')
-    const content = portableTextToMarkdown(work.content)
+    const content = portableTextToMarkdown(work.content, { headingOffset: 3 })
     if (content) {
       sections.push(content, '')
     }
@@ -22,7 +22,7 @@ export async function GET() {
   for (const post of posts) {
     const url = buildPostUrl(post.slug, post.published_at)
     sections.push(`### [${post.title}](${url})`, '')
-    const content = portableTextToMarkdown(post.content)
+    const content = portableTextToMarkdown(post.content, { headingOffset: 3 })
     if (content) {
       sections.push(content, '')
     } else if (post.excerpt) {
