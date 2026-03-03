@@ -1,16 +1,16 @@
 'use server'
 
-import { lookup } from 'node:dns/promises'
-import { isIP } from 'node:net'
+import {
+  extractFediverseHandleFromURL,
+  parseFediverseHandle,
+  verifyFediverseHandle
+} from '@ykzts/fediverse'
 import type { Json } from '@ykzts/supabase'
 import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
 import { getCurrentUser } from '@/lib/auth'
 import { invalidateCaches } from '@/lib/revalidate'
-import {
-  detectServiceFromURL,
-  extractFediverseCreatorFromURL
-} from '@/lib/social-service-detector'
+import { detectServiceFromURL } from '@/lib/social-service-detector'
 import { createClient } from '@/lib/supabase/server'
 import { DEFAULT_TIMEZONE } from '@/lib/timezones'
 
@@ -49,194 +49,6 @@ const technologySchema = z.object({
   id: z.uuid(),
   name: z.string().min(1)
 })
-
-function parseFediverseCreator(value: string): {
-  normalized: string
-  acct: string
-  domain: string
-} | null {
-  const trimmed = value.trim()
-  const match = trimmed.match(/^@?([^@\s]+)@([^@\s]+)$/)
-
-  if (!match) {
-    return null
-  }
-
-  const username = match[1]
-  const domain = match[2].toLowerCase()
-
-  if (!isValidPublicHostname(domain)) {
-    return null
-  }
-
-  const acct = `${username}@${domain}`
-
-  return {
-    acct,
-    domain,
-    normalized: `@${acct}`
-  }
-}
-
-function isValidPublicHostname(domain: string): boolean {
-  if (domain.length > 253 || domain === 'localhost') {
-    return false
-  }
-
-  if (!domain.includes('.')) {
-    return false
-  }
-
-  return /^[a-z0-9.-]+$/i.test(domain)
-}
-
-function isPrivateIPv4(address: string): boolean {
-  const octets = address.split('.').map((segment) => Number(segment))
-
-  if (octets.length !== 4 || octets.some((octet) => Number.isNaN(octet))) {
-    return true
-  }
-
-  if (octets[0] === 10) {
-    return true
-  }
-
-  if (octets[0] === 127) {
-    return true
-  }
-
-  if (octets[0] === 169 && octets[1] === 254) {
-    return true
-  }
-
-  if (octets[0] === 172 && octets[1] >= 16 && octets[1] <= 31) {
-    return true
-  }
-
-  if (octets[0] === 192 && octets[1] === 168) {
-    return true
-  }
-
-  if (address === '169.254.169.254') {
-    return true
-  }
-
-  return false
-}
-
-function isPrivateIPv6(address: string): boolean {
-  const normalized = address.toLowerCase()
-
-  if (normalized === '::1') {
-    return true
-  }
-
-  if (normalized.startsWith('fc') || normalized.startsWith('fd')) {
-    return true
-  }
-
-  if (
-    normalized.startsWith('fe8') ||
-    normalized.startsWith('fe9') ||
-    normalized.startsWith('fea') ||
-    normalized.startsWith('feb')
-  ) {
-    return true
-  }
-
-  if (normalized.startsWith('::ffff:')) {
-    const mappedAddress = normalized.replace('::ffff:', '')
-    return isPrivateIPv4(mappedAddress)
-  }
-
-  return false
-}
-
-function isPublicIpAddress(address: string): boolean {
-  const ipVersion = isIP(address)
-
-  if (ipVersion === 4) {
-    return !isPrivateIPv4(address)
-  }
-
-  if (ipVersion === 6) {
-    return !isPrivateIPv6(address)
-  }
-
-  return false
-}
-
-async function isSafeWebFingerDomain(domain: string): Promise<boolean> {
-  try {
-    const resolvedAddresses = await lookup(domain, {
-      all: true,
-      verbatim: true
-    })
-
-    if (resolvedAddresses.length === 0) {
-      return false
-    }
-
-    return resolvedAddresses.every((entry) => isPublicIpAddress(entry.address))
-  } catch {
-    return false
-  }
-}
-
-async function verifyFediverseCreatorWithWebFinger(
-  acct: string,
-  domain: string
-): Promise<boolean> {
-  try {
-    const isSafeDomain = await isSafeWebFingerDomain(domain)
-
-    if (!isSafeDomain) {
-      return false
-    }
-
-    const webfingerUrl = new URL(`https://${domain}/.well-known/webfinger`)
-    webfingerUrl.searchParams.set('resource', `acct:${acct}`)
-
-    const response = await fetch(webfingerUrl.toString(), {
-      headers: {
-        Accept: 'application/jrd+json, application/json'
-      },
-      signal: AbortSignal.timeout(5000)
-    })
-
-    if (!response.ok) {
-      return false
-    }
-
-    const data = (await response.json()) as unknown
-
-    if (!data || typeof data !== 'object') {
-      return false
-    }
-
-    const subjectValue =
-      'subject' in data && typeof data.subject === 'string'
-        ? data.subject
-        : undefined
-
-    const aliasesValue =
-      'aliases' in data && Array.isArray(data.aliases)
-        ? data.aliases.filter(
-            (alias): alias is string => typeof alias === 'string'
-          )
-        : []
-
-    const expectedSubject = `acct:${acct}`.toLowerCase()
-    const subject = subjectValue?.toLowerCase()
-    if (subject === expectedSubject) {
-      return true
-    }
-
-    return aliasesValue.some((alias) => alias.toLowerCase() === expectedSubject)
-  } catch {
-    return false
-  }
-}
 
 export async function updateProfile(
   _prevState: { error: string } | { success: true } | null,
@@ -286,7 +98,7 @@ export async function updateProfile(
 
     if (isManual) {
       // Validate and verify manually provided fediverse_creator via WebFinger
-      const parsedFediverseCreator = parseFediverseCreator(fediverse_creator)
+      const parsedFediverseCreator = parseFediverseHandle(fediverse_creator)
 
       if (!parsedFediverseCreator) {
         return {
@@ -295,7 +107,7 @@ export async function updateProfile(
         }
       }
 
-      const isValid = await verifyFediverseCreatorWithWebFinger(
+      const isValid = await verifyFediverseHandle(
         parsedFediverseCreator.acct,
         parsedFediverseCreator.domain
       )
@@ -316,10 +128,9 @@ export async function updateProfile(
         for (let i = 0; i < socialLinksCount; i++) {
           const url = formData.get(`social_link_url_${i}`) as string
           if (!url || url.trim() === '') continue
-          // extractFediverseCreatorFromURL resolves the canonical handle via WebFinger
-          const extracted = await extractFediverseCreatorFromURL(url.trim())
+          const extracted = await extractFediverseHandleFromURL(url.trim())
           if (extracted) {
-            const parsed = parseFediverseCreator(extracted)
+            const parsed = parseFediverseHandle(extracted)
             if (parsed) {
               normalizedFediverseCreator = parsed.normalized
             }
