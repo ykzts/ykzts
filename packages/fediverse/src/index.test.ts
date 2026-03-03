@@ -1,10 +1,6 @@
 import * as dns from 'node:dns/promises'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import {
-  extractFediverseHandleFromURL,
-  parseFediverseHandle,
-  verifyFediverseHandle
-} from './index'
+import { extractFediverseHandleFromURL, verifyFediverseHandle } from './index'
 
 vi.mock('node:dns/promises')
 global.fetch = vi.fn()
@@ -18,50 +14,6 @@ function mockPublicDns() {
 
 beforeEach(() => {
   vi.clearAllMocks()
-})
-
-describe('parseFediverseHandle', () => {
-  it('parses @user@domain form', () => {
-    expect(parseFediverseHandle('@user@example.com')).toEqual({
-      acct: 'user@example.com',
-      domain: 'example.com',
-      normalized: '@user@example.com'
-    })
-  })
-
-  it('parses user@domain form (no leading @)', () => {
-    expect(parseFediverseHandle('user@example.com')).toEqual({
-      acct: 'user@example.com',
-      domain: 'example.com',
-      normalized: '@user@example.com'
-    })
-  })
-
-  it('lowercases the domain', () => {
-    const result = parseFediverseHandle('User@Example.COM')
-    expect(result?.domain).toBe('example.com')
-    expect(result?.acct).toBe('User@example.com')
-  })
-
-  it('returns null for missing domain', () => {
-    expect(parseFediverseHandle('@user')).toBeNull()
-  })
-
-  it('returns null for localhost domain', () => {
-    expect(parseFediverseHandle('user@localhost')).toBeNull()
-  })
-
-  it('returns null for domain without dot', () => {
-    expect(parseFediverseHandle('user@domain')).toBeNull()
-  })
-
-  it('returns null for empty string', () => {
-    expect(parseFediverseHandle('')).toBeNull()
-  })
-
-  it('returns null for plain username', () => {
-    expect(parseFediverseHandle('justuser')).toBeNull()
-  })
 })
 
 describe('verifyFediverseHandle', () => {
@@ -156,7 +108,7 @@ describe('verifyFediverseHandle', () => {
 })
 
 describe('extractFediverseHandleFromURL', () => {
-  it('resolves canonical handle via WebFinger', async () => {
+  it('resolves canonical handle via WebFinger using the full URL as resource', async () => {
     mockPublicDns()
     vi.mocked(fetch).mockResolvedValueOnce({
       json: async () => ({ subject: 'acct:user@mastodon.social' }),
@@ -167,12 +119,12 @@ describe('extractFediverseHandleFromURL', () => {
       await extractFediverseHandleFromURL('https://mastodon.social/@user')
     ).toBe('@user@mastodon.social')
     expect(fetch).toHaveBeenCalledWith(
-      'https://mastodon.social/.well-known/webfinger?resource=acct%3Auser%40mastodon.social',
+      'https://mastodon.social/.well-known/webfinger?resource=https%3A%2F%2Fmastodon.social%2F%40user',
       expect.objectContaining({ headers: expect.anything() })
     )
   })
 
-  it('returns the canonical subject even if it differs from the URL username', async () => {
+  it('returns the canonical subject even if it differs from the URL path', async () => {
     mockPublicDns()
     vi.mocked(fetch).mockResolvedValueOnce({
       json: async () => ({ subject: 'acct:canonical@mastodon.social' }),
@@ -186,16 +138,25 @@ describe('extractFediverseHandleFromURL', () => {
     ).toBe('@canonical@mastodon.social')
   })
 
+  it('supports URLs without /@username path (e.g. Misskey user page)', async () => {
+    mockPublicDns()
+    vi.mocked(fetch).mockResolvedValueOnce({
+      json: async () => ({ subject: 'acct:user@misskey.io' }),
+      ok: true
+    } as Response)
+
+    expect(
+      await extractFediverseHandleFromURL('https://misskey.io/users/abcdef')
+    ).toBe('@user@misskey.io')
+    expect(fetch).toHaveBeenCalledWith(
+      'https://misskey.io/.well-known/webfinger?resource=https%3A%2F%2Fmisskey.io%2Fusers%2Fabcdef',
+      expect.objectContaining({ headers: expect.anything() })
+    )
+  })
+
   it('returns null for HTTP URLs', async () => {
     expect(
       await extractFediverseHandleFromURL('http://mastodon.social/@user')
-    ).toBeNull()
-    expect(fetch).not.toHaveBeenCalled()
-  })
-
-  it('returns null for URLs without /@username pattern', async () => {
-    expect(
-      await extractFediverseHandleFromURL('https://github.com/username')
     ).toBeNull()
     expect(fetch).not.toHaveBeenCalled()
   })
@@ -255,6 +216,26 @@ describe('extractFediverseHandleFromURL', () => {
     ).toBeNull()
   })
 
+  it('returns null when DNS resolves to CGNAT (100.64.x.x)', async () => {
+    mockLookup.mockResolvedValue([
+      { address: '100.64.0.1', family: 4 }
+    ] as never)
+
+    expect(
+      await extractFediverseHandleFromURL('https://cgnat.example/@user')
+    ).toBeNull()
+  })
+
+  it('returns null when DNS resolves to IPv4-mapped IPv6 with private address', async () => {
+    mockLookup.mockResolvedValue([
+      { address: '::ffff:192.168.1.1', family: 6 }
+    ] as never)
+
+    expect(
+      await extractFediverseHandleFromURL('https://internal.example/@user')
+    ).toBeNull()
+  })
+
   it('returns null when WebFinger returns non-acct subject', async () => {
     mockPublicDns()
     vi.mocked(fetch).mockResolvedValueOnce({
@@ -295,5 +276,18 @@ describe('extractFediverseHandleFromURL', () => {
     expect(
       await extractFediverseHandleFromURL('https://mastodon.social/@user')
     ).toBeNull()
+  })
+
+  it('returns null when fetch returns a redirect (3xx)', async () => {
+    mockPublicDns()
+    vi.mocked(fetch).mockResolvedValueOnce({
+      ok: false,
+      status: 301
+    } as Response)
+
+    expect(
+      await extractFediverseHandleFromURL('https://mastodon.social/@user')
+    ).toBeNull()
+    expect(fetch).toHaveBeenCalledOnce()
   })
 })

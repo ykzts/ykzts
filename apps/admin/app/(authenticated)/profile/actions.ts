@@ -1,9 +1,6 @@
 'use server'
 
-import {
-  extractFediverseHandleFromURL,
-  parseFediverseHandle
-} from '@ykzts/fediverse'
+import { extractFediverseHandleFromURL } from '@ykzts/fediverse'
 import type { Json } from '@ykzts/supabase'
 import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
@@ -163,10 +160,7 @@ export async function updateProfile(
           if (!url || url.trim() === '') continue
           const extracted = await extractFediverseHandleFromURL(url.trim())
           if (extracted) {
-            const parsed = parseFediverseHandle(extracted)
-            if (parsed) {
-              normalizedFediverseCreator = parsed.normalized
-            }
+            normalizedFediverseCreator = extracted
             break
           }
         }
