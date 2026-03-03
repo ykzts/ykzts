@@ -116,6 +116,10 @@ export function PostForm({
     post?.published_at || null
   )
   const [titleValue, setTitleValue] = useState(post?.title || '')
+  const [excerptValue, setExcerptValue] = useState(post?.excerpt || '')
+  const [publishedAtDisplayValue, setPublishedAtDisplayValue] = useState(
+    post?.published_at ? toLocalDateTimeString(new Date(post.published_at)) : ''
+  )
   const [editorKey, setEditorKey] = useState(0)
   const [isLoadingClipboard, setIsLoadingClipboard] = useState(false)
 
@@ -134,9 +138,26 @@ export function PostForm({
         toast.error('クリップボードにテキストがありません')
         return
       }
-      const { title, contentJson } = parseMarkdownForPost(text)
+      const {
+        title,
+        contentJson,
+        tags: fmTags,
+        excerpt,
+        publishedAt
+      } = parseMarkdownForPost(text)
       if (title) {
         setTitleValue(title)
+      }
+      if (fmTags.length > 0) {
+        setTags((prev) => [...new Set([...prev, ...fmTags])])
+      }
+      if (excerpt) {
+        setExcerptValue(excerpt)
+      }
+      if (publishedAt) {
+        setPublishedAtValue(publishedAt)
+        setPublishedAtDisplayValue(toLocalDateTimeString(new Date(publishedAt)))
+        setShowPublishedAt(true)
       }
       setEditorContent(contentJson)
       setEditorKey((prev) => prev + 1)
@@ -398,11 +419,12 @@ export function PostForm({
             <Field>
               <FieldLabel htmlFor="excerpt">抜粋</FieldLabel>
               <Textarea
-                defaultValue={post?.excerpt || ''}
                 id="excerpt"
                 name="excerpt"
+                onChange={(e) => setExcerptValue(e.target.value)}
                 placeholder="投稿の簡単な説明（任意）"
                 rows={3}
+                value={excerptValue}
               />
               <FieldDescription>投稿の要約や説明文</FieldDescription>
             </Field>
@@ -525,11 +547,6 @@ export function PostForm({
                 />
                 {/* Visible datetime-local input for user interaction */}
                 <Input
-                  defaultValue={
-                    post?.published_at
-                      ? toLocalDateTimeString(new Date(post.published_at))
-                      : ''
-                  }
                   disabled={isEditMode && post?.status === 'published'}
                   id="published_at_display"
                   min={
@@ -539,19 +556,14 @@ export function PostForm({
                   }
                   name="published_at_display"
                   onChange={(e) => {
-                    const form = e.currentTarget.form
-                    const hidden = form?.elements.namedItem(
-                      'published_at'
-                    ) as HTMLInputElement | null
                     const newValue = e.currentTarget.value
                       ? new Date(e.currentTarget.value).toISOString()
                       : ''
-                    if (hidden) {
-                      hidden.value = newValue
-                    }
+                    setPublishedAtDisplayValue(e.currentTarget.value)
                     setPublishedAtValue(newValue || null)
                   }}
                   type="datetime-local"
+                  value={publishedAtDisplayValue}
                 />
                 <FieldDescription>
                   指定した日時に自動公開されます
