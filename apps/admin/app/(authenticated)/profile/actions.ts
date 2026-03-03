@@ -97,10 +97,15 @@ export async function updateProfile(
     // Fetch existing social links (id + url) for change detection
     let existingSocialLinks = new Map<string, string>()
     if (existingProfile) {
-      const { data: existingLinks } = await supabase
+      const { data: existingLinks, error: existingLinksError } = await supabase
         .from('social_links')
         .select('id, url')
         .eq('profile_id', existingProfile.id)
+      if (existingLinksError) {
+        return {
+          error: `ソーシャルリンクの取得に失敗しました: ${existingLinksError.message}`
+        }
+      }
       existingSocialLinks = new Map(
         (existingLinks ?? []).map((l) => [l.id, (l.url ?? '').trim()])
       )
@@ -154,16 +159,21 @@ export async function updateProfile(
         // Social links unchanged - reuse existing fediverse_creator without WebFinger
         normalizedFediverseCreator = existingProfile.fediverse_creator
       } else {
-        // Links changed - run WebFinger to re-determine fediverse_creator
+        // Links changed - run WebFinger in parallel to re-determine fediverse_creator
+        const candidateUrls: string[] = []
         for (let i = 0; i < socialLinksCount; i++) {
           const url = formData.get(`social_link_url_${i}`) as string
           if (!url || url.trim() === '') continue
-          const extracted = await extractFediverseHandleFromURL(url.trim())
-          if (extracted) {
-            normalizedFediverseCreator = extracted
-            break
-          }
+          candidateUrls.push(url.trim())
         }
+        const extractedHandles = await Promise.all(
+          candidateUrls.map((candidateUrl) =>
+            extractFediverseHandleFromURL(candidateUrl)
+          )
+        )
+        normalizedFediverseCreator =
+          extractedHandles.find((value): value is string => value !== null) ??
+          null
       }
     }
 

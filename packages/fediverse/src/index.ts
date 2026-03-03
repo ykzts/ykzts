@@ -134,7 +134,7 @@ export async function extractFediverseHandleFromURL(
     const hostname = url.hostname.toLowerCase()
     const jrd = await fetchWebFinger(urlString, hostname)
 
-    if (!jrd?.subject.startsWith('acct:')) {
+    if (!jrd?.subject.toLowerCase().startsWith('acct:')) {
       return null
     }
 
