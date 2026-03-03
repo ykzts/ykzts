@@ -141,7 +141,7 @@ export function portableTextToMarkdown(
     return convertToMarkdown(content as PortableTextLike[], {
       block: {
         code: ({ value, children }) => {
-          const language = (value as PortableTextLike).language as
+          const language = (value as unknown as PortableTextLike).language as
             | string
             | undefined
           return `\`\`\`${language ?? ''}\n${children}\n\`\`\``
