@@ -280,57 +280,51 @@ export async function updateProfile(
       timezone
     } = profileValidation.data
 
-    // If fediverse_creator is not manually provided, try to auto-extract from social links
-    let fediverseCreatorInput = fediverse_creator
-    if (!fediverseCreatorInput || fediverseCreatorInput.trim() === '') {
+    const isManual = !!(fediverse_creator && fediverse_creator.trim() !== '')
+
+    let normalizedFediverseCreator: string | null = null
+
+    if (isManual) {
+      // Validate and verify manually provided fediverse_creator via WebFinger
+      const parsedFediverseCreator = parseFediverseCreator(fediverse_creator)
+
+      if (!parsedFediverseCreator) {
+        return {
+          error:
+            'fediverse:creator は @user@example.com または user@example.com 形式で入力してください。'
+        }
+      }
+
+      const isValid = await verifyFediverseCreatorWithWebFinger(
+        parsedFediverseCreator.acct,
+        parsedFediverseCreator.domain
+      )
+
+      if (!isValid) {
+        return {
+          error:
+            'fediverse:creator の検証に失敗しました。.well-known/webfinger で確認できるアカウントを指定してください。'
+        }
+      }
+
+      normalizedFediverseCreator = parsedFediverseCreator.normalized
+    } else {
+      // Try to auto-extract from social links using WebFinger
       const socialLinksCountStr = formData.get('social_links_count') as string
       const socialLinksCount = Number.parseInt(socialLinksCountStr, 10)
       if (!Number.isNaN(socialLinksCount) && socialLinksCount > 0) {
         for (let i = 0; i < socialLinksCount; i++) {
           const url = formData.get(`social_link_url_${i}`) as string
           if (!url || url.trim() === '') continue
-          const extracted = extractFediverseCreatorFromURL(url.trim())
+          // extractFediverseCreatorFromURL resolves the canonical handle via WebFinger
+          const extracted = await extractFediverseCreatorFromURL(url.trim())
           if (extracted) {
-            fediverseCreatorInput = extracted
+            const parsed = parseFediverseCreator(extracted)
+            if (parsed) {
+              normalizedFediverseCreator = parsed.normalized
+            }
             break
           }
-        }
-      }
-    }
-
-    const isManual = !!(fediverse_creator && fediverse_creator.trim() !== '')
-
-    let normalizedFediverseCreator: string | null = null
-    if (fediverseCreatorInput && fediverseCreatorInput.trim() !== '') {
-      const parsedFediverseCreator = parseFediverseCreator(
-        fediverseCreatorInput
-      )
-
-      if (!parsedFediverseCreator) {
-        // Only return error for manually provided values; skip silently for auto-extracted ones
-        if (isManual) {
-          return {
-            error:
-              'fediverse:creator は @user@example.com または user@example.com 形式で入力してください。'
-          }
-        }
-      } else {
-        const isValidFediverseCreator =
-          await verifyFediverseCreatorWithWebFinger(
-            parsedFediverseCreator.acct,
-            parsedFediverseCreator.domain
-          )
-
-        if (!isValidFediverseCreator) {
-          if (isManual) {
-            return {
-              error:
-                'fediverse:creator の検証に失敗しました。.well-known/webfinger で確認できるアカウントを指定してください。'
-            }
-          }
-          // Auto-extracted value failed verification; silently skip
-        } else {
-          normalizedFediverseCreator = parsedFediverseCreator.normalized
         }
       }
     }
