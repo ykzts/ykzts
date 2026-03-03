@@ -222,7 +222,6 @@ export async function deleteKeyVisual(): Promise<{ error?: string }> {
     // Invalidate cache and revalidate paths
     await invalidateCaches('profile')
     revalidatePath('/profile')
-    revalidatePath('/profile/edit')
 
     return {}
   } catch (error) {

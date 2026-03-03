@@ -575,7 +575,7 @@ export async function updateProfile(
     }
 
     // Invalidate cache
-    revalidateTag('profile', 'max')
+    revalidateTag('profile')
     await invalidateCaches('profile')
   } catch (error) {
     return {

@@ -411,7 +411,7 @@ export default function ProfileForm({
         </Button>
         <Button
           onClick={() => {
-            router.push('/profile')
+            router.push('/')
           }}
           type="button"
           variant="secondary"
