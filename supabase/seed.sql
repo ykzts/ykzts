@@ -177,6 +177,17 @@ ON CONFLICT (id) DO UPDATE SET
   sort_order = EXCLUDED.sort_order,
   updated_at = NOW();
 
+-- Insert profile_technologies for test user (links profile to technologies)
+INSERT INTO profile_technologies (id, profile_id, technology_id, sort_order, created_at, updated_at) VALUES
+  ('00000000-0000-0000-0000-000000000031', '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000021', 1, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000032', '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000022', 2, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000033', '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000023', 3, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000034', '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000024', 4, NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000035', '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000025', 5, NOW(), NOW())
+ON CONFLICT (profile_id, technology_id) DO UPDATE SET
+  sort_order = EXCLUDED.sort_order,
+  updated_at = NOW();
+
 -- Insert sample works with Portable Text content
 INSERT INTO works (id, profile_id, title, slug, content, starts_at, created_at, updated_at) VALUES
   (
