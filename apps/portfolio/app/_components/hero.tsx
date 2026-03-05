@@ -43,11 +43,15 @@ async function HeroImpl() {
 
           {/* Tech Stack Tags */}
           <div className="flex flex-wrap gap-2">
-            {profile.technologies.map((tech) => (
-              <Badge key={tech.name} variant="secondary">
-                {tech.name}
-              </Badge>
-            ))}
+            {profile.profile_technologies.map((item) => {
+              const tech = item.technology as { name: string } | null
+              if (!tech) return null
+              return (
+                <Badge key={item.sort_order} variant="secondary">
+                  {tech.name}
+                </Badge>
+              )
+            })}
           </div>
         </div>
 

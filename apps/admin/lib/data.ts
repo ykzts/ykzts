@@ -122,8 +122,10 @@ export async function getTechnologies() {
 
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from('technologies')
-    .select('id, name, sort_order, profile_id!inner(user_id)')
+    .from('profile_technologies')
+    .select(
+      'sort_order, technology:technologies(id, name), profile_id!inner(user_id)'
+    )
     .eq('profile_id.user_id', user.id)
     .order('sort_order', { ascending: true })
 
@@ -131,7 +133,14 @@ export async function getTechnologies() {
     throw new Error(`技術タグの取得に失敗しました: ${error.message}`)
   }
 
-  return data ?? []
+  return (data ?? []).map((item) => {
+    const technology = item.technology as { id: string; name: string }
+    return {
+      id: technology.id,
+      name: technology.name,
+      sort_order: item.sort_order
+    }
+  })
 }
 
 export async function getWorks() {
