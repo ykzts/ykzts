@@ -18,8 +18,7 @@ CREATE TABLE IF NOT EXISTS work_urls (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- Create indexes for work_urls
-CREATE INDEX IF NOT EXISTS work_urls_work_id_idx ON work_urls(work_id);
+-- Create index for work_urls (composite index covers work_id lookups too)
 CREATE INDEX IF NOT EXISTS work_urls_work_id_sort_order_idx ON work_urls(work_id, sort_order);
 
 -- Enable Row Level Security on work_urls
@@ -88,8 +87,7 @@ CREATE TABLE IF NOT EXISTS work_technologies (
   PRIMARY KEY (work_id, technology_id)
 );
 
--- Create indexes for work_technologies
-CREATE INDEX IF NOT EXISTS work_technologies_work_id_idx ON work_technologies(work_id);
+-- Create index for work_technologies (technology_id direction; work_id direction is covered by the PK)
 CREATE INDEX IF NOT EXISTS work_technologies_technology_id_idx ON work_technologies(technology_id);
 
 -- Enable Row Level Security on work_technologies
@@ -100,28 +98,32 @@ CREATE POLICY "Enable read access for all users" ON work_technologies
   FOR SELECT
   USING (true);
 
--- Authenticated users can insert work_technologies for their own works
+-- Authenticated users can insert work_technologies for their own works and technologies
 CREATE POLICY "Users can insert their own work technologies" ON work_technologies
   FOR INSERT
   TO authenticated
   WITH CHECK (
     EXISTS (
       SELECT 1 FROM works
+      JOIN technologies ON technologies.id = work_technologies.technology_id
       JOIN profiles ON profiles.id = works.profile_id
       WHERE works.id = work_technologies.work_id
+      AND technologies.profile_id = works.profile_id
       AND profiles.user_id = auth.uid()
     )
   );
 
--- Authenticated users can delete work_technologies for their own works
+-- Authenticated users can delete work_technologies for their own works and technologies
 CREATE POLICY "Users can delete their own work technologies" ON work_technologies
   FOR DELETE
   TO authenticated
   USING (
     EXISTS (
       SELECT 1 FROM works
+      JOIN technologies ON technologies.id = work_technologies.technology_id
       JOIN profiles ON profiles.id = works.profile_id
       WHERE works.id = work_technologies.work_id
+      AND technologies.profile_id = works.profile_id
       AND profiles.user_id = auth.uid()
     )
   );
