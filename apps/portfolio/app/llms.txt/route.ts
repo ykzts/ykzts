@@ -1,11 +1,15 @@
 import { extractFirstParagraph } from '@ykzts/portable-text-utils'
 import { buildPostUrl, buildWorkUrl, getLlmsHeaderLines } from '@/lib/llms'
-import { getPostsForLlms, getWorks } from '@/lib/supabase'
+import { getPostsForLlms, getProfile, getWorks } from '@/lib/supabase'
 
 export async function GET() {
-  const [works, posts] = await Promise.all([getWorks(), getPostsForLlms()])
+  const [works, posts, profile] = await Promise.all([
+    getWorks(),
+    getPostsForLlms(),
+    getProfile().catch(() => null)
+  ])
 
-  const lines: string[] = [...getLlmsHeaderLines(), '', '## Works', '']
+  const lines: string[] = [...getLlmsHeaderLines(profile), '', '## Works', '']
 
   for (const work of works) {
     const url = buildWorkUrl(work.slug)
