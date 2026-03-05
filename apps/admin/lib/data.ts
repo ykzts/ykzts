@@ -133,13 +133,18 @@ export async function getTechnologies() {
     throw new Error(`技術タグの取得に失敗しました: ${error.message}`)
   }
 
-  return (data ?? []).map((item) => {
-    const technology = item.technology as { id: string; name: string }
-    return {
-      id: technology.id,
-      name: technology.name,
-      sort_order: item.sort_order
+  return (data ?? []).flatMap((item) => {
+    if (!item.technology) {
+      return []
     }
+
+    return [
+      {
+        id: item.technology.id,
+        name: item.technology.name,
+        sort_order: item.sort_order
+      }
+    ]
   })
 }
 

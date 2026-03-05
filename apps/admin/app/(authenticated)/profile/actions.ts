@@ -387,7 +387,7 @@ export async function updateProfile(
         // Insert new technology
         const { data: newTech, error: techInsertError } = await supabase
           .from('technologies')
-          .insert({ name: techName.trim(), profile_id: profileId })
+          .insert({ name: techName.trim() })
           .select('id')
           .single()
 
@@ -416,10 +416,17 @@ export async function updateProfile(
     }
 
     // Delete removed technologies
-    const { data: existingProfileTechs } = await supabase
-      .from('profile_technologies')
-      .select('technology_id')
-      .eq('profile_id', profileId)
+    const { data: existingProfileTechs, error: existingProfileTechsError } =
+      await supabase
+        .from('profile_technologies')
+        .select('technology_id')
+        .eq('profile_id', profileId)
+
+    if (existingProfileTechsError) {
+      return {
+        error: `技術タグの取得に失敗しました: ${existingProfileTechsError.message}`
+      }
+    }
 
     if (existingProfileTechs) {
       const idsToDelete = existingProfileTechs
@@ -439,10 +446,16 @@ export async function updateProfile(
           }
         }
 
-        const { data: remainingPTs } = await supabase
+        const { data: remainingPTs, error: remainingPTsError } = await supabase
           .from('profile_technologies')
           .select('technology_id')
           .in('technology_id', idsToDelete)
+
+        if (remainingPTsError) {
+          return {
+            error: `技術タグの削除確認に失敗しました: ${remainingPTsError.message}`
+          }
+        }
 
         const technologyIdsWithLinks = new Set(
           (remainingPTs ?? []).map((pt) => pt.technology_id)
