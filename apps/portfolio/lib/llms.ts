@@ -61,10 +61,31 @@ export function getLlmsHeaderLines(
     lines.push('', '## Technologies', '', technologies.join(', '))
   }
 
-  const socialLinks = profile.social_links?.filter(
-    (l): l is { service: string | null; url: string } =>
-      typeof l.url === 'string' && l.url.trim() !== ''
-  )
+  const socialLinks = profile.social_links?.flatMap((l) => {
+    if (typeof l.url !== 'string') {
+      return []
+    }
+
+    const rawUrl = l.url.trim()
+    if (!rawUrl) {
+      return []
+    }
+
+    try {
+      const parsed = new URL(rawUrl)
+      if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+        return []
+      }
+
+      const service =
+        typeof l.service === 'string' && l.service.trim() !== ''
+          ? l.service.trim()
+          : null
+      return [{ service, url: parsed.toString() }]
+    } catch {
+      return []
+    }
+  })
   if (socialLinks && socialLinks.length > 0) {
     lines.push('', '## Social Links', '')
     for (const link of socialLinks) {

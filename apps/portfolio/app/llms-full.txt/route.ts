@@ -1,20 +1,32 @@
 import { portableTextToMarkdown } from '@ykzts/portable-text-utils'
-import { buildPostUrl, buildWorkUrl, getLlmsHeaderLines } from '@/lib/llms'
+import {
+  buildPostUrl,
+  buildWorkUrl,
+  getLlmsHeaderLines,
+  type ProfileForHeader
+} from '@/lib/llms'
 import { getPostsForLlmsFull, getProfile, getWorks } from '@/lib/supabase'
 
 export async function GET() {
   const [works, posts, profile] = await Promise.all([
     getWorks(),
     getPostsForLlmsFull(),
-    getProfile().catch(() => null)
+    getProfile().catch((err: unknown) => {
+      console.warn('Failed to fetch profile for llms-full.txt:', err)
+      return null
+    })
   ])
 
-  const profileForHeader = profile
+  const profileForHeader: ProfileForHeader | null = profile
     ? {
-        ...profile,
         aboutMarkdown: profile.about
           ? portableTextToMarkdown(profile.about)
-          : null
+          : null,
+        name: profile.name,
+        occupation: profile.occupation,
+        social_links: profile.social_links,
+        tagline: profile.tagline,
+        technologies: profile.technologies
       }
     : null
 
