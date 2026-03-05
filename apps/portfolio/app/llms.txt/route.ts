@@ -1,11 +1,38 @@
 import { extractFirstParagraph } from '@ykzts/portable-text-utils'
-import { buildPostUrl, buildWorkUrl, getLlmsHeaderLines } from '@/lib/llms'
-import { getPostsForLlms, getWorks } from '@/lib/supabase'
+import {
+  buildPostUrl,
+  buildWorkUrl,
+  getLlmsHeaderLines,
+  type ProfileForHeader
+} from '@/lib/llms'
+import { getPostsForLlms, getProfile, getWorks } from '@/lib/supabase'
 
 export async function GET() {
-  const [works, posts] = await Promise.all([getWorks(), getPostsForLlms()])
+  const [works, posts, profile] = await Promise.all([
+    getWorks(),
+    getPostsForLlms(),
+    getProfile().catch((err: unknown) => {
+      console.warn('Failed to fetch profile for llms.txt:', err)
+      return null
+    })
+  ])
 
-  const lines: string[] = [...getLlmsHeaderLines(), '', '## Works', '']
+  const profileForHeader: ProfileForHeader | null = profile
+    ? {
+        name: profile.name,
+        occupation: profile.occupation,
+        social_links: profile.social_links,
+        tagline: profile.tagline,
+        technologies: profile.technologies
+      }
+    : null
+
+  const lines: string[] = [
+    ...getLlmsHeaderLines(profileForHeader),
+    '',
+    '## Works',
+    ''
+  ]
 
   for (const work of works) {
     const url = buildWorkUrl(work.slug)
