@@ -1,10 +1,10 @@
 'use server'
 
 import { randomUUID } from 'node:crypto'
+import { createServerClient } from '@ykzts/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { getCurrentUser } from './auth'
 import { invalidateCaches } from './revalidate'
-import { createClient } from './supabase/server'
 
 export type KeyVisualUploadResult = {
   error?: string
@@ -73,7 +73,7 @@ export async function uploadKeyVisual(
       }
     }
 
-    const supabase = await createClient()
+    const supabase = await createServerClient()
 
     // Get current profile's key_visual_id for cleanup
     const { data: profile } = await supabase
@@ -160,7 +160,7 @@ export async function deleteKeyVisual(): Promise<{ error?: string }> {
       }
     }
 
-    const supabase = await createClient()
+    const supabase = await createServerClient()
 
     // Get current profile's key_visual_id
     const { data: profile } = await supabase

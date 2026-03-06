@@ -1,6 +1,6 @@
+import { createServerClient } from '@ykzts/supabase/server'
 import { cacheTag } from 'next/cache'
 import { getCurrentUser } from './auth'
-import { createClient } from './supabase/server'
 import { DEFAULT_TIMEZONE } from './timezones'
 
 export async function getProfile() {
@@ -14,7 +14,7 @@ export async function getProfile() {
     throw new Error('認証されていません')
   }
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   // Filter by user_id to get the authenticated user's profile
   const { data, error } = await supabase
@@ -46,7 +46,7 @@ export async function getProfileTimezone(): Promise<string> {
     return DEFAULT_TIMEZONE
   }
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   const { data, error } = await supabase
     .from('profiles')
@@ -71,7 +71,7 @@ export async function getKeyVisual() {
     throw new Error('認証されていません')
   }
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   const { data, error } = await supabase
     .from('profiles')
@@ -97,7 +97,7 @@ export async function getSocialLinks() {
     throw new Error('ログインが必要です。')
   }
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
   const { data, error } = await supabase
     .from('social_links')
     .select('id, service, url, sort_order, profile_id!inner(user_id)')
@@ -120,7 +120,7 @@ export async function getTechnologies() {
     throw new Error('ログインが必要です。')
   }
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
   const { data, error } = await supabase
     .from('profile_technologies')
     .select(
@@ -152,7 +152,7 @@ export async function getWorks() {
   'use cache: private'
   cacheTag('works')
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
   const { data, error } = await supabase
     .from('works')
     .select('id, title, slug, starts_at, created_at')
@@ -169,7 +169,7 @@ export async function getAllTechnologies() {
   'use cache: private'
   cacheTag('profile')
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
   const { data, error } = await supabase
     .from('technologies')
     .select('id, name')
@@ -186,7 +186,7 @@ export async function getWork(id: string) {
   'use cache: private'
   cacheTag('works')
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   // Get current user's profile to ensure we only fetch their works
   const { data: profileData } = await supabase
@@ -219,7 +219,7 @@ export async function getPosts() {
   'use cache: private'
   cacheTag('posts')
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
   const { data, error } = await supabase
     .from('posts')
     .select('id, title, created_at, updated_at')
@@ -243,7 +243,7 @@ export async function getPost(id: string) {
     throw new Error('認証されていません')
   }
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   // Get the authenticated user's profile
   const { data: profileData, error: profileError } = await supabase
@@ -279,7 +279,7 @@ export async function getCounts() {
   'use cache: private'
   cacheTag('counts')
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   const [profilesResult, worksResult, postsResult] = await Promise.all([
     supabase.from('profiles').select('*', { count: 'exact', head: true }),

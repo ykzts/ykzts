@@ -1,7 +1,7 @@
+import { createServerClient } from '@ykzts/supabase/server'
 import { revalidateTag } from 'next/cache'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   const safeNext = next.startsWith('/') && !next.startsWith('//') ? next : '/'
 
   if (code) {
-    const supabase = await createClient()
+    const supabase = await createServerClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
       revalidateTag('auth-user', 'max')

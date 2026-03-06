@@ -1,10 +1,10 @@
 'use server'
 
 import { randomUUID } from 'node:crypto'
+import { createServerClient } from '@ykzts/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { getCurrentUser } from './auth'
 import { invalidateCaches } from './revalidate'
-import { createClient } from './supabase/server'
 
 export type AvatarUploadResult = {
   error?: string
@@ -73,7 +73,7 @@ export async function uploadAvatar(
       }
     }
 
-    const supabase = await createClient()
+    const supabase = await createServerClient()
 
     // Get user's profile to check for existing avatar
     const { data: profile } = await supabase
@@ -176,7 +176,7 @@ export async function deleteAvatar(): Promise<{ error?: string }> {
       }
     }
 
-    const supabase = await createClient()
+    const supabase = await createServerClient()
 
     // Get user's profile to get avatar URL
     const { data: profile } = await supabase

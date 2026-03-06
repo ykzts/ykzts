@@ -1,11 +1,11 @@
+import { createServerClient } from '@ykzts/supabase/server'
 import { cacheTag } from 'next/cache'
-import { createClient } from './supabase/server'
 
 export async function getCurrentUser() {
   'use cache: private'
   cacheTag('auth-user')
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
   const {
     data: { user },
     error

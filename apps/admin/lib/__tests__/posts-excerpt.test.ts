@@ -1,12 +1,12 @@
-import type { Json } from '@ykzts/supabase'
+import type { Json } from '@ykzts/supabase/types'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPost, updatePost } from '../posts'
 
 // Mock the Supabase client with parameter capture
 const mockRpc = vi.fn().mockResolvedValue({ data: 'mock-post-id', error: null })
 
-vi.mock('../supabase/server', () => ({
-  createClient: vi.fn(() => ({
+vi.mock('@ykzts/supabase/server', () => ({
+  createServerClient: vi.fn(() => ({
     rpc: mockRpc
   }))
 }))

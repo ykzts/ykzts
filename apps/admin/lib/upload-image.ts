@@ -1,6 +1,6 @@
 'use client'
 
-import { createClient } from '@/lib/supabase/client'
+import { createBrowserClient } from '@ykzts/supabase/client'
 
 export type ImageUploadOptions = {
   file: File
@@ -46,7 +46,7 @@ export async function uploadImage({
       }
     }
 
-    const supabase = createClient()
+    const supabase = createBrowserClient()
 
     // Get current user
     const {
@@ -117,7 +117,10 @@ export async function uploadImage({
   } catch (error) {
     console.error('Upload error:', error)
     return {
-      error: 'アップロード中にエラーが発生しました。'
+      error:
+        error instanceof Error
+          ? error.message
+          : 'アップロード中にエラーが発生しました。'
     }
   }
 }

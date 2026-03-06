@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@ykzts/supabase'
+import type { Database } from './database.types.js'
 
 /**
- * Create a Supabase client with service role privileges
+ * Create a Supabase client with service role privileges.
  * This client bypasses Row Level Security (RLS) and should only be used for:
  * - System operations (cron jobs, background tasks)
  * - Admin operations that need to bypass RLS
@@ -28,6 +28,7 @@ export function createServiceRoleClient() {
   return createClient<Database>(supabaseUrl, supabaseServiceRoleKey, {
     auth: {
       autoRefreshToken: false,
+      detectSessionInUrl: false,
       persistSession: false
     }
   })

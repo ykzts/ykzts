@@ -1,4 +1,4 @@
-import type { Json } from '@ykzts/supabase'
+import type { Json } from '@ykzts/supabase/types'
 import { describe, expect, it } from 'vitest'
 import { extractFirstParagraph } from '../portable-text-utils'
 

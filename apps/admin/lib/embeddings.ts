@@ -1,4 +1,4 @@
-import type { Json } from '@ykzts/supabase'
+import type { Json } from '@ykzts/supabase/types'
 import { embed } from 'ai'
 import { extractFirstParagraph } from './portable-text-utils'
 

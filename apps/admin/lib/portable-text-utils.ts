@@ -1,4 +1,4 @@
-import type { Json } from '@ykzts/supabase'
+import type { Json } from '@ykzts/supabase/types'
 
 /**
  * Portable Text block structure

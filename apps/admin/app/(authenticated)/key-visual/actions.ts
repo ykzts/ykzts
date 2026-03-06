@@ -1,11 +1,11 @@
 'use server'
 
+import { createServerClient } from '@ykzts/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { getCurrentUser } from '@/lib/auth'
 import { invalidateCaches } from '@/lib/revalidate'
-import { createClient } from '@/lib/supabase/server'
 
 const keyVisualSchema = z.object({
   alt_text: z.string().optional(),
@@ -83,7 +83,7 @@ export async function saveKeyVisual(
       width
     }
 
-    const supabase = await createClient()
+    const supabase = await createServerClient()
 
     const { data: profile, error: profileError } = await supabase
       .from('profiles')

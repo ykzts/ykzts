@@ -1,7 +1,7 @@
-import type { Json } from '@ykzts/supabase'
+import { createServiceRoleClient } from '@ykzts/supabase/service-role'
+import type { Json } from '@ykzts/supabase/types'
 import { NextResponse } from 'next/server'
 import { generatePostEmbedding } from '@/lib/embeddings'
-import { createServiceRoleClient } from '@/lib/supabase/service-role'
 
 /**
  * Extract content from current_version returned by database function

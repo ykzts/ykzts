@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { getImageDimensions } from '../upload-image'
 
-vi.mock('@/lib/supabase/client', () => ({
-  createClient: vi.fn()
+vi.mock('@ykzts/supabase/client', () => ({
+  createBrowserClient: vi.fn()
 }))
 
 describe('getImageDimensions', () => {

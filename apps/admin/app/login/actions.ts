@@ -1,12 +1,12 @@
 'use server'
 
+import { createServerClient } from '@ykzts/supabase/server'
 import { revalidateTag } from 'next/cache'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
 
 export async function signInWithGitHub() {
-  const supabase = await createClient()
+  const supabase = await createServerClient()
   const headersList = await headers()
   const origin = headersList.get('origin')
 
@@ -43,7 +43,7 @@ export async function signInWithPassword(email: string, password: string) {
     throw new Error('Password authentication is only available in development')
   }
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
   const { error } = await supabase.auth.signInWithPassword({
     email,
     password
@@ -58,7 +58,7 @@ export async function signInWithPassword(email: string, password: string) {
 }
 
 export async function logout() {
-  const supabase = await createClient()
+  const supabase = await createServerClient()
   await supabase.auth.signOut()
   revalidateTag('auth-user', 'max')
   redirect('/login')

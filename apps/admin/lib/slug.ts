@@ -1,7 +1,7 @@
 'use server'
 
+import { createServerClient } from '@ykzts/supabase/server'
 import slugify from 'slugify'
-import { createClient } from './supabase/server'
 
 /**
  * Internal helper to generate a unique slug for a given table
@@ -23,7 +23,7 @@ async function generateUniqueSlug(
     throw new Error('スラッグを生成できませんでした')
   }
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   // Check if base slug exists
   let query = supabase.from(table).select('slug').eq('slug', baseSlug).limit(1)

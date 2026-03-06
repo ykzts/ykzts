@@ -1,12 +1,12 @@
 'use server'
 
-import type { Json } from '@ykzts/supabase'
+import { createServerClient } from '@ykzts/supabase/server'
+import type { Json } from '@ykzts/supabase/types'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { getProfile } from '@/lib/data'
 import { invalidateCaches } from '@/lib/revalidate'
-import { createClient } from '@/lib/supabase/server'
 
 export type ActionState = {
   error?: string
@@ -108,7 +108,7 @@ export async function createWork(
   }
 
   try {
-    const supabase = await createClient()
+    const supabase = await createServerClient()
 
     // Parse content as JSON for Portable Text format
     let contentJson: Json
