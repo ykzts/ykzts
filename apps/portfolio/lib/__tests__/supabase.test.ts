@@ -36,23 +36,28 @@ describe('Supabase utilities', () => {
         id: 'test-id',
         key_visual: null,
         name: 'Test User',
+        profile_technologies: [
+          { sort_order: 0, technology: { name: 'JavaScript' } },
+          { sort_order: 1, technology: { name: 'TypeScript' } }
+        ],
         social_links: [
           {
             url: 'https://github.com/test'
           }
         ],
-        tagline: 'Software Developer',
-        technologies: [{ name: 'JavaScript' }, { name: 'TypeScript' }]
+        tagline: 'Software Developer'
       }
 
       mockFrom.mockReturnValue({
         select: vi.fn(() => ({
-          maybeSingle: vi.fn(() =>
-            Promise.resolve({
-              data: mockData,
-              error: null
-            })
-          )
+          order: vi.fn(() => ({
+            maybeSingle: vi.fn(() =>
+              Promise.resolve({
+                data: mockData,
+                error: null
+              })
+            )
+          }))
         }))
       })
 
@@ -66,12 +71,14 @@ describe('Supabase utilities', () => {
     it('should throw error when no profile data is found', async () => {
       mockFrom.mockReturnValue({
         select: vi.fn(() => ({
-          maybeSingle: vi.fn(() =>
-            Promise.resolve({
-              data: null,
-              error: null
-            })
-          )
+          order: vi.fn(() => ({
+            maybeSingle: vi.fn(() =>
+              Promise.resolve({
+                data: null,
+                error: null
+              })
+            )
+          }))
         }))
       })
 
@@ -82,12 +89,14 @@ describe('Supabase utilities', () => {
     it('should throw error on Supabase errors', async () => {
       mockFrom.mockReturnValue({
         select: vi.fn(() => ({
-          maybeSingle: vi.fn(() =>
-            Promise.resolve({
-              data: null,
-              error: { message: 'Database error' }
-            })
-          )
+          order: vi.fn(() => ({
+            maybeSingle: vi.fn(() =>
+              Promise.resolve({
+                data: null,
+                error: { message: 'Database error' }
+              })
+            )
+          }))
         }))
       })
 

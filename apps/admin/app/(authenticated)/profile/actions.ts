@@ -41,7 +41,7 @@ const socialLinkSchema = z.object({
 })
 
 const technologySchema = z.object({
-  id: z.uuid(),
+  id: z.string().nullable().optional(),
   name: z.string().min(1)
 })
 
@@ -340,7 +340,7 @@ export async function updateProfile(
     const technologiesToKeep = new Set<string>()
 
     for (let i = 0; i < technologiesCount; i++) {
-      const id = formData.get(`technology_id_${i}`) as string
+      const id = formData.get(`technology_id_${i}`) as string | null
       const techName = formData.get(`technology_name_${i}`) as string
 
       // Skip empty entries
@@ -357,63 +357,123 @@ export async function updateProfile(
         }
       }
 
-      const techData = {
-        name: techName.trim(),
-        profile_id: profileId,
-        sort_order: i
-      }
-
       if (id) {
-        // Update existing
+        // Update existing technology
         technologiesToKeep.add(id)
-        const { error: updateError } = await supabase
-          .from('technologies')
-          .update(techData)
-          .eq('id', id)
-          .eq('profile_id', profileId)
 
-        if (updateError) {
+        const { error: nameUpdateError } = await supabase
+          .from('technologies')
+          .update({ name: techName.trim() })
+          .eq('id', id)
+
+        if (nameUpdateError) {
           return {
-            error: `技術タグの更新に失敗しました: ${updateError.message}`
+            error: `技術タグの更新に失敗しました: ${nameUpdateError.message}`
+          }
+        }
+
+        const { error: ptUpdateError } = await supabase
+          .from('profile_technologies')
+          .update({ sort_order: i })
+          .eq('profile_id', profileId)
+          .eq('technology_id', id)
+
+        if (ptUpdateError) {
+          return {
+            error: `技術タグの更新に失敗しました: ${ptUpdateError.message}`
           }
         }
       } else {
-        // Insert new
-        const { data, error: insertError } = await supabase
+        // Insert new technology
+        const { data: newTech, error: techInsertError } = await supabase
           .from('technologies')
-          .insert(techData)
+          .insert({ name: techName.trim() })
           .select('id')
           .single()
 
-        if (insertError) {
+        if (techInsertError) {
           return {
-            error: `技術タグの追加に失敗しました: ${insertError.message}`
+            error: `技術タグの追加に失敗しました: ${techInsertError.message}`
           }
         }
-        if (data) technologiesToKeep.add(data.id)
+
+        const { error: ptInsertError } = await supabase
+          .from('profile_technologies')
+          .insert({
+            profile_id: profileId,
+            sort_order: i,
+            technology_id: newTech.id
+          })
+
+        if (ptInsertError) {
+          return {
+            error: `技術タグの追加に失敗しました: ${ptInsertError.message}`
+          }
+        }
+
+        technologiesToKeep.add(newTech.id)
       }
     }
 
     // Delete removed technologies
-    const { data: existingTechnologies } = await supabase
-      .from('technologies')
-      .select('id')
-      .eq('profile_id', profileId)
+    const { data: existingProfileTechs, error: existingProfileTechsError } =
+      await supabase
+        .from('profile_technologies')
+        .select('technology_id')
+        .eq('profile_id', profileId)
 
-    if (existingTechnologies) {
-      const idsToDelete = existingTechnologies
-        .map((tech) => tech.id)
+    if (existingProfileTechsError) {
+      return {
+        error: `技術タグの取得に失敗しました: ${existingProfileTechsError.message}`
+      }
+    }
+
+    if (existingProfileTechs) {
+      const idsToDelete = existingProfileTechs
+        .map((pt) => pt.technology_id)
         .filter((id) => !technologiesToKeep.has(id))
 
       if (idsToDelete.length > 0) {
-        const { error: deleteError } = await supabase
-          .from('technologies')
+        const { error: ptDeleteError } = await supabase
+          .from('profile_technologies')
           .delete()
-          .in('id', idsToDelete)
+          .eq('profile_id', profileId)
+          .in('technology_id', idsToDelete)
 
-        if (deleteError) {
+        if (ptDeleteError) {
           return {
-            error: `技術タグの削除に失敗しました: ${deleteError.message}`
+            error: `技術タグの削除に失敗しました: ${ptDeleteError.message}`
+          }
+        }
+
+        const { data: remainingPTs, error: remainingPTsError } = await supabase
+          .from('profile_technologies')
+          .select('technology_id')
+          .in('technology_id', idsToDelete)
+
+        if (remainingPTsError) {
+          return {
+            error: `技術タグの削除確認に失敗しました: ${remainingPTsError.message}`
+          }
+        }
+
+        const technologyIdsWithLinks = new Set(
+          (remainingPTs ?? []).map((pt) => pt.technology_id)
+        )
+        const orphanedTechIds = idsToDelete.filter(
+          (id) => !technologyIdsWithLinks.has(id)
+        )
+
+        if (orphanedTechIds.length > 0) {
+          const { error: techDeleteError } = await supabase
+            .from('technologies')
+            .delete()
+            .in('id', orphanedTechIds)
+
+          if (techDeleteError) {
+            return {
+              error: `技術タグの削除に失敗しました: ${techDeleteError.message}`
+            }
           }
         }
       }

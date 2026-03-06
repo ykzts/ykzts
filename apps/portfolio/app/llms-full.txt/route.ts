@@ -24,9 +24,9 @@ export async function GET() {
           : null,
         name: profile.name,
         occupation: profile.occupation,
+        profile_technologies: profile.profile_technologies,
         social_links: profile.social_links,
-        tagline: profile.tagline,
-        technologies: profile.technologies
+        tagline: profile.tagline
       }
     : null
 

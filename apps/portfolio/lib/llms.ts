@@ -9,17 +9,17 @@ type SocialLink = {
   url: string | null
 }
 
-type Technology = {
-  name: string | null
+type ProfileTechnology = {
+  technology: { name: string } | null
 }
 
 export type ProfileForHeader = {
   aboutMarkdown?: string | null
   name?: string | null
   occupation?: string | null
+  profile_technologies?: ProfileTechnology[] | null
   social_links?: SocialLink[] | null
   tagline?: string | null
-  technologies?: Technology[] | null
 }
 
 export function getLlmsHeaderLines(
@@ -54,8 +54,8 @@ export function getLlmsHeaderLines(
     lines.push('', '## Profile', '', ...profileLines)
   }
 
-  const technologies = profile.technologies
-    ?.map((t) => t.name)
+  const technologies = profile.profile_technologies
+    ?.map((t) => t.technology?.name)
     .filter((n): n is string => !!n)
   if (technologies && technologies.length > 0) {
     lines.push('', '## Technologies', '', technologies.join(', '))
