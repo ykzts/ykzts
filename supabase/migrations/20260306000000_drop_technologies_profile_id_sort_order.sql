@@ -10,6 +10,11 @@
 --
 -- Depends on: 20260305000001_add_profile_technologies.sql
 
+-- Drop work_technologies policies that reference technologies.profile_id.
+-- These must be removed before the profile_id column can be dropped.
+DROP POLICY IF EXISTS "Users can insert their own work technologies" ON work_technologies;
+DROP POLICY IF EXISTS "Users can delete their own work technologies" ON work_technologies;
+
 -- Drop old profile_id-based RLS policies on technologies
 DROP POLICY IF EXISTS "Users can insert their own technologies" ON technologies;
 DROP POLICY IF EXISTS "Users can update their own technologies" ON technologies;
@@ -70,3 +75,39 @@ DROP INDEX IF EXISTS technologies_sort_order_idx;
 -- Drop profile_id and sort_order columns from technologies
 ALTER TABLE technologies DROP COLUMN IF EXISTS profile_id;
 ALTER TABLE technologies DROP COLUMN IF EXISTS sort_order;
+
+-- Recreate work_technologies write policies using profile_technologies instead of
+-- the now-removed technologies.profile_id column.
+
+-- INSERT: Verified via profile_technologies — the technology must be linked to the
+-- same profile that owns the work.
+CREATE POLICY "Users can insert their own work technologies" ON work_technologies
+  FOR INSERT
+  TO authenticated
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM works
+      JOIN profiles ON profiles.id = works.profile_id
+      JOIN profile_technologies pt
+        ON pt.technology_id = work_technologies.technology_id
+        AND pt.profile_id = works.profile_id
+      WHERE works.id = work_technologies.work_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
+
+-- DELETE: Same ownership check via profile_technologies.
+CREATE POLICY "Users can delete their own work technologies" ON work_technologies
+  FOR DELETE
+  TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM works
+      JOIN profiles ON profiles.id = works.profile_id
+      JOIN profile_technologies pt
+        ON pt.technology_id = work_technologies.technology_id
+        AND pt.profile_id = works.profile_id
+      WHERE works.id = work_technologies.work_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
