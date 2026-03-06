@@ -22,12 +22,12 @@ type Work = {
   slug: string
   starts_at: string
   title: string
-  work_technologies: WorkTechnology[]
-  work_urls: WorkUrl[]
+  work_technologies: readonly WorkTechnology[]
+  work_urls: readonly WorkUrl[]
 }
 
 type WorksListProps = {
-  works: Work[]
+  works: readonly Work[]
   initialDisplayCount?: number
 }
 

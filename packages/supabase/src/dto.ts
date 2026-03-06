@@ -25,7 +25,7 @@ export type Profile = {
     } | null
   }[]
   social_links: readonly {
-    service: string
+    service: string | null
     url: string
   }[]
   tagline: string | null
