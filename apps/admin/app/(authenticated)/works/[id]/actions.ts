@@ -1,11 +1,11 @@
 'use server'
 
-import type { Json } from '@ykzts/supabase'
+import { createServerClient } from '@ykzts/supabase/server'
+import type { Json } from '@ykzts/supabase/types'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { invalidateCaches } from '@/lib/revalidate'
-import { createClient } from '@/lib/supabase/server'
 
 export type ActionState = {
   error?: string
@@ -122,7 +122,7 @@ export async function updateWork(
   }
 
   try {
-    const supabase = await createClient()
+    const supabase = await createServerClient()
 
     // Update and return the updated row to verify success
     const { data, error } = await supabase
@@ -224,7 +224,7 @@ export async function updateWork(
 }
 
 export async function deleteWork(id: string): Promise<void> {
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   // Delete and return the deleted row to verify success
   const { data, error } = await supabase

@@ -1,12 +1,12 @@
 'use server'
 
-import { createClient } from './supabase/server'
+import { createServerClient } from '@ykzts/supabase/server'
 
 /**
  * Get all unique tags used across all posts
  */
 export async function getAllExistingTags(): Promise<string[]> {
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   const { data, error } = await supabase
     .from('posts')

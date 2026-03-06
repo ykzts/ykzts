@@ -1,6 +1,6 @@
 'use server'
 
-import type { Json } from '@ykzts/supabase'
+import type { Json } from '@ykzts/supabase/types'
 import { generateText, Output } from 'ai'
 import { z } from 'zod'
 import { portableTextToMarkdown } from './portable-text-to-markdown'

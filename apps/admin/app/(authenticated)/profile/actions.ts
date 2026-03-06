@@ -1,13 +1,13 @@
 'use server'
 
 import { extractFediverseHandleFromURL } from '@ykzts/fediverse'
-import type { Json } from '@ykzts/supabase'
+import { createServerClient } from '@ykzts/supabase/server'
+import type { Json } from '@ykzts/supabase/types'
 import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
 import { getCurrentUser } from '@/lib/auth'
 import { invalidateCaches } from '@/lib/revalidate'
 import { detectServiceFromURL } from '@/lib/social-service-detector'
-import { createClient } from '@/lib/supabase/server'
 import { DEFAULT_TIMEZONE } from '@/lib/timezones'
 
 // Validation schemas
@@ -79,7 +79,7 @@ export async function updateProfile(
     const { name, occupation, tagline, email, about, timezone } =
       profileValidation.data
 
-    const supabase = await createClient()
+    const supabase = await createServerClient()
 
     // Get or create profile for current user
     const { data: existingProfile, error: profileFetchError } = await supabase

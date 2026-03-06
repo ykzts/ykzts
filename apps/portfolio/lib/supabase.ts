@@ -1,16 +1,12 @@
 import type { PortableTextBlock } from '@portabletext/types'
-import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@ykzts/supabase'
+import { createBrowserClient } from '@ykzts/supabase/client'
 import { cacheTag } from 'next/cache'
 import { isPortableTextValue } from '@/lib/portable-text'
 
-// Create Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
 const supabase =
-  supabaseUrl && supabaseAnonKey
-    ? createClient<Database>(supabaseUrl, supabaseAnonKey)
+  process.env.NEXT_PUBLIC_SUPABASE_URL &&
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    ? createBrowserClient()
     : null
 
 export async function getProfile() {

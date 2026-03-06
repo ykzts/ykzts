@@ -13,7 +13,7 @@
   },
   "exports": {
     ".": {
-      "types": "./src/database.types.ts"
+      "types": "./src/types.ts"
     },
     "./client": {
       "types": "./src/client.ts",
@@ -30,6 +30,10 @@
     "./service-role": {
       "types": "./src/service-role.ts",
       "default": "./src/service-role.ts"
+    },
+    "./types": {
+      "types": "./src/types.ts",
+      "default": "./src/types.ts"
     }
   },
   "license": "MIT",
@@ -44,6 +48,6 @@
     "typegen": "./scripts/typegen.sh"
   },
   "type": "module",
-  "types": "./src/database.types.ts",
+  "types": "./src/types.ts",
   "version": "1.0.0"
 }

@@ -1,6 +1,6 @@
 'use server'
 
-import type { Json } from '@ykzts/supabase'
+import type { Json } from '@ykzts/supabase/types'
 import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'

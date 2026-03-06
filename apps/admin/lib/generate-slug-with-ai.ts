@@ -1,11 +1,11 @@
 'use server'
 
-import type { Json } from '@ykzts/supabase'
+import { createServerClient } from '@ykzts/supabase/server'
+import type { Json } from '@ykzts/supabase/types'
 import { generateText, stepCountIs, tool } from 'ai'
 import { z } from 'zod'
 import { portableTextToMarkdown } from './portable-text-to-markdown'
 import { cleanSlug } from './slug-utils'
-import { createClient } from './supabase/server'
 
 /**
  * Create a tool for checking slug availability in the database
@@ -20,7 +20,7 @@ function createSlugAvailabilityTool(
     description:
       'Check if a slug is already in use in the database. You MUST call this tool before returning any slug to ensure uniqueness. If the slug is taken, try a different variation.',
     execute: async ({ slug }) => {
-      const supabase = await createClient()
+      const supabase = await createServerClient()
       let query = supabase.from(table).select('slug').eq('slug', slug).limit(1)
 
       if (excludeId) {

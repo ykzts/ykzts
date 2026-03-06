@@ -1,8 +1,8 @@
-import type { Database, Json } from '@ykzts/supabase'
+import { createServerClient } from '@ykzts/supabase/server'
+import type { Database, Json } from '@ykzts/supabase/types'
 import { cacheTag } from 'next/cache'
 import { getCurrentUser } from './auth'
 import { extractFirstParagraph } from './portable-text-utils'
-import { createClient } from './supabase/server'
 
 type Post = Database['public']['Tables']['posts']['Row']
 type PostVersion = Database['public']['Tables']['post_versions']['Row']
@@ -49,7 +49,7 @@ export async function getPosts(filter: PostsFilter = {}) {
     throw new Error('認証されていません')
   }
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   // Get the authenticated user's profile
   const { data: profileData, error: profileError } = await supabase
@@ -135,7 +135,7 @@ export async function getPostById(id: string): Promise<PostWithDetails | null> {
     throw new Error('認証されていません')
   }
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   // Get the authenticated user's profile
   const { data: profileData, error: profileError } = await supabase
@@ -198,7 +198,7 @@ export async function createPost(params: {
   tags?: string[]
   title: string
 }) {
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   // Auto-generate excerpt from first paragraph if not provided
   let excerpt = params.excerpt || ''
@@ -237,7 +237,7 @@ export async function updatePost(params: {
   tags?: string[]
   title?: string
 }) {
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   // Auto-generate excerpt from first paragraph if content is provided and excerpt is explicitly empty
   // undefined means "don't update excerpt" (preserve existing in database)
@@ -274,7 +274,7 @@ export async function updatePost(params: {
  * Delete a post using the database function
  */
 export async function deletePost(postId: string): Promise<void> {
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   const { error } = await supabase.rpc('delete_post', {
     p_post_id: postId
@@ -299,7 +299,7 @@ export async function getPostVersions(
     throw new Error('認証されていません')
   }
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   // Get the authenticated user's profile
   const { data: profileData, error: profileError } = await supabase
@@ -362,7 +362,7 @@ export async function getPostVersion(
     throw new Error('認証されていません')
   }
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   // Get the authenticated user's profile
   const { data: profileData, error: profileError } = await supabase
@@ -424,7 +424,7 @@ export async function compareVersions(
     throw new Error('認証されていません')
   }
 
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   // Get the authenticated user's profile
   const { data: profileData, error: profileError } = await supabase
@@ -494,7 +494,7 @@ export async function compareVersions(
  * Rollback to a specific version by creating a new version with that content
  */
 export async function rollbackToVersion(postId: string, versionId: string) {
-  const supabase = await createClient()
+  const supabase = await createServerClient()
 
   // Get the version to rollback to
   const { data: targetVersion, error: versionError } = await supabase

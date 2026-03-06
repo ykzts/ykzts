@@ -1,6 +1,6 @@
 'use client'
 
-import { createClient } from '@/lib/supabase/client'
+import { createBrowserClient } from '@ykzts/supabase/client'
 
 export type ImageUploadOptions = {
   file: File
@@ -46,7 +46,7 @@ export async function uploadImage({
       }
     }
 
-    const supabase = createClient()
+    const supabase = createBrowserClient()
 
     // Get current user
     const {
