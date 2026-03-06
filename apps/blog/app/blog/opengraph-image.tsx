@@ -9,7 +9,12 @@ export const size = {
 export const contentType = 'image/png'
 
 export default async function Image() {
-  const profile = await getProfile()
+  let profile: { name: string | null; tagline: string | null } | null = null
+  try {
+    profile = await getProfile()
+  } catch {
+    // Silently fall back when profile is unavailable
+  }
 
   return new ImageResponse(
     <div
@@ -84,7 +89,7 @@ export default async function Image() {
         >
           Blog
         </div>
-        {profile.tagline && (
+        {profile?.tagline && (
           <div
             style={{
               color: 'rgba(255, 255, 255, 0.8)',
@@ -95,7 +100,7 @@ export default async function Image() {
               textAlign: 'center'
             }}
           >
-            {profile.tagline}
+            {profile?.tagline}
           </div>
         )}
       </div>
@@ -137,7 +142,7 @@ export default async function Image() {
             fontWeight: 500
           }}
         >
-          {profile.name}
+          {profile?.name}
         </div>
       </div>
     </div>,

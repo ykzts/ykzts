@@ -26,7 +26,7 @@ function isValidAvatarUrl(url: string): boolean {
 }
 
 export default async function Icon() {
-  const profile = await getProfile()
+  const profile = await getProfile().catch(() => notFound())
 
   if (!profile.avatar_url) {
     notFound()

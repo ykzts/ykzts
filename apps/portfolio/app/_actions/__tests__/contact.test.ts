@@ -15,7 +15,7 @@ vi.mock('@ykzts/supabase/queries', () => ({
     name: 'Test User',
     social_links: [],
     tagline: 'Test',
-    technologies: []
+    profile_technologies: []
   }))
 }))
 

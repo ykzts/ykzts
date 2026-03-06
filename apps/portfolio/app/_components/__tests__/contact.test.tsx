@@ -12,7 +12,7 @@ vi.mock('../contact-form', () => ({
   default: () => <div data-testid="contact-form">Contact Form</div>
 }))
 
-// Mock getProfile from lib/supabase
+// Mock getProfile from @ykzts/supabase/queries
 vi.mock('@ykzts/supabase/queries', () => ({
   getProfile: vi.fn(async () => ({
     about: [
@@ -30,7 +30,10 @@ vi.mock('@ykzts/supabase/queries', () => ({
       }
     ],
     tagline: 'ソフトウェア開発者',
-    technologies: [{ name: 'JavaScript' }, { name: 'TypeScript' }]
+    profile_technologies: [
+      { sort_order: 0, technology: { name: 'JavaScript' } },
+      { sort_order: 1, technology: { name: 'TypeScript' } }
+    ]
   }))
 }))
 

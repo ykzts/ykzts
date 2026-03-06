@@ -66,6 +66,14 @@ function normalizePage(page: number): number {
     : 1
 }
 
+/**
+ * Fetches the site publisher's profile.
+ *
+ * Unlike `getWorks` and `getPosts`, this function throws when Supabase is not
+ * configured, because a missing profile is a critical error (no sensible
+ * default exists). Callers that can tolerate failure should catch the error
+ * themselves (e.g. `getProfile().catch(() => null)`).
+ */
 export async function getProfile(): Promise<Profile> {
   'use cache'
 
@@ -141,6 +149,12 @@ export async function getProfile(): Promise<Profile> {
   }
 }
 
+/**
+ * Fetches all works ordered by start date descending.
+ *
+ * Returns an empty array when Supabase is not configured, so pages that list
+ * works can still render without a profile dependency.
+ */
 export async function getWorks(): Promise<Work[]> {
   'use cache'
 
@@ -187,6 +201,12 @@ export async function getWorks(): Promise<Work[]> {
   })
 }
 
+/**
+ * Fetches published posts for a given page, ordered by publication date descending.
+ *
+ * Returns an empty array when Supabase is not configured, so listing pages can
+ * still render without a profile dependency.
+ */
 export async function getPosts(page = 1): Promise<Post[]> {
   'use cache'
 

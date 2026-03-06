@@ -172,9 +172,10 @@ export default async function PostDetailPage({ params }: PageProps) {
     notFound()
   }
 
-  // Fetch publisher profile and adjacent posts concurrently
+  // Fetch publisher profile and adjacent posts concurrently.
+  // getProfile() failure is tolerated; fall back to post.profile.name for publisher.
   const [publisherProfile, { previousPost, nextPost }] = await Promise.all([
-    getProfile(),
+    getProfile().catch(() => null),
     getAdjacentPosts(slug, isDraft)
   ])
 
@@ -183,6 +184,7 @@ export default async function PostDetailPage({ params }: PageProps) {
 
   // JSON-LD structured data for Article schema
   const baseUrl = getSiteOrigin().origin
+  const publisherName = publisherProfile?.name ?? post.profile.name
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -196,7 +198,7 @@ export default async function PostDetailPage({ params }: PageProps) {
     headline: post.title || DEFAULT_POST_TITLE,
     publisher: {
       '@type': 'Person',
-      name: publisherProfile.name,
+      name: publisherName,
       url: baseUrl
     }
   }
