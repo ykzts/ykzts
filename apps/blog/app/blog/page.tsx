@@ -1,11 +1,11 @@
 import { getSiteName } from '@ykzts/site-config'
+import { getProfile } from '@ykzts/supabase/queries'
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import BlogPagination from '@/components/blog-pagination'
 import Header from '@/components/header'
 import PostCard from '@/components/post-card'
 import { getPosts, getTotalPages } from '@/lib/supabase/posts'
-import { getPublisherProfile } from '@/lib/supabase/profiles'
 
 const siteName = getSiteName()
 
@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   let description = buildDescription('このサイト')
 
   try {
-    const profile = await getPublisherProfile()
+    const profile = await getProfile()
     description = buildDescription(profile.name)
   } catch (error) {
     console.error('Failed to load profile for blog metadata:', error)

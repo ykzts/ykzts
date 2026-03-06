@@ -1,7 +1,7 @@
+import { getProfile } from '@ykzts/supabase/queries'
 import { Suspense } from 'react'
 import Skeleton from '@/components/skeleton'
 import range from '@/lib/range'
-import { getProfile } from '@/lib/supabase'
 import PortableTextBlock from './portable-text'
 
 function AboutSkeleton() {

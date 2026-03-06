@@ -61,7 +61,7 @@ describe('Supabase utilities', () => {
         }))
       })
 
-      const { getProfile } = await import('../supabase')
+      const { getProfile } = await import('@ykzts/supabase/queries')
       const result = await getProfile()
 
       expect(result).toEqual(mockData)
@@ -82,7 +82,7 @@ describe('Supabase utilities', () => {
         }))
       })
 
-      const { getProfile } = await import('../supabase')
+      const { getProfile } = await import('@ykzts/supabase/queries')
       await expect(getProfile()).rejects.toThrow('Profile not found')
     })
 
@@ -100,7 +100,7 @@ describe('Supabase utilities', () => {
         }))
       })
 
-      const { getProfile } = await import('../supabase')
+      const { getProfile } = await import('@ykzts/supabase/queries')
       await expect(getProfile()).rejects.toThrow(
         'Failed to fetch profile: Database error'
       )
@@ -140,7 +140,7 @@ describe('Supabase utilities', () => {
         }))
       })
 
-      const { getWorks } = await import('../supabase')
+      const { getWorks } = await import('@ykzts/supabase/queries')
       const result = await getWorks()
 
       expect(result).toEqual(mockData)
@@ -159,7 +159,7 @@ describe('Supabase utilities', () => {
         }))
       })
 
-      const { getWorks } = await import('../supabase')
+      const { getWorks } = await import('@ykzts/supabase/queries')
       await expect(getWorks()).rejects.toThrow(
         'Failed to fetch works: Database error'
       )

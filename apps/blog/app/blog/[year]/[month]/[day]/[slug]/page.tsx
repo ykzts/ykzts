@@ -1,4 +1,5 @@
 import { getSiteOrigin } from '@ykzts/site-config'
+import { getProfile } from '@ykzts/supabase/queries'
 import type { Metadata, Route } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
@@ -19,7 +20,6 @@ import {
   getPostBySlug,
   getSimilarPosts
 } from '@/lib/supabase/posts'
-import { getPublisherProfile } from '@/lib/supabase/profiles'
 
 type PageProps = {
   params: Promise<{
@@ -174,7 +174,7 @@ export default async function PostDetailPage({ params }: PageProps) {
 
   // Fetch publisher profile and adjacent posts concurrently
   const [publisherProfile, { previousPost, nextPost }] = await Promise.all([
-    getPublisherProfile(),
+    getProfile(),
     getAdjacentPosts(slug, isDraft)
   ])
 

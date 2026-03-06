@@ -1,5 +1,5 @@
+import { getProfile } from '@ykzts/supabase/queries'
 import { ImageResponse } from 'next/og'
-import { getPublisherProfile } from '@/lib/supabase/profiles'
 
 export const alt = 'Blog'
 export const size = {
@@ -9,7 +9,7 @@ export const size = {
 export const contentType = 'image/png'
 
 export default async function Image() {
-  const profile = await getPublisherProfile()
+  const profile = await getProfile()
 
   return new ImageResponse(
     <div

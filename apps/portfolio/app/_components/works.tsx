@@ -1,7 +1,7 @@
+import { getWorks } from '@ykzts/supabase/queries'
 import { Suspense } from 'react'
 import Skeleton from '@/components/skeleton'
 import range from '@/lib/range'
-import { getWorks } from '@/lib/supabase'
 import WorksList from './works-list'
 
 function WorksSkeleton() {

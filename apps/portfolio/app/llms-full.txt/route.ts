@@ -1,11 +1,12 @@
 import { portableTextToMarkdown } from '@ykzts/portable-text-utils'
+import { getProfile, getWorks } from '@ykzts/supabase/queries'
 import {
   buildPostUrl,
   buildWorkUrl,
   getLlmsHeaderLines,
   type ProfileForHeader
 } from '@/lib/llms'
-import { getPostsForLlmsFull, getProfile, getWorks } from '@/lib/supabase'
+import { getPostsForLlmsFull } from '@/lib/supabase'
 
 export async function GET() {
   const [works, posts, profile] = await Promise.all([

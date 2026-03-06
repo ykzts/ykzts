@@ -1,8 +1,8 @@
+import { getProfile } from '@ykzts/supabase/queries'
 import { Suspense } from 'react'
 import Link from '@/components/link'
 import Skeleton from '@/components/skeleton'
 import { getSocialInfo } from '@/lib/social-services'
-import { getProfile } from '@/lib/supabase'
 
 function SocialLinksSkeleton() {
   const placeholders = ['one', 'two', 'three', 'four', 'five']

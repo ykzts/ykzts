@@ -1,6 +1,6 @@
+import { getProfile } from '@ykzts/supabase/queries'
 import { notFound } from 'next/navigation'
 import { NextResponse } from 'next/server'
-import { getPublisherProfile } from '@/lib/supabase/profiles'
 
 export const size = {
   height: 256,
@@ -26,7 +26,7 @@ function isValidAvatarUrl(url: string): boolean {
 }
 
 export default async function Icon() {
-  const profile = await getPublisherProfile()
+  const profile = await getProfile()
 
   if (!profile.avatar_url) {
     notFound()

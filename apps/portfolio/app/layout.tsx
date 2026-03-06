@@ -1,11 +1,11 @@
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
 import { getSiteName, getSiteOrigin } from '@ykzts/site-config'
+import { getProfile } from '@ykzts/supabase/queries'
 import { Toaster } from '@ykzts/ui/components/sonner'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
 import { twMerge } from 'tailwind-merge'
-import { getProfile } from '@/lib/supabase'
 import SVGSymbols from './_components/svg-symbols'
 import ThemeProvider from './_components/theme-provider'
 

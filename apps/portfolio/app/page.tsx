@@ -1,7 +1,7 @@
 import { getPortfolioDescription, getSiteName } from '@ykzts/site-config'
+import { getProfile } from '@ykzts/supabase/queries'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getProfile } from '@/lib/supabase'
 import About from './_components/about'
 import Contact from './_components/contact'
 import Footer from './_components/footer'

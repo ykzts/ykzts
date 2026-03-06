@@ -1,4 +1,4 @@
-import { getProfile, getWorks } from '@/lib/supabase'
+import { getProfile, getWorks } from '@ykzts/supabase/queries'
 import Navigation from './navigation'
 
 async function NavigationImpl() {

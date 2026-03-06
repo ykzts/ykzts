@@ -1,6 +1,6 @@
+import { getProfile } from '@ykzts/supabase/queries'
 import { notFound } from 'next/navigation'
 import { NextResponse } from 'next/server'
-import { getProfile } from '@/lib/supabase'
 
 export const size = {
   height: 256,

@@ -1,5 +1,4 @@
-import { getPublisherProfile } from '@/lib/supabase/profiles'
-import { getWorks } from '@/lib/supabase/works'
+import { getProfile, getWorks } from '@ykzts/supabase/queries'
 import Navigation from './navigation'
 
 async function NavigationWrapper() {
@@ -7,7 +6,7 @@ async function NavigationWrapper() {
   let hasWorks = false
 
   try {
-    const profile = await getPublisherProfile()
+    const profile = await getProfile()
     hasAbout = !!profile.about
   } catch (error) {
     console.error('Failed to load profile for navigation:', error)

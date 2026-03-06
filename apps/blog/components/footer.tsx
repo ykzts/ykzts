@@ -1,10 +1,10 @@
 import Footer from '@ykzts/layout/components/footer'
+import { getProfile } from '@ykzts/supabase/queries'
 import { Suspense } from 'react'
 import Link from '@/components/link'
-import { getPublisherProfile } from '@/lib/supabase/profiles'
 
 async function FooterImpl() {
-  const profile = await getPublisherProfile()
+  const profile = await getProfile()
 
   return (
     <Footer>

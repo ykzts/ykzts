@@ -1,9 +1,9 @@
 import Footer from '@ykzts/layout/components/footer'
+import { getProfile } from '@ykzts/supabase/queries'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import ExternalLink from '@/components/link'
 import Skeleton from '@/components/skeleton'
-import { getProfile } from '@/lib/supabase'
 
 function FooterSkeleton() {
   return (

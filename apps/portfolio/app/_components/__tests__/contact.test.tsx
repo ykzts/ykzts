@@ -13,7 +13,7 @@ vi.mock('../contact-form', () => ({
 }))
 
 // Mock getProfile from lib/supabase
-vi.mock('@/lib/supabase', () => ({
+vi.mock('@ykzts/supabase/queries', () => ({
   getProfile: vi.fn(async () => ({
     about: [
       {

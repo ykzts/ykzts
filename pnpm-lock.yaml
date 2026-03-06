@@ -573,6 +573,9 @@ importers:
 
   packages/supabase:
     dependencies:
+      '@portabletext/types':
+        specifier: 4.0.1
+        version: 4.0.1
       '@supabase/ssr':
         specifier: 0.9.0
         version: 0.9.0(@supabase/supabase-js@2.98.0)
