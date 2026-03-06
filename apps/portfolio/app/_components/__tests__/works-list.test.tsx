@@ -7,7 +7,6 @@ const mockPush = vi.fn()
 const mockSearchParams = new URLSearchParams()
 
 vi.mock('next/navigation', () => ({
-  usePathname: () => '/',
   useRouter: () => ({ push: mockPush }),
   useSearchParams: () => mockSearchParams
 }))
@@ -247,7 +246,7 @@ describe('WorksList Component', () => {
     const allButton = screen.getByRole('button', { name: 'すべて' })
     await user.click(allButton)
 
-    expect(mockPush).toHaveBeenCalledWith('/?', { scroll: false })
+    expect(mockPush).toHaveBeenCalledWith('/', { scroll: false })
   })
 
   it('renders technology tags on work articles', () => {

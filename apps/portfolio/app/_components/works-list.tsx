@@ -1,6 +1,6 @@
 'use client'
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useMemo, useState } from 'react'
 import type { PortableTextValue } from '@/lib/portable-text'
 import PortableTextBlock from './portable-text'
@@ -36,7 +36,6 @@ export default function WorksList({
   initialDisplayCount = 5
 }: WorksListProps) {
   const router = useRouter()
-  const pathname = usePathname()
   const searchParams = useSearchParams()
   const activeTechnology = searchParams.get('technology')
 
@@ -77,7 +76,8 @@ export default function WorksList({
       params.delete('technology')
     }
     setShowAll(false)
-    router.push(`${pathname}?${params.toString()}`, { scroll: false })
+    const query = params.toString()
+    router.push(query ? `/?${query}` : '/', { scroll: false })
   }
 
   return (
