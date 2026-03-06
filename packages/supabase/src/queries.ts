@@ -5,7 +5,7 @@ import type { Post, PostSummary, Profile, Work } from './dto.js'
 
 const POSTS_PER_PAGE = 10
 
-function createClient() {
+function createSupabaseClient() {
   if (
     !process.env.NEXT_PUBLIC_SUPABASE_URL ||
     !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -51,12 +51,27 @@ function extractVersionDate(currentVersion: unknown): string | null {
   return (currentVersion as { version_date?: string })?.version_date ?? null
 }
 
+function extractVersionContent(
+  currentVersion: unknown
+): PortableTextBlock[] | null {
+  const content = Array.isArray(currentVersion)
+    ? (currentVersion[0]?.content ?? null)
+    : ((currentVersion as { content?: unknown } | null)?.content ?? null)
+  return isPortableTextValue(content) ? content : null
+}
+
+function normalizePage(page: number): number {
+  return typeof page === 'number' && Number.isFinite(page)
+    ? Math.max(1, Math.floor(page))
+    : 1
+}
+
 export async function getProfile(): Promise<Profile> {
   'use cache'
 
   cacheTag('profile')
 
-  const supabase = createClient()
+  const supabase = createSupabaseClient()
 
   if (!supabase) {
     throw new Error(
@@ -131,7 +146,7 @@ export async function getWorks(): Promise<Work[]> {
 
   cacheTag('works')
 
-  const supabase = createClient()
+  const supabase = createSupabaseClient()
 
   if (!supabase) {
     return []
@@ -177,16 +192,13 @@ export async function getPosts(page = 1): Promise<Post[]> {
 
   cacheTag('posts')
 
-  const supabase = createClient()
+  const supabase = createSupabaseClient()
 
   if (!supabase) {
     return []
   }
 
-  const safePage =
-    typeof page === 'number' && Number.isFinite(page)
-      ? Math.max(1, Math.floor(page))
-      : 1
+  const safePage = normalizePage(page)
   const offset = (safePage - 1) * POSTS_PER_PAGE
 
   const { data, error } = await supabase
@@ -221,9 +233,7 @@ export async function getPosts(page = 1): Promise<Post[]> {
   }
 
   return data.map((post) => ({
-    content: (Array.isArray(post.current_version)
-      ? (post.current_version[0]?.content ?? null)
-      : (post.current_version?.content ?? null)) as PortableTextBlock[] | null,
+    content: extractVersionContent(post.current_version),
     excerpt: post.excerpt,
     id: post.id,
     profile: normalizePostAuthor(post),
