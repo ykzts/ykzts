@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { Panel } from '@/components/panel'
-import { getWork } from '@/lib/data'
+import { getAllTechnologies, getWork } from '@/lib/data'
 import { WorkForm } from '../_components/work-form'
 import { WorkFormSkeleton } from '../_components/work-form-skeleton'
 import { deleteWork, updateWork } from './actions'
@@ -12,7 +12,10 @@ export function generateStaticParams() {
 }
 
 async function WorkEditContent({ id }: { id: string }) {
-  const work = await getWork(id)
+  const [work, allTechnologies] = await Promise.all([
+    getWork(id),
+    getAllTechnologies()
+  ])
 
   if (!work) {
     notFound()
@@ -21,6 +24,7 @@ async function WorkEditContent({ id }: { id: string }) {
   return (
     <Panel>
       <WorkForm
+        allTechnologies={allTechnologies}
         deleteAction={deleteWork}
         updateAction={updateWork}
         work={work}

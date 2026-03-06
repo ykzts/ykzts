@@ -165,6 +165,23 @@ export async function getWorks() {
   return data
 }
 
+export async function getAllTechnologies() {
+  'use cache: private'
+  cacheTag('profile')
+
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('technologies')
+    .select('id, name')
+    .order('name', { ascending: true })
+
+  if (error) {
+    throw new Error(`技術タグの取得に失敗しました: ${error.message}`)
+  }
+
+  return data ?? []
+}
+
 export async function getWork(id: string) {
   'use cache: private'
   cacheTag('works')
@@ -185,7 +202,9 @@ export async function getWork(id: string) {
   // We verify the user has a profile, and RLS ensures they can only see their own works
   const { data, error } = await supabase
     .from('works')
-    .select('id, title, slug, starts_at, content, created_at, updated_at')
+    .select(
+      'id, title, slug, starts_at, content, created_at, updated_at, work_urls(id, label, url, sort_order), work_technologies(technology_id)'
+    )
     .eq('id', id)
     .maybeSingle()
 
