@@ -27,6 +27,11 @@ const workSchema = z.object({
     .max(256, 'タイトルは256文字以内で入力してください')
 })
 
+const workUrlSchema = z.object({
+  label: z.string().min(1, 'ラベルは必須です'),
+  url: z.string().url('有効なURLを入力してください')
+})
+
 export async function createWork(
   _prevState: ActionState,
   formData: FormData
@@ -47,6 +52,46 @@ export async function createWork(
   }
 
   const validatedData = validation.data
+
+  // Parse work URLs
+  const workUrlsCountStr = formData.get('work_urls_count')
+  const workUrlsCount =
+    typeof workUrlsCountStr === 'string'
+      ? Number.parseInt(workUrlsCountStr, 10)
+      : 0
+
+  if (Number.isNaN(workUrlsCount) || workUrlsCount < 0 || workUrlsCount > 50) {
+    return { error: 'URLの件数が不正です' }
+  }
+
+  type WorkUrlInput = { label: string; url: string }
+  const workUrlInputs: WorkUrlInput[] = []
+
+  for (let i = 0; i < workUrlsCount; i++) {
+    const label = formData.get(`work_url_label_${i}`)
+    const url = formData.get(`work_url_url_${i}`)
+
+    if (typeof label !== 'string' || typeof url !== 'string') continue
+    if (!label.trim() && !url.trim()) continue
+
+    const urlValidation = workUrlSchema.safeParse({
+      label: label.trim(),
+      url: url.trim()
+    })
+
+    if (!urlValidation.success) {
+      return {
+        error: `URL #${i + 1}: ${urlValidation.error.issues[0]?.message}`
+      }
+    }
+
+    workUrlInputs.push({ label: label.trim(), url: url.trim() })
+  }
+
+  // Parse selected technology IDs
+  const selectedTechIds = formData
+    .getAll('work_technology_id')
+    .filter((v): v is string => typeof v === 'string' && v.trim() !== '')
 
   // Get current user's profile ID
   let profileId: string
@@ -97,6 +142,42 @@ export async function createWork(
     // Verify that a row was actually inserted
     if (!data) {
       return { error: '作品の作成に失敗しました' }
+    }
+
+    const workId = data.id
+
+    // Insert work URLs
+    if (workUrlInputs.length > 0) {
+      const { error: urlsError } = await supabase.from('work_urls').insert(
+        workUrlInputs.map((u, i) => ({
+          label: u.label,
+          sort_order: i,
+          url: u.url,
+          work_id: workId
+        }))
+      )
+
+      if (urlsError) {
+        return { error: `URLの追加に失敗しました: ${urlsError.message}` }
+      }
+    }
+
+    // Insert work technologies
+    if (selectedTechIds.length > 0) {
+      const { error: techsError } = await supabase
+        .from('work_technologies')
+        .insert(
+          selectedTechIds.map((techId) => ({
+            technology_id: techId,
+            work_id: workId
+          }))
+        )
+
+      if (techsError) {
+        return {
+          error: `技術タグの追加に失敗しました: ${techsError.message}`
+        }
+      }
     }
 
     // Revalidate both works list and dashboard counts
