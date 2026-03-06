@@ -1,7 +1,7 @@
 import type { PortableTextBlock } from '@portabletext/types'
 import { cacheTag } from 'next/cache'
-import { createBrowserClient } from './client.js'
-import type { Post, PostSummary, Profile, Work } from './dto.js'
+import { createBrowserClient } from './client'
+import type { Post, PostSummary, Profile, Work } from './dto'
 
 const POSTS_PER_PAGE = 10
 
