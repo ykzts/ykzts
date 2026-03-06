@@ -1,3 +1,4 @@
 {
-  "extends": "@ykzts/tsconfig/basic.json"
+  "extends": "@ykzts/tsconfig/next.json",
+  "include": ["src"]
 }
