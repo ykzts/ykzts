@@ -114,7 +114,18 @@ describe('Supabase utilities', () => {
           content: [{ _type: 'block', children: [{ text: 'Test content' }] }],
           slug: 'test-work',
           starts_at: '2024-01-01',
-          title: 'Test Work'
+          title: 'Test Work',
+          work_technologies: [
+            { technology: { name: 'React' }, technology_id: 'tech-1' }
+          ],
+          work_urls: [
+            {
+              id: 'url-1',
+              label: 'GitHub',
+              sort_order: 0,
+              url: 'https://github.com/example/test-work'
+            }
+          ]
         }
       ]
 

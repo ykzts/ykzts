@@ -84,17 +84,37 @@ export async function getWorks() {
 
   const { data, error } = await supabase
     .from('works')
-    .select('content, slug, title, starts_at')
+    .select(
+      `
+        content,
+        slug,
+        title,
+        starts_at,
+        work_urls(id, label, url, sort_order),
+        work_technologies(technology_id, technology:technologies(name))
+      `
+    )
     .order('starts_at', { ascending: false })
 
   if (error) {
     throw new Error(`Failed to fetch works: ${error.message}`)
   }
 
-  return data.map((work) => ({
-    ...work,
-    content: isPortableTextValue(work.content) ? work.content : null
-  }))
+  return data.map((work) => {
+    const workUrls = Array.isArray(work.work_urls)
+      ? [...work.work_urls].sort((a, b) => a.sort_order - b.sort_order)
+      : []
+    const workTechnologies = Array.isArray(work.work_technologies)
+      ? work.work_technologies
+      : []
+
+    return {
+      ...work,
+      content: isPortableTextValue(work.content) ? work.content : null,
+      work_technologies: workTechnologies,
+      work_urls: workUrls
+    }
+  })
 }
 
 export async function getPostsForLlms() {
