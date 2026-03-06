@@ -166,15 +166,14 @@ ON CONFLICT (id) DO UPDATE SET
   updated_at = NOW();
 
 -- Insert technologies for test user
-INSERT INTO technologies (id, profile_id, name, sort_order, created_at, updated_at) VALUES
-  ('00000000-0000-0000-0000-000000000021', '00000000-0000-0000-0000-000000000001', 'Test Tech 1', 1, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000022', '00000000-0000-0000-0000-000000000001', 'Test Tech 2', 2, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000023', '00000000-0000-0000-0000-000000000001', 'Test Tech 3', 3, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000024', '00000000-0000-0000-0000-000000000001', 'Test Tech 4', 4, NOW(), NOW()),
-  ('00000000-0000-0000-0000-000000000025', '00000000-0000-0000-0000-000000000001', 'Test Tech 5', 5, NOW(), NOW())
+INSERT INTO technologies (id, name, created_at, updated_at) VALUES
+  ('00000000-0000-0000-0000-000000000021', 'Test Tech 1', NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000022', 'Test Tech 2', NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000023', 'Test Tech 3', NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000024', 'Test Tech 4', NOW(), NOW()),
+  ('00000000-0000-0000-0000-000000000025', 'Test Tech 5', NOW(), NOW())
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
-  sort_order = EXCLUDED.sort_order,
   updated_at = NOW();
 
 -- Insert profile_technologies for test user (links profile to technologies)
