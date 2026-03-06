@@ -24,7 +24,9 @@ CREATE POLICY "Users can insert technologies" ON technologies
   TO authenticated
   WITH CHECK (true);
 
--- UPDATE: Allow authenticated users to update technologies linked to their profile
+-- UPDATE: Allow authenticated users to update technologies exclusively linked to their profile.
+-- A technology is only updatable if the current user has a link to it AND no other user
+-- shares the same technology row, preventing one user's rename from affecting others.
 CREATE POLICY "Users can update their own technologies" ON technologies
   FOR UPDATE
   TO authenticated
@@ -35,11 +37,18 @@ CREATE POLICY "Users can update their own technologies" ON technologies
       WHERE pt.technology_id = technologies.id
       AND p.user_id = auth.uid()
     )
+    AND NOT EXISTS (
+      SELECT 1 FROM profile_technologies pt
+      JOIN profiles p ON p.id = pt.profile_id
+      WHERE pt.technology_id = technologies.id
+      AND p.user_id != auth.uid()
+    )
   )
   WITH CHECK (true);
 
--- DELETE: Allow authenticated users to delete orphaned technologies
--- (technologies with no remaining profile_technologies links)
+-- DELETE: Allow authenticated users to delete fully orphaned technologies.
+-- A technology is orphaned only when neither profile_technologies nor work_technologies
+-- reference it, ensuring deletions do not silently cascade through work associations.
 CREATE POLICY "Users can delete orphaned technologies" ON technologies
   FOR DELETE
   TO authenticated
@@ -47,6 +56,10 @@ CREATE POLICY "Users can delete orphaned technologies" ON technologies
     NOT EXISTS (
       SELECT 1 FROM profile_technologies pt
       WHERE pt.technology_id = technologies.id
+    )
+    AND NOT EXISTS (
+      SELECT 1 FROM work_technologies wt
+      WHERE wt.technology_id = technologies.id
     )
   );
 
