@@ -355,34 +355,21 @@ export type Database = {
           created_at: string
           id: string
           name: string
-          profile_id: string | null
-          sort_order: number
           updated_at: string
         }
         Insert: {
           created_at?: string
           id?: string
           name: string
-          profile_id?: string | null
-          sort_order?: number
           updated_at?: string
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
-          profile_id?: string | null
-          sort_order?: number
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "technologies_profile_id_fkey"
-            columns: ["profile_id"]
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       work_technologies: {
         Row: {
