@@ -117,7 +117,10 @@ export async function uploadImage({
   } catch (error) {
     console.error('Upload error:', error)
     return {
-      error: 'アップロード中にエラーが発生しました。'
+      error:
+        error instanceof Error
+          ? error.message
+          : 'アップロード中にエラーが発生しました。'
     }
   }
 }
