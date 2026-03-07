@@ -16,7 +16,7 @@
     "gray-matter": "4.0.3"
   },
   "devDependencies": {
-    "@portabletext/types": "4.0.1",
+    "@portabletext/types": "4.0.2",
     "@ykzts/tsconfig": "workspace:*",
     "typescript": "5.9.3",
     "vitest": "4.0.18"
