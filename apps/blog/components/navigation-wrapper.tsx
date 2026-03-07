@@ -8,7 +8,10 @@ async function NavigationWrapper() {
   ])
 
   if (profileResult.status === 'rejected') {
-    console.error('Failed to load profile for navigation:', profileResult.reason)
+    console.error(
+      'Failed to load profile for navigation:',
+      profileResult.reason
+    )
   }
 
   if (worksResult.status === 'rejected') {

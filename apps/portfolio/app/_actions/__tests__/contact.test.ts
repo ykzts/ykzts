@@ -13,9 +13,9 @@ vi.mock('@ykzts/supabase/queries', () => ({
     email: 'admin@example.com',
     id: 'test-id',
     name: 'Test User',
+    profile_technologies: [],
     social_links: [],
-    tagline: 'Test',
-    profile_technologies: []
+    tagline: 'Test'
   }))
 }))
 

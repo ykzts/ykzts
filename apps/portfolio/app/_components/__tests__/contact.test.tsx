@@ -24,16 +24,16 @@ vi.mock('@ykzts/supabase/queries', () => ({
     email: 'test@example.com',
     id: 'test-id',
     name: 'テストユーザー',
+    profile_technologies: [
+      { sort_order: 0, technology: { name: 'JavaScript' } },
+      { sort_order: 1, technology: { name: 'TypeScript' } }
+    ],
     social_links: [
       {
         url: 'https://github.com/test'
       }
     ],
-    tagline: 'ソフトウェア開発者',
-    profile_technologies: [
-      { sort_order: 0, technology: { name: 'JavaScript' } },
-      { sort_order: 1, technology: { name: 'TypeScript' } }
-    ]
+    tagline: 'ソフトウェア開発者'
   }))
 }))
 
