@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@portabletext/markdown": "1.1.4",
-    "@portabletext/to-html": "5.0.1",
+    "@portabletext/to-html": "5.0.2",
     "gray-matter": "4.0.3"
   },
   "devDependencies": {
