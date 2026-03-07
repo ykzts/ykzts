@@ -212,8 +212,8 @@ importers:
         version: 4.3.6
     devDependencies:
       '@portabletext/types':
-        specifier: 4.0.1
-        version: 4.0.1
+        specifier: 4.0.2
+        version: 4.0.2
       '@tailwindcss/postcss':
         specifier: 4.2.1
         version: 4.2.1
@@ -321,8 +321,8 @@ importers:
         specifier: 6.0.2
         version: 6.0.2(react@19.2.4)
       '@portabletext/types':
-        specifier: 4.0.1
-        version: 4.0.1
+        specifier: 4.0.2
+        version: 4.0.2
       '@react-email/render':
         specifier: 2.0.4
         version: 2.0.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -544,8 +544,8 @@ importers:
         version: 4.0.3
     devDependencies:
       '@portabletext/types':
-        specifier: 4.0.1
-        version: 4.0.1
+        specifier: 4.0.2
+        version: 4.0.2
       '@ykzts/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -574,8 +574,8 @@ importers:
   packages/supabase:
     dependencies:
       '@portabletext/types':
-        specifier: 4.0.1
-        version: 4.0.1
+        specifier: 4.0.2
+        version: 4.0.2
       '@supabase/ssr':
         specifier: 0.9.0
         version: 0.9.0(@supabase/supabase-js@2.98.0)
@@ -2092,10 +2092,6 @@ packages:
 
   '@portabletext/toolkit@5.0.2':
     resolution: {integrity: sha512-Njc1LE1PMJkTx/wEPqZ6sOWGgFgX2B47fxpOQ/Ia4ByhsZoA5Sq8dNvvV5F052j/xE8TbOLiBEjS848FkKADDQ==}
-    engines: {node: '>=20.19 <22 || >=22.12'}
-
-  '@portabletext/types@4.0.1':
-    resolution: {integrity: sha512-L8PZjVjmdKpW+82c1oNqGMqCOtQD2xORqJfr6Is7X5XXbz38eLYY79IM/1ok+Esf/iGOPtEYORdcf0ETmsWYew==}
     engines: {node: '>=20.19 <22 || >=22.12'}
 
   '@portabletext/types@4.0.2':
@@ -9455,7 +9451,7 @@ snapshots:
   '@portabletext/react@6.0.2(react@19.2.4)':
     dependencies:
       '@portabletext/toolkit': 5.0.2
-      '@portabletext/types': 4.0.1
+      '@portabletext/types': 4.0.2
       react: 19.2.4
 
   '@portabletext/schema@2.1.1': {}
@@ -9463,13 +9459,11 @@ snapshots:
   '@portabletext/to-html@5.0.1':
     dependencies:
       '@portabletext/toolkit': 5.0.2
-      '@portabletext/types': 4.0.1
+      '@portabletext/types': 4.0.2
 
   '@portabletext/toolkit@5.0.2':
     dependencies:
       '@portabletext/types': 4.0.2
-
-  '@portabletext/types@4.0.1': {}
 
   '@portabletext/types@4.0.2': {}
 
