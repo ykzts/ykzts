@@ -1,5 +1,5 @@
+import { getProfile } from '@ykzts/supabase/queries'
 import { ImageResponse } from 'next/og'
-import { getProfile } from '@/lib/supabase'
 
 export const alt = process.env.NEXT_PUBLIC_SITE_NAME ?? 'example.com'
 export const size = {

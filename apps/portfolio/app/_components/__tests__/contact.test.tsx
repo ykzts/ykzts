@@ -12,8 +12,8 @@ vi.mock('../contact-form', () => ({
   default: () => <div data-testid="contact-form">Contact Form</div>
 }))
 
-// Mock getProfile from lib/supabase
-vi.mock('@/lib/supabase', () => ({
+// Mock getProfile from @ykzts/supabase/queries
+vi.mock('@ykzts/supabase/queries', () => ({
   getProfile: vi.fn(async () => ({
     about: [
       {
@@ -24,13 +24,16 @@ vi.mock('@/lib/supabase', () => ({
     email: 'test@example.com',
     id: 'test-id',
     name: 'テストユーザー',
+    profile_technologies: [
+      { sort_order: 0, technology: { name: 'JavaScript' } },
+      { sort_order: 1, technology: { name: 'TypeScript' } }
+    ],
     social_links: [
       {
         url: 'https://github.com/test'
       }
     ],
-    tagline: 'ソフトウェア開発者',
-    technologies: [{ name: 'JavaScript' }, { name: 'TypeScript' }]
+    tagline: 'ソフトウェア開発者'
   }))
 }))
 

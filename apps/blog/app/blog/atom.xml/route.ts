@@ -1,16 +1,16 @@
 import { portableTextToHTML } from '@ykzts/portable-text-utils'
 import { getSiteName, getSiteOrigin } from '@ykzts/site-config'
+import { getProfile } from '@ykzts/supabase/queries'
 import { Feed } from 'feed'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
 import { getPostsForFeed } from '@/lib/supabase/posts'
-import { getPublisherProfile } from '@/lib/supabase/profiles'
 
 export async function GET() {
   const posts = await getPostsForFeed(20)
 
   let profileName: string | null = null
   try {
-    const profile = await getPublisherProfile()
+    const profile = await getProfile()
     if (profile.name?.trim()) {
       profileName = profile.name.trim()
     }

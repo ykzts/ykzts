@@ -1,4 +1,5 @@
 import { getSiteOrigin } from '@ykzts/site-config'
+import { getProfile } from '@ykzts/supabase/queries'
 import type { Metadata, Route } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
@@ -19,7 +20,6 @@ import {
   getPostBySlug,
   getSimilarPosts
 } from '@/lib/supabase/posts'
-import { getPublisherProfile } from '@/lib/supabase/profiles'
 
 type PageProps = {
   params: Promise<{
@@ -172,9 +172,10 @@ export default async function PostDetailPage({ params }: PageProps) {
     notFound()
   }
 
-  // Fetch publisher profile and adjacent posts concurrently
+  // Fetch publisher profile and adjacent posts concurrently.
+  // getProfile() failure is tolerated; fall back to post.profile.name for publisher.
   const [publisherProfile, { previousPost, nextPost }] = await Promise.all([
-    getPublisherProfile(),
+    getProfile().catch(() => null),
     getAdjacentPosts(slug, isDraft)
   ])
 
@@ -183,6 +184,7 @@ export default async function PostDetailPage({ params }: PageProps) {
 
   // JSON-LD structured data for Article schema
   const baseUrl = getSiteOrigin().origin
+  const publisherName = publisherProfile?.name ?? post.profile.name
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -196,7 +198,7 @@ export default async function PostDetailPage({ params }: PageProps) {
     headline: post.title || DEFAULT_POST_TITLE,
     publisher: {
       '@type': 'Person',
-      name: publisherProfile.name,
+      name: publisherName,
       url: baseUrl
     }
   }

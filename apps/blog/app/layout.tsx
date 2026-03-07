@@ -1,6 +1,7 @@
 import './globals.css'
 import { Analytics } from '@vercel/analytics/next'
 import { getSiteName, getSiteOrigin } from '@ykzts/site-config'
+import { getProfile } from '@ykzts/supabase/queries'
 import { cn } from '@ykzts/ui/lib/utils'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
@@ -8,7 +9,6 @@ import { Suspense } from 'react'
 import DraftModeBanner from '@/components/draft-mode-banner'
 import Footer from '@/components/footer'
 import ThemeProvider from '@/components/theme-provider'
-import { getPublisherProfile } from '@/lib/supabase/profiles'
 
 const siteName = getSiteName()
 
@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
   let fediverseCreator: string | null = null
 
   try {
-    const profile = await getPublisherProfile()
+    const profile = await getProfile()
     fediverseCreator = profile.fediverse_creator?.trim() || null
   } catch (error) {
     console.error('Failed to load profile for blog layout metadata:', error)

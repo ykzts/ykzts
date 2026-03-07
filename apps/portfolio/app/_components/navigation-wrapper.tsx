@@ -1,23 +1,27 @@
-import { getProfile, getWorks } from '@/lib/supabase'
+import { getProfile, getWorks } from '@ykzts/supabase/queries'
 import Navigation from './navigation'
 
 async function NavigationImpl() {
-  let hasAbout = false
-  let hasWorks = false
+  const [profileResult, worksResult] = await Promise.allSettled([
+    getProfile(),
+    getWorks()
+  ])
 
-  try {
-    const profile = await getProfile()
-    hasAbout = !!profile.about
-  } catch (error) {
-    console.error('Failed to load profile for navigation:', error)
+  if (profileResult.status === 'rejected') {
+    console.error(
+      'Failed to load profile for navigation:',
+      profileResult.reason
+    )
   }
 
-  try {
-    const works = await getWorks()
-    hasWorks = works.length > 0
-  } catch (error) {
-    console.error('Failed to load works for navigation:', error)
+  if (worksResult.status === 'rejected') {
+    console.error('Failed to load works for navigation:', worksResult.reason)
   }
+
+  const hasAbout =
+    profileResult.status === 'fulfilled' && !!profileResult.value.about
+  const hasWorks =
+    worksResult.status === 'fulfilled' && worksResult.value.length > 0
 
   return <Navigation hasAbout={hasAbout} hasWorks={hasWorks} />
 }

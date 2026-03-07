@@ -1,9 +1,9 @@
 'use server'
 
 import { getSiteName } from '@ykzts/site-config'
+import { getProfile } from '@ykzts/supabase/queries'
 import { Resend } from 'resend'
 import * as z from 'zod'
-import { getProfile } from '@/lib/supabase'
 import { verifyTurnstile } from '@/lib/turnstile'
 
 const resend = new Resend(process.env.RESEND_API_KEY)

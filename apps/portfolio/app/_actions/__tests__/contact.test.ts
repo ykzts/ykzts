@@ -7,15 +7,15 @@ vi.stubEnv('NEXT_PUBLIC_SITE_NAME', 'example.com')
 vi.stubEnv('MAIL_FROM_ADDRESS', 'no-reply@example.com')
 
 // Mock getProfile from Supabase
-vi.mock('@/lib/supabase', () => ({
+vi.mock('@ykzts/supabase/queries', () => ({
   getProfile: vi.fn(async () => ({
     about: [],
     email: 'admin@example.com',
     id: 'test-id',
     name: 'Test User',
+    profile_technologies: [],
     social_links: [],
-    tagline: 'Test',
-    technologies: []
+    tagline: 'Test'
   }))
 }))
 

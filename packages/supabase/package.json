@@ -1,6 +1,7 @@
 {
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
+    "@portabletext/types": "4.0.1",
     "@supabase/ssr": "0.9.0",
     "@supabase/supabase-js": "2.98.0",
     "next": "16.1.6"
@@ -19,9 +20,17 @@
       "types": "./src/client.ts",
       "default": "./src/client.ts"
     },
+    "./dto": {
+      "types": "./src/dto.ts",
+      "default": "./src/dto.ts"
+    },
     "./next-image-config": {
       "types": "./src/next-image-config.ts",
       "default": "./src/next-image-config.ts"
+    },
+    "./queries": {
+      "types": "./src/queries.ts",
+      "default": "./src/queries.ts"
     },
     "./server": {
       "types": "./src/server.ts",

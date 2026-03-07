@@ -17,8 +17,8 @@ export type ProfileForHeader = {
   aboutMarkdown?: string | null
   name?: string | null
   occupation?: string | null
-  profile_technologies?: ProfileTechnology[] | null
-  social_links?: SocialLink[] | null
+  profile_technologies?: readonly ProfileTechnology[] | null
+  social_links?: readonly SocialLink[] | null
   tagline?: string | null
 }
 

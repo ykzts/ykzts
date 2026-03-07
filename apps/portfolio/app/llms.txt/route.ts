@@ -1,11 +1,12 @@
 import { extractFirstParagraph } from '@ykzts/portable-text-utils'
+import { getProfile, getWorks } from '@ykzts/supabase/queries'
 import {
   buildPostUrl,
   buildWorkUrl,
   getLlmsHeaderLines,
   type ProfileForHeader
 } from '@/lib/llms'
-import { getPostsForLlms, getProfile, getWorks } from '@/lib/supabase'
+import { getPostsForLlms } from '@/lib/supabase'
 
 export async function GET() {
   const [works, posts, profile] = await Promise.all([
