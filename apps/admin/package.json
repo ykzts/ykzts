@@ -21,7 +21,7 @@
     "@ykzts/site-config": "workspace:*",
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
-    "ai": "6.0.111",
+    "ai": "6.0.116",
     "diff": "8.0.3",
     "lexical": "0.41.0",
     "lucide-react": "0.577.0",
