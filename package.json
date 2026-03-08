@@ -3,7 +3,7 @@
   "dependencies": {},
   "description": "",
   "devDependencies": {
-    "@biomejs/biome": "2.4.5",
+    "@biomejs/biome": "2.4.6",
     "turbo": "2.8.13"
   },
   "license": "MIT",
