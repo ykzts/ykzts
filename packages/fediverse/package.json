@@ -15,7 +15,7 @@
     "zod": "4.3.6"
   },
   "devDependencies": {
-    "@types/node": "24.11.0",
+    "@types/node": "24.11.1",
     "@ykzts/tsconfig": "workspace:*",
     "typescript": "5.9.3",
     "vitest": "4.0.18"
