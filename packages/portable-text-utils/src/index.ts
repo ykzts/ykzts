@@ -85,6 +85,9 @@ export function portableTextToHTML(
 
   return toHTML(content, {
     components: {
+      block: {
+        code: ({ children }) => `<pre><code>${children}</code></pre>`
+      },
       marks: {
         link: ({ children, value }) => {
           const href = value?.href as string | undefined
@@ -96,6 +99,30 @@ export function portableTextToHTML(
               ? ''
               : ' rel="noreferrer noopener"'
           return `<a href="${escapeHTML(href)}"${titleAttr}${rel}>${children}</a>`
+        }
+      },
+      types: {
+        code: ({ value }) => {
+          const language = (value as Record<string, unknown>).language as
+            | string
+            | undefined
+          const code = escapeHTML(
+            ((value as Record<string, unknown>).code as string | undefined) ??
+              ''
+          )
+          const langAttr = language
+            ? ` class="language-${escapeHTML(language)}"`
+            : ''
+          return `<pre><code${langAttr}>${code}</code></pre>`
+        },
+        image: ({ value }) => {
+          const v = value as Record<string, unknown>
+          const alt = escapeHTML((v.alt as string | undefined) ?? '')
+          const asset = v.asset as { url?: string } | undefined
+          const src = asset?.url
+          if (!src || !uriLooksSafe(src)) return ''
+          const figcaption = alt ? `<figcaption>${alt}</figcaption>` : ''
+          return `<figure><img alt="${alt}" src="${escapeHTML(src)}" />${figcaption}</figure>`
         }
       }
     }
