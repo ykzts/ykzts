@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { parseMarkdownForPost, portableTextToMarkdown } from './index'
+import {
+  parseMarkdownForPost,
+  portableTextToHTML,
+  portableTextToMarkdown
+} from './index'
 
 describe('portableTextToMarkdown', () => {
   it('returns empty string for null input', () => {
@@ -208,6 +212,120 @@ describe('portableTextToMarkdown', () => {
     ]
     const result = portableTextToMarkdown(content, { headingOffset: 0 })
     expect(result).toContain('# Normal heading')
+  })
+})
+
+describe('portableTextToHTML', () => {
+  it('converts a paragraph block to HTML', () => {
+    const content = [
+      {
+        _type: 'block',
+        children: [{ _type: 'span', text: 'Hello, world!' }],
+        style: 'normal'
+      }
+    ]
+    const result = portableTextToHTML(content)
+    expect(result).toContain('Hello, world!')
+    expect(result).toContain('<p>')
+  })
+
+  it('returns empty string for null input', () => {
+    expect(portableTextToHTML(null)).toBe('')
+  })
+
+  it('returns empty string for undefined input', () => {
+    expect(portableTextToHTML(undefined)).toBe('')
+  })
+
+  it('converts a heading block to HTML', () => {
+    const content = [
+      {
+        _type: 'block',
+        children: [{ _type: 'span', text: 'A Heading' }],
+        style: 'h2'
+      }
+    ]
+    const result = portableTextToHTML(content)
+    expect(result).toContain('A Heading')
+    expect(result).toContain('<h2>')
+  })
+
+  it('converts code block style to pre/code', () => {
+    const content = [
+      {
+        _type: 'block',
+        children: [{ _type: 'span', text: 'const x = 1' }],
+        style: 'code'
+      }
+    ]
+    const result = portableTextToHTML(content)
+    expect(result).toContain('const x = 1')
+    expect(result).toContain('<pre>')
+    expect(result).toContain('<code>')
+  })
+
+  it('converts image type block to figure/img', () => {
+    const content = [
+      {
+        _type: 'image',
+        alt: 'A test image',
+        asset: { url: 'https://example.com/image.png' }
+      }
+    ]
+    const result = portableTextToHTML(
+      content as Parameters<typeof portableTextToHTML>[0]
+    )
+    expect(result).toContain('<figure>')
+    expect(result).toContain('<img')
+    expect(result).toContain('alt="A test image"')
+    expect(result).toContain('src="https://example.com/image.png"')
+    expect(result).toContain('<figcaption>A test image</figcaption>')
+  })
+
+  it('converts image type block without alt text to figure/img without figcaption', () => {
+    const content = [
+      {
+        _type: 'image',
+        asset: { url: 'https://example.com/image.png' }
+      }
+    ]
+    const result = portableTextToHTML(
+      content as Parameters<typeof portableTextToHTML>[0]
+    )
+    expect(result).toContain('<figure>')
+    expect(result).toContain('<img')
+    expect(result).not.toContain('<figcaption>')
+  })
+
+  it('converts _type code block (object form) with language to pre/code', () => {
+    const content = [
+      {
+        _type: 'code',
+        code: 'const x = 1',
+        language: 'javascript'
+      }
+    ]
+    const result = portableTextToHTML(
+      content as Parameters<typeof portableTextToHTML>[0]
+    )
+    expect(result).toContain('const x = 1')
+    expect(result).toContain('<pre>')
+    expect(result).toContain('language-javascript')
+  })
+
+  it('converts _type code block (object form) without language to pre/code', () => {
+    const content = [
+      {
+        _type: 'code',
+        code: 'hello world'
+      }
+    ]
+    const result = portableTextToHTML(
+      content as Parameters<typeof portableTextToHTML>[0]
+    )
+    expect(result).toContain('hello world')
+    expect(result).toContain('<pre>')
+    expect(result).toContain('<code>')
   })
 })
 
