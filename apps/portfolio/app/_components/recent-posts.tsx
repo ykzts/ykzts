@@ -38,7 +38,15 @@ function RecentPostsSkeleton() {
 }
 
 async function RecentPostsImpl() {
-  const allPosts = await getPosts()
+  let allPosts: Awaited<ReturnType<typeof getPosts>>
+
+  try {
+    allPosts = await getPosts()
+  } catch (error) {
+    console.error('Failed to load recent posts:', error)
+    return null
+  }
+
   const posts = allPosts.slice(0, RECENT_POSTS_COUNT)
 
   if (posts.length === 0) {
@@ -61,7 +69,7 @@ async function RecentPostsImpl() {
               className="group rounded-xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:border-primary/50 hover:shadow-md"
               key={post.id}
             >
-              <h3 className="mb-2 font-semibold text-lg text-card-foreground">
+              <h3 className="mb-2 font-semibold text-card-foreground text-lg">
                 <a className="hover:text-primary hover:underline" href={url}>
                   {post.title}
                 </a>
@@ -89,7 +97,7 @@ async function RecentPostsImpl() {
                   <div className="flex flex-wrap gap-1.5">
                     {post.tags.map((tag) => (
                       <span
-                        className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground"
+                        className="rounded-full bg-muted px-2.5 py-0.5 font-medium text-muted-foreground text-xs"
                         key={tag}
                       >
                         {tag}
