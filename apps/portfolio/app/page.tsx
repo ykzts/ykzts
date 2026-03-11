@@ -7,6 +7,7 @@ import Contact from './_components/contact'
 import Footer from './_components/footer'
 import Hero from './_components/hero'
 import NavigationWrapper from './_components/navigation-wrapper'
+import RecentPosts from './_components/recent-posts'
 import Works from './_components/works'
 
 const siteName = getSiteName()
@@ -64,6 +65,7 @@ export default function HomePage(_props: PageProps<'/'>) {
       <main className="px-6 md:px-12 lg:px-24" id="content">
         <About />
         <Works />
+        <RecentPosts />
         <Contact />
       </main>
 
