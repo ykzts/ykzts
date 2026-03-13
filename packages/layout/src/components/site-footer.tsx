@@ -5,12 +5,30 @@ import Footer from './footer'
 import FooterContent from './footer-content'
 
 type Props = {
-  artworkCredit?: ReactNode
   privacyLink: ReactNode
 }
 
-async function SiteFooterImpl({ artworkCredit, privacyLink }: Props) {
+async function SiteFooterImpl({ privacyLink }: Props) {
   const profile = await getProfile()
+  const kv = profile.key_visual
+
+  const artworkCredit = kv?.artist_name ? (
+    <span className="text-sm">
+      {kv.attribution ?? 'Artwork by'}{' '}
+      {kv.artist_url ? (
+        <a
+          className="text-primary transition-colors duration-200 hover:text-primary/80"
+          href={kv.artist_url}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          {kv.artist_name}
+        </a>
+      ) : (
+        kv.artist_name
+      )}
+    </span>
+  ) : undefined
 
   return (
     <Footer>

@@ -98,17 +98,6 @@ export default function RootLayout({
           />
           {children}
           <SiteFooter
-            artworkCredit={
-              <span className="text-sm">
-                Artwork by{' '}
-                <Link
-                  className="text-primary transition-colors duration-200 hover:text-primary/80"
-                  href="https://x.com/diru_k1005"
-                >
-                  Kannazuki Diru
-                </Link>
-              </span>
-            }
             privacyLink={
               <Link
                 className="transition-colors duration-200 hover:text-primary"

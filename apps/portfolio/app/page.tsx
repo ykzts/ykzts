@@ -1,10 +1,11 @@
 import Header from '@ykzts/layout/components/header'
+import SiteFooter from '@ykzts/layout/components/site-footer'
 import { getPortfolioDescription, getSiteName } from '@ykzts/site-config'
 import { getProfile } from '@ykzts/supabase/queries'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import About from './_components/about'
 import Contact from './_components/contact'
-import Footer from './_components/footer'
 import Hero from './_components/hero'
 import RecentPosts from './_components/recent-posts'
 import Works from './_components/works'
@@ -61,7 +62,16 @@ export default function HomePage(_props: PageProps<'/'>) {
         <Contact />
       </main>
 
-      <Footer />
+      <SiteFooter
+        privacyLink={
+          <Link
+            className="transition-colors duration-200 hover:text-primary"
+            href="/privacy"
+          >
+            Privacy Policy
+          </Link>
+        }
+      />
     </div>
   )
 }
