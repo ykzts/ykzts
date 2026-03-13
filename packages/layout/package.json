@@ -29,7 +29,7 @@
     "typescript": "5.9.3"
   },
   "author": "Yamagishi Kazutoshi",
-  "description": "Shared layout components (Header, SiteFooter, SiteNavigation, Navigation, ThemeToggle, Footer, NavigationWrapper) for ykzts applications",
+  "description": "Shared layout components for ykzts applications",
   "license": "MIT",
   "repository": {
     "directory": "packages/layout",
