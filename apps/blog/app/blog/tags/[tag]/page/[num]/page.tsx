@@ -73,21 +73,23 @@ export default async function TagPaginationPage({ params }: PageProps) {
   return (
     <>
       <Header />
-      <main className="container mx-auto px-4 py-8">
-        <h1 className="mb-8 font-bold text-3xl">
-          {decodedTag} ({postCount}件)
-        </h1>
-        <div className="space-y-6">
-          {posts.map((post) => (
-            <PostCard isDraft={isDraft} key={post.id} post={post} />
-          ))}
-        </div>
-        <div className="mt-8">
-          <BlogPagination
-            baseUrl={`/blog/tags/${encodeURIComponent(decodedTag)}/page`}
-            currentPage={pageNum}
-            totalPages={totalPages}
-          />
+      <main className="px-6 py-8 md:px-12 lg:px-24">
+        <div className="mx-auto max-w-4xl">
+          <h1 className="mb-8 font-bold text-3xl">
+            {decodedTag} ({postCount}件)
+          </h1>
+          <div className="space-y-6">
+            {posts.map((post) => (
+              <PostCard isDraft={isDraft} key={post.id} post={post} />
+            ))}
+          </div>
+          <div className="mt-8">
+            <BlogPagination
+              baseUrl={`/blog/tags/${encodeURIComponent(decodedTag)}/page`}
+              currentPage={pageNum}
+              totalPages={totalPages}
+            />
+          </div>
         </div>
       </main>
     </>

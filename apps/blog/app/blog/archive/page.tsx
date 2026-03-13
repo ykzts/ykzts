@@ -25,9 +25,11 @@ export default async function ArchivePage() {
     return (
       <>
         <Header />
-        <main className="container mx-auto px-4 py-8">
-          <h1 className="mb-8 font-bold text-3xl">アーカイブ</h1>
-          <p className="text-muted-foreground">記事がありません</p>
+        <main className="px-6 py-8 md:px-12 lg:px-24">
+          <div className="mx-auto max-w-4xl">
+            <h1 className="mb-8 font-bold text-3xl">アーカイブ</h1>
+            <p className="text-muted-foreground">記事がありません</p>
+          </div>
         </main>
       </>
     )
@@ -43,12 +45,14 @@ export default async function ArchivePage() {
   return (
     <>
       <Header />
-      <main className="container mx-auto px-4 py-8">
-        <h1 className="mb-8 font-bold text-3xl">アーカイブ</h1>
-        <ArchiveList
-          initialYearData={{ count, posts, year: latestYear }}
-          isDraft={isDraft}
-        />
+      <main className="px-6 py-8 md:px-12 lg:px-24">
+        <div className="mx-auto max-w-4xl">
+          <h1 className="mb-8 font-bold text-3xl">アーカイブ</h1>
+          <ArchiveList
+            initialYearData={{ count, posts, year: latestYear }}
+            isDraft={isDraft}
+          />
+        </div>
       </main>
     </>
   )

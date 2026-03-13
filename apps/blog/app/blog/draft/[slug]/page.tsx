@@ -111,13 +111,13 @@ export default async function DraftPostPage({ params }: PageProps) {
   return (
     <>
       <Header />
-      <main className="container mx-auto px-4 py-8">
-        <div className="mx-auto max-w-7xl">
+      <main className="px-6 py-8 md:px-12 lg:px-24">
+        <div className="mx-auto max-w-4xl">
           {hasHeadings ? (
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
               <ArticleContent
                 authorName={post.profile.name}
-                className="min-w-0 max-w-3xl"
+                className="min-w-0"
                 content={post.content}
                 headings={headings}
                 publishedAt={post.published_at}
@@ -143,11 +143,11 @@ export default async function DraftPostPage({ params }: PageProps) {
           )}
         </div>
 
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-4xl">
           <PostNavigation nextPost={nextPost} previousPost={previousPost} />
         </div>
 
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-4xl">
           <div aria-atomic="false" aria-live="polite">
             <Suspense fallback={<SimilarPostsSkeleton />}>
               <SimilarPostsSection postId={post.id} />
