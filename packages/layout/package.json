@@ -4,8 +4,15 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./components/*": "./src/components/*.tsx",
-    "./styles/*": "./src/styles/*.css"
+    "./components/footer": "./src/components/footer.tsx",
+    "./components/footer-content": "./src/components/footer-content.tsx",
+    "./components/header": "./src/components/header.tsx",
+    "./components/navigation": "./src/components/navigation.tsx",
+    "./components/navigation-wrapper": "./src/components/navigation-wrapper.tsx",
+    "./components/site-footer": "./src/components/site-footer.tsx",
+    "./components/site-navigation": "./src/components/site-navigation.tsx",
+    "./components/theme-toggle": "./src/components/theme-toggle.tsx",
+    "./styles/styles.css": "./src/styles/styles.css"
   },
   "scripts": {
     "lint": "biome check ."
