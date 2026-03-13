@@ -1,14 +1,9 @@
 import { getProfile } from '@ykzts/supabase/queries'
-import type { ReactNode } from 'react'
 import { Suspense } from 'react'
 import Footer from './footer'
 import FooterContent from './footer-content'
 
-type Props = {
-  privacyLink: ReactNode
-}
-
-async function SiteFooterImpl({ privacyLink }: Props) {
+async function SiteFooterImpl() {
   const profile = await getProfile()
   const kv = profile.key_visual
 
@@ -29,6 +24,15 @@ async function SiteFooterImpl({ privacyLink }: Props) {
       )}
     </span>
   ) : undefined
+
+  const privacyLink = (
+    <a
+      className="transition-colors duration-200 hover:text-primary"
+      href="/privacy"
+    >
+      プライバシーポリシー
+    </a>
+  )
 
   return (
     <Footer>
@@ -52,10 +56,10 @@ function SiteFooterSkeleton() {
   )
 }
 
-export default function SiteFooter(props: Props) {
+export default function SiteFooter() {
   return (
     <Suspense fallback={<SiteFooterSkeleton />}>
-      <SiteFooterImpl {...props} />
+      <SiteFooterImpl />
     </Suspense>
   )
 }

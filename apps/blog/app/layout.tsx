@@ -9,7 +9,6 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
 import { Suspense } from 'react'
 import DraftModeBanner from '@/components/draft-mode-banner'
-import Link from '@/components/link'
 import SearchForm from '@/components/search-form'
 import ThemeProvider from '@/components/theme-provider'
 
@@ -97,16 +96,7 @@ export default function RootLayout({
             extra={<SearchForm className="hidden md:block md:w-48 lg:w-64" />}
           />
           {children}
-          <SiteFooter
-            privacyLink={
-              <Link
-                className="transition-colors duration-200 hover:text-primary"
-                href="/privacy"
-              >
-                プライバシーポリシー
-              </Link>
-            }
-          />
+          <SiteFooter />
           <Analytics />
         </ThemeProvider>
       </body>

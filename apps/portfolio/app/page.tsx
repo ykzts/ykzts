@@ -3,7 +3,6 @@ import SiteFooter from '@ykzts/layout/components/site-footer'
 import { getPortfolioDescription, getSiteName } from '@ykzts/site-config'
 import { getProfile } from '@ykzts/supabase/queries'
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import About from './_components/about'
 import Contact from './_components/contact'
 import Hero from './_components/hero'
@@ -62,16 +61,7 @@ export default function HomePage(_props: PageProps<'/'>) {
         <Contact />
       </main>
 
-      <SiteFooter
-        privacyLink={
-          <Link
-            className="transition-colors duration-200 hover:text-primary"
-            href="/privacy"
-          >
-            Privacy Policy
-          </Link>
-        }
-      />
+      <SiteFooter />
     </div>
   )
 }
