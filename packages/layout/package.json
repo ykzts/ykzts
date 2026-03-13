@@ -4,19 +4,14 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./components/footer": "./src/components/footer.tsx",
-    "./components/footer-content": "./src/components/footer-content.tsx",
-    "./components/header": "./src/components/header.tsx",
-    "./components/navigation": "./src/components/navigation.tsx",
-    "./components/navigation-wrapper": "./src/components/navigation-wrapper.tsx",
-    "./components/site-navigation": "./src/components/site-navigation.tsx",
-    "./components/theme-toggle": "./src/components/theme-toggle.tsx",
-    "./styles/styles.css": "./src/styles/styles.css"
+    "./components/*": "./src/components/*.tsx",
+    "./styles/*": "./src/styles/*.css"
   },
   "scripts": {
     "lint": "biome check ."
   },
   "dependencies": {
+    "@ykzts/site-config": "workspace:*",
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
     "lucide-react": "0.577.0",
@@ -34,7 +29,7 @@
     "typescript": "5.9.3"
   },
   "author": "Yamagishi Kazutoshi",
-  "description": "Shared layout components (Header, Navigation, ThemeToggle, Footer, NavigationWrapper) for ykzts applications",
+  "description": "Shared layout components (Header, SiteFooter, SiteNavigation, Navigation, ThemeToggle, Footer, NavigationWrapper) for ykzts applications",
   "license": "MIT",
   "repository": {
     "directory": "packages/layout",

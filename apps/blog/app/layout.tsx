@@ -1,5 +1,7 @@
 import './globals.css'
 import { Analytics } from '@vercel/analytics/next'
+import Header from '@ykzts/layout/components/header'
+import SiteFooter from '@ykzts/layout/components/site-footer'
 import { getSiteName, getSiteOrigin } from '@ykzts/site-config'
 import { getProfile } from '@ykzts/supabase/queries'
 import { cn } from '@ykzts/ui/lib/utils'
@@ -7,7 +9,8 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
 import { Suspense } from 'react'
 import DraftModeBanner from '@/components/draft-mode-banner'
-import Footer from '@/components/footer'
+import Link from '@/components/link'
+import SearchForm from '@/components/search-form'
 import ThemeProvider from '@/components/theme-provider'
 
 const siteName = getSiteName()
@@ -90,8 +93,31 @@ export default function RootLayout({
           <Suspense fallback={null}>
             <DraftModeBanner />
           </Suspense>
+          <Header
+            extra={<SearchForm className="hidden md:block md:w-48 lg:w-64" />}
+          />
           {children}
-          <Footer />
+          <SiteFooter
+            artworkCredit={
+              <span className="text-sm">
+                Artwork by{' '}
+                <Link
+                  className="text-primary transition-colors duration-200 hover:text-primary/80"
+                  href="https://x.com/diru_k1005"
+                >
+                  Kannazuki Diru
+                </Link>
+              </span>
+            }
+            privacyLink={
+              <Link
+                className="transition-colors duration-200 hover:text-primary"
+                href="/privacy"
+              >
+                プライバシーポリシー
+              </Link>
+            }
+          />
           <Analytics />
         </ThemeProvider>
       </body>

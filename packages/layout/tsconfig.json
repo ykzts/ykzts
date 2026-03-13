@@ -3,6 +3,7 @@
     "outDir": "./dist",
     "paths": {
       "@ykzts/layout/*": ["./src/*"],
+      "@ykzts/site-config": ["../site-config/src/index.ts"],
       "@ykzts/supabase/*": ["../supabase/src/*"],
       "@ykzts/ui/*": ["../ui/src/*"]
     }

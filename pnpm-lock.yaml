@@ -493,6 +493,9 @@ importers:
 
   packages/layout:
     dependencies:
+      '@ykzts/site-config':
+        specifier: workspace:*
+        version: link:../site-config
       '@ykzts/supabase':
         specifier: workspace:*
         version: link:../supabase

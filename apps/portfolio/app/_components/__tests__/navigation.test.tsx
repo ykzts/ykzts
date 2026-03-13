@@ -8,7 +8,9 @@ vi.mock('next-themes', () => ({
   })
 }))
 
-const { default: Navigation } = await import('../navigation')
+const { default: Navigation } = await import(
+  '@ykzts/layout/components/site-navigation'
+)
 
 describe('Navigation', () => {
   it('shows Works link when hasWorks is true', () => {

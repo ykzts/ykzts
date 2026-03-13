@@ -3,7 +3,6 @@ import { draftMode } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import ArticleContent from '@/components/article-content'
-import Header from '@/components/header'
 import PostNavigation from '@/components/post-navigation'
 import SimilarPosts from '@/components/similar-posts'
 import SimilarPostsSkeleton from '@/components/similar-posts-skeleton'
@@ -109,30 +108,13 @@ export default async function DraftPostPage({ params }: PageProps) {
   const hasHeadings = headings.length > 0
 
   return (
-    <>
-      <Header />
-      <main className="px-6 py-8 md:px-12 lg:px-24">
-        <div className="mx-auto max-w-4xl">
-          {hasHeadings ? (
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
-              <ArticleContent
-                authorName={post.profile.name}
-                className="min-w-0"
-                content={post.content}
-                headings={headings}
-                publishedAt={post.published_at}
-                tags={post.tags}
-                title={post.title}
-                versionDate={post.version_date}
-              />
-              <div className="hidden lg:block">
-                <TableOfContents headings={headings} variant="desktop" />
-              </div>
-            </div>
-          ) : (
+    <main className="px-6 py-8 md:px-12 lg:px-24">
+      <div className="mx-auto max-w-4xl">
+        {hasHeadings ? (
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
             <ArticleContent
               authorName={post.profile.name}
-              className="mx-auto max-w-3xl"
+              className="min-w-0"
               content={post.content}
               headings={headings}
               publishedAt={post.published_at}
@@ -140,22 +122,36 @@ export default async function DraftPostPage({ params }: PageProps) {
               title={post.title}
               versionDate={post.version_date}
             />
-          )}
-        </div>
-
-        <div className="mx-auto max-w-4xl">
-          <PostNavigation nextPost={nextPost} previousPost={previousPost} />
-        </div>
-
-        <div className="mx-auto max-w-4xl">
-          <div aria-atomic="false" aria-live="polite">
-            <Suspense fallback={<SimilarPostsSkeleton />}>
-              <SimilarPostsSection postId={post.id} />
-            </Suspense>
+            <div className="hidden lg:block">
+              <TableOfContents headings={headings} variant="desktop" />
+            </div>
           </div>
+        ) : (
+          <ArticleContent
+            authorName={post.profile.name}
+            className="mx-auto max-w-3xl"
+            content={post.content}
+            headings={headings}
+            publishedAt={post.published_at}
+            tags={post.tags}
+            title={post.title}
+            versionDate={post.version_date}
+          />
+        )}
+      </div>
+
+      <div className="mx-auto max-w-4xl">
+        <PostNavigation nextPost={nextPost} previousPost={previousPost} />
+      </div>
+
+      <div className="mx-auto max-w-4xl">
+        <div aria-atomic="false" aria-live="polite">
+          <Suspense fallback={<SimilarPostsSkeleton />}>
+            <SimilarPostsSection postId={post.id} />
+          </Suspense>
         </div>
-      </main>
-    </>
+      </div>
+    </main>
   )
 }
 

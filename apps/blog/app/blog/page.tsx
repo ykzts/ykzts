@@ -3,7 +3,6 @@ import { getProfile } from '@ykzts/supabase/queries'
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import BlogPagination from '@/components/blog-pagination'
-import Header from '@/components/header'
 import PostCard from '@/components/post-card'
 import { getPosts, getTotalPages } from '@/lib/supabase/posts'
 
@@ -45,22 +44,19 @@ export default async function HomePage() {
   const totalPages = await getTotalPages(isDraft)
 
   return (
-    <>
-      <Header />
-      <main className="px-6 py-8 md:px-12 lg:px-24">
-        <div className="mx-auto max-w-4xl">
-          <div className="space-y-6">
-            {posts.map((post) => (
-              <PostCard isDraft={isDraft} key={post.id} post={post} />
-            ))}
-          </div>
-          {totalPages > 1 && (
-            <div className="mt-8">
-              <BlogPagination currentPage={1} totalPages={totalPages} />
-            </div>
-          )}
+    <main className="px-6 py-8 md:px-12 lg:px-24">
+      <div className="mx-auto max-w-4xl">
+        <div className="space-y-6">
+          {posts.map((post) => (
+            <PostCard isDraft={isDraft} key={post.id} post={post} />
+          ))}
         </div>
-      </main>
-    </>
+        {totalPages > 1 && (
+          <div className="mt-8">
+            <BlogPagination currentPage={1} totalPages={totalPages} />
+          </div>
+        )}
+      </div>
+    </main>
   )
 }

@@ -1,7 +1,6 @@
 import { getSiteName } from '@ykzts/site-config'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
-import Header from '@/components/header'
 import SearchForm from '@/components/search-form'
 import SearchResults from '@/components/search-results'
 import { searchPosts } from '@/lib/supabase/posts'
@@ -69,20 +68,17 @@ async function SearchContent({ searchParams }: SearchPageProps) {
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   return (
-    <>
-      <Header />
-      <main className="px-6 py-8 md:px-12 lg:px-24">
-        <div className="mx-auto max-w-4xl">
-          <h1 className="mb-6 font-bold text-3xl">ブログ記事検索</h1>
-          <p className="mb-8 text-muted-foreground">
-            キーワードを入力して、関連する記事を検索できます。
-          </p>
+    <main className="px-6 py-8 md:px-12 lg:px-24">
+      <div className="mx-auto max-w-4xl">
+        <h1 className="mb-6 font-bold text-3xl">ブログ記事検索</h1>
+        <p className="mb-8 text-muted-foreground">
+          キーワードを入力して、関連する記事を検索できます。
+        </p>
 
-          <Suspense fallback={<SearchForm className="mb-8" />}>
-            <SearchContent searchParams={searchParams} />
-          </Suspense>
-        </div>
-      </main>
-    </>
+        <Suspense fallback={<SearchForm className="mb-8" />}>
+          <SearchContent searchParams={searchParams} />
+        </Suspense>
+      </div>
+    </main>
   )
 }

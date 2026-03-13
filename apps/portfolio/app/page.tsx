@@ -1,5 +1,4 @@
-import SharedHeader from '@ykzts/layout/components/header'
-import NavigationWrapper from '@ykzts/layout/components/navigation-wrapper'
+import Header from '@ykzts/layout/components/header'
 import { getPortfolioDescription, getSiteName } from '@ykzts/site-config'
 import { getProfile } from '@ykzts/supabase/queries'
 import type { Metadata } from 'next'
@@ -51,9 +50,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function HomePage(_props: PageProps<'/'>) {
   return (
     <div className="min-h-screen">
-      <SharedHeader title={siteName}>
-        <NavigationWrapper />
-      </SharedHeader>
+      <Header />
 
       <Hero />
 
