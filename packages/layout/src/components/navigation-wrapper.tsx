@@ -28,7 +28,12 @@ async function NavigationImpl() {
 }
 
 function NavigationSkeleton() {
-  return <div className="h-9 w-32 animate-pulse rounded-md bg-muted" />
+  return (
+    <div
+      aria-hidden="true"
+      className="h-9 w-32 animate-pulse rounded-md bg-muted"
+    />
+  )
 }
 
 export default function NavigationWrapper() {
