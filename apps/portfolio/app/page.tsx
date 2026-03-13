@@ -1,12 +1,12 @@
+import SharedHeader from '@ykzts/layout/components/header'
+import NavigationWrapper from '@ykzts/layout/components/navigation-wrapper'
 import { getPortfolioDescription, getSiteName } from '@ykzts/site-config'
 import { getProfile } from '@ykzts/supabase/queries'
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import About from './_components/about'
 import Contact from './_components/contact'
 import Footer from './_components/footer'
 import Hero from './_components/hero'
-import NavigationWrapper from './_components/navigation-wrapper'
 import RecentPosts from './_components/recent-posts'
 import Works from './_components/works'
 
@@ -51,14 +51,9 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function HomePage(_props: PageProps<'/'>) {
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-10 border-border border-b bg-background/90 px-6 backdrop-blur-sm md:px-12 lg:px-24">
-        <div className="mx-auto flex h-14 max-w-4xl items-center justify-between">
-          <Link className="font-semibold text-foreground text-lg" href="/">
-            {siteName}
-          </Link>
-          <NavigationWrapper />
-        </div>
-      </header>
+      <SharedHeader title={siteName}>
+        <NavigationWrapper />
+      </SharedHeader>
 
       <Hero />
 

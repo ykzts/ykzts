@@ -5,7 +5,11 @@
   "type": "module",
   "exports": {
     "./components/footer": "./src/components/footer.tsx",
+    "./components/footer-content": "./src/components/footer-content.tsx",
+    "./components/header": "./src/components/header.tsx",
     "./components/navigation": "./src/components/navigation.tsx",
+    "./components/navigation-wrapper": "./src/components/navigation-wrapper.tsx",
+    "./components/site-navigation": "./src/components/site-navigation.tsx",
     "./components/theme-toggle": "./src/components/theme-toggle.tsx",
     "./styles/styles.css": "./src/styles/styles.css"
   },
@@ -13,6 +17,7 @@
     "lint": "biome check ."
   },
   "dependencies": {
+    "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
     "lucide-react": "0.577.0",
     "next-themes": "0.4.6"
@@ -25,10 +30,11 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@ykzts/tsconfig": "workspace:*",
+    "next": "16.1.6",
     "typescript": "5.9.3"
   },
   "author": "Yamagishi Kazutoshi",
-  "description": "Shared layout components (Navigation, ThemeToggle, Footer) for ykzts applications",
+  "description": "Shared layout components (Header, Navigation, ThemeToggle, Footer, NavigationWrapper) for ykzts applications",
   "license": "MIT",
   "repository": {
     "directory": "packages/layout",

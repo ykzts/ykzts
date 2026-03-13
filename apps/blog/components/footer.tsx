@@ -1,4 +1,5 @@
 import Footer from '@ykzts/layout/components/footer'
+import FooterContent from '@ykzts/layout/components/footer-content'
 import { getProfile } from '@ykzts/supabase/queries'
 import { Suspense } from 'react'
 import Link from '@/components/link'
@@ -8,9 +9,8 @@ async function FooterImpl() {
 
   return (
     <Footer>
-      <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-        <div className="flex flex-col items-center gap-1 md:items-start">
-          <span>© {profile.name}</span>
+      <FooterContent
+        artworkCredit={
           <span className="text-sm">
             Artwork by{' '}
             <Link
@@ -20,14 +20,17 @@ async function FooterImpl() {
               Kannazuki Diru
             </Link>
           </span>
-        </div>
-        <Link
-          className="transition-colors duration-200 hover:text-primary"
-          href="/privacy"
-        >
-          プライバシーポリシー
-        </Link>
-      </div>
+        }
+        copyright={<span>© {profile.name}</span>}
+        privacyLink={
+          <Link
+            className="transition-colors duration-200 hover:text-primary"
+            href="/privacy"
+          >
+            プライバシーポリシー
+          </Link>
+        }
+      />
     </Footer>
   )
 }
