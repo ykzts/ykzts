@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import Navigation from '@ykzts/layout/components/site-navigation'
 import { describe, expect, it, vi } from 'vitest'
 
 vi.mock('next-themes', () => ({
@@ -8,10 +9,6 @@ vi.mock('next-themes', () => ({
     setTheme: vi.fn()
   })
 }))
-
-const { default: Navigation } = await import(
-  '@ykzts/layout/components/site-navigation'
-)
 
 describe('Navigation', () => {
   it('should render site-wide navigation links', () => {
@@ -70,6 +67,6 @@ describe('Navigation', () => {
     render(<Navigation />)
 
     const nav = screen.getByLabelText('Main navigation')
-    expect(nav).toBeDefined()
+    expect(nav).toBeInTheDocument()
   })
 })

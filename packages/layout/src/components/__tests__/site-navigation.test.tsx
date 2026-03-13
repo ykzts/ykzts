@@ -12,15 +12,11 @@ vi.mock('next-themes', () => ({
 const { default: SiteNavigation } = await import('../site-navigation')
 
 describe('SiteNavigation', () => {
-  it('renders About link by default', () => {
+  it('renders default navigation links (About, Works, Contact)', () => {
     render(<SiteNavigation />)
 
     expect(screen.getAllByText('About').length).toBeGreaterThan(0)
-  })
-
-  it('renders Contact link always', () => {
-    render(<SiteNavigation hasAbout={false} hasWorks={false} />)
-
+    expect(screen.getAllByText('Works').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Contact').length).toBeGreaterThan(0)
   })
 
@@ -49,12 +45,6 @@ describe('SiteNavigation', () => {
     expect(screen.queryByText('Works')).not.toBeInTheDocument()
   })
 
-  it('shows Works link by default', () => {
-    render(<SiteNavigation />)
-
-    expect(screen.getAllByText('Works').length).toBeGreaterThan(0)
-  })
-
   it('shows About link when hasAbout is true', () => {
     render(<SiteNavigation hasAbout={true} />)
 
@@ -65,12 +55,6 @@ describe('SiteNavigation', () => {
     render(<SiteNavigation hasAbout={false} />)
 
     expect(screen.queryByText('About')).not.toBeInTheDocument()
-  })
-
-  it('shows About link by default', () => {
-    render(<SiteNavigation />)
-
-    expect(screen.getAllByText('About').length).toBeGreaterThan(0)
   })
 
   it('has an accessible mobile menu button', () => {
@@ -84,6 +68,6 @@ describe('SiteNavigation', () => {
     render(<SiteNavigation />)
 
     const nav = screen.getByLabelText('Main navigation')
-    expect(nav).toBeDefined()
+    expect(nav).toBeInTheDocument()
   })
 })

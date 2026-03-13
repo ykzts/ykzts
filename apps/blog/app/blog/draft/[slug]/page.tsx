@@ -114,7 +114,7 @@ export default async function DraftPostPage({ params }: PageProps) {
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
             <ArticleContent
               authorName={post.profile.name}
-              className="min-w-0"
+              className="mx-auto min-w-0 max-w-3xl lg:mx-0 lg:max-w-none"
               content={post.content}
               headings={headings}
               publishedAt={post.published_at}
