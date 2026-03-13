@@ -78,14 +78,16 @@ export default async function PaginationPage({ params }: PageProps) {
   return (
     <>
       <Header />
-      <main className="container mx-auto px-4 py-8">
-        <div className="space-y-6">
-          {posts.map((post) => (
-            <PostCard isDraft={isDraft} key={post.id} post={post} />
-          ))}
-        </div>
-        <div className="mt-8">
-          <BlogPagination currentPage={pageNum} totalPages={totalPages} />
+      <main className="px-6 py-8 md:px-12 lg:px-24">
+        <div className="mx-auto max-w-4xl">
+          <div className="space-y-6">
+            {posts.map((post) => (
+              <PostCard isDraft={isDraft} key={post.id} post={post} />
+            ))}
+          </div>
+          <div className="mt-8">
+            <BlogPagination currentPage={pageNum} totalPages={totalPages} />
+          </div>
         </div>
       </main>
     </>

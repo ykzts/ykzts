@@ -215,15 +215,15 @@ export default async function PostDetailPage({ params }: PageProps) {
         type="application/ld+json"
       />
       <Header />
-      <main className="container mx-auto px-4 py-8">
+      <main className="px-6 py-8 md:px-12 lg:px-24">
         {/* Grid layout: article body + ToC */}
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-4xl">
           {hasHeadings ? (
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
               {/* Main content */}
               <ArticleContent
                 authorName={post.profile.name}
-                className="min-w-0 max-w-3xl"
+                className="min-w-0"
                 content={post.content}
                 headings={headings}
                 historyUrl={historyUrl}
@@ -254,12 +254,12 @@ export default async function PostDetailPage({ params }: PageProps) {
         </div>
 
         {/* Full width: article navigation */}
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-4xl">
           <PostNavigation nextPost={nextPost} previousPost={previousPost} />
         </div>
 
         {/* Full width: related articles */}
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-4xl">
           <div aria-atomic="false" aria-live="polite">
             <Suspense fallback={<SimilarPostsSkeleton />}>
               <SimilarPostsSection postId={post.id} />

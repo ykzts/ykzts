@@ -10,7 +10,7 @@ export default function NotFound() {
   return (
     <>
       <Header />
-      <main className="container mx-auto px-4 py-16">
+      <main className="px-6 py-16 md:px-12 lg:px-24">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="mb-4 font-bold text-4xl">404 Not Found</h1>
           <p className="mb-8 text-lg text-muted-foreground leading-8">

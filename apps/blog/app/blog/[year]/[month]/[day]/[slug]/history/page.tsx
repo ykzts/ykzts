@@ -108,8 +108,8 @@ export default async function PostHistoryPage({ params }: PageProps) {
   return (
     <>
       <Header />
-      <main className="container mx-auto px-4 py-8">
-        <div className="mx-auto max-w-3xl">
+      <main className="px-6 py-8 md:px-12 lg:px-24">
+        <div className="mx-auto max-w-4xl">
           <h1 className="mb-2 font-bold text-3xl">編集履歴</h1>
           <p className="mb-6 text-muted-foreground">
             <Link className="hover:underline" href={postUrl}>
