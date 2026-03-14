@@ -4,8 +4,8 @@ import {
   type PortableTextReactComponents
 } from '@portabletext/react'
 import type { PortableTextBlock } from '@portabletext/types'
-import Link from 'next/link'
 import type { ComponentProps } from 'react'
+import Link from '@/components/link'
 
 const portableTextComponents = {
   marks: {
@@ -19,19 +19,7 @@ const portableTextComponents = {
         return <>{children}</>
       }
 
-      const isExternal =
-        href.startsWith('http://') || href.startsWith('https://')
-
-      return (
-        <Link
-          href={href}
-          {...(isExternal
-            ? { rel: 'noreferrer noopener', target: '_blank' }
-            : {})}
-        >
-          {children}
-        </Link>
-      )
+      return <Link href={href}>{children}</Link>
     }
   }
 } satisfies Partial<PortableTextReactComponents>
