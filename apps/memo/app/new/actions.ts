@@ -10,6 +10,8 @@ export type CreateMemoState = {
   error?: string
 } | null
 
+const RESERVED_ROUTE_SEGMENTS = ['api', 'auth', 'login', 'new']
+
 export async function createMemo(
   _prevState: CreateMemoState,
   formData: FormData
@@ -47,11 +49,10 @@ export async function createMemo(
   }
 
   // Reject paths that collide with static routes
-  const reservedPaths = ['api', 'auth', 'login', 'new']
   const firstSegment = normalizedPath.split('/')[0]
-  if (reservedPaths.includes(firstSegment)) {
+  if (RESERVED_ROUTE_SEGMENTS.includes(firstSegment)) {
     return {
-      error: `"${firstSegment}" はシステムで予約されているため、パスに使用できません`
+      error: 'このパスはシステムで予約されているため使用できません'
     }
   }
 
