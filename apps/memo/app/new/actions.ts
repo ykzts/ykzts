@@ -91,6 +91,7 @@ export async function createMemo(
     .single()
 
   if (versionError || !version) {
+    await supabase.from('memos').delete().eq('id', memo.id)
     return {
       error: `バージョンの作成に失敗しました: ${versionError?.message ?? '不明なエラー'}`
     }
@@ -103,6 +104,7 @@ export async function createMemo(
     .eq('id', memo.id)
 
   if (updateError) {
+    await supabase.from('memos').delete().eq('id', memo.id)
     return {
       error: `メモの更新に失敗しました: ${updateError.message}`
     }
