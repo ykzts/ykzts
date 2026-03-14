@@ -27,6 +27,7 @@ import { generateTagsWithAI } from '@/lib/generate-tags-with-ai'
 import type { PostWithDetails } from '@/lib/posts'
 import { generateSlugSmart, generateUniqueSlugForPost } from '@/lib/slug'
 import { getAllExistingTags } from '@/lib/tags'
+import { uploadImage } from '@/lib/upload-image'
 import { generateSlug } from '@/lib/utils'
 import { PublicUrlField } from './public-url-field'
 
@@ -368,6 +369,7 @@ export function PostForm({
                 key={editorKey}
                 name="content"
                 placeholder="投稿の本文を入力..."
+                uploadImage={uploadImage}
               />
             </Field>
           </div>

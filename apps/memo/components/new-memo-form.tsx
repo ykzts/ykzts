@@ -1,63 +1,31 @@
 'use client'
 
-import type { PortableTextBlock } from '@portabletext/types'
 import { RichTextEditor } from '@ykzts/portable-text-editor'
-import { useActionState, useEffect, useState } from 'react'
-import { updateMemo } from '@/app/[...path]/actions'
-import MemoPortableText from '@/components/portable-text'
+import { useActionState } from 'react'
+import { createMemo } from '@/app/new/actions'
 import { uploadImage } from '@/lib/upload-image'
 
-type Props = {
-  content: PortableTextBlock[] | null
-  memoId: string
-  memoPath: string
-  title: string
-  visibility: string
-}
-
-export function InlineMemoEditor({
-  content,
-  memoId,
-  memoPath,
-  title,
-  visibility
-}: Props) {
-  const [isEditing, setIsEditing] = useState(false)
-  const [state, formAction, isPending] = useActionState(updateMemo, null)
-
-  useEffect(() => {
-    if (state?.success) {
-      setIsEditing(false)
-    }
-  }, [state])
-
-  if (!isEditing) {
-    return (
-      <div>
-        <div className="mb-4 flex justify-end">
-          <button
-            className="rounded bg-primary px-3 py-1.5 text-primary-foreground text-sm hover:bg-primary/90"
-            onClick={() => setIsEditing(true)}
-            type="button"
-          >
-            編集
-          </button>
-        </div>
-        {content ? (
-          <MemoPortableText value={content} />
-        ) : (
-          <p className="text-muted-foreground">コンテンツがありません。</p>
-        )}
-      </div>
-    )
-  }
-
-  const initialContent = content ? JSON.stringify(content) : undefined
+export function NewMemoForm() {
+  const [state, formAction, isPending] = useActionState(createMemo, null)
 
   return (
     <form action={formAction}>
-      <input name="memoId" type="hidden" value={memoId} />
-      <input name="memoPath" type="hidden" value={memoPath} />
+      <div className="mb-4">
+        <label className="mb-1 block font-medium text-sm" htmlFor="memo-path">
+          パス
+        </label>
+        <input
+          className="w-full rounded border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          id="memo-path"
+          name="path"
+          placeholder="my-memo または category/my-memo"
+          required
+          type="text"
+        />
+        <p className="mt-1 text-muted-foreground text-xs">
+          URLのパス部分です。英数字、ハイフン、アンダースコア、スラッシュが使用できます。
+        </p>
+      </div>
 
       <div className="mb-4">
         <label className="mb-1 block font-medium text-sm" htmlFor="memo-title">
@@ -65,7 +33,6 @@ export function InlineMemoEditor({
         </label>
         <input
           className="w-full rounded border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-          defaultValue={title}
           id="memo-title"
           name="title"
           required
@@ -82,7 +49,6 @@ export function InlineMemoEditor({
         </label>
         <RichTextEditor
           id="memo-content"
-          initialValue={initialContent}
           name="content"
           placeholder="メモの内容を入力してください..."
           uploadImage={uploadImage}
@@ -98,7 +64,7 @@ export function InlineMemoEditor({
         </label>
         <select
           className="rounded border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-          defaultValue={visibility}
+          defaultValue="private"
           id="memo-visibility"
           name="visibility"
         >
@@ -114,20 +80,18 @@ export function InlineMemoEditor({
       )}
 
       <div className="flex justify-end gap-2">
-        <button
+        <a
           className="rounded border border-border px-4 py-2 text-sm hover:bg-muted/20"
-          disabled={isPending}
-          onClick={() => setIsEditing(false)}
-          type="button"
+          href="/"
         >
           キャンセル
-        </button>
+        </a>
         <button
           className="rounded bg-primary px-4 py-2 text-primary-foreground text-sm hover:bg-primary/90 disabled:opacity-50"
           disabled={isPending}
           type="submit"
         >
-          {isPending ? '保存中...' : '保存'}
+          {isPending ? '作成中...' : '作成'}
         </button>
       </div>
     </form>

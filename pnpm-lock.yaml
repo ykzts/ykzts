@@ -26,30 +26,6 @@ importers:
       '@dnd-kit/utilities':
         specifier: 3.2.2
         version: 3.2.2(react@19.2.4)
-      '@lexical/code':
-        specifier: 0.41.0
-        version: 0.41.0
-      '@lexical/link':
-        specifier: 0.41.0
-        version: 0.41.0
-      '@lexical/list':
-        specifier: 0.41.0
-        version: 0.41.0
-      '@lexical/react':
-        specifier: 0.41.0
-        version: 0.41.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(yjs@13.6.29)
-      '@lexical/rich-text':
-        specifier: 0.41.0
-        version: 0.41.0
-      '@lexical/selection':
-        specifier: 0.41.0
-        version: 0.41.0
-      '@lexical/table':
-        specifier: 0.41.0
-        version: 0.41.0
-      '@lexical/utils':
-        specifier: 0.41.0
-        version: 0.41.0
       '@supabase/ssr':
         specifier: 0.9.0
         version: 0.9.0(@supabase/supabase-js@2.98.0)
@@ -65,6 +41,9 @@ importers:
       '@ykzts/pagination-utils':
         specifier: workspace:*
         version: link:../../packages/pagination-utils
+      '@ykzts/portable-text-editor':
+        specifier: workspace:*
+        version: link:../../packages/portable-text-editor
       '@ykzts/portable-text-utils':
         specifier: workspace:*
         version: link:../../packages/portable-text-utils
@@ -83,9 +62,6 @@ importers:
       diff:
         specifier: 8.0.3
         version: 8.0.3
-      lexical:
-        specifier: 0.41.0
-        version: 0.41.0
       lucide-react:
         specifier: 0.577.0
         version: 0.577.0(react@19.2.4)
@@ -311,36 +287,15 @@ importers:
 
   apps/memo:
     dependencies:
-      '@lexical/code':
-        specifier: 0.41.0
-        version: 0.41.0
-      '@lexical/link':
-        specifier: 0.41.0
-        version: 0.41.0
-      '@lexical/list':
-        specifier: 0.41.0
-        version: 0.41.0
-      '@lexical/react':
-        specifier: 0.41.0
-        version: 0.41.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(yjs@13.6.29)
-      '@lexical/rich-text':
-        specifier: 0.41.0
-        version: 0.41.0
-      '@lexical/selection':
-        specifier: 0.41.0
-        version: 0.41.0
-      '@lexical/table':
-        specifier: 0.41.0
-        version: 0.41.0
-      '@lexical/utils':
-        specifier: 0.41.0
-        version: 0.41.0
       '@portabletext/react':
         specifier: 6.0.3
         version: 6.0.3(react@19.2.4)
       '@supabase/ssr':
         specifier: 0.9.0
         version: 0.9.0(@supabase/supabase-js@2.98.0)
+      '@ykzts/portable-text-editor':
+        specifier: workspace:*
+        version: link:../../packages/portable-text-editor
       '@ykzts/portable-text-utils':
         specifier: workspace:*
         version: link:../../packages/portable-text-utils
@@ -353,9 +308,6 @@ importers:
       '@ykzts/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      lexical:
-        specifier: 0.41.0
-        version: 0.41.0
       lucide-react:
         specifier: 0.577.0
         version: 0.577.0(react@19.2.4)
@@ -660,6 +612,70 @@ importers:
       typescript:
         specifier: 5.9.3
         version: 5.9.3
+
+  packages/portable-text-editor:
+    dependencies:
+      '@lexical/code':
+        specifier: 0.41.0
+        version: 0.41.0
+      '@lexical/link':
+        specifier: 0.41.0
+        version: 0.41.0
+      '@lexical/list':
+        specifier: 0.41.0
+        version: 0.41.0
+      '@lexical/react':
+        specifier: 0.41.0
+        version: 0.41.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(yjs@13.6.29)
+      '@lexical/rich-text':
+        specifier: 0.41.0
+        version: 0.41.0
+      '@lexical/selection':
+        specifier: 0.41.0
+        version: 0.41.0
+      '@lexical/table':
+        specifier: 0.41.0
+        version: 0.41.0
+      '@lexical/utils':
+        specifier: 0.41.0
+        version: 0.41.0
+      '@ykzts/ui':
+        specifier: workspace:*
+        version: link:../ui
+      lexical:
+        specifier: 0.41.0
+        version: 0.41.0
+      lucide-react:
+        specifier: 0.577.0
+        version: 0.577.0(react@19.2.4)
+      react:
+        specifier: ^19.0.0
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.4(react@19.2.4)
+      sonner:
+        specifier: 2.0.7
+        version: 2.0.7(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+    devDependencies:
+      '@types/react':
+        specifier: 19.2.14
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.14)
+      '@vitejs/plugin-react':
+        specifier: 5.1.4
+        version: 5.1.4(vite@7.3.1(@types/node@24.11.1)(jiti@2.6.1)(lightningcss@1.31.1)(yaml@2.8.2))
+      '@ykzts/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: 4.0.18
+        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.11.1)(jiti@2.6.1)(jsdom@28.1.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.11.1)(typescript@5.9.3))(yaml@2.8.2)
 
   packages/portable-text-utils:
     dependencies:

@@ -21,7 +21,7 @@ import { EditorStatePlugin } from './plugins/editor-state-plugin'
 import { ImagePlugin } from './plugins/image-plugin'
 import { LinkPlugin } from './plugins/link-plugin'
 import { TablePlugin } from './plugins/table-plugin'
-import { ToolbarPlugin } from './plugins/toolbar-plugin'
+import { ToolbarPlugin, type UploadImageFn } from './plugins/toolbar-plugin'
 import {
   initializeEditorWithPortableText,
   lexicalToPortableText
@@ -71,6 +71,7 @@ type RichTextEditorProps = {
   name: string
   onChange?: (value: string) => void
   placeholder?: string
+  uploadImage?: UploadImageFn
 }
 
 export function RichTextEditor({
@@ -79,7 +80,8 @@ export function RichTextEditor({
   initialValue,
   name,
   onChange,
-  placeholder
+  placeholder,
+  uploadImage
 }: RichTextEditorProps) {
   const [isClient, setIsClient] = useState(false)
   const hiddenInputRef = useRef<HTMLInputElement>(null)
@@ -142,7 +144,7 @@ export function RichTextEditor({
     <div>
       <LexicalComposer initialConfig={initialConfig}>
         <div className="relative rounded border border-border bg-card">
-          <ToolbarPlugin />
+          <ToolbarPlugin uploadImage={uploadImage} />
           <div className="relative">
             <RichTextPlugin
               contentEditable={

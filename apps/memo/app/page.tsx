@@ -62,6 +62,24 @@ async function MemoList() {
   )
 }
 
+async function MemoListHeader() {
+  const ownerProfile = await getOwnerProfile()
+
+  return (
+    <div className="mb-6 flex items-center justify-between">
+      <h1 className="font-bold text-2xl">メモ一覧</h1>
+      {ownerProfile && (
+        <Link
+          className="rounded bg-primary px-3 py-1.5 text-primary-foreground text-sm hover:bg-primary/90"
+          href="/new"
+        >
+          新規作成
+        </Link>
+      )}
+    </div>
+  )
+}
+
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
@@ -69,7 +87,13 @@ export default function HomePage() {
         <Header />
       </Suspense>
       <main className="mx-auto max-w-3xl px-4 py-8">
-        <h1 className="mb-6 font-bold text-2xl">メモ一覧</h1>
+        <Suspense
+          fallback={
+            <div className="mb-6 h-8 w-32 animate-pulse rounded bg-muted" />
+          }
+        >
+          <MemoListHeader />
+        </Suspense>
         <Suspense
           fallback={
             <div className="space-y-2">

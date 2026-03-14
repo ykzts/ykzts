@@ -1,0 +1,46 @@
+{
+  "author": "Yamagishi Kazutoshi",
+  "dependencies": {
+    "@lexical/code": "0.41.0",
+    "@lexical/link": "0.41.0",
+    "@lexical/list": "0.41.0",
+    "@lexical/react": "0.41.0",
+    "@lexical/rich-text": "0.41.0",
+    "@lexical/selection": "0.41.0",
+    "@lexical/table": "0.41.0",
+    "@lexical/utils": "0.41.0",
+    "@ykzts/ui": "workspace:*",
+    "lexical": "0.41.0",
+    "lucide-react": "0.577.0",
+    "sonner": "2.0.7"
+  },
+  "description": "Shared Lexical-based rich text editor with Portable Text serialization",
+  "devDependencies": {
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.1.4",
+    "@ykzts/tsconfig": "workspace:*",
+    "typescript": "5.9.3",
+    "vitest": "4.0.18"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "license": "MIT",
+  "name": "@ykzts/portable-text-editor",
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "private": true,
+  "repository": {
+    "directory": "packages/portable-text-editor",
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.git"
+  },
+  "scripts": {
+    "test": "vitest --run"
+  },
+  "type": "module",
+  "version": "1.0.0"
+}
