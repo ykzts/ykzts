@@ -2,4 +2,5 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 @import '@ykzts/ui/styles/theme.css';
+@import '@ykzts/portable-text-editor/styles/styles.css';
 @plugin '@tailwindcss/typography';

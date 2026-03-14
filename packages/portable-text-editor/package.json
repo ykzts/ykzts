@@ -24,7 +24,8 @@
     "vitest": "4.0.18"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./styles/styles.css": "./src/styles/styles.css"
   },
   "license": "MIT",
   "name": "@ykzts/portable-text-editor",
