@@ -46,6 +46,15 @@ export async function createMemo(
     }
   }
 
+  // Reject paths that collide with static routes
+  const reservedPaths = ['api', 'auth', 'login', 'new']
+  const firstSegment = normalizedPath.split('/')[0]
+  if (reservedPaths.includes(firstSegment)) {
+    return {
+      error: `"${firstSegment}" はシステムで予約されているため、パスに使用できません`
+    }
+  }
+
   let contentJson: Json
   try {
     contentJson = JSON.parse(content) as Json
@@ -56,11 +65,16 @@ export async function createMemo(
   const supabase = await createServerClient()
 
   // Check path uniqueness
-  const { data: existing } = await supabase
+  const { data: existing, error: existingError } = await supabase
     .from('memos')
     .select('id')
     .eq('path', normalizedPath)
     .maybeSingle()
+
+  if (existingError) {
+    console.error('Failed to check memo path uniqueness:', existingError)
+    return { error: 'パスの確認に失敗しました' }
+  }
 
   if (existing) {
     return { error: 'そのパスは既に使用されています' }
@@ -78,8 +92,9 @@ export async function createMemo(
     .single()
 
   if (memoError || !memo) {
+    console.error('Failed to create memo:', memoError)
     return {
-      error: `メモの作成に失敗しました: ${memoError?.message ?? '不明なエラー'}`
+      error: 'メモの作成に失敗しました'
     }
   }
 
@@ -101,8 +116,9 @@ export async function createMemo(
         cleanupError
       )
     }
+    console.error('Failed to create memo version:', versionError)
     return {
-      error: `バージョンの作成に失敗しました: ${versionError?.message ?? '不明なエラー'}`
+      error: 'バージョンの作成に失敗しました'
     }
   }
 
@@ -123,8 +139,9 @@ export async function createMemo(
         cleanupError
       )
     }
+    console.error('Failed to update memo current version:', updateError)
     return {
-      error: `メモの更新に失敗しました: ${updateError.message}`
+      error: 'メモの更新に失敗しました'
     }
   }
 

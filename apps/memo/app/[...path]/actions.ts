@@ -58,7 +58,8 @@ export async function updateMemo(
     .maybeSingle()
 
   if (memoError) {
-    return { error: `メモの取得に失敗しました: ${memoError.message}` }
+    console.error('Failed to fetch memo for update:', memoError)
+    return { error: 'メモの取得に失敗しました' }
   }
 
   if (!memo) {
@@ -73,8 +74,9 @@ export async function updateMemo(
     .single()
 
   if (versionError || !version) {
+    console.error('Failed to create memo version:', versionError)
     return {
-      error: `バージョンの作成に失敗しました: ${versionError?.message ?? '不明なエラー'}`
+      error: 'バージョンの作成に失敗しました'
     }
   }
 
@@ -89,7 +91,8 @@ export async function updateMemo(
     .eq('id', memoId)
 
   if (updateError) {
-    return { error: `メモの更新に失敗しました: ${updateError.message}` }
+    console.error('Failed to update memo:', updateError)
+    return { error: 'メモの更新に失敗しました' }
   }
 
   revalidatePath(`/${memoPath}`)
