@@ -39,7 +39,12 @@ export async function signInWithGitHub() {
 
 export async function logout() {
   const supabase = await createServerClient()
-  await supabase.auth.signOut()
+  const { error } = await supabase.auth.signOut()
+
+  if (error) {
+    throw new Error(`ログアウトに失敗しました: ${error.message}`)
+  }
+
   revalidateTag('auth-user', 'max')
   redirect('/login')
 }

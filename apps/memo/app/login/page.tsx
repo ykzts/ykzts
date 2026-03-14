@@ -18,7 +18,10 @@ async function LoginContent() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
+    <main
+      aria-label="ログイン"
+      className="flex min-h-screen items-center justify-center bg-background"
+    >
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">ログイン</CardTitle>
@@ -27,7 +30,7 @@ async function LoginContent() {
           <LoginForm />
         </CardContent>
       </Card>
-    </div>
+    </main>
   )
 }
 

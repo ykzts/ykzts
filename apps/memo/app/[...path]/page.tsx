@@ -1,10 +1,9 @@
 import { createServerClient } from '@ykzts/supabase/server'
 import { draftMode } from 'next/headers'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
-import { logout } from '@/app/login/actions'
-import { getCurrentUser, getOwnerProfile } from '@/lib/auth'
+import Header from '@/components/header'
+import { getOwnerProfile } from '@/lib/auth'
 
 type Props = {
   params: Promise<{ path: string[] }>
@@ -27,55 +26,30 @@ async function getMemo(memoPath: string, isDraftMode: boolean) {
   const { data, error } = await query.maybeSingle()
 
   if (error) {
-    throw new Error(`メモの取得に失敗しました: ${error.message}`)
+    return { data: null, error }
   }
 
-  return data
-}
-
-async function Header({ canEdit }: { canEdit: boolean }) {
-  const user = await getCurrentUser()
-
-  return (
-    <header className="border-border border-b bg-background">
-      <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-        <Link className="font-bold text-xl" href="/">
-          Memo
-        </Link>
-        <nav className="flex items-center gap-4">
-          {canEdit && (
-            <span className="rounded bg-yellow-100 px-2 py-1 text-xs text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-              編集モード
-            </span>
-          )}
-          {user ? (
-            <form action={logout}>
-              <button
-                className="text-muted-foreground text-sm hover:text-foreground"
-                type="submit"
-              >
-                ログアウト
-              </button>
-            </form>
-          ) : (
-            <Link
-              className="text-muted-foreground text-sm hover:text-foreground"
-              href="/login"
-            >
-              ログイン
-            </Link>
-          )}
-        </nav>
-      </div>
-    </header>
-  )
+  return { data, error: null }
 }
 
 async function MemoContent({ path: memoPath }: { path: string }) {
   const { isEnabled: isDraftMode } = await draftMode()
   const ownerProfile = await getOwnerProfile()
 
-  const memo = await getMemo(memoPath, isDraftMode)
+  const { data: memo, error } = await getMemo(memoPath, isDraftMode)
+
+  if (error) {
+    return (
+      <>
+        <Header />
+        <main className="mx-auto max-w-3xl px-4 py-8">
+          <p className="text-muted-foreground">
+            メモの読み込みに失敗しました。
+          </p>
+        </main>
+      </>
+    )
+  }
 
   if (!memo) {
     notFound()
@@ -91,6 +65,8 @@ async function MemoContent({ path: memoPath }: { path: string }) {
     : versions[0]
 
   const title = currentVersion?.title ?? memo.path
+
+  const dateOptions: Intl.DateTimeFormatOptions = { timeZone: 'Asia/Tokyo' }
 
   return (
     <>
@@ -125,10 +101,14 @@ async function MemoContent({ path: memoPath }: { path: string }) {
         )}
 
         <div className="mt-8 border-border border-t pt-4 text-muted-foreground text-sm">
-          <p>更新日時: {new Date(memo.updated_at).toLocaleString('ja-JP')}</p>
+          <p>
+            更新日時:{' '}
+            {new Date(memo.updated_at).toLocaleString('ja-JP', dateOptions)}
+          </p>
           {memo.published_at && (
             <p>
-              公開日時: {new Date(memo.published_at).toLocaleString('ja-JP')}
+              公開日時:{' '}
+              {new Date(memo.published_at).toLocaleString('ja-JP', dateOptions)}
             </p>
           )}
         </div>

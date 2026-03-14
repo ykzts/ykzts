@@ -23,6 +23,9 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Return the user to an error page with some instructions
-  return NextResponse.redirect(new URL('/login?error=oauth', request.url))
+  // Return the user to an error page with some instructions, preserving next
+  const loginErrorUrl = new URL('/login', request.url)
+  loginErrorUrl.searchParams.set('error', 'oauth')
+  loginErrorUrl.searchParams.set('next', safeNext)
+  return NextResponse.redirect(loginErrorUrl)
 }

@@ -30,11 +30,15 @@ export async function getOwnerProfile() {
   }
 
   const supabase = await createServerClient()
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('profiles')
     .select('id')
     .eq('user_id', user.id)
     .maybeSingle()
+
+  if (error) {
+    throw new Error(`プロフィールの取得に失敗しました: ${error.message}`)
+  }
 
   return data
 }

@@ -2,8 +2,8 @@ import { createServerClient } from '@ykzts/supabase/server'
 import { draftMode } from 'next/headers'
 import Link from 'next/link'
 import { Suspense } from 'react'
-import { getCurrentUser, getOwnerProfile } from '@/lib/auth'
-import { logout } from './login/actions'
+import Header from '@/components/header'
+import { getOwnerProfile } from '@/lib/auth'
 
 async function MemoList() {
   const { isEnabled: isDraftMode } = await draftMode()
@@ -59,39 +59,6 @@ async function MemoList() {
         )
       })}
     </ul>
-  )
-}
-
-async function Header() {
-  const user = await getCurrentUser()
-
-  return (
-    <header className="border-border border-b bg-background">
-      <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-        <Link className="font-bold text-xl" href="/">
-          Memo
-        </Link>
-        <nav>
-          {user ? (
-            <form action={logout}>
-              <button
-                className="text-muted-foreground text-sm hover:text-foreground"
-                type="submit"
-              >
-                ログアウト
-              </button>
-            </form>
-          ) : (
-            <Link
-              className="text-muted-foreground text-sm hover:text-foreground"
-              href="/login"
-            >
-              ログイン
-            </Link>
-          )}
-        </nav>
-      </div>
-    </header>
   )
 }
 

@@ -13,11 +13,19 @@ export async function GET(request: NextRequest) {
   // Only enable draft mode for authenticated users
   const supabase = await createServerClient()
   const {
-    data: { user }
+    data: { user },
+    error
   } = await supabase.auth.getUser()
 
+  // Treat only "session missing" as unauthenticated; other errors are unexpected
+  if (error && error.message !== 'Auth session missing!') {
+    throw new Error(`認証情報の取得に失敗しました: ${error.message}`)
+  }
+
   if (!user) {
-    return NextResponse.redirect(new URL('/login', request.url))
+    const loginUrl = new URL('/login', request.url)
+    loginUrl.searchParams.set('next', safeNext)
+    return NextResponse.redirect(loginUrl)
   }
 
   const draft = await draftMode()
