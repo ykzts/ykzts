@@ -44,11 +44,14 @@ function extractCurrentVersion<T>(
   return currentVersion ?? null
 }
 
+// Cache Components requires at least one result from generateStaticParams.
+// This placeholder is used when no memos exist or Supabase is not configured.
+const PLACEHOLDER_PARAMS = [{ path: ['_placeholder'] }]
+
 export async function generateStaticParams() {
   if (!supabase) {
     // Return placeholder when Supabase is not configured (e.g., during build without env vars)
-    // Cache Components requires at least one result from generateStaticParams
-    return [{ path: ['_placeholder'] }]
+    return PLACEHOLDER_PARAMS
   }
 
   const { data: memos, error } = await supabase
@@ -63,8 +66,7 @@ export async function generateStaticParams() {
   }
 
   if (memos.length === 0) {
-    // Cache Components requires at least one result from generateStaticParams
-    return [{ path: ['_placeholder'] }]
+    return PLACEHOLDER_PARAMS
   }
 
   // Include memo paths and all prefix paths (for index pages)
