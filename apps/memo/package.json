@@ -1,17 +1,23 @@
 {
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
+    "@portabletext/react": "6.0.3",
     "@supabase/ssr": "0.9.0",
+    "@ykzts/portable-text-utils": "workspace:*",
+    "@ykzts/site-config": "workspace:*",
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
     "lucide-react": "0.577.0",
     "next": "16.1.6",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "server-only": "0.0.1"
   },
   "description": "Memo application for ykzts",
   "devDependencies": {
+    "@portabletext/types": "4.0.2",
     "@tailwindcss/postcss": "4.2.1",
+    "@tailwindcss/typography": "0.5.19",
     "@types/node": "24.11.1",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",

@@ -1,9 +1,14 @@
 import './globals.css'
+import { getSiteOrigin } from '@ykzts/site-config'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   description: 'メモアプリケーション',
-  title: 'Memo'
+  metadataBase: getSiteOrigin(),
+  title: {
+    default: 'Memo',
+    template: '%s | Memo'
+  }
 }
 
 export default function RootLayout({
