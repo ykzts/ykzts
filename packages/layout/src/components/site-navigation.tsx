@@ -1,4 +1,4 @@
-import Navigation from '@ykzts/layout/components/navigation'
+import Navigation from './navigation'
 import ThemeToggle from './theme-toggle'
 
 const allNavItems = [
@@ -21,7 +21,7 @@ type Props = {
   hasWorks?: boolean
 }
 
-export default function BlogNavigation({
+export default function SiteNavigation({
   hasAbout = true,
   hasWorks = true
 }: Props) {

@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
 import BlogPagination from '@/components/blog-pagination'
-import Header from '@/components/header'
 import PostCard from '@/components/post-card'
 import { getPosts, getTotalPages } from '@/lib/supabase/posts'
 
@@ -76,20 +75,17 @@ export default async function PaginationPage({ params }: PageProps) {
   }
 
   return (
-    <>
-      <Header />
-      <main className="px-6 py-8 md:px-12 lg:px-24">
-        <div className="mx-auto max-w-4xl">
-          <div className="space-y-6">
-            {posts.map((post) => (
-              <PostCard isDraft={isDraft} key={post.id} post={post} />
-            ))}
-          </div>
-          <div className="mt-8">
-            <BlogPagination currentPage={pageNum} totalPages={totalPages} />
-          </div>
+    <main className="px-6 py-8 md:px-12 lg:px-24">
+      <div className="mx-auto max-w-4xl">
+        <div className="space-y-6">
+          {posts.map((post) => (
+            <PostCard isDraft={isDraft} key={post.id} post={post} />
+          ))}
         </div>
-      </main>
-    </>
+        <div className="mt-8">
+          <BlogPagination currentPage={pageNum} totalPages={totalPages} />
+        </div>
+      </div>
+    </main>
   )
 }

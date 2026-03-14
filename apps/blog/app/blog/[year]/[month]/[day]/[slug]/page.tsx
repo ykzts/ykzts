@@ -5,7 +5,6 @@ import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import ArticleContent from '@/components/article-content'
-import Header from '@/components/header'
 import PostNavigation from '@/components/post-navigation'
 import SimilarPosts from '@/components/similar-posts'
 import SimilarPostsSkeleton from '@/components/similar-posts-skeleton'
@@ -214,7 +213,6 @@ export default async function PostDetailPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         type="application/ld+json"
       />
-      <Header />
       <main className="px-6 py-8 md:px-12 lg:px-24">
         {/* Grid layout: article body + ToC */}
         <div className="mx-auto max-w-4xl">

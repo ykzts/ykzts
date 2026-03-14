@@ -3,10 +3,12 @@
     "outDir": "./dist",
     "paths": {
       "@ykzts/layout/*": ["./src/*"],
+      "@ykzts/site-config": ["../site-config/src/index.ts"],
+      "@ykzts/supabase/*": ["../supabase/src/*"],
       "@ykzts/ui/*": ["../ui/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"],
-  "extends": "@ykzts/tsconfig/react-library.json",
+  "extends": "@ykzts/tsconfig/next.json",
   "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

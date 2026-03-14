@@ -5,14 +5,22 @@
   "type": "module",
   "exports": {
     "./components/footer": "./src/components/footer.tsx",
+    "./components/footer-content": "./src/components/footer-content.tsx",
+    "./components/header": "./src/components/header.tsx",
     "./components/navigation": "./src/components/navigation.tsx",
+    "./components/navigation-wrapper": "./src/components/navigation-wrapper.tsx",
+    "./components/site-footer": "./src/components/site-footer.tsx",
+    "./components/site-navigation": "./src/components/site-navigation.tsx",
     "./components/theme-toggle": "./src/components/theme-toggle.tsx",
     "./styles/styles.css": "./src/styles/styles.css"
   },
   "scripts": {
-    "lint": "biome check ."
+    "lint": "biome check .",
+    "test": "vitest --run"
   },
   "dependencies": {
+    "@ykzts/site-config": "workspace:*",
+    "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
     "lucide-react": "0.577.0",
     "next-themes": "0.4.6"
@@ -22,13 +30,21 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.2",
+    "@testing-library/user-event": "14.6.1",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.1.4",
     "@ykzts/tsconfig": "workspace:*",
-    "typescript": "5.9.3"
+    "jsdom": "28.1.0",
+    "next": "16.1.6",
+    "typescript": "5.9.3",
+    "vite-tsconfig-paths": "6.1.1",
+    "vitest": "4.0.18"
   },
   "author": "Yamagishi Kazutoshi",
-  "description": "Shared layout components (Navigation, ThemeToggle, Footer) for ykzts applications",
+  "description": "Shared layout components for ykzts applications",
   "license": "MIT",
   "repository": {
     "directory": "packages/layout",

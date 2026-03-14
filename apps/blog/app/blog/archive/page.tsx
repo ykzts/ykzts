@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
-import Header from '@/components/header'
 import {
   getLatestPostDate,
   getPostCountByYear,
@@ -23,15 +22,12 @@ export default async function ArchivePage() {
   if (!latestPostDate) {
     // No posts exist
     return (
-      <>
-        <Header />
-        <main className="px-6 py-8 md:px-12 lg:px-24">
-          <div className="mx-auto max-w-4xl">
-            <h1 className="mb-8 font-bold text-3xl">アーカイブ</h1>
-            <p className="text-muted-foreground">記事がありません</p>
-          </div>
-        </main>
-      </>
+      <main className="px-6 py-8 md:px-12 lg:px-24">
+        <div className="mx-auto max-w-4xl">
+          <h1 className="mb-8 font-bold text-3xl">アーカイブ</h1>
+          <p className="text-muted-foreground">記事がありません</p>
+        </div>
+      </main>
     )
   }
 
@@ -43,17 +39,14 @@ export default async function ArchivePage() {
   const count = await getPostCountByYear(latestYear, isDraft)
 
   return (
-    <>
-      <Header />
-      <main className="px-6 py-8 md:px-12 lg:px-24">
-        <div className="mx-auto max-w-4xl">
-          <h1 className="mb-8 font-bold text-3xl">アーカイブ</h1>
-          <ArchiveList
-            initialYearData={{ count, posts, year: latestYear }}
-            isDraft={isDraft}
-          />
-        </div>
-      </main>
-    </>
+    <main className="px-6 py-8 md:px-12 lg:px-24">
+      <div className="mx-auto max-w-4xl">
+        <h1 className="mb-8 font-bold text-3xl">アーカイブ</h1>
+        <ArchiveList
+          initialYearData={{ count, posts, year: latestYear }}
+          isDraft={isDraft}
+        />
+      </div>
+    </main>
   )
 }

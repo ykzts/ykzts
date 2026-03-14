@@ -1,5 +1,6 @@
 import { getProfile, getWorks } from '@ykzts/supabase/queries'
-import Navigation from './navigation'
+import { Suspense } from 'react'
+import SiteNavigation from './site-navigation'
 
 async function NavigationImpl() {
   const [profileResult, worksResult] = await Promise.allSettled([
@@ -23,7 +24,22 @@ async function NavigationImpl() {
   const hasWorks =
     worksResult.status === 'fulfilled' && worksResult.value.length > 0
 
-  return <Navigation hasAbout={hasAbout} hasWorks={hasWorks} />
+  return <SiteNavigation hasAbout={hasAbout} hasWorks={hasWorks} />
 }
 
-export default NavigationImpl
+function NavigationSkeleton() {
+  return (
+    <div
+      aria-hidden="true"
+      className="h-9 w-32 animate-pulse rounded-md bg-muted"
+    />
+  )
+}
+
+export default function NavigationWrapper() {
+  return (
+    <Suspense fallback={<NavigationSkeleton />}>
+      <NavigationImpl />
+    </Suspense>
+  )
+}
