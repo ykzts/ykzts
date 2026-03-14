@@ -36,20 +36,31 @@ function isPortableTextValue(value: unknown): value is PortableTextContent {
   })
 }
 
-export async function generateStaticParams() {
-  let supabase: ReturnType<typeof createBrowserClient>
-  try {
-    supabase = createBrowserClient()
-  } catch {
-    return [{ path: [PLACEHOLDER_PATH] }]
+function extractCurrentVersion<T>(
+  currentVersion: T | T[] | null | undefined
+): T | null {
+  if (Array.isArray(currentVersion)) {
+    return currentVersion[0] ?? null
   }
+  return currentVersion ?? null
+}
 
-  const { data: memos } = await supabase
+export async function generateStaticParams() {
+  // Let createBrowserClient throw on env/config failures so they surface at build time
+  const supabase = createBrowserClient()
+
+  const { data: memos, error } = await supabase
     .from('memos')
     .select('path')
     .eq('visibility', 'public')
 
-  if (!memos || memos.length === 0) {
+  if (error) {
+    throw new Error(
+      `Failed to fetch memos for static generation: ${error.message}`
+    )
+  }
+
+  if (memos.length === 0) {
     return [{ path: [PLACEHOLDER_PATH] }]
   }
 
@@ -77,23 +88,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const siteOrigin = getSiteOrigin()
   const supabase = await createServerClient()
 
-  const { data: memo } = await supabase
+  const { data: memo, error: memoError } = await supabase
     .from('memos')
     .select(
-      'path, visibility, published_at, updated_at, current_version_id, memo_versions(id, title, content)'
+      'path, visibility, published_at, updated_at, current_version:memo_versions!memos_current_version_id_fkey(id, title, content)'
     )
     .eq('path', memoPath)
     .eq('visibility', 'public')
     .maybeSingle()
 
+  if (memoError) {
+    throw new Error(`Failed to fetch memo metadata: ${memoError.message}`)
+  }
+
   if (!memo) {
     // Check if there are child memos (index page)
-    const { data: children } = await supabase
+    const { data: children, error: childError } = await supabase
       .from('memos')
       .select('id')
       .eq('visibility', 'public')
       .like('path', `${memoPath}/%`)
       .limit(1)
+
+    if (childError) {
+      throw new Error(`Failed to fetch child memos: ${childError.message}`)
+    }
 
     if (!children || children.length === 0) {
       return { title: 'Not Found' }
@@ -105,11 +124,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
-  const versions = Array.isArray(memo.memo_versions) ? memo.memo_versions : []
-  const currentVersion = memo.current_version_id
-    ? (versions.find((v) => v.id === memo.current_version_id) ?? versions[0])
-    : versions[0]
-
+  const currentVersion = extractCurrentVersion(memo.current_version)
   const title = currentVersion?.title ?? memo.path
   const content = isPortableTextValue(currentVersion?.content)
     ? currentVersion.content
@@ -138,7 +153,7 @@ async function getMemo(memoPath: string, isDraftMode: boolean) {
   let query = supabase
     .from('memos')
     .select(
-      'id, path, visibility, profile_id, published_at, updated_at, current_version_id, memo_versions(id, title, content, created_at)'
+      'id, path, visibility, profile_id, published_at, updated_at, current_version:memo_versions!memos_current_version_id_fkey(id, title, content)'
     )
     .eq('path', memoPath)
 
@@ -161,7 +176,7 @@ async function getChildMemos(pathPrefix: string, isDraftMode: boolean) {
   let query = supabase
     .from('memos')
     .select(
-      'id, path, visibility, current_version_id, memo_versions(id, title)'
+      'id, path, visibility, current_version:memo_versions!memos_current_version_id_fkey(id, title)'
     )
     .like('path', `${pathPrefix}/%`)
     .order('path', { ascending: true })
@@ -209,7 +224,20 @@ async function MemoContent({ path: memoPath }: { path: string }) {
       isDraftMode
     )
 
-    if (childError || !children || children.length === 0) {
+    if (childError) {
+      return (
+        <>
+          <Header />
+          <main className="mx-auto max-w-3xl px-4 py-8">
+            <p className="text-muted-foreground">
+              メモの読み込みに失敗しました。
+            </p>
+          </main>
+        </>
+      )
+    }
+
+    if (!children || children.length === 0) {
       notFound()
     }
 
@@ -225,12 +253,7 @@ async function MemoContent({ path: memoPath }: { path: string }) {
           <p className="mb-6 text-muted-foreground text-sm">/{memoPath}</p>
           <ul className="space-y-2">
             {children.map((child) => {
-              const versions = Array.isArray(child.memo_versions)
-                ? child.memo_versions
-                : []
-              const version =
-                versions.find((v) => v.id === child.current_version_id) ??
-                versions[0]
+              const version = extractCurrentVersion(child.current_version)
               const title = version?.title ?? child.path
               return (
                 <li key={child.id}>
@@ -260,12 +283,7 @@ async function MemoContent({ path: memoPath }: { path: string }) {
   // Edit permission: user must be authenticated and own the memo
   const canEdit = Boolean(ownerProfile && memo.profile_id === ownerProfile.id)
 
-  // Get the current version
-  const versions = Array.isArray(memo.memo_versions) ? memo.memo_versions : []
-  const currentVersion = memo.current_version_id
-    ? (versions.find((v) => v.id === memo.current_version_id) ?? versions[0])
-    : versions[0]
-
+  const currentVersion = extractCurrentVersion(memo.current_version)
   const title = currentVersion?.title ?? memo.path
   const content = isPortableTextValue(currentVersion?.content)
     ? currentVersion.content
