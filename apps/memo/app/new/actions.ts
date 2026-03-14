@@ -91,7 +91,16 @@ export async function createMemo(
     .single()
 
   if (versionError || !version) {
-    await supabase.from('memos').delete().eq('id', memo.id)
+    const { error: cleanupError } = await supabase
+      .from('memos')
+      .delete()
+      .eq('id', memo.id)
+    if (cleanupError) {
+      console.error(
+        'Failed to clean up memo after version creation failure:',
+        cleanupError
+      )
+    }
     return {
       error: `バージョンの作成に失敗しました: ${versionError?.message ?? '不明なエラー'}`
     }
@@ -104,7 +113,16 @@ export async function createMemo(
     .eq('id', memo.id)
 
   if (updateError) {
-    await supabase.from('memos').delete().eq('id', memo.id)
+    const { error: cleanupError } = await supabase
+      .from('memos')
+      .delete()
+      .eq('id', memo.id)
+    if (cleanupError) {
+      console.error(
+        'Failed to clean up memo after update failure:',
+        cleanupError
+      )
+    }
     return {
       error: `メモの更新に失敗しました: ${updateError.message}`
     }
