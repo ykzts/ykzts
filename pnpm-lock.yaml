@@ -311,6 +311,30 @@ importers:
 
   apps/memo:
     dependencies:
+      '@lexical/code':
+        specifier: 0.41.0
+        version: 0.41.0
+      '@lexical/link':
+        specifier: 0.41.0
+        version: 0.41.0
+      '@lexical/list':
+        specifier: 0.41.0
+        version: 0.41.0
+      '@lexical/react':
+        specifier: 0.41.0
+        version: 0.41.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(yjs@13.6.29)
+      '@lexical/rich-text':
+        specifier: 0.41.0
+        version: 0.41.0
+      '@lexical/selection':
+        specifier: 0.41.0
+        version: 0.41.0
+      '@lexical/table':
+        specifier: 0.41.0
+        version: 0.41.0
+      '@lexical/utils':
+        specifier: 0.41.0
+        version: 0.41.0
       '@portabletext/react':
         specifier: 6.0.3
         version: 6.0.3(react@19.2.4)
@@ -329,6 +353,9 @@ importers:
       '@ykzts/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      lexical:
+        specifier: 0.41.0
+        version: 0.41.0
       lucide-react:
         specifier: 0.577.0
         version: 0.577.0(react@19.2.4)
@@ -344,6 +371,9 @@ importers:
       server-only:
         specifier: 0.0.1
         version: 0.0.1
+      sonner:
+        specifier: 2.0.7
+        version: 2.0.7(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
     devDependencies:
       '@portabletext/types':
         specifier: 4.0.2

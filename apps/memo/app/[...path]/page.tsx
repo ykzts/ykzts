@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import Header from '@/components/header'
+import { InlineMemoEditor } from '@/components/inline-memo-editor'
 import MemoPortableText from '@/components/portable-text'
 import { getOwnerProfile } from '@/lib/auth'
 import { supabase } from '@/lib/supabase/client'
@@ -314,16 +315,17 @@ async function MemoContent({ path: memoPath }: { path: string }) {
               </span>
             )}
           </div>
-          {canEdit && (
-            <div className="flex gap-2">
-              <span className="text-muted-foreground text-sm">
-                ✓ 編集権限あり
-              </span>
-            </div>
-          )}
         </div>
 
-        {content ? (
+        {canEdit ? (
+          <InlineMemoEditor
+            content={content}
+            memoId={memo.id}
+            memoPath={memo.path}
+            title={title}
+            visibility={memo.visibility}
+          />
+        ) : content ? (
           <MemoPortableText value={content} />
         ) : (
           <p className="text-muted-foreground">コンテンツがありません。</p>
