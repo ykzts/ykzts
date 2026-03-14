@@ -20,13 +20,18 @@ CREATE TABLE IF NOT EXISTS memo_versions (
   memo_id UUID NOT NULL REFERENCES memos(id) ON DELETE CASCADE,
   title TEXT,
   content JSONB NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
+  CONSTRAINT memo_versions_memo_id_id_key UNIQUE (memo_id, id)
 );
 
--- 3. Add FK from memos.current_version_id to memo_versions.id
+-- 3. Add composite FK from memos.(id, current_version_id) to memo_versions.(memo_id, id)
+-- This ensures current_version_id always references a version belonging to the same memo.
+-- DEFERRABLE INITIALLY DEFERRED allows inserting memo + version in the same transaction.
 ALTER TABLE memos
   ADD CONSTRAINT memos_current_version_id_fkey
-  FOREIGN KEY (current_version_id) REFERENCES memo_versions(id);
+  FOREIGN KEY (id, current_version_id)
+  REFERENCES memo_versions(memo_id, id)
+  DEFERRABLE INITIALLY DEFERRED;
 
 -- 4. Create indexes
 CREATE INDEX IF NOT EXISTS memos_profile_id_idx ON memos(profile_id);
@@ -134,7 +139,8 @@ CREATE POLICY "Users can insert versions of their own memos" ON memo_versions
     )
   );
 
--- Only the memo owner can update versions
+-- Only the memo owner can update versions, and only when the memo is still private
+-- (public memo versions are append-only; private memos allow overwriting the current version)
 CREATE POLICY "Users can update versions of their own memos" ON memo_versions
   FOR UPDATE
   TO authenticated
@@ -144,6 +150,8 @@ CREATE POLICY "Users can update versions of their own memos" ON memo_versions
       JOIN profiles ON profiles.id = memos.profile_id
       WHERE memos.id = memo_versions.memo_id
       AND profiles.user_id = auth.uid()
+      AND memos.visibility = 'private'
+      AND memos.current_version_id = memo_versions.id
     )
   )
   WITH CHECK (
@@ -152,10 +160,13 @@ CREATE POLICY "Users can update versions of their own memos" ON memo_versions
       JOIN profiles ON profiles.id = memos.profile_id
       WHERE memos.id = memo_versions.memo_id
       AND profiles.user_id = auth.uid()
+      AND memos.visibility = 'private'
+      AND memos.current_version_id = memo_versions.id
     )
   );
 
--- Only the memo owner can delete versions
+-- Only the memo owner can delete versions, and only when the memo is still private
+-- (public memo versions are append-only and cannot be deleted)
 CREATE POLICY "Users can delete versions of their own memos" ON memo_versions
   FOR DELETE
   TO authenticated
@@ -165,6 +176,7 @@ CREATE POLICY "Users can delete versions of their own memos" ON memo_versions
       JOIN profiles ON profiles.id = memos.profile_id
       WHERE memos.id = memo_versions.memo_id
       AND profiles.user_id = auth.uid()
+      AND memos.visibility = 'private'
     )
   );
 

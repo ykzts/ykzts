@@ -394,14 +394,14 @@ INSERT INTO memo_versions (
 ) VALUES
   (
     '00000000-0000-0000-0000-000000000106',
-    '00000000-0000-0000-0000-000000000006',
+    (SELECT id FROM memos WHERE path = 'sample-memo'),
     'Sample Memo',
     '[{"_type":"block","_key":"memo1-block","style":"normal","children":[{"_type":"span","_key":"memo1-span","text":"This is a sample public memo.","marks":[]}]}]'::jsonb,
     NOW()
   ),
   (
     '00000000-0000-0000-0000-000000000107',
-    '00000000-0000-0000-0000-000000000007',
+    (SELECT id FROM memos WHERE path = 'work/sample-note'),
     'Work Note',
     '[{"_type":"block","_key":"memo2-block","style":"normal","children":[{"_type":"span","_key":"memo2-span","text":"This is a private work note.","marks":[]}]}]'::jsonb,
     NOW()
@@ -409,12 +409,9 @@ INSERT INTO memo_versions (
 ON CONFLICT (id) DO NOTHING;
 
 UPDATE memos
-SET current_version_id = CASE id
-  WHEN '00000000-0000-0000-0000-000000000006' THEN '00000000-0000-0000-0000-000000000106'
-  WHEN '00000000-0000-0000-0000-000000000007' THEN '00000000-0000-0000-0000-000000000107'
+SET current_version_id = CASE path
+  WHEN 'sample-memo' THEN '00000000-0000-0000-0000-000000000106'
+  WHEN 'work/sample-note' THEN '00000000-0000-0000-0000-000000000107'
   ELSE current_version_id
 END
-WHERE id IN (
-  '00000000-0000-0000-0000-000000000006',
-  '00000000-0000-0000-0000-000000000007'
-);
+WHERE path IN ('sample-memo', 'work/sample-note');
