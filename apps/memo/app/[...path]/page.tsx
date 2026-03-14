@@ -1,7 +1,6 @@
 import type { PortableTextBlock } from '@portabletext/types'
 import { extractFirstParagraph } from '@ykzts/portable-text-utils'
 import { getSiteOrigin } from '@ykzts/site-config'
-import { createBrowserClient } from '@ykzts/supabase/client'
 import { createServerClient } from '@ykzts/supabase/server'
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
@@ -11,6 +10,14 @@ import { Suspense } from 'react'
 import Header from '@/components/header'
 import MemoPortableText from '@/components/portable-text'
 import { getOwnerProfile } from '@/lib/auth'
+import { supabase } from '@/lib/supabase/client'
+
+function isSupabaseConfigured() {
+  return Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  )
+}
 
 type Props = {
   params: Promise<{ path: string[] }>
@@ -38,8 +45,11 @@ function extractCurrentVersion<T>(
 }
 
 export async function generateStaticParams() {
-  // Let createBrowserClient throw on env/config failures so they surface at build time
-  const supabase = createBrowserClient()
+  if (!supabase) {
+    // Return placeholder when Supabase is not configured (e.g., during build without env vars)
+    // Cache Components requires at least one result from generateStaticParams
+    return [{ path: ['_placeholder'] }]
+  }
 
   const { data: memos, error } = await supabase
     .from('memos')
@@ -53,7 +63,8 @@ export async function generateStaticParams() {
   }
 
   if (memos.length === 0) {
-    return []
+    // Cache Components requires at least one result from generateStaticParams
+    return [{ path: ['_placeholder'] }]
   }
 
   // Include memo paths and all prefix paths (for index pages)
@@ -72,6 +83,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { path } = await params
   const memoPath = path.join('/')
+
+  if (!isSupabaseConfigured()) {
+    return { title: 'Not Found' }
+  }
 
   const siteOrigin = getSiteOrigin()
   const supabase = await createServerClient()
@@ -136,6 +151,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 async function getMemo(memoPath: string, isDraftMode: boolean) {
+  if (!isSupabaseConfigured()) {
+    return { data: null, error: null }
+  }
+
   const supabase = await createServerClient()
 
   let query = supabase
@@ -159,6 +178,10 @@ async function getMemo(memoPath: string, isDraftMode: boolean) {
 }
 
 async function getChildMemos(pathPrefix: string, isDraftMode: boolean) {
+  if (!isSupabaseConfigured()) {
+    return { data: null, error: null }
+  }
+
   const supabase = await createServerClient()
 
   let query = supabase
