@@ -351,3 +351,70 @@ WHERE id IN (
   '00000000-0000-0000-0000-000000000004',
   '00000000-0000-0000-0000-000000000005'
 );
+
+-- Insert sample memos
+INSERT INTO memos (
+  id,
+  profile_id,
+  path,
+  visibility,
+  published_at,
+  created_at,
+  updated_at
+) VALUES
+  (
+    '00000000-0000-0000-0000-000000000006',
+    '00000000-0000-0000-0000-000000000001',
+    'sample-memo',
+    'public',
+    NOW(),
+    NOW(),
+    NOW()
+  ),
+  (
+    '00000000-0000-0000-0000-000000000007',
+    '00000000-0000-0000-0000-000000000001',
+    'work/sample-note',
+    'private',
+    NULL,
+    NOW(),
+    NOW()
+  )
+ON CONFLICT (path) DO UPDATE SET
+  visibility = EXCLUDED.visibility,
+  published_at = EXCLUDED.published_at,
+  updated_at = NOW();
+
+INSERT INTO memo_versions (
+  id,
+  memo_id,
+  title,
+  content,
+  created_at
+) VALUES
+  (
+    '00000000-0000-0000-0000-000000000106',
+    '00000000-0000-0000-0000-000000000006',
+    'Sample Memo',
+    '[{"_type":"block","_key":"memo1-block","style":"normal","children":[{"_type":"span","_key":"memo1-span","text":"This is a sample public memo.","marks":[]}]}]'::jsonb,
+    NOW()
+  ),
+  (
+    '00000000-0000-0000-0000-000000000107',
+    '00000000-0000-0000-0000-000000000007',
+    'Work Note',
+    '[{"_type":"block","_key":"memo2-block","style":"normal","children":[{"_type":"span","_key":"memo2-span","text":"This is a private work note.","marks":[]}]}]'::jsonb,
+    NOW()
+  )
+ON CONFLICT (id) DO NOTHING;
+
+UPDATE memos
+SET current_version_id = CASE id
+  WHEN '00000000-0000-0000-0000-000000000006' THEN '00000000-0000-0000-0000-000000000106'
+  WHEN '00000000-0000-0000-0000-000000000007' THEN '00000000-0000-0000-0000-000000000107'
+  ELSE current_version_id
+END
+WHERE id IN (
+  '00000000-0000-0000-0000-000000000006',
+  '00000000-0000-0000-0000-000000000007'
+);
