@@ -309,6 +309,58 @@ importers:
         specifier: 4.0.18
         version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.11.1)(jiti@2.6.1)(jsdom@28.1.0(@noble/hashes@1.8.0))(lightningcss@1.31.1)(msw@2.12.10(@types/node@24.11.1)(typescript@5.9.3))(yaml@2.8.2)
 
+  apps/memo:
+    dependencies:
+      '@supabase/ssr':
+        specifier: 0.9.0
+        version: 0.9.0(@supabase/supabase-js@2.98.0)
+      '@ykzts/supabase':
+        specifier: workspace:*
+        version: link:../../packages/supabase
+      '@ykzts/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      lucide-react:
+        specifier: 0.577.0
+        version: 0.577.0(react@19.2.4)
+      next:
+        specifier: 16.1.6
+        version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: 19.2.4
+        version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@tailwindcss/postcss':
+        specifier: 4.2.1
+        version: 4.2.1
+      '@types/node':
+        specifier: 24.11.1
+        version: 24.11.1
+      '@types/react':
+        specifier: 19.2.14
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.14)
+      '@ykzts/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      postcss:
+        specifier: 8.5.8
+        version: 8.5.8
+      tailwindcss:
+        specifier: 4.2.1
+        version: 4.2.1
+      tw-animate-css:
+        specifier: 1.4.0
+        version: 1.4.0
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+
   apps/portfolio:
     dependencies:
       '@marsidev/react-turnstile':
