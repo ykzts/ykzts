@@ -1,7 +1,5 @@
-import {
-  extractFirstParagraph,
-  portableTextToHTML
-} from '@ykzts/portable-text-utils'
+import type { PortableTextBlock } from '@portabletext/types'
+import { extractFirstParagraph } from '@ykzts/portable-text-utils'
 import { getSiteOrigin } from '@ykzts/site-config'
 import { createBrowserClient } from '@ykzts/supabase/client'
 import { createServerClient } from '@ykzts/supabase/server'
@@ -11,6 +9,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import Header from '@/components/header'
+import MemoPortableText from '@/components/portable-text'
 import { getOwnerProfile } from '@/lib/auth'
 
 type Props = {
@@ -19,12 +18,7 @@ type Props = {
 
 const PLACEHOLDER_PATH = '_placeholder'
 
-type PortableTextContent = Exclude<
-  Parameters<typeof portableTextToHTML>[0],
-  null | undefined
->
-
-function isPortableTextValue(value: unknown): value is PortableTextContent {
+function isPortableTextValue(value: unknown): value is PortableTextBlock[] {
   if (!Array.isArray(value)) {
     return false
   }
@@ -288,7 +282,6 @@ async function MemoContent({ path: memoPath }: { path: string }) {
   const content = isPortableTextValue(currentVersion?.content)
     ? currentVersion.content
     : null
-  const contentHtml = portableTextToHTML(content)
 
   const dateOptions: Intl.DateTimeFormatOptions = { timeZone: 'Asia/Tokyo' }
 
@@ -315,12 +308,8 @@ async function MemoContent({ path: memoPath }: { path: string }) {
           )}
         </div>
 
-        {contentHtml ? (
-          <div
-            className="prose max-w-none"
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: Content is sanitized server-side from PortableText
-            dangerouslySetInnerHTML={{ __html: contentHtml }}
-          />
+        {content ? (
+          <MemoPortableText value={content} />
         ) : (
           <p className="text-muted-foreground">コンテンツがありません。</p>
         )}
