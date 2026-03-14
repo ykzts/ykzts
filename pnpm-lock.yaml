@@ -314,6 +314,12 @@ importers:
       '@supabase/ssr':
         specifier: 0.9.0
         version: 0.9.0(@supabase/supabase-js@2.98.0)
+      '@ykzts/portable-text-utils':
+        specifier: workspace:*
+        version: link:../../packages/portable-text-utils
+      '@ykzts/site-config':
+        specifier: workspace:*
+        version: link:../../packages/site-config
       '@ykzts/supabase':
         specifier: workspace:*
         version: link:../../packages/supabase
@@ -336,6 +342,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: 4.2.1
         version: 4.2.1
+      '@tailwindcss/typography':
+        specifier: 0.5.19
+        version: 0.5.19(tailwindcss@4.2.1)
       '@types/node':
         specifier: 24.11.1
         version: 24.11.1
