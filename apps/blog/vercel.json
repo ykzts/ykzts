@@ -1,8 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/api/blog/cron/publish",
-      "schedule": "*/5 * * * *"
-    }
-  ]
-}
