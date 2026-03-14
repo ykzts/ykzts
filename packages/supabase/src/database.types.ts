@@ -96,6 +96,83 @@ export type Database = {
         }
         Relationships: []
       }
+      memo_versions: {
+        Row: {
+          content: Json
+          created_at: string
+          id: string
+          memo_id: string
+          title: string | null
+        }
+        Insert: {
+          content: Json
+          created_at?: string
+          id?: string
+          memo_id: string
+          title?: string | null
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          id?: string
+          memo_id?: string
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memo_versions_memo_id_fkey"
+            columns: ["memo_id"]
+            referencedRelation: "memos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      memos: {
+        Row: {
+          created_at: string
+          current_version_id: string | null
+          id: string
+          path: string
+          profile_id: string
+          published_at: string | null
+          updated_at: string
+          visibility: string
+        }
+        Insert: {
+          created_at?: string
+          current_version_id?: string | null
+          id?: string
+          path: string
+          profile_id: string
+          published_at?: string | null
+          updated_at?: string
+          visibility?: string
+        }
+        Update: {
+          created_at?: string
+          current_version_id?: string | null
+          id?: string
+          path?: string
+          profile_id?: string
+          published_at?: string | null
+          updated_at?: string
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memos_current_version_id_fkey"
+            columns: ["current_version_id"]
+            referencedRelation: "memo_versions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "memos_profile_id_fkey"
+            columns: ["profile_id"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       post_versions: {
         Row: {
           change_summary: string | null
