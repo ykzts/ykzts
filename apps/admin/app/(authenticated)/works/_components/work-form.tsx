@@ -28,6 +28,7 @@ import type { MouseEvent } from 'react'
 import { useActionState, useCallback, useState } from 'react'
 import { RichTextEditor } from '@/components/portable-text-editor'
 import { generateUniqueSlugForWork } from '@/lib/slug'
+import { uploadImage } from '@/lib/upload-image'
 import { generateSlug } from '@/lib/utils'
 import { SortableItem } from './sortable-item'
 
@@ -317,6 +318,7 @@ export function WorkForm({
                 id="content"
                 initialValue={contentString}
                 name="content"
+                uploadImage={uploadImage}
               />
             </Field>
 

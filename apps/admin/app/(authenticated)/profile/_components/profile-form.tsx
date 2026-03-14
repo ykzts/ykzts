@@ -22,6 +22,7 @@ import { useActionState, useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { RichTextEditor } from '@/components/portable-text-editor'
 import { DEFAULT_TIMEZONE, getCommonTimezones } from '@/lib/timezones'
+import { uploadImage } from '@/lib/upload-image'
 import { updateProfile } from '../actions'
 import { AvatarUpload } from './avatar-upload'
 import { SortableItem } from './sortable-item'
@@ -258,6 +259,7 @@ export default function ProfileForm({
               : undefined
           }
           name="about"
+          uploadImage={uploadImage}
         />
       </div>
 

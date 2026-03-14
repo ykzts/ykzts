@@ -51,7 +51,7 @@ import {
 } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
-import { uploadImage } from '@/lib/upload-image'
+
 import { ImageAltDialog } from './image-alt-dialog'
 import { INSERT_IMAGE_COMMAND } from './image-plugin'
 import { LinkDialog } from './link-dialog'
@@ -97,7 +97,16 @@ const CODE_LANGUAGES = [
   { label: 'Plain Text', value: 'plaintext' }
 ] as const
 
-export function ToolbarPlugin() {
+export type UploadImageFn = (options: {
+  file: File
+  onProgress?: (progress: number) => void
+}) => Promise<{ error?: string; height?: number; url?: string; width?: number }>
+
+export function ToolbarPlugin({
+  uploadImage
+}: {
+  uploadImage?: UploadImageFn
+}) {
   const [editor] = useLexicalComposerContext()
   const [isBold, setIsBold] = useState(false)
   const [isItalic, setIsItalic] = useState(false)
@@ -235,6 +244,7 @@ export function ToolbarPlugin() {
 
   const handleImageUpload = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (!uploadImage) return
       const files = event.target.files
       if (!files || files.length === 0) return
 
@@ -265,7 +275,7 @@ export function ToolbarPlugin() {
         }
       }
     },
-    []
+    [uploadImage]
   )
 
   const handleAltConfirm = useCallback(
@@ -535,17 +545,28 @@ export function ToolbarPlugin() {
           <Outdent className="size-4" />
         </button>
         <div className="mx-1 h-6 w-px self-center bg-border" />
-        <button
-          aria-label="画像"
-          className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-            isUploading ? 'cursor-not-allowed opacity-50' : ''
-          } text-muted-foreground`}
-          disabled={isUploading}
-          onClick={triggerImageUpload}
-          type="button"
-        >
-          <Image className="size-4" />
-        </button>
+        {uploadImage && (
+          <>
+            <button
+              aria-label="画像"
+              className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
+                isUploading ? 'cursor-not-allowed opacity-50' : ''
+              } text-muted-foreground`}
+              disabled={isUploading}
+              onClick={triggerImageUpload}
+              type="button"
+            >
+              <Image className="size-4" />
+            </button>
+            <input
+              accept="image/jpeg,image/png,image/gif,image/webp"
+              className="hidden"
+              onChange={handleImageUpload}
+              ref={fileInputRef}
+              type="file"
+            />
+          </>
+        )}
         <button
           aria-label="テーブル"
           className="rounded px-3 py-1 text-muted-foreground text-sm transition-colors hover:bg-muted/20"
@@ -554,13 +575,6 @@ export function ToolbarPlugin() {
         >
           <Table className="size-4" />
         </button>
-        <input
-          accept="image/jpeg,image/png,image/gif,image/webp"
-          className="hidden"
-          onChange={handleImageUpload}
-          ref={fileInputRef}
-          type="file"
-        />
       </div>
       <LinkDialog
         onConfirm={handleLinkConfirm}
