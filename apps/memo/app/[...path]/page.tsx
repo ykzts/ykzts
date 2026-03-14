@@ -16,8 +16,6 @@ type Props = {
   params: Promise<{ path: string[] }>
 }
 
-const PLACEHOLDER_PATH = '_placeholder'
-
 function isPortableTextValue(value: unknown): value is PortableTextBlock[] {
   if (!Array.isArray(value)) {
     return false
@@ -55,7 +53,7 @@ export async function generateStaticParams() {
   }
 
   if (memos.length === 0) {
-    return [{ path: [PLACEHOLDER_PATH] }]
+    return []
   }
 
   // Include memo paths and all prefix paths (for index pages)
@@ -74,10 +72,6 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { path } = await params
   const memoPath = path.join('/')
-
-  if (memoPath === PLACEHOLDER_PATH) {
-    return { title: 'Not Found' }
-  }
 
   const siteOrigin = getSiteOrigin()
   const supabase = await createServerClient()
@@ -191,10 +185,6 @@ async function getChildMemos(pathPrefix: string, isDraftMode: boolean) {
 async function MemoContent({ path: memoPath }: { path: string }) {
   const { isEnabled: isDraftMode } = await draftMode()
   const ownerProfile = await getOwnerProfile()
-
-  if (memoPath === PLACEHOLDER_PATH) {
-    notFound()
-  }
 
   const { data: memo, error } = await getMemo(memoPath, isDraftMode)
 

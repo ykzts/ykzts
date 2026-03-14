@@ -43,10 +43,17 @@ type PortableTextProps = Omit<
   value: PortableTextBlock[]
 }
 
-export default function MemoPortableText({ value, ...props }: PortableTextProps) {
+export default function MemoPortableText({
+  value,
+  ...props
+}: PortableTextProps) {
   return (
     <div className="prose max-w-none">
-      <PortableText {...props} components={portableTextComponents} value={value} />
+      <PortableText
+        {...props}
+        components={portableTextComponents}
+        value={value}
+      />
     </div>
   )
 }
