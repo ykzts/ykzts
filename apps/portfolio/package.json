@@ -42,7 +42,7 @@
     "@types/node": "24.12.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-react": "5.2.0",
+    "@vitejs/plugin-react": "6.0.1",
     "@ykzts/tsconfig": "workspace:*",
     "autoprefixer": "10.4.27",
     "axe-core": "4.11.1",
