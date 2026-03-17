@@ -21,7 +21,7 @@
     "@vitejs/plugin-react": "5.2.0",
     "@ykzts/tsconfig": "workspace:*",
     "typescript": "5.9.3",
-    "vitest": "4.0.18"
+    "vitest": "4.1.0"
   },
   "exports": {
     ".": "./src/index.ts",
