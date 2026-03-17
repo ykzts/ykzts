@@ -29,7 +29,7 @@
     "@tailwindcss/postcss": "4.2.1",
     "@vercel/config": "0.0.39",
     "@tailwindcss/typography": "0.5.19",
-    "@types/node": "24.11.1",
+    "@types/node": "24.12.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@ykzts/tsconfig": "workspace:*",
