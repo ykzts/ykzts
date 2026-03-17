@@ -11,7 +11,6 @@ export function LoginSkeleton() {
           />
         </CardHeader>
         <CardContent>
-          {/* biome-ignore lint/a11y/useSemanticElements: role="status" is semantically correct for loading state */}
           <div
             aria-label="読み込み中..."
             aria-live="polite"

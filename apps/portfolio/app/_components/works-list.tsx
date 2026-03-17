@@ -85,7 +85,7 @@ export default function WorksList({
       {allTechnologies.length > 0 && (
         <div className="mb-8 flex flex-wrap gap-2">
           <button
-            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+            className={`rounded-full px-4 py-1.5 font-medium text-sm transition-colors ${
               !activeTechnology
                 ? 'bg-primary text-primary-foreground'
                 : 'border border-border bg-card text-card-foreground hover:border-primary/50'
@@ -97,7 +97,7 @@ export default function WorksList({
           </button>
           {allTechnologies.map((tech) => (
             <button
-              className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+              className={`rounded-full px-4 py-1.5 font-medium text-sm transition-colors ${
                 activeTechnology === tech
                   ? 'bg-primary text-primary-foreground'
                   : 'border border-border bg-card text-card-foreground hover:border-primary/50'
@@ -135,7 +135,7 @@ export default function WorksList({
                 <div className="mt-4 flex flex-wrap gap-3">
                   {work.work_urls.map((workUrl) => (
                     <a
-                      className="inline-flex items-center rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-card-foreground transition-colors hover:border-primary/50 hover:text-primary"
+                      className="inline-flex items-center rounded-lg border border-border px-3 py-1.5 font-medium text-card-foreground text-sm transition-colors hover:border-primary/50 hover:text-primary"
                       href={workUrl.url}
                       key={workUrl.id}
                       rel="noopener noreferrer"
@@ -150,7 +150,7 @@ export default function WorksList({
                 <div className="mt-3 flex flex-wrap gap-2">
                   {validTechnologies.map((wt) => (
                     <span
-                      className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground"
+                      className="rounded-full bg-muted px-2.5 py-0.5 font-medium text-muted-foreground text-xs"
                       key={wt.technology_id}
                     >
                       {wt.technology?.name}

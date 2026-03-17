@@ -266,5 +266,5 @@ export async function getPosts(page = 1): Promise<Post[]> {
   }))
 }
 
-export { POSTS_PER_PAGE }
 export type { Post, PostAuthor, PostSummary, Profile, Work }
+export { POSTS_PER_PAGE }
