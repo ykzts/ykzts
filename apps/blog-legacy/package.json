@@ -5,7 +5,7 @@
     "url": "https://github.com/ykzts/ykzts/issues"
   },
   "dependencies": {
-    "@vercel/analytics": "1.6.1",
+    "@vercel/analytics": "2.0.1",
     "@ykzts/site-config": "workspace:*",
     "next": "16.1.6",
     "react": "19.2.4",
