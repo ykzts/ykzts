@@ -24,7 +24,7 @@ env:
   # renovate: datasource=node-version depName=node
   NODE_VERSION: 24.14.0
   # renovate: datasource=github-releases depName=supabase/cli
-  SUPABASE_VERSION: 2.75.0
+  SUPABASE_VERSION: 2.78.1
 
 jobs:
   accessibility:
