@@ -19,8 +19,8 @@ if (supabaseUrl) {
 }
 
 const nextConfig: NextConfig = {
+  cacheComponents: true,
   experimental: {
-    cacheComponents: true,
     mdxRs: {
       mdxType: 'gfm'
     },
