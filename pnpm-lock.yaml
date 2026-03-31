@@ -69,8 +69,8 @@ importers:
         specifier: 6.0.141
         version: 6.0.141(zod@4.3.6)
       diff:
-        specifier: 8.0.3
-        version: 8.0.3
+        specifier: 8.0.4
+        version: 8.0.4
       lucide-react:
         specifier: 0.577.0
         version: 0.577.0(react@19.2.4)
@@ -3961,6 +3961,10 @@ packages:
 
   diff@8.0.3:
     resolution: {integrity: sha512-qejHi7bcSD4hQAZE0tNAawRK1ZtafHDmMTMkrrIGgSLl7hTnQHmKCeB45xAcbfTqK2zowkM3j3bHt/4b/ARbYQ==}
+    engines: {node: '>=0.3.1'}
+
+  diff@8.0.4:
+    resolution: {integrity: sha512-DPi0FmjiSU5EvQV0++GFDOJ9ASQUVFh5kD+OzOnYdi7n3Wpm9hWWGfB/O2blfHcMVTL5WkQXSnRiK9makhrcnw==}
     engines: {node: '>=0.3.1'}
 
   dom-accessibility-api@0.5.16:
@@ -11404,6 +11408,8 @@ snapshots:
 
   diff@8.0.3: {}
 
+  diff@8.0.4: {}
+
   dom-accessibility-api@0.5.16: {}
 
   dom-accessibility-api@0.6.3: {}
@@ -14689,7 +14695,7 @@ snapshots:
       cosmiconfig: 9.0.0(typescript@5.9.3)
       dedent: 1.7.1
       deepmerge: 4.3.1
-      diff: 8.0.3
+      diff: 8.0.4
       execa: 9.6.1
       fast-glob: 3.3.3
       fs-extra: 11.3.4
