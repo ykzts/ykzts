@@ -109,8 +109,8 @@ importers:
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.14)
       '@vercel/config':
-        specifier: 0.0.39
-        version: 0.0.39
+        specifier: 0.1.0
+        version: 0.1.0
       '@ykzts/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -230,8 +230,8 @@ importers:
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.14)
       '@vercel/config':
-        specifier: 0.0.39
-        version: 0.0.39
+        specifier: 0.1.0
+        version: 0.1.0
       '@vitejs/plugin-react':
         specifier: 6.0.1
         version: 6.0.1(babel-plugin-react-compiler@1.0.0)(vite@8.0.0(@types/node@24.12.0)(esbuild@0.27.3)(jiti@2.6.1)(yaml@2.8.2))
@@ -3074,8 +3074,8 @@ packages:
       vue-router:
         optional: true
 
-  '@vercel/config@0.0.39':
-    resolution: {integrity: sha512-LQZct6yB9G6ItulmmnrNt+BWWSoBTpIGy6yoEspDWGY4XIF1utxVCRewYbky6xbigDRt3WvdwFt3zmn6C769Ag==}
+  '@vercel/config@0.1.0':
+    resolution: {integrity: sha512-fZSW+xYGgKnptVTRBlk6aUBEkEQNGufPqxMMKZ66EKPGkTvPBmcjxEVBny6ugoAdnIsfmbMd8mxH1C/ANKXfkQ==}
     hasBin: true
 
   '@vercel/microfrontends@2.3.1':
@@ -3109,8 +3109,8 @@ packages:
     resolution: {integrity: sha512-Fw28YZpRnA3cAHHDlkt7xQHiJ0fcL+NRcIqsocZQUSmbzeIKRpwttJjik5ZGanXP+vlA4SbTg+AbA3bP363l+w==}
     engines: {node: '>= 20'}
 
-  '@vercel/routing-utils@6.0.2':
-    resolution: {integrity: sha512-XFsvKoRhwwxKC8jnnefhjYG02g5qpHc2PCxd2EKEVLiHQLF9un8HEA6+R0OfazN0daVj3SxjTDVnFClVREjg1Q==}
+  '@vercel/routing-utils@6.1.1':
+    resolution: {integrity: sha512-kUJn6CRuLvua5xvDZTJu1rC8GLdniC8D5VIzoJKm0dUdcUxv3LEx+pi8dokxWS+YM7cIs1Z3Y8ms/BDW1iBzzA==}
 
   '@vitejs/plugin-react@6.0.1':
     resolution: {integrity: sha512-l9X/E3cDb+xY3SWzlG1MOGt2usfEHGMNIaegaUGFsLkb3RCn/k8/TOXBcab+OndDI4TBtktT8/9BwwW8Vi9KUQ==}
@@ -10521,9 +10521,9 @@ snapshots:
       next: 16.2.1(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react: 19.2.4
 
-  '@vercel/config@0.0.39':
+  '@vercel/config@0.1.0':
     dependencies:
-      '@vercel/routing-utils': 6.0.2
+      '@vercel/routing-utils': 6.1.1
       pretty-cache-header: 1.0.0
       zod: 3.25.76
 
@@ -10552,7 +10552,7 @@ snapshots:
 
   '@vercel/oidc@3.1.0': {}
 
-  '@vercel/routing-utils@6.0.2':
+  '@vercel/routing-utils@6.1.1':
     dependencies:
       path-to-regexp: 6.1.0
       path-to-regexp-updated: path-to-regexp@6.3.0
