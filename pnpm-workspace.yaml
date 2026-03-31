@@ -8,6 +8,7 @@ packages:
 catalog:
   '@next/mdx': 16.2.1
   next: 16.2.1
+  typescript: 6.0.2
 
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
