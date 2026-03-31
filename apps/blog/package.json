@@ -13,7 +13,7 @@
     "@ykzts/ui": "workspace:*",
     "ai": "6.0.141",
     "feed": "5.2.0",
-    "lucide-react": "0.577.0",
+    "lucide-react": "1.7.0",
     "next": "catalog:",
     "next-themes": "0.4.6",
     "react": "19.2.4",
