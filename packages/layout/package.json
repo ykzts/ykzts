@@ -37,7 +37,7 @@
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.1",
     "@ykzts/tsconfig": "workspace:*",
-    "jsdom": "29.0.0",
+    "jsdom": "29.0.1",
     "next": "catalog:",
     "typescript": "5.9.3",
     "vite-tsconfig-paths": "6.1.1",
