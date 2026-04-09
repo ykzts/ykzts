@@ -11,7 +11,7 @@
     "test": "vitest --run"
   },
   "dependencies": {
-    "@portabletext/markdown": "1.1.4",
+    "@portabletext/markdown": "1.2.0",
     "@portabletext/to-html": "5.0.2",
     "gray-matter": "4.0.3"
   },
