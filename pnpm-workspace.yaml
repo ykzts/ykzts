@@ -6,8 +6,8 @@ packages:
   - scripts/*
 
 catalog:
-  '@next/mdx': 16.2.1
-  next: 16.2.1
+  '@next/mdx': 16.2.2
+  next: 16.2.2
   typescript: 6.0.2
 
 minimumReleaseAge: 1440
