@@ -439,8 +439,8 @@ importers:
         specifier: 10.0.3
         version: 10.0.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       resend:
-        specifier: 6.9.4
-        version: 6.9.4(@react-email/render@2.0.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
+        specifier: 6.10.0
+        version: 6.10.0(@react-email/render@2.0.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
       shiki:
         specifier: 4.0.2
         version: 4.0.2
@@ -5918,8 +5918,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  postal-mime@2.7.3:
-    resolution: {integrity: sha512-MjhXadAJaWgYzevi46+3kLak8y6gbg0ku14O1gO/LNOuay8dO+1PtcSGvAdgDR0DoIsSaiIA8y/Ddw6MnrO0Tw==}
+  postal-mime@2.7.4:
+    resolution: {integrity: sha512-0WdnFQYUrPGGTFu1uOqD2s7omwua8xaeYGdO6rb88oD5yJ/4pPHDA4sdWqfD8wQVfCny563n/HQS7zTFft+f/g==}
 
   postcss-selector-parser@6.0.10:
     resolution: {integrity: sha512-IQ7TZdoaqbT+LCpShg46jnZVlhWD2w6iQYAcYXfHARZ7X1t/UGhhceQDs5X0cGqKvYlHNOuv7Oa1xmb0oQuA3w==}
@@ -6172,8 +6172,8 @@ packages:
   reselect@5.1.1:
     resolution: {integrity: sha512-K/BG6eIky/SBpzfHZv/dd+9JBFiS4SWV7FIujVyJRux6e45+73RaUHXLmIR1f7WOMaQ0U1km6qwklRQxpJJY0w==}
 
-  resend@6.9.4:
-    resolution: {integrity: sha512-/M3dsJzu5OgozqVsA4Psd/1L7EdePgOIIxClas453GOQYFG3VHc2ZyCHZFlvqsc9aZCCd2BJRRqZgWC8D9c7/g==}
+  resend@6.10.0:
+    resolution: {integrity: sha512-i7CwZpYj4Oho1RxsTpLcCUkO08+HiL4NXrm6jLJ2WzJ89UGI8eROSieLONJA3hnUrf1OYnCyfq5F6POnHUMv1Q==}
     engines: {node: '>=20'}
     peerDependencies:
       '@react-email/render': '*'
@@ -6597,8 +6597,8 @@ packages:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
 
-  svix@1.86.0:
-    resolution: {integrity: sha512-/HTvXwjLJe1l/MsLXAO1ddCYxElJk4eNR4DzOjDOEmGrPN/3BtBE8perGwMAaJ2sT5T172VkBYzmHcjUfM1JRQ==}
+  svix@1.88.0:
+    resolution: {integrity: sha512-vm/JrrUd3bVyBE+3L33TIyVSs8gS5fYx7lrISvKlDJXTYX1ACH4REX8P1tHxsSKoZi/rvifM1t0XRc5Vc45THw==}
 
   symbol-tree@3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
@@ -13420,7 +13420,7 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.2
 
-  postal-mime@2.7.3: {}
+  postal-mime@2.7.4: {}
 
   postcss-selector-parser@6.0.10:
     dependencies:
@@ -13912,10 +13912,10 @@ snapshots:
 
   reselect@5.1.1: {}
 
-  resend@6.9.4(@react-email/render@2.0.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)):
+  resend@6.10.0(@react-email/render@2.0.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)):
     dependencies:
-      postal-mime: 2.7.3
-      svix: 1.86.0
+      postal-mime: 2.7.4
+      svix: 1.88.0
     optionalDependencies:
       '@react-email/render': 2.0.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
 
@@ -14441,7 +14441,7 @@ snapshots:
     dependencies:
       has-flag: 4.0.0
 
-  svix@1.86.0:
+  svix@1.88.0:
     dependencies:
       standardwebhooks: 1.0.0
       uuid: 10.0.0
