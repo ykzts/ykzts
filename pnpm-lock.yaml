@@ -810,8 +810,8 @@ importers:
   renovate-config:
     devDependencies:
       renovate:
-        specifier: 43.104.7
-        version: 43.104.7(typanion@3.14.0)
+        specifier: 43.104.11
+        version: 43.104.11(typanion@3.14.0)
 
 packages:
 
@@ -3480,8 +3480,8 @@ packages:
   brace-expansion@1.1.12:
     resolution: {integrity: sha512-9T9UjW3r0UW5c1Q7GTwllptXwhvYmEzFhzMfZ9H7FQWt+uZePjZPjBP/W1ZEyZ1twGWom5/56TF4lPcqjnDHcg==}
 
-  brace-expansion@5.0.4:
-    resolution: {integrity: sha512-h+DEnpVvxmfVefa4jFbCf5HdH5YMDXRsmKflpf1pILZWRFlTbJpxeU55nJl4Smt5HQaGzg1o6RHFPJaOqnmBDg==}
+  brace-expansion@5.0.5:
+    resolution: {integrity: sha512-VZznLgtwhn+Mact9tfiwx64fA9erHH/MCXEUfB/0bX/6Fz6ny5EGTXYltMocqg4xFAQZtnO3DHWWXi8RiuN7cQ==}
     engines: {node: 18 || 20 || >=22}
 
   braces@3.0.3:
@@ -4949,14 +4949,14 @@ packages:
     resolution: {integrity: sha512-OCzaRMK8HobtX8fp37uIVmL8CY1IGc/a6gLsDqz3quExFR09/U78HUzWYr7T31UEB6+Eu0/8dkVD5fFDOl9a8w==}
     engines: {node: '>= 8'}
 
-  jsonc-morph@0.3.1:
-    resolution: {integrity: sha512-bMphxB0fv2g7QX6tQQZDWJ/WGUoyLZNNXAjds9LlnOGCGHMcyy2DGzECwfTxpSM/V9Ru2mrA4Ra+3bNbwrVmRw==}
+  jsonc-morph@0.3.3:
+    resolution: {integrity: sha512-YljoHRXfZacx4utaktqGlz8p9xJJaV12WxciEpf4+g+8jVk0QNmxpxStkXVwjTnJZr9EAK4TT5TzdCO5M2i7rw==}
 
   jsonc-parser@3.3.1:
     resolution: {integrity: sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ==}
 
-  jsonc-weaver@0.2.2:
-    resolution: {integrity: sha512-fDO1+8cpEFGlw42kvEqh/HAnXd47Lv19mWQaR30p2k6wOwfL4Dx/B2f8reaQepBc1aupBIOTwWmhThFUgv9zLQ==}
+  jsonc-weaver@0.2.4:
+    resolution: {integrity: sha512-aIKK8SOg+TdBdeML4MB++phUEdS7KWZxuaPPjxUSat8Kc/2A+2AoxmAGhvbVajNjqsgSX4dhjfCJq3QlE/NSCg==}
 
   jsonfile@6.2.0:
     resolution: {integrity: sha512-FGuPw30AdOIUTRMC2OMRtQV+jkVj2cfPqSeWXv1NEAJ1qZ5zb1X6z1mFhbfOB/iy3ssJCD+3KuZ8r8C3uVFlAg==}
@@ -5446,8 +5446,8 @@ packages:
   minimalistic-assert@1.0.1:
     resolution: {integrity: sha512-UtJcAD4yEaGtjPezWuO9wC4nwUnVH/8/Im3yEHQP4b67cXlD/Qr9hdITCU1xDbSEXg2XKNaP8jsReV7vQd00/A==}
 
-  minimatch@10.2.4:
-    resolution: {integrity: sha512-oRjTw/97aTBN0RHbYCdtF1MQfvusSIBQM0IZEgzl6426+8jSC0nF1a/GmnVLpfB9yyr6g6FTqWqiZVbxrtaCIg==}
+  minimatch@10.2.5:
+    resolution: {integrity: sha512-MULkVLfKGYDFYejP07QOurDLLQpcjk7Fw+7jXS2R2czRQzR56yHRveU5NDJEOviH+hETZKSkIk5c+T23GjFUMg==}
     engines: {node: 18 || 20 || >=22}
 
   minimatch@3.1.5:
@@ -5534,8 +5534,8 @@ packages:
     resolution: {integrity: sha512-at/ZndSy3xEGJ8i0ygALh8ru9qy7gWW1cmkaqBN29JmMlIvM//MEO9y1sk/avxuwnPcfhkejkLsuPxH81BrkSg==}
     engines: {node: '>=0.8.0'}
 
-  nan@2.25.0:
-    resolution: {integrity: sha512-0M90Ag7Xn5KMLLZ7zliPWP3rT90P6PN+IzVFS0VqmnPktBk3700xUVv8Ikm9EUaUE5SDWdp/BIxdENzVznpm1g==}
+  nan@2.26.2:
+    resolution: {integrity: sha512-0tTvBTYkt3tdGw22nrAy50x7gpbGCCFH3AFcyS5WiUu7Eu4vWlri1woE6qHBSfy11vksDqkiwjOnlR7WV8G1Hw==}
 
   nanoid@3.3.11:
     resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
@@ -6054,8 +6054,8 @@ packages:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
     hasBin: true
 
-  re2@1.23.3:
-    resolution: {integrity: sha512-5jh686rmj/8dYpBo72XYgwzgG8Y9HNDATYZ1x01gqZ6FvXVUP33VZ0+6GLCeavaNywz3OkXBU8iNX7LjiuisPg==}
+  re2@1.24.0:
+    resolution: {integrity: sha512-pBm6cMaOb0Yb0kg0Sfw/k4LwDMkPScb/NVd7GrEllDwfsPZstsZIo93A6Nn0wZuWJw3h57GdzkrOk81EofKY/g==}
 
   react-dom@19.2.4:
     resolution: {integrity: sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ==}
@@ -6146,8 +6146,8 @@ packages:
   remark@15.0.1:
     resolution: {integrity: sha512-Eht5w30ruCXgFmxVUSlNWQ9iiimq07URKeFS3hNc8cUWy1llX4KDWfyEDZRycMc+znsN9Ux5/tJ/BFdgdOwA3A==}
 
-  renovate@43.104.7:
-    resolution: {integrity: sha512-+J1mvPMXsVojnhCeyzbv901w2LRrTwb/L3qUDsJ0qBNlleAlRqrK++TAUvkHCZ7DPvxUeQGjqej3JKlKH7G69g==}
+  renovate@43.104.11:
+    resolution: {integrity: sha512-Xa4PxjMZ/Vq72ktVkFo0EIk5I1zhmOTZBm9yQ3LuS2RnOAo/o1d5fMFsvINRLy/C8c9iXWLKcW/HA8dY1fSZNw==}
     engines: {node: ^24.11.0, pnpm: ^10.0.0}
     hasBin: true
 
@@ -10095,7 +10095,7 @@ snapshots:
   '@ts-morph/common@0.27.0':
     dependencies:
       fast-glob: 3.3.3
-      minimatch: 10.2.4
+      minimatch: 10.2.5
       path-browserify: 1.0.1
 
   '@turbo/darwin-64@2.9.4':
@@ -10627,7 +10627,7 @@ snapshots:
       balanced-match: 1.0.2
       concat-map: 0.0.1
 
-  brace-expansion@5.0.4:
+  brace-expansion@5.0.5:
     dependencies:
       balanced-match: 4.0.4
 
@@ -11097,7 +11097,7 @@ snapshots:
 
   dtrace-provider@0.8.8:
     dependencies:
-      nan: 2.25.0
+      nan: 2.26.2
     optional: true
 
   dunder-proto@1.0.1:
@@ -11121,7 +11121,7 @@ snapshots:
     dependencies:
       '@one-ini/wasm': 0.2.1
       commander: 14.0.3
-      minimatch: 10.2.4
+      minimatch: 10.2.5
       semver: 7.7.4
 
   ee-first@1.1.1: {}
@@ -11682,7 +11682,7 @@ snapshots:
 
   glob@13.0.6:
     dependencies:
-      minimatch: 10.2.4
+      minimatch: 10.2.5
       minipass: 7.1.3
       path-scurry: 2.0.2
 
@@ -12208,13 +12208,13 @@ snapshots:
 
   jsonata@2.1.0: {}
 
-  jsonc-morph@0.3.1: {}
+  jsonc-morph@0.3.3: {}
 
   jsonc-parser@3.3.1: {}
 
-  jsonc-weaver@0.2.2:
+  jsonc-weaver@0.2.4:
     dependencies:
-      jsonc-morph: 0.3.1
+      jsonc-morph: 0.3.3
 
   jsonfile@6.2.0:
     dependencies:
@@ -12955,9 +12955,9 @@ snapshots:
 
   minimalistic-assert@1.0.1: {}
 
-  minimatch@10.2.4:
+  minimatch@10.2.5:
     dependencies:
-      brace-expansion: 5.0.4
+      brace-expansion: 5.0.5
 
   minimatch@3.1.5:
     dependencies:
@@ -13057,7 +13057,7 @@ snapshots:
       rimraf: 2.4.5
     optional: true
 
-  nan@2.25.0:
+  nan@2.26.2:
     optional: true
 
   nanoid@3.3.11: {}
@@ -13608,10 +13608,10 @@ snapshots:
       strip-json-comments: 2.0.1
     optional: true
 
-  re2@1.23.3:
+  re2@1.24.0:
     dependencies:
       install-artifact-from-github: 1.4.0
-      nan: 2.25.0
+      nan: 2.26.2
       node-gyp: 12.2.0
     transitivePeerDependencies:
       - supports-color
@@ -13767,7 +13767,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  renovate@43.104.7(typanion@3.14.0):
+  renovate@43.104.11(typanion@3.14.0):
     dependencies:
       '@aws-sdk/client-codecommit': 3.1021.0
       '@aws-sdk/client-ec2': 3.1021.0
@@ -13846,12 +13846,12 @@ snapshots:
       json-stringify-pretty-compact: 4.0.0
       json5: 2.2.3
       jsonata: 2.1.0
-      jsonc-weaver: 0.2.2
+      jsonc-weaver: 0.2.4
       klona: 2.0.6
       luxon: 3.7.2
       markdown-it: 14.1.1
       markdown-table: 3.0.4
-      minimatch: 10.2.4
+      minimatch: 10.2.5
       moo: 0.5.3
       ms: 2.1.3
       neotraverse: 0.6.18
@@ -13888,7 +13888,7 @@ snapshots:
     optionalDependencies:
       better-sqlite3: 12.8.0
       openpgp: 6.3.0
-      re2: 1.23.3
+      re2: 1.24.0
     transitivePeerDependencies:
       - '@node-rs/xxhash'
       - aws-crt
