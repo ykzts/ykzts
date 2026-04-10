@@ -5,7 +5,7 @@
     "@dnd-kit/sortable": "10.0.0",
     "@dnd-kit/utilities": "3.2.2",
     "@supabase/ssr": "0.10.0",
-    "@supabase/supabase-js": "2.100.1",
+    "@supabase/supabase-js": "2.102.0",
     "@vercel/microfrontends": "2.3.1",
     "@ykzts/fediverse": "workspace:*",
     "@ykzts/pagination-utils": "workspace:*",
