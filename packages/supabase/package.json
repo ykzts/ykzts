@@ -3,7 +3,7 @@
   "dependencies": {
     "@portabletext/types": "4.0.2",
     "@supabase/ssr": "0.10.0",
-    "@supabase/supabase-js": "2.102.0",
+    "@supabase/supabase-js": "2.103.2",
     "next": "catalog:"
   },
   "description": "Supabase database type definitions for ykzts applications",
