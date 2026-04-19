@@ -2,7 +2,7 @@
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
     "@portabletext/types": "4.0.2",
-    "@supabase/ssr": "0.10.0",
+    "@supabase/ssr": "0.10.2",
     "@supabase/supabase-js": "2.103.2",
     "next": "catalog:"
   },
