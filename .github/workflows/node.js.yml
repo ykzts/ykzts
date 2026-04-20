@@ -14,7 +14,7 @@ permissions:
 
 env:
   # renovate: datasource=npm depName=corepack
-  COREPACK_VERSION: 0.34.6
+  COREPACK_VERSION: 0.34.7
   # renovate: datasource=node-version depName=node
   NODE_VERSION: 24.15.0
 
