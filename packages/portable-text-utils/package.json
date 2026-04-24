@@ -19,6 +19,6 @@
     "@portabletext/types": "4.0.2",
     "@ykzts/tsconfig": "workspace:*",
     "typescript": "catalog:",
-    "vitest": "4.1.2"
+    "vitest": "4.1.5"
   }
 }

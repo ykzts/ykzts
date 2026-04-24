@@ -18,7 +18,7 @@
     "@types/react-dom": "19.2.3",
     "@ykzts/tsconfig": "workspace:*",
     "typescript": "catalog:",
-    "vitest": "4.1.2"
+    "vitest": "4.1.5"
   },
   "homepage": "https://ykzts.blog/",
   "keywords": [],
