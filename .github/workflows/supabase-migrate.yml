@@ -17,7 +17,7 @@ permissions:
 
 env:
   # renovate: datasource=github-releases depName=supabase/cli
-  SUPABASE_VERSION: 2.84.2
+  SUPABASE_VERSION: 2.95.4
 
 # Prevent concurrent migrations to the same environment
 concurrency:
