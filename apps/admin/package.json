@@ -14,7 +14,7 @@
     "@ykzts/site-config": "workspace:*",
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
-    "ai": "6.0.149",
+    "ai": "6.0.174",
     "diff": "8.0.4",
     "lucide-react": "1.7.0",
     "next": "catalog:",
