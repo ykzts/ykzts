@@ -27,7 +27,7 @@
   "description": "Admin application for content management",
   "devDependencies": {
     "@tailwindcss/postcss": "4.2.2",
-    "@vercel/config": "0.1.0",
+    "@vercel/config": "0.3.0",
     "@tailwindcss/typography": "0.5.19",
     "@types/node": "24.12.2",
     "@types/react": "19.2.14",
