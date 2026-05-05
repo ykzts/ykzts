@@ -70,7 +70,7 @@ importers:
         version: link:../../packages/ui
       ai:
         specifier: 6.0.149
-        version: 6.0.149(zod@4.3.6)
+        version: 6.0.149(zod@4.4.2)
       diff:
         specifier: 8.0.4
         version: 8.0.4
@@ -93,8 +93,8 @@ importers:
         specifier: 2.0.7
         version: 2.0.7(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       zod:
-        specifier: 4.3.6
-        version: 4.3.6
+        specifier: 4.4.2
+        version: 4.4.2
     devDependencies:
       '@tailwindcss/postcss':
         specifier: 4.2.2
@@ -170,7 +170,7 @@ importers:
         version: link:../../packages/ui
       ai:
         specifier: 6.0.149
-        version: 6.0.149(zod@4.3.6)
+        version: 6.0.149(zod@4.4.2)
       feed:
         specifier: 5.2.0
         version: 5.2.0
@@ -199,8 +199,8 @@ importers:
         specifier: 3.5.0
         version: 3.5.0
       zod:
-        specifier: 4.3.6
-        version: 4.3.6
+        specifier: 4.4.2
+        version: 4.4.2
     devDependencies:
       '@portabletext/types':
         specifier: 4.0.2
@@ -451,8 +451,8 @@ importers:
         specifier: 3.5.0
         version: 3.5.0
       zod:
-        specifier: 4.3.6
-        version: 4.3.6
+        specifier: 4.4.2
+        version: 4.4.2
     devDependencies:
       '@axe-core/playwright':
         specifier: 4.11.1
@@ -545,8 +545,8 @@ importers:
         specifier: 2.3.0
         version: 2.3.0
       zod:
-        specifier: 4.3.6
-        version: 4.3.6
+        specifier: 4.4.2
+        version: 4.4.2
     devDependencies:
       '@types/node':
         specifier: 24.12.2
@@ -6883,10 +6883,12 @@ packages:
 
   uuid@10.0.0:
     resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   validate-npm-package-name@5.0.0:
@@ -7192,6 +7194,9 @@ packages:
   zod@4.3.6:
     resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
 
+  zod@4.4.2:
+    resolution: {integrity: sha512-IynmDyxsEsb9RKzO3J9+4SxXnl2FTFSzNBaKKaMV6tsSk0rw9gYw9gs+JFCq/qk2LCZ78KDwyj+Z289TijSkUw==}
+
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
@@ -7199,19 +7204,19 @@ snapshots:
 
   '@adobe/css-tools@4.4.4': {}
 
-  '@ai-sdk/gateway@3.0.91(zod@4.3.6)':
+  '@ai-sdk/gateway@3.0.91(zod@4.4.2)':
     dependencies:
       '@ai-sdk/provider': 3.0.8
-      '@ai-sdk/provider-utils': 4.0.23(zod@4.3.6)
+      '@ai-sdk/provider-utils': 4.0.23(zod@4.4.2)
       '@vercel/oidc': 3.1.0
-      zod: 4.3.6
+      zod: 4.4.2
 
-  '@ai-sdk/provider-utils@4.0.23(zod@4.3.6)':
+  '@ai-sdk/provider-utils@4.0.23(zod@4.4.2)':
     dependencies:
       '@ai-sdk/provider': 3.0.8
       '@standard-schema/spec': 1.1.0
       eventsource-parser: 3.0.6
-      zod: 4.3.6
+      zod: 4.4.2
 
   '@ai-sdk/provider@3.0.8':
     dependencies:
@@ -9362,7 +9367,7 @@ snapshots:
       fs-extra: 11.3.4
       toml-eslint-parser: 0.12.0
       upath: 2.0.1
-      zod: 4.3.6
+      zod: 4.4.2
 
   '@renovatebot/good-enough-parser@2.0.0':
     dependencies:
@@ -10386,13 +10391,13 @@ snapshots:
     dependencies:
       humanize-ms: 1.2.1
 
-  ai@6.0.149(zod@4.3.6):
+  ai@6.0.149(zod@4.4.2):
     dependencies:
-      '@ai-sdk/gateway': 3.0.91(zod@4.3.6)
+      '@ai-sdk/gateway': 3.0.91(zod@4.4.2)
       '@ai-sdk/provider': 3.0.8
-      '@ai-sdk/provider-utils': 4.0.23(zod@4.3.6)
+      '@ai-sdk/provider-utils': 4.0.23(zod@4.4.2)
       '@opentelemetry/api': 1.9.0
-      zod: 4.3.6
+      zod: 4.4.2
 
   ajv-formats@3.0.1(ajv@8.18.0):
     optionalDependencies:
@@ -14959,5 +14964,7 @@ snapshots:
   zod@3.25.76: {}
 
   zod@4.3.6: {}
+
+  zod@4.4.2: {}
 
   zwitch@2.0.4: {}

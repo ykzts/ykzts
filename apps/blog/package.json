@@ -21,7 +21,7 @@
     "server-only": "0.0.1",
     "shiki": "4.0.2",
     "tailwind-merge": "3.5.0",
-    "zod": "4.3.6"
+    "zod": "4.4.2"
   },
   "description": "Next.js blog application for ykzts.blog",
   "devDependencies": {
