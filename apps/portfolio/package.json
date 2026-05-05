@@ -24,7 +24,7 @@
     "shiki": "4.0.2",
     "sonner": "2.0.7",
     "tailwind-merge": "3.5.0",
-    "zod": "4.3.6"
+    "zod": "4.4.2"
   },
   "description": "Next.js portfolio website showcasing projects, skills, and professional experience",
   "devDependencies": {
