@@ -8,13 +8,13 @@
     "@vercel/analytics": "2.0.1",
     "@ykzts/site-config": "workspace:*",
     "next": "catalog:",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
   },
   "description": "Next.js redirect gateway for legacy blog domains",
   "devDependencies": {
     "@types/node": "24.12.2",
-    "@types/react": "19.2.14",
+    "@types/react": "19.2.15",
     "@types/react-dom": "19.2.3",
     "@ykzts/tsconfig": "workspace:*",
     "typescript": "catalog:",
