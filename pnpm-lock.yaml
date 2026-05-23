@@ -382,8 +382,8 @@ importers:
   apps/portfolio:
     dependencies:
       '@marsidev/react-turnstile':
-        specifier: 1.5.0
-        version: 1.5.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+        specifier: 1.5.2
+        version: 1.5.2(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@mdx-js/react':
         specifier: 3.1.1
         version: 3.1.1(@types/react@19.2.15)(react@19.2.6)
@@ -1885,8 +1885,8 @@ packages:
   '@lhci/utils@0.15.1':
     resolution: {integrity: sha512-WclJnUQJeOMY271JSuaOjCv/aA0pgvuHZS29NFNdIeI14id8eiFsjith85EGKYhljgoQhJ2SiW4PsVfFiakNNw==}
 
-  '@marsidev/react-turnstile@1.5.0':
-    resolution: {integrity: sha512-Ph6mcj8u9WBDsBO7s9jKPsyRDz1sBPBJwrk+Ngx09vFInvKsQ6U6kW5amEcGq4dHOreB6DgFrOJk7/fy318YlQ==}
+  '@marsidev/react-turnstile@1.5.2':
+    resolution: {integrity: sha512-+3aBPxp86JzSC0ZmgyonoGoUEENcUkH3LGahXSpkV87ArvD2DzRCmPgh0FyQk6PQRmJwQJDAfwNavFsxUxMQWA==}
     peerDependencies:
       react: ^17.0.2 || ^18.0.0 || ^19.0
       react-dom: ^17.0.2 || ^18.0.0 || ^19.0
@@ -8876,7 +8876,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@marsidev/react-turnstile@1.5.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
+  '@marsidev/react-turnstile@1.5.2(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
     dependencies:
       react: 19.2.6
       react-dom: 19.2.6(react@19.2.6)
