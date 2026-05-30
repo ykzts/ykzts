@@ -10,7 +10,7 @@
   "devDependencies": {
     "@types/node": "24.12.2",
     "@ykzts/tsconfig": "workspace:*",
-    "typescript": "6.0.2"
+    "typescript": "6.0.3"
   },
   "exports": {
     ".": {
