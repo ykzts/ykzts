@@ -1,7 +1,7 @@
 {
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
-    "@portabletext/react": "6.0.3",
+    "@portabletext/react": "6.2.0",
     "@supabase/supabase-js": "2.106.2",
     "@vercel/analytics": "2.0.1",
     "@vercel/microfrontends": "2.3.4",
