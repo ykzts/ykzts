@@ -1,9 +1,25 @@
 import { getPosts } from '@ykzts/supabase/queries'
+import { cacheLife } from 'next/cache'
 import { Suspense } from 'react'
 import Skeleton from '@/components/skeleton'
 import range from '@/lib/range'
 
 const RECENT_POSTS_COUNT = 5
+
+function startOfHour(date: Date): Date {
+  const normalized = new Date(date)
+  normalized.setMinutes(0, 0, 0)
+
+  return normalized
+}
+
+async function getCurrentTime(): Promise<Date> {
+  'use cache'
+
+  cacheLife('hours')
+
+  return startOfHour(new Date())
+}
 
 function getDateBasedUrl(slug: string, publishedAt: string): string {
   const date = new Date(publishedAt)
@@ -38,10 +54,12 @@ function RecentPostsSkeleton() {
 }
 
 async function RecentPostsImpl() {
+  const now = await getCurrentTime()
+
   let allPosts: Awaited<ReturnType<typeof getPosts>>
 
   try {
-    allPosts = await getPosts()
+    allPosts = await getPosts(1, now)
   } catch (error) {
     console.error('Failed to load recent posts:', error)
     return null
