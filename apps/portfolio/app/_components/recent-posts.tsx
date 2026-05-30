@@ -5,6 +5,13 @@ import range from '@/lib/range'
 
 const RECENT_POSTS_COUNT = 5
 
+function startOfDay(date: Date): Date {
+  const normalized = new Date(date)
+  normalized.setMinutes(0, 0, 0)
+
+  return normalized
+}
+
 function getDateBasedUrl(slug: string, publishedAt: string): string {
   const date = new Date(publishedAt)
   const year = date.getUTCFullYear()
@@ -41,7 +48,7 @@ async function RecentPostsImpl() {
   let allPosts: Awaited<ReturnType<typeof getPosts>>
 
   try {
-    allPosts = await getPosts()
+    allPosts = await getPosts(1, startOfDay(new Date()))
   } catch (error) {
     console.error('Failed to load recent posts:', error)
     return null

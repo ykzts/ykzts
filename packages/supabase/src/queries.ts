@@ -207,7 +207,7 @@ export async function getWorks(): Promise<Work[]> {
  * Returns an empty array when Supabase is not configured, so listing pages can
  * still render without a profile dependency.
  */
-export async function getPosts(page = 1): Promise<Post[]> {
+export async function getPosts(page = 1, now = new Date()): Promise<Post[]> {
   'use cache'
 
   cacheTag('posts')
@@ -244,7 +244,7 @@ export async function getPosts(page = 1): Promise<Post[]> {
       `
     )
     .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
+    .lte('published_at', now.toISOString())
     .order('published_at', { ascending: false })
     .range(offset, offset + POSTS_PER_PAGE - 1)
 
