@@ -139,8 +139,8 @@ importers:
   apps/blog:
     dependencies:
       '@portabletext/react':
-        specifier: 6.0.3
-        version: 6.0.3(react@19.2.6)
+        specifier: 6.2.0
+        version: 6.2.0(react@19.2.6)
       '@supabase/supabase-js':
         specifier: 2.106.2
         version: 2.106.2
@@ -306,8 +306,8 @@ importers:
   apps/memo:
     dependencies:
       '@portabletext/react':
-        specifier: 6.0.3
-        version: 6.0.3(react@19.2.6)
+        specifier: 6.2.0
+        version: 6.2.0(react@19.2.6)
       '@supabase/ssr':
         specifier: 0.10.3
         version: 0.10.3(@supabase/supabase-js@2.106.2)
@@ -388,8 +388,8 @@ importers:
         specifier: 3.1.1
         version: 3.1.1(@types/react@19.2.15)(react@19.2.6)
       '@portabletext/react':
-        specifier: 6.0.3
-        version: 6.0.3(react@19.2.6)
+        specifier: 6.2.0
+        version: 6.2.0(react@19.2.6)
       '@portabletext/types':
         specifier: 4.0.2
         version: 4.0.2
@@ -2250,8 +2250,8 @@ packages:
     resolution: {integrity: sha512-D1fkDVFebLGtynXx96tFR1vCilOEbFenZyeGapcapZg5xN9raXYzTLIIiRbuF9af7viRiEsZPnJX5Cei8uzURw==}
     engines: {node: '>=20.19 <22 || >=22.12'}
 
-  '@portabletext/react@6.0.3':
-    resolution: {integrity: sha512-xkpykEYKdyR8DJq1oTGKhmwQMqIta8OEHAEMq1EQ5kGOdnVU4ZzU6c+1EZNgyNFpSZs/25ee3kA4Te9ybbQCyA==}
+  '@portabletext/react@6.2.0':
+    resolution: {integrity: sha512-Z0J/AWrvg7GyDfEBQRRhi6ZpxLOsN4/QbU8KhTwfa6r2ELiRaMa4gkHE9wfs3V1ozNDrTG4IRr+8yBnHNDnAqA==}
     engines: {node: '>=20.19 <22 || >=22.12'}
     peerDependencies:
       react: ^18.2 || ^19
@@ -9278,7 +9278,7 @@ snapshots:
       '@portabletext/toolkit': 5.0.2
       markdown-it: 14.1.1
 
-  '@portabletext/react@6.0.3(react@19.2.6)':
+  '@portabletext/react@6.2.0(react@19.2.6)':
     dependencies:
       '@portabletext/toolkit': 5.0.2
       '@portabletext/types': 4.0.2
