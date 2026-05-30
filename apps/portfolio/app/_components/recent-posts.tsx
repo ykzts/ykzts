@@ -13,7 +13,7 @@ function startOfHour(date: Date): Date {
   return normalized
 }
 
-async function getCurrentTime(): Date {
+async function getCurrentTime(): Promise<Date> {
   'use cache'
 
   cacheLife('hours')
