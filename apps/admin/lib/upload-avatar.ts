@@ -185,7 +185,7 @@ export async function deleteAvatar(): Promise<{ error?: string }> {
       .eq('user_id', user.id)
       .maybeSingle()
 
-    if (!profile || !profile.avatar_url) {
+    if (!profile?.avatar_url) {
       return {
         error: 'アバターが設定されていません。'
       }
