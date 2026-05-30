@@ -5,7 +5,7 @@ import range from '@/lib/range'
 
 const RECENT_POSTS_COUNT = 5
 
-function startOfDay(date: Date): Date {
+function startOfHour(date: Date): Date {
   const normalized = new Date(date)
   normalized.setMinutes(0, 0, 0)
 
@@ -44,11 +44,11 @@ function RecentPostsSkeleton() {
   )
 }
 
-async function RecentPostsImpl() {
+async function RecentPostsImpl({ now }: { now: Date }) {
   let allPosts: Awaited<ReturnType<typeof getPosts>>
 
   try {
-    allPosts = await getPosts(1, startOfDay(new Date()))
+    allPosts = await getPosts(1, now)
   } catch (error) {
     console.error('Failed to load recent posts:', error)
     return null
@@ -130,9 +130,11 @@ async function RecentPostsImpl() {
 }
 
 export default function RecentPosts() {
+  const now = startOfHour(new Date())
+
   return (
     <Suspense fallback={<RecentPostsSkeleton />}>
-      <RecentPostsImpl />
+      <RecentPostsImpl now={now} />
     </Suspense>
   )
 }
