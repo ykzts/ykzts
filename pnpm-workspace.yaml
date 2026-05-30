@@ -3,12 +3,17 @@ packages:
   - packages/*
   - profile
   - renovate-config
-  - scripts/*
 
 catalog:
   '@next/mdx': 16.2.6
   next: 16.2.6
   typescript: 6.0.3
+
+allowBuilds:
+  '@swc/core': true
+  '@tailwindcss/oxide': true
+  esbuild: true
+  shape: true
 
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
@@ -16,9 +21,4 @@ minimumReleaseAgeExclude:
   - eslint-config-next
   - next
   - renovate
-onlyBuiltDependencies:
-  - '@swc/core'
-  - '@tailwindcss/oxide'
-  - esbuild
-  - sharp
 savePrefix: ''
