@@ -143,7 +143,7 @@ async function RecentPostsImpl() {
 export default function RecentPosts() {
   return (
     <Suspense fallback={<RecentPostsSkeleton />}>
-      <RecentPostsImpl now={now} />
+      <RecentPostsImpl />
     </Suspense>
   )
 }
