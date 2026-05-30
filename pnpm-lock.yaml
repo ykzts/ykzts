@@ -70,7 +70,7 @@ importers:
         version: link:../../packages/ui
       ai:
         specifier: 6.0.191
-        version: 6.0.191(zod@4.3.6)
+        version: 6.0.191(zod@4.4.3)
       diff:
         specifier: 8.0.4
         version: 8.0.4
@@ -93,8 +93,8 @@ importers:
         specifier: 2.0.7
         version: 2.0.7(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       zod:
-        specifier: 4.3.6
-        version: 4.3.6
+        specifier: 4.4.3
+        version: 4.4.3
     devDependencies:
       '@tailwindcss/postcss':
         specifier: 4.2.2
@@ -170,7 +170,7 @@ importers:
         version: link:../../packages/ui
       ai:
         specifier: 6.0.191
-        version: 6.0.191(zod@4.3.6)
+        version: 6.0.191(zod@4.4.3)
       feed:
         specifier: 5.2.0
         version: 5.2.0
@@ -199,8 +199,8 @@ importers:
         specifier: 3.6.0
         version: 3.6.0
       zod:
-        specifier: 4.3.6
-        version: 4.3.6
+        specifier: 4.4.3
+        version: 4.4.3
     devDependencies:
       '@portabletext/types':
         specifier: 4.0.2
@@ -451,8 +451,8 @@ importers:
         specifier: 3.6.0
         version: 3.6.0
       zod:
-        specifier: 4.3.6
-        version: 4.3.6
+        specifier: 4.4.3
+        version: 4.4.3
     devDependencies:
       '@axe-core/playwright':
         specifier: 4.11.1
@@ -545,8 +545,8 @@ importers:
         specifier: 2.4.0
         version: 2.4.0
       zod:
-        specifier: 4.3.6
-        version: 4.3.6
+        specifier: 4.4.3
+        version: 4.4.3
     devDependencies:
       '@types/node':
         specifier: 24.12.2
@@ -7204,6 +7204,9 @@ packages:
   zod@4.3.6:
     resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
 
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
+
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
@@ -7211,19 +7214,19 @@ snapshots:
 
   '@adobe/css-tools@4.4.4': {}
 
-  '@ai-sdk/gateway@3.0.120(zod@4.3.6)':
+  '@ai-sdk/gateway@3.0.120(zod@4.4.3)':
     dependencies:
       '@ai-sdk/provider': 3.0.10
-      '@ai-sdk/provider-utils': 4.0.27(zod@4.3.6)
+      '@ai-sdk/provider-utils': 4.0.27(zod@4.4.3)
       '@vercel/oidc': 3.2.0
-      zod: 4.3.6
+      zod: 4.4.3
 
-  '@ai-sdk/provider-utils@4.0.27(zod@4.3.6)':
+  '@ai-sdk/provider-utils@4.0.27(zod@4.4.3)':
     dependencies:
       '@ai-sdk/provider': 3.0.10
       '@standard-schema/spec': 1.1.0
       eventsource-parser: 3.0.8
-      zod: 4.3.6
+      zod: 4.4.3
 
   '@ai-sdk/provider@3.0.10':
     dependencies:
@@ -9374,7 +9377,7 @@ snapshots:
       fs-extra: 11.3.4
       toml-eslint-parser: 0.12.0
       upath: 2.0.1
-      zod: 4.3.6
+      zod: 4.4.3
 
   '@renovatebot/good-enough-parser@2.0.0':
     dependencies:
@@ -10392,13 +10395,13 @@ snapshots:
     dependencies:
       humanize-ms: 1.2.1
 
-  ai@6.0.191(zod@4.3.6):
+  ai@6.0.191(zod@4.4.3):
     dependencies:
-      '@ai-sdk/gateway': 3.0.120(zod@4.3.6)
+      '@ai-sdk/gateway': 3.0.120(zod@4.4.3)
       '@ai-sdk/provider': 3.0.10
-      '@ai-sdk/provider-utils': 4.0.27(zod@4.3.6)
+      '@ai-sdk/provider-utils': 4.0.27(zod@4.4.3)
       '@opentelemetry/api': 1.9.1
-      zod: 4.3.6
+      zod: 4.4.3
 
   ajv-formats@3.0.1(ajv@8.18.0):
     optionalDependencies:
@@ -14967,5 +14970,7 @@ snapshots:
   zod@3.25.76: {}
 
   zod@4.3.6: {}
+
+  zod@4.4.3: {}
 
   zwitch@2.0.4: {}
