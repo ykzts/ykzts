@@ -62,7 +62,7 @@ async function HeroImpl() {
               className="h-auto w-full rounded-2xl shadow-lg"
               fetchPriority="high"
               height={kv.height}
-              lazy="eager"
+              loading="eager"
               sizes="(min-width: 768px) 33vw, 100vw"
               src={kv.url}
               width={kv.width}
