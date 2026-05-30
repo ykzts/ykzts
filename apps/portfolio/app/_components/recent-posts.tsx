@@ -13,7 +13,7 @@ function startOfHour(date: Date): Date {
   return normalized
 }
 
-function getCurrentTime(): Date {
+async function getCurrentTime(): Date {
   'use cache'
 
   cacheLife('hours')
@@ -54,7 +54,7 @@ function RecentPostsSkeleton() {
 }
 
 async function RecentPostsImpl() {
-  const now = getCurrentTime()
+  const now = await getCurrentTime()
 
   let allPosts: Awaited<ReturnType<typeof getPosts>>
 
