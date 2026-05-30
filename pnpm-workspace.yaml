@@ -10,8 +10,8 @@ catalog:
   typescript: 6.0.3
 
 allowBuilds:
-  @swc/core: true
-  @tailwindcss/oxide: true
+  '@swc/core': true
+  '@tailwindcss/oxide': true
   esbuild: true
   shape: true
 
