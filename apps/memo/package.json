@@ -20,7 +20,7 @@
     "@portabletext/types": "4.0.2",
     "@tailwindcss/postcss": "4.3.0",
     "@tailwindcss/typography": "0.5.19",
-    "@types/node": "24.12.2",
+    "@types/node": "24.12.4",
     "@types/react": "19.2.15",
     "@types/react-dom": "19.2.3",
     "@ykzts/tsconfig": "workspace:*",
