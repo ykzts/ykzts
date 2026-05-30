@@ -1,4 +1,5 @@
 import { getPosts } from '@ykzts/supabase/queries'
+import { cacheLife } from 'next/cache'
 import { Suspense } from 'react'
 import Skeleton from '@/components/skeleton'
 import range from '@/lib/range'
@@ -10,6 +11,14 @@ function startOfHour(date: Date): Date {
   normalized.setMinutes(0, 0, 0)
 
   return normalized
+}
+
+function getCurrentTime(): Date {
+  'use cache'
+
+  cacheLife('hours')
+
+  return startOfHour(new Date())
 }
 
 function getDateBasedUrl(slug: string, publishedAt: string): string {
@@ -44,7 +53,9 @@ function RecentPostsSkeleton() {
   )
 }
 
-async function RecentPostsImpl({ now }: { now: Date }) {
+async function RecentPostsImpl() {
+  const now = getCurrentTime()
+
   let allPosts: Awaited<ReturnType<typeof getPosts>>
 
   try {
@@ -130,8 +141,6 @@ async function RecentPostsImpl({ now }: { now: Date }) {
 }
 
 export default function RecentPosts() {
-  const now = startOfHour(new Date())
-
   return (
     <Suspense fallback={<RecentPostsSkeleton />}>
       <RecentPostsImpl now={now} />
