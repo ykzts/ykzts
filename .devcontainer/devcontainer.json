@@ -17,6 +17,9 @@
     "cpus": 4
   },
   "image": "mcr.microsoft.com/devcontainers/typescript-node:4-24-bookworm",
+  "mounts": [
+    "source=ykzts-com-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+  ],
   "name": "ykzts.com",
   "postCreateCommand": "./.devcontainer/post-create.sh"
 }
