@@ -1,3 +1,4 @@
+import { Link } from '@vercel/microfrontends/next/client'
 import { getPosts } from '@ykzts/supabase/queries'
 import { cacheLife } from 'next/cache'
 import { Suspense } from 'react'
@@ -88,9 +89,9 @@ async function RecentPostsImpl() {
               key={post.id}
             >
               <h3 className="mb-2 font-semibold text-card-foreground text-lg">
-                <a className="hover:text-primary hover:underline" href={url}>
+                <Link className="hover:text-primary hover:underline" href={url}>
                   {post.title}
-                </a>
+                </Link>
               </h3>
               {post.excerpt && (
                 <p className="mb-3 line-clamp-2 text-muted-foreground text-sm leading-relaxed">
@@ -129,12 +130,12 @@ async function RecentPostsImpl() {
         })}
       </div>
       <div className="mt-8 text-center">
-        <a
+        <Link
           className="inline-flex items-center rounded-lg border border-border bg-card px-6 py-3 font-medium text-card-foreground transition-all duration-300 hover:border-primary/50 hover:shadow-md"
           href="/blog"
         >
           ブログをすべて見る
-        </a>
+        </Link>
       </div>
     </section>
   )

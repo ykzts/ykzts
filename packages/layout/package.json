@@ -19,6 +19,7 @@
     "test": "vitest --run"
   },
   "dependencies": {
+    "@vercel/microfrontends": "2.3.4",
     "@ykzts/site-config": "workspace:*",
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",

@@ -1,5 +1,5 @@
+import { Link } from '@vercel/microfrontends/next/client'
 import { ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
 
 export default function DocsLayout({ children }: LayoutProps<'/'>) {
   return (

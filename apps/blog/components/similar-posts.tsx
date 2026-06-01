@@ -1,3 +1,4 @@
+import { Link } from '@vercel/microfrontends/next/client'
 import { extractFirstParagraph } from '@ykzts/portable-text-utils'
 import {
   Card,
@@ -7,7 +8,6 @@ import {
   CardHeader,
   CardTitle
 } from '@ykzts/ui/components/card'
-import Link from 'next/link'
 import { getPostUrl } from '@/lib/blog-urls'
 import type { PortableTextValue } from '@/lib/portable-text'
 import DateDisplay from './date-display'

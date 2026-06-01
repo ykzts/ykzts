@@ -1,5 +1,6 @@
 'use client'
 
+import { Link } from '@vercel/microfrontends/next/client'
 import { Button } from '@ykzts/ui/components/button'
 import {
   NavigationMenu,
@@ -108,26 +109,26 @@ export default function Navigation({ actions, navItems }: Props) {
                   </summary>
                   <div className="mt-1 ml-4 flex flex-col gap-1">
                     {item.children.map((child) => (
-                      <a
+                      <Link
                         className="rounded-md px-4 py-2 text-base text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
                         href={child.href}
                         key={child.href}
                         onClick={() => setOpen(false)}
                       >
                         {child.label}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </details>
               ) : (
-                <a
+                <Link
                   className="rounded-md px-4 py-3 font-medium text-foreground text-lg transition-colors hover:bg-accent hover:text-accent-foreground"
                   href={item.href}
                   key={item.href}
                   onClick={() => setOpen(false)}
                 >
                   {item.label}
-                </a>
+                </Link>
               )
             )}
           </nav>

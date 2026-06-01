@@ -1,5 +1,5 @@
+import { Link } from '@vercel/microfrontends/next/client'
 import type { Route } from 'next'
-import Link from 'next/link'
 import DateDisplay from './date-display'
 import TagList from './tag-list'
 

@@ -1,7 +1,7 @@
 'use client'
 
+import { Link } from '@vercel/microfrontends/next/client'
 import { Button } from '@ykzts/ui/components/button'
-import Link from 'next/link'
 import type { ComponentProps } from 'react'
 
 type LinkButtonProps = Omit<ComponentProps<typeof Button>, 'render'> &
@@ -16,9 +16,5 @@ export default function LinkButton({
   href,
   ...props
 }: LinkButtonProps) {
-  return (
-    <Button render={<Link href={href} />} {...props}>
-      {children}
-    </Button>
-  )
+  return <Button render={<Link href={href}>{children}</Link>} {...props} />
 }
