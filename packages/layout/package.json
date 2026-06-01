@@ -23,7 +23,7 @@
     "@ykzts/site-config": "workspace:*",
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
-    "lucide-react": "1.16.0",
+    "lucide-react": "1.17.0",
     "next-themes": "0.4.6"
   },
   "peerDependencies": {
