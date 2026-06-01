@@ -1,6 +1,6 @@
+import { Link } from '@vercel/microfrontends/next/client'
 import { Badge } from '@ykzts/ui/components/badge'
 import type { Route } from 'next'
-import Link from 'next/link'
 
 type TagListProps = {
   tags: string[]

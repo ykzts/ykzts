@@ -1,7 +1,7 @@
+import { Link } from '@vercel/microfrontends/next/client'
 import { portableTextToMarkdown } from '@ykzts/portable-text-utils'
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import DateDisplay from '@/components/date-display'
 import LinkButton from '@/components/link-button'

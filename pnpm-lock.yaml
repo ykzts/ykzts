@@ -563,6 +563,9 @@ importers:
 
   packages/layout:
     dependencies:
+      '@vercel/microfrontends':
+        specifier: 2.3.4
+        version: 2.3.4(@vercel/analytics@2.0.1(next@16.2.6(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(react@19.2.6))(next@16.2.6(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(vite@8.0.14(@types/node@24.12.4)(jiti@2.7.0)(yaml@2.8.3))
       '@ykzts/site-config':
         specifier: workspace:*
         version: link:../site-config

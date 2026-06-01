@@ -27,8 +27,8 @@ vi.mock('next/image', () => ({
   }) => React.createElement('img', { alt, src, ...props })
 }))
 
-vi.mock('next/link', () => ({
-  default: ({
+vi.mock('@vercel/microfrontends/next/client', () => ({
+  Link: ({
     children,
     href,
     ...props

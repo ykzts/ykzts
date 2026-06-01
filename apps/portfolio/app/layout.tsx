@@ -1,5 +1,9 @@
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
+import {
+  PrefetchCrossZoneLinks,
+  PrefetchCrossZoneLinksProvider
+} from '@vercel/microfrontends/next/client'
 import { getSiteName, getSiteOrigin } from '@ykzts/site-config'
 import { getProfile } from '@ykzts/supabase/queries'
 import { Toaster } from '@ykzts/ui/components/sonner'
@@ -82,20 +86,23 @@ export default function RootLayout({ children, modal }: LayoutProps<'/'>) {
           disableTransitionOnChange
           enableSystem
         >
-          <a
-            className="absolute -top-20 left-2 z-1000 rounded bg-primary px-4 py-2 text-primary-foreground no-underline transition-[top] duration-300 focus-visible:top-2"
-            href="#content"
-          >
-            メインコンテンツにスキップ
-          </a>
+          <PrefetchCrossZoneLinksProvider>
+            <a
+              className="absolute -top-20 left-2 z-1000 rounded bg-primary px-4 py-2 text-primary-foreground no-underline transition-[top] duration-300 focus-visible:top-2"
+              href="#content"
+            >
+              メインコンテンツにスキップ
+            </a>
 
-          <SVGSymbols />
+            <SVGSymbols />
 
-          {children}
-          {modal}
+            {children}
+            {modal}
 
-          <Toaster />
-          <Analytics />
+            <Toaster />
+            <Analytics />
+            <PrefetchCrossZoneLinks />
+          </PrefetchCrossZoneLinksProvider>
         </ThemeProvider>
       </body>
     </html>

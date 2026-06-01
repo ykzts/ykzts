@@ -30,6 +30,12 @@
       "sourceType": "github",
       "skillPath": "skills/composition-patterns/SKILL.md",
       "computedHash": "575757e3e25761c8c562d6e395d29f0b76c98b1273c0bd72d88e6ab1bc9c7d42"
+    },
+    "vercel-microfrontends": {
+      "source": "vercel/microfrontends",
+      "sourceType": "github",
+      "skillPath": "skills/vercel-microfrontends/SKILL.md",
+      "computedHash": "cabdceabe3985a640fb5b5569aae0fdab7d0bcb2d077197ad43e485c1b05da07"
     }
   }
 }

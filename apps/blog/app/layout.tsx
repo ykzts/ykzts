@@ -1,5 +1,9 @@
 import './globals.css'
 import { Analytics } from '@vercel/analytics/next'
+import {
+  PrefetchCrossZoneLinks,
+  PrefetchCrossZoneLinksProvider
+} from '@vercel/microfrontends/next/client'
 import Header from '@ykzts/layout/components/header'
 import SiteFooter from '@ykzts/layout/components/site-footer'
 import { getSiteName, getSiteOrigin } from '@ykzts/site-config'
@@ -89,15 +93,18 @@ export default function RootLayout({
           disableTransitionOnChange
           enableSystem
         >
-          <Suspense fallback={null}>
-            <DraftModeBanner />
-          </Suspense>
-          <Header
-            extra={<SearchForm className="hidden md:block md:w-48 lg:w-64" />}
-          />
-          {children}
-          <SiteFooter />
-          <Analytics />
+          <PrefetchCrossZoneLinksProvider>
+            <Suspense fallback={null}>
+              <DraftModeBanner />
+            </Suspense>
+            <Header
+              extra={<SearchForm className="hidden md:block md:w-48 lg:w-64" />}
+            />
+            {children}
+            <SiteFooter />
+            <Analytics />
+            <PrefetchCrossZoneLinks />
+          </PrefetchCrossZoneLinksProvider>
         </ThemeProvider>
       </body>
     </html>
