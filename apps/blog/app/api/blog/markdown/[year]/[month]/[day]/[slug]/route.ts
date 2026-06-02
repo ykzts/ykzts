@@ -46,7 +46,7 @@ export async function GET(
     })
   }
 
-  const body = portableTextToMarkdown(post.content, { headingOffset: 2 })
+  const body = portableTextToMarkdown(post.content, { headingOffset: 0 })
 
   return new Response([`# ${post.title}`, `${body}\n`].join('\n\n'), {
     headers: {

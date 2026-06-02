@@ -39,7 +39,7 @@ export async function GET(request: Request) {
         controller.enqueue(textEncoder.encode(`## [${post.title}](${url})\n\n`))
 
         const body = isPortableTextValue(post.content)
-          ? portableTextToMarkdown(post.content, { headingOffset: 3 })
+          ? portableTextToMarkdown(post.content, { headingOffset: 1 })
           : post.excerpt
 
         controller.enqueue(textEncoder.encode(`${body}\n\n`))
