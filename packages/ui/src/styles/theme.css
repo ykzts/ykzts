@@ -182,5 +182,5 @@
 }
 
 @utility shiki {
-  @apply rounded overflow-y-auto p-1 text-sm;
+  @apply rounded-lg overflow-y-auto p-2 text-sm;
 }
