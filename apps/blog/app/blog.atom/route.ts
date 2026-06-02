@@ -27,8 +27,18 @@ export async function GET() {
       }
     : undefined
 
+  const latestPostUpdatedAt =
+    posts.length > 0
+      ? posts.reduce((latest, post) => {
+          const postDate = new Date(post.version_date ?? post.published_at)
+          return postDate.getTime() > latest.getTime() ? postDate : latest
+        }, new Date(0))
+      : undefined
+
   const feedCopyright = profileName
-    ? `Copyright © ${new Date().getFullYear()} ${profileName}`
+    ? latestPostUpdatedAt
+      ? `Copyright © ${latestPostUpdatedAt.getFullYear()} ${profileName}`
+      : `Copyright © ${profileName}`
     : undefined
 
   const feed = new Feed({
@@ -37,11 +47,13 @@ export async function GET() {
     description: 'Blog',
     favicon: new URL('/favicon.ico', siteOrigin).toString(),
     feedLinks: {
-      atom: new URL('/blog/atom.xml', siteOrigin).toString()
+      atom: new URL('/blog.atom', siteOrigin).toString()
     },
+    generator: 'Next.js with feed package',
     id: baseUrl,
     link: baseUrl,
-    title: `Blog | ${getSiteName()}`
+    title: `Blog | ${getSiteName()}`,
+    updated: latestPostUpdatedAt
   })
 
   for (const post of posts) {
@@ -56,11 +68,11 @@ export async function GET() {
 
     feed.addItem({
       content: portableTextToHTML(post.content),
-      date: new Date(post.published_at),
+      date: post.version_date ? new Date(post.version_date) : publishedDate,
       description: post.excerpt || undefined,
       id: postUrl,
       link: postUrl,
-      published: new Date(post.published_at),
+      published: publishedDate,
       title: post.title || DEFAULT_POST_TITLE
     })
   }

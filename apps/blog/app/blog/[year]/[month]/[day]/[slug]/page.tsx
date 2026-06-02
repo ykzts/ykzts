@@ -104,8 +104,15 @@ export async function generateMetadata({
 
   const authorName = post.profile.name
   const fediverseCreator = post.profile.fediverse_creator?.trim()
+  const url = getDateBasedUrl(slug, post.published_at)
 
   return {
+    alternates: {
+      canonical: url,
+      types: {
+        'text/markdown': `${url}.md`
+      }
+    },
     authors: [{ name: authorName }],
     description: post.excerpt || undefined,
     openGraph: {
@@ -116,7 +123,7 @@ export async function generateMetadata({
       tags: post.tags ?? undefined,
       title: post.title || DEFAULT_POST_TITLE,
       type: 'article',
-      url: getDateBasedUrl(slug, post.published_at)
+      url
     },
     other: {
       ...(fediverseCreator ? { 'fediverse:creator': fediverseCreator } : {})
