@@ -13,7 +13,7 @@ This application powers the blog section at [ykzts.com/blog](https://ykzts.com/b
 - **Supabase Integration**: PostgreSQL database for article management and storage
 - **AI-Powered Similar Posts**: Embedding-based similar article recommendations via Vercel AI SDK
 - **Vercel Analytics**: Performance monitoring and user analytics
-- **Atom Feed**: Syndication feed generated at `/blog/atom.xml`
+- **Atom Feed**: Syndication feed generated at `/blog.atom`
 - **Sitemap**: Auto-generated sitemap at `/blog/sitemap.xml`
 - **Full-Text Search**: Article search powered by Supabase
 - **Draft Mode**: Preview unpublished posts via secure draft endpoints

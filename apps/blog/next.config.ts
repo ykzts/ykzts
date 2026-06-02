@@ -11,6 +11,25 @@ const nextConfig: NextConfig = {
   images: getSupabaseImageConfig(),
   reactCompiler: true,
   reactStrictMode: true,
+  redirects: async () => [
+    {
+      destination: '/blog.atom',
+      permanent: true,
+      source: '/blog/atom.xml'
+    }
+  ],
+  rewrites: async () => ({
+    beforeFiles: [
+      {
+        destination: '/api/blog/markdown',
+        source: '/blog.md'
+      },
+      {
+        destination: '/api/blog/markdown/:year/:month/:day/:slug',
+        source: '/blog/:year/:month/:day/:slug.md'
+      }
+    ]
+  }),
   typedRoutes: true
 }
 

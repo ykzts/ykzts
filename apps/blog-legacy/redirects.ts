@@ -2,7 +2,7 @@ export type LegacyRedirectTuple = [source: string, destination: string]
 
 export const legacyRedirects: LegacyRedirectTuple[] = [
   ['/([Aa]uthor|about)', '/'],
-  ['/(feed/?|index.xml|rss)', '/blog/atom.xml'],
+  ['/(feed/?|index.xml|rss)', '/blog.atom'],
   ['/post/20308520977', '/blog/2012/04/01/custom-http-header-on-nginx'],
   ['/post/25108537330', '/blog/2012/06/14/nodex-xmlhttprequest'],
   ['/post/25378068289', '/blog/2012/06/18/xmlhttprequest-response-type'],

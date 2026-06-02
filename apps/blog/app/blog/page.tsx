@@ -23,6 +23,12 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 
   return {
+    alternates: {
+      canonical: '/blog',
+      types: {
+        'text/markdown': '/blog.md'
+      }
+    },
     description,
     openGraph: {
       description,

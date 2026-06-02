@@ -28,7 +28,7 @@ describe('createLegacyRedirects', () => {
     const redirects = createLegacyRedirects('https://example.com/')
 
     expect(redirects[1]).toEqual({
-      destination: 'https://example.com/blog/atom.xml',
+      destination: 'https://example.com/blog.atom',
       source: '/(feed/?|index.xml|rss)',
       statusCode: 301
     })

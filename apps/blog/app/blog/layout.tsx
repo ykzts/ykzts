@@ -4,7 +4,7 @@ import type { ReactNode } from 'react'
 export const metadata: Metadata = {
   alternates: {
     types: {
-      'application/atom+xml': '/blog/atom.xml'
+      'application/atom+xml': '/blog.atom'
     }
   }
 }
