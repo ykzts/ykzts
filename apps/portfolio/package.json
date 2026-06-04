@@ -45,7 +45,7 @@
     "@vitejs/plugin-react": "6.0.2",
     "@ykzts/tsconfig": "workspace:*",
     "autoprefixer": "10.5.0",
-    "axe-core": "4.11.4",
+    "axe-core": "4.12.0",
     "babel-plugin-react-compiler": "1.0.0",
     "jsdom": "29.1.1",
     "postcss": "8.5.15",
