@@ -12,9 +12,9 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "24.12.4",
+    "@types/node": "catalog:",
     "@ykzts/tsconfig": "workspace:*",
     "typescript": "catalog:",
-    "vitest": "4.1.8"
+    "vitest": "catalog:"
   }
 }
