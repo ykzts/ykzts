@@ -5,8 +5,8 @@ packages:
   - renovate-config
 
 catalog:
-  '@next/mdx': 16.2.6
-  next: 16.2.6
+  '@next/mdx': 16.2.7
+  next: 16.2.7
   typescript: 6.0.3
 
 allowBuilds:
