@@ -8,7 +8,7 @@
     "@react-email/render": "2.0.8",
     "@supabase/supabase-js": "2.106.2",
     "@vercel/analytics": "2.0.1",
-    "@vercel/microfrontends": "2.3.4",
+    "@vercel/microfrontends": "2.3.5",
     "@ykzts/layout": "workspace:*",
     "@ykzts/portable-text-utils": "workspace:*",
     "@ykzts/site-config": "workspace:*",

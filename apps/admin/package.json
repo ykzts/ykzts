@@ -6,7 +6,7 @@
     "@dnd-kit/utilities": "3.2.2",
     "@supabase/ssr": "0.10.3",
     "@supabase/supabase-js": "2.106.2",
-    "@vercel/microfrontends": "2.3.4",
+    "@vercel/microfrontends": "2.3.5",
     "@ykzts/fediverse": "workspace:*",
     "@ykzts/pagination-utils": "workspace:*",
     "@ykzts/portable-text-editor": "workspace:*",
