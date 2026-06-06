@@ -8,9 +8,9 @@
   },
   "description": "Supabase database type definitions for ykzts applications",
   "devDependencies": {
-    "@types/node": "24.12.4",
+    "@types/node": "catalog:",
     "@ykzts/tsconfig": "workspace:*",
-    "typescript": "6.0.3"
+    "typescript": "catalog:"
   },
   "exports": {
     ".": {

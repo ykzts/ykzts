@@ -8,17 +8,17 @@
     "@vercel/analytics": "2.0.1",
     "@ykzts/site-config": "workspace:*",
     "next": "catalog:",
-    "react": "19.2.7",
-    "react-dom": "19.2.7"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "description": "Next.js redirect gateway for legacy blog domains",
   "devDependencies": {
-    "@types/node": "24.12.4",
-    "@types/react": "19.2.16",
-    "@types/react-dom": "19.2.3",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "@ykzts/tsconfig": "workspace:*",
     "typescript": "catalog:",
-    "vitest": "4.1.8"
+    "vitest": "catalog:"
   },
   "homepage": "https://ykzts.blog/",
   "keywords": [],

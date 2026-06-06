@@ -43,9 +43,9 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@types/react": "19.2.16",
-    "@types/react-dom": "19.2.3",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "@ykzts/tsconfig": "workspace:*",
-    "typescript": "6.0.3"
+    "typescript": "catalog:"
   }
 }
