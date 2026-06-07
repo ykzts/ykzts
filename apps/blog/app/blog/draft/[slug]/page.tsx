@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import ArticleContent from '@/components/article-content'
+import DraftModeBanner from '@/components/draft-mode-banner'
 import PostNavigation from '@/components/post-navigation'
 import SimilarPosts from '@/components/similar-posts'
 import SimilarPostsSkeleton from '@/components/similar-posts-skeleton'
 import TableOfContents from '@/components/table-of-contents'
-import { getDateBasedUrl } from '@/lib/blog-urls'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
 import { extractHeadings } from '@/lib/extract-headings'
 import { isPortableTextValue } from '@/lib/portable-text'
@@ -85,11 +85,6 @@ export default async function DraftPostPage({ params }: PageProps) {
     notFound()
   }
 
-  // If the post has been published, redirect to the canonical date-based URL
-  if (post.published_at) {
-    redirect(getDateBasedUrl(slug, post.published_at))
-  }
-
   // Validate content is valid PortableText
   if (!post.content || !isPortableTextValue(post.content)) {
     notFound()
@@ -109,6 +104,8 @@ export default async function DraftPostPage({ params }: PageProps) {
 
   return (
     <main className="px-6 py-8 md:px-12 lg:px-24">
+      <DraftModeBanner />
+
       <div className="mx-auto max-w-4xl">
         {hasHeadings ? (
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">

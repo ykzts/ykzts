@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { draftMode } from 'next/headers'
 import {
   getLatestPostDate,
   getPostCountByYear,
@@ -13,11 +12,8 @@ export const metadata: Metadata = {
 }
 
 export default async function ArchivePage() {
-  const draft = await draftMode()
-  const isDraft = draft.isEnabled
-
   // Get the latest post's publication date
-  const latestPostDate = await getLatestPostDate(isDraft)
+  const latestPostDate = await getLatestPostDate()
 
   if (!latestPostDate) {
     // No posts exist
@@ -35,17 +31,14 @@ export default async function ArchivePage() {
   const latestYear = new Date(latestPostDate).getUTCFullYear()
 
   // Fetch posts for the latest year
-  const posts = await getPostsByYear(latestYear, isDraft)
-  const count = await getPostCountByYear(latestYear, isDraft)
+  const posts = await getPostsByYear(latestYear)
+  const count = await getPostCountByYear(latestYear)
 
   return (
     <main className="px-6 py-8 md:px-12 lg:px-24">
       <div className="mx-auto max-w-4xl">
         <h1 className="mb-8 font-bold text-3xl">アーカイブ</h1>
-        <ArchiveList
-          initialYearData={{ count, posts, year: latestYear }}
-          isDraft={isDraft}
-        />
+        <ArchiveList initialYearData={{ count, posts, year: latestYear }} />
       </div>
     </main>
   )

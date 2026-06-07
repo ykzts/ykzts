@@ -4,11 +4,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', 'https://test.supabase.co')
 vi.stubEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY', 'test-anon-key')
 
-// Mock @ykzts/supabase/client
+// Mock Supabase client factory used by @ykzts/supabase/queries
 const mockFrom = vi.fn()
 
-vi.mock('@ykzts/supabase/client', () => ({
-  createBrowserClient: vi.fn(() => ({
+vi.mock('@supabase/supabase-js', () => ({
+  createClient: vi.fn(() => ({
     from: mockFrom
   }))
 }))

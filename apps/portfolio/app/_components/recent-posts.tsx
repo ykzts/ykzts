@@ -66,7 +66,12 @@ async function RecentPostsImpl() {
     return null
   }
 
-  const posts = allPosts.slice(0, RECENT_POSTS_COUNT)
+  const posts = allPosts
+    .filter(
+      (post): post is typeof post & { published_at: string } =>
+        post.published_at != null
+    )
+    .slice(0, RECENT_POSTS_COUNT)
 
   if (posts.length === 0) {
     return null
@@ -79,9 +84,7 @@ async function RecentPostsImpl() {
       </h2>
       <div className="space-y-6">
         {posts.map((post) => {
-          const url = post.published_at
-            ? getDateBasedUrl(post.slug, post.published_at)
-            : `/blog/draft/${post.slug}`
+          const url = getDateBasedUrl(post.slug, post.published_at)
 
           return (
             <article

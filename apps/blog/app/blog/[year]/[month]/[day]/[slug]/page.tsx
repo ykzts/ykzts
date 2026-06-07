@@ -1,7 +1,6 @@
 import { getSiteOrigin } from '@ykzts/site-config'
 import { getProfile } from '@ykzts/supabase/queries'
 import type { Metadata, Route } from 'next'
-import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import ArticleContent from '@/components/article-content'
@@ -59,10 +58,7 @@ export async function generateMetadata({
   params
 }: PageProps): Promise<Metadata> {
   const { year, month, day, slug } = await params
-  const draft = await draftMode()
-  const isDraft = draft.isEnabled
-
-  const post = await getPostBySlug(slug, isDraft)
+  const post = await getPostBySlug(slug)
 
   if (!post) {
     return {
@@ -137,10 +133,7 @@ export async function generateMetadata({
 
 export default async function PostDetailPage({ params }: PageProps) {
   const { year, month, day, slug } = await params
-  const draft = await draftMode()
-  const isDraft = draft.isEnabled
-
-  const post = await getPostBySlug(slug, isDraft)
+  const post = await getPostBySlug(slug)
 
   if (!post) {
     notFound()
@@ -182,7 +175,7 @@ export default async function PostDetailPage({ params }: PageProps) {
   // getProfile() failure is tolerated; fall back to post.profile.name for publisher.
   const [publisherProfile, { previousPost, nextPost }] = await Promise.all([
     getProfile().catch(() => null),
-    getAdjacentPosts(slug, isDraft)
+    getAdjacentPosts(slug)
   ])
 
   const historyUrl =

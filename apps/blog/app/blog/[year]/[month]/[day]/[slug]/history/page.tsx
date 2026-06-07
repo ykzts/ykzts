@@ -1,7 +1,6 @@
 import { Link } from '@vercel/microfrontends/next/client'
 import { portableTextToMarkdown } from '@ykzts/portable-text-utils'
 import type { Metadata } from 'next'
-import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import DateDisplay from '@/components/date-display'
 import LinkButton from '@/components/link-button'
@@ -52,10 +51,7 @@ export async function generateMetadata({
   params
 }: PageProps): Promise<Metadata> {
   const { slug } = await params
-  const draft = await draftMode()
-  const isDraft = draft.isEnabled
-
-  const post = await getPostBySlug(slug, isDraft)
+  const post = await getPostBySlug(slug)
 
   if (!post) {
     return { title: 'Not Found' }
@@ -69,10 +65,7 @@ export async function generateMetadata({
 
 export default async function PostHistoryPage({ params }: PageProps) {
   const { year, month, day, slug } = await params
-  const draft = await draftMode()
-  const isDraft = draft.isEnabled
-
-  const post = await getPostBySlug(slug, isDraft)
+  const post = await getPostBySlug(slug)
 
   if (!post) {
     notFound()

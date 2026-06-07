@@ -113,7 +113,7 @@ describe('GET /api/blog/draft', () => {
 
     expect(response.status).toBe(307)
     expect(response.headers.get('location')).toBe(
-      'http://localhost:3000/blog/2024/01/15/test-post'
+      'http://localhost:3000/blog/draft/test-post'
     )
     expect(mockDraftMode).toHaveBeenCalled()
     expect(mockEnable).toHaveBeenCalled()

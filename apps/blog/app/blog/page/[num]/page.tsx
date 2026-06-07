@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { draftMode } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
 import BlogPagination from '@/components/blog-pagination'
 import PostCard from '@/components/post-card'
@@ -57,17 +56,14 @@ export default async function PaginationPage({ params }: PageProps) {
     redirect('/blog')
   }
 
-  const draft = await draftMode()
-  const isDraft = draft.isEnabled
-
-  const totalPages = await getTotalPages(isDraft)
+  const totalPages = await getTotalPages()
 
   // Handle page numbers beyond total pages
   if (pageNum > totalPages) {
     notFound()
   }
 
-  const posts = await getPosts(pageNum, isDraft)
+  const posts = await getPosts(pageNum)
 
   // If no posts found, show not found
   if (!posts || posts.length === 0) {
@@ -79,7 +75,7 @@ export default async function PaginationPage({ params }: PageProps) {
       <div className="mx-auto max-w-4xl">
         <div className="space-y-6">
           {posts.map((post) => (
-            <PostCard isDraft={isDraft} key={post.id} post={post} />
+            <PostCard key={post.id} post={post} />
           ))}
         </div>
         <div className="mt-8">

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { draftMode } from 'next/headers'
 import { notFound, redirect } from 'next/navigation'
 import BlogPagination from '@/components/blog-pagination'
 import PostCard from '@/components/post-card'
@@ -52,11 +51,8 @@ export default async function TagPaginationPage({ params }: PageProps) {
     redirect(`/blog/tags/${encodeURIComponent(decodedTag)}`)
   }
 
-  const draft = await draftMode()
-  const isDraft = draft.isEnabled
-
-  const posts = await getPostsByTag(decodedTag, pageNum, isDraft)
-  const postCount = await getPostCountByTag(decodedTag, isDraft)
+  const posts = await getPostsByTag(decodedTag, pageNum)
+  const postCount = await getPostCountByTag(decodedTag)
 
   if (!posts || posts.length === 0) {
     notFound()
@@ -77,7 +73,7 @@ export default async function TagPaginationPage({ params }: PageProps) {
         </h1>
         <div className="space-y-6">
           {posts.map((post) => (
-            <PostCard isDraft={isDraft} key={post.id} post={post} />
+            <PostCard key={post.id} post={post} />
           ))}
         </div>
         <div className="mt-8">
