@@ -1,106 +1,106 @@
-import type { Metadata } from 'next'
-import { draftMode } from 'next/headers'
-import { notFound } from 'next/navigation'
-import { Suspense } from 'react'
-import ArticleContent from '@/components/article-content'
-import DraftModeBanner from '@/components/draft-mode-banner'
-import PostNavigation from '@/components/post-navigation'
-import SimilarPosts from '@/components/similar-posts'
-import SimilarPostsSkeleton from '@/components/similar-posts-skeleton'
-import TableOfContents from '@/components/table-of-contents'
-import { DEFAULT_POST_TITLE } from '@/lib/constants'
-import { extractHeadings } from '@/lib/extract-headings'
-import { isPortableTextValue } from '@/lib/portable-text'
+import type { Metadata } from "next";
+import { draftMode } from "next/headers";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import ArticleContent from "@/components/article-content";
+import DraftModeBanner from "@/components/draft-mode-banner";
+import PostNavigation from "@/components/post-navigation";
+import SimilarPosts from "@/components/similar-posts";
+import SimilarPostsSkeleton from "@/components/similar-posts-skeleton";
+import TableOfContents from "@/components/table-of-contents";
+import { DEFAULT_POST_TITLE } from "@/lib/constants";
+import { extractHeadings } from "@/lib/extract-headings";
+import { isPortableTextValue } from "@/lib/portable-text";
 import {
   getAdjacentPosts,
   getPostBySlug,
-  getSimilarPosts
-} from '@/lib/supabase/posts'
+  getSimilarPosts,
+} from "@/lib/supabase/posts";
 
-type PageProps = {
+interface PageProps {
   params: Promise<{
-    slug: string
-  }>
+    slug: string;
+  }>;
 }
 
 // Return a placeholder to satisfy the Next.js Cache Components requirement.
 // Draft slugs are not known at build time, so all actual paths are rendered
 // dynamically on request.
 export async function generateStaticParams() {
-  return [{ slug: '_placeholder' }]
+  return [{ slug: "_placeholder" }];
 }
 
 export async function generateMetadata({
-  params
+  params,
 }: PageProps): Promise<Metadata> {
-  const { slug } = await params
+  const { slug } = await params;
 
-  if (slug === '_placeholder') {
-    return { title: 'Not Found' }
+  if (slug === "_placeholder") {
+    return { title: "Not Found" };
   }
 
-  const draft = await draftMode()
+  const draft = await draftMode();
 
   if (!draft.isEnabled) {
     return {
-      title: 'Not Found'
-    }
+      title: "Not Found",
+    };
   }
 
-  const post = await getPostBySlug(slug, true)
+  const post = await getPostBySlug(slug, true);
 
   if (!post) {
     return {
-      title: 'Not Found'
-    }
+      title: "Not Found",
+    };
   }
 
-  const fediverseCreator = post.profile?.fediverse_creator?.trim()
+  const fediverseCreator = post.profile?.fediverse_creator?.trim();
 
   return {
     other: fediverseCreator
-      ? { 'fediverse:creator': fediverseCreator }
+      ? { "fediverse:creator": fediverseCreator }
       : undefined,
-    title: post.title || DEFAULT_POST_TITLE
-  }
+    title: post.title || DEFAULT_POST_TITLE,
+  };
 }
 
 export default async function DraftPostPage({ params }: PageProps) {
-  const { slug } = await params
+  const { slug } = await params;
 
-  if (slug === '_placeholder') {
-    notFound()
+  if (slug === "_placeholder") {
+    notFound();
   }
 
-  const draft = await draftMode()
+  const draft = await draftMode();
 
   // Draft posts are only accessible in draft mode
   if (!draft.isEnabled) {
-    notFound()
+    notFound();
   }
 
-  const post = await getPostBySlug(slug, true)
+  const post = await getPostBySlug(slug, true);
 
   if (!post) {
-    notFound()
+    notFound();
   }
 
   // Validate content is valid PortableText
-  if (!post.content || !isPortableTextValue(post.content)) {
-    notFound()
+  if (!(post.content && isPortableTextValue(post.content))) {
+    notFound();
   }
 
   // Profile is required for author information
   if (!post.profile?.name) {
-    notFound()
+    notFound();
   }
 
   // Fetch adjacent posts
-  const { previousPost, nextPost } = await getAdjacentPosts(slug, true)
+  const { previousPost, nextPost } = await getAdjacentPosts(slug, true);
 
   // Extract headings for Table of Contents
-  const headings = extractHeadings(post.content)
-  const hasHeadings = headings.length > 0
+  const headings = extractHeadings(post.content);
+  const hasHeadings = headings.length > 0;
 
   return (
     <main className="px-6 py-8 md:px-12 lg:px-24">
@@ -149,11 +149,11 @@ export default async function DraftPostPage({ params }: PageProps) {
         </div>
       </div>
     </main>
-  )
+  );
 }
 
-const SIMILAR_POSTS_LIMIT = 3
-const SIMILAR_POSTS_THRESHOLD = 0.5
+const SIMILAR_POSTS_LIMIT = 3;
+const SIMILAR_POSTS_THRESHOLD = 0.5;
 
 async function SimilarPostsSection({ postId }: { postId: string }) {
   try {
@@ -161,9 +161,9 @@ async function SimilarPostsSection({ postId }: { postId: string }) {
       postId,
       SIMILAR_POSTS_LIMIT,
       SIMILAR_POSTS_THRESHOLD
-    )
-    return <SimilarPosts posts={similarPosts} />
+    );
+    return <SimilarPosts posts={similarPosts} />;
   } catch {
-    return null
+    return null;
   }
 }

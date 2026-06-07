@@ -47,5 +47,5 @@ export default function ProfileEditSkeleton() {
         <div className="inline-flex h-10 w-24 cursor-default items-center justify-center gap-2 rounded-md bg-muted/10 px-4 py-2 font-medium text-sm" />
       </div>
     </div>
-  )
+  );
 }

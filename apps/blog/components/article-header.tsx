@@ -1,15 +1,15 @@
-import { Link } from '@vercel/microfrontends/next/client'
-import type { Route } from 'next'
-import DateDisplay from './date-display'
-import TagList from './tag-list'
+import { Link } from "@vercel/microfrontends/next/client";
+import type { Route } from "next";
+import DateDisplay from "./date-display";
+import TagList from "./tag-list";
 
 interface ArticleHeaderProps {
-  title: string
-  authorName: string
-  historyUrl?: Route
-  publishedAt: string | null
-  versionDate?: string | null
-  tags?: string[] | null
+  authorName: string;
+  historyUrl?: Route;
+  publishedAt: string | null;
+  tags?: string[] | null;
+  title: string;
+  versionDate?: string | null;
 }
 
 export default function ArticleHeader({
@@ -18,7 +18,7 @@ export default function ArticleHeader({
   historyUrl,
   publishedAt,
   versionDate,
-  tags
+  tags,
 }: ArticleHeaderProps) {
   return (
     <header className="mb-8">
@@ -50,5 +50,5 @@ export default function ArticleHeader({
         </div>
       )}
     </header>
-  )
+  );
 }

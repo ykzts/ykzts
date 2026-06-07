@@ -1,29 +1,29 @@
 import {
   portableTextToMarkdown as convertToMarkdown,
-  type PortableTextBlockRenderer
-} from '@portabletext/markdown'
-import { escapeHTML, toHTML, uriLooksSafe } from '@portabletext/to-html'
-import type { PortableTextBlock } from '@portabletext/types'
+  type PortableTextBlockRenderer,
+} from "@portabletext/markdown";
+import { escapeHTML, toHTML, uriLooksSafe } from "@portabletext/to-html";
+import type { PortableTextBlock } from "@portabletext/types";
 
-export type { MarkdownPostParseResult } from './markdown-to-portable-text'
-export { parseMarkdownForPost } from './markdown-to-portable-text'
+export type { MarkdownPostParseResult } from "./markdown-to-portable-text";
+export { parseMarkdownForPost } from "./markdown-to-portable-text";
 
 /**
  * Extracts plain text from a PortableText block's children
  */
 function extractTextFromBlock(block: PortableTextBlock): string {
-  if (!('children' in block) || !Array.isArray(block.children)) {
-    return ''
+  if (!("children" in block && Array.isArray(block.children))) {
+    return "";
   }
 
   return block.children
     .map((child) => {
-      if (typeof child === 'object' && child !== null && 'text' in child) {
-        return String(child.text)
+      if (typeof child === "object" && child !== null && "text" in child) {
+        return String(child.text);
       }
-      return ''
+      return "";
     })
-    .join('')
+    .join("");
 }
 
 /**
@@ -36,39 +36,39 @@ export function extractFirstParagraph(
   content: PortableTextBlock[] | null | undefined,
   maxLength = 150
 ): string {
-  if (!content || !Array.isArray(content)) {
-    return ''
+  if (!(content && Array.isArray(content))) {
+    return "";
   }
 
   for (const block of content) {
     // Only process text blocks (not code, image, etc.)
-    if (block._type !== 'block') {
-      continue
+    if (block._type !== "block") {
+      continue;
     }
 
     // Look for text blocks with 'normal' style (paragraphs)
     if (
-      'style' in block &&
-      block.style === 'normal' &&
-      'children' in block &&
+      "style" in block &&
+      block.style === "normal" &&
+      "children" in block &&
       Array.isArray(block.children)
     ) {
-      const text = extractTextFromBlock(block)
-      const trimmedText = text.trim()
+      const text = extractTextFromBlock(block);
+      const trimmedText = text.trim();
 
       if (trimmedText) {
         // Truncate to maxLength and add ellipsis if needed
         // Use spreading to handle Unicode code points correctly (emoji, surrogate pairs)
-        const codePoints = [...trimmedText]
+        const codePoints = [...trimmedText];
         if (codePoints.length > maxLength) {
-          return `${codePoints.slice(0, maxLength).join('')}...`
+          return `${codePoints.slice(0, maxLength).join("")}...`;
         }
-        return trimmedText
+        return trimmedText;
       }
     }
   }
 
-  return ''
+  return "";
 }
 
 /**
@@ -80,67 +80,71 @@ export function portableTextToHTML(
   content: PortableTextBlock[] | null | undefined
 ): string {
   if (!content) {
-    return ''
+    return "";
   }
 
   return toHTML(content, {
     components: {
       block: {
-        code: ({ children }) => `<pre><code>${children}</code></pre>`
+        code: ({ children }) => `<pre><code>${children}</code></pre>`,
       },
       marks: {
         link: ({ children, value }) => {
-          const href = value?.href as string | undefined
-          const title = value?.title as string | undefined
-          if (!href || !uriLooksSafe(href)) return children
-          const titleAttr = title ? ` title="${escapeHTML(title)}"` : ''
+          const href = value?.href as string | undefined;
+          const title = value?.title as string | undefined;
+          if (!(href && uriLooksSafe(href))) {
+            return children;
+          }
+          const titleAttr = title ? ` title="${escapeHTML(title)}"` : "";
           const rel =
-            href.startsWith('/') || href.startsWith('#')
-              ? ''
-              : ' rel="noreferrer noopener"'
-          return `<a href="${escapeHTML(href)}"${titleAttr}${rel}>${children}</a>`
-        }
+            href.startsWith("/") || href.startsWith("#")
+              ? ""
+              : ' rel="noreferrer noopener"';
+          return `<a href="${escapeHTML(href)}"${titleAttr}${rel}>${children}</a>`;
+        },
       },
       types: {
         code: ({ value }) => {
           const language = (value as Record<string, unknown>).language as
             | string
-            | undefined
+            | undefined;
           const code = escapeHTML(
             ((value as Record<string, unknown>).code as string | undefined) ??
-              ''
-          )
+              ""
+          );
           const langAttr = language
             ? ` class="language-${escapeHTML(language)}"`
-            : ''
-          return `<pre><code${langAttr}>${code}</code></pre>`
+            : "";
+          return `<pre><code${langAttr}>${code}</code></pre>`;
         },
         image: ({ value }) => {
-          const v = value as Record<string, unknown>
-          const alt = escapeHTML((v.alt as string | undefined) ?? '')
-          const asset = v.asset as { url?: string } | undefined
-          const src = asset?.url
-          if (!src || !uriLooksSafe(src)) return ''
-          const figcaption = alt ? `<figcaption>${alt}</figcaption>` : ''
-          return `<figure><img alt="${alt}" src="${escapeHTML(src)}" />${figcaption}</figure>`
-        }
-      }
-    }
-  })
+          const v = value as Record<string, unknown>;
+          const alt = escapeHTML((v.alt as string | undefined) ?? "");
+          const asset = v.asset as { url?: string } | undefined;
+          const src = asset?.url;
+          if (!(src && uriLooksSafe(src))) {
+            return "";
+          }
+          const figcaption = alt ? `<figcaption>${alt}</figcaption>` : "";
+          return `<figure><img alt="${alt}" src="${escapeHTML(src)}" />${figcaption}</figure>`;
+        },
+      },
+    },
+  });
 }
 
 // Simple type for Portable Text blocks accepted by @portabletext/markdown
-type PortableTextLike = {
-  _type: string
-  [key: string]: unknown
+interface PortableTextLike {
+  _type: string;
+  [key: string]: unknown;
 }
 
-export type PortableTextToMarkdownOptions = {
+export interface PortableTextToMarkdownOptions {
   /**
    * Number of heading levels to offset.
    * For example, 3 shifts h1→h4, h2→h5, h3→h6. Default: 0
    */
-  headingOffset?: number
+  headingOffset?: number;
 }
 
 /**
@@ -153,22 +157,22 @@ export function portableTextToMarkdown(
   content: unknown,
   options?: PortableTextToMarkdownOptions
 ): string {
-  if (!content || !Array.isArray(content) || content.length === 0) {
-    return ''
+  if (!(content && Array.isArray(content)) || content.length === 0) {
+    return "";
   }
 
-  const headingOffset = options?.headingOffset ?? 0
+  const headingOffset = options?.headingOffset ?? 0;
 
   const makeHeadingRenderer = (level: number): PortableTextBlockRenderer => {
-    const adjustedLevel = Math.min(Math.max(level + headingOffset, 1), 6)
-    return ({ children }) => `${'#'.repeat(adjustedLevel)} ${children}`
-  }
+    const adjustedLevel = Math.min(Math.max(level + headingOffset, 1), 6);
+    return ({ children }) => `${"#".repeat(adjustedLevel)} ${children}`;
+  };
 
   const getFence = (code: string): string => {
-    const runs = code.match(/`+/g) ?? []
-    const maxRun = runs.reduce((max, run) => Math.max(max, run.length), 0)
-    return '`'.repeat(Math.max(3, maxRun + 1))
-  }
+    const runs = code.match(/`+/g) ?? [];
+    const maxRun = runs.reduce((max, run) => Math.max(max, run.length), 0);
+    return "`".repeat(Math.max(3, maxRun + 1));
+  };
 
   try {
     return convertToMarkdown(content as PortableTextLike[], {
@@ -176,36 +180,36 @@ export function portableTextToMarkdown(
         code: ({ value, children }) => {
           const language = (value as unknown as PortableTextLike).language as
             | string
-            | undefined
-          const code = String(children)
-          const fence = getFence(code)
-          return `${fence}${language ?? ''}\n${code}\n${fence}`
+            | undefined;
+          const code = String(children);
+          const fence = getFence(code);
+          return `${fence}${language ?? ""}\n${code}\n${fence}`;
         },
         h1: makeHeadingRenderer(1),
         h2: makeHeadingRenderer(2),
         h3: makeHeadingRenderer(3),
         h4: makeHeadingRenderer(4),
         h5: makeHeadingRenderer(5),
-        h6: makeHeadingRenderer(6)
+        h6: makeHeadingRenderer(6),
       },
       types: {
         code: ({ value }) => {
-          const v = value as PortableTextLike
-          const language = (v.language as string | null | undefined) ?? ''
-          const code = (v.code as string | undefined) ?? ''
-          const fence = getFence(code)
-          return `${fence}${language}\n${code}\n${fence}`
+          const v = value as PortableTextLike;
+          const language = (v.language as string | null | undefined) ?? "";
+          const code = (v.code as string | undefined) ?? "";
+          const fence = getFence(code);
+          return `${fence}${language}\n${code}\n${fence}`;
         },
         image: ({ value }) => {
-          const v = value as PortableTextLike
-          const alt = (v.alt as string | undefined) ?? ''
-          const asset = v.asset as { url?: string } | undefined
-          const src = asset?.url ?? ''
-          return src ? `![${alt}](${src})` : ''
-        }
-      }
-    })
+          const v = value as PortableTextLike;
+          const alt = (v.alt as string | undefined) ?? "";
+          const asset = v.asset as { url?: string } | undefined;
+          const src = asset?.url ?? "";
+          return src ? `![${alt}](${src})` : "";
+        },
+      },
+    });
   } catch {
-    return ''
+    return "";
   }
 }

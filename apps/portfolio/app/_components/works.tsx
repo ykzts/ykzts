@@ -1,8 +1,8 @@
-import { getWorks } from '@ykzts/supabase/queries'
-import { Suspense } from 'react'
-import Skeleton from '@/components/skeleton'
-import range from '@/lib/range'
-import WorksList from './works-list'
+import { getWorks } from "@ykzts/supabase/queries";
+import { Suspense } from "react";
+import Skeleton from "@/components/skeleton";
+import range from "@/lib/range";
+import WorksList from "./works-list";
 
 function WorksSkeleton() {
   return (
@@ -24,11 +24,11 @@ function WorksSkeleton() {
         ))}
       </div>
     </section>
-  )
+  );
 }
 
 async function WorksImpl() {
-  const works = await getWorks()
+  const works = await getWorks();
 
   return (
     <section className="mx-auto max-w-4xl py-20" id="works">
@@ -37,7 +37,7 @@ async function WorksImpl() {
       </h2>
       <WorksList works={works} />
     </section>
-  )
+  );
 }
 
 export default function Works() {
@@ -45,5 +45,5 @@ export default function Works() {
     <Suspense fallback={<WorksSkeleton />}>
       <WorksImpl />
     </Suspense>
-  )
+  );
 }

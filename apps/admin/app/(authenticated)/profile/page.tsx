@@ -1,15 +1,15 @@
-import { Suspense } from 'react'
-import { Panel } from '@/components/panel'
-import { getProfile, getSocialLinks, getTechnologies } from '@/lib/data'
-import ProfileForm from './_components/profile-form'
-import ProfileFormSkeleton from './_components/skeleton'
+import { Suspense } from "react";
+import { Panel } from "@/components/panel";
+import { getProfile, getSocialLinks, getTechnologies } from "@/lib/data";
+import ProfileForm from "./_components/profile-form";
+import ProfileFormSkeleton from "./_components/skeleton";
 
 async function ProfileFormWrapper() {
   const [profile, socialLinks, technologies] = await Promise.all([
     getProfile(),
     getSocialLinks(),
-    getTechnologies()
-  ])
+    getTechnologies(),
+  ]);
 
   return (
     <ProfileForm
@@ -17,7 +17,7 @@ async function ProfileFormWrapper() {
       initialSocialLinks={socialLinks}
       initialTechnologies={technologies}
     />
-  )
+  );
 }
 
 export default function ProfilePage() {
@@ -30,5 +30,5 @@ export default function ProfilePage() {
         </Suspense>
       </Panel>
     </div>
-  )
+  );
 }

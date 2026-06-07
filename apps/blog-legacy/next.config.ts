@@ -1,18 +1,18 @@
-import { getSiteOrigin } from '@ykzts/site-config'
-import type { NextConfig } from 'next'
-import { createLegacyRedirects } from './redirects'
+import { getSiteOrigin } from "@ykzts/site-config";
+import type { NextConfig } from "next";
+import { createLegacyRedirects } from "./redirects";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
   experimental: {
-    turbopackFileSystemCacheForDev: true
+    turbopackFileSystemCacheForDev: true,
   },
   reactCompiler: true,
   reactStrictMode: true,
   redirects() {
-    return createLegacyRedirects(getSiteOrigin().origin)
+    return createLegacyRedirects(getSiteOrigin().origin);
   },
-  typedRoutes: true
-}
+  typedRoutes: true,
+};
 
-export default nextConfig
+export default nextConfig;

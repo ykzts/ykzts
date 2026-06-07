@@ -1,11 +1,11 @@
-import Link from 'next/link'
-import { Suspense } from 'react'
-import { Panel } from '@/components/panel'
-import { getCounts } from '@/lib/data'
-import { DashboardSkeleton } from './_components/dashboard-skeleton'
+import Link from "next/link";
+import { Suspense } from "react";
+import { Panel } from "@/components/panel";
+import { getCounts } from "@/lib/data";
+import { DashboardSkeleton } from "./_components/dashboard-skeleton";
 
 async function DashboardContent() {
-  const counts = await getCounts()
+  const counts = await getCounts();
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -25,7 +25,7 @@ async function DashboardContent() {
         </Panel>
       </Link>
     </div>
-  )
+  );
 }
 
 export default function AdminDashboard() {
@@ -36,5 +36,5 @@ export default function AdminDashboard() {
         <DashboardContent />
       </Suspense>
     </div>
-  )
+  );
 }

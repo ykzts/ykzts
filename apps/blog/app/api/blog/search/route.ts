@@ -1,25 +1,25 @@
-import type { NextRequest } from 'next/server'
-import { NextResponse } from 'next/server'
-import { z } from 'zod'
-import { generateSearchEmbedding } from '@/lib/embeddings'
-import { supabase } from '@/lib/supabase/client'
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { generateSearchEmbedding } from "@/lib/embeddings";
+import { supabase } from "@/lib/supabase/client";
 
 // Validation schema for search request
 const searchRequestSchema = z.object({
   limit: z.number().min(1).max(20).optional().default(5),
-  query: z.string().trim().min(1, 'Search query must not be empty'),
-  threshold: z.number().min(0).max(1).optional().default(0.4)
-})
+  query: z.string().trim().min(1, "Search query must not be empty"),
+  threshold: z.number().min(0).max(1).optional().default(0.4),
+});
 
 // Type for search result from database function
-type SearchResult = {
-  excerpt: string | null
-  id: string
-  published_at: string
-  similarity: number
-  slug: string
-  tags: string[] | null
-  title: string
+interface SearchResult {
+  excerpt: string | null;
+  id: string;
+  published_at: string;
+  similarity: number;
+  slug: string;
+  tags: string[] | null;
+  title: string;
 }
 
 /**
@@ -54,60 +54,60 @@ export async function POST(request: NextRequest) {
   // Check if Supabase is configured
   if (!supabase) {
     return NextResponse.json(
-      { error: 'Search service not available' },
+      { error: "Search service not available" },
       { status: 503 }
-    )
+    );
   }
 
   // Parse request body
-  let body: unknown
+  let body: unknown;
 
   try {
-    body = await request.json()
+    body = await request.json();
   } catch {
-    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
   // Validate request body
-  const validation = searchRequestSchema.safeParse(body)
+  const validation = searchRequestSchema.safeParse(body);
 
   if (!validation.success) {
     return NextResponse.json(
       {
-        error: 'Invalid request body',
-        issues: validation.error.issues
+        error: "Invalid request body",
+        issues: validation.error.issues,
       },
       { status: 400 }
-    )
+    );
   }
 
-  const { limit, query, threshold } = validation.data
+  const { limit, query, threshold } = validation.data;
 
   try {
     // Generate embedding for search query
-    const queryEmbedding = await generateSearchEmbedding(query)
+    const queryEmbedding = await generateSearchEmbedding(query);
 
     // Call database function to search for similar posts
-    const { data, error } = await supabase.rpc('search_posts_by_embedding', {
+    const { data, error } = await supabase.rpc("search_posts_by_embedding", {
       match_count: limit,
       match_threshold: threshold,
-      query_embedding: JSON.stringify(queryEmbedding)
-    })
+      query_embedding: JSON.stringify(queryEmbedding),
+    });
 
     if (error) {
-      console.error('Search error:', error)
-      return NextResponse.json({ error: 'Search failed' }, { status: 500 })
+      console.error("Search error:", error);
+      return NextResponse.json({ error: "Search failed" }, { status: 500 });
     }
 
-    const results = (data as SearchResult[]) || []
+    const results = (data as SearchResult[]) || [];
 
     return NextResponse.json({
       count: results.length,
       query,
-      results
-    })
+      results,
+    });
   } catch (error) {
-    console.error('Search error:', error)
-    return NextResponse.json({ error: 'Search failed' }, { status: 500 })
+    console.error("Search error:", error);
+    return NextResponse.json({ error: "Search failed" }, { status: 500 });
   }
 }

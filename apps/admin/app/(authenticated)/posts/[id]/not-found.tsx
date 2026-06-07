@@ -2,8 +2,8 @@ import {
   Empty,
   EmptyContent,
   EmptyDescription,
-  EmptyTitle
-} from '@ykzts/ui/components/empty'
+  EmptyTitle,
+} from "@ykzts/ui/components/empty";
 
 export default function NotFound() {
   return (
@@ -15,5 +15,5 @@ export default function NotFound() {
         </EmptyDescription>
       </EmptyContent>
     </Empty>
-  )
+  );
 }

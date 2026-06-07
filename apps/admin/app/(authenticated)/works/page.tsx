@@ -1,16 +1,16 @@
-import Link from 'next/link'
-import { Suspense } from 'react'
-import { Panel } from '@/components/panel'
-import { getProfileTimezone, getWorks } from '@/lib/data'
-import { formatDateOnly } from '@/lib/timezones'
-import { NewWorkButton } from './_components/new-work-button'
-import { WorksPageSkeleton } from './_components/works-page-skeleton'
+import Link from "next/link";
+import { Suspense } from "react";
+import { Panel } from "@/components/panel";
+import { getProfileTimezone, getWorks } from "@/lib/data";
+import { formatDateOnly } from "@/lib/timezones";
+import { NewWorkButton } from "./_components/new-work-button";
+import { WorksPageSkeleton } from "./_components/works-page-skeleton";
 
 async function WorksContent() {
   const [works, timezone] = await Promise.all([
     getWorks(),
-    getProfileTimezone()
-  ])
+    getProfileTimezone(),
+  ]);
 
   return (
     <Panel>
@@ -56,7 +56,7 @@ async function WorksContent() {
         </div>
       )}
     </Panel>
-  )
+  );
 }
 
 export default function WorksPage() {
@@ -71,5 +71,5 @@ export default function WorksPage() {
         <WorksContent />
       </Suspense>
     </div>
-  )
+  );
 }

@@ -1,18 +1,18 @@
-'use client'
+"use client";
 
-import type { PortableTextBlock } from '@portabletext/types'
-import { RichTextEditor } from '@ykzts/portable-text-editor'
-import { useActionState, useEffect, useState } from 'react'
-import { updateMemo } from '@/app/[...path]/actions'
-import MemoPortableText from '@/components/portable-text'
-import { uploadImage } from '@/lib/upload-image'
+import type { PortableTextBlock } from "@portabletext/types";
+import { RichTextEditor } from "@ykzts/portable-text-editor";
+import { useActionState, useEffect, useState } from "react";
+import { updateMemo } from "@/app/[...path]/actions";
+import MemoPortableText from "@/components/portable-text";
+import { uploadImage } from "@/lib/upload-image";
 
-type Props = {
-  content: PortableTextBlock[] | null
-  memoId: string
-  memoPath: string
-  title: string
-  visibility: string
+interface Props {
+  content: PortableTextBlock[] | null;
+  memoId: string;
+  memoPath: string;
+  title: string;
+  visibility: string;
 }
 
 export function InlineMemoEditor({
@@ -20,16 +20,16 @@ export function InlineMemoEditor({
   memoId,
   memoPath,
   title,
-  visibility
+  visibility,
 }: Props) {
-  const [isEditing, setIsEditing] = useState(false)
-  const [state, formAction, isPending] = useActionState(updateMemo, null)
+  const [isEditing, setIsEditing] = useState(false);
+  const [state, formAction, isPending] = useActionState(updateMemo, null);
 
   useEffect(() => {
     if (state?.success) {
-      setIsEditing(false)
+      setIsEditing(false);
     }
-  }, [state])
+  }, [state]);
 
   if (!isEditing) {
     return (
@@ -49,10 +49,10 @@ export function InlineMemoEditor({
           <p className="text-muted-foreground">コンテンツがありません。</p>
         )}
       </div>
-    )
+    );
   }
 
-  const initialContent = content ? JSON.stringify(content) : undefined
+  const initialContent = content ? JSON.stringify(content) : undefined;
 
   return (
     <form action={formAction}>
@@ -127,9 +127,9 @@ export function InlineMemoEditor({
           disabled={isPending}
           type="submit"
         >
-          {isPending ? '保存中...' : '保存'}
+          {isPending ? "保存中..." : "保存"}
         </button>
       </div>
     </form>
-  )
+  );
 }

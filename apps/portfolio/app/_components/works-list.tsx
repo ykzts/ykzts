@@ -1,45 +1,45 @@
-'use client'
+"use client";
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useMemo, useState } from 'react'
-import type { PortableTextValue } from '@/lib/portable-text'
-import PortableTextBlock from './portable-text'
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
+import type { PortableTextValue } from "@/lib/portable-text";
+import PortableTextBlock from "./portable-text";
 
-type WorkUrl = {
-  id: string
-  label: string
-  sort_order: number
-  url: string
+interface WorkUrl {
+  id: string;
+  label: string;
+  sort_order: number;
+  url: string;
 }
 
-type WorkTechnology = {
-  technology: { name: string } | null
-  technology_id: string
+interface WorkTechnology {
+  technology: { name: string } | null;
+  technology_id: string;
 }
 
-type Work = {
-  content: PortableTextValue | null
-  slug: string
-  starts_at: string
-  title: string
-  work_technologies: readonly WorkTechnology[]
-  work_urls: readonly WorkUrl[]
+interface Work {
+  content: PortableTextValue | null;
+  slug: string;
+  starts_at: string;
+  title: string;
+  work_technologies: readonly WorkTechnology[];
+  work_urls: readonly WorkUrl[];
 }
 
-type WorksListProps = {
-  works: readonly Work[]
-  initialDisplayCount?: number
+interface WorksListProps {
+  initialDisplayCount?: number;
+  works: readonly Work[];
 }
 
 export default function WorksList({
   works,
-  initialDisplayCount = 5
+  initialDisplayCount = 5,
 }: WorksListProps) {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const activeTechnology = searchParams.get('technology')
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const activeTechnology = searchParams.get("technology");
 
-  const [showAll, setShowAll] = useState(false)
+  const [showAll, setShowAll] = useState(false);
 
   const allTechnologies = useMemo(
     () =>
@@ -53,7 +53,7 @@ export default function WorksList({
         )
       ).sort(),
     [works]
-  )
+  );
 
   const filteredWorks = activeTechnology
     ? works.filter((work) =>
@@ -61,24 +61,24 @@ export default function WorksList({
           (wt) => wt.technology?.name === activeTechnology
         )
       )
-    : works
+    : works;
 
   const displayedWorks = showAll
     ? filteredWorks
-    : filteredWorks.slice(0, initialDisplayCount)
-  const hasMore = filteredWorks.length > initialDisplayCount
+    : filteredWorks.slice(0, initialDisplayCount);
+  const hasMore = filteredWorks.length > initialDisplayCount;
 
   const handleTechnologyFilter = (technology: string | null) => {
-    const params = new URLSearchParams(searchParams.toString())
+    const params = new URLSearchParams(searchParams.toString());
     if (technology) {
-      params.set('technology', technology)
+      params.set("technology", technology);
     } else {
-      params.delete('technology')
+      params.delete("technology");
     }
-    setShowAll(false)
-    const query = params.toString()
-    router.push(query ? `/?${query}` : '/', { scroll: false })
-  }
+    setShowAll(false);
+    const query = params.toString();
+    router.push(query ? `/?${query}` : "/", { scroll: false });
+  };
 
   return (
     <>
@@ -86,9 +86,9 @@ export default function WorksList({
         <div className="mb-8 flex flex-wrap gap-2">
           <button
             className={`rounded-full px-4 py-1.5 font-medium text-sm transition-colors ${
-              !activeTechnology
-                ? 'bg-primary text-primary-foreground'
-                : 'border border-border bg-card text-card-foreground hover:border-primary/50'
+              activeTechnology
+                ? "border border-border bg-card text-card-foreground hover:border-primary/50"
+                : "bg-primary text-primary-foreground"
             }`}
             onClick={() => handleTechnologyFilter(null)}
             type="button"
@@ -99,8 +99,8 @@ export default function WorksList({
             <button
               className={`rounded-full px-4 py-1.5 font-medium text-sm transition-colors ${
                 activeTechnology === tech
-                  ? 'bg-primary text-primary-foreground'
-                  : 'border border-border bg-card text-card-foreground hover:border-primary/50'
+                  ? "bg-primary text-primary-foreground"
+                  : "border border-border bg-card text-card-foreground hover:border-primary/50"
               }`}
               key={tech}
               onClick={() => handleTechnologyFilter(tech)}
@@ -115,7 +115,7 @@ export default function WorksList({
         {displayedWorks.map((work) => {
           const validTechnologies = work.work_technologies.filter(
             (wt) => wt.technology !== null
-          )
+          );
 
           return (
             <article
@@ -159,7 +159,7 @@ export default function WorksList({
                 </div>
               )}
             </article>
-          )
+          );
         })}
       </div>
       {hasMore && !showAll && (
@@ -174,5 +174,5 @@ export default function WorksList({
         </div>
       )}
     </>
-  )
+  );
 }

@@ -1,31 +1,31 @@
-'use client'
+"use client";
 
-import { $createCodeNode, $isCodeNode } from '@lexical/code'
-import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link'
+import { $createCodeNode, $isCodeNode } from "@lexical/code";
+import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
 import {
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
   ListNode,
-  REMOVE_LIST_COMMAND
-} from '@lexical/list'
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
+  REMOVE_LIST_COMMAND,
+} from "@lexical/list";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import {
   $createHeadingNode,
   $createQuoteNode,
   $isHeadingNode,
   $isQuoteNode,
-  type HeadingNode
-} from '@lexical/rich-text'
-import { $setBlocksType } from '@lexical/selection'
-import { INSERT_TABLE_COMMAND } from '@lexical/table'
-import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils'
+  type HeadingNode,
+} from "@lexical/rich-text";
+import { $setBlocksType } from "@lexical/selection";
+import { INSERT_TABLE_COMMAND } from "@lexical/table";
+import { $getNearestNodeOfType, mergeRegister } from "@lexical/utils";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from '@ykzts/ui/components/select'
+  SelectValue,
+} from "@ykzts/ui/components/select";
 import {
   $createParagraphNode,
   $getSelection,
@@ -33,8 +33,8 @@ import {
   $isRangeSelection,
   FORMAT_TEXT_COMMAND,
   INDENT_CONTENT_COMMAND,
-  OUTDENT_CONTENT_COMMAND
-} from 'lexical'
+  OUTDENT_CONTENT_COMMAND,
+} from "lexical";
 import {
   Bold,
   Code,
@@ -47,236 +47,247 @@ import {
   Outdent,
   Strikethrough,
   Table,
-  Underline
-} from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { toast } from 'sonner'
+  Underline,
+} from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
-import { ImageAltDialog } from './image-alt-dialog'
-import { INSERT_IMAGE_COMMAND } from './image-plugin'
-import { LinkDialog } from './link-dialog'
-import { TableDialog } from './table-dialog'
+import { ImageAltDialog } from "./image-alt-dialog";
+import { INSERT_IMAGE_COMMAND } from "./image-plugin";
+import { LinkDialog } from "./link-dialog";
+import { TableDialog } from "./table-dialog";
 
 const BLOCK_TYPES = [
-  { label: '段落', value: 'paragraph' },
-  { label: '見出し2', value: 'h2' },
-  { label: '見出し3', value: 'h3' },
-  { label: '見出し4', value: 'h4' },
-  { label: '見出し5', value: 'h5' },
-  { label: '見出し6', value: 'h6' },
-  { label: '引用', value: 'quote' },
-  { label: 'コードブロック', value: 'code' }
-] as const
+  { label: "段落", value: "paragraph" },
+  { label: "見出し2", value: "h2" },
+  { label: "見出し3", value: "h3" },
+  { label: "見出し4", value: "h4" },
+  { label: "見出し5", value: "h5" },
+  { label: "見出し6", value: "h6" },
+  { label: "引用", value: "quote" },
+  { label: "コードブロック", value: "code" },
+] as const;
 
 const CODE_LANGUAGES = [
-  { label: 'TypeScript', value: 'typescript' },
-  { label: 'JavaScript', value: 'javascript' },
-  { label: 'TSX', value: 'tsx' },
-  { label: 'JSX', value: 'jsx' },
-  { label: 'Python', value: 'python' },
-  { label: 'Java', value: 'java' },
-  { label: 'Go', value: 'go' },
-  { label: 'Rust', value: 'rust' },
-  { label: 'C++', value: 'cpp' },
-  { label: 'C', value: 'c' },
-  { label: 'C#', value: 'csharp' },
-  { label: 'PHP', value: 'php' },
-  { label: 'Ruby', value: 'ruby' },
-  { label: 'Swift', value: 'swift' },
-  { label: 'Kotlin', value: 'kotlin' },
-  { label: 'Bash', value: 'bash' },
-  { label: 'Shell', value: 'shell' },
-  { label: 'SQL', value: 'sql' },
-  { label: 'JSON', value: 'json' },
-  { label: 'YAML', value: 'yaml' },
-  { label: 'XML', value: 'xml' },
-  { label: 'HTML', value: 'html' },
-  { label: 'CSS', value: 'css' },
-  { label: 'SCSS', value: 'scss' },
-  { label: 'Markdown', value: 'markdown' },
-  { label: 'Plain Text', value: 'plaintext' }
-] as const
+  { label: "TypeScript", value: "typescript" },
+  { label: "JavaScript", value: "javascript" },
+  { label: "TSX", value: "tsx" },
+  { label: "JSX", value: "jsx" },
+  { label: "Python", value: "python" },
+  { label: "Java", value: "java" },
+  { label: "Go", value: "go" },
+  { label: "Rust", value: "rust" },
+  { label: "C++", value: "cpp" },
+  { label: "C", value: "c" },
+  { label: "C#", value: "csharp" },
+  { label: "PHP", value: "php" },
+  { label: "Ruby", value: "ruby" },
+  { label: "Swift", value: "swift" },
+  { label: "Kotlin", value: "kotlin" },
+  { label: "Bash", value: "bash" },
+  { label: "Shell", value: "shell" },
+  { label: "SQL", value: "sql" },
+  { label: "JSON", value: "json" },
+  { label: "YAML", value: "yaml" },
+  { label: "XML", value: "xml" },
+  { label: "HTML", value: "html" },
+  { label: "CSS", value: "css" },
+  { label: "SCSS", value: "scss" },
+  { label: "Markdown", value: "markdown" },
+  { label: "Plain Text", value: "plaintext" },
+] as const;
 
 export type UploadImageFn = (options: {
-  file: File
-  onProgress?: (progress: number) => void
-}) => Promise<{ error?: string; height?: number; url?: string; width?: number }>
+  file: File;
+  onProgress?: (progress: number) => void;
+}) => Promise<{
+  error?: string;
+  height?: number;
+  url?: string;
+  width?: number;
+}>;
 
 export function ToolbarPlugin({
-  uploadImage
+  uploadImage,
 }: {
-  uploadImage?: UploadImageFn
+  uploadImage?: UploadImageFn;
 }) {
-  const [editor] = useLexicalComposerContext()
-  const [isBold, setIsBold] = useState(false)
-  const [isItalic, setIsItalic] = useState(false)
-  const [isUnderline, setIsUnderline] = useState(false)
-  const [isStrikethrough, setIsStrikethrough] = useState(false)
-  const [isCode, setIsCode] = useState(false)
-  const [isLink, setIsLink] = useState(false)
-  const [isBulletList, setIsBulletList] = useState(false)
-  const [isNumberedList, setIsNumberedList] = useState(false)
+  const [editor] = useLexicalComposerContext();
+  const [isBold, setIsBold] = useState(false);
+  const [isItalic, setIsItalic] = useState(false);
+  const [isUnderline, setIsUnderline] = useState(false);
+  const [isStrikethrough, setIsStrikethrough] = useState(false);
+  const [isCode, setIsCode] = useState(false);
+  const [isLink, setIsLink] = useState(false);
+  const [isBulletList, setIsBulletList] = useState(false);
+  const [isNumberedList, setIsNumberedList] = useState(false);
   const [blockType, setBlockType] = useState<
-    'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'quote' | 'code'
-  >('paragraph')
-  const [codeLanguage, setCodeLanguage] = useState<string>('')
-  const [isUploading, setIsUploading] = useState(false)
-  const [showLinkDialog, setShowLinkDialog] = useState(false)
-  const [showAltDialog, setShowAltDialog] = useState(false)
-  const [showTableDialog, setShowTableDialog] = useState(false)
-  const [pendingImageUrl, setPendingImageUrl] = useState<string | null>(null)
-  const [pendingImageAlt, setPendingImageAlt] = useState('')
+    "paragraph" | "h2" | "h3" | "h4" | "h5" | "h6" | "quote" | "code"
+  >("paragraph");
+  const [codeLanguage, setCodeLanguage] = useState<string>("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [showLinkDialog, setShowLinkDialog] = useState(false);
+  const [showAltDialog, setShowAltDialog] = useState(false);
+  const [showTableDialog, setShowTableDialog] = useState(false);
+  const [pendingImageUrl, setPendingImageUrl] = useState<string | null>(null);
+  const [pendingImageAlt, setPendingImageAlt] = useState("");
   const [pendingImageWidth, setPendingImageWidth] = useState<
     number | undefined
-  >(undefined)
+  >(undefined);
   const [pendingImageHeight, setPendingImageHeight] = useState<
     number | undefined
-  >(undefined)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  >(undefined);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const updateToolbar = useCallback(() => {
-    const selection = $getSelection()
+    const selection = $getSelection();
     if ($isRangeSelection(selection)) {
-      setIsBold(selection.hasFormat('bold'))
-      setIsItalic(selection.hasFormat('italic'))
-      setIsUnderline(selection.hasFormat('underline'))
-      setIsStrikethrough(selection.hasFormat('strikethrough'))
-      setIsCode(selection.hasFormat('code'))
+      setIsBold(selection.hasFormat("bold"));
+      setIsItalic(selection.hasFormat("italic"));
+      setIsUnderline(selection.hasFormat("underline"));
+      setIsStrikethrough(selection.hasFormat("strikethrough"));
+      setIsCode(selection.hasFormat("code"));
 
       // Check if we're in a link - check both anchor and focus nodes
-      const anchorNode = selection.anchor.getNode()
-      const focusNode = selection.focus.getNode()
-      const anchorParent = anchorNode.getParent()
-      const focusParent = focusNode.getParent()
+      const anchorNode = selection.anchor.getNode();
+      const focusNode = selection.focus.getNode();
+      const anchorParent = anchorNode.getParent();
+      const focusParent = focusNode.getParent();
       setIsLink(
         $isLinkNode(anchorNode) ||
           $isLinkNode(anchorParent) ||
           $isLinkNode(focusNode) ||
           $isLinkNode(focusParent)
-      )
+      );
 
       // Check if we're in a list - use $getNearestNodeOfType for reliable traversal
-      const listNode = $getNearestNodeOfType(anchorNode, ListNode)
+      const listNode = $getNearestNodeOfType(anchorNode, ListNode);
       if (listNode) {
-        const listType = listNode.getListType()
-        setIsBulletList(listType === 'bullet')
-        setIsNumberedList(listType === 'number')
+        const listType = listNode.getListType();
+        setIsBulletList(listType === "bullet");
+        setIsNumberedList(listType === "number");
       } else {
-        setIsBulletList(false)
-        setIsNumberedList(false)
+        setIsBulletList(false);
+        setIsNumberedList(false);
       }
 
       // Check block type (heading or paragraph)
       const element =
-        anchorNode.getKey() === 'root'
+        anchorNode.getKey() === "root"
           ? anchorNode
-          : anchorNode.getTopLevelElementOrThrow()
+          : anchorNode.getTopLevelElementOrThrow();
 
       if ($isHeadingNode(element)) {
-        const headingNode = element as HeadingNode
-        const tag = headingNode.getTag()
-        setBlockType(tag as 'h2' | 'h3' | 'h4' | 'h5' | 'h6')
-        setCodeLanguage('')
+        const headingNode = element as HeadingNode;
+        const tag = headingNode.getTag();
+        setBlockType(tag as "h2" | "h3" | "h4" | "h5" | "h6");
+        setCodeLanguage("");
       } else if ($isParagraphNode(element)) {
-        setBlockType('paragraph')
-        setCodeLanguage('')
+        setBlockType("paragraph");
+        setCodeLanguage("");
       } else if ($isQuoteNode(element)) {
-        setBlockType('quote')
-        setCodeLanguage('')
+        setBlockType("quote");
+        setCodeLanguage("");
       } else if ($isCodeNode(element)) {
-        setBlockType('code')
-        const language = element.getLanguage() || ''
-        setCodeLanguage(language)
+        setBlockType("code");
+        const language = element.getLanguage() || "";
+        setCodeLanguage(language);
       } else {
-        setBlockType('paragraph')
-        setCodeLanguage('')
+        setBlockType("paragraph");
+        setCodeLanguage("");
       }
     }
-  }, [])
+  }, []);
 
-  useEffect(() => {
-    return mergeRegister(
-      editor.registerUpdateListener(({ editorState }) => {
-        editorState.read(() => {
-          updateToolbar()
+  useEffect(
+    () =>
+      mergeRegister(
+        editor.registerUpdateListener(({ editorState }) => {
+          editorState.read(() => {
+            updateToolbar();
+          });
         })
-      })
-    )
-  }, [editor, updateToolbar])
+      ),
+    [editor, updateToolbar]
+  );
 
   const formatBold = () => {
-    editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')
-  }
+    editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
+  };
 
   const formatItalic = () => {
-    editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')
-  }
+    editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic");
+  };
 
   const formatUnderline = () => {
-    editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')
-  }
+    editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline");
+  };
 
   const formatStrikethrough = () => {
-    editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough')
-  }
+    editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough");
+  };
 
   const formatCode = () => {
-    editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code')
-  }
+    editor.dispatchCommand(FORMAT_TEXT_COMMAND, "code");
+  };
 
   const insertLink = useCallback(() => {
-    if (!isLink) {
-      setShowLinkDialog(true)
+    if (isLink) {
+      editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
     } else {
-      editor.dispatchCommand(TOGGLE_LINK_COMMAND, null)
+      setShowLinkDialog(true);
     }
-  }, [editor, isLink])
+  }, [editor, isLink]);
 
   const handleLinkConfirm = useCallback(
     (url: string, title: string) => {
       editor.dispatchCommand(TOGGLE_LINK_COMMAND, {
         title: title || null,
-        url
-      })
+        url,
+      });
     },
     [editor]
-  )
+  );
 
   const handleImageUpload = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
-      if (!uploadImage) return
-      const files = event.target.files
-      if (!files || files.length === 0) return
+      if (!uploadImage) {
+        return;
+      }
+      const files = event.target.files;
+      if (!files || files.length === 0) {
+        return;
+      }
 
-      const file = files[0]
-      setIsUploading(true)
+      const file = files[0];
+      setIsUploading(true);
 
       try {
-        const result = await uploadImage({ file })
+        const result = await uploadImage({ file });
 
         if (result.error) {
-          toast.error(result.error)
+          toast.error(result.error);
         } else if (result.url) {
           // Show the alt text dialog so the user can set/confirm the alt attribute
-          setPendingImageUrl(result.url)
-          setPendingImageAlt(file.name.replace(/\.[^/.]+$/, ''))
-          setPendingImageWidth(result.width)
-          setPendingImageHeight(result.height)
-          setShowAltDialog(true)
+          setPendingImageUrl(result.url);
+          setPendingImageAlt(file.name.replace(/\.[^/.]+$/, ""));
+          setPendingImageWidth(result.width);
+          setPendingImageHeight(result.height);
+          setShowAltDialog(true);
         }
       } catch (error) {
-        console.error('Image upload error:', error)
-        toast.error('画像のアップロードに失敗しました。')
+        console.error("Image upload error:", error);
+        toast.error("画像のアップロードに失敗しました。");
       } finally {
-        setIsUploading(false)
+        setIsUploading(false);
         // Reset file input
         if (fileInputRef.current) {
-          fileInputRef.current.value = ''
+          fileInputRef.current.value = "";
         }
       }
     },
     [uploadImage]
-  )
+  );
 
   const handleAltConfirm = useCallback(
     (alt: string) => {
@@ -285,100 +296,100 @@ export function ToolbarPlugin({
           altText: alt,
           height: pendingImageHeight,
           src: pendingImageUrl,
-          width: pendingImageWidth
-        })
-        setPendingImageUrl(null)
-        setPendingImageAlt('')
-        setPendingImageWidth(undefined)
-        setPendingImageHeight(undefined)
+          width: pendingImageWidth,
+        });
+        setPendingImageUrl(null);
+        setPendingImageAlt("");
+        setPendingImageWidth(undefined);
+        setPendingImageHeight(undefined);
       }
     },
     [editor, pendingImageUrl, pendingImageWidth, pendingImageHeight]
-  )
+  );
 
   const handleAltDialogOpenChange = useCallback((isOpen: boolean) => {
-    setShowAltDialog(isOpen)
+    setShowAltDialog(isOpen);
     if (!isOpen) {
-      setPendingImageUrl(null)
-      setPendingImageAlt('')
-      setPendingImageWidth(undefined)
-      setPendingImageHeight(undefined)
+      setPendingImageUrl(null);
+      setPendingImageAlt("");
+      setPendingImageWidth(undefined);
+      setPendingImageHeight(undefined);
     }
-  }, [])
+  }, []);
 
   const triggerImageUpload = () => {
-    fileInputRef.current?.click()
-  }
+    fileInputRef.current?.click();
+  };
 
   const insertTable = useCallback(
     (rows: number, columns: number) => {
       editor.dispatchCommand(INSERT_TABLE_COMMAND, {
         columns: String(columns),
-        rows: String(rows)
-      })
+        rows: String(rows),
+      });
     },
     [editor]
-  )
+  );
 
   const formatBulletList = () => {
     if (isBulletList) {
-      editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)
+      editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
     } else {
-      editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined)
+      editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
     }
-  }
+  };
 
   const formatNumberedList = () => {
     if (isNumberedList) {
-      editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)
+      editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
     } else {
-      editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined)
+      editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
     }
-  }
+  };
 
   const handleIndent = () => {
-    editor.dispatchCommand(INDENT_CONTENT_COMMAND, undefined)
-  }
+    editor.dispatchCommand(INDENT_CONTENT_COMMAND, undefined);
+  };
 
   const handleOutdent = () => {
-    editor.dispatchCommand(OUTDENT_CONTENT_COMMAND, undefined)
-  }
+    editor.dispatchCommand(OUTDENT_CONTENT_COMMAND, undefined);
+  };
 
   const formatBlockType = (
-    blockType: 'paragraph' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'quote' | 'code'
+    blockType: "paragraph" | "h2" | "h3" | "h4" | "h5" | "h6" | "quote" | "code"
   ) => {
     editor.update(() => {
-      const selection = $getSelection()
+      const selection = $getSelection();
       if ($isRangeSelection(selection)) {
-        if (blockType === 'paragraph') {
-          $setBlocksType(selection, () => $createParagraphNode())
-        } else if (blockType === 'quote') {
-          $setBlocksType(selection, () => $createQuoteNode())
-        } else if (blockType === 'code') {
-          $setBlocksType(selection, () => $createCodeNode())
+        if (blockType === "paragraph") {
+          $setBlocksType(selection, () => $createParagraphNode());
+        } else if (blockType === "quote") {
+          $setBlocksType(selection, () => $createQuoteNode());
+        } else if (blockType === "code") {
+          $setBlocksType(selection, () => $createCodeNode());
         } else {
-          $setBlocksType(selection, () => $createHeadingNode(blockType))
+          $setBlocksType(selection, () => $createHeadingNode(blockType));
         }
       }
-    })
-  }
+    });
+  };
 
   const updateCodeLanguage = (language: string) => {
     editor.update(() => {
-      const selection = $getSelection()
+      const selection = $getSelection();
       if ($isRangeSelection(selection)) {
-        const anchorNode = selection.anchor.getNode()
+        const anchorNode = selection.anchor.getNode();
         const element =
-          anchorNode.getKey() === 'root'
+          anchorNode.getKey() === "root"
             ? anchorNode
-            : anchorNode.getTopLevelElementOrThrow()
+            : anchorNode.getTopLevelElementOrThrow();
 
         if ($isCodeNode(element)) {
-          element.setLanguage(language)
+          element.setLanguage(language);
         }
       }
-    })
-  }
+    });
+  };
 
   return (
     <div className="border-border border-b bg-muted/5">
@@ -389,15 +400,15 @@ export function ToolbarPlugin({
             if (value) {
               formatBlockType(
                 value as
-                  | 'paragraph'
-                  | 'h2'
-                  | 'h3'
-                  | 'h4'
-                  | 'h5'
-                  | 'h6'
-                  | 'quote'
-                  | 'code'
-              )
+                  | "paragraph"
+                  | "h2"
+                  | "h3"
+                  | "h4"
+                  | "h5"
+                  | "h6"
+                  | "quote"
+                  | "code"
+              );
             }
           }}
           value={blockType}
@@ -413,10 +424,10 @@ export function ToolbarPlugin({
             ))}
           </SelectContent>
         </Select>
-        {blockType === 'code' && (
+        {blockType === "code" && (
           <Select
             items={CODE_LANGUAGES}
-            onValueChange={(value) => updateCodeLanguage(value || '')}
+            onValueChange={(value) => updateCodeLanguage(value || "")}
             value={codeLanguage}
           >
             <SelectTrigger aria-label="プログラミング言語" size="sm">
@@ -436,7 +447,7 @@ export function ToolbarPlugin({
         <button
           aria-label="太字"
           className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-            isBold ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+            isBold ? "bg-muted/30 text-primary" : "text-muted-foreground"
           }`}
           onClick={formatBold}
           type="button"
@@ -446,7 +457,7 @@ export function ToolbarPlugin({
         <button
           aria-label="斜体"
           className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-            isItalic ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+            isItalic ? "bg-muted/30 text-primary" : "text-muted-foreground"
           }`}
           onClick={formatItalic}
           type="button"
@@ -456,7 +467,7 @@ export function ToolbarPlugin({
         <button
           aria-label="下線"
           className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-            isUnderline ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+            isUnderline ? "bg-muted/30 text-primary" : "text-muted-foreground"
           }`}
           onClick={formatUnderline}
           type="button"
@@ -467,8 +478,8 @@ export function ToolbarPlugin({
           aria-label="取り消し線"
           className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
             isStrikethrough
-              ? 'bg-muted/30 text-primary'
-              : 'text-muted-foreground'
+              ? "bg-muted/30 text-primary"
+              : "text-muted-foreground"
           }`}
           onClick={formatStrikethrough}
           type="button"
@@ -478,7 +489,7 @@ export function ToolbarPlugin({
         <button
           aria-label="インラインコード"
           className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-            isCode ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+            isCode ? "bg-muted/30 text-primary" : "text-muted-foreground"
           }`}
           onClick={formatCode}
           type="button"
@@ -489,7 +500,7 @@ export function ToolbarPlugin({
         <button
           aria-label="リンク"
           className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-            isLink ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+            isLink ? "bg-muted/30 text-primary" : "text-muted-foreground"
           }`}
           onClick={insertLink}
           type="button"
@@ -499,7 +510,7 @@ export function ToolbarPlugin({
         <button
           aria-label="順序なしリスト"
           className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-            isBulletList ? 'bg-muted/30 text-primary' : 'text-muted-foreground'
+            isBulletList ? "bg-muted/30 text-primary" : "text-muted-foreground"
           }`}
           onClick={formatBulletList}
           type="button"
@@ -510,8 +521,8 @@ export function ToolbarPlugin({
           aria-label="順序付きリスト"
           className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
             isNumberedList
-              ? 'bg-muted/30 text-primary'
-              : 'text-muted-foreground'
+              ? "bg-muted/30 text-primary"
+              : "text-muted-foreground"
           }`}
           onClick={formatNumberedList}
           type="button"
@@ -522,10 +533,10 @@ export function ToolbarPlugin({
           aria-label="インデント"
           className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
             isBulletList || isNumberedList
-              ? 'text-muted-foreground'
-              : 'cursor-not-allowed text-muted-foreground/50'
+              ? "text-muted-foreground"
+              : "cursor-not-allowed text-muted-foreground/50"
           }`}
-          disabled={!isBulletList && !isNumberedList}
+          disabled={!(isBulletList || isNumberedList)}
           onClick={handleIndent}
           type="button"
         >
@@ -535,10 +546,10 @@ export function ToolbarPlugin({
           aria-label="アウトデント"
           className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
             isBulletList || isNumberedList
-              ? 'text-muted-foreground'
-              : 'cursor-not-allowed text-muted-foreground/50'
+              ? "text-muted-foreground"
+              : "cursor-not-allowed text-muted-foreground/50"
           }`}
-          disabled={!isBulletList && !isNumberedList}
+          disabled={!(isBulletList || isNumberedList)}
           onClick={handleOutdent}
           type="button"
         >
@@ -550,7 +561,7 @@ export function ToolbarPlugin({
             <button
               aria-label="画像"
               className={`rounded px-3 py-1 text-sm transition-colors hover:bg-muted/20 ${
-                isUploading ? 'cursor-not-allowed opacity-50' : ''
+                isUploading ? "cursor-not-allowed opacity-50" : ""
               } text-muted-foreground`}
               disabled={isUploading}
               onClick={triggerImageUpload}
@@ -593,5 +604,5 @@ export function ToolbarPlugin({
         open={showTableDialog}
       />
     </div>
-  )
+  );
 }

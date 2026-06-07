@@ -1,18 +1,18 @@
-import type { Metadata } from 'next'
-import type { ReactNode } from 'react'
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
   alternates: {
     types: {
-      'application/atom+xml': '/blog.atom'
-    }
-  }
-}
+      "application/atom+xml": "/blog.atom",
+    },
+  },
+};
 
-type LayoutProps = {
-  children: ReactNode
+interface LayoutProps {
+  children: ReactNode;
 }
 
 export default function BlogLayout({ children }: LayoutProps) {
-  return children
+  return children;
 }

@@ -1,9 +1,9 @@
-import { getProfile } from '@ykzts/supabase/queries'
-import { Badge } from '@ykzts/ui/components/badge'
-import Image from 'next/image'
-import { Suspense } from 'react'
-import Skeleton from '@/components/skeleton'
-import range from '@/lib/range'
+import { getProfile } from "@ykzts/supabase/queries";
+import { Badge } from "@ykzts/ui/components/badge";
+import Image from "next/image";
+import { Suspense } from "react";
+import Skeleton from "@/components/skeleton";
+import range from "@/lib/range";
 
 function HeroSkeleton() {
   return (
@@ -21,14 +21,14 @@ function HeroSkeleton() {
         <Skeleton className="size-80 rounded-2xl" />
       </div>
     </header>
-  )
+  );
 }
 
 async function HeroImpl() {
-  const profile = await getProfile()
+  const profile = await getProfile();
   const kv = Array.isArray(profile.key_visual)
     ? profile.key_visual[0]
-    : profile.key_visual
+    : profile.key_visual;
 
   return (
     <header className="px-6 py-20 md:px-12 lg:px-24 lg:py-28">
@@ -44,13 +44,15 @@ async function HeroImpl() {
           {/* Tech Stack Tags */}
           <div className="flex flex-wrap gap-2">
             {profile.profile_technologies.map((item) => {
-              const tech = item.technology as { name: string } | null
-              if (!tech) return null
+              const tech = item.technology as { name: string } | null;
+              if (!tech) {
+                return null;
+              }
               return (
                 <Badge key={item.sort_order} variant="secondary">
                   {tech.name}
                 </Badge>
-              )
+              );
             })}
           </div>
         </div>
@@ -71,7 +73,7 @@ async function HeroImpl() {
         </div>
       </div>
     </header>
-  )
+  );
 }
 
 export default function Hero() {
@@ -79,5 +81,5 @@ export default function Hero() {
     <Suspense fallback={<HeroSkeleton />}>
       <HeroImpl />
     </Suspense>
-  )
+  );
 }

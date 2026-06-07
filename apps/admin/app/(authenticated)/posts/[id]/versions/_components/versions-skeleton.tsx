@@ -1,4 +1,4 @@
-import { Panel } from '@/components/panel'
+import { Panel } from "@/components/panel";
 
 export function VersionsSkeleton() {
   return (
@@ -46,5 +46,5 @@ export function VersionsSkeleton() {
         </div>
       </Panel>
     </div>
-  )
+  );
 }

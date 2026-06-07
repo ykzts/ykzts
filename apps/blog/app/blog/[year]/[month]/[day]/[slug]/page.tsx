@@ -1,80 +1,80 @@
-import { getSiteOrigin } from '@ykzts/site-config'
-import { getProfile } from '@ykzts/supabase/queries'
-import type { Metadata, Route } from 'next'
-import { notFound } from 'next/navigation'
-import { Suspense } from 'react'
-import ArticleContent from '@/components/article-content'
-import PostNavigation from '@/components/post-navigation'
-import SimilarPosts from '@/components/similar-posts'
-import SimilarPostsSkeleton from '@/components/similar-posts-skeleton'
-import TableOfContents from '@/components/table-of-contents'
-import { getDateBasedUrl } from '@/lib/blog-urls'
-import { DEFAULT_POST_TITLE } from '@/lib/constants'
-import { extractHeadings } from '@/lib/extract-headings'
-import { isPortableTextValue } from '@/lib/portable-text'
+import { getSiteOrigin } from "@ykzts/site-config";
+import { getProfile } from "@ykzts/supabase/queries";
+import type { Metadata, Route } from "next";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import ArticleContent from "@/components/article-content";
+import PostNavigation from "@/components/post-navigation";
+import SimilarPosts from "@/components/similar-posts";
+import SimilarPostsSkeleton from "@/components/similar-posts-skeleton";
+import TableOfContents from "@/components/table-of-contents";
+import { getDateBasedUrl } from "@/lib/blog-urls";
+import { DEFAULT_POST_TITLE } from "@/lib/constants";
+import { extractHeadings } from "@/lib/extract-headings";
+import { isPortableTextValue } from "@/lib/portable-text";
 import {
   getAdjacentPosts,
   getAllPosts,
   getPostBySlug,
-  getSimilarPosts
-} from '@/lib/supabase/posts'
+  getSimilarPosts,
+} from "@/lib/supabase/posts";
 
-type PageProps = {
+interface PageProps {
   params: Promise<{
-    year: string
-    month: string
-    day: string
-    slug: string
-  }>
+    year: string;
+    month: string;
+    day: string;
+    slug: string;
+  }>;
 }
 
 export async function generateStaticParams() {
-  const posts = await getAllPosts()
+  const posts = await getAllPosts();
 
   // Return placeholder if no posts to satisfy Next.js Cache Components requirement
   if (posts.length === 0) {
     return [
       {
-        day: '01',
-        month: '01',
-        slug: '_placeholder',
-        year: '2024'
-      }
-    ]
+        day: "01",
+        month: "01",
+        slug: "_placeholder",
+        year: "2024",
+      },
+    ];
   }
 
   return posts.map((post) => {
-    const date = new Date(post.published_at)
+    const date = new Date(post.published_at);
     return {
-      day: String(date.getUTCDate()).padStart(2, '0'),
-      month: String(date.getUTCMonth() + 1).padStart(2, '0'),
+      day: String(date.getUTCDate()).padStart(2, "0"),
+      month: String(date.getUTCMonth() + 1).padStart(2, "0"),
       slug: post.slug,
-      year: String(date.getUTCFullYear())
-    }
-  })
+      year: String(date.getUTCFullYear()),
+    };
+  });
 }
 
 export async function generateMetadata({
-  params
+  params,
 }: PageProps): Promise<Metadata> {
-  const { year, month, day, slug } = await params
-  const post = await getPostBySlug(slug)
+  const { year, month, day, slug } = await params;
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     return {
-      title: 'Not Found'
-    }
+      title: "Not Found",
+    };
   }
 
   // Validate URL date components match the post's published_at date
   if (post.published_at) {
-    const publishedDate = new Date(post.published_at)
-    const expectedYear = String(publishedDate.getUTCFullYear())
+    const publishedDate = new Date(post.published_at);
+    const expectedYear = String(publishedDate.getUTCFullYear());
     const expectedMonth = String(publishedDate.getUTCMonth() + 1).padStart(
       2,
-      '0'
-    )
-    const expectedDay = String(publishedDate.getUTCDate()).padStart(2, '0')
+      "0"
+    );
+    const expectedDay = String(publishedDate.getUTCDate()).padStart(2, "0");
 
     if (
       year !== expectedYear ||
@@ -82,32 +82,32 @@ export async function generateMetadata({
       day !== expectedDay
     ) {
       return {
-        title: 'Not Found'
-      }
+        title: "Not Found",
+      };
     }
   } else {
     // Draft posts with no published_at cannot be accessed via date-based URL
     return {
-      title: 'Not Found'
-    }
+      title: "Not Found",
+    };
   }
 
   if (!post.profile?.name) {
     return {
-      title: 'Not Found'
-    }
+      title: "Not Found",
+    };
   }
 
-  const authorName = post.profile.name
-  const fediverseCreator = post.profile.fediverse_creator?.trim()
-  const url = getDateBasedUrl(slug, post.published_at)
+  const authorName = post.profile.name;
+  const fediverseCreator = post.profile.fediverse_creator?.trim();
+  const url = getDateBasedUrl(slug, post.published_at);
 
   return {
     alternates: {
       canonical: url,
       types: {
-        'text/markdown': `${url}.md`
-      }
+        "text/markdown": `${url}.md`,
+      },
     },
     authors: [{ name: authorName }],
     description: post.excerpt || undefined,
@@ -118,93 +118,93 @@ export async function generateMetadata({
       publishedTime: post.published_at,
       tags: post.tags ?? undefined,
       title: post.title || DEFAULT_POST_TITLE,
-      type: 'article',
-      url
+      type: "article",
+      url,
     },
     other: {
-      ...(fediverseCreator ? { 'fediverse:creator': fediverseCreator } : {})
+      ...(fediverseCreator ? { "fediverse:creator": fediverseCreator } : {}),
     },
     title: post.title || DEFAULT_POST_TITLE,
     twitter: {
-      card: 'summary_large_image'
-    }
-  }
+      card: "summary_large_image",
+    },
+  };
 }
 
 export default async function PostDetailPage({ params }: PageProps) {
-  const { year, month, day, slug } = await params
-  const post = await getPostBySlug(slug)
+  const { year, month, day, slug } = await params;
+  const post = await getPostBySlug(slug);
 
   if (!post) {
-    notFound()
+    notFound();
   }
 
   // Validate URL date components match the post's published_at date
   if (post.published_at) {
-    const publishedDate = new Date(post.published_at)
-    const expectedYear = String(publishedDate.getUTCFullYear())
+    const publishedDate = new Date(post.published_at);
+    const expectedYear = String(publishedDate.getUTCFullYear());
     const expectedMonth = String(publishedDate.getUTCMonth() + 1).padStart(
       2,
-      '0'
-    )
-    const expectedDay = String(publishedDate.getUTCDate()).padStart(2, '0')
+      "0"
+    );
+    const expectedDay = String(publishedDate.getUTCDate()).padStart(2, "0");
 
     if (
       year !== expectedYear ||
       month !== expectedMonth ||
       day !== expectedDay
     ) {
-      notFound()
+      notFound();
     }
   } else {
     // Draft posts with no published_at cannot be accessed via date-based URL
-    notFound()
+    notFound();
   }
 
   // Validate content is valid PortableText
-  if (!post.content || !isPortableTextValue(post.content)) {
-    notFound()
+  if (!(post.content && isPortableTextValue(post.content))) {
+    notFound();
   }
 
   // Profile is required for author information
   if (!post.profile?.name) {
-    notFound()
+    notFound();
   }
 
   // Fetch publisher profile and adjacent posts concurrently.
   // getProfile() failure is tolerated; fall back to post.profile.name for publisher.
   const [publisherProfile, { previousPost, nextPost }] = await Promise.all([
     getProfile().catch(() => null),
-    getAdjacentPosts(slug)
-  ])
+    getAdjacentPosts(slug),
+  ]);
 
   const historyUrl =
-    `${getDateBasedUrl(slug, post.published_at)}/history` as Route
+    `${getDateBasedUrl(slug, post.published_at)}/history` as Route;
 
   // JSON-LD structured data for Article schema
-  const baseUrl = getSiteOrigin().origin
-  const publisherName = publisherProfile?.name ?? post.profile.name
+  const baseUrl = getSiteOrigin().origin;
+  const publisherName = publisherProfile?.name ?? post.profile.name;
   const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
     author: {
-      '@type': 'Person',
-      name: post.profile.name
+      "@type": "Person",
+      name: post.profile.name,
     },
     dateModified: post.version_date || post.published_at,
     datePublished: post.published_at,
     description: post.excerpt || undefined,
     headline: post.title || DEFAULT_POST_TITLE,
     publisher: {
-      '@type': 'Person',
+      "@type": "Person",
       name: publisherName,
-      url: baseUrl
-    }
-  }
+      url: baseUrl,
+    },
+  };
 
   // Extract headings for Table of Contents
-  const headings = extractHeadings(post.content)
-  const hasHeadings = headings.length > 0
+  const headings = extractHeadings(post.content);
+  const hasHeadings = headings.length > 0;
 
   return (
     <>
@@ -266,11 +266,11 @@ export default async function PostDetailPage({ params }: PageProps) {
         </div>
       </main>
     </>
-  )
+  );
 }
 
-const SIMILAR_POSTS_LIMIT = 3
-const SIMILAR_POSTS_THRESHOLD = 0.5
+const SIMILAR_POSTS_LIMIT = 3;
+const SIMILAR_POSTS_THRESHOLD = 0.5;
 
 async function SimilarPostsSection({ postId }: { postId: string }) {
   try {
@@ -278,11 +278,11 @@ async function SimilarPostsSection({ postId }: { postId: string }) {
       postId,
       SIMILAR_POSTS_LIMIT,
       SIMILAR_POSTS_THRESHOLD
-    )
-    return <SimilarPosts posts={similarPosts} />
+    );
+    return <SimilarPosts posts={similarPosts} />;
   } catch {
     // Silently fail if similar posts can't be fetched
     // This is a non-critical feature and shouldn't break the article page
-    return null
+    return null;
   }
 }

@@ -1,5 +1,5 @@
-import ContactForm from './contact-form'
-import SocialLinks from './social-links'
+import ContactForm from "./contact-form";
+import SocialLinks from "./social-links";
 
 export default function Contact() {
   return (
@@ -25,5 +25,5 @@ export default function Contact() {
         <SocialLinks />
       </div>
     </section>
-  )
+  );
 }

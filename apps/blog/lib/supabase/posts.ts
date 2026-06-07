@@ -1,26 +1,26 @@
-'use cache'
+"use cache";
 
-import type { PortableTextBlock } from '@portabletext/types'
-import { cacheTag } from 'next/cache'
-import { supabase, supabaseAdmin } from './client'
+import type { PortableTextBlock } from "@portabletext/types";
+import { cacheTag } from "next/cache";
+import { supabase, supabaseAdmin } from "./client";
 
 function getClient(isDraft = false) {
   if (isDraft && !supabaseAdmin) {
     console.warn(
-      '[supabase] Draft mode is active but SUPABASE_SERVICE_ROLE_KEY is not set. ' +
-        'Draft posts will not be visible.'
-    )
+      "[supabase] Draft mode is active but SUPABASE_SERVICE_ROLE_KEY is not set. " +
+        "Draft posts will not be visible."
+    );
   }
-  return isDraft ? (supabaseAdmin ?? supabase) : supabase
+  return isDraft ? (supabaseAdmin ?? supabase) : supabase;
 }
 
-const POSTS_PER_PAGE = 10
+const POSTS_PER_PAGE = 10;
 
 type Profile = {
-  fediverse_creator?: string | null
-  id: string
-  name: string
-} | null
+  fediverse_creator?: string | null;
+  id: string;
+  name: string;
+} | null;
 
 /**
  * Normalizes profile data from Supabase query results.
@@ -31,16 +31,16 @@ type Profile = {
  * and validates the profile object structure.
  */
 function normalizeProfile(data: { profile?: unknown }): Profile {
-  const profile = Array.isArray(data.profile) ? data.profile[0] : data.profile
+  const profile = Array.isArray(data.profile) ? data.profile[0] : data.profile;
   if (
     profile != null &&
-    typeof profile === 'object' &&
-    'id' in profile &&
-    'name' in profile
+    typeof profile === "object" &&
+    "id" in profile &&
+    "name" in profile
   ) {
-    return profile as Profile
+    return profile as Profile;
   }
-  return null
+  return null;
 }
 
 /**
@@ -52,28 +52,28 @@ function normalizeProfile(data: { profile?: unknown }): Profile {
  */
 function extractVersionDate(currentVersion: unknown): string | null {
   if (Array.isArray(currentVersion)) {
-    return currentVersion[0]?.version_date ?? null
+    return currentVersion[0]?.version_date ?? null;
   }
-  return (currentVersion as { version_date?: string })?.version_date ?? null
+  return (currentVersion as { version_date?: string })?.version_date ?? null;
 }
 
 export async function getPosts(page = 1, isDraft = false) {
-  cacheTag('posts')
+  cacheTag("posts");
 
-  const client = getClient(isDraft)
+  const client = getClient(isDraft);
 
   if (!client) {
     // Return empty array when Supabase is not configured (e.g., during build without env vars)
-    return []
+    return [];
   }
 
   const safePage =
-    typeof page === 'number' && Number.isFinite(page)
+    typeof page === "number" && Number.isFinite(page)
       ? Math.max(1, Math.floor(page))
-      : 1
-  const offset = (safePage - 1) * POSTS_PER_PAGE
+      : 1;
+  const offset = (safePage - 1) * POSTS_PER_PAGE;
 
-  let query = client.from('posts').select(
+  let query = client.from("posts").select(
     `
       id,
       slug,
@@ -92,22 +92,22 @@ export async function getPosts(page = 1, isDraft = false) {
         version_date
       )
     `
-  )
+  );
 
   // In draft mode, show all posts including drafts and scheduled
   // In normal mode, only show published posts that are not in the future
   if (!isDraft) {
     query = query
-      .eq('status', 'published')
-      .lte('published_at', new Date().toISOString())
+      .eq("status", "published")
+      .lte("published_at", new Date().toISOString());
   }
 
   const { data, error } = await query
-    .order('published_at', { ascending: false })
-    .range(offset, offset + POSTS_PER_PAGE - 1)
+    .order("published_at", { ascending: false })
+    .range(offset, offset + POSTS_PER_PAGE - 1);
 
   if (error) {
-    throw new Error(`Failed to fetch posts: ${error.message}`)
+    throw new Error(`Failed to fetch posts: ${error.message}`);
   }
 
   return data.map((post) => ({
@@ -122,22 +122,22 @@ export async function getPosts(page = 1, isDraft = false) {
     status: post.status as string,
     tags: post.tags,
     title: post.title as string,
-    version_date: extractVersionDate(post.current_version)
-  }))
+    version_date: extractVersionDate(post.current_version),
+  }));
 }
 
 export async function getPostBySlug(slug: string, isDraft = false) {
-  cacheTag('posts')
+  cacheTag("posts");
 
-  const client = getClient(isDraft)
+  const client = getClient(isDraft);
 
   if (!client) {
     // Return null when Supabase is not configured (e.g., during build without env vars)
-    return null
+    return null;
   }
 
   let query = client
-    .from('posts')
+    .from("posts")
     .select(
       `
       id,
@@ -157,24 +157,24 @@ export async function getPostBySlug(slug: string, isDraft = false) {
       )
     `
     )
-    .eq('slug', slug)
+    .eq("slug", slug);
 
   // In draft mode, show any post regardless of status
   // In normal mode, only show published posts that are not in the future
   if (!isDraft) {
     query = query
-      .eq('status', 'published')
-      .lte('published_at', new Date().toISOString())
+      .eq("status", "published")
+      .lte("published_at", new Date().toISOString());
   }
 
-  const { data, error } = await query.maybeSingle()
+  const { data, error } = await query.maybeSingle();
 
   if (error) {
-    throw new Error(`Failed to fetch post: ${error.message}`)
+    throw new Error(`Failed to fetch post: ${error.message}`);
   }
 
   if (!data) {
-    return null
+    return null;
   }
 
   return {
@@ -188,28 +188,28 @@ export async function getPostBySlug(slug: string, isDraft = false) {
     slug: data.slug as string,
     tags: data.tags,
     title: data.title as string,
-    version_date: extractVersionDate(data.current_version)
-  }
+    version_date: extractVersionDate(data.current_version),
+  };
 }
 
 export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
-  cacheTag('posts')
+  cacheTag("posts");
 
-  const client = getClient(isDraft)
+  const client = getClient(isDraft);
 
   if (!client) {
     // Return empty array when Supabase is not configured (e.g., during build without env vars)
-    return []
+    return [];
   }
 
   const safePage =
-    typeof page === 'number' && Number.isFinite(page)
+    typeof page === "number" && Number.isFinite(page)
       ? Math.max(1, Math.floor(page))
-      : 1
-  const offset = (safePage - 1) * POSTS_PER_PAGE
+      : 1;
+  const offset = (safePage - 1) * POSTS_PER_PAGE;
 
   let query = client
-    .from('posts')
+    .from("posts")
     .select(
       `
       id,
@@ -230,22 +230,22 @@ export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
       )
     `
     )
-    .contains('tags', [tag])
+    .contains("tags", [tag]);
 
   // In draft mode, show all posts including drafts and scheduled
   // In normal mode, only show published posts that are not in the future
   if (!isDraft) {
     query = query
-      .eq('status', 'published')
-      .lte('published_at', new Date().toISOString())
+      .eq("status", "published")
+      .lte("published_at", new Date().toISOString());
   }
 
   const { data, error } = await query
-    .order('published_at', { ascending: false })
-    .range(offset, offset + POSTS_PER_PAGE - 1)
+    .order("published_at", { ascending: false })
+    .range(offset, offset + POSTS_PER_PAGE - 1);
 
   if (error) {
-    throw new Error(`Failed to fetch posts by tag: ${error.message}`)
+    throw new Error(`Failed to fetch posts by tag: ${error.message}`);
   }
 
   return data.map((post) => ({
@@ -260,45 +260,45 @@ export async function getPostsByTag(tag: string, page = 1, isDraft = false) {
     status: post.status as string,
     tags: post.tags,
     title: post.title as string,
-    version_date: extractVersionDate(post.current_version)
-  }))
+    version_date: extractVersionDate(post.current_version),
+  }));
 }
 
 export async function getAllTags() {
-  cacheTag('posts')
+  cacheTag("posts");
 
   if (!supabase) {
     // Return empty array when Supabase is not configured (e.g., during build without env vars)
-    return []
+    return [];
   }
 
   const { data, error } = await supabase
-    .from('posts')
-    .select('tags')
-    .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
-    .not('tags', 'is', null)
+    .from("posts")
+    .select("tags")
+    .eq("status", "published")
+    .lte("published_at", new Date().toISOString())
+    .not("tags", "is", null);
 
   if (error) {
-    throw new Error(`Failed to fetch tags: ${error.message}`)
+    throw new Error(`Failed to fetch tags: ${error.message}`);
   }
 
-  const allTags = data.flatMap((post) => post.tags || [])
-  const uniqueTags = Array.from(new Set(allTags)).sort()
+  const allTags = data.flatMap((post) => post.tags || []);
+  const uniqueTags = Array.from(new Set(allTags)).sort();
 
-  return uniqueTags
+  return uniqueTags;
 }
 
 export async function getAllPosts() {
-  cacheTag('posts')
+  cacheTag("posts");
 
   if (!supabase) {
     // Return empty array when Supabase is not configured (e.g., during build without env vars)
-    return []
+    return [];
   }
 
   const { data, error } = await supabase
-    .from('posts')
+    .from("posts")
     .select(
       `
       slug,
@@ -308,32 +308,32 @@ export async function getAllPosts() {
       )
     `
     )
-    .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
-    .not('slug', 'is', null)
-    .order('published_at', { ascending: false })
+    .eq("status", "published")
+    .lte("published_at", new Date().toISOString())
+    .not("slug", "is", null)
+    .order("published_at", { ascending: false });
 
   if (error) {
-    throw new Error(`Failed to fetch all posts: ${error.message}`)
+    throw new Error(`Failed to fetch all posts: ${error.message}`);
   }
 
   return data.map((post) => ({
     published_at: post.published_at as string,
     slug: post.slug as string,
-    version_date: extractVersionDate(post.current_version)
-  }))
+    version_date: extractVersionDate(post.current_version),
+  }));
 }
 
 export async function getPostsForFeed(limit = 20) {
-  cacheTag('posts')
+  cacheTag("posts");
 
   if (!supabase) {
     // Return empty array when Supabase is not configured (e.g., during build without env vars)
-    return []
+    return [];
   }
 
   const { data, error } = await supabase
-    .from('posts')
+    .from("posts")
     .select(
       `
       slug,
@@ -346,14 +346,14 @@ export async function getPostsForFeed(limit = 20) {
       )
     `
     )
-    .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
-    .not('slug', 'is', null)
-    .order('published_at', { ascending: false })
-    .limit(limit)
+    .eq("status", "published")
+    .lte("published_at", new Date().toISOString())
+    .not("slug", "is", null)
+    .order("published_at", { ascending: false })
+    .limit(limit);
 
   if (error) {
-    throw new Error(`Failed to fetch posts for feed: ${error.message}`)
+    throw new Error(`Failed to fetch posts for feed: ${error.message}`);
   }
 
   return data.map((post) => ({
@@ -364,74 +364,74 @@ export async function getPostsForFeed(limit = 20) {
     published_at: post.published_at as string,
     slug: post.slug as string,
     title: post.title as string,
-    version_date: extractVersionDate(post.current_version)
-  }))
+    version_date: extractVersionDate(post.current_version),
+  }));
 }
 
 export async function getTotalPostCount(isDraft = false) {
-  cacheTag('posts')
+  cacheTag("posts");
 
-  const client = getClient(isDraft)
+  const client = getClient(isDraft);
 
   if (!client) {
     // Return 0 when Supabase is not configured (e.g., during build without env vars)
-    return 0
+    return 0;
   }
 
-  let query = client.from('posts').select('*', { count: 'exact', head: true })
+  let query = client.from("posts").select("*", { count: "exact", head: true });
 
   // In draft mode, count all posts
   // In normal mode, only count published posts that are not in the future
   if (!isDraft) {
     query = query
-      .eq('status', 'published')
-      .lte('published_at', new Date().toISOString())
+      .eq("status", "published")
+      .lte("published_at", new Date().toISOString());
   }
 
-  const { count, error } = await query
+  const { count, error } = await query;
 
   if (error) {
-    throw new Error(`Failed to count posts: ${error.message}`)
+    throw new Error(`Failed to count posts: ${error.message}`);
   }
 
-  return count ?? 0
+  return count ?? 0;
 }
 
 export async function getTotalPages(isDraft = false) {
-  const count = await getTotalPostCount(isDraft)
-  return Math.ceil(count / POSTS_PER_PAGE)
+  const count = await getTotalPostCount(isDraft);
+  return Math.ceil(count / POSTS_PER_PAGE);
 }
 
 export async function getPostCountByTag(tag: string, isDraft = false) {
-  cacheTag('posts')
+  cacheTag("posts");
 
-  const client = getClient(isDraft)
+  const client = getClient(isDraft);
 
   if (!client) {
     // Return 0 when Supabase is not configured (e.g., during build without env vars)
-    return 0
+    return 0;
   }
 
   let query = client
-    .from('posts')
-    .select('*', { count: 'exact', head: true })
-    .contains('tags', [tag])
+    .from("posts")
+    .select("*", { count: "exact", head: true })
+    .contains("tags", [tag]);
 
   // In draft mode, count all posts
   // In normal mode, only count published posts that are not in the future
   if (!isDraft) {
     query = query
-      .eq('status', 'published')
-      .lte('published_at', new Date().toISOString())
+      .eq("status", "published")
+      .lte("published_at", new Date().toISOString());
   }
 
-  const { count, error } = await query
+  const { count, error } = await query;
 
   if (error) {
-    throw new Error(`Failed to count posts by tag: ${error.message}`)
+    throw new Error(`Failed to count posts by tag: ${error.message}`);
   }
 
-  return count ?? 0
+  return count ?? 0;
 }
 
 /**
@@ -442,39 +442,39 @@ export async function getPostCountByTag(tag: string, isDraft = false) {
  * @returns Array of search results with similarity scores
  */
 export async function searchPosts(query: string, limit = 10, threshold = 0.4) {
-  cacheTag('posts')
+  cacheTag("posts");
 
   if (!supabase) {
     // Return empty array when Supabase is not configured
-    return []
+    return [];
   }
 
   // Generate embedding for search query
-  const { generateSearchEmbedding } = await import('@/lib/embeddings')
-  const queryEmbedding = await generateSearchEmbedding(query)
+  const { generateSearchEmbedding } = await import("@/lib/embeddings");
+  const queryEmbedding = await generateSearchEmbedding(query);
 
   // Call database function to search for similar posts
-  const { data, error } = await supabase.rpc('search_posts_by_embedding', {
+  const { data, error } = await supabase.rpc("search_posts_by_embedding", {
     match_count: limit,
     match_threshold: threshold,
-    query_embedding: JSON.stringify(queryEmbedding)
-  })
+    query_embedding: JSON.stringify(queryEmbedding),
+  });
 
   if (error) {
-    throw new Error(`Failed to search posts: ${error.message}`)
+    throw new Error(`Failed to search posts: ${error.message}`);
   }
 
   return (
     (data as {
-      excerpt: string | null
-      id: string
-      published_at: string
-      similarity: number
-      slug: string
-      tags: string[] | null
-      title: string
+      excerpt: string | null;
+      id: string;
+      published_at: string;
+      similarity: number;
+      slug: string;
+      tags: string[] | null;
+      title: string;
     }[]) || []
-  )
+  );
 }
 
 /**
@@ -489,35 +489,35 @@ export async function getSimilarPosts(
   limit = 5,
   threshold = 0.5
 ) {
-  cacheTag('posts')
+  cacheTag("posts");
 
   if (!supabase) {
     // Return empty array when Supabase is not configured
-    return []
+    return [];
   }
 
   // Call database function to get similar posts
-  const { data, error } = await supabase.rpc('get_similar_posts', {
+  const { data, error } = await supabase.rpc("get_similar_posts", {
     match_count: limit,
     match_threshold: threshold,
-    post_id: postId
-  })
+    post_id: postId,
+  });
 
   if (error) {
-    throw new Error(`Failed to get similar posts: ${error.message}`)
+    throw new Error(`Failed to get similar posts: ${error.message}`);
   }
 
   return (
     (data as {
-      excerpt: string | null
-      id: string
-      published_at: string
-      similarity: number
-      slug: string
-      tags: string[] | null
-      title: string
+      excerpt: string | null;
+      id: string;
+      published_at: string;
+      similarity: number;
+      slug: string;
+      tags: string[] | null;
+      title: string;
     }[]) || []
-  )
+  );
 }
 
 /**
@@ -527,86 +527,86 @@ export async function getSimilarPosts(
  * @returns Object containing previous (older) and next (newer) posts
  */
 export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
-  cacheTag('posts')
+  cacheTag("posts");
 
-  const client = getClient(isDraft)
+  const client = getClient(isDraft);
 
   if (!client) {
-    return { nextPost: null, previousPost: null }
+    return { nextPost: null, previousPost: null };
   }
 
   // First, get only the published_at date of the current post (lightweight query)
   let currentQuery = client
-    .from('posts')
-    .select('published_at')
-    .eq('slug', currentSlug)
+    .from("posts")
+    .select("published_at")
+    .eq("slug", currentSlug);
 
   if (!isDraft) {
     currentQuery = currentQuery
-      .eq('status', 'published')
-      .lte('published_at', new Date().toISOString())
+      .eq("status", "published")
+      .lte("published_at", new Date().toISOString());
   }
 
   const { data: currentData, error: currentError } =
-    await currentQuery.maybeSingle()
+    await currentQuery.maybeSingle();
 
   if (currentError) {
-    throw new Error(`Failed to fetch current post: ${currentError.message}`)
+    throw new Error(`Failed to fetch current post: ${currentError.message}`);
   }
 
   if (!currentData) {
-    return { nextPost: null, previousPost: null }
+    return { nextPost: null, previousPost: null };
   }
 
   // Draft posts have no published_at; adjacent posts are date-ordered so
   // there is nothing meaningful to navigate to.
   if (!currentData.published_at) {
-    return { nextPost: null, previousPost: null }
+    return { nextPost: null, previousPost: null };
   }
 
-  const currentPublishedAt = currentData.published_at
+  const currentPublishedAt = currentData.published_at;
 
   // Build base filters (apply same filters as getPostBySlug)
   const buildQuery = () => {
-    let query = client.from('posts').select(
+    let query = client.from("posts").select(
       `
       slug,
       title,
       published_at
     `
-    )
+    );
 
     if (!isDraft) {
       query = query
-        .eq('status', 'published')
-        .lte('published_at', new Date().toISOString())
+        .eq("status", "published")
+        .lte("published_at", new Date().toISOString());
     }
 
-    return query
-  }
+    return query;
+  };
 
   // Get next post (newer, published_at >= current, excluding current post)
   const { data: nextData, error: nextError } = await buildQuery()
-    .gte('published_at', currentPublishedAt)
-    .neq('slug', currentSlug)
-    .order('published_at', { ascending: true })
+    .gte("published_at", currentPublishedAt)
+    .neq("slug", currentSlug)
+    .order("published_at", { ascending: true })
     .limit(1)
-    .maybeSingle()
+    .maybeSingle();
 
   if (nextError) {
-    throw new Error(`Failed to fetch next post: ${nextError.message}`)
+    throw new Error(`Failed to fetch next post: ${nextError.message}`);
   }
 
   // Get previous post (older, published_at <= current, excluding current post)
   const { data: prevData, error: prevError } = await buildQuery()
-    .lte('published_at', currentPublishedAt)
-    .neq('slug', currentSlug)
-    .order('published_at', { ascending: false })
+    .lte("published_at", currentPublishedAt)
+    .neq("slug", currentSlug)
+    .order("published_at", { ascending: false })
     .limit(1)
-    .maybeSingle()
+    .maybeSingle();
 
   if (prevError) {
-    throw new Error(`Failed to fetch previous post: ${prevError.message}`)
+    throw new Error(`Failed to fetch previous post: ${prevError.message}`);
   }
 
   return {
@@ -614,17 +614,17 @@ export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
       ? {
           published_at: nextData.published_at as string,
           slug: nextData.slug as string,
-          title: nextData.title as string
+          title: nextData.title as string,
         }
       : null,
     previousPost: prevData
       ? {
           published_at: prevData.published_at as string,
           slug: prevData.slug as string,
-          title: prevData.title as string
+          title: prevData.title as string,
         }
-      : null
-  }
+      : null,
+  };
 }
 
 /**
@@ -633,33 +633,33 @@ export async function getAdjacentPosts(currentSlug: string, isDraft = false) {
  * @returns The latest post's published_at date or null if no posts exist
  */
 export async function getLatestPostDate(isDraft = false) {
-  cacheTag('posts')
+  cacheTag("posts");
 
-  const client = getClient(isDraft)
+  const client = getClient(isDraft);
 
   if (!client) {
-    return null
+    return null;
   }
 
   let query = client
-    .from('posts')
-    .select('published_at')
-    .order('published_at', { ascending: false })
-    .limit(1)
+    .from("posts")
+    .select("published_at")
+    .order("published_at", { ascending: false })
+    .limit(1);
 
   if (!isDraft) {
     query = query
-      .eq('status', 'published')
-      .lte('published_at', new Date().toISOString())
+      .eq("status", "published")
+      .lte("published_at", new Date().toISOString());
   }
 
-  const { data, error } = await query.maybeSingle()
+  const { data, error } = await query.maybeSingle();
 
   if (error) {
-    throw new Error(`Failed to fetch latest post date: ${error.message}`)
+    throw new Error(`Failed to fetch latest post date: ${error.message}`);
   }
 
-  return data ? (data.published_at as string) : null
+  return data ? (data.published_at as string) : null;
 }
 
 /**
@@ -669,19 +669,19 @@ export async function getLatestPostDate(isDraft = false) {
  * @returns Array of posts published in the specified year
  */
 export async function getPostsByYear(year: number, isDraft = false) {
-  cacheTag('posts')
+  cacheTag("posts");
 
-  const client = getClient(isDraft)
+  const client = getClient(isDraft);
 
   if (!client) {
-    return []
+    return [];
   }
 
-  const yearStart = new Date(Date.UTC(year, 0, 1)).toISOString()
-  const yearEnd = new Date(Date.UTC(year + 1, 0, 1)).toISOString()
+  const yearStart = new Date(Date.UTC(year, 0, 1)).toISOString();
+  const yearEnd = new Date(Date.UTC(year + 1, 0, 1)).toISOString();
 
   let query = client
-    .from('posts')
+    .from("posts")
     .select(
       `
       id,
@@ -702,21 +702,21 @@ export async function getPostsByYear(year: number, isDraft = false) {
       )
     `
     )
-    .gte('published_at', yearStart)
-    .lt('published_at', yearEnd)
+    .gte("published_at", yearStart)
+    .lt("published_at", yearEnd);
 
   if (!isDraft) {
     query = query
-      .eq('status', 'published')
-      .lte('published_at', new Date().toISOString())
+      .eq("status", "published")
+      .lte("published_at", new Date().toISOString());
   }
 
-  const { data, error } = await query.order('published_at', {
-    ascending: false
-  })
+  const { data, error } = await query.order("published_at", {
+    ascending: false,
+  });
 
   if (error) {
-    throw new Error(`Failed to fetch posts by year: ${error.message}`)
+    throw new Error(`Failed to fetch posts by year: ${error.message}`);
   }
 
   return data.map((post) => ({
@@ -731,8 +731,8 @@ export async function getPostsByYear(year: number, isDraft = false) {
     status: post.status as string,
     tags: post.tags,
     title: post.title as string,
-    version_date: extractVersionDate(post.current_version)
-  }))
+    version_date: extractVersionDate(post.current_version),
+  }));
 }
 
 /**
@@ -742,49 +742,49 @@ export async function getPostsByYear(year: number, isDraft = false) {
  * @returns The number of posts published in the specified year
  */
 export async function getPostCountByYear(year: number, isDraft = false) {
-  cacheTag('posts')
+  cacheTag("posts");
 
-  const client = getClient(isDraft)
+  const client = getClient(isDraft);
 
   if (!client) {
-    return 0
+    return 0;
   }
 
-  const yearStart = new Date(Date.UTC(year, 0, 1)).toISOString()
-  const yearEnd = new Date(Date.UTC(year + 1, 0, 1)).toISOString()
+  const yearStart = new Date(Date.UTC(year, 0, 1)).toISOString();
+  const yearEnd = new Date(Date.UTC(year + 1, 0, 1)).toISOString();
 
   let query = client
-    .from('posts')
-    .select('*', { count: 'exact', head: true })
-    .gte('published_at', yearStart)
-    .lt('published_at', yearEnd)
+    .from("posts")
+    .select("*", { count: "exact", head: true })
+    .gte("published_at", yearStart)
+    .lt("published_at", yearEnd);
 
   if (!isDraft) {
     query = query
-      .eq('status', 'published')
-      .lte('published_at', new Date().toISOString())
+      .eq("status", "published")
+      .lte("published_at", new Date().toISOString());
   }
 
-  const { count, error } = await query
+  const { count, error } = await query;
 
   if (error) {
-    throw new Error(`Failed to count posts by year: ${error.message}`)
+    throw new Error(`Failed to count posts by year: ${error.message}`);
   }
 
-  return count ?? 0
+  return count ?? 0;
 }
 
-export { POSTS_PER_PAGE }
+export { POSTS_PER_PAGE };
 
 export async function getPostVersions(postId: string) {
-  cacheTag('posts')
+  cacheTag("posts");
 
   if (!supabase) {
-    return []
+    return [];
   }
 
   const { data, error } = await supabase
-    .from('post_versions')
+    .from("post_versions")
     .select(
       `
       id,
@@ -795,14 +795,14 @@ export async function getPostVersions(postId: string) {
       content
     `
     )
-    .eq('post_id', postId)
-    .order('version_number', { ascending: false })
+    .eq("post_id", postId)
+    .order("version_number", { ascending: false });
 
   if (error) {
     throw new Error(
       `Failed to fetch post versions for post ${postId}: ${error.message}`
-    )
+    );
   }
 
-  return data
+  return data;
 }

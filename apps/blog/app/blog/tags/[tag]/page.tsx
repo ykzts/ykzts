@@ -1,55 +1,55 @@
-import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import BlogPagination from '@/components/blog-pagination'
-import PostCard from '@/components/post-card'
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import BlogPagination from "@/components/blog-pagination";
+import PostCard from "@/components/post-card";
 import {
   getAllTags,
   getPostCountByTag,
   getPostsByTag,
-  POSTS_PER_PAGE
-} from '@/lib/supabase/posts'
+  POSTS_PER_PAGE,
+} from "@/lib/supabase/posts";
 
-type PageProps = {
-  params: Promise<{ tag: string }>
+interface PageProps {
+  params: Promise<{ tag: string }>;
 }
 
 export async function generateStaticParams() {
-  const tags = await getAllTags()
+  const tags = await getAllTags();
 
   // Return a dummy tag if no tags exist to satisfy Next.js Cache Components requirement
   if (tags.length === 0) {
-    return [{ tag: '_placeholder' }]
+    return [{ tag: "_placeholder" }];
   }
 
   return tags.map((tag) => ({
-    tag
-  }))
+    tag,
+  }));
 }
 
 export async function generateMetadata({
-  params
+  params,
 }: PageProps): Promise<Metadata> {
-  const { tag } = await params
-  const decodedTag = decodeURIComponent(tag)
+  const { tag } = await params;
+  const decodedTag = decodeURIComponent(tag);
 
   return {
     description: `${decodedTag}タグの記事一覧`,
-    title: `${decodedTag}タグの記事`
-  }
+    title: `${decodedTag}タグの記事`,
+  };
 }
 
 export default async function TagArchivePage({ params }: PageProps) {
-  const { tag } = await params
-  const decodedTag = decodeURIComponent(tag)
+  const { tag } = await params;
+  const decodedTag = decodeURIComponent(tag);
 
-  const posts = await getPostsByTag(decodedTag, 1)
-  const postCount = await getPostCountByTag(decodedTag)
+  const posts = await getPostsByTag(decodedTag, 1);
+  const postCount = await getPostCountByTag(decodedTag);
 
   if (!posts || posts.length === 0) {
-    notFound()
+    notFound();
   }
 
-  const totalPages = Math.ceil(postCount / POSTS_PER_PAGE)
+  const totalPages = Math.ceil(postCount / POSTS_PER_PAGE);
 
   return (
     <main className="px-6 py-8 md:px-12 lg:px-24">
@@ -73,5 +73,5 @@ export default async function TagArchivePage({ params }: PageProps) {
         )}
       </div>
     </main>
-  )
+  );
 }

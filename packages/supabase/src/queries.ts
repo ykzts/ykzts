@@ -1,62 +1,64 @@
-import type { PortableTextBlock } from '@portabletext/types'
-import { createClient } from '@supabase/supabase-js'
-import { cacheTag } from 'next/cache'
-import type { Database } from './database.types.js'
-import type { Post, PostAuthor, PostSummary, Profile, Work } from './dto'
+import type { PortableTextBlock } from "@portabletext/types";
+import { createClient } from "@supabase/supabase-js";
+import { cacheTag } from "next/cache";
+import type { Database } from "./database.types.js";
+import type { Post, Profile, Work } from "./dto";
 
-const POSTS_PER_PAGE = 10
+export type { Post, PostAuthor, PostSummary, Profile, Work } from "./dto";
+
+const POSTS_PER_PAGE = 10;
 
 function createSupabaseClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  if (!supabaseUrl || !supabaseAnonKey) {
-    return null
+  if (!(supabaseUrl && supabaseAnonKey)) {
+    return null;
   }
 
   return createClient<Database>(supabaseUrl, supabaseAnonKey, {
     auth: {
       autoRefreshToken: false,
       detectSessionInUrl: false,
-      persistSession: false
-    }
-  })
+      persistSession: false,
+    },
+  });
 }
 
 function isPortableTextValue(value: unknown): value is PortableTextBlock[] {
   if (!Array.isArray(value)) {
-    return false
+    return false;
   }
 
   return value.every((item) => {
-    if (!item || typeof item !== 'object') {
-      return false
+    if (!item || typeof item !== "object") {
+      return false;
     }
 
-    const type = (item as { _type?: unknown })._type
+    const type = (item as { _type?: unknown })._type;
 
-    return typeof type === 'string'
-  })
+    return typeof type === "string";
+  });
 }
 
-function normalizePostAuthor(data: { profile?: unknown }): Post['profile'] {
-  const profile = Array.isArray(data.profile) ? data.profile[0] : data.profile
+function normalizePostAuthor(data: { profile?: unknown }): Post["profile"] {
+  const profile = Array.isArray(data.profile) ? data.profile[0] : data.profile;
   if (
     profile != null &&
-    typeof profile === 'object' &&
-    'id' in profile &&
-    'name' in profile
+    typeof profile === "object" &&
+    "id" in profile &&
+    "name" in profile
   ) {
-    return profile as Post['profile']
+    return profile as Post["profile"];
   }
-  return null
+  return null;
 }
 
 function extractVersionDate(currentVersion: unknown): string | null {
   if (Array.isArray(currentVersion)) {
-    return currentVersion[0]?.version_date ?? null
+    return currentVersion[0]?.version_date ?? null;
   }
-  return (currentVersion as { version_date?: string })?.version_date ?? null
+  return (currentVersion as { version_date?: string })?.version_date ?? null;
 }
 
 function extractVersionContent(
@@ -64,59 +66,59 @@ function extractVersionContent(
 ): PortableTextBlock[] | null {
   const content = Array.isArray(currentVersion)
     ? (currentVersion[0]?.content ?? null)
-    : ((currentVersion as { content?: unknown } | null)?.content ?? null)
-  return isPortableTextValue(content) ? content : null
+    : ((currentVersion as { content?: unknown } | null)?.content ?? null);
+  return isPortableTextValue(content) ? content : null;
 }
 
 function normalizePage(page: number): number {
-  return typeof page === 'number' && Number.isFinite(page)
+  return typeof page === "number" && Number.isFinite(page)
     ? Math.max(1, Math.floor(page))
-    : 1
+    : 1;
 }
 
 function normalizeProfile(
   profileData: {
-    about: unknown
-    key_visual: unknown
-    profile_technologies: unknown
-    social_links: unknown
+    about: unknown;
+    key_visual: unknown;
+    profile_technologies: unknown;
+    social_links: unknown;
   } & Record<string, unknown>
 ): Profile {
-  let aboutRaw = profileData.about
+  let aboutRaw = profileData.about;
 
-  if (typeof aboutRaw === 'string') {
+  if (typeof aboutRaw === "string") {
     try {
-      aboutRaw = JSON.parse(aboutRaw)
+      aboutRaw = JSON.parse(aboutRaw);
     } catch {
-      aboutRaw = null
+      aboutRaw = null;
     }
   }
 
-  const about = isPortableTextValue(aboutRaw) ? aboutRaw : null
+  const about = isPortableTextValue(aboutRaw) ? aboutRaw : null;
 
   const social_links = Array.isArray(profileData.social_links)
     ? profileData.social_links
-    : []
+    : [];
   const profile_technologies = Array.isArray(profileData.profile_technologies)
     ? profileData.profile_technologies
-    : []
+    : [];
   const key_visual = Array.isArray(profileData.key_visual)
     ? (profileData.key_visual[0] ?? null)
-    : profileData.key_visual
+    : profileData.key_visual;
 
   return {
-    ...(profileData as Profile),
+    ...(profileData as unknown as Profile),
     about,
     key_visual,
     profile_technologies,
-    social_links
-  }
+    social_links,
+  };
 }
 
 function getSupabaseConfigError(): Error {
   return new Error(
-    'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-  )
+    "Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables."
+  );
 }
 
 /**
@@ -126,20 +128,20 @@ function getSupabaseConfigError(): Error {
  * - `error` contains the root cause when the fetch cannot be satisfied.
  */
 async function fetchProfileData(): Promise<{
-  error: Error | null
-  profile: Profile | null
+  error: Error | null;
+  profile: Profile | null;
 }> {
-  const supabase = createSupabaseClient()
+  const supabase = createSupabaseClient();
 
   if (!supabase) {
     return {
       error: getSupabaseConfigError(),
-      profile: null
-    }
+      profile: null,
+    };
   }
 
   const { data: profileData, error: profileError } = await supabase
-    .from('profiles')
+    .from("profiles")
     .select(
       `
         id,
@@ -155,30 +157,30 @@ async function fetchProfileData(): Promise<{
         key_visual:key_visuals(id, url, width, height, artist_name, artist_url, attribution, alt_text)
       `
     )
-    .order('sort_order', {
+    .order("sort_order", {
       ascending: true,
-      referencedTable: 'profile_technologies'
+      referencedTable: "profile_technologies",
     })
-    .maybeSingle()
+    .maybeSingle();
 
   if (profileError) {
     return {
       error: new Error(`Failed to fetch profile: ${profileError.message}`),
-      profile: null
-    }
+      profile: null,
+    };
   }
 
   if (!profileData) {
     return {
-      error: new Error('Profile not found'),
-      profile: null
-    }
+      error: new Error("Profile not found"),
+      profile: null,
+    };
   }
 
   return {
     error: null,
-    profile: normalizeProfile(profileData)
-  }
+    profile: normalizeProfile(profileData),
+  };
 }
 
 /**
@@ -188,20 +190,20 @@ async function fetchProfileData(): Promise<{
  * - Returns `error` only for actual query failures.
  */
 async function fetchWorksData(): Promise<{
-  error: Error | null
-  works: Work[]
+  error: Error | null;
+  works: Work[];
 }> {
-  const supabase = createSupabaseClient()
+  const supabase = createSupabaseClient();
 
   if (!supabase) {
     return {
       error: null,
-      works: []
-    }
+      works: [],
+    };
   }
 
   const { data, error } = await supabase
-    .from('works')
+    .from("works")
     .select(
       `
         content,
@@ -212,20 +214,20 @@ async function fetchWorksData(): Promise<{
         work_technologies(technology_id, technology:technologies(name))
       `
     )
-    .order('starts_at', { ascending: false })
+    .order("starts_at", { ascending: false });
 
   if (error) {
     return {
       error: new Error(`Failed to fetch works: ${error.message}`),
-      works: []
-    }
+      works: [],
+    };
   }
 
   if (!data) {
     return {
       error: null,
-      works: []
-    }
+      works: [],
+    };
   }
 
   return {
@@ -233,19 +235,19 @@ async function fetchWorksData(): Promise<{
     works: data.map((work) => {
       const work_urls = Array.isArray(work.work_urls)
         ? [...work.work_urls].sort((a, b) => a.sort_order - b.sort_order)
-        : []
+        : [];
       const work_technologies = Array.isArray(work.work_technologies)
         ? work.work_technologies
-        : []
+        : [];
 
       return {
         ...work,
         content: isPortableTextValue(work.content) ? work.content : null,
         work_technologies,
-        work_urls
-      }
-    })
-  }
+        work_urls,
+      };
+    }),
+  };
 }
 
 /**
@@ -255,13 +257,13 @@ async function fetchWorksData(): Promise<{
  * Returns `null` for missing configuration, query errors, and missing profile.
  */
 export async function getProfileOptional(): Promise<Profile | null> {
-  'use cache'
+  "use cache";
 
-  cacheTag('profile')
+  cacheTag("profile");
 
-  const { profile } = await fetchProfileData()
+  const { profile } = await fetchProfileData();
 
-  return profile
+  return profile;
 }
 
 /**
@@ -271,13 +273,13 @@ export async function getProfileOptional(): Promise<Profile | null> {
  * Returns an empty array for missing configuration and query errors.
  */
 export async function getWorksOptional(): Promise<Work[]> {
-  'use cache'
+  "use cache";
 
-  cacheTag('works')
+  cacheTag("works");
 
-  const { works } = await fetchWorksData()
+  const { works } = await fetchWorksData();
 
-  return works
+  return works;
 }
 
 /**
@@ -287,21 +289,21 @@ export async function getWorksOptional(): Promise<Work[]> {
  * Callers that can tolerate failure should use `getProfileOptional()`.
  */
 export async function getProfile(): Promise<Profile> {
-  'use cache'
+  "use cache";
 
-  cacheTag('profile')
+  cacheTag("profile");
 
-  const { error, profile } = await fetchProfileData()
+  const { error, profile } = await fetchProfileData();
 
   if (error) {
-    throw error
+    throw error;
   }
 
   if (!profile) {
-    throw new Error('Profile not found')
+    throw new Error("Profile not found");
   }
 
-  return profile
+  return profile;
 }
 
 /**
@@ -311,17 +313,17 @@ export async function getProfile(): Promise<Profile> {
  * Callers that can tolerate failure should use `getWorksOptional()`.
  */
 export async function getWorks(): Promise<Work[]> {
-  'use cache'
+  "use cache";
 
-  cacheTag('works')
+  cacheTag("works");
 
-  const { error, works } = await fetchWorksData()
+  const { error, works } = await fetchWorksData();
 
   if (error) {
-    throw error
+    throw error;
   }
 
-  return works
+  return works;
 }
 
 /**
@@ -331,21 +333,21 @@ export async function getWorks(): Promise<Work[]> {
  * still render without a profile dependency.
  */
 export async function getPosts(page = 1, now = new Date()): Promise<Post[]> {
-  'use cache'
+  "use cache";
 
-  cacheTag('posts')
+  cacheTag("posts");
 
-  const supabase = createSupabaseClient()
+  const supabase = createSupabaseClient();
 
   if (!supabase) {
-    return []
+    return [];
   }
 
-  const safePage = normalizePage(page)
-  const offset = (safePage - 1) * POSTS_PER_PAGE
+  const safePage = normalizePage(page);
+  const offset = (safePage - 1) * POSTS_PER_PAGE;
 
   const { data, error } = await supabase
-    .from('posts')
+    .from("posts")
     .select(
       `
         id,
@@ -366,13 +368,13 @@ export async function getPosts(page = 1, now = new Date()): Promise<Post[]> {
         )
       `
     )
-    .eq('status', 'published')
-    .lte('published_at', now.toISOString())
-    .order('published_at', { ascending: false })
-    .range(offset, offset + POSTS_PER_PAGE - 1)
+    .eq("status", "published")
+    .lte("published_at", now.toISOString())
+    .order("published_at", { ascending: false })
+    .range(offset, offset + POSTS_PER_PAGE - 1);
 
   if (error) {
-    throw new Error(`Failed to fetch posts: ${error.message}`)
+    throw new Error(`Failed to fetch posts: ${error.message}`);
   }
 
   return data.map((post) => ({
@@ -385,9 +387,8 @@ export async function getPosts(page = 1, now = new Date()): Promise<Post[]> {
     status: post.status as string,
     tags: post.tags,
     title: post.title as string,
-    version_date: extractVersionDate(post.current_version)
-  }))
+    version_date: extractVersionDate(post.current_version),
+  }));
 }
 
-export type { Post, PostAuthor, PostSummary, Profile, Work }
-export { POSTS_PER_PAGE }
+export { POSTS_PER_PAGE };

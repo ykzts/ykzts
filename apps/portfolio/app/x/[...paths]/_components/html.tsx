@@ -1,11 +1,11 @@
 export default function Html({
   githubBaseURL,
   packageName,
-  repositoryURL = `${githubBaseURL}.git`
+  repositoryURL = `${githubBaseURL}.git`,
 }: {
-  githubBaseURL: string
-  packageName: string
-  repositoryURL?: string
+  githubBaseURL: string;
+  packageName: string;
+  repositoryURL?: string;
 }) {
   return (
     <html lang="en">
@@ -20,8 +20,8 @@ export default function Html({
             packageName,
             githubBaseURL,
             `${githubBaseURL}/tree/main{/dir}`,
-            `${githubBaseURL}/blob/main{/dir}/{file}#L{line}`
-          ].join(' ')}
+            `${githubBaseURL}/blob/main{/dir}/{file}#L{line}`,
+          ].join(" ")}
           name="go-source"
         />
         <meta
@@ -32,10 +32,10 @@ export default function Html({
       </head>
       <body>
         <p>
-          Redirect to{' '}
+          Redirect to{" "}
           <a href={`https://pkg.go.dev/${packageName}`}>pkg.go.dev</a>.
         </p>
       </body>
     </html>
-  )
+  );
 }

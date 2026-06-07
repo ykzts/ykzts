@@ -1,80 +1,82 @@
-'use client'
+"use client";
 
-import { ChevronDown, ChevronUp } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import type { Heading } from '@/lib/extract-headings'
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { useEffect, useState } from "react";
+import type { Heading } from "@/lib/extract-headings";
 
 interface TableOfContentsProps {
-  headings: Heading[]
-  variant?: 'mobile' | 'desktop'
+  headings: Heading[];
+  variant?: "mobile" | "desktop";
 }
 
 export default function TableOfContents({
   headings,
-  variant = 'desktop'
+  variant = "desktop",
 }: TableOfContentsProps) {
-  const [activeId, setActiveId] = useState<string>('')
-  const [isOpen, setIsOpen] = useState(false)
+  const [activeId, setActiveId] = useState<string>("");
+  const [isOpen, setIsOpen] = useState(false);
 
   // Track active heading using Intersection Observer
   useEffect(() => {
-    if (headings.length === 0) return
+    if (headings.length === 0) {
+      return;
+    }
 
-    const visibleIds = new Set<string>()
+    const visibleIds = new Set<string>();
 
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            visibleIds.add(entry.target.id)
+            visibleIds.add(entry.target.id);
           } else {
-            visibleIds.delete(entry.target.id)
+            visibleIds.delete(entry.target.id);
           }
         }
 
         // Pick the first visible heading in document order
-        const firstVisible = headings.find((h) => visibleIds.has(h.id))
+        const firstVisible = headings.find((h) => visibleIds.has(h.id));
         if (firstVisible) {
-          setActiveId(firstVisible.id)
+          setActiveId(firstVisible.id);
         }
       },
       {
         // Trigger when heading is in the top 20% of viewport
-        rootMargin: '-80px 0px -80% 0px',
-        threshold: 0
+        rootMargin: "-80px 0px -80% 0px",
+        threshold: 0,
       }
-    )
+    );
 
     // Observe all heading elements
     const headingElements = headings
       .map((heading) => document.getElementById(heading.id))
-      .filter((el): el is HTMLElement => el !== null)
+      .filter((el): el is HTMLElement => el !== null);
 
     for (const element of headingElements) {
-      observer.observe(element)
+      observer.observe(element);
     }
 
     return () => {
-      observer.disconnect()
-    }
-  }, [headings])
+      observer.disconnect();
+    };
+  }, [headings]);
 
   // Smooth scroll to heading
   const scrollToHeading = (id: string) => {
-    const element = document.getElementById(id)
+    const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
       // Close mobile accordion after clicking
-      setIsOpen(false)
+      setIsOpen(false);
     }
-  }
+  };
 
   if (headings.length === 0) {
-    return null
+    return null;
   }
 
   // Mobile variant: Collapsible accordion
-  if (variant === 'mobile') {
+  if (variant === "mobile") {
     return (
       <div className="mb-8">
         <button
@@ -100,14 +102,14 @@ export default function TableOfContents({
             <ol className="space-y-2">
               {headings.map((heading) => (
                 <li
-                  className={heading.level === 3 ? 'ml-4' : ''}
+                  className={heading.level === 3 ? "ml-4" : ""}
                   key={heading.id}
                 >
                   <button
                     className={`block w-full text-left text-sm transition-colors hover:text-primary ${
                       activeId === heading.id
-                        ? 'font-medium text-primary'
-                        : 'text-muted-foreground'
+                        ? "font-medium text-primary"
+                        : "text-muted-foreground"
                     }`}
                     onClick={() => scrollToHeading(heading.id)}
                     type="button"
@@ -120,7 +122,7 @@ export default function TableOfContents({
           </nav>
         )}
       </div>
-    )
+    );
   }
 
   // Desktop variant: Fixed sidebar
@@ -133,12 +135,12 @@ export default function TableOfContents({
         <p className="mb-4 font-semibold text-foreground text-sm">目次</p>
         <ol className="space-y-2 border-border border-l-2 pl-4">
           {headings.map((heading) => (
-            <li className={heading.level === 3 ? 'ml-4' : ''} key={heading.id}>
+            <li className={heading.level === 3 ? "ml-4" : ""} key={heading.id}>
               <button
                 className={`block text-left text-sm transition-colors hover:text-primary ${
                   activeId === heading.id
-                    ? 'font-medium text-primary'
-                    : 'text-muted-foreground'
+                    ? "font-medium text-primary"
+                    : "text-muted-foreground"
                 }`}
                 onClick={() => scrollToHeading(heading.id)}
                 type="button"
@@ -150,5 +152,5 @@ export default function TableOfContents({
         </ol>
       </nav>
     </aside>
-  )
+  );
 }

@@ -2,25 +2,25 @@ import {
   $createCodeNode,
   $isCodeNode,
   CodeHighlightNode,
-  CodeNode
-} from '@lexical/code'
-import { LinkNode } from '@lexical/link'
+  CodeNode,
+} from "@lexical/code";
+import { LinkNode } from "@lexical/link";
 import {
   $createListItemNode,
   $createListNode,
   $isListItemNode,
   $isListNode,
   ListItemNode,
-  ListNode
-} from '@lexical/list'
+  ListNode,
+} from "@lexical/list";
 import {
   $createHeadingNode,
   $createQuoteNode,
   $isHeadingNode,
   $isQuoteNode,
   HeadingNode,
-  QuoteNode
-} from '@lexical/rich-text'
+  QuoteNode,
+} from "@lexical/rich-text";
 import {
   $createTableNodeWithDimensions,
   $isTableCellNode,
@@ -29,153 +29,153 @@ import {
   TableCellHeaderStates,
   TableCellNode,
   TableNode,
-  TableRowNode
-} from '@lexical/table'
+  TableRowNode,
+} from "@lexical/table";
 import {
   $createParagraphNode,
   $createTextNode,
   $getRoot,
   $isParagraphNode,
   $isTextNode,
-  createEditor
-} from 'lexical'
-import { describe, expect, it, vi } from 'vitest'
-import { $createImageNode, $isImageNode, ImageNode } from '../nodes/image-node'
+  createEditor,
+} from "lexical";
+import { describe, expect, it, vi } from "vitest";
+import { $createImageNode, $isImageNode, ImageNode } from "../nodes/image-node";
 import {
   initializeEditorWithPortableText,
-  lexicalToPortableText
-} from '../portable-text-serializer'
+  lexicalToPortableText,
+} from "../portable-text-serializer";
 
-type PortableTextTestNode = {
-  _key: string
-  _type: string
-  alt: string
-  asset: { url: string }
+interface PortableTextTestNode {
+  _key: string;
+  _type: string;
+  alt: string;
+  asset: { url: string };
   children: Array<{
-    _key: string
-    _type: string
-    marks: string[]
-    text: string
-  }>
-  language: string
-  level: number
-  listItem: string
-  markDefs: unknown[]
+    _key: string;
+    _type: string;
+    marks: string[];
+    text: string;
+  }>;
+  language: string;
+  level: number;
+  listItem: string;
+  markDefs: unknown[];
   rows: Array<{
-    cells: Array<{ content: string; isHeader: boolean }>
-  }>
-  style: string
+    cells: Array<{ content: string; isHeader: boolean }>;
+  }>;
+  style: string;
 }
 
 const toPortableText = (editor: ReturnType<typeof createEditor>) =>
-  lexicalToPortableText(editor) as unknown as PortableTextTestNode[]
+  lexicalToPortableText(editor) as unknown as PortableTextTestNode[];
 
-describe('Portable Text Serializer', () => {
-  describe('lexicalToPortableText', () => {
-    it('should serialize plain text to Portable Text', () => {
+describe("Portable Text Serializer", () => {
+  describe("lexicalToPortableText", () => {
+    it("should serialize plain text to Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const paragraph = $createParagraphNode()
-        const text = $createTextNode('Hello world')
-        paragraph.append(text)
-        root.append(paragraph)
-      })
+        const root = $getRoot();
+        const paragraph = $createParagraphNode();
+        const text = $createTextNode("Hello world");
+        paragraph.append(text);
+        root.append(paragraph);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(1)
-      expect(portableText[0]._type).toBe('block')
-      expect(portableText[0].children).toHaveLength(1)
-      expect(portableText[0].children[0]._type).toBe('span')
-      expect(portableText[0].children[0].text).toBe('Hello world')
-      expect(portableText[0].children[0]._key).toBeDefined()
-    })
+      expect(portableText).toHaveLength(1);
+      expect(portableText[0]._type).toBe("block");
+      expect(portableText[0].children).toHaveLength(1);
+      expect(portableText[0].children[0]._type).toBe("span");
+      expect(portableText[0].children[0].text).toBe("Hello world");
+      expect(portableText[0].children[0]._key).toBeDefined();
+    });
 
-    it('should serialize bold text to Portable Text', () => {
+    it("should serialize bold text to Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const paragraph = $createParagraphNode()
-        const boldText = $createTextNode('bold text')
-        boldText.toggleFormat('bold')
-        paragraph.append(boldText)
-        root.append(paragraph)
-      })
+        const root = $getRoot();
+        const paragraph = $createParagraphNode();
+        const boldText = $createTextNode("bold text");
+        boldText.toggleFormat("bold");
+        paragraph.append(boldText);
+        root.append(paragraph);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText[0].children[0].marks).toContain('strong')
-      expect(portableText[0].children[0].text).toBe('bold text')
-    })
+      expect(portableText[0].children[0].marks).toContain("strong");
+      expect(portableText[0].children[0].text).toBe("bold text");
+    });
 
-    it('should serialize italic text to Portable Text', () => {
+    it("should serialize italic text to Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const paragraph = $createParagraphNode()
-        const italicText = $createTextNode('italic text')
-        italicText.toggleFormat('italic')
-        paragraph.append(italicText)
-        root.append(paragraph)
-      })
+        const root = $getRoot();
+        const paragraph = $createParagraphNode();
+        const italicText = $createTextNode("italic text");
+        italicText.toggleFormat("italic");
+        paragraph.append(italicText);
+        root.append(paragraph);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText[0].children[0].marks).toContain('em')
-      expect(portableText[0].children[0].text).toBe('italic text')
-    })
+      expect(portableText[0].children[0].marks).toContain("em");
+      expect(portableText[0].children[0].text).toBe("italic text");
+    });
 
-    it('should serialize underline text to Portable Text', () => {
+    it("should serialize underline text to Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const paragraph = $createParagraphNode()
-        const underlineText = $createTextNode('underline text')
-        underlineText.toggleFormat('underline')
-        paragraph.append(underlineText)
-        root.append(paragraph)
-      })
+        const root = $getRoot();
+        const paragraph = $createParagraphNode();
+        const underlineText = $createTextNode("underline text");
+        underlineText.toggleFormat("underline");
+        paragraph.append(underlineText);
+        root.append(paragraph);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText[0].children[0].marks).toContain('underline')
-      expect(portableText[0].children[0].text).toBe('underline text')
-    })
+      expect(portableText[0].children[0].marks).toContain("underline");
+      expect(portableText[0].children[0].text).toBe("underline text");
+    });
 
-    it('should serialize strikethrough text to Portable Text', () => {
+    it("should serialize strikethrough text to Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const paragraph = $createParagraphNode()
-        const strikethroughText = $createTextNode('strikethrough text')
-        strikethroughText.toggleFormat('strikethrough')
-        paragraph.append(strikethroughText)
-        root.append(paragraph)
-      })
+        const root = $getRoot();
+        const paragraph = $createParagraphNode();
+        const strikethroughText = $createTextNode("strikethrough text");
+        strikethroughText.toggleFormat("strikethrough");
+        paragraph.append(strikethroughText);
+        root.append(paragraph);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText[0].children[0].marks).toContain('strike-through')
-      expect(portableText[0].children[0].text).toBe('strikethrough text')
-    })
+      expect(portableText[0].children[0].marks).toContain("strike-through");
+      expect(portableText[0].children[0].text).toBe("strikethrough text");
+    });
 
-    it('should serialize inline code text to Portable Text', () => {
+    it("should serialize inline code text to Portable Text", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -183,249 +183,251 @@ describe('Portable Text Serializer', () => {
           ListNode,
           ListItemNode,
           CodeNode,
-          CodeHighlightNode
-        ]
-      })
+          CodeHighlightNode,
+        ],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const paragraph = $createParagraphNode()
-        const codeText = $createTextNode('inline code')
-        codeText.toggleFormat('code')
-        paragraph.append(codeText)
-        root.append(paragraph)
-      })
+        const root = $getRoot();
+        const paragraph = $createParagraphNode();
+        const codeText = $createTextNode("inline code");
+        codeText.toggleFormat("code");
+        paragraph.append(codeText);
+        root.append(paragraph);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText[0].children[0].marks).toContain('code')
-      expect(portableText[0].children[0].text).toBe('inline code')
-    })
+      expect(portableText[0].children[0].marks).toContain("code");
+      expect(portableText[0].children[0].text).toBe("inline code");
+    });
 
-    it('should serialize combined formatting to Portable Text', () => {
+    it("should serialize combined formatting to Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const paragraph = $createParagraphNode()
-        const text = $createTextNode('bold italic strikethrough underline text')
-        text.toggleFormat('bold')
-        text.toggleFormat('italic')
-        text.toggleFormat('strikethrough')
-        text.toggleFormat('underline')
-        paragraph.append(text)
-        root.append(paragraph)
-      })
+        const root = $getRoot();
+        const paragraph = $createParagraphNode();
+        const text = $createTextNode(
+          "bold italic strikethrough underline text"
+        );
+        text.toggleFormat("bold");
+        text.toggleFormat("italic");
+        text.toggleFormat("strikethrough");
+        text.toggleFormat("underline");
+        paragraph.append(text);
+        root.append(paragraph);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText[0].children[0].marks).toContain('strong')
-      expect(portableText[0].children[0].marks).toContain('em')
-      expect(portableText[0].children[0].marks).toContain('strike-through')
-      expect(portableText[0].children[0].marks).toContain('underline')
-    })
+      expect(portableText[0].children[0].marks).toContain("strong");
+      expect(portableText[0].children[0].marks).toContain("em");
+      expect(portableText[0].children[0].marks).toContain("strike-through");
+      expect(portableText[0].children[0].marks).toContain("underline");
+    });
 
-    it('should serialize empty editor to empty block', () => {
+    it("should serialize empty editor to empty block", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(1)
-      expect(portableText[0].children[0].text).toBe('')
-    })
+      expect(portableText).toHaveLength(1);
+      expect(portableText[0].children[0].text).toBe("");
+    });
 
-    it('should serialize multiple paragraphs to multiple blocks', () => {
+    it("should serialize multiple paragraphs to multiple blocks", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
+        const root = $getRoot();
 
-        const paragraph1 = $createParagraphNode()
-        const text1 = $createTextNode('First paragraph')
-        paragraph1.append(text1)
+        const paragraph1 = $createParagraphNode();
+        const text1 = $createTextNode("First paragraph");
+        paragraph1.append(text1);
 
-        const paragraph2 = $createParagraphNode()
-        const text2 = $createTextNode('Second paragraph')
-        paragraph2.append(text2)
+        const paragraph2 = $createParagraphNode();
+        const text2 = $createTextNode("Second paragraph");
+        paragraph2.append(text2);
 
-        root.append(paragraph1, paragraph2)
-      })
+        root.append(paragraph1, paragraph2);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(2)
-      expect(portableText[0].children[0].text).toBe('First paragraph')
-      expect(portableText[1].children[0].text).toBe('Second paragraph')
-    })
-  })
+      expect(portableText).toHaveLength(2);
+      expect(portableText[0].children[0].text).toBe("First paragraph");
+      expect(portableText[1].children[0].text).toBe("Second paragraph");
+    });
+  });
 
-  describe('initializeEditorWithPortableText', () => {
-    it('should deserialize plain text from Portable Text', () => {
+  describe("initializeEditorWithPortableText", () => {
+    it("should deserialize plain text from Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Hello world' }],
+          _type: "block",
+          children: [{ _type: "span", text: "Hello world" }],
           markDefs: [],
-          style: 'normal'
-        }
-      ])
+          style: "normal",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const paragraph = root.getFirstChild()
-        expect($isParagraphNode(paragraph)).toBe(true)
+        const root = $getRoot();
+        const paragraph = root.getFirstChild();
+        expect($isParagraphNode(paragraph)).toBe(true);
 
         if ($isParagraphNode(paragraph)) {
-          const text = paragraph.getFirstChild()
-          expect($isTextNode(text)).toBe(true)
+          const text = paragraph.getFirstChild();
+          expect($isTextNode(text)).toBe(true);
           if ($isTextNode(text)) {
-            expect(text.getTextContent()).toBe('Hello world')
+            expect(text.getTextContent()).toBe("Hello world");
           }
         }
-      })
-    })
+      });
+    });
 
-    it('should deserialize bold text from Portable Text', () => {
+    it("should deserialize bold text from Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
-          children: [{ _type: 'span', marks: ['strong'], text: 'bold text' }],
+          _type: "block",
+          children: [{ _type: "span", marks: ["strong"], text: "bold text" }],
           markDefs: [],
-          style: 'normal'
-        }
-      ])
+          style: "normal",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const paragraph = root.getFirstChild()
+        const root = $getRoot();
+        const paragraph = root.getFirstChild();
 
         if ($isParagraphNode(paragraph)) {
-          const text = paragraph.getFirstChild()
+          const text = paragraph.getFirstChild();
           if ($isTextNode(text)) {
-            expect(text.getTextContent()).toBe('bold text')
-            expect(text.hasFormat('bold')).toBe(true)
+            expect(text.getTextContent()).toBe("bold text");
+            expect(text.hasFormat("bold")).toBe(true);
           }
         }
-      })
-    })
+      });
+    });
 
-    it('should deserialize italic text from Portable Text', () => {
+    it("should deserialize italic text from Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
-          children: [{ _type: 'span', marks: ['em'], text: 'italic text' }],
+          _type: "block",
+          children: [{ _type: "span", marks: ["em"], text: "italic text" }],
           markDefs: [],
-          style: 'normal'
-        }
-      ])
+          style: "normal",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const paragraph = root.getFirstChild()
+        const root = $getRoot();
+        const paragraph = root.getFirstChild();
 
         if ($isParagraphNode(paragraph)) {
-          const text = paragraph.getFirstChild()
+          const text = paragraph.getFirstChild();
           if ($isTextNode(text)) {
-            expect(text.getTextContent()).toBe('italic text')
-            expect(text.hasFormat('italic')).toBe(true)
+            expect(text.getTextContent()).toBe("italic text");
+            expect(text.hasFormat("italic")).toBe(true);
           }
         }
-      })
-    })
+      });
+    });
 
-    it('should deserialize underline text from Portable Text', () => {
+    it("should deserialize underline text from Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
+          _type: "block",
           children: [
-            { _type: 'span', marks: ['underline'], text: 'underline text' }
+            { _type: "span", marks: ["underline"], text: "underline text" },
           ],
           markDefs: [],
-          style: 'normal'
-        }
-      ])
+          style: "normal",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const paragraph = root.getFirstChild()
+        const root = $getRoot();
+        const paragraph = root.getFirstChild();
 
         if ($isParagraphNode(paragraph)) {
-          const text = paragraph.getFirstChild()
+          const text = paragraph.getFirstChild();
           if ($isTextNode(text)) {
-            expect(text.getTextContent()).toBe('underline text')
-            expect(text.hasFormat('underline')).toBe(true)
+            expect(text.getTextContent()).toBe("underline text");
+            expect(text.hasFormat("underline")).toBe(true);
           }
         }
-      })
-    })
+      });
+    });
 
-    it('should deserialize strikethrough text from Portable Text', () => {
+    it("should deserialize strikethrough text from Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
+          _type: "block",
           children: [
             {
-              _type: 'span',
-              marks: ['strike-through'],
-              text: 'strikethrough text'
-            }
+              _type: "span",
+              marks: ["strike-through"],
+              text: "strikethrough text",
+            },
           ],
           markDefs: [],
-          style: 'normal'
-        }
-      ])
+          style: "normal",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const paragraph = root.getFirstChild()
+        const root = $getRoot();
+        const paragraph = root.getFirstChild();
 
         if ($isParagraphNode(paragraph)) {
-          const text = paragraph.getFirstChild()
+          const text = paragraph.getFirstChild();
           if ($isTextNode(text)) {
-            expect(text.getTextContent()).toBe('strikethrough text')
-            expect(text.hasFormat('strikethrough')).toBe(true)
+            expect(text.getTextContent()).toBe("strikethrough text");
+            expect(text.hasFormat("strikethrough")).toBe(true);
           }
         }
-      })
-    })
+      });
+    });
 
-    it('should deserialize inline code from Portable Text', () => {
+    it("should deserialize inline code from Portable Text", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -433,558 +435,558 @@ describe('Portable Text Serializer', () => {
           ListNode,
           ListItemNode,
           CodeNode,
-          CodeHighlightNode
-        ]
-      })
+          CodeHighlightNode,
+        ],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
+          _type: "block",
           children: [
             {
-              _type: 'span',
-              marks: ['code'],
-              text: 'inline code'
-            }
+              _type: "span",
+              marks: ["code"],
+              text: "inline code",
+            },
           ],
           markDefs: [],
-          style: 'normal'
-        }
-      ])
+          style: "normal",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const paragraph = root.getFirstChild()
+        const root = $getRoot();
+        const paragraph = root.getFirstChild();
 
         if ($isParagraphNode(paragraph)) {
-          const text = paragraph.getFirstChild()
+          const text = paragraph.getFirstChild();
           if ($isTextNode(text)) {
-            expect(text.getTextContent()).toBe('inline code')
-            expect(text.hasFormat('code')).toBe(true)
+            expect(text.getTextContent()).toBe("inline code");
+            expect(text.hasFormat("code")).toBe(true);
           }
         }
-      })
-    })
+      });
+    });
 
-    it('should handle invalid JSON gracefully', () => {
+    it("should handle invalid JSON gracefully", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       const consoleErrorSpy = vi
-        .spyOn(console, 'error')
-        .mockImplementation(() => {})
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
 
-      initializeEditorWithPortableText(editor, 'invalid json')
+      initializeEditorWithPortableText(editor, "invalid json");
 
-      consoleErrorSpy.mockRestore()
+      consoleErrorSpy.mockRestore();
 
       // Should not throw and editor should remain usable
       editor.read(() => {
-        const root = $getRoot()
-        expect(root).toBeDefined()
-      })
-    })
-  })
+        const root = $getRoot();
+        expect(root).toBeDefined();
+      });
+    });
+  });
 
-  describe('Round-trip serialization', () => {
-    it('should preserve plain text through round-trip', () => {
+  describe("Round-trip serialization", () => {
+    it("should preserve plain text through round-trip", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const paragraph = $createParagraphNode()
-        const text = $createTextNode('Test content')
-        paragraph.append(text)
-        root.append(paragraph)
-      })
+        const root = $getRoot();
+        const paragraph = $createParagraphNode();
+        const text = $createTextNode("Test content");
+        paragraph.append(text);
+        root.append(paragraph);
+      });
 
-      const portableText = toPortableText(editor)
-      const json = JSON.stringify(portableText)
+      const portableText = toPortableText(editor);
+      const json = JSON.stringify(portableText);
 
       const editor2 = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
-      initializeEditorWithPortableText(editor2, json)
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
+      initializeEditorWithPortableText(editor2, json);
 
-      const portableText2 = toPortableText(editor2)
+      const portableText2 = toPortableText(editor2);
 
-      expect(portableText2[0].children[0].text).toBe('Test content')
-    })
+      expect(portableText2[0].children[0].text).toBe("Test content");
+    });
 
-    it('should preserve formatting through round-trip', () => {
+    it("should preserve formatting through round-trip", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const paragraph = $createParagraphNode()
-        const text = $createTextNode('Bold italic')
-        text.toggleFormat('bold')
-        text.toggleFormat('italic')
-        paragraph.append(text)
-        root.append(paragraph)
-      })
+        const root = $getRoot();
+        const paragraph = $createParagraphNode();
+        const text = $createTextNode("Bold italic");
+        text.toggleFormat("bold");
+        text.toggleFormat("italic");
+        paragraph.append(text);
+        root.append(paragraph);
+      });
 
-      const portableText = toPortableText(editor)
-      const json = JSON.stringify(portableText)
+      const portableText = toPortableText(editor);
+      const json = JSON.stringify(portableText);
 
       const editor2 = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
-      initializeEditorWithPortableText(editor2, json)
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
+      initializeEditorWithPortableText(editor2, json);
 
-      const portableText2 = toPortableText(editor2)
+      const portableText2 = toPortableText(editor2);
 
-      expect(portableText2[0].children[0].marks).toContain('strong')
-      expect(portableText2[0].children[0].marks).toContain('em')
-      expect(portableText2[0].children[0].text).toBe('Bold italic')
-    })
-  })
+      expect(portableText2[0].children[0].marks).toContain("strong");
+      expect(portableText2[0].children[0].marks).toContain("em");
+      expect(portableText2[0].children[0].text).toBe("Bold italic");
+    });
+  });
 
-  describe('Image Node', () => {
-    it('should serialize image to Portable Text', () => {
+  describe("Image Node", () => {
+    it("should serialize image to Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
+        const root = $getRoot();
         const imageNode = $createImageNode({
-          altText: 'Test image',
-          src: 'https://example.com/image.jpg'
-        })
-        root.append(imageNode)
-      })
+          altText: "Test image",
+          src: "https://example.com/image.jpg",
+        });
+        root.append(imageNode);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(1)
-      expect(portableText[0]._type).toBe('image')
-      if (portableText[0]._type === 'image') {
-        expect(portableText[0].alt).toBe('Test image')
-        expect(portableText[0].asset.url).toBe('https://example.com/image.jpg')
-        expect(portableText[0]._key).toBeDefined()
+      expect(portableText).toHaveLength(1);
+      expect(portableText[0]._type).toBe("image");
+      if (portableText[0]._type === "image") {
+        expect(portableText[0].alt).toBe("Test image");
+        expect(portableText[0].asset.url).toBe("https://example.com/image.jpg");
+        expect(portableText[0]._key).toBeDefined();
       }
-    })
+    });
 
-    it('should deserialize image from Portable Text', () => {
+    it("should deserialize image from Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       const json = JSON.stringify([
         {
-          _key: 'test-key',
-          _type: 'image',
-          alt: 'Test image',
+          _key: "test-key",
+          _type: "image",
+          alt: "Test image",
           asset: {
-            _type: 'reference',
-            url: 'https://example.com/image.jpg'
-          }
-        }
-      ])
+            _type: "reference",
+            url: "https://example.com/image.jpg",
+          },
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const imageNode = root.getFirstChild()
-        expect($isImageNode(imageNode)).toBe(true)
+        const root = $getRoot();
+        const imageNode = root.getFirstChild();
+        expect($isImageNode(imageNode)).toBe(true);
 
         if ($isImageNode(imageNode)) {
-          expect(imageNode.getAltText()).toBe('Test image')
-          expect(imageNode.getSrc()).toBe('https://example.com/image.jpg')
+          expect(imageNode.getAltText()).toBe("Test image");
+          expect(imageNode.getSrc()).toBe("https://example.com/image.jpg");
         }
-      })
-    })
+      });
+    });
 
-    it('should preserve images through round-trip', () => {
+    it("should preserve images through round-trip", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
+        const root = $getRoot();
         const imageNode = $createImageNode({
-          altText: 'Round trip image',
-          src: 'https://example.com/roundtrip.png'
-        })
-        root.append(imageNode)
-      })
+          altText: "Round trip image",
+          src: "https://example.com/roundtrip.png",
+        });
+        root.append(imageNode);
+      });
 
-      const portableText = toPortableText(editor)
-      const json = JSON.stringify(portableText)
+      const portableText = toPortableText(editor);
+      const json = JSON.stringify(portableText);
 
       const editor2 = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
-      initializeEditorWithPortableText(editor2, json)
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
+      initializeEditorWithPortableText(editor2, json);
 
-      const portableText2 = toPortableText(editor2)
+      const portableText2 = toPortableText(editor2);
 
-      expect(portableText2).toHaveLength(1)
-      expect(portableText2[0]._type).toBe('image')
-      if (portableText2[0]._type === 'image') {
-        expect(portableText2[0].alt).toBe('Round trip image')
+      expect(portableText2).toHaveLength(1);
+      expect(portableText2[0]._type).toBe("image");
+      if (portableText2[0]._type === "image") {
+        expect(portableText2[0].alt).toBe("Round trip image");
         expect(portableText2[0].asset.url).toBe(
-          'https://example.com/roundtrip.png'
-        )
+          "https://example.com/roundtrip.png"
+        );
       }
-    })
+    });
 
-    it('should handle mixed content with images and text blocks', () => {
+    it("should handle mixed content with images and text blocks", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
+        const root = $getRoot();
 
         // Add text block
-        const paragraph = $createParagraphNode()
-        const text = $createTextNode('Text before image')
-        paragraph.append(text)
-        root.append(paragraph)
+        const paragraph = $createParagraphNode();
+        const text = $createTextNode("Text before image");
+        paragraph.append(text);
+        root.append(paragraph);
 
         // Add image
         const imageNode = $createImageNode({
-          altText: 'Middle image',
-          src: 'https://example.com/middle.jpg'
-        })
-        root.append(imageNode)
+          altText: "Middle image",
+          src: "https://example.com/middle.jpg",
+        });
+        root.append(imageNode);
 
         // Add another text block
-        const paragraph2 = $createParagraphNode()
-        const text2 = $createTextNode('Text after image')
-        paragraph2.append(text2)
-        root.append(paragraph2)
-      })
+        const paragraph2 = $createParagraphNode();
+        const text2 = $createTextNode("Text after image");
+        paragraph2.append(text2);
+        root.append(paragraph2);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(3)
-      expect(portableText[0]._type).toBe('block')
-      expect(portableText[1]._type).toBe('image')
-      expect(portableText[2]._type).toBe('block')
+      expect(portableText).toHaveLength(3);
+      expect(portableText[0]._type).toBe("block");
+      expect(portableText[1]._type).toBe("image");
+      expect(portableText[2]._type).toBe("block");
 
-      if (portableText[0]._type === 'block') {
-        expect(portableText[0].children[0].text).toBe('Text before image')
+      if (portableText[0]._type === "block") {
+        expect(portableText[0].children[0].text).toBe("Text before image");
       }
-      if (portableText[1]._type === 'image') {
-        expect(portableText[1].alt).toBe('Middle image')
+      if (portableText[1]._type === "image") {
+        expect(portableText[1].alt).toBe("Middle image");
       }
-      if (portableText[2]._type === 'block') {
-        expect(portableText[2].children[0].text).toBe('Text after image')
+      if (portableText[2]._type === "block") {
+        expect(portableText[2].children[0].text).toBe("Text after image");
       }
-    })
+    });
 
-    it('should handle malformed image blocks gracefully', () => {
+    it("should handle malformed image blocks gracefully", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       // Test with missing asset
       const jsonWithoutAsset = JSON.stringify([
         {
-          _key: 'test-key-1',
-          _type: 'image',
-          alt: 'Image without asset'
+          _key: "test-key-1",
+          _type: "image",
+          alt: "Image without asset",
         },
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Valid text' }],
-          markDefs: []
-        }
-      ])
+          _type: "block",
+          children: [{ _type: "span", text: "Valid text" }],
+          markDefs: [],
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, jsonWithoutAsset)
+      initializeEditorWithPortableText(editor, jsonWithoutAsset);
 
       editor.read(() => {
-        const root = $getRoot()
+        const root = $getRoot();
         // Should only have the valid text block, malformed image skipped
-        expect(root.getChildrenSize()).toBe(1)
-        const paragraph = root.getFirstChild()
-        expect($isParagraphNode(paragraph)).toBe(true)
-      })
+        expect(root.getChildrenSize()).toBe(1);
+        const paragraph = root.getFirstChild();
+        expect($isParagraphNode(paragraph)).toBe(true);
+      });
 
       // Test with missing url in asset
       const editor2 = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       const jsonWithoutUrl = JSON.stringify([
         {
-          _key: 'test-key-2',
-          _type: 'image',
-          alt: 'Image without URL',
+          _key: "test-key-2",
+          _type: "image",
+          alt: "Image without URL",
           asset: {
-            _type: 'reference'
-          }
+            _type: "reference",
+          },
         },
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Another valid text' }],
-          markDefs: []
-        }
-      ])
+          _type: "block",
+          children: [{ _type: "span", text: "Another valid text" }],
+          markDefs: [],
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor2, jsonWithoutUrl)
+      initializeEditorWithPortableText(editor2, jsonWithoutUrl);
 
       editor2.read(() => {
-        const root = $getRoot()
+        const root = $getRoot();
         // Should only have the valid text block, malformed image skipped
-        expect(root.getChildrenSize()).toBe(1)
-        const paragraph = root.getFirstChild()
-        expect($isParagraphNode(paragraph)).toBe(true)
-      })
-    })
-  })
+        expect(root.getChildrenSize()).toBe(1);
+        const paragraph = root.getFirstChild();
+        expect($isParagraphNode(paragraph)).toBe(true);
+      });
+    });
+  });
 
-  describe('List Support', () => {
-    it('should serialize bullet list to Portable Text', () => {
+  describe("List Support", () => {
+    it("should serialize bullet list to Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const list = $createListNode('bullet')
-        const item1 = $createListItemNode()
-        item1.append($createTextNode('First item'))
-        const item2 = $createListItemNode()
-        item2.append($createTextNode('Second item'))
-        list.append(item1, item2)
-        root.append(list)
-      })
+        const root = $getRoot();
+        const list = $createListNode("bullet");
+        const item1 = $createListItemNode();
+        item1.append($createTextNode("First item"));
+        const item2 = $createListItemNode();
+        item2.append($createTextNode("Second item"));
+        list.append(item1, item2);
+        root.append(list);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(2)
-      expect(portableText[0]._type).toBe('block')
-      expect(portableText[0].listItem).toBe('bullet')
-      expect(portableText[0].level).toBe(1)
-      expect(portableText[0].children[0].text).toBe('First item')
-      expect(portableText[1]._type).toBe('block')
-      expect(portableText[1].listItem).toBe('bullet')
-      expect(portableText[1].level).toBe(1)
-      expect(portableText[1].children[0].text).toBe('Second item')
-    })
+      expect(portableText).toHaveLength(2);
+      expect(portableText[0]._type).toBe("block");
+      expect(portableText[0].listItem).toBe("bullet");
+      expect(portableText[0].level).toBe(1);
+      expect(portableText[0].children[0].text).toBe("First item");
+      expect(portableText[1]._type).toBe("block");
+      expect(portableText[1].listItem).toBe("bullet");
+      expect(portableText[1].level).toBe(1);
+      expect(portableText[1].children[0].text).toBe("Second item");
+    });
 
-    it('should serialize numbered list to Portable Text', () => {
+    it("should serialize numbered list to Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
+        const root = $getRoot();
 
-        const list = $createListNode('number')
-        const item1 = $createListItemNode()
-        item1.append($createTextNode('First step'))
-        const item2 = $createListItemNode()
-        item2.append($createTextNode('Second step'))
-        list.append(item1, item2)
-        root.append(list)
-      })
+        const list = $createListNode("number");
+        const item1 = $createListItemNode();
+        item1.append($createTextNode("First step"));
+        const item2 = $createListItemNode();
+        item2.append($createTextNode("Second step"));
+        list.append(item1, item2);
+        root.append(list);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(2)
-      expect(portableText[0]._type).toBe('block')
-      expect(portableText[0].listItem).toBe('number')
-      expect(portableText[0].level).toBe(1)
-      expect(portableText[0].children[0].text).toBe('First step')
-      expect(portableText[1]._type).toBe('block')
-      expect(portableText[1].listItem).toBe('number')
-      expect(portableText[1].level).toBe(1)
-      expect(portableText[1].children[0].text).toBe('Second step')
-    })
+      expect(portableText).toHaveLength(2);
+      expect(portableText[0]._type).toBe("block");
+      expect(portableText[0].listItem).toBe("number");
+      expect(portableText[0].level).toBe(1);
+      expect(portableText[0].children[0].text).toBe("First step");
+      expect(portableText[1]._type).toBe("block");
+      expect(portableText[1].listItem).toBe("number");
+      expect(portableText[1].level).toBe(1);
+      expect(portableText[1].children[0].text).toBe("Second step");
+    });
 
-    it('should deserialize bullet list from Portable Text', () => {
+    it("should deserialize bullet list from Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Item 1' }],
+          _type: "block",
+          children: [{ _type: "span", text: "Item 1" }],
           level: 1,
-          listItem: 'bullet',
+          listItem: "bullet",
           markDefs: [],
-          style: 'normal'
+          style: "normal",
         },
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Item 2' }],
+          _type: "block",
+          children: [{ _type: "span", text: "Item 2" }],
           level: 1,
-          listItem: 'bullet',
+          listItem: "bullet",
           markDefs: [],
-          style: 'normal'
-        }
-      ])
+          style: "normal",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
+        const root = $getRoot();
 
-        const list = root.getFirstChild()
-        expect($isListNode(list)).toBe(true)
+        const list = root.getFirstChild();
+        expect($isListNode(list)).toBe(true);
 
         if ($isListNode(list)) {
-          expect(list.getListType()).toBe('bullet')
-          const items = list.getChildren()
-          expect(items).toHaveLength(2)
+          expect(list.getListType()).toBe("bullet");
+          const items = list.getChildren();
+          expect(items).toHaveLength(2);
 
           if ($isListItemNode(items[0])) {
-            const firstItemText = items[0].getTextContent()
-            expect(firstItemText).toBe('Item 1')
+            const firstItemText = items[0].getTextContent();
+            expect(firstItemText).toBe("Item 1");
           }
 
           if ($isListItemNode(items[1])) {
-            const secondItemText = items[1].getTextContent()
-            expect(secondItemText).toBe('Item 2')
+            const secondItemText = items[1].getTextContent();
+            expect(secondItemText).toBe("Item 2");
           }
         }
-      })
-    })
+      });
+    });
 
-    it('should deserialize numbered list from Portable Text', () => {
+    it("should deserialize numbered list from Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Step 1' }],
+          _type: "block",
+          children: [{ _type: "span", text: "Step 1" }],
           level: 1,
-          listItem: 'number',
+          listItem: "number",
           markDefs: [],
-          style: 'normal'
+          style: "normal",
         },
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Step 2' }],
+          _type: "block",
+          children: [{ _type: "span", text: "Step 2" }],
           level: 1,
-          listItem: 'number',
+          listItem: "number",
           markDefs: [],
-          style: 'normal'
-        }
-      ])
+          style: "normal",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
+        const root = $getRoot();
 
-        const list = root.getFirstChild()
-        expect($isListNode(list)).toBe(true)
+        const list = root.getFirstChild();
+        expect($isListNode(list)).toBe(true);
 
         if ($isListNode(list)) {
-          expect(list.getListType()).toBe('number')
-          const items = list.getChildren()
-          expect(items).toHaveLength(2)
+          expect(list.getListType()).toBe("number");
+          const items = list.getChildren();
+          expect(items).toHaveLength(2);
 
           if ($isListItemNode(items[0])) {
-            const firstItemText = items[0].getTextContent()
-            expect(firstItemText).toBe('Step 1')
+            const firstItemText = items[0].getTextContent();
+            expect(firstItemText).toBe("Step 1");
           }
 
           if ($isListItemNode(items[1])) {
-            const secondItemText = items[1].getTextContent()
-            expect(secondItemText).toBe('Step 2')
+            const secondItemText = items[1].getTextContent();
+            expect(secondItemText).toBe("Step 2");
           }
         }
-      })
-    })
+      });
+    });
 
-    it('should preserve list formatting through round-trip', () => {
+    it("should preserve list formatting through round-trip", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
+        const root = $getRoot();
 
-        const list = $createListNode('bullet')
-        const item = $createListItemNode()
-        const text = $createTextNode('Bold item')
-        text.toggleFormat('bold')
-        item.append(text)
-        list.append(item)
-        root.append(list)
-      })
+        const list = $createListNode("bullet");
+        const item = $createListItemNode();
+        const text = $createTextNode("Bold item");
+        text.toggleFormat("bold");
+        item.append(text);
+        list.append(item);
+        root.append(list);
+      });
 
-      const portableText = toPortableText(editor)
-      const json = JSON.stringify(portableText)
+      const portableText = toPortableText(editor);
+      const json = JSON.stringify(portableText);
 
       const editor2 = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
-      initializeEditorWithPortableText(editor2, json)
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
+      initializeEditorWithPortableText(editor2, json);
 
-      const portableText2 = toPortableText(editor2)
+      const portableText2 = toPortableText(editor2);
 
-      expect(portableText2[0].listItem).toBe('bullet')
-      expect(portableText2[0].children[0].marks).toContain('strong')
-      expect(portableText2[0].children[0].text).toBe('Bold item')
-    })
+      expect(portableText2[0].listItem).toBe("bullet");
+      expect(portableText2[0].children[0].marks).toContain("strong");
+      expect(portableText2[0].children[0].text).toBe("Bold item");
+    });
 
-    it('should handle mixed content with lists and paragraphs', () => {
+    it("should handle mixed content with lists and paragraphs", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Paragraph before list' }],
+          _type: "block",
+          children: [{ _type: "span", text: "Paragraph before list" }],
           markDefs: [],
-          style: 'normal'
+          style: "normal",
         },
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'List item' }],
+          _type: "block",
+          children: [{ _type: "span", text: "List item" }],
           level: 1,
-          listItem: 'bullet',
+          listItem: "bullet",
           markDefs: [],
-          style: 'normal'
+          style: "normal",
         },
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Paragraph after list' }],
+          _type: "block",
+          children: [{ _type: "span", text: "Paragraph after list" }],
           markDefs: [],
-          style: 'normal'
-        }
-      ])
+          style: "normal",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
+        const root = $getRoot();
 
-        expect(root.getChildrenSize()).toBe(3)
+        expect(root.getChildrenSize()).toBe(3);
 
-        const firstChild = root.getFirstChild()
-        expect($isParagraphNode(firstChild)).toBe(true)
+        const firstChild = root.getFirstChild();
+        expect($isParagraphNode(firstChild)).toBe(true);
 
-        const secondChild = root.getChildren()[1]
-        expect($isListNode(secondChild)).toBe(true)
+        const secondChild = root.getChildren()[1];
+        expect($isListNode(secondChild)).toBe(true);
 
-        const thirdChild = root.getChildren()[2]
-        expect($isParagraphNode(thirdChild)).toBe(true)
-      })
-    })
+        const thirdChild = root.getChildren()[2];
+        expect($isParagraphNode(thirdChild)).toBe(true);
+      });
+    });
 
-    it('should serialize nested bullet list with correct levels', () => {
+    it("should serialize nested bullet list with correct levels", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -992,78 +994,78 @@ describe('Portable Text Serializer', () => {
           ListNode,
           ListItemNode,
           HeadingNode,
-          QuoteNode
-        ]
-      })
+          QuoteNode,
+        ],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
+        const root = $getRoot();
 
         // Create a nested bullet list
-        const outerList = $createListNode('bullet')
+        const outerList = $createListNode("bullet");
 
         // First item at level 1
-        const item1 = $createListItemNode()
-        item1.append($createTextNode('Item 1'))
-        outerList.append(item1)
+        const item1 = $createListItemNode();
+        item1.append($createTextNode("Item 1"));
+        outerList.append(item1);
 
         // Second item at level 1 with nested list
-        const item2 = $createListItemNode()
-        item2.append($createTextNode('Item 2'))
+        const item2 = $createListItemNode();
+        item2.append($createTextNode("Item 2"));
 
         // Nested list
-        const nestedList = $createListNode('bullet')
-        const nestedItem1 = $createListItemNode()
-        nestedItem1.append($createTextNode('Nested Item 2.1'))
-        nestedList.append(nestedItem1)
+        const nestedList = $createListNode("bullet");
+        const nestedItem1 = $createListItemNode();
+        nestedItem1.append($createTextNode("Nested Item 2.1"));
+        nestedList.append(nestedItem1);
 
-        const nestedItem2 = $createListItemNode()
-        nestedItem2.append($createTextNode('Nested Item 2.2'))
-        nestedList.append(nestedItem2)
+        const nestedItem2 = $createListItemNode();
+        nestedItem2.append($createTextNode("Nested Item 2.2"));
+        nestedList.append(nestedItem2);
 
-        item2.append(nestedList)
-        outerList.append(item2)
+        item2.append(nestedList);
+        outerList.append(item2);
 
         // Third item at level 1
-        const item3 = $createListItemNode()
-        item3.append($createTextNode('Item 3'))
-        outerList.append(item3)
+        const item3 = $createListItemNode();
+        item3.append($createTextNode("Item 3"));
+        outerList.append(item3);
 
-        root.append(outerList)
-      })
+        root.append(outerList);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
       // Should have 5 blocks: 3 at level 1, 2 at level 2
-      expect(portableText).toHaveLength(5)
+      expect(portableText).toHaveLength(5);
 
       // Check first item
-      expect(portableText[0].listItem).toBe('bullet')
-      expect(portableText[0].level).toBe(1)
-      expect(portableText[0].children[0].text).toBe('Item 1')
+      expect(portableText[0].listItem).toBe("bullet");
+      expect(portableText[0].level).toBe(1);
+      expect(portableText[0].children[0].text).toBe("Item 1");
 
       // Check second item
-      expect(portableText[1].listItem).toBe('bullet')
-      expect(portableText[1].level).toBe(1)
-      expect(portableText[1].children[0].text).toBe('Item 2')
+      expect(portableText[1].listItem).toBe("bullet");
+      expect(portableText[1].level).toBe(1);
+      expect(portableText[1].children[0].text).toBe("Item 2");
 
       // Check first nested item
-      expect(portableText[2].listItem).toBe('bullet')
-      expect(portableText[2].level).toBe(2)
-      expect(portableText[2].children[0].text).toBe('Nested Item 2.1')
+      expect(portableText[2].listItem).toBe("bullet");
+      expect(portableText[2].level).toBe(2);
+      expect(portableText[2].children[0].text).toBe("Nested Item 2.1");
 
       // Check second nested item
-      expect(portableText[3].listItem).toBe('bullet')
-      expect(portableText[3].level).toBe(2)
-      expect(portableText[3].children[0].text).toBe('Nested Item 2.2')
+      expect(portableText[3].listItem).toBe("bullet");
+      expect(portableText[3].level).toBe(2);
+      expect(portableText[3].children[0].text).toBe("Nested Item 2.2");
 
       // Check third item
-      expect(portableText[4].listItem).toBe('bullet')
-      expect(portableText[4].level).toBe(1)
-      expect(portableText[4].children[0].text).toBe('Item 3')
-    })
+      expect(portableText[4].listItem).toBe("bullet");
+      expect(portableText[4].level).toBe(1);
+      expect(portableText[4].children[0].text).toBe("Item 3");
+    });
 
-    it('should serialize deeply nested lists with correct levels', () => {
+    it("should serialize deeply nested lists with correct levels", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -1071,48 +1073,48 @@ describe('Portable Text Serializer', () => {
           ListNode,
           ListItemNode,
           HeadingNode,
-          QuoteNode
-        ]
-      })
+          QuoteNode,
+        ],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
+        const root = $getRoot();
 
         // Create a deeply nested list (3 levels)
-        const list1 = $createListNode('bullet')
+        const list1 = $createListNode("bullet");
 
-        const item1 = $createListItemNode()
-        item1.append($createTextNode('Level 1'))
+        const item1 = $createListItemNode();
+        item1.append($createTextNode("Level 1"));
 
-        const list2 = $createListNode('bullet')
-        const item2 = $createListItemNode()
-        item2.append($createTextNode('Level 2'))
+        const list2 = $createListNode("bullet");
+        const item2 = $createListItemNode();
+        item2.append($createTextNode("Level 2"));
 
-        const list3 = $createListNode('bullet')
-        const item3 = $createListItemNode()
-        item3.append($createTextNode('Level 3'))
-        list3.append(item3)
+        const list3 = $createListNode("bullet");
+        const item3 = $createListItemNode();
+        item3.append($createTextNode("Level 3"));
+        list3.append(item3);
 
-        item2.append(list3)
-        list2.append(item2)
-        item1.append(list2)
-        list1.append(item1)
+        item2.append(list3);
+        list2.append(item2);
+        item1.append(list2);
+        list1.append(item1);
 
-        root.append(list1)
-      })
+        root.append(list1);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(3)
-      expect(portableText[0].level).toBe(1)
-      expect(portableText[0].children[0].text).toBe('Level 1')
-      expect(portableText[1].level).toBe(2)
-      expect(portableText[1].children[0].text).toBe('Level 2')
-      expect(portableText[2].level).toBe(3)
-      expect(portableText[2].children[0].text).toBe('Level 3')
-    })
+      expect(portableText).toHaveLength(3);
+      expect(portableText[0].level).toBe(1);
+      expect(portableText[0].children[0].text).toBe("Level 1");
+      expect(portableText[1].level).toBe(2);
+      expect(portableText[1].children[0].text).toBe("Level 2");
+      expect(portableText[2].level).toBe(3);
+      expect(portableText[2].children[0].text).toBe("Level 3");
+    });
 
-    it('should serialize nested numbered list with correct levels', () => {
+    it("should serialize nested numbered list with correct levels", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -1120,45 +1122,45 @@ describe('Portable Text Serializer', () => {
           ListNode,
           ListItemNode,
           HeadingNode,
-          QuoteNode
-        ]
-      })
+          QuoteNode,
+        ],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
+        const root = $getRoot();
 
-        const outerList = $createListNode('number')
+        const outerList = $createListNode("number");
 
-        const item1 = $createListItemNode()
-        item1.append($createTextNode('First'))
-        outerList.append(item1)
+        const item1 = $createListItemNode();
+        item1.append($createTextNode("First"));
+        outerList.append(item1);
 
-        const item2 = $createListItemNode()
-        item2.append($createTextNode('Second'))
+        const item2 = $createListItemNode();
+        item2.append($createTextNode("Second"));
 
-        const nestedList = $createListNode('number')
-        const nestedItem = $createListItemNode()
-        nestedItem.append($createTextNode('Second.1'))
-        nestedList.append(nestedItem)
+        const nestedList = $createListNode("number");
+        const nestedItem = $createListItemNode();
+        nestedItem.append($createTextNode("Second.1"));
+        nestedList.append(nestedItem);
 
-        item2.append(nestedList)
-        outerList.append(item2)
+        item2.append(nestedList);
+        outerList.append(item2);
 
-        root.append(outerList)
-      })
+        root.append(outerList);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(3)
-      expect(portableText[0].listItem).toBe('number')
-      expect(portableText[0].level).toBe(1)
-      expect(portableText[1].listItem).toBe('number')
-      expect(portableText[1].level).toBe(1)
-      expect(portableText[2].listItem).toBe('number')
-      expect(portableText[2].level).toBe(2)
-    })
+      expect(portableText).toHaveLength(3);
+      expect(portableText[0].listItem).toBe("number");
+      expect(portableText[0].level).toBe(1);
+      expect(portableText[1].listItem).toBe("number");
+      expect(portableText[1].level).toBe(1);
+      expect(portableText[2].listItem).toBe("number");
+      expect(portableText[2].level).toBe(2);
+    });
 
-    it('should deserialize nested bullet list correctly', () => {
+    it("should deserialize nested bullet list correctly", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -1166,99 +1168,101 @@ describe('Portable Text Serializer', () => {
           ListNode,
           ListItemNode,
           HeadingNode,
-          QuoteNode
-        ]
-      })
+          QuoteNode,
+        ],
+      });
 
       const json = JSON.stringify([
         {
-          _key: '1',
-          _type: 'block',
-          children: [{ _key: 's1', _type: 'span', text: 'Item 1' }],
+          _key: "1",
+          _type: "block",
+          children: [{ _key: "s1", _type: "span", text: "Item 1" }],
           level: 1,
-          listItem: 'bullet',
+          listItem: "bullet",
           markDefs: [],
-          style: 'normal'
+          style: "normal",
         },
         {
-          _key: '2',
-          _type: 'block',
-          children: [{ _key: 's2', _type: 'span', text: 'Item 2' }],
+          _key: "2",
+          _type: "block",
+          children: [{ _key: "s2", _type: "span", text: "Item 2" }],
           level: 1,
-          listItem: 'bullet',
+          listItem: "bullet",
           markDefs: [],
-          style: 'normal'
+          style: "normal",
         },
         {
-          _key: '3',
-          _type: 'block',
-          children: [{ _key: 's3', _type: 'span', text: 'Nested 2.1' }],
+          _key: "3",
+          _type: "block",
+          children: [{ _key: "s3", _type: "span", text: "Nested 2.1" }],
           level: 2,
-          listItem: 'bullet',
+          listItem: "bullet",
           markDefs: [],
-          style: 'normal'
+          style: "normal",
         },
         {
-          _key: '4',
-          _type: 'block',
-          children: [{ _key: 's4', _type: 'span', text: 'Item 3' }],
+          _key: "4",
+          _type: "block",
+          children: [{ _key: "s4", _type: "span", text: "Item 3" }],
           level: 1,
-          listItem: 'bullet',
+          listItem: "bullet",
           markDefs: [],
-          style: 'normal'
-        }
-      ])
+          style: "normal",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const list = root.getFirstChild()
+        const root = $getRoot();
+        const list = root.getFirstChild();
 
-        expect($isListNode(list)).toBe(true)
+        expect($isListNode(list)).toBe(true);
 
         if ($isListNode(list)) {
-          const items = list.getChildren()
-          expect(items.length).toBe(3)
+          const items = list.getChildren();
+          expect(items.length).toBe(3);
 
           // First item
-          const item1 = items[0]
-          expect($isListItemNode(item1)).toBe(true)
+          const item1 = items[0];
+          expect($isListItemNode(item1)).toBe(true);
           if ($isListItemNode(item1)) {
-            expect(item1.getTextContent()).toBe('Item 1')
+            expect(item1.getTextContent()).toBe("Item 1");
           }
 
           // Second item with nested list
-          const item2 = items[1]
-          expect($isListItemNode(item2)).toBe(true)
+          const item2 = items[1];
+          expect($isListItemNode(item2)).toBe(true);
           if ($isListItemNode(item2)) {
-            const item2Children = item2.getChildren()
+            const item2Children = item2.getChildren();
             // Should have text and nested list
-            expect(item2Children.length).toBe(2)
+            expect(item2Children.length).toBe(2);
 
-            const nestedList = item2Children.find((child) => $isListNode(child))
-            expect(nestedList).toBeDefined()
+            const nestedList = item2Children.find((child) =>
+              $isListNode(child)
+            );
+            expect(nestedList).toBeDefined();
 
             if (nestedList && $isListNode(nestedList)) {
-              const nestedItems = nestedList.getChildren()
-              expect(nestedItems.length).toBe(1)
+              const nestedItems = nestedList.getChildren();
+              expect(nestedItems.length).toBe(1);
               if ($isListItemNode(nestedItems[0])) {
-                expect(nestedItems[0].getTextContent()).toBe('Nested 2.1')
+                expect(nestedItems[0].getTextContent()).toBe("Nested 2.1");
               }
             }
           }
 
           // Third item
-          const item3 = items[2]
-          expect($isListItemNode(item3)).toBe(true)
+          const item3 = items[2];
+          expect($isListItemNode(item3)).toBe(true);
           if ($isListItemNode(item3)) {
-            expect(item3.getTextContent()).toBe('Item 3')
+            expect(item3.getTextContent()).toBe("Item 3");
           }
         }
-      })
-    })
+      });
+    });
 
-    it('should round-trip nested lists correctly', () => {
+    it("should round-trip nested lists correctly", () => {
       const editor1 = createEditor({
         nodes: [
           LinkNode,
@@ -1266,35 +1270,35 @@ describe('Portable Text Serializer', () => {
           ListNode,
           ListItemNode,
           HeadingNode,
-          QuoteNode
-        ]
-      })
+          QuoteNode,
+        ],
+      });
 
       editor1.update(() => {
-        const root = $getRoot()
+        const root = $getRoot();
 
-        const list = $createListNode('bullet')
+        const list = $createListNode("bullet");
 
-        const item1 = $createListItemNode()
-        item1.append($createTextNode('Outer 1'))
-        list.append(item1)
+        const item1 = $createListItemNode();
+        item1.append($createTextNode("Outer 1"));
+        list.append(item1);
 
-        const item2 = $createListItemNode()
-        item2.append($createTextNode('Outer 2'))
+        const item2 = $createListItemNode();
+        item2.append($createTextNode("Outer 2"));
 
-        const nestedList = $createListNode('bullet')
-        const nestedItem = $createListItemNode()
-        nestedItem.append($createTextNode('Inner 2.1'))
-        nestedList.append(nestedItem)
+        const nestedList = $createListNode("bullet");
+        const nestedItem = $createListItemNode();
+        nestedItem.append($createTextNode("Inner 2.1"));
+        nestedList.append(nestedItem);
 
-        item2.append(nestedList)
-        list.append(item2)
+        item2.append(nestedList);
+        list.append(item2);
 
-        root.append(list)
-      })
+        root.append(list);
+      });
 
-      const portableText1 = toPortableText(editor1)
-      const json = JSON.stringify(portableText1)
+      const portableText1 = toPortableText(editor1);
+      const json = JSON.stringify(portableText1);
 
       const editor2 = createEditor({
         nodes: [
@@ -1303,23 +1307,23 @@ describe('Portable Text Serializer', () => {
           ListNode,
           ListItemNode,
           HeadingNode,
-          QuoteNode
-        ]
-      })
-      initializeEditorWithPortableText(editor2, json)
+          QuoteNode,
+        ],
+      });
+      initializeEditorWithPortableText(editor2, json);
 
-      const portableText2 = toPortableText(editor2)
+      const portableText2 = toPortableText(editor2);
 
-      expect(portableText2).toHaveLength(3)
-      expect(portableText2[0].level).toBe(1)
-      expect(portableText2[0].children[0].text).toBe('Outer 1')
-      expect(portableText2[1].level).toBe(1)
-      expect(portableText2[1].children[0].text).toBe('Outer 2')
-      expect(portableText2[2].level).toBe(2)
-      expect(portableText2[2].children[0].text).toBe('Inner 2.1')
-    })
+      expect(portableText2).toHaveLength(3);
+      expect(portableText2[0].level).toBe(1);
+      expect(portableText2[0].children[0].text).toBe("Outer 1");
+      expect(portableText2[1].level).toBe(1);
+      expect(portableText2[1].children[0].text).toBe("Outer 2");
+      expect(portableText2[2].level).toBe(2);
+      expect(portableText2[2].children[0].text).toBe("Inner 2.1");
+    });
 
-    it('should handle mixed list types in nested structure', () => {
+    it("should handle mixed list types in nested structure", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -1327,54 +1331,54 @@ describe('Portable Text Serializer', () => {
           ListNode,
           ListItemNode,
           HeadingNode,
-          QuoteNode
-        ]
-      })
+          QuoteNode,
+        ],
+      });
 
       const json = JSON.stringify([
         {
-          _key: '1',
-          _type: 'block',
-          children: [{ _key: 's1', _type: 'span', text: 'Bullet 1' }],
+          _key: "1",
+          _type: "block",
+          children: [{ _key: "s1", _type: "span", text: "Bullet 1" }],
           level: 1,
-          listItem: 'bullet',
+          listItem: "bullet",
           markDefs: [],
-          style: 'normal'
+          style: "normal",
         },
         {
-          _key: '2',
-          _type: 'block',
-          children: [{ _key: 's2', _type: 'span', text: 'Number 1.1' }],
+          _key: "2",
+          _type: "block",
+          children: [{ _key: "s2", _type: "span", text: "Number 1.1" }],
           level: 2,
-          listItem: 'number',
+          listItem: "number",
           markDefs: [],
-          style: 'normal'
+          style: "normal",
         },
         {
-          _key: '3',
-          _type: 'block',
-          children: [{ _key: 's3', _type: 'span', text: 'Bullet 2' }],
+          _key: "3",
+          _type: "block",
+          children: [{ _key: "s3", _type: "span", text: "Bullet 2" }],
           level: 1,
-          listItem: 'bullet',
+          listItem: "bullet",
           markDefs: [],
-          style: 'normal'
-        }
-      ])
+          style: "normal",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(3)
-      expect(portableText[0].listItem).toBe('bullet')
-      expect(portableText[0].level).toBe(1)
-      expect(portableText[1].listItem).toBe('number')
-      expect(portableText[1].level).toBe(2)
-      expect(portableText[2].listItem).toBe('bullet')
-      expect(portableText[2].level).toBe(1)
-    })
+      expect(portableText).toHaveLength(3);
+      expect(portableText[0].listItem).toBe("bullet");
+      expect(portableText[0].level).toBe(1);
+      expect(portableText[1].listItem).toBe("number");
+      expect(portableText[1].level).toBe(2);
+      expect(portableText[2].listItem).toBe("bullet");
+      expect(portableText[2].level).toBe(1);
+    });
 
-    it('should handle level skipping in Portable Text input', () => {
+    it("should handle level skipping in Portable Text input", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -1382,293 +1386,293 @@ describe('Portable Text Serializer', () => {
           ListNode,
           ListItemNode,
           HeadingNode,
-          QuoteNode
-        ]
-      })
+          QuoteNode,
+        ],
+      });
 
       // Test malformed input with level 1 jumping to level 3
       const json = JSON.stringify([
         {
-          _key: '1',
-          _type: 'block',
-          children: [{ _key: 's1', _type: 'span', text: 'Level 1' }],
+          _key: "1",
+          _type: "block",
+          children: [{ _key: "s1", _type: "span", text: "Level 1" }],
           level: 1,
-          listItem: 'bullet',
+          listItem: "bullet",
           markDefs: [],
-          style: 'normal'
+          style: "normal",
         },
         {
-          _key: '2',
-          _type: 'block',
+          _key: "2",
+          _type: "block",
           children: [
-            { _key: 's2', _type: 'span', text: 'Level 3 (skipped 2)' }
+            { _key: "s2", _type: "span", text: "Level 3 (skipped 2)" },
           ],
           level: 3,
-          listItem: 'bullet',
+          listItem: "bullet",
           markDefs: [],
-          style: 'normal'
-        }
-      ])
+          style: "normal",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const list = root.getFirstChild()
+        const root = $getRoot();
+        const list = root.getFirstChild();
 
-        expect($isListNode(list)).toBe(true)
+        expect($isListNode(list)).toBe(true);
 
         if ($isListNode(list)) {
-          const items = list.getChildren()
-          expect(items.length).toBeGreaterThan(0)
+          const items = list.getChildren();
+          expect(items.length).toBeGreaterThan(0);
 
           // The structure should be created even with skipped levels
           // Level 1 item should exist
-          const item1 = items[0]
-          expect($isListItemNode(item1)).toBe(true)
+          const item1 = items[0];
+          expect($isListItemNode(item1)).toBe(true);
 
           if ($isListItemNode(item1)) {
-            const item1Text = item1.getTextContent()
+            const item1Text = item1.getTextContent();
             // First item contains either "Level 1" or empty text
-            expect(item1Text).toBeTruthy()
+            expect(item1Text).toBeTruthy();
           }
         }
-      })
-    })
-  })
+      });
+    });
+  });
 
-  describe('Heading Support', () => {
-    it('should serialize H2 heading to Portable Text', () => {
+  describe("Heading Support", () => {
+    it("should serialize H2 heading to Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const heading = $createHeadingNode('h2')
-        heading.append($createTextNode('Main Heading'))
-        root.append(heading)
-      })
+        const root = $getRoot();
+        const heading = $createHeadingNode("h2");
+        heading.append($createTextNode("Main Heading"));
+        root.append(heading);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(1)
-      expect(portableText[0]._type).toBe('block')
-      expect(portableText[0].style).toBe('h2')
-      expect(portableText[0].children[0].text).toBe('Main Heading')
-    })
+      expect(portableText).toHaveLength(1);
+      expect(portableText[0]._type).toBe("block");
+      expect(portableText[0].style).toBe("h2");
+      expect(portableText[0].children[0].text).toBe("Main Heading");
+    });
 
-    it('should serialize H3 heading to Portable Text', () => {
+    it("should serialize H3 heading to Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const heading = $createHeadingNode('h3')
-        heading.append($createTextNode('Subheading'))
-        root.append(heading)
-      })
+        const root = $getRoot();
+        const heading = $createHeadingNode("h3");
+        heading.append($createTextNode("Subheading"));
+        root.append(heading);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(1)
-      expect(portableText[0]._type).toBe('block')
-      expect(portableText[0].style).toBe('h3')
-      expect(portableText[0].children[0].text).toBe('Subheading')
-    })
+      expect(portableText).toHaveLength(1);
+      expect(portableText[0]._type).toBe("block");
+      expect(portableText[0].style).toBe("h3");
+      expect(portableText[0].children[0].text).toBe("Subheading");
+    });
 
-    it('should serialize headings H4-H6 to Portable Text', () => {
+    it("should serialize headings H4-H6 to Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const h4 = $createHeadingNode('h4')
-        h4.append($createTextNode('H4 Heading'))
-        const h5 = $createHeadingNode('h5')
-        h5.append($createTextNode('H5 Heading'))
-        const h6 = $createHeadingNode('h6')
-        h6.append($createTextNode('H6 Heading'))
-        root.append(h4, h5, h6)
-      })
+        const root = $getRoot();
+        const h4 = $createHeadingNode("h4");
+        h4.append($createTextNode("H4 Heading"));
+        const h5 = $createHeadingNode("h5");
+        h5.append($createTextNode("H5 Heading"));
+        const h6 = $createHeadingNode("h6");
+        h6.append($createTextNode("H6 Heading"));
+        root.append(h4, h5, h6);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(3)
-      expect(portableText[0].style).toBe('h4')
-      expect(portableText[0].children[0].text).toBe('H4 Heading')
-      expect(portableText[1].style).toBe('h5')
-      expect(portableText[1].children[0].text).toBe('H5 Heading')
-      expect(portableText[2].style).toBe('h6')
-      expect(portableText[2].children[0].text).toBe('H6 Heading')
-    })
+      expect(portableText).toHaveLength(3);
+      expect(portableText[0].style).toBe("h4");
+      expect(portableText[0].children[0].text).toBe("H4 Heading");
+      expect(portableText[1].style).toBe("h5");
+      expect(portableText[1].children[0].text).toBe("H5 Heading");
+      expect(portableText[2].style).toBe("h6");
+      expect(portableText[2].children[0].text).toBe("H6 Heading");
+    });
 
-    it('should deserialize H2 heading from Portable Text', () => {
+    it("should deserialize H2 heading from Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Main Heading' }],
+          _type: "block",
+          children: [{ _type: "span", text: "Main Heading" }],
           markDefs: [],
-          style: 'h2'
-        }
-      ])
+          style: "h2",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const heading = root.getFirstChild()
-        expect($isHeadingNode(heading)).toBe(true)
+        const root = $getRoot();
+        const heading = root.getFirstChild();
+        expect($isHeadingNode(heading)).toBe(true);
 
         if ($isHeadingNode(heading)) {
-          expect(heading.getTag()).toBe('h2')
-          expect(heading.getTextContent()).toBe('Main Heading')
+          expect(heading.getTag()).toBe("h2");
+          expect(heading.getTextContent()).toBe("Main Heading");
         }
-      })
-    })
+      });
+    });
 
-    it('should deserialize headings H3-H6 from Portable Text', () => {
+    it("should deserialize headings H3-H6 from Portable Text", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'H3' }],
+          _type: "block",
+          children: [{ _type: "span", text: "H3" }],
           markDefs: [],
-          style: 'h3'
+          style: "h3",
         },
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'H4' }],
+          _type: "block",
+          children: [{ _type: "span", text: "H4" }],
           markDefs: [],
-          style: 'h4'
+          style: "h4",
         },
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'H5' }],
+          _type: "block",
+          children: [{ _type: "span", text: "H5" }],
           markDefs: [],
-          style: 'h5'
+          style: "h5",
         },
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'H6' }],
+          _type: "block",
+          children: [{ _type: "span", text: "H6" }],
           markDefs: [],
-          style: 'h6'
-        }
-      ])
+          style: "h6",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const children = root.getChildren()
+        const root = $getRoot();
+        const children = root.getChildren();
 
-        expect(children).toHaveLength(4)
+        expect(children).toHaveLength(4);
 
         if ($isHeadingNode(children[0])) {
-          expect(children[0].getTag()).toBe('h3')
-          expect(children[0].getTextContent()).toBe('H3')
+          expect(children[0].getTag()).toBe("h3");
+          expect(children[0].getTextContent()).toBe("H3");
         }
         if ($isHeadingNode(children[1])) {
-          expect(children[1].getTag()).toBe('h4')
-          expect(children[1].getTextContent()).toBe('H4')
+          expect(children[1].getTag()).toBe("h4");
+          expect(children[1].getTextContent()).toBe("H4");
         }
         if ($isHeadingNode(children[2])) {
-          expect(children[2].getTag()).toBe('h5')
-          expect(children[2].getTextContent()).toBe('H5')
+          expect(children[2].getTag()).toBe("h5");
+          expect(children[2].getTextContent()).toBe("H5");
         }
         if ($isHeadingNode(children[3])) {
-          expect(children[3].getTag()).toBe('h6')
-          expect(children[3].getTextContent()).toBe('H6')
+          expect(children[3].getTag()).toBe("h6");
+          expect(children[3].getTextContent()).toBe("H6");
         }
-      })
-    })
+      });
+    });
 
-    it('should preserve heading formatting through round-trip', () => {
+    it("should preserve heading formatting through round-trip", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const heading = $createHeadingNode('h2')
-        const text = $createTextNode('Bold Heading')
-        text.toggleFormat('bold')
-        heading.append(text)
-        root.append(heading)
-      })
+        const root = $getRoot();
+        const heading = $createHeadingNode("h2");
+        const text = $createTextNode("Bold Heading");
+        text.toggleFormat("bold");
+        heading.append(text);
+        root.append(heading);
+      });
 
-      const portableText = toPortableText(editor)
-      const json = JSON.stringify(portableText)
+      const portableText = toPortableText(editor);
+      const json = JSON.stringify(portableText);
 
       const editor2 = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
-      })
-      initializeEditorWithPortableText(editor2, json)
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode],
+      });
+      initializeEditorWithPortableText(editor2, json);
 
-      const portableText2 = toPortableText(editor2)
+      const portableText2 = toPortableText(editor2);
 
-      expect(portableText2[0].style).toBe('h2')
-      expect(portableText2[0].children[0].marks).toContain('strong')
-      expect(portableText2[0].children[0].text).toBe('Bold Heading')
-    })
+      expect(portableText2[0].style).toBe("h2");
+      expect(portableText2[0].children[0].marks).toContain("strong");
+      expect(portableText2[0].children[0].text).toBe("Bold Heading");
+    });
 
-    it('should handle mixed content with headings and paragraphs', () => {
+    it("should handle mixed content with headings and paragraphs", () => {
       const editor = createEditor({
-        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode]
-      })
+        nodes: [LinkNode, ImageNode, ListNode, ListItemNode, HeadingNode],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Regular paragraph' }],
+          _type: "block",
+          children: [{ _type: "span", text: "Regular paragraph" }],
           markDefs: [],
-          style: 'normal'
+          style: "normal",
         },
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Heading text' }],
+          _type: "block",
+          children: [{ _type: "span", text: "Heading text" }],
           markDefs: [],
-          style: 'h2'
+          style: "h2",
         },
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Another paragraph' }],
+          _type: "block",
+          children: [{ _type: "span", text: "Another paragraph" }],
           markDefs: [],
-          style: 'normal'
-        }
-      ])
+          style: "normal",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const children = root.getChildren()
+        const root = $getRoot();
+        const children = root.getChildren();
 
-        expect(children).toHaveLength(3)
+        expect(children).toHaveLength(3);
 
-        expect($isParagraphNode(children[0])).toBe(true)
-        expect($isHeadingNode(children[1])).toBe(true)
-        expect($isParagraphNode(children[2])).toBe(true)
+        expect($isParagraphNode(children[0])).toBe(true);
+        expect($isHeadingNode(children[1])).toBe(true);
+        expect($isParagraphNode(children[2])).toBe(true);
 
         if ($isHeadingNode(children[1])) {
-          expect(children[1].getTag()).toBe('h2')
-          expect(children[1].getTextContent()).toBe('Heading text')
+          expect(children[1].getTag()).toBe("h2");
+          expect(children[1].getTextContent()).toBe("Heading text");
         }
-      })
-    })
-  })
+      });
+    });
+  });
 
-  describe('Quote Support', () => {
-    it('should serialize quote to Portable Text', () => {
+  describe("Quote Support", () => {
+    it("should serialize quote to Portable Text", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -1676,26 +1680,26 @@ describe('Portable Text Serializer', () => {
           ListNode,
           ListItemNode,
           HeadingNode,
-          QuoteNode
-        ]
-      })
+          QuoteNode,
+        ],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const quote = $createQuoteNode()
-        quote.append($createTextNode('This is a quote'))
-        root.append(quote)
-      })
+        const root = $getRoot();
+        const quote = $createQuoteNode();
+        quote.append($createTextNode("This is a quote"));
+        root.append(quote);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(1)
-      expect(portableText[0]._type).toBe('block')
-      expect(portableText[0].style).toBe('blockquote')
-      expect(portableText[0].children[0].text).toBe('This is a quote')
-    })
+      expect(portableText).toHaveLength(1);
+      expect(portableText[0]._type).toBe("block");
+      expect(portableText[0].style).toBe("blockquote");
+      expect(portableText[0].children[0].text).toBe("This is a quote");
+    });
 
-    it('should deserialize quote from Portable Text', () => {
+    it("should deserialize quote from Portable Text", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -1703,33 +1707,33 @@ describe('Portable Text Serializer', () => {
           ListNode,
           ListItemNode,
           HeadingNode,
-          QuoteNode
-        ]
-      })
+          QuoteNode,
+        ],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Quoted text' }],
+          _type: "block",
+          children: [{ _type: "span", text: "Quoted text" }],
           markDefs: [],
-          style: 'blockquote'
-        }
-      ])
+          style: "blockquote",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const quote = root.getFirstChild()
-        expect($isQuoteNode(quote)).toBe(true)
+        const root = $getRoot();
+        const quote = root.getFirstChild();
+        expect($isQuoteNode(quote)).toBe(true);
 
         if ($isQuoteNode(quote)) {
-          expect(quote.getTextContent()).toBe('Quoted text')
+          expect(quote.getTextContent()).toBe("Quoted text");
         }
-      })
-    })
+      });
+    });
 
-    it('should preserve quote formatting through round-trip', () => {
+    it("should preserve quote formatting through round-trip", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -1737,21 +1741,21 @@ describe('Portable Text Serializer', () => {
           ListNode,
           ListItemNode,
           HeadingNode,
-          QuoteNode
-        ]
-      })
+          QuoteNode,
+        ],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const quote = $createQuoteNode()
-        const text = $createTextNode('Bold quote')
-        text.toggleFormat('bold')
-        quote.append(text)
-        root.append(quote)
-      })
+        const root = $getRoot();
+        const quote = $createQuoteNode();
+        const text = $createTextNode("Bold quote");
+        text.toggleFormat("bold");
+        quote.append(text);
+        root.append(quote);
+      });
 
-      const portableText = toPortableText(editor)
-      const json = JSON.stringify(portableText)
+      const portableText = toPortableText(editor);
+      const json = JSON.stringify(portableText);
 
       const editor2 = createEditor({
         nodes: [
@@ -1760,19 +1764,19 @@ describe('Portable Text Serializer', () => {
           ListNode,
           ListItemNode,
           HeadingNode,
-          QuoteNode
-        ]
-      })
-      initializeEditorWithPortableText(editor2, json)
+          QuoteNode,
+        ],
+      });
+      initializeEditorWithPortableText(editor2, json);
 
-      const portableText2 = toPortableText(editor2)
+      const portableText2 = toPortableText(editor2);
 
-      expect(portableText2[0].style).toBe('blockquote')
-      expect(portableText2[0].children[0].marks).toContain('strong')
-      expect(portableText2[0].children[0].text).toBe('Bold quote')
-    })
+      expect(portableText2[0].style).toBe("blockquote");
+      expect(portableText2[0].children[0].marks).toContain("strong");
+      expect(portableText2[0].children[0].text).toBe("Bold quote");
+    });
 
-    it('should handle mixed content with quotes and other blocks', () => {
+    it("should handle mixed content with quotes and other blocks", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -1780,52 +1784,52 @@ describe('Portable Text Serializer', () => {
           ListNode,
           ListItemNode,
           HeadingNode,
-          QuoteNode
-        ]
-      })
+          QuoteNode,
+        ],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Regular paragraph' }],
+          _type: "block",
+          children: [{ _type: "span", text: "Regular paragraph" }],
           markDefs: [],
-          style: 'normal'
+          style: "normal",
         },
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Quote text' }],
+          _type: "block",
+          children: [{ _type: "span", text: "Quote text" }],
           markDefs: [],
-          style: 'blockquote'
+          style: "blockquote",
         },
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'Another paragraph' }],
+          _type: "block",
+          children: [{ _type: "span", text: "Another paragraph" }],
           markDefs: [],
-          style: 'normal'
-        }
-      ])
+          style: "normal",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const children = root.getChildren()
+        const root = $getRoot();
+        const children = root.getChildren();
 
-        expect(children).toHaveLength(3)
+        expect(children).toHaveLength(3);
 
-        expect($isParagraphNode(children[0])).toBe(true)
-        expect($isQuoteNode(children[1])).toBe(true)
-        expect($isParagraphNode(children[2])).toBe(true)
+        expect($isParagraphNode(children[0])).toBe(true);
+        expect($isQuoteNode(children[1])).toBe(true);
+        expect($isParagraphNode(children[2])).toBe(true);
 
         if ($isQuoteNode(children[1])) {
-          expect(children[1].getTextContent()).toBe('Quote text')
+          expect(children[1].getTextContent()).toBe("Quote text");
         }
-      })
-    })
-  })
+      });
+    });
+  });
 
-  describe('Code Block Support', () => {
-    it('should serialize code block to Portable Text', () => {
+  describe("Code Block Support", () => {
+    it("should serialize code block to Portable Text", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -1835,26 +1839,26 @@ describe('Portable Text Serializer', () => {
           HeadingNode,
           QuoteNode,
           CodeNode,
-          CodeHighlightNode
-        ]
-      })
+          CodeHighlightNode,
+        ],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const code = $createCodeNode()
-        code.append($createTextNode('const x = 42;'))
-        root.append(code)
-      })
+        const root = $getRoot();
+        const code = $createCodeNode();
+        code.append($createTextNode("const x = 42;"));
+        root.append(code);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(1)
-      expect(portableText[0]._type).toBe('block')
-      expect(portableText[0].style).toBe('code')
-      expect(portableText[0].children[0].text).toBe('const x = 42;')
-    })
+      expect(portableText).toHaveLength(1);
+      expect(portableText[0]._type).toBe("block");
+      expect(portableText[0].style).toBe("code");
+      expect(portableText[0].children[0].text).toBe("const x = 42;");
+    });
 
-    it('should deserialize code block from Portable Text', () => {
+    it("should deserialize code block from Portable Text", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -1864,33 +1868,33 @@ describe('Portable Text Serializer', () => {
           HeadingNode,
           QuoteNode,
           CodeNode,
-          CodeHighlightNode
-        ]
-      })
+          CodeHighlightNode,
+        ],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'function test() {}' }],
+          _type: "block",
+          children: [{ _type: "span", text: "function test() {}" }],
           markDefs: [],
-          style: 'code'
-        }
-      ])
+          style: "code",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const code = root.getFirstChild()
-        expect($isCodeNode(code)).toBe(true)
+        const root = $getRoot();
+        const code = root.getFirstChild();
+        expect($isCodeNode(code)).toBe(true);
 
         if ($isCodeNode(code)) {
-          expect(code.getTextContent()).toBe('function test() {}')
+          expect(code.getTextContent()).toBe("function test() {}");
         }
-      })
-    })
+      });
+    });
 
-    it('should preserve code block formatting through round-trip', () => {
+    it("should preserve code block formatting through round-trip", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -1900,19 +1904,19 @@ describe('Portable Text Serializer', () => {
           HeadingNode,
           QuoteNode,
           CodeNode,
-          CodeHighlightNode
-        ]
-      })
+          CodeHighlightNode,
+        ],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const code = $createCodeNode()
-        code.append($createTextNode('const greeting = "Hello, World!";'))
-        root.append(code)
-      })
+        const root = $getRoot();
+        const code = $createCodeNode();
+        code.append($createTextNode('const greeting = "Hello, World!";'));
+        root.append(code);
+      });
 
-      const portableText = toPortableText(editor)
-      const json = JSON.stringify(portableText)
+      const portableText = toPortableText(editor);
+      const json = JSON.stringify(portableText);
 
       const editor2 = createEditor({
         nodes: [
@@ -1923,20 +1927,20 @@ describe('Portable Text Serializer', () => {
           HeadingNode,
           QuoteNode,
           CodeNode,
-          CodeHighlightNode
-        ]
-      })
-      initializeEditorWithPortableText(editor2, json)
+          CodeHighlightNode,
+        ],
+      });
+      initializeEditorWithPortableText(editor2, json);
 
-      const portableText2 = toPortableText(editor2)
+      const portableText2 = toPortableText(editor2);
 
-      expect(portableText2[0].style).toBe('code')
+      expect(portableText2[0].style).toBe("code");
       expect(portableText2[0].children[0].text).toBe(
         'const greeting = "Hello, World!";'
-      )
-    })
+      );
+    });
 
-    it('should serialize code block with language to Portable Text', () => {
+    it("should serialize code block with language to Portable Text", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -1946,27 +1950,27 @@ describe('Portable Text Serializer', () => {
           HeadingNode,
           QuoteNode,
           CodeNode,
-          CodeHighlightNode
-        ]
-      })
+          CodeHighlightNode,
+        ],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const code = $createCodeNode('typescript')
-        code.append($createTextNode('const x: number = 42;'))
-        root.append(code)
-      })
+        const root = $getRoot();
+        const code = $createCodeNode("typescript");
+        code.append($createTextNode("const x: number = 42;"));
+        root.append(code);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(1)
-      expect(portableText[0]._type).toBe('block')
-      expect(portableText[0].style).toBe('code')
-      expect(portableText[0].language).toBe('typescript')
-      expect(portableText[0].children[0].text).toBe('const x: number = 42;')
-    })
+      expect(portableText).toHaveLength(1);
+      expect(portableText[0]._type).toBe("block");
+      expect(portableText[0].style).toBe("code");
+      expect(portableText[0].language).toBe("typescript");
+      expect(portableText[0].children[0].text).toBe("const x: number = 42;");
+    });
 
-    it('should deserialize code block with language from Portable Text', () => {
+    it("should deserialize code block with language from Portable Text", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -1976,35 +1980,35 @@ describe('Portable Text Serializer', () => {
           HeadingNode,
           QuoteNode,
           CodeNode,
-          CodeHighlightNode
-        ]
-      })
+          CodeHighlightNode,
+        ],
+      });
 
       const json = JSON.stringify([
         {
-          _type: 'block',
-          children: [{ _type: 'span', text: 'function test() {}' }],
-          language: 'javascript',
+          _type: "block",
+          children: [{ _type: "span", text: "function test() {}" }],
+          language: "javascript",
           markDefs: [],
-          style: 'code'
-        }
-      ])
+          style: "code",
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, json)
+      initializeEditorWithPortableText(editor, json);
 
       editor.read(() => {
-        const root = $getRoot()
-        const code = root.getFirstChild()
-        expect($isCodeNode(code)).toBe(true)
+        const root = $getRoot();
+        const code = root.getFirstChild();
+        expect($isCodeNode(code)).toBe(true);
 
         if ($isCodeNode(code)) {
-          expect(code.getTextContent()).toBe('function test() {}')
-          expect(code.getLanguage()).toBe('javascript')
+          expect(code.getTextContent()).toBe("function test() {}");
+          expect(code.getLanguage()).toBe("javascript");
         }
-      })
-    })
+      });
+    });
 
-    it('should preserve code block language through round-trip', () => {
+    it("should preserve code block language through round-trip", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -2014,19 +2018,19 @@ describe('Portable Text Serializer', () => {
           HeadingNode,
           QuoteNode,
           CodeNode,
-          CodeHighlightNode
-        ]
-      })
+          CodeHighlightNode,
+        ],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const code = $createCodeNode('python')
-        code.append($createTextNode('def hello():\n    print("Hello")'))
-        root.append(code)
-      })
+        const root = $getRoot();
+        const code = $createCodeNode("python");
+        code.append($createTextNode('def hello():\n    print("Hello")'));
+        root.append(code);
+      });
 
-      const portableText = toPortableText(editor)
-      const json = JSON.stringify(portableText)
+      const portableText = toPortableText(editor);
+      const json = JSON.stringify(portableText);
 
       const editor2 = createEditor({
         nodes: [
@@ -2037,21 +2041,21 @@ describe('Portable Text Serializer', () => {
           HeadingNode,
           QuoteNode,
           CodeNode,
-          CodeHighlightNode
-        ]
-      })
-      initializeEditorWithPortableText(editor2, json)
+          CodeHighlightNode,
+        ],
+      });
+      initializeEditorWithPortableText(editor2, json);
 
-      const portableText2 = toPortableText(editor2)
+      const portableText2 = toPortableText(editor2);
 
-      expect(portableText2[0].style).toBe('code')
-      expect(portableText2[0].language).toBe('python')
+      expect(portableText2[0].style).toBe("code");
+      expect(portableText2[0].language).toBe("python");
       expect(portableText2[0].children[0].text).toBe(
         'def hello():\n    print("Hello")'
-      )
-    })
+      );
+    });
 
-    it('should serialize a table to Portable Text', () => {
+    it("should serialize a table to Portable Text", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -2060,27 +2064,27 @@ describe('Portable Text Serializer', () => {
           ListItemNode,
           TableNode,
           TableCellNode,
-          TableRowNode
-        ]
-      })
+          TableRowNode,
+        ],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const tableNode = $createTableNodeWithDimensions(2, 2, false)
-        root.append(tableNode)
-      })
+        const root = $getRoot();
+        const tableNode = $createTableNodeWithDimensions(2, 2, false);
+        root.append(tableNode);
+      });
 
-      const portableText = toPortableText(editor)
+      const portableText = toPortableText(editor);
 
-      expect(portableText).toHaveLength(1)
-      expect(portableText[0]._type).toBe('table')
-      if (portableText[0]._type === 'table') {
-        expect(portableText[0].rows).toHaveLength(2)
-        expect(portableText[0].rows[0].cells).toHaveLength(2)
+      expect(portableText).toHaveLength(1);
+      expect(portableText[0]._type).toBe("table");
+      if (portableText[0]._type === "table") {
+        expect(portableText[0].rows).toHaveLength(2);
+        expect(portableText[0].rows[0].cells).toHaveLength(2);
       }
-    })
+    });
 
-    it('should deserialize a table from Portable Text', () => {
+    it("should deserialize a table from Portable Text", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -2089,78 +2093,78 @@ describe('Portable Text Serializer', () => {
           ListItemNode,
           TableNode,
           TableCellNode,
-          TableRowNode
-        ]
-      })
+          TableRowNode,
+        ],
+      });
 
       const portableText = JSON.stringify([
         {
-          _key: 'table1',
-          _type: 'table',
+          _key: "table1",
+          _type: "table",
           rows: [
             {
-              _key: 'row1',
+              _key: "row1",
               cells: [
-                { _key: 'cell1', content: 'Name', isHeader: true },
-                { _key: 'cell2', content: 'Value', isHeader: true }
-              ]
+                { _key: "cell1", content: "Name", isHeader: true },
+                { _key: "cell2", content: "Value", isHeader: true },
+              ],
             },
             {
-              _key: 'row2',
+              _key: "row2",
               cells: [
-                { _key: 'cell3', content: 'foo', isHeader: false },
-                { _key: 'cell4', content: 'bar', isHeader: false }
-              ]
-            }
-          ]
-        }
-      ])
+                { _key: "cell3", content: "foo", isHeader: false },
+                { _key: "cell4", content: "bar", isHeader: false },
+              ],
+            },
+          ],
+        },
+      ]);
 
-      initializeEditorWithPortableText(editor, portableText)
+      initializeEditorWithPortableText(editor, portableText);
 
       editor.read(() => {
-        const root = $getRoot()
-        const tableNode = root.getFirstChild()
-        expect($isTableNode(tableNode)).toBe(true)
+        const root = $getRoot();
+        const tableNode = root.getFirstChild();
+        expect($isTableNode(tableNode)).toBe(true);
 
         if ($isTableNode(tableNode)) {
-          const rows = tableNode.getChildren()
-          expect(rows).toHaveLength(2)
+          const rows = tableNode.getChildren();
+          expect(rows).toHaveLength(2);
 
-          const firstRow = rows[0]
-          expect($isTableRowNode(firstRow)).toBe(true)
+          const firstRow = rows[0];
+          expect($isTableRowNode(firstRow)).toBe(true);
 
           if ($isTableRowNode(firstRow)) {
-            const cells = firstRow.getChildren()
-            expect(cells).toHaveLength(2)
+            const cells = firstRow.getChildren();
+            expect(cells).toHaveLength(2);
 
-            const firstCell = cells[0]
-            expect($isTableCellNode(firstCell)).toBe(true)
+            const firstCell = cells[0];
+            expect($isTableCellNode(firstCell)).toBe(true);
 
             if ($isTableCellNode(firstCell)) {
               expect(firstCell.hasHeaderState(TableCellHeaderStates.ROW)).toBe(
                 true
-              )
-              expect(firstCell.getTextContent()).toBe('Name')
+              );
+              expect(firstCell.getTextContent()).toBe("Name");
             }
           }
 
-          const secondRow = rows[1]
+          const secondRow = rows[1];
           if ($isTableRowNode(secondRow)) {
-            const cells = secondRow.getChildren()
-            const firstCell = cells[0]
+            const cells = secondRow.getChildren();
+            const firstCell = cells[0];
             if ($isTableCellNode(firstCell)) {
               expect(firstCell.hasHeaderState(TableCellHeaderStates.ROW)).toBe(
                 false
-              )
-              expect(firstCell.getTextContent()).toBe('foo')
+              );
+              expect(firstCell.getTextContent()).toBe("foo");
             }
           }
         }
-      })
-    })
+      });
+    });
 
-    it('should round-trip a table through serialization', () => {
+    it("should round-trip a table through serialization", () => {
       const editor = createEditor({
         nodes: [
           LinkNode,
@@ -2169,18 +2173,18 @@ describe('Portable Text Serializer', () => {
           ListItemNode,
           TableNode,
           TableCellNode,
-          TableRowNode
-        ]
-      })
+          TableRowNode,
+        ],
+      });
 
       editor.update(() => {
-        const root = $getRoot()
-        const tableNode = $createTableNodeWithDimensions(2, 3, false)
-        root.append(tableNode)
-      })
+        const root = $getRoot();
+        const tableNode = $createTableNodeWithDimensions(2, 3, false);
+        root.append(tableNode);
+      });
 
-      const portableText = toPortableText(editor)
-      const json = JSON.stringify(portableText)
+      const portableText = toPortableText(editor);
+      const json = JSON.stringify(portableText);
 
       const editor2 = createEditor({
         nodes: [
@@ -2190,18 +2194,18 @@ describe('Portable Text Serializer', () => {
           ListItemNode,
           TableNode,
           TableCellNode,
-          TableRowNode
-        ]
-      })
-      initializeEditorWithPortableText(editor2, json)
+          TableRowNode,
+        ],
+      });
+      initializeEditorWithPortableText(editor2, json);
 
-      const portableText2 = toPortableText(editor2)
+      const portableText2 = toPortableText(editor2);
 
-      expect(portableText2[0]._type).toBe('table')
-      if (portableText2[0]._type === 'table') {
-        expect(portableText2[0].rows).toHaveLength(2)
-        expect(portableText2[0].rows[0].cells).toHaveLength(3)
+      expect(portableText2[0]._type).toBe("table");
+      if (portableText2[0]._type === "table") {
+        expect(portableText2[0].rows).toHaveLength(2);
+        expect(portableText2[0].rows[0].cells).toHaveLength(3);
       }
-    })
-  })
-})
+    });
+  });
+});

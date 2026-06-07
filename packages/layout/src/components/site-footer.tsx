@@ -1,15 +1,15 @@
-import { getProfile } from '@ykzts/supabase/queries'
-import { Suspense } from 'react'
-import Footer from './footer'
-import FooterContent from './footer-content'
+import { getProfile } from "@ykzts/supabase/queries";
+import { Suspense } from "react";
+import Footer from "./footer";
+import FooterContent from "./footer-content";
 
 async function SiteFooterImpl() {
-  const profile = await getProfile()
-  const kv = profile.key_visual
+  const profile = await getProfile();
+  const kv = profile.key_visual;
 
   const artworkCredit = kv?.artist_name ? (
     <span className="text-sm">
-      {kv.attribution ?? 'Artwork by'}{' '}
+      {kv.attribution ?? "Artwork by"}{" "}
       {kv.artist_url ? (
         <a
           className="text-primary transition-colors duration-200 hover:text-primary/80"
@@ -23,7 +23,7 @@ async function SiteFooterImpl() {
         kv.artist_name
       )}
     </span>
-  ) : undefined
+  ) : undefined;
 
   const privacyLink = (
     <a
@@ -32,7 +32,7 @@ async function SiteFooterImpl() {
     >
       プライバシーポリシー
     </a>
-  )
+  );
 
   return (
     <Footer>
@@ -42,7 +42,7 @@ async function SiteFooterImpl() {
         privacyLink={privacyLink}
       />
     </Footer>
-  )
+  );
 }
 
 function SiteFooterSkeleton() {
@@ -53,7 +53,7 @@ function SiteFooterSkeleton() {
         <div className="h-5 w-32 animate-pulse rounded bg-muted" />
       </div>
     </Footer>
-  )
+  );
 }
 
 export default function SiteFooter() {
@@ -61,5 +61,5 @@ export default function SiteFooter() {
     <Suspense fallback={<SiteFooterSkeleton />}>
       <SiteFooterImpl />
     </Suspense>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import { getVisiblePages } from '@ykzts/pagination-utils'
+import { getVisiblePages } from "@ykzts/pagination-utils";
 import {
   Pagination,
   PaginationContent,
@@ -6,23 +6,23 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious
-} from '@ykzts/ui/components/pagination'
-import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
-import type { Route } from 'next'
+  PaginationPrevious,
+} from "@ykzts/ui/components/pagination";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import type { Route } from "next";
 
-type BlogPaginationProps = {
-  currentPage: number
-  totalPages: number
-  baseUrl?: string
+interface BlogPaginationProps {
+  baseUrl?: string;
+  currentPage: number;
+  totalPages: number;
 }
 
 function DisabledButton({
   children,
-  icon
+  icon,
 }: {
-  children: React.ReactNode
-  icon: React.ReactNode
+  children: React.ReactNode;
+  icon: React.ReactNode;
 }) {
   return (
     <span
@@ -32,37 +32,37 @@ function DisabledButton({
       {icon}
       {children}
     </span>
-  )
+  );
 }
 
 export default function BlogPagination({
   currentPage,
   totalPages,
-  baseUrl = '/blog/page'
+  baseUrl = "/blog/page",
 }: BlogPaginationProps) {
   if (totalPages <= 1) {
-    return null
+    return null;
   }
 
   // Derive page 1 URL from baseUrl
   // If baseUrl ends with '/page', strip it; otherwise use baseUrl as-is
   // This handles both '/blog/page' -> '/blog' and '/blog/tags/foo/page' -> '/blog/tags/foo'
-  const baseUrlPage1 = baseUrl.endsWith('/page')
-    ? (baseUrl.slice(0, -'/page'.length) as Route)
-    : (baseUrl as Route)
+  const baseUrlPage1 = baseUrl.endsWith("/page")
+    ? (baseUrl.slice(0, -"/page".length) as Route)
+    : (baseUrl as Route);
 
   const getPageUrl = (page: number): Route => {
     if (page === 1) {
-      return baseUrlPage1
+      return baseUrlPage1;
     }
-    return `${baseUrl}/${page}` as Route
-  }
+    return `${baseUrl}/${page}` as Route;
+  };
 
   // Calculate page numbers to display
   const { pages, showStartEllipsis, showEndEllipsis } = getVisiblePages(
     currentPage,
     totalPages
-  )
+  );
 
   return (
     <Pagination>
@@ -106,7 +106,7 @@ export default function BlogPagination({
 
         {showEndEllipsis && (
           <>
-            {pages[pages.length - 1] < totalPages - 1 && (
+            {(pages.at(-1) ?? 0) < totalPages - 1 && (
               <PaginationItem>
                 <PaginationEllipsis />
               </PaginationItem>
@@ -133,5 +133,5 @@ export default function BlogPagination({
         </PaginationItem>
       </PaginationContent>
     </Pagination>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import { Panel } from '@/components/panel'
+import { Panel } from "@/components/panel";
 
 export function VersionDetailSkeleton() {
   return (
@@ -20,5 +20,5 @@ export function VersionDetailSkeleton() {
         <div className="h-10 w-24 animate-pulse rounded bg-muted" />
       </div>
     </div>
-  )
+  );
 }

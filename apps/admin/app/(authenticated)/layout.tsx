@@ -3,27 +3,27 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@ykzts/ui/components/dropdown-menu'
-import { User as UserIcon } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { redirect } from 'next/navigation'
-import { Suspense } from 'react'
-import { getCurrentUser } from '@/lib/auth'
-import { getProfile } from '@/lib/data'
-import { logout } from '../login/actions'
-import Navigation from './_components/navigation'
+  DropdownMenuTrigger,
+} from "@ykzts/ui/components/dropdown-menu";
+import { User as UserIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import { getCurrentUser } from "@/lib/auth";
+import { getProfile } from "@/lib/data";
+import { logout } from "../login/actions";
+import Navigation from "./_components/navigation";
 
 async function UserInfo() {
-  const profile = await getProfile()
+  const profile = await getProfile();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-muted transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
         {profile?.avatar_url ? (
           <Image
-            alt={`${profile?.name ?? 'ユーザー'}のプロフィール画像`}
+            alt={`${profile?.name ?? "ユーザー"}のプロフィール画像`}
             className="h-full w-full object-cover"
             height={32}
             sizes="32px"
@@ -51,7 +51,7 @@ async function UserInfo() {
         </form>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
 
 function UserInfoFallback() {
@@ -59,15 +59,15 @@ function UserInfoFallback() {
     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
       <UserIcon className="h-4 w-4 text-muted-foreground" />
     </div>
-  )
+  );
 }
 
 async function AuthGuard({ children }: { children: React.ReactNode }) {
   // Auth guard wrapped in Suspense - checks auth and redirects if needed
-  const user = await getCurrentUser()
+  const user = await getCurrentUser();
 
   if (!user) {
-    redirect('/login')
+    redirect("/login");
   }
 
   return (
@@ -91,7 +91,7 @@ async function AuthGuard({ children }: { children: React.ReactNode }) {
         {children}
       </main>
     </>
-  )
+  );
 }
 
 function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
@@ -101,7 +101,7 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
         <AuthGuard>{children}</AuthGuard>
       </Suspense>
     </div>
-  )
+  );
 }
 
-export default AuthenticatedLayout
+export default AuthenticatedLayout;

@@ -1,35 +1,39 @@
-import Navigation from './navigation'
-import ThemeToggle from './theme-toggle'
+import Navigation from "./navigation";
+import ThemeToggle from "./theme-toggle";
 
 const allNavItems = [
-  { href: '/#about', label: 'About' },
-  { href: '/#works', label: 'Works' },
+  { href: "/#about", label: "About" },
+  { href: "/#works", label: "Works" },
   {
     children: [
-      { href: '/blog', label: 'Blog' },
-      { href: '/blog/archive', label: 'Archive' },
-      { href: '/blog/search', label: 'Search' }
+      { href: "/blog", label: "Blog" },
+      { href: "/blog/archive", label: "Archive" },
+      { href: "/blog/search", label: "Search" },
     ],
-    href: '/blog',
-    label: 'Blog'
+    href: "/blog",
+    label: "Blog",
   },
-  { href: '/#contact', label: 'Contact' }
-]
+  { href: "/#contact", label: "Contact" },
+];
 
-type Props = {
-  hasAbout?: boolean
-  hasWorks?: boolean
+interface Props {
+  hasAbout?: boolean;
+  hasWorks?: boolean;
 }
 
 export default function SiteNavigation({
   hasAbout = true,
-  hasWorks = true
+  hasWorks = true,
 }: Props) {
   const navItems = allNavItems.filter((item) => {
-    if (item.href === '/#about') return hasAbout
-    if (item.href === '/#works') return hasWorks
-    return true
-  })
+    if (item.href === "/#about") {
+      return hasAbout;
+    }
+    if (item.href === "/#works") {
+      return hasWorks;
+    }
+    return true;
+  });
 
-  return <Navigation actions={<ThemeToggle />} navItems={navItems} />
+  return <Navigation actions={<ThemeToggle />} navItems={navItems} />;
 }

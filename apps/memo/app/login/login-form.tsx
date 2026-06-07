@@ -1,30 +1,30 @@
-'use client'
+"use client";
 
-import { Button } from '@ykzts/ui/components/button'
-import { useState, useTransition } from 'react'
-import { signInWithGitHub } from './actions'
+import { Button } from "@ykzts/ui/components/button";
+import { useState, useTransition } from "react";
+import { signInWithGitHub } from "./actions";
 
 export default function LoginForm() {
-  const [isPending, startTransition] = useTransition()
-  const [error, setError] = useState<string | null>(null)
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
 
   const handleGitHubSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
+    e.preventDefault();
+    setError(null);
     startTransition(async () => {
       try {
-        const url = await signInWithGitHub()
+        const url = await signInWithGitHub();
         if (url) {
-          window.location.href = url
-          return
+          window.location.href = url;
+          return;
         }
-        setError('ログインURLの取得に失敗しました')
+        setError("ログインURLの取得に失敗しました");
       } catch (err) {
-        console.error('GitHub login error:', err)
-        setError('ログインに失敗しました。もう一度お試しください。')
+        console.error("GitHub login error:", err);
+        setError("ログインに失敗しました。もう一度お試しください。");
       }
-    })
-  }
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -61,5 +61,5 @@ export default function LoginForm() {
         </Button>
       </form>
     </div>
-  )
+  );
 }

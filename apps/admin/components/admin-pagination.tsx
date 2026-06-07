@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { getVisiblePages } from '@ykzts/pagination-utils'
+import { getVisiblePages } from "@ykzts/pagination-utils";
 import {
   Pagination,
   PaginationContent,
@@ -8,22 +8,22 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious
-} from '@ykzts/ui/components/pagination'
-import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
-import { useRouter, useSearchParams } from 'next/navigation'
+  PaginationPrevious,
+} from "@ykzts/ui/components/pagination";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-type AdminPaginationProps = {
-  currentPage: number
-  totalPages: number
+interface AdminPaginationProps {
+  currentPage: number;
+  totalPages: number;
 }
 
 function DisabledButton({
   children,
-  icon
+  icon,
 }: {
-  children: React.ReactNode
-  icon: React.ReactNode
+  children: React.ReactNode;
+  icon: React.ReactNode;
 }) {
   return (
     <span
@@ -33,37 +33,37 @@ function DisabledButton({
       {icon}
       {children}
     </span>
-  )
+  );
 }
 
 export function AdminPagination({
   currentPage,
-  totalPages
+  totalPages,
 }: AdminPaginationProps) {
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   // Early return for single page
   if (totalPages <= 1) {
-    return null
+    return null;
   }
 
   const handlePageChange = (page: number) => {
-    const params = new URLSearchParams(searchParams.toString())
+    const params = new URLSearchParams(searchParams.toString());
     if (page === 1) {
-      params.delete('page')
+      params.delete("page");
     } else {
-      params.set('page', page.toString())
+      params.set("page", page.toString());
     }
-    const queryString = params.toString()
-    router.push(queryString ? `/posts?${queryString}` : '/posts')
-  }
+    const queryString = params.toString();
+    router.push(queryString ? `/posts?${queryString}` : "/posts");
+  };
 
   // Calculate page numbers to display
   const { pages, showStartEllipsis, showEndEllipsis } = getVisiblePages(
     currentPage,
     totalPages
-  )
+  );
 
   return (
     <Pagination className="mt-6">
@@ -73,8 +73,8 @@ export function AdminPagination({
             <PaginationPrevious
               href="#"
               onClick={(e) => {
-                e.preventDefault()
-                handlePageChange(currentPage - 1)
+                e.preventDefault();
+                handlePageChange(currentPage - 1);
               }}
               text="前へ"
             />
@@ -91,8 +91,8 @@ export function AdminPagination({
               <PaginationLink
                 href="#"
                 onClick={(e) => {
-                  e.preventDefault()
-                  handlePageChange(1)
+                  e.preventDefault();
+                  handlePageChange(1);
                 }}
               >
                 1
@@ -112,8 +112,8 @@ export function AdminPagination({
               href="#"
               isActive={page === currentPage}
               onClick={(e) => {
-                e.preventDefault()
-                handlePageChange(page)
+                e.preventDefault();
+                handlePageChange(page);
               }}
             >
               {page}
@@ -123,7 +123,7 @@ export function AdminPagination({
 
         {showEndEllipsis && (
           <>
-            {pages[pages.length - 1] < totalPages - 1 && (
+            {(pages.at(-1) ?? 0) < totalPages - 1 && (
               <PaginationItem>
                 <PaginationEllipsis />
               </PaginationItem>
@@ -132,8 +132,8 @@ export function AdminPagination({
               <PaginationLink
                 href="#"
                 onClick={(e) => {
-                  e.preventDefault()
-                  handlePageChange(totalPages)
+                  e.preventDefault();
+                  handlePageChange(totalPages);
                 }}
               >
                 {totalPages}
@@ -147,8 +147,8 @@ export function AdminPagination({
             <PaginationNext
               href="#"
               onClick={(e) => {
-                e.preventDefault()
-                handlePageChange(currentPage + 1)
+                e.preventDefault();
+                handlePageChange(currentPage + 1);
               }}
               text="次へ"
             />
@@ -160,5 +160,5 @@ export function AdminPagination({
         </PaginationItem>
       </PaginationContent>
     </Pagination>
-  )
+  );
 }

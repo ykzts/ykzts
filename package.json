@@ -4,7 +4,8 @@
   "description": "",
   "devDependencies": {
     "@biomejs/biome": "2.4.16",
-    "turbo": "2.9.16"
+    "turbo": "2.9.16",
+    "ultracite": "7.8.1"
   },
   "license": "MIT",
   "name": "@ykzts/monorepo",
@@ -16,8 +17,9 @@
   },
   "scripts": {
     "build": "turbo run build",
-    "check": "biome check",
     "dev": "turbo run dev",
+    "check": "ultracite check",
+    "fix": "ultracite fix",
     "lighthouse": "turbo run lighthouse",
     "test": "turbo run test",
     "test:a11y": "turbo run test:a11y",

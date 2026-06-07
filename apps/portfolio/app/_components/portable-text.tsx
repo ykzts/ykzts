@@ -2,36 +2,36 @@ import {
   PortableText,
   type PortableTextBlockComponent,
   type PortableTextMarkComponentProps,
-  type PortableTextReactComponents
-} from '@portabletext/react'
-import { type ComponentProps, Suspense } from 'react'
-import Link from '@/components/link'
-import type { PortableTextValue } from '@/lib/portable-text'
-import { highlightCode } from '@/lib/shiki'
+  type PortableTextReactComponents,
+} from "@portabletext/react";
+import { type ComponentProps, Suspense } from "react";
+import Link from "@/components/link";
+import type { PortableTextValue } from "@/lib/portable-text";
+import { highlightCode } from "@/lib/shiki";
 
 // Component to handle code block syntax highlighting
 async function CodeBlockHighlighter({
   language,
-  text
+  text,
 }: {
-  language?: string
-  text: string
+  language?: string;
+  text: string;
 }) {
   try {
-    const html = await highlightCode(text, language)
+    const html = await highlightCode(text, language);
 
     return (
       // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki generates safe HTML for syntax highlighting
       <div dangerouslySetInnerHTML={{ __html: html }} />
-    )
+    );
   } catch (error) {
     // If highlighting fails, fall back to plain code block
-    console.error('Failed to highlight code block:', error)
+    console.error("Failed to highlight code block:", error);
     return (
       <pre className="overflow-x-auto rounded-lg bg-muted p-4">
         <code>{text}</code>
       </pre>
-    )
+    );
   }
 }
 
@@ -40,18 +40,18 @@ const CodeBlockComponent: PortableTextBlockComponent = (props) => {
   // Extract text from the block's children spans
   const text = props.value.children
     .map((child) => {
-      if ('text' in child) {
-        return child.text
+      if ("text" in child) {
+        return child.text;
       }
-      return ''
+      return "";
     })
-    .join('')
+    .join("");
 
   // Extract language if available
   const language =
-    'language' in props.value && typeof props.value.language === 'string'
+    "language" in props.value && typeof props.value.language === "string"
       ? props.value.language
-      : undefined
+      : undefined;
 
   return (
     <Suspense
@@ -63,38 +63,38 @@ const CodeBlockComponent: PortableTextBlockComponent = (props) => {
     >
       <CodeBlockHighlighter language={language} text={text} />
     </Suspense>
-  )
-}
+  );
+};
 
 const portableTextComponents = {
   block: {
-    code: CodeBlockComponent
+    code: CodeBlockComponent,
   },
   marks: {
     link({
       children,
-      value
+      value,
     }: PortableTextMarkComponentProps<{ _type: string; href: string }>) {
-      const href = value?.href
+      const href = value?.href;
 
-      return <Link href={href}>{children}</Link>
-    }
+      return <Link href={href}>{children}</Link>;
+    },
   },
   types: {
     table({
-      value
+      value,
     }: {
       value: {
-        _key: string
+        _key: string;
         rows: Array<{
-          _key: string
-          cells: Array<{ _key: string; content: string; isHeader: boolean }>
-        }>
-      }
+          _key: string;
+          cells: Array<{ _key: string; content: string; isHeader: boolean }>;
+        }>;
+      };
     }) {
-      const hasHeader = value.rows[0]?.cells.every((cell) => cell.isHeader)
-      const headerRow = hasHeader ? value.rows[0] : null
-      const bodyRows = hasHeader ? value.rows.slice(1) : value.rows
+      const hasHeader = value.rows[0]?.cells.every((cell) => cell.isHeader);
+      const headerRow = hasHeader ? value.rows[0] : null;
+      const bodyRows = hasHeader ? value.rows.slice(1) : value.rows;
       return (
         <table>
           {headerRow && (
@@ -116,17 +116,17 @@ const portableTextComponents = {
             ))}
           </tbody>
         </table>
-      )
-    }
-  }
-} satisfies Partial<PortableTextReactComponents>
+      );
+    },
+  },
+} satisfies Partial<PortableTextReactComponents>;
 
 type PortableTextProps = Omit<
   ComponentProps<typeof PortableText>,
-  'components'
+  "components"
 > & {
-  value: PortableTextValue
-}
+  value: PortableTextValue;
+};
 
 export default function PortableTextBlock({
   value,
@@ -138,5 +138,5 @@ export default function PortableTextBlock({
       components={portableTextComponents}
       value={value}
     />
-  )
+  );
 }

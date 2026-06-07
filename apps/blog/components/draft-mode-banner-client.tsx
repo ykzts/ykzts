@@ -1,18 +1,18 @@
-'use client'
+"use client";
 
 export default function DraftModeBannerClient({
-  isDraftMode
+  isDraftMode,
 }: {
-  isDraftMode: boolean
+  isDraftMode: boolean;
 }) {
   if (!isDraftMode) {
-    return null
+    return null;
   }
 
   const handleDisable = async () => {
-    await fetch('/api/blog/draft/disable')
-    window.location.href = '/blog'
-  }
+    await fetch("/api/blog/draft/disable");
+    window.location.href = "/blog";
+  };
 
   return (
     <div
@@ -28,5 +28,5 @@ export default function DraftModeBannerClient({
         無効化
       </button>
     </div>
-  )
+  );
 }

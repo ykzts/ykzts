@@ -1,101 +1,101 @@
-import { Link } from '@vercel/microfrontends/next/client'
-import { portableTextToMarkdown } from '@ykzts/portable-text-utils'
-import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import DateDisplay from '@/components/date-display'
-import LinkButton from '@/components/link-button'
-import VersionCompare from '@/components/version-compare'
-import { getDateBasedUrl } from '@/lib/blog-urls'
-import { DEFAULT_POST_TITLE } from '@/lib/constants'
+import { Link } from "@vercel/microfrontends/next/client";
+import { portableTextToMarkdown } from "@ykzts/portable-text-utils";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import DateDisplay from "@/components/date-display";
+import LinkButton from "@/components/link-button";
+import VersionCompare from "@/components/version-compare";
+import { getDateBasedUrl } from "@/lib/blog-urls";
+import { DEFAULT_POST_TITLE } from "@/lib/constants";
 import {
   getAllPosts,
   getPostBySlug,
-  getPostVersions
-} from '@/lib/supabase/posts'
+  getPostVersions,
+} from "@/lib/supabase/posts";
 
-type PageProps = {
+interface PageProps {
   params: Promise<{
-    year: string
-    month: string
-    day: string
-    slug: string
-  }>
+    year: string;
+    month: string;
+    day: string;
+    slug: string;
+  }>;
 }
 
 export async function generateStaticParams() {
-  const posts = await getAllPosts()
+  const posts = await getAllPosts();
 
   if (posts.length === 0) {
     return [
       {
-        day: '01',
-        month: '01',
-        slug: '_placeholder',
-        year: '2024'
-      }
-    ]
+        day: "01",
+        month: "01",
+        slug: "_placeholder",
+        year: "2024",
+      },
+    ];
   }
 
   return posts.map((post) => {
-    const date = new Date(post.published_at)
+    const date = new Date(post.published_at);
     return {
-      day: String(date.getUTCDate()).padStart(2, '0'),
-      month: String(date.getUTCMonth() + 1).padStart(2, '0'),
+      day: String(date.getUTCDate()).padStart(2, "0"),
+      month: String(date.getUTCMonth() + 1).padStart(2, "0"),
       slug: post.slug,
-      year: String(date.getUTCFullYear())
-    }
-  })
+      year: String(date.getUTCFullYear()),
+    };
+  });
 }
 
 export async function generateMetadata({
-  params
+  params,
 }: PageProps): Promise<Metadata> {
-  const { slug } = await params
-  const post = await getPostBySlug(slug)
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
 
   if (!post) {
-    return { title: 'Not Found' }
+    return { title: "Not Found" };
   }
 
   return {
     robots: { index: false },
-    title: `編集履歴: ${post.title || DEFAULT_POST_TITLE}`
-  }
+    title: `編集履歴: ${post.title || DEFAULT_POST_TITLE}`,
+  };
 }
 
 export default async function PostHistoryPage({ params }: PageProps) {
-  const { year, month, day, slug } = await params
-  const post = await getPostBySlug(slug)
+  const { year, month, day, slug } = await params;
+  const post = await getPostBySlug(slug);
 
   if (!post) {
-    notFound()
+    notFound();
   }
 
   // Validate URL date components match the post's published_at date
   if (post.published_at) {
-    const publishedDate = new Date(post.published_at)
-    const expectedYear = String(publishedDate.getUTCFullYear())
+    const publishedDate = new Date(post.published_at);
+    const expectedYear = String(publishedDate.getUTCFullYear());
     const expectedMonth = String(publishedDate.getUTCMonth() + 1).padStart(
       2,
-      '0'
-    )
-    const expectedDay = String(publishedDate.getUTCDate()).padStart(2, '0')
+      "0"
+    );
+    const expectedDay = String(publishedDate.getUTCDate()).padStart(2, "0");
 
     if (
       year !== expectedYear ||
       month !== expectedMonth ||
       day !== expectedDay
     ) {
-      notFound()
+      notFound();
     }
   } else {
     // Draft posts with no published_at cannot be accessed via date-based URL
-    notFound()
+    notFound();
   }
 
-  const versions = await getPostVersions(post.id)
+  const versions = await getPostVersions(post.id);
 
-  const postUrl = getDateBasedUrl(slug, post.published_at)
+  const postUrl = getDateBasedUrl(slug, post.published_at);
 
   return (
     <main className="px-6 py-8 md:px-12 lg:px-24">
@@ -148,7 +148,7 @@ export default async function PostHistoryPage({ params }: PageProps) {
                 id: version.id,
                 markdownText: portableTextToMarkdown(version.content),
                 version_date: version.version_date,
-                version_number: version.version_number
+                version_number: version.version_number,
               }))}
             />
           </>
@@ -161,5 +161,5 @@ export default async function PostHistoryPage({ params }: PageProps) {
         </div>
       </div>
     </main>
-  )
+  );
 }

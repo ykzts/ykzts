@@ -1,68 +1,68 @@
-import { createServerClient } from '@supabase/ssr'
-import type { Database } from '@ykzts/supabase/types'
-import { type NextRequest, NextResponse } from 'next/server'
+import { createServerClient } from "@supabase/ssr";
+import type { Database } from "@ykzts/supabase/types";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function updateSession(request: NextRequest) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  if (!supabaseUrl || !supabaseAnonKey) {
+  if (!(supabaseUrl && supabaseAnonKey)) {
     return new NextResponse(
-      'Supabase environment variables are not configured',
+      "Supabase environment variables are not configured",
       {
-        status: 500
+        status: 500,
       }
-    )
+    );
   }
 
   const response = NextResponse.next({
-    request
-  })
+    request,
+  });
 
   const supabase = createServerClient<Database>(supabaseUrl, supabaseAnonKey, {
     cookies: {
       getAll() {
-        return request.cookies.getAll()
+        return request.cookies.getAll();
       },
       setAll(cookiesToSet) {
         for (const { name, value, options } of cookiesToSet) {
-          request.cookies.set(name, value)
-          response.cookies.set(name, value, options)
+          request.cookies.set(name, value);
+          response.cookies.set(name, value, options);
         }
-      }
-    }
-  })
+      },
+    },
+  });
 
   // Refresh session if expired - required for Server Components
   const {
-    data: { user }
-  } = await supabase.auth.getUser()
+    data: { user },
+  } = await supabase.auth.getUser();
 
   // Protect / routes - redirect to /login if not authenticated
   if (
     !user &&
-    request.nextUrl.pathname !== '/login' &&
-    !request.nextUrl.pathname.startsWith('/auth/callback')
+    request.nextUrl.pathname !== "/login" &&
+    !request.nextUrl.pathname.startsWith("/auth/callback")
   ) {
     const redirectResponse = NextResponse.redirect(
-      new URL('/login', request.url)
-    )
+      new URL("/login", request.url)
+    );
     // Copy auth cookies from the original response to preserve token refresh
     for (const cookie of response.cookies.getAll()) {
-      redirectResponse.cookies.set(cookie)
+      redirectResponse.cookies.set(cookie);
     }
-    return redirectResponse
+    return redirectResponse;
   }
 
   // Redirect to / if already authenticated and trying to access login page
-  if (user && request.nextUrl.pathname === '/login') {
-    const redirectResponse = NextResponse.redirect(new URL('/', request.url))
+  if (user && request.nextUrl.pathname === "/login") {
+    const redirectResponse = NextResponse.redirect(new URL("/", request.url));
     // Copy auth cookies from the original response to preserve session
     for (const cookie of response.cookies.getAll()) {
-      redirectResponse.cookies.set(cookie)
+      redirectResponse.cookies.set(cookie);
     }
-    return redirectResponse
+    return redirectResponse;
   }
 
-  return response
+  return response;
 }

@@ -1,1 +1,1 @@
-export { portableTextToMarkdown } from '@ykzts/portable-text-utils'
+export { portableTextToMarkdown } from "@ykzts/portable-text-utils";

@@ -1,9 +1,9 @@
-import type { Metadata } from 'next'
-import SubLayout from './(docs)/layout'
+import type { Metadata } from "next";
+import SubLayout from "./(docs)/layout";
 
 export const metadata: Metadata = {
-  title: '404 Not Found'
-}
+  title: "404 Not Found",
+};
 
 export default function NotFound() {
   return (
@@ -12,5 +12,5 @@ export default function NotFound() {
 
       <p className="leading-8">お探しのページを見つけられませんでした。</p>
     </SubLayout>
-  )
+  );
 }

@@ -1,3 +1,3 @@
-'use client'
+"use client";
 
-export * from '../components/skeleton'
+export * from "../components/skeleton";

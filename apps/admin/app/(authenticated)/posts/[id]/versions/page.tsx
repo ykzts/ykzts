@@ -1,20 +1,20 @@
-import { Badge } from '@ykzts/ui/components/badge'
-import { Button } from '@ykzts/ui/components/button'
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { Suspense } from 'react'
-import { Panel } from '@/components/panel'
-import { getPostById, getPostVersions } from '@/lib/posts'
-import { VersionsSkeleton } from './_components/versions-skeleton'
+import { Badge } from "@ykzts/ui/components/badge";
+import { Button } from "@ykzts/ui/components/button";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import { Panel } from "@/components/panel";
+import { getPostById, getPostVersions } from "@/lib/posts";
+import { VersionsSkeleton } from "./_components/versions-skeleton";
 
 async function VersionsContent({ postId }: { postId: string }) {
   const [post, versions] = await Promise.all([
     getPostById(postId),
-    getPostVersions(postId)
-  ])
+    getPostVersions(postId),
+  ]);
 
   if (!post) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -26,7 +26,7 @@ async function VersionsContent({ postId }: { postId: string }) {
             <dt className="font-medium text-muted-foreground text-sm">
               タイトル
             </dt>
-            <dd>{post.title || '(タイトルなし)'}</dd>
+            <dd>{post.title || "(タイトルなし)"}</dd>
           </div>
           <div>
             <dt className="font-medium text-muted-foreground text-sm">
@@ -43,7 +43,7 @@ async function VersionsContent({ postId }: { postId: string }) {
             <dd>
               {versions.length > 0 && versions[0]
                 ? `v${versions[0].version_number}`
-                : '不明'}
+                : "不明"}
             </dd>
           </div>
         </dl>
@@ -70,9 +70,9 @@ async function VersionsContent({ postId }: { postId: string }) {
                       {index === 0 && <Badge variant="default">現在</Badge>}
                     </div>
                     <p className="mt-1 text-muted-foreground text-sm">
-                      {new Date(version.version_date).toLocaleString('ja-JP')}
-                      {' • '}
-                      {version.profile?.name || '不明'}
+                      {new Date(version.version_date).toLocaleString("ja-JP")}
+                      {" • "}
+                      {version.profile?.name || "不明"}
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -112,7 +112,7 @@ async function VersionsContent({ postId }: { postId: string }) {
                 {version.title && (
                   <div className="mt-2">
                     <span className="font-medium text-muted-foreground text-sm">
-                      タイトル:{' '}
+                      タイトル:{" "}
                     </span>
                     <span className="text-sm">{version.title}</span>
                   </div>
@@ -132,15 +132,15 @@ async function VersionsContent({ postId }: { postId: string }) {
         </Button>
       </div>
     </div>
-  )
+  );
 }
 
 export default async function VersionsPage({
-  params
+  params,
 }: {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = await params
+  const { id } = await params;
 
   return (
     <div>
@@ -149,5 +149,5 @@ export default async function VersionsPage({
         <VersionsContent postId={id} />
       </Suspense>
     </div>
-  )
+  );
 }

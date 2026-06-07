@@ -1,30 +1,30 @@
-'use client'
+"use client";
 
-import { ExternalLink } from 'lucide-react'
-import { CopyUrlButton } from '@/components/copy-url-button'
-import { getBlogPostUrl } from '@/lib/blog-urls'
+import { ExternalLink } from "lucide-react";
+import { CopyUrlButton } from "@/components/copy-url-button";
+import { getBlogPostUrl } from "@/lib/blog-urls";
 
-type PublicUrlCellProps = {
-  slug: string | null
-  publishedAt: string | null
-  status: 'draft' | 'scheduled' | 'published' | null
-  draftPreviewUrl?: string | null
+interface PublicUrlCellProps {
+  draftPreviewUrl?: string | null;
+  publishedAt: string | null;
+  slug: string | null;
+  status: "draft" | "scheduled" | "published" | null;
 }
 
 export function PublicUrlCell({
   slug,
   publishedAt,
   status,
-  draftPreviewUrl
+  draftPreviewUrl,
 }: PublicUrlCellProps) {
   if (!slug) {
-    return <span className="text-muted-foreground text-sm">-</span>
+    return <span className="text-muted-foreground text-sm">-</span>;
   }
 
-  const url = getBlogPostUrl(slug, publishedAt)
+  const url = getBlogPostUrl(slug, publishedAt);
 
   if (!url) {
-    if (status === 'draft' && draftPreviewUrl) {
+    if (status === "draft" && draftPreviewUrl) {
       return (
         <div className="flex items-center gap-2">
           <a
@@ -39,10 +39,10 @@ export function PublicUrlCell({
           </a>
           <CopyUrlButton size="icon" url={draftPreviewUrl} variant="ghost" />
         </div>
-      )
+      );
     }
 
-    return <span className="text-muted-foreground text-sm">-</span>
+    return <span className="text-muted-foreground text-sm">-</span>;
   }
 
   return (
@@ -56,10 +56,10 @@ export function PublicUrlCell({
       >
         <ExternalLink className="h-3.5 w-3.5 flex-shrink-0" />
         <span className="truncate">
-          {status === 'scheduled' ? '予約公開URL' : '公開URL'}
+          {status === "scheduled" ? "予約公開URL" : "公開URL"}
         </span>
       </a>
       <CopyUrlButton size="icon" url={url} variant="ghost" />
     </div>
-  )
+  );
 }

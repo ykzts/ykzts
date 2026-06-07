@@ -1,39 +1,39 @@
-import { revalidateTag } from 'next/cache'
-import type { NextRequest } from 'next/server'
-import { NextResponse } from 'next/server'
-import { z } from 'zod'
+import { revalidateTag } from "next/cache";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { z } from "zod";
 
 const revalidateRequestSchema = z.object({
-  tag: z.string().min(1, 'Tag must not be empty')
-})
+  tag: z.string().min(1, "Tag must not be empty"),
+});
 
 export async function POST(request: NextRequest) {
-  const secret = request.headers.get('x-revalidate-secret')
+  const secret = request.headers.get("x-revalidate-secret");
 
   if (secret !== process.env.REVALIDATE_SECRET) {
-    return NextResponse.json({ message: 'Invalid secret' }, { status: 401 })
+    return NextResponse.json({ message: "Invalid secret" }, { status: 401 });
   }
 
-  let body: unknown
+  let body: unknown;
 
   try {
-    body = await request.json()
+    body = await request.json();
   } catch {
-    return NextResponse.json({ message: 'Invalid JSON body' }, { status: 400 })
+    return NextResponse.json({ message: "Invalid JSON body" }, { status: 400 });
   }
 
-  const validation = revalidateRequestSchema.safeParse(body)
+  const validation = revalidateRequestSchema.safeParse(body);
 
   if (!validation.success) {
     return NextResponse.json(
-      { errors: validation.error.issues, message: 'Invalid request body' },
+      { errors: validation.error.issues, message: "Invalid request body" },
       { status: 400 }
-    )
+    );
   }
 
-  const { tag } = validation.data
+  const { tag } = validation.data;
 
-  revalidateTag(tag, 'max')
+  revalidateTag(tag, "max");
 
-  return NextResponse.json({ now: Date.now(), revalidated: true })
+  return NextResponse.json({ now: Date.now(), revalidated: true });
 }

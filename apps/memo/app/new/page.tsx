@@ -1,14 +1,14 @@
-import { redirect } from 'next/navigation'
-import { Suspense } from 'react'
-import Header from '@/components/header'
-import { NewMemoForm } from '@/components/new-memo-form'
-import { getOwnerProfile } from '@/lib/auth'
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import Header from "@/components/header";
+import { NewMemoForm } from "@/components/new-memo-form";
+import { getOwnerProfile } from "@/lib/auth";
 
 async function NewMemoContent() {
-  const ownerProfile = await getOwnerProfile()
+  const ownerProfile = await getOwnerProfile();
 
   if (!ownerProfile) {
-    redirect('/login')
+    redirect("/login");
   }
 
   return (
@@ -19,7 +19,7 @@ async function NewMemoContent() {
         <NewMemoForm />
       </main>
     </>
-  )
+  );
 }
 
 export default function NewMemoPage() {
@@ -29,5 +29,5 @@ export default function NewMemoPage() {
         <NewMemoContent />
       </Suspense>
     </div>
-  )
+  );
 }

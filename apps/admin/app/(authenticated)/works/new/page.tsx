@@ -1,10 +1,10 @@
-import { Panel } from '@/components/panel'
-import { getAllTechnologies } from '@/lib/data'
-import { WorkForm } from '../_components/work-form'
-import { createWork } from './actions'
+import { Panel } from "@/components/panel";
+import { getAllTechnologies } from "@/lib/data";
+import { WorkForm } from "../_components/work-form";
+import { createWork } from "./actions";
 
 export default async function NewWorkPage() {
-  const allTechnologies = await getAllTechnologies()
+  const allTechnologies = await getAllTechnologies();
 
   return (
     <div>
@@ -13,5 +13,5 @@ export default async function NewWorkPage() {
         <WorkForm allTechnologies={allTechnologies} createAction={createWork} />
       </Panel>
     </div>
-  )
+  );
 }

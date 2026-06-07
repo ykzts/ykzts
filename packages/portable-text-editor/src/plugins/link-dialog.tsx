@@ -1,63 +1,67 @@
-'use client'
+"use client";
 
-import { Button } from '@ykzts/ui/components/button'
+import { Button } from "@ykzts/ui/components/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
-} from '@ykzts/ui/components/dialog'
-import { Field, FieldDescription, FieldLabel } from '@ykzts/ui/components/field'
-import { Input } from '@ykzts/ui/components/input'
-import type { FormEvent } from 'react'
-import { useEffect, useRef, useState } from 'react'
-import { validateUrl } from './link-plugin'
+  DialogTitle,
+} from "@ykzts/ui/components/dialog";
+import {
+  Field,
+  FieldDescription,
+  FieldLabel,
+} from "@ykzts/ui/components/field";
+import { Input } from "@ykzts/ui/components/input";
+import type { FormEvent } from "react";
+import { useEffect, useRef, useState } from "react";
+import { validateUrl } from "./link-plugin";
 
 interface LinkDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  onConfirm: (url: string, title: string) => void
+  onConfirm: (url: string, title: string) => void;
+  onOpenChange: (open: boolean) => void;
+  open: boolean;
 }
 
 export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
-  const [url, setUrl] = useState('')
-  const [title, setTitle] = useState('')
-  const [error, setError] = useState('')
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState("");
+  const [error, setError] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (open) {
-      setUrl('')
-      setTitle('')
-      setError('')
+      setUrl("");
+      setTitle("");
+      setError("");
       requestAnimationFrame(() => {
-        inputRef.current?.focus()
-      })
+        inputRef.current?.focus();
+      });
     }
-  }, [open])
+  }, [open]);
 
   const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!url.trim()) {
-      setError('URLを入力してください')
-      return
+      setError("URLを入力してください");
+      return;
     }
 
     if (!validateUrl(url)) {
-      setError('有効なURL（http://またはhttps://）を入力してください')
-      return
+      setError("有効なURL（http://またはhttps://）を入力してください");
+      return;
     }
 
-    onConfirm(url, title)
-    onOpenChange(false)
-  }
+    onConfirm(url, title);
+    onOpenChange(false);
+  };
 
   const handleCancel = () => {
-    onOpenChange(false)
-  }
+    onOpenChange(false);
+  };
 
   return (
     <Dialog onOpenChange={onOpenChange} open={open}>
@@ -74,12 +78,12 @@ export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
             <Field>
               <FieldLabel htmlFor="link-url-input">URL</FieldLabel>
               <Input
-                aria-describedby={error ? 'link-url-error' : undefined}
+                aria-describedby={error ? "link-url-error" : undefined}
                 aria-invalid={!!error}
                 id="link-url-input"
                 onChange={(e) => {
-                  setUrl(e.target.value)
-                  setError('')
+                  setUrl(e.target.value);
+                  setError("");
                 }}
                 placeholder="https://example.com"
                 ref={inputRef}
@@ -124,5 +128,5 @@ export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

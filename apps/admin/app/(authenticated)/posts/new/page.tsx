@@ -1,6 +1,6 @@
-import { Panel } from '@/components/panel'
-import { PostForm } from '../_components/post-form'
-import { createPostAction } from './actions'
+import { Panel } from "@/components/panel";
+import { PostForm } from "../_components/post-form";
+import { createPostAction } from "./actions";
 
 export default function NewPostPage() {
   return (
@@ -10,5 +10,5 @@ export default function NewPostPage() {
         <PostForm createAction={createPostAction} />
       </Panel>
     </div>
-  )
+  );
 }

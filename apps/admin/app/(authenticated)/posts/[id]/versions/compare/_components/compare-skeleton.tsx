@@ -1,4 +1,4 @@
-import { Panel } from '@/components/panel'
+import { Panel } from "@/components/panel";
 
 export function CompareSkeleton() {
   return (
@@ -32,5 +32,5 @@ export function CompareSkeleton() {
         </div>
       </div>
     </Panel>
-  )
+  );
 }

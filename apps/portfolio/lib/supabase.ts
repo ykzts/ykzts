@@ -1,54 +1,54 @@
-import type { PortableTextBlock } from '@portabletext/types'
-import { createBrowserClient } from '@ykzts/supabase/client'
-import { cacheTag } from 'next/cache'
+import type { PortableTextBlock } from "@portabletext/types";
+import { createBrowserClient } from "@ykzts/supabase/client";
+import { cacheTag } from "next/cache";
 
 const supabase =
   process.env.NEXT_PUBLIC_SUPABASE_URL &&
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
     ? createBrowserClient()
-    : null
+    : null;
 
 export async function getPostsForLlms() {
-  'use cache'
+  "use cache";
 
-  cacheTag('posts')
+  cacheTag("posts");
 
   if (!supabase) {
-    return []
+    return [];
   }
 
   const { data, error } = await supabase
-    .from('posts')
-    .select('slug, title, excerpt, published_at')
-    .eq('status', 'published')
-    .not('slug', 'is', null)
-    .not('title', 'is', null)
-    .not('published_at', 'is', null)
-    .order('published_at', { ascending: false })
+    .from("posts")
+    .select("slug, title, excerpt, published_at")
+    .eq("status", "published")
+    .not("slug", "is", null)
+    .not("title", "is", null)
+    .not("published_at", "is", null)
+    .order("published_at", { ascending: false });
 
   if (error) {
-    throw new Error(`Failed to fetch posts: ${error.message}`)
+    throw new Error(`Failed to fetch posts: ${error.message}`);
   }
 
   return data.map((post) => ({
     excerpt: post.excerpt,
     published_at: post.published_at as string,
     slug: post.slug as string,
-    title: post.title as string
-  }))
+    title: post.title as string,
+  }));
 }
 
 export async function getPostsForLlmsFull() {
-  'use cache'
+  "use cache";
 
-  cacheTag('posts')
+  cacheTag("posts");
 
   if (!supabase) {
-    return []
+    return [];
   }
 
   const { data, error } = await supabase
-    .from('posts')
+    .from("posts")
     .select(
       `
       slug,
@@ -60,14 +60,14 @@ export async function getPostsForLlmsFull() {
       )
     `
     )
-    .eq('status', 'published')
-    .not('slug', 'is', null)
-    .not('title', 'is', null)
-    .not('published_at', 'is', null)
-    .order('published_at', { ascending: false })
+    .eq("status", "published")
+    .not("slug", "is", null)
+    .not("title", "is", null)
+    .not("published_at", "is", null)
+    .order("published_at", { ascending: false });
 
   if (error) {
-    throw new Error(`Failed to fetch posts: ${error.message}`)
+    throw new Error(`Failed to fetch posts: ${error.message}`);
   }
 
   return data.map((post) => ({
@@ -77,6 +77,6 @@ export async function getPostsForLlmsFull() {
     excerpt: post.excerpt,
     published_at: post.published_at as string,
     slug: post.slug as string,
-    title: post.title as string
-  }))
+    title: post.title as string,
+  }));
 }

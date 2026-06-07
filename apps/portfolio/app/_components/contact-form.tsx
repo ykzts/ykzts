@@ -1,37 +1,40 @@
-'use client'
+"use client";
 
-import { Turnstile } from '@marsidev/react-turnstile'
-import { Link } from '@vercel/microfrontends/next/client'
-import { Button } from '@ykzts/ui/components/button'
-import { Checkbox } from '@ykzts/ui/components/checkbox'
-import { Field, FieldError, FieldLabel } from '@ykzts/ui/components/field'
-import { Input } from '@ykzts/ui/components/input'
-import { Textarea } from '@ykzts/ui/components/textarea'
-import { useTheme } from 'next-themes'
-import { useActionState, useEffect, useRef, useState } from 'react'
-import { toast } from 'sonner'
-import { submitContactForm } from '../_actions/contact'
+import { Turnstile } from "@marsidev/react-turnstile";
+import { Link } from "@vercel/microfrontends/next/client";
+import { Button } from "@ykzts/ui/components/button";
+import { Checkbox } from "@ykzts/ui/components/checkbox";
+import { Field, FieldError, FieldLabel } from "@ykzts/ui/components/field";
+import { Input } from "@ykzts/ui/components/input";
+import { Textarea } from "@ykzts/ui/components/textarea";
+import { useTheme } from "next-themes";
+import { useActionState, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import { submitContactForm } from "../_actions/contact";
 
 export default function ContactForm() {
-  const { resolvedTheme } = useTheme()
-  const [state, formAction, isPending] = useActionState(submitContactForm, null)
-  const [turnstileToken, setTurnstileToken] = useState<string>('')
-  const formRef = useRef<HTMLFormElement>(null)
+  const { resolvedTheme } = useTheme();
+  const [state, formAction, isPending] = useActionState(
+    submitContactForm,
+    null
+  );
+  const [turnstileToken, setTurnstileToken] = useState<string>("");
+  const formRef = useRef<HTMLFormElement>(null);
 
   // Handle success state - reset form on success
   useEffect(() => {
     if (state?.success) {
-      formRef.current?.reset()
-      setTurnstileToken('')
+      formRef.current?.reset();
+      setTurnstileToken("");
     }
-  }, [state?.success])
+  }, [state?.success]);
 
   // Show toast for general errors
   useEffect(() => {
     if (state?.error) {
-      toast.error(state.error)
+      toast.error(state.error);
     }
-  }, [state?.error])
+  }, [state?.error]);
 
   if (state?.success) {
     return (
@@ -47,11 +50,11 @@ export default function ContactForm() {
           新しいお問い合わせを送信
         </Button>
       </div>
-    )
+    );
   }
 
-  const errors = state?.fieldErrors || {}
-  const formData = state?.formData || {}
+  const errors = state?.fieldErrors || {};
+  const formData = state?.formData || {};
 
   return (
     <form action={formAction} ref={formRef}>
@@ -60,9 +63,9 @@ export default function ContactForm() {
           お名前 <span className="text-red-500">*</span>
         </FieldLabel>
         <Input
-          aria-describedby={errors.name ? 'name-error' : undefined}
+          aria-describedby={errors.name ? "name-error" : undefined}
           aria-invalid={Boolean(errors.name)}
-          defaultValue={formData.name || ''}
+          defaultValue={formData.name || ""}
           id="name"
           name="name"
           required
@@ -76,9 +79,9 @@ export default function ContactForm() {
           メールアドレス <span className="text-red-500">*</span>
         </FieldLabel>
         <Input
-          aria-describedby={errors.email ? 'email-error' : undefined}
+          aria-describedby={errors.email ? "email-error" : undefined}
           aria-invalid={Boolean(errors.email)}
-          defaultValue={formData.email || ''}
+          defaultValue={formData.email || ""}
           id="email"
           name="email"
           required
@@ -94,9 +97,9 @@ export default function ContactForm() {
           件名 <span className="text-red-500">*</span>
         </FieldLabel>
         <Input
-          aria-describedby={errors.subject ? 'subject-error' : undefined}
+          aria-describedby={errors.subject ? "subject-error" : undefined}
           aria-invalid={Boolean(errors.subject)}
-          defaultValue={formData.subject || ''}
+          defaultValue={formData.subject || ""}
           id="subject"
           name="subject"
           required
@@ -112,9 +115,9 @@ export default function ContactForm() {
           メッセージ <span className="text-red-500">*</span>
         </FieldLabel>
         <Textarea
-          aria-describedby={errors.message ? 'message-error' : undefined}
+          aria-describedby={errors.message ? "message-error" : undefined}
           aria-invalid={Boolean(errors.message)}
-          defaultValue={formData.message || ''}
+          defaultValue={formData.message || ""}
           id="message"
           name="message"
           required
@@ -127,10 +130,10 @@ export default function ContactForm() {
 
       <div className="mb-5 flex cursor-pointer items-start gap-2.5 text-base text-muted-foreground">
         <Checkbox
-          aria-describedby={errors.privacyConsent ? 'privacy-error' : undefined}
+          aria-describedby={errors.privacyConsent ? "privacy-error" : undefined}
           aria-invalid={Boolean(errors.privacyConsent)}
           aria-label="プライバシーポリシーに同意"
-          defaultChecked={formData.privacyConsent || false}
+          defaultChecked={formData.privacyConsent}
           name="privacyConsent"
           required
         />
@@ -151,15 +154,15 @@ export default function ContactForm() {
         <Turnstile
           className="w-full"
           onSuccess={(token) => {
-            setTurnstileToken(token)
+            setTurnstileToken(token);
           }}
           options={{
-            size: 'flexible',
-            theme: resolvedTheme === 'dark' ? 'dark' : 'light'
+            size: "flexible",
+            theme: resolvedTheme === "dark" ? "dark" : "light",
           }}
           siteKey={
             process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
-            '1x00000000000000000000AA'
+            "1x00000000000000000000AA"
           }
         />
         <input name="turnstileToken" type="hidden" value={turnstileToken} />
@@ -170,9 +173,9 @@ export default function ContactForm() {
 
       <div className="mt-6">
         <Button disabled={isPending || !turnstileToken} type="submit">
-          {isPending ? '送信中...' : '送信する'}
+          {isPending ? "送信中..." : "送信する"}
         </Button>
       </div>
     </form>
-  )
+  );
 }

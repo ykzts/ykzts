@@ -1,32 +1,32 @@
-import { getPostUrl } from '@/lib/blog-urls'
-import LinkButton from './link-button'
+import { getPostUrl } from "@/lib/blog-urls";
+import LinkButton from "./link-button";
 
-type PostNavigationItem = {
-  slug: string
-  title: string
-  published_at: string | null
+interface PostNavigationItem {
+  published_at: string | null;
+  slug: string;
+  title: string;
 }
 
-type PostNavigationProps = {
-  previousPost: PostNavigationItem | null
-  nextPost: PostNavigationItem | null
+interface PostNavigationProps {
+  nextPost: PostNavigationItem | null;
+  previousPost: PostNavigationItem | null;
 }
 
 export default function PostNavigation({
   previousPost,
-  nextPost
+  nextPost,
 }: PostNavigationProps) {
   // Don't render if there are no adjacent posts
-  if (!previousPost && !nextPost) {
-    return null
+  if (!(previousPost || nextPost)) {
+    return null;
   }
 
   const prevUrl = previousPost
     ? getPostUrl(previousPost.slug, previousPost.published_at)
-    : null
+    : null;
   const nextUrl = nextPost
     ? getPostUrl(nextPost.slug, nextPost.published_at)
-    : null
+    : null;
 
   return (
     <nav
@@ -65,5 +65,5 @@ export default function PostNavigation({
         <div className="hidden flex-1 sm:block" />
       )}
     </nav>
-  )
+  );
 }

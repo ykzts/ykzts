@@ -1,15 +1,15 @@
-import { Link } from '@vercel/microfrontends/next/client'
-import { Badge } from '@ykzts/ui/components/badge'
-import type { Route } from 'next'
+import { Link } from "@vercel/microfrontends/next/client";
+import { Badge } from "@ykzts/ui/components/badge";
+import type { Route } from "next";
 
-type TagListProps = {
-  tags: string[]
-  className?: string
+interface TagListProps {
+  className?: string;
+  tags: string[];
 }
 
 export default function TagList({ tags, className }: TagListProps) {
   if (!tags || tags.length === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -20,5 +20,5 @@ export default function TagList({ tags, className }: TagListProps) {
         </Link>
       ))}
     </div>
-  )
+  );
 }

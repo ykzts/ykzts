@@ -14,7 +14,7 @@
  * ```
  */
 
-import type { NextConfig } from 'next'
+import type { NextConfig } from "next";
 
 /**
  * Generate Next.js image configuration for Supabase Storage
@@ -29,52 +29,52 @@ import type { NextConfig } from 'next'
  */
 export function getSupabaseImageConfig(
   supabaseUrl?: string
-): NextConfig['images'] {
-  const url = supabaseUrl ?? process.env.NEXT_PUBLIC_SUPABASE_URL
-  const imageConfig: NextConfig['images'] = {}
+): NextConfig["images"] {
+  const url = supabaseUrl ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const imageConfig: NextConfig["images"] = {};
 
   if (!url) {
-    return imageConfig
+    return imageConfig;
   }
 
   try {
-    const parsedUrl = new URL(url)
+    const parsedUrl = new URL(url);
     const isLocalhost =
-      parsedUrl.hostname === 'localhost' ||
-      parsedUrl.hostname === '127.0.0.1' ||
-      parsedUrl.hostname === '0.0.0.0' ||
-      parsedUrl.hostname.endsWith('.local')
+      parsedUrl.hostname === "localhost" ||
+      parsedUrl.hostname === "127.0.0.1" ||
+      parsedUrl.hostname === "0.0.0.0" ||
+      parsedUrl.hostname.endsWith(".local");
 
     // Allow localhost IPs only in development
-    if (isLocalhost && process.env.NODE_ENV !== 'production') {
-      imageConfig.dangerouslyAllowLocalIP = true
+    if (isLocalhost && process.env.NODE_ENV !== "production") {
+      imageConfig.dangerouslyAllowLocalIP = true;
 
       // Add patterns for all common localhost variants and the actual hostname if .local
       const localhostVariants = [
-        'localhost',
-        '127.0.0.1',
-        '0.0.0.0',
-        ...(parsedUrl.hostname.endsWith('.local') ? [parsedUrl.hostname] : [])
-      ]
+        "localhost",
+        "127.0.0.1",
+        "0.0.0.0",
+        ...(parsedUrl.hostname.endsWith(".local") ? [parsedUrl.hostname] : []),
+      ];
       imageConfig.remotePatterns = localhostVariants.map((hostname) => ({
         hostname,
-        pathname: '/storage/v1/object/public/**',
+        pathname: "/storage/v1/object/public/**",
         port: parsedUrl.port || undefined,
-        protocol: parsedUrl.protocol.replace(':', '') as 'http' | 'https'
-      }))
+        protocol: parsedUrl.protocol.replace(":", "") as "http" | "https",
+      }));
     } else {
       imageConfig.remotePatterns = [
         {
           hostname: parsedUrl.hostname,
-          pathname: '/storage/v1/object/public/**',
+          pathname: "/storage/v1/object/public/**",
           port: parsedUrl.port || undefined,
-          protocol: parsedUrl.protocol.replace(':', '') as 'http' | 'https'
-        }
-      ]
+          protocol: parsedUrl.protocol.replace(":", "") as "http" | "https",
+        },
+      ];
     }
   } catch (error) {
-    console.warn('Failed to parse Supabase URL for image config:', error)
+    console.warn("Failed to parse Supabase URL for image config:", error);
   }
 
-  return imageConfig
+  return imageConfig;
 }

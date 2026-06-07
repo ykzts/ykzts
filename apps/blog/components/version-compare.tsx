@@ -1,131 +1,133 @@
-'use client'
+"use client";
 
-import { useCallback, useMemo, useState } from 'react'
-import DateDisplay from './date-display'
+import { useCallback, useMemo, useState } from "react";
+import DateDisplay from "./date-display";
 
-type Version = {
-  change_summary: string | null
-  id: string
-  markdownText: string
-  version_date: string
-  version_number: number
+interface Version {
+  change_summary: string | null;
+  id: string;
+  markdownText: string;
+  version_date: string;
+  version_number: number;
 }
 
-type DiffLine = {
-  key: string
-  text: string
-  type: 'added' | 'removed' | 'unchanged'
+interface DiffLine {
+  key: string;
+  text: string;
+  type: "added" | "removed" | "unchanged";
 }
 
 function computeDiff(oldText: string, newText: string): DiffLine[] {
-  const oldLines = oldText.split('\n')
-  const newLines = newText.split('\n')
+  const oldLines = oldText.split("\n");
+  const newLines = newText.split("\n");
 
-  const m = oldLines.length
-  const n = newLines.length
+  const m = oldLines.length;
+  const n = newLines.length;
 
   const dp: number[][] = Array.from({ length: m + 1 }, () =>
     new Array(n + 1).fill(0)
-  )
+  );
 
   for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
       if (oldLines[i - 1] === newLines[j - 1]) {
-        dp[i][j] = dp[i - 1][j - 1] + 1
+        dp[i][j] = dp[i - 1][j - 1] + 1;
       } else {
-        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1])
+        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
       }
     }
   }
 
-  const result: DiffLine[] = []
-  let i = m
-  let j = n
-  let lineNum = 0
+  const result: DiffLine[] = [];
+  let i = m;
+  let j = n;
+  let lineNum = 0;
 
   while (i > 0 || j > 0) {
     if (i > 0 && j > 0 && oldLines[i - 1] === newLines[j - 1]) {
       result.unshift({
         key: `u-${lineNum++}`,
         text: oldLines[i - 1],
-        type: 'unchanged'
-      })
-      i--
-      j--
+        type: "unchanged",
+      });
+      i--;
+      j--;
     } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
       result.unshift({
         key: `a-${lineNum++}`,
         text: newLines[j - 1],
-        type: 'added'
-      })
-      j--
+        type: "added",
+      });
+      j--;
     } else {
       result.unshift({
         key: `r-${lineNum++}`,
         text: oldLines[i - 1],
-        type: 'removed'
-      })
-      i--
+        type: "removed",
+      });
+      i--;
     }
   }
 
-  return result
+  return result;
 }
 
-type VersionCompareProps = {
-  versions: Version[]
+interface VersionCompareProps {
+  versions: Version[];
 }
 
 export default function VersionCompare({ versions }: VersionCompareProps) {
-  const [selectedIds, setSelectedIds] = useState<[string, string] | null>(null)
-  const [pendingId, setPendingId] = useState<string | null>(null)
+  const [selectedIds, setSelectedIds] = useState<[string, string] | null>(null);
+  const [pendingId, setPendingId] = useState<string | null>(null);
 
   const handleSelect = useCallback(
     (id: string) => {
       if (selectedIds) {
         // If clicking one of the two selected versions, deselect just that one
         // and keep the other as the pending pick
-        const otherId = selectedIds.find((x) => x !== id)
-        setSelectedIds(null)
-        setPendingId(otherId ?? id)
-        return
+        const otherId = selectedIds.find((x) => x !== id);
+        setSelectedIds(null);
+        setPendingId(otherId ?? id);
+        return;
       }
       if (pendingId === null) {
-        setPendingId(id)
-        return
+        setPendingId(id);
+        return;
       }
       if (pendingId === id) {
-        setPendingId(null)
-        return
+        setPendingId(null);
+        return;
       }
-      setSelectedIds([pendingId, id])
-      setPendingId(null)
+      setSelectedIds([pendingId, id]);
+      setPendingId(null);
     },
     [selectedIds, pendingId]
-  )
+  );
 
   const isChecked = useCallback(
-    (id: string) => {
-      return pendingId === id || (selectedIds?.includes(id) ?? false)
-    },
+    (id: string) => pendingId === id || (selectedIds?.includes(id) ?? false),
     [pendingId, selectedIds]
-  )
+  );
 
   const diffResult = useMemo(() => {
-    if (selectedIds === null) return null
-    const vA = versions.find((v) => v.id === selectedIds[0])
-    const vB = versions.find((v) => v.id === selectedIds[1])
-    if (!vA || !vB) return null
+    if (selectedIds === null) {
+      return null;
+    }
+    const vA = versions.find((v) => v.id === selectedIds[0]);
+    const vB = versions.find((v) => v.id === selectedIds[1]);
+    if (!(vA && vB)) {
+      return null;
+    }
 
     const [older, newer] =
-      vA.version_number < vB.version_number ? [vA, vB] : [vB, vA]
+      vA.version_number < vB.version_number ? [vA, vB] : [vB, vA];
 
     return {
       diff: computeDiff(older.markdownText, newer.markdownText),
       newerVersion: newer,
-      olderVersion: older
-    }
-  }, [selectedIds, versions])
+      olderVersion: older,
+    };
+  }, [selectedIds, versions]);
 
   return (
     <div>
@@ -209,11 +211,11 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
               {diffResult.diff.map((line) => (
                 <div
                   className={
-                    line.type === 'added'
-                      ? 'bg-green-100 text-green-900 dark:bg-green-950 dark:text-green-100'
-                      : line.type === 'removed'
-                        ? 'bg-red-100 text-red-900 dark:bg-red-950 dark:text-red-100'
-                        : 'bg-transparent'
+                    line.type === "added"
+                      ? "bg-green-100 text-green-900 dark:bg-green-950 dark:text-green-100"
+                      : line.type === "removed"
+                        ? "bg-red-100 text-red-900 dark:bg-red-950 dark:text-red-100"
+                        : "bg-transparent"
                   }
                   key={line.key}
                 >
@@ -221,11 +223,11 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
                     aria-hidden="true"
                     className="inline-block w-6 select-none text-center opacity-60"
                   >
-                    {line.type === 'added'
-                      ? '+'
-                      : line.type === 'removed'
-                        ? '-'
-                        : ' '}
+                    {line.type === "added"
+                      ? "+"
+                      : line.type === "removed"
+                        ? "-"
+                        : " "}
                   </span>
                   <span className="px-2">{line.text}</span>
                 </div>
@@ -243,5 +245,5 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
         </section>
       )}
     </div>
-  )
+  );
 }
