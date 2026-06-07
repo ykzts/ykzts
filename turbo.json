@@ -4,7 +4,19 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY"],
+      "env": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        "CRON_SECRET",
+        "DRAFT_SECRET",
+        "MAIL_FROM_ADDRESS",
+        "NODE_ENV",
+        "RESEND_API_KEY",
+        "REVALIDATE_SECRET",
+        "REVALIDATE_URLS",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "TURNSTILE_SECRET_KEY"
+      ],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "dev": {
@@ -14,7 +26,19 @@
     "lighthouse": {
       "cache": false,
       "dependsOn": ["^build", "build"],
-      "env": ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY"],
+      "env": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        "CRON_SECRET",
+        "DRAFT_SECRET",
+        "MAIL_FROM_ADDRESS",
+        "NODE_ENV",
+        "RESEND_API_KEY",
+        "REVALIDATE_SECRET",
+        "REVALIDATE_URLS",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "TURNSTILE_SECRET_KEY"
+      ],
       "outputs": [".lighthouseci/**"]
     },
     "test": {
@@ -31,7 +55,19 @@
     },
     "typegen": {
       "dependsOn": ["^build"],
-      "env": ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY"],
+      "env": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        "CRON_SECRET",
+        "DRAFT_SECRET",
+        "MAIL_FROM_ADDRESS",
+        "NODE_ENV",
+        "RESEND_API_KEY",
+        "REVALIDATE_SECRET",
+        "REVALIDATE_URLS",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "TURNSTILE_SECRET_KEY"
+      ],
       "outputs": [
         ".next/**",
         "!.next/cache/**",
