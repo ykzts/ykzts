@@ -1,17 +1,11 @@
 {
-  "$schema": "https://turbo.build/schema.json",
+  "$schema": "./node_modules/turbo/schema.json",
   "globalDependencies": ["**/.env.*local"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "env": ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY"],
-      "outputs": [
-        ".docusaurus/**",
-        ".next/**",
-        "!.next/cache/**",
-        "build/**",
-        "dist/**"
-      ]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "dev": {
       "cache": false,
@@ -39,11 +33,10 @@
       "dependsOn": ["^build"],
       "env": ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY"],
       "outputs": [
-        ".docusaurus/**",
         ".next/**",
         "!.next/cache/**",
-        "build/**",
-        "dist/**"
+        "dist/**",
+        "src/database.types.ts"
       ]
     },
     "validate": {}
