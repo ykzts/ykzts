@@ -5,7 +5,7 @@ import {
   type PortableTextReactComponents
 } from '@portabletext/react'
 import Image from 'next/image'
-import { type ComponentProps, Suspense } from 'react'
+import type { ComponentProps } from 'react'
 import Link from '@/components/link'
 import { generateHeadingId } from '@/lib/extract-headings'
 import type {
@@ -58,7 +58,7 @@ function extractTextFromBlock(children: unknown): string {
 }
 
 // Named component for code blocks
-const CodeBlockComponent: PortableTextBlockComponent = (props) => {
+const CodeBlockComponent: PortableTextBlockComponent = async (props) => {
   // Extract text from the block's children spans
   const text = extractTextFromBlock(props.value.children)
 
@@ -68,17 +68,7 @@ const CodeBlockComponent: PortableTextBlockComponent = (props) => {
       ? props.value.language
       : undefined
 
-  return (
-    <Suspense
-      fallback={
-        <pre className="not-prose overflow-x-auto rounded-lg bg-muted p-4">
-          <code>{text}</code>
-        </pre>
-      }
-    >
-      <CodeBlockHighlighter language={language} text={text} />
-    </Suspense>
-  )
+  return <CodeBlockHighlighter language={language} text={text} />
 }
 
 // Heading components with IDs for ToC

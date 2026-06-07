@@ -1,13 +1,10 @@
 import { getSiteOrigin } from '@ykzts/site-config'
 import { getProfile } from '@ykzts/supabase/queries'
 import type { Metadata, Route } from 'next'
-import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
-import { Suspense } from 'react'
 import ArticleContent from '@/components/article-content'
 import PostNavigation from '@/components/post-navigation'
 import SimilarPosts from '@/components/similar-posts'
-import SimilarPostsSkeleton from '@/components/similar-posts-skeleton'
 import TableOfContents from '@/components/table-of-contents'
 import { getDateBasedUrl } from '@/lib/blog-urls'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
@@ -59,10 +56,7 @@ export async function generateMetadata({
   params
 }: PageProps): Promise<Metadata> {
   const { year, month, day, slug } = await params
-  const draft = await draftMode()
-  const isDraft = draft.isEnabled
-
-  const post = await getPostBySlug(slug, isDraft)
+  const post = await getPostBySlug(slug)
 
   if (!post) {
     return {
@@ -137,10 +131,7 @@ export async function generateMetadata({
 
 export default async function PostDetailPage({ params }: PageProps) {
   const { year, month, day, slug } = await params
-  const draft = await draftMode()
-  const isDraft = draft.isEnabled
-
-  const post = await getPostBySlug(slug, isDraft)
+  const post = await getPostBySlug(slug)
 
   if (!post) {
     notFound()
@@ -182,7 +173,7 @@ export default async function PostDetailPage({ params }: PageProps) {
   // getProfile() failure is tolerated; fall back to post.profile.name for publisher.
   const [publisherProfile, { previousPost, nextPost }] = await Promise.all([
     getProfile().catch(() => null),
-    getAdjacentPosts(slug, isDraft)
+    getAdjacentPosts(slug)
   ])
 
   const historyUrl =
@@ -266,9 +257,7 @@ export default async function PostDetailPage({ params }: PageProps) {
         {/* Full width: related articles */}
         <div className="mx-auto max-w-4xl">
           <div aria-atomic="false" aria-live="polite">
-            <Suspense fallback={<SimilarPostsSkeleton />}>
-              <SimilarPostsSection postId={post.id} />
-            </Suspense>
+            <SimilarPostsSection postId={post.id} />
           </div>
         </div>
       </main>

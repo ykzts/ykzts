@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import BlogPagination from '@/components/blog-pagination'
 import PostCard from '@/components/post-card'
@@ -43,11 +42,8 @@ export default async function TagArchivePage({ params }: PageProps) {
   const { tag } = await params
   const decodedTag = decodeURIComponent(tag)
 
-  const draft = await draftMode()
-  const isDraft = draft.isEnabled
-
-  const posts = await getPostsByTag(decodedTag, 1, isDraft)
-  const postCount = await getPostCountByTag(decodedTag, isDraft)
+  const posts = await getPostsByTag(decodedTag, 1)
+  const postCount = await getPostCountByTag(decodedTag)
 
   if (!posts || posts.length === 0) {
     notFound()
@@ -63,7 +59,7 @@ export default async function TagArchivePage({ params }: PageProps) {
         </h1>
         <div className="space-y-6">
           {posts.map((post) => (
-            <PostCard isDraft={isDraft} key={post.id} post={post} />
+            <PostCard key={post.id} post={post} />
           ))}
         </div>
         {totalPages > 1 && (

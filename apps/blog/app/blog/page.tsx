@@ -1,7 +1,6 @@
 import { getSiteName } from '@ykzts/site-config'
 import { getProfile } from '@ykzts/supabase/queries'
 import type { Metadata } from 'next'
-import { draftMode } from 'next/headers'
 import BlogPagination from '@/components/blog-pagination'
 import PostCard from '@/components/post-card'
 import { getPosts, getTotalPages } from '@/lib/supabase/posts'
@@ -43,18 +42,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const draft = await draftMode()
-  const isDraft = draft.isEnabled
-
-  const posts = await getPosts(1, isDraft)
-  const totalPages = await getTotalPages(isDraft)
+  const posts = await getPosts(1)
+  const totalPages = await getTotalPages()
 
   return (
     <main className="px-6 py-8 md:px-12 lg:px-24">
       <div className="mx-auto max-w-4xl">
         <div className="space-y-6">
           {posts.map((post) => (
-            <PostCard isDraft={isDraft} key={post.id} post={post} />
+            <PostCard key={post.id} post={post} />
           ))}
         </div>
         {totalPages > 1 && (

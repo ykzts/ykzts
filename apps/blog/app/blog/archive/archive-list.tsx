@@ -36,13 +36,9 @@ type YearData = {
 
 type ArchiveListProps = {
   initialYearData: YearData
-  isDraft?: boolean
 }
 
-export default function ArchiveList({
-  initialYearData,
-  isDraft = false
-}: ArchiveListProps) {
+export default function ArchiveList({ initialYearData }: ArchiveListProps) {
   const [yearDataList, setYearDataList] = useState<YearData[]>([
     initialYearData
   ])
@@ -112,7 +108,7 @@ export default function ArchiveList({
           </h2>
           <div className="space-y-6">
             {yearData.posts.map((post) => (
-              <PostCard isDraft={isDraft} key={post.id} post={post} />
+              <PostCard key={post.id} post={post} />
             ))}
           </div>
         </section>

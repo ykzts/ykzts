@@ -1,7 +1,6 @@
 import { draftMode } from 'next/headers'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { getPostUrl } from '@/lib/blog-urls'
 import { supabase, supabaseAdmin } from '@/lib/supabase/client'
 
 export async function GET(request: NextRequest) {
@@ -47,10 +46,7 @@ export async function GET(request: NextRequest) {
 
     if (post) {
       return NextResponse.redirect(
-        new URL(
-          getPostUrl(post.slug as string, post.published_at ?? null),
-          request.url
-        )
+        new URL(`/blog/draft/${encodeURIComponent(post.slug as string)}`, request.url)
       )
     }
   } catch (error) {

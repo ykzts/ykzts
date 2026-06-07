@@ -255,6 +255,10 @@ async function fetchWorksData(): Promise<{
  * Returns `null` for missing configuration, query errors, and missing profile.
  */
 export async function getProfileOptional(): Promise<Profile | null> {
+  'use cache'
+
+  cacheTag('profile')
+
   const { profile } = await fetchProfileData()
 
   return profile
@@ -267,6 +271,10 @@ export async function getProfileOptional(): Promise<Profile | null> {
  * Returns an empty array for missing configuration and query errors.
  */
 export async function getWorksOptional(): Promise<Work[]> {
+  'use cache'
+
+  cacheTag('works')
+
   const { works } = await fetchWorksData()
 
   return works
