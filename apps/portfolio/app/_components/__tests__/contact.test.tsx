@@ -12,6 +12,11 @@ vi.mock('../contact-form', () => ({
   default: () => <div data-testid="contact-form">Contact Form</div>
 }))
 
+// Mock the async server-rendered SocialLinks subtree to keep this test focused.
+vi.mock('../social-links', () => ({
+  default: () => <div data-testid="social-links">Social Links</div>
+}))
+
 // Mock getProfile from @ykzts/supabase/queries
 vi.mock('@ykzts/supabase/queries', () => ({
   getProfile: vi.fn(async () => ({
@@ -38,17 +43,15 @@ vi.mock('@ykzts/supabase/queries', () => ({
 }))
 
 describe('Contact Component', () => {
-  it('renders with id="contact"', async () => {
-    const ContactElement = await Contact()
-    render(ContactElement)
+  it('renders with id="contact"', () => {
+    render(<Contact />)
 
     const section = document.querySelector('section')
     expect(section).toHaveAttribute('id', 'contact')
   })
 
-  it('renders the section title', async () => {
-    const ContactElement = await Contact()
-    const { container } = render(ContactElement)
+  it('renders the section title', () => {
+    const { container } = render(<Contact />)
 
     const heading = container.querySelector('h2')
     expect(heading).toBeInTheDocument()

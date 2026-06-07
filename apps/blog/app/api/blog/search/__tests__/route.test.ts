@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock Supabase client
 const mockRpc = vi.fn()
@@ -20,6 +20,11 @@ vi.mock('@/lib/embeddings', () => ({
 describe('POST /api/blog/search', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   it('should return 400 for invalid JSON body', async () => {
