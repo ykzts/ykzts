@@ -5,7 +5,7 @@ import {
   type PortableTextReactComponents
 } from '@portabletext/react'
 import Image from 'next/image'
-import type { ComponentProps } from 'react'
+import { Suspense, type ComponentProps } from 'react'
 import Link from '@/components/link'
 import { generateHeadingId } from '@/lib/extract-headings'
 import type {
@@ -58,7 +58,7 @@ function extractTextFromBlock(children: unknown): string {
 }
 
 // Named component for code blocks
-const CodeBlockComponent: PortableTextBlockComponent = async (props) => {
+const CodeBlockComponent: PortableTextBlockComponent = (props) => {
   // Extract text from the block's children spans
   const text = extractTextFromBlock(props.value.children)
 
@@ -68,7 +68,32 @@ const CodeBlockComponent: PortableTextBlockComponent = async (props) => {
       ? props.value.language
       : undefined
 
-  return <CodeBlockHighlighter language={language} text={text} />
+  return (
+    <Suspense
+      fallback={
+        <pre className="not-prose overflow-x-auto rounded-lg bg-muted p-4">
+          <code>{text}</code>
+        </pre>
+      }
+    >
+      <CodeBlockHighlighter language={language} text={text} />
+    </Suspense>
+  )
+}
+
+async function InlineCodeBlockHighlighter({
+  code,
+  language
+}: {
+  code: string
+  language?: string
+}) {
+  const html = await highlightCode(code, language)
+
+  return (
+    // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki generates safe HTML for syntax highlighting
+    <div dangerouslySetInnerHTML={{ __html: html }} />
+  )
 }
 
 // Heading components with IDs for ToC
@@ -104,13 +129,19 @@ const portableTextComponents = {
     }
   },
   types: {
-    async code({ value }: { value: CodeBlock }) {
+    code({ value }: { value: CodeBlock }) {
       const { code, language } = value
-      const html = await highlightCode(code, language)
 
       return (
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki generates safe HTML for syntax highlighting
-        <div dangerouslySetInnerHTML={{ __html: html }} />
+        <Suspense
+          fallback={
+            <pre className="not-prose overflow-x-auto rounded-lg bg-muted p-4">
+              <code>{code}</code>
+            </pre>
+          }
+        >
+          <InlineCodeBlockHighlighter code={code} language={language} />
+        </Suspense>
       )
     },
     image({ value }: { value: ImageBlock }) {

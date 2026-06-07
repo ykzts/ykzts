@@ -2,9 +2,11 @@ import { getSiteOrigin } from '@ykzts/site-config'
 import { getProfile } from '@ykzts/supabase/queries'
 import type { Metadata, Route } from 'next'
 import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
 import ArticleContent from '@/components/article-content'
 import PostNavigation from '@/components/post-navigation'
 import SimilarPosts from '@/components/similar-posts'
+import SimilarPostsSkeleton from '@/components/similar-posts-skeleton'
 import TableOfContents from '@/components/table-of-contents'
 import { getDateBasedUrl } from '@/lib/blog-urls'
 import { DEFAULT_POST_TITLE } from '@/lib/constants'
@@ -257,7 +259,9 @@ export default async function PostDetailPage({ params }: PageProps) {
         {/* Full width: related articles */}
         <div className="mx-auto max-w-4xl">
           <div aria-atomic="false" aria-live="polite">
-            <SimilarPostsSection postId={post.id} />
+            <Suspense fallback={<SimilarPostsSkeleton />}>
+              <SimilarPostsSection postId={post.id} />
+            </Suspense>
           </div>
         </div>
       </main>
