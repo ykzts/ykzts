@@ -273,7 +273,7 @@ describe('portableTextToHTML', () => {
       }
     ]
     const result = portableTextToHTML(
-      content as Parameters<typeof portableTextToHTML>[0]
+      content as unknown as Parameters<typeof portableTextToHTML>[0]
     )
     expect(result).toContain('<figure>')
     expect(result).toContain('<img')
@@ -290,7 +290,7 @@ describe('portableTextToHTML', () => {
       }
     ]
     const result = portableTextToHTML(
-      content as Parameters<typeof portableTextToHTML>[0]
+      content as unknown as Parameters<typeof portableTextToHTML>[0]
     )
     expect(result).toContain('<figure>')
     expect(result).toContain('<img')
@@ -306,7 +306,7 @@ describe('portableTextToHTML', () => {
       }
     ]
     const result = portableTextToHTML(
-      content as Parameters<typeof portableTextToHTML>[0]
+      content as unknown as Parameters<typeof portableTextToHTML>[0]
     )
     expect(result).toContain('const x = 1')
     expect(result).toContain('<pre>')
@@ -321,7 +321,7 @@ describe('portableTextToHTML', () => {
       }
     ]
     const result = portableTextToHTML(
-      content as Parameters<typeof portableTextToHTML>[0]
+      content as unknown as Parameters<typeof portableTextToHTML>[0]
     )
     expect(result).toContain('hello world')
     expect(result).toContain('<pre>')

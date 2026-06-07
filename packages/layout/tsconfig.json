@@ -2,11 +2,9 @@
   "compilerOptions": {
     "outDir": "./dist",
     "paths": {
-      "@ykzts/layout/*": ["./src/*"],
-      "@ykzts/site-config": ["../site-config/src/index.ts"],
-      "@ykzts/supabase/*": ["../supabase/src/*"],
-      "@ykzts/ui/*": ["../ui/src/*"]
-    }
+      "@ykzts/layout/*": ["./src/*"]
+    },
+    "types": ["@testing-library/jest-dom", "node", "vitest/globals"]
   },
   "exclude": ["node_modules", "dist"],
   "extends": "@ykzts/tsconfig/next.json",

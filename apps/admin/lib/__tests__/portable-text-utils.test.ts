@@ -336,7 +336,9 @@ describe('extractFirstParagraph', () => {
         }
       ]
 
-      const result = extractFirstParagraph(content)
+      const result = extractFirstParagraph(
+        content as unknown as Parameters<typeof extractFirstParagraph>[0]
+      )
       expect(result).toBe('Valid paragraph.')
     })
 
@@ -391,7 +393,9 @@ describe('extractFirstParagraph', () => {
         }
       ]
 
-      const result = extractFirstParagraph(content)
+      const result = extractFirstParagraph(
+        content as unknown as Parameters<typeof extractFirstParagraph>[0]
+      )
       expect(result).toBe('Valid paragraph.')
     })
   })

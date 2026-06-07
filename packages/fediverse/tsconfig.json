@@ -1,4 +1,7 @@
 {
+  "compilerOptions": {
+    "types": ["node", "vitest/globals"]
+  },
   "extends": "@ykzts/tsconfig/basic.json",
   "include": ["src"]
 }

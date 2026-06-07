@@ -60,6 +60,7 @@
     "dev": "next dev --port $(microfrontends port)",
     "start": "next start",
     "test": "vitest --run",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "typegen": "next typegen"
   },
   "type": "module",

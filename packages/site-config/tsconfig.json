@@ -1,4 +1,7 @@
 {
+  "compilerOptions": {
+    "types": ["node"]
+  },
   "extends": "@ykzts/tsconfig/react-library.json",
   "include": ["src"]
 }
