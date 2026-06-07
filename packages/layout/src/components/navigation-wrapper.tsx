@@ -1,11 +1,14 @@
-import { getProfile, getWorks } from '@ykzts/supabase/queries'
+import { getProfileOptional, getWorksOptional } from '@ykzts/supabase/queries'
 import { Suspense } from 'react'
 import SiteNavigation from './site-navigation'
 
 async function NavigationImpl() {
-  const [profile, works] = await Promise.all([getProfile(), getWorks()])
+  const [profile, works] = await Promise.all([
+    getProfileOptional(),
+    getWorksOptional()
+  ])
 
-  const hasAbout = !!profile.about
+  const hasAbout = !!profile?.about
   const hasWorks = works.length > 0
 
   return <SiteNavigation hasAbout={hasAbout} hasWorks={hasWorks} />

@@ -74,25 +74,68 @@ function normalizePage(page: number): number {
     : 1
 }
 
+function normalizeProfile(
+  profileData: {
+    about: unknown
+    key_visual: unknown
+    profile_technologies: unknown
+    social_links: unknown
+  } & Record<string, unknown>
+): Profile {
+  let aboutRaw = profileData.about
+
+  if (typeof aboutRaw === 'string') {
+    try {
+      aboutRaw = JSON.parse(aboutRaw)
+    } catch {
+      aboutRaw = null
+    }
+  }
+
+  const about = isPortableTextValue(aboutRaw) ? aboutRaw : null
+
+  const social_links = Array.isArray(profileData.social_links)
+    ? profileData.social_links
+    : []
+  const profile_technologies = Array.isArray(profileData.profile_technologies)
+    ? profileData.profile_technologies
+    : []
+  const key_visual = Array.isArray(profileData.key_visual)
+    ? (profileData.key_visual[0] ?? null)
+    : profileData.key_visual
+
+  return {
+    ...(profileData as Profile),
+    about,
+    key_visual,
+    profile_technologies,
+    social_links
+  }
+}
+
+function getSupabaseConfigError(): Error {
+  return new Error(
+    'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
+  )
+}
+
 /**
- * Fetches the site publisher's profile.
+ * Shared profile fetch primitive used by both strict and tolerant query APIs.
  *
- * Unlike `getWorks` and `getPosts`, this function throws when Supabase is not
- * configured, because a missing profile is a critical error (no sensible
- * default exists). Callers that can tolerate failure should catch the error
- * themselves (e.g. `getProfile().catch(() => null)`).
+ * - `profile` contains normalized data when available.
+ * - `error` contains the root cause when the fetch cannot be satisfied.
  */
-export async function getProfile(): Promise<Profile> {
-  'use cache'
-
-  cacheTag('profile')
-
+async function fetchProfileData(): Promise<{
+  error: Error | null
+  profile: Profile | null
+}> {
   const supabase = createSupabaseClient()
 
   if (!supabase) {
-    throw new Error(
-      'Supabase is not properly configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-    )
+    return {
+      error: getSupabaseConfigError(),
+      profile: null
+    }
   }
 
   const { data: profileData, error: profileError } = await supabase
@@ -119,59 +162,42 @@ export async function getProfile(): Promise<Profile> {
     .maybeSingle()
 
   if (profileError) {
-    throw new Error(`Failed to fetch profile: ${profileError.message}`)
-  }
-
-  if (!profileData) {
-    throw new Error('Profile not found')
-  }
-
-  let aboutRaw = profileData.about
-
-  if (typeof aboutRaw === 'string') {
-    try {
-      aboutRaw = JSON.parse(aboutRaw)
-    } catch {
-      aboutRaw = null
+    return {
+      error: new Error(`Failed to fetch profile: ${profileError.message}`),
+      profile: null
     }
   }
 
-  const about = isPortableTextValue(aboutRaw) ? aboutRaw : null
-
-  const social_links = Array.isArray(profileData.social_links)
-    ? profileData.social_links
-    : []
-  const profile_technologies = Array.isArray(profileData.profile_technologies)
-    ? profileData.profile_technologies
-    : []
-  const key_visual = Array.isArray(profileData.key_visual)
-    ? (profileData.key_visual[0] ?? null)
-    : profileData.key_visual
+  if (!profileData) {
+    return {
+      error: new Error('Profile not found'),
+      profile: null
+    }
+  }
 
   return {
-    ...profileData,
-    about,
-    key_visual,
-    profile_technologies,
-    social_links
+    error: null,
+    profile: normalizeProfile(profileData)
   }
 }
 
 /**
- * Fetches all works ordered by start date descending.
+ * Shared works fetch primitive used by both strict and tolerant query APIs.
  *
- * Returns an empty array when Supabase is not configured, so pages that list
- * works can still render without a profile dependency.
+ * - Returns an empty array when data is unavailable.
+ * - Returns `error` only for actual query failures.
  */
-export async function getWorks(): Promise<Work[]> {
-  'use cache'
-
-  cacheTag('works')
-
+async function fetchWorksData(): Promise<{
+  error: Error | null
+  works: Work[]
+}> {
   const supabase = createSupabaseClient()
 
   if (!supabase) {
-    return []
+    return {
+      error: null,
+      works: []
+    }
   }
 
   const { data, error } = await supabase
@@ -189,24 +215,105 @@ export async function getWorks(): Promise<Work[]> {
     .order('starts_at', { ascending: false })
 
   if (error) {
-    throw new Error(`Failed to fetch works: ${error.message}`)
+    return {
+      error: new Error(`Failed to fetch works: ${error.message}`),
+      works: []
+    }
   }
 
-  return data.map((work) => {
-    const work_urls = Array.isArray(work.work_urls)
-      ? [...work.work_urls].sort((a, b) => a.sort_order - b.sort_order)
-      : []
-    const work_technologies = Array.isArray(work.work_technologies)
-      ? work.work_technologies
-      : []
-
+  if (!data) {
     return {
-      ...work,
-      content: isPortableTextValue(work.content) ? work.content : null,
-      work_technologies,
-      work_urls
+      error: null,
+      works: []
     }
-  })
+  }
+
+  return {
+    error: null,
+    works: data.map((work) => {
+      const work_urls = Array.isArray(work.work_urls)
+        ? [...work.work_urls].sort((a, b) => a.sort_order - b.sort_order)
+        : []
+      const work_technologies = Array.isArray(work.work_technologies)
+        ? work.work_technologies
+        : []
+
+      return {
+        ...work,
+        content: isPortableTextValue(work.content) ? work.content : null,
+        work_technologies,
+        work_urls
+      }
+    })
+  }
+}
+
+/**
+ * Fetches profile data in a tolerant way for UI/metadata paths that should not
+ * fail hard when Supabase is unavailable.
+ *
+ * Returns `null` for missing configuration, query errors, and missing profile.
+ */
+export async function getProfileOptional(): Promise<Profile | null> {
+  const { profile } = await fetchProfileData()
+
+  return profile
+}
+
+/**
+ * Fetches works in a tolerant way for UI paths that should render even when
+ * Supabase is unavailable.
+ *
+ * Returns an empty array for missing configuration and query errors.
+ */
+export async function getWorksOptional(): Promise<Work[]> {
+  const { works } = await fetchWorksData()
+
+  return works
+}
+
+/**
+ * Fetches the site publisher's profile.
+ *
+ * This is the strict variant and throws when profile data cannot be obtained.
+ * Callers that can tolerate failure should use `getProfileOptional()`.
+ */
+export async function getProfile(): Promise<Profile> {
+  'use cache'
+
+  cacheTag('profile')
+
+  const { error, profile } = await fetchProfileData()
+
+  if (error) {
+    throw error
+  }
+
+  if (!profile) {
+    throw new Error('Profile not found')
+  }
+
+  return profile
+}
+
+/**
+ * Fetches all works ordered by start date descending.
+ *
+ * This is the strict variant and throws for query failures.
+ * Callers that can tolerate failure should use `getWorksOptional()`.
+ */
+export async function getWorks(): Promise<Work[]> {
+  'use cache'
+
+  cacheTag('works')
+
+  const { error, works } = await fetchWorksData()
+
+  if (error) {
+    throw error
+  }
+
+  return works
 }
 
 /**

@@ -6,7 +6,7 @@ import {
 import Header from '@ykzts/layout/components/header'
 import SiteFooter from '@ykzts/layout/components/site-footer'
 import { getSiteName, getSiteOrigin } from '@ykzts/site-config'
-import { getProfile } from '@ykzts/supabase/queries'
+import { getProfileOptional } from '@ykzts/supabase/queries'
 import { cn } from '@ykzts/ui/lib/utils'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
@@ -19,8 +19,8 @@ import ThemeProvider from '@/components/theme-provider'
 const siteName = getSiteName()
 
 export async function generateMetadata(): Promise<Metadata> {
-  const profile = await getProfile()
-  const fediverseCreator = profile.fediverse_creator?.trim() || null
+  const profile = await getProfileOptional()
+  const fediverseCreator = profile?.fediverse_creator?.trim() || null
 
   return {
     metadataBase: getSiteOrigin(),
