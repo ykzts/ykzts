@@ -5,7 +5,7 @@ import {
   type PortableTextReactComponents
 } from '@portabletext/react'
 import Image from 'next/image'
-import { Suspense, type ComponentProps } from 'react'
+import { type ComponentProps, Suspense } from 'react'
 import Link from '@/components/link'
 import { generateHeadingId } from '@/lib/extract-headings'
 import type {

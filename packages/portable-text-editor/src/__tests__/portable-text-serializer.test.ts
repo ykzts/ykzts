@@ -51,7 +51,12 @@ type PortableTextTestNode = {
   _type: string
   alt: string
   asset: { url: string }
-  children: Array<{ _key: string; _type: string; marks: string[]; text: string }>
+  children: Array<{
+    _key: string
+    _type: string
+    marks: string[]
+    text: string
+  }>
   language: string
   level: number
   listItem: string
