@@ -54,6 +54,7 @@
     "url": "https://github.com/ykzts/ykzts.git"
   },
   "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "typegen": "./scripts/typegen.sh"
   },
   "type": "module",

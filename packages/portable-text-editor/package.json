@@ -40,7 +40,8 @@
     "url": "https://github.com/ykzts/ykzts.git"
   },
   "scripts": {
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "type": "module",
   "version": "1.0.0"

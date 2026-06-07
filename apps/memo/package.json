@@ -41,6 +41,7 @@
     "build": "next build",
     "dev": "next dev --port 3003",
     "start": "next start",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "typegen": "next typegen"
   },
   "type": "module",

@@ -46,6 +46,25 @@ import {
   lexicalToPortableText
 } from '../portable-text-serializer'
 
+type PortableTextTestNode = {
+  _key: string
+  _type: string
+  alt: string
+  asset: { url: string }
+  children: Array<{ _key: string; _type: string; marks: string[]; text: string }>
+  language: string
+  level: number
+  listItem: string
+  markDefs: unknown[]
+  rows: Array<{
+    cells: Array<{ content: string; isHeader: boolean }>
+  }>
+  style: string
+}
+
+const toPortableText = (editor: ReturnType<typeof createEditor>) =>
+  lexicalToPortableText(editor) as unknown as PortableTextTestNode[]
+
 describe('Portable Text Serializer', () => {
   describe('lexicalToPortableText', () => {
     it('should serialize plain text to Portable Text', () => {
@@ -61,7 +80,7 @@ describe('Portable Text Serializer', () => {
         root.append(paragraph)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(1)
       expect(portableText[0]._type).toBe('block')
@@ -85,7 +104,7 @@ describe('Portable Text Serializer', () => {
         root.append(paragraph)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText[0].children[0].marks).toContain('strong')
       expect(portableText[0].children[0].text).toBe('bold text')
@@ -105,7 +124,7 @@ describe('Portable Text Serializer', () => {
         root.append(paragraph)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText[0].children[0].marks).toContain('em')
       expect(portableText[0].children[0].text).toBe('italic text')
@@ -125,7 +144,7 @@ describe('Portable Text Serializer', () => {
         root.append(paragraph)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText[0].children[0].marks).toContain('underline')
       expect(portableText[0].children[0].text).toBe('underline text')
@@ -145,7 +164,7 @@ describe('Portable Text Serializer', () => {
         root.append(paragraph)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText[0].children[0].marks).toContain('strike-through')
       expect(portableText[0].children[0].text).toBe('strikethrough text')
@@ -172,7 +191,7 @@ describe('Portable Text Serializer', () => {
         root.append(paragraph)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText[0].children[0].marks).toContain('code')
       expect(portableText[0].children[0].text).toBe('inline code')
@@ -195,7 +214,7 @@ describe('Portable Text Serializer', () => {
         root.append(paragraph)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText[0].children[0].marks).toContain('strong')
       expect(portableText[0].children[0].marks).toContain('em')
@@ -208,7 +227,7 @@ describe('Portable Text Serializer', () => {
         nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(1)
       expect(portableText[0].children[0].text).toBe('')
@@ -233,7 +252,7 @@ describe('Portable Text Serializer', () => {
         root.append(paragraph1, paragraph2)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(2)
       expect(portableText[0].children[0].text).toBe('First paragraph')
@@ -473,7 +492,7 @@ describe('Portable Text Serializer', () => {
         root.append(paragraph)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
       const json = JSON.stringify(portableText)
 
       const editor2 = createEditor({
@@ -481,7 +500,7 @@ describe('Portable Text Serializer', () => {
       })
       initializeEditorWithPortableText(editor2, json)
 
-      const portableText2 = lexicalToPortableText(editor2)
+      const portableText2 = toPortableText(editor2)
 
       expect(portableText2[0].children[0].text).toBe('Test content')
     })
@@ -501,7 +520,7 @@ describe('Portable Text Serializer', () => {
         root.append(paragraph)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
       const json = JSON.stringify(portableText)
 
       const editor2 = createEditor({
@@ -509,7 +528,7 @@ describe('Portable Text Serializer', () => {
       })
       initializeEditorWithPortableText(editor2, json)
 
-      const portableText2 = lexicalToPortableText(editor2)
+      const portableText2 = toPortableText(editor2)
 
       expect(portableText2[0].children[0].marks).toContain('strong')
       expect(portableText2[0].children[0].marks).toContain('em')
@@ -532,7 +551,7 @@ describe('Portable Text Serializer', () => {
         root.append(imageNode)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(1)
       expect(portableText[0]._type).toBe('image')
@@ -588,7 +607,7 @@ describe('Portable Text Serializer', () => {
         root.append(imageNode)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
       const json = JSON.stringify(portableText)
 
       const editor2 = createEditor({
@@ -596,7 +615,7 @@ describe('Portable Text Serializer', () => {
       })
       initializeEditorWithPortableText(editor2, json)
 
-      const portableText2 = lexicalToPortableText(editor2)
+      const portableText2 = toPortableText(editor2)
 
       expect(portableText2).toHaveLength(1)
       expect(portableText2[0]._type).toBe('image')
@@ -636,7 +655,7 @@ describe('Portable Text Serializer', () => {
         root.append(paragraph2)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(3)
       expect(portableText[0]._type).toBe('block')
@@ -733,7 +752,7 @@ describe('Portable Text Serializer', () => {
         root.append(list)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(2)
       expect(portableText[0]._type).toBe('block')
@@ -763,7 +782,7 @@ describe('Portable Text Serializer', () => {
         root.append(list)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(2)
       expect(portableText[0]._type).toBe('block')
@@ -893,7 +912,7 @@ describe('Portable Text Serializer', () => {
         root.append(list)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
       const json = JSON.stringify(portableText)
 
       const editor2 = createEditor({
@@ -901,7 +920,7 @@ describe('Portable Text Serializer', () => {
       })
       initializeEditorWithPortableText(editor2, json)
 
-      const portableText2 = lexicalToPortableText(editor2)
+      const portableText2 = toPortableText(editor2)
 
       expect(portableText2[0].listItem).toBe('bullet')
       expect(portableText2[0].children[0].marks).toContain('strong')
@@ -1002,7 +1021,7 @@ describe('Portable Text Serializer', () => {
         root.append(outerList)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       // Should have 5 blocks: 3 at level 1, 2 at level 2
       expect(portableText).toHaveLength(5)
@@ -1071,7 +1090,7 @@ describe('Portable Text Serializer', () => {
         root.append(list1)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(3)
       expect(portableText[0].level).toBe(1)
@@ -1117,7 +1136,7 @@ describe('Portable Text Serializer', () => {
         root.append(outerList)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(3)
       expect(portableText[0].listItem).toBe('number')
@@ -1263,7 +1282,7 @@ describe('Portable Text Serializer', () => {
         root.append(list)
       })
 
-      const portableText1 = lexicalToPortableText(editor1)
+      const portableText1 = toPortableText(editor1)
       const json = JSON.stringify(portableText1)
 
       const editor2 = createEditor({
@@ -1278,7 +1297,7 @@ describe('Portable Text Serializer', () => {
       })
       initializeEditorWithPortableText(editor2, json)
 
-      const portableText2 = lexicalToPortableText(editor2)
+      const portableText2 = toPortableText(editor2)
 
       expect(portableText2).toHaveLength(3)
       expect(portableText2[0].level).toBe(1)
@@ -1333,7 +1352,7 @@ describe('Portable Text Serializer', () => {
 
       initializeEditorWithPortableText(editor, json)
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(3)
       expect(portableText[0].listItem).toBe('bullet')
@@ -1420,7 +1439,7 @@ describe('Portable Text Serializer', () => {
         root.append(heading)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(1)
       expect(portableText[0]._type).toBe('block')
@@ -1440,7 +1459,7 @@ describe('Portable Text Serializer', () => {
         root.append(heading)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(1)
       expect(portableText[0]._type).toBe('block')
@@ -1464,7 +1483,7 @@ describe('Portable Text Serializer', () => {
         root.append(h4, h5, h6)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(3)
       expect(portableText[0].style).toBe('h4')
@@ -1576,7 +1595,7 @@ describe('Portable Text Serializer', () => {
         root.append(heading)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
       const json = JSON.stringify(portableText)
 
       const editor2 = createEditor({
@@ -1584,7 +1603,7 @@ describe('Portable Text Serializer', () => {
       })
       initializeEditorWithPortableText(editor2, json)
 
-      const portableText2 = lexicalToPortableText(editor2)
+      const portableText2 = toPortableText(editor2)
 
       expect(portableText2[0].style).toBe('h2')
       expect(portableText2[0].children[0].marks).toContain('strong')
@@ -1657,7 +1676,7 @@ describe('Portable Text Serializer', () => {
         root.append(quote)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(1)
       expect(portableText[0]._type).toBe('block')
@@ -1720,7 +1739,7 @@ describe('Portable Text Serializer', () => {
         root.append(quote)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
       const json = JSON.stringify(portableText)
 
       const editor2 = createEditor({
@@ -1735,7 +1754,7 @@ describe('Portable Text Serializer', () => {
       })
       initializeEditorWithPortableText(editor2, json)
 
-      const portableText2 = lexicalToPortableText(editor2)
+      const portableText2 = toPortableText(editor2)
 
       expect(portableText2[0].style).toBe('blockquote')
       expect(portableText2[0].children[0].marks).toContain('strong')
@@ -1816,7 +1835,7 @@ describe('Portable Text Serializer', () => {
         root.append(code)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(1)
       expect(portableText[0]._type).toBe('block')
@@ -1881,7 +1900,7 @@ describe('Portable Text Serializer', () => {
         root.append(code)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
       const json = JSON.stringify(portableText)
 
       const editor2 = createEditor({
@@ -1898,7 +1917,7 @@ describe('Portable Text Serializer', () => {
       })
       initializeEditorWithPortableText(editor2, json)
 
-      const portableText2 = lexicalToPortableText(editor2)
+      const portableText2 = toPortableText(editor2)
 
       expect(portableText2[0].style).toBe('code')
       expect(portableText2[0].children[0].text).toBe(
@@ -1927,7 +1946,7 @@ describe('Portable Text Serializer', () => {
         root.append(code)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(1)
       expect(portableText[0]._type).toBe('block')
@@ -1995,7 +2014,7 @@ describe('Portable Text Serializer', () => {
         root.append(code)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
       const json = JSON.stringify(portableText)
 
       const editor2 = createEditor({
@@ -2012,7 +2031,7 @@ describe('Portable Text Serializer', () => {
       })
       initializeEditorWithPortableText(editor2, json)
 
-      const portableText2 = lexicalToPortableText(editor2)
+      const portableText2 = toPortableText(editor2)
 
       expect(portableText2[0].style).toBe('code')
       expect(portableText2[0].language).toBe('python')
@@ -2040,7 +2059,7 @@ describe('Portable Text Serializer', () => {
         root.append(tableNode)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
 
       expect(portableText).toHaveLength(1)
       expect(portableText[0]._type).toBe('table')
@@ -2149,7 +2168,7 @@ describe('Portable Text Serializer', () => {
         root.append(tableNode)
       })
 
-      const portableText = lexicalToPortableText(editor)
+      const portableText = toPortableText(editor)
       const json = JSON.stringify(portableText)
 
       const editor2 = createEditor({
@@ -2165,7 +2184,7 @@ describe('Portable Text Serializer', () => {
       })
       initializeEditorWithPortableText(editor2, json)
 
-      const portableText2 = lexicalToPortableText(editor2)
+      const portableText2 = toPortableText(editor2)
 
       expect(portableText2[0]._type).toBe('table')
       if (portableText2[0]._type === 'table') {

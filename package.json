@@ -21,6 +21,7 @@
     "lighthouse": "turbo run lighthouse",
     "test": "turbo run test",
     "test:a11y": "turbo run test:a11y",
+    "typecheck": "turbo run typecheck",
     "typegen": "turbo run typegen",
     "validate": "turbo run validate"
   },

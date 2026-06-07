@@ -1,9 +1,9 @@
 import * as dns from 'node:dns/promises'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { extractFediverseHandleFromURL, verifyFediverseHandle } from './index'
+import { extractFediverseHandleFromURL, verifyFediverseHandle } from './index.js'
 
 vi.mock('node:dns/promises')
-global.fetch = vi.fn()
+globalThis.fetch = vi.fn()
 
 const mockLookup = vi.mocked(dns.lookup)
 
