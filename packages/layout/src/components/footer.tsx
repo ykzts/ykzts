@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from "react";
 
-type Props = {
-  children: ReactNode
+interface Props {
+  children: ReactNode;
 }
 
 export default function Footer({ children }: Props) {
@@ -11,5 +11,5 @@ export default function Footer({ children }: Props) {
         {children}
       </div>
     </footer>
-  )
+  );
 }

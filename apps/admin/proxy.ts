@@ -1,8 +1,8 @@
-import type { NextRequest } from 'next/server'
-import { updateSession } from '@/lib/supabase/proxy'
+import type { NextRequest } from "next/server";
+import { updateSession } from "@/lib/supabase/proxy";
 
 export async function proxy(request: NextRequest) {
-  return await updateSession(request)
+  return await updateSession(request);
 }
 
 export const config = {
@@ -16,6 +16,6 @@ export const config = {
      * - vc-ap- (microfrontends asset prefix)
      * Feel free to modify this pattern to include more paths.
      */
-    '/((?!api/|_next/static|_next/image|favicon.ico|vc-ap-|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'
-  ]
-}
+    "/((?!api/|_next/static|_next/image|favicon.ico|vc-ap-|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
+};

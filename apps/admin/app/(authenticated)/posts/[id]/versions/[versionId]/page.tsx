@@ -1,30 +1,30 @@
-import { Badge } from '@ykzts/ui/components/badge'
-import { Button } from '@ykzts/ui/components/button'
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { Suspense } from 'react'
-import { Panel } from '@/components/panel'
-import { getPostById, getPostVersion } from '@/lib/posts'
-import { RollbackButton } from './_components/rollback-button'
-import { VersionDetailSkeleton } from './_components/version-detail-skeleton'
+import { Badge } from "@ykzts/ui/components/badge";
+import { Button } from "@ykzts/ui/components/button";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import { Panel } from "@/components/panel";
+import { getPostById, getPostVersion } from "@/lib/posts";
+import { RollbackButton } from "./_components/rollback-button";
+import { VersionDetailSkeleton } from "./_components/version-detail-skeleton";
 
 async function VersionDetailContent({
   postId,
-  versionId
+  versionId,
 }: {
-  postId: string
-  versionId: string
+  postId: string;
+  versionId: string;
 }) {
   const [post, version] = await Promise.all([
     getPostById(postId),
-    getPostVersion(versionId)
-  ])
+    getPostVersion(versionId),
+  ]);
 
-  if (!post || !version) {
-    notFound()
+  if (!(post && version)) {
+    notFound();
   }
 
-  const isCurrent = post.current_version_id === version.id
+  const isCurrent = post.current_version_id === version.id;
 
   return (
     <div className="space-y-6">
@@ -50,14 +50,14 @@ async function VersionDetailContent({
             <dt className="font-medium text-muted-foreground text-sm">
               バージョン日時
             </dt>
-            <dd>{new Date(version.version_date).toLocaleString('ja-JP')}</dd>
+            <dd>{new Date(version.version_date).toLocaleString("ja-JP")}</dd>
           </div>
 
           <div>
             <dt className="font-medium text-muted-foreground text-sm">
               作成者
             </dt>
-            <dd>{version.profile?.name || '不明'}</dd>
+            <dd>{version.profile?.name || "不明"}</dd>
           </div>
 
           {version.change_summary && (
@@ -133,15 +133,15 @@ async function VersionDetailContent({
         </Button>
       </div>
     </div>
-  )
+  );
 }
 
 export default async function VersionDetailPage({
-  params
+  params,
 }: {
-  params: Promise<{ id: string; versionId: string }>
+  params: Promise<{ id: string; versionId: string }>;
 }) {
-  const { id, versionId } = await params
+  const { id, versionId } = await params;
 
   return (
     <div>
@@ -150,5 +150,5 @@ export default async function VersionDetailPage({
         <VersionDetailContent postId={id} versionId={versionId} />
       </Suspense>
     </div>
-  )
+  );
 }

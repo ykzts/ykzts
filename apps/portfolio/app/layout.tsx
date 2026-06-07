@@ -1,49 +1,49 @@
-import './globals.css'
-import { Analytics } from '@vercel/analytics/react'
+import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 import {
   PrefetchCrossZoneLinks,
-  PrefetchCrossZoneLinksProvider
-} from '@vercel/microfrontends/next/client'
-import { getSiteName, getSiteOrigin } from '@ykzts/site-config'
-import { getProfile } from '@ykzts/supabase/queries'
-import { Toaster } from '@ykzts/ui/components/sonner'
-import type { Metadata, Viewport } from 'next'
-import SVGSymbols from './_components/svg-symbols'
-import ThemeProvider from './_components/theme-provider'
+  PrefetchCrossZoneLinksProvider,
+} from "@vercel/microfrontends/next/client";
+import { getSiteName, getSiteOrigin } from "@ykzts/site-config";
+import { getProfile } from "@ykzts/supabase/queries";
+import { Toaster } from "@ykzts/ui/components/sonner";
+import type { Metadata, Viewport } from "next";
+import SVGSymbols from "./_components/svg-symbols";
+import ThemeProvider from "./_components/theme-provider";
 
-const siteName = getSiteName()
+const siteName = getSiteName();
 
 export async function generateMetadata(): Promise<Metadata> {
-  let fediverseCreator: string | null = null
+  let fediverseCreator: string | null = null;
 
   try {
-    const profile = await getProfile()
-    fediverseCreator = profile.fediverse_creator?.trim() || null
+    const profile = await getProfile();
+    fediverseCreator = profile.fediverse_creator?.trim() || null;
   } catch {
-    console.error('Failed to load profile for portfolio layout metadata')
+    console.error("Failed to load profile for portfolio layout metadata");
   }
 
   return {
     metadataBase: getSiteOrigin(),
     other: {
-      ...(fediverseCreator ? { 'fediverse:creator': fediverseCreator } : {}),
-      'Hatena::Bookmark': 'nocomment'
+      ...(fediverseCreator ? { "fediverse:creator": fediverseCreator } : {}),
+      "Hatena::Bookmark": "nocomment",
     },
     title: {
       default: siteName,
-      template: `%s | ${siteName}`
-    }
-  }
+      template: `%s | ${siteName}`,
+    },
+  };
 }
 
 export const viewport: Viewport = {
   themeColor: [
-    { color: '#fafafa', media: '(prefers-color-scheme: light)' },
-    { color: '#0f0f1a', media: '(prefers-color-scheme: dark)' }
-  ]
-}
+    { color: "#fafafa", media: "(prefers-color-scheme: light)" },
+    { color: "#0f0f1a", media: "(prefers-color-scheme: dark)" },
+  ],
+};
 
-export default function RootLayout({ children, modal }: LayoutProps<'/'>) {
+export default function RootLayout({ children, modal }: LayoutProps<"/">) {
   return (
     <html
       className="scroll-smooth antialiased"
@@ -78,5 +78,5 @@ export default function RootLayout({ children, modal }: LayoutProps<'/'>) {
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

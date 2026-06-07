@@ -1,49 +1,49 @@
-'use client'
+"use client";
 
-import { Button } from '@ykzts/ui/components/button'
+import { Button } from "@ykzts/ui/components/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
-} from '@ykzts/ui/components/dialog'
-import { Field, FieldLabel } from '@ykzts/ui/components/field'
-import { Input } from '@ykzts/ui/components/input'
-import type { FormEvent } from 'react'
-import { useEffect, useRef, useState } from 'react'
+  DialogTitle,
+} from "@ykzts/ui/components/dialog";
+import { Field, FieldLabel } from "@ykzts/ui/components/field";
+import { Input } from "@ykzts/ui/components/input";
+import type { FormEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface TableDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  onConfirm: (rows: number, columns: number) => void
+  onConfirm: (rows: number, columns: number) => void;
+  onOpenChange: (open: boolean) => void;
+  open: boolean;
 }
 
 export function TableDialog({
   open,
   onOpenChange,
-  onConfirm
+  onConfirm,
 }: TableDialogProps) {
-  const [rows, setRows] = useState('3')
-  const [columns, setColumns] = useState('3')
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [rows, setRows] = useState("3");
+  const [columns, setColumns] = useState("3");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (open) {
-      setRows('3')
-      setColumns('3')
+      setRows("3");
+      setColumns("3");
       requestAnimationFrame(() => {
-        inputRef.current?.focus()
-      })
+        inputRef.current?.focus();
+      });
     }
-  }, [open])
+  }, [open]);
 
   const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const rowCount = Number.parseInt(rows, 10)
-    const colCount = Number.parseInt(columns, 10)
+    const rowCount = Number.parseInt(rows, 10);
+    const colCount = Number.parseInt(columns, 10);
 
     if (
       !Number.isFinite(rowCount) ||
@@ -51,16 +51,16 @@ export function TableDialog({
       !Number.isFinite(colCount) ||
       colCount < 1
     ) {
-      return
+      return;
     }
 
-    onConfirm(rowCount, colCount)
-    onOpenChange(false)
-  }
+    onConfirm(rowCount, colCount);
+    onOpenChange(false);
+  };
 
   const handleCancel = () => {
-    onOpenChange(false)
-  }
+    onOpenChange(false);
+  };
 
   return (
     <Dialog onOpenChange={onOpenChange} open={open}>
@@ -107,5 +107,5 @@ export function TableDialog({
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

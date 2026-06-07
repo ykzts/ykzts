@@ -1,7 +1,7 @@
-export type VisiblePages = {
-  pages: number[]
-  showEndEllipsis: boolean
-  showStartEllipsis: boolean
+export interface VisiblePages {
+  pages: number[];
+  showEndEllipsis: boolean;
+  showStartEllipsis: boolean;
 }
 
 /**
@@ -16,25 +16,25 @@ export function getVisiblePages(
   totalPages: number,
   maxVisible = 5
 ): VisiblePages {
-  const pages: number[] = []
+  const pages: number[] = [];
 
   // Calculate start and end of visible range, centered on current page
-  let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2))
-  const endPage = Math.min(totalPages, startPage + maxVisible - 1)
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+  const endPage = Math.min(totalPages, startPage + maxVisible - 1);
 
   // Adjust start if we're near the end
   if (endPage - startPage + 1 < maxVisible) {
-    startPage = Math.max(1, endPage - maxVisible + 1)
+    startPage = Math.max(1, endPage - maxVisible + 1);
   }
 
   // Build pages array
   for (let i = startPage; i <= endPage; i++) {
-    pages.push(i)
+    pages.push(i);
   }
 
   return {
     pages,
     showEndEllipsis: endPage < totalPages,
-    showStartEllipsis: startPage > 1
-  }
+    showStartEllipsis: startPage > 1,
+  };
 }

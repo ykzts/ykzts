@@ -1,20 +1,20 @@
-import type { Route } from 'next'
-import type { Heading } from '@/lib/extract-headings'
-import type { PortableTextValue } from '@/lib/portable-text'
-import ArticleHeader from './article-header'
-import PortableTextBlock from './portable-text'
-import TableOfContents from './table-of-contents'
+import type { Route } from "next";
+import type { Heading } from "@/lib/extract-headings";
+import type { PortableTextValue } from "@/lib/portable-text";
+import ArticleHeader from "./article-header";
+import PortableTextBlock from "./portable-text";
+import TableOfContents from "./table-of-contents";
 
 interface ArticleContentProps {
-  authorName: string
-  className?: string
-  content: PortableTextValue
-  headings: Heading[]
-  historyUrl?: Route
-  publishedAt: string | null
-  tags?: string[] | null
-  title: string
-  versionDate?: string | null
+  authorName: string;
+  className?: string;
+  content: PortableTextValue;
+  headings: Heading[];
+  historyUrl?: Route;
+  publishedAt: string | null;
+  tags?: string[] | null;
+  title: string;
+  versionDate?: string | null;
 }
 
 export default function ArticleContent({
@@ -26,7 +26,7 @@ export default function ArticleContent({
   publishedAt,
   tags,
   title,
-  versionDate
+  versionDate,
 }: ArticleContentProps) {
   return (
     <article className={className}>
@@ -46,5 +46,5 @@ export default function ArticleContent({
       )}
       <PortableTextBlock value={content} />
     </article>
-  )
+  );
 }

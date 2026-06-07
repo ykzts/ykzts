@@ -1,37 +1,38 @@
-import { markdownToPortableText as convertFromMarkdown } from '@portabletext/markdown'
-import matter from 'gray-matter'
+import { markdownToPortableText as convertFromMarkdown } from "@portabletext/markdown";
+import matter from "gray-matter";
 
-export type MarkdownPostParseResult = {
-  title: string
-  contentJson: string
-  tags: string[]
-  excerpt: string
-  publishedAt: string | null
+export interface MarkdownPostParseResult {
+  contentJson: string;
+  excerpt: string;
+  publishedAt: string | null;
+  tags: string[];
+  title: string;
 }
 
-type PortableTextCodeBlock = {
-  _key?: string
-  _type: 'code'
-  language?: string
-  code?: string
+interface PortableTextCodeBlock {
+  _key?: string;
+  _type: "code";
+  code?: string;
+  language?: string;
+  [key: string]: unknown;
 }
 
-type PortableTextSpan = {
-  _key?: string
-  _type: 'span'
-  text?: string
+interface PortableTextSpan {
+  _key?: string;
+  _type: "span";
+  text?: string;
 }
 
-type PortableTextBlock = {
-  _key?: string
-  _type: string
-  style?: string
-  children?: PortableTextSpan[]
-  [key: string]: unknown
+interface PortableTextBlock {
+  _key?: string;
+  _type: string;
+  children?: PortableTextSpan[];
+  style?: string;
+  [key: string]: unknown;
 }
 
 function isCodeBlock(block: PortableTextBlock): block is PortableTextCodeBlock {
-  return block._type === 'code'
+  return block._type === "code";
 }
 
 /**
@@ -46,20 +47,20 @@ function transformBlock(block: PortableTextBlock): PortableTextBlock {
   if (isCodeBlock(block)) {
     return {
       _key: block._key,
-      _type: 'block',
+      _type: "block",
       children: [
         {
           _key: crypto.randomUUID(),
-          _type: 'span',
-          text: block.code ?? ''
-        }
+          _type: "span",
+          text: block.code ?? "",
+        },
       ],
       language: block.language,
       markDefs: [],
-      style: 'code'
-    }
+      style: "code",
+    };
   }
-  return block
+  return block;
 }
 
 /**
@@ -67,11 +68,11 @@ function transformBlock(block: PortableTextBlock): PortableTextBlock {
  */
 function extractBlockText(block: PortableTextBlock): string {
   if (!Array.isArray(block.children)) {
-    return ''
+    return "";
   }
   return block.children
-    .map((span) => (span._type === 'span' ? (span.text ?? '') : ''))
-    .join('')
+    .map((span) => (span._type === "span" ? (span.text ?? "") : ""))
+    .join("");
 }
 
 /**
@@ -81,17 +82,17 @@ function extractBlockText(block: PortableTextBlock): string {
 function parseTags(raw: unknown): string[] {
   if (Array.isArray(raw)) {
     return raw
-      .filter((t): t is string => typeof t === 'string')
+      .filter((t): t is string => typeof t === "string")
       .map((t) => t.trim())
-      .filter(Boolean)
+      .filter(Boolean);
   }
-  if (typeof raw === 'string' && raw.trim()) {
+  if (typeof raw === "string" && raw.trim()) {
     return raw
-      .split(',')
+      .split(",")
       .map((t) => t.trim())
-      .filter(Boolean)
+      .filter(Boolean);
   }
-  return []
+  return [];
 }
 
 /**
@@ -99,17 +100,17 @@ function parseTags(raw: unknown): string[] {
  * Returns null when the value is absent or cannot be parsed.
  */
 function parsePublishedAt(raw: unknown): string | null {
-  if (raw === null || raw === undefined || raw === '') {
-    return null
+  if (raw === null || raw === undefined || raw === "") {
+    return null;
   }
   if (raw instanceof Date) {
-    return Number.isNaN(raw.getTime()) ? null : raw.toISOString()
+    return Number.isNaN(raw.getTime()) ? null : raw.toISOString();
   }
-  if (typeof raw === 'string' || typeof raw === 'number') {
-    const d = new Date(raw)
-    return Number.isNaN(d.getTime()) ? null : d.toISOString()
+  if (typeof raw === "string" || typeof raw === "number") {
+    const d = new Date(raw);
+    return Number.isNaN(d.getTime()) ? null : d.toISOString();
   }
-  return null
+  return null;
 }
 
 /**
@@ -122,31 +123,31 @@ function parsePublishedAt(raw: unknown): string | null {
 export function parseMarkdownForPost(
   markdown: string
 ): MarkdownPostParseResult {
-  const { data: frontmatter, content: body } = matter(markdown)
+  const { data: frontmatter, content: body } = matter(markdown);
 
-  let allBlocks: PortableTextBlock[] = []
+  let allBlocks: PortableTextBlock[] = [];
   try {
-    const converted = convertFromMarkdown(body)
-    allBlocks = converted as PortableTextBlock[]
+    const converted = convertFromMarkdown(body);
+    allBlocks = converted as PortableTextBlock[];
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error)
+    const errorMessage = error instanceof Error ? error.message : String(error);
     console.error(
       `Failed to convert Markdown to Portable Text: ${errorMessage}`
-    )
-    throw error
+    );
+    throw error;
   }
 
   let title =
-    typeof frontmatter.title === 'string' ? frontmatter.title.trim() : ''
-  let titleBlockIndex = -1
+    typeof frontmatter.title === "string" ? frontmatter.title.trim() : "";
+  let titleBlockIndex = -1;
 
   if (!title) {
     for (let i = 0; i < allBlocks.length; i++) {
-      const block = allBlocks[i]
-      if (block._type === 'block' && block.style === 'h1') {
-        title = extractBlockText(block)
-        titleBlockIndex = i
-        break
+      const block = allBlocks[i];
+      if (block._type === "block" && block.style === "h1") {
+        title = extractBlockText(block);
+        titleBlockIndex = i;
+        break;
       }
     }
   }
@@ -155,24 +156,24 @@ export function parseMarkdownForPost(
     titleBlockIndex >= 0
       ? [
           ...allBlocks.slice(0, titleBlockIndex),
-          ...allBlocks.slice(titleBlockIndex + 1)
+          ...allBlocks.slice(titleBlockIndex + 1),
         ]
-      : allBlocks
+      : allBlocks;
 
-  const portableText = bodyBlocks.map(transformBlock)
+  const portableText = bodyBlocks.map(transformBlock);
 
-  const tags = parseTags(frontmatter.tags)
+  const tags = parseTags(frontmatter.tags);
   const excerpt =
-    typeof frontmatter.excerpt === 'string' ? frontmatter.excerpt.trim() : ''
+    typeof frontmatter.excerpt === "string" ? frontmatter.excerpt.trim() : "";
   const publishedAt =
     parsePublishedAt(frontmatter.published_at) ??
-    parsePublishedAt(frontmatter.date)
+    parsePublishedAt(frontmatter.date);
 
   return {
     contentJson: JSON.stringify(portableText),
     excerpt,
     publishedAt,
     tags,
-    title
-  }
+    title,
+  };
 }

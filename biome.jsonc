@@ -1,88 +1,40 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-  "assist": {
-    "actions": {
-      "source": {
-        "useSortedAttributes": "on",
-        "useSortedKeys": "on",
-        "useSortedProperties": "on"
+  "extends": [
+    "ultracite/biome/core",
+    "ultracite/biome/next",
+    "ultracite/biome/react",
+    "ultracite/biome/vitest"
+  ],
+  "linter": {
+    "rules": {
+      "complexity": {
+        "noExcessiveCognitiveComplexity": "warn"
+      },
+      "performance": {
+        "noBarrelFile": "warn",
+        "useTopLevelRegex": "warn"
+      },
+      "style": {
+        "noNestedTernary": "warn",
+        "useCollapsedIf": "warn"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "warn",
+        "noBitwiseOperators": "warn",
+        "noEmptyBlockStatements": "warn",
+        "noEvolvingTypes": "warn",
+        "useAwait": "warn"
       }
-    }
-  },
-  "css": {
-    "assist": {
-      "enabled": true
-    },
-    "formatter": {
-      "enabled": true,
-      "quoteStyle": "single"
-    },
-    "linter": {
-      "enabled": true
-    },
-    "parser": {
-      "tailwindDirectives": true
     }
   },
   "files": {
     "includes": [
-      "**",
       "!.agents/**/*",
       "!.devcontainer/devcontainer-lock.json",
       "!packages/supabase/src/database.types.ts",
       "!packages/ui/src/components/**/*.{ts,tsx}",
       "!skills-lock.json"
     ]
-  },
-  "formatter": {
-    "useEditorconfig": true
-  },
-  "javascript": {
-    "formatter": {
-      "quoteStyle": "single",
-      "semicolons": "asNeeded",
-      "trailingCommas": "none"
-    }
-  },
-  "linter": {
-    "domains": {
-      "next": "recommended",
-      "react": "recommended"
-    },
-    "rules": {
-      "complexity": {
-        "useLiteralKeys": "off"
-      },
-      "correctness": {
-        "useUniqueElementIds": "off"
-      },
-      "nursery": {
-        "useSortedClasses": {
-          "level": "warn",
-          "options": {
-            "attributes": ["className"],
-            "functions": ["twMerge"]
-          }
-        }
-      }
-    }
-  },
-  "overrides": [
-    {
-      "assist": {
-        "actions": {
-          "source": {
-            "useSortedKeys": "off"
-          }
-        }
-      },
-      "includes": ["**/package.json"]
-    }
-  ],
-  "vcs": {
-    "clientKind": "git",
-    "defaultBranch": "main",
-    "enabled": true,
-    "useIgnoreFile": true
   }
 }

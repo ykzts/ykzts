@@ -1,103 +1,105 @@
-'use client'
+"use client";
 
 import {
   Card,
   CardContent,
   CardFooter,
-  CardHeader
-} from '@ykzts/ui/components/card'
-import { Skeleton } from '@ykzts/ui/components/skeleton'
-import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
-import PostCard from '@/components/post-card'
-import type { PortableTextValue } from '@/lib/portable-text'
-import { getYearData } from './actions'
+  CardHeader,
+} from "@ykzts/ui/components/card";
+import { Skeleton } from "@ykzts/ui/components/skeleton";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import PostCard from "@/components/post-card";
+import type { PortableTextValue } from "@/lib/portable-text";
+import { getYearData } from "./actions";
 
-type Post = {
-  content: PortableTextValue | null
-  excerpt: string | null
-  id: string
+interface Post {
+  content: PortableTextValue | null;
+  excerpt: string | null;
+  id: string;
   profile: {
-    id: string
-    name: string
-  } | null
-  published_at: string | null
-  slug: string
-  status: string
-  tags: string[] | null
-  title: string
-  version_date: string | null
+    id: string;
+    name: string;
+  } | null;
+  published_at: string | null;
+  slug: string;
+  status: string;
+  tags: string[] | null;
+  title: string;
+  version_date: string | null;
 }
 
-type YearData = {
-  count: number
-  posts: Post[]
-  year: number
+interface YearData {
+  count: number;
+  posts: Post[];
+  year: number;
 }
 
-type ArchiveListProps = {
-  initialYearData: YearData
+interface ArchiveListProps {
+  initialYearData: YearData;
 }
 
 export default function ArchiveList({ initialYearData }: ArchiveListProps) {
   const [yearDataList, setYearDataList] = useState<YearData[]>([
-    initialYearData
-  ])
-  const [isPending, startTransition] = useTransition()
-  const [hasMore, setHasMore] = useState(true)
-  const observerTarget = useRef<HTMLDivElement>(null)
-  const currentYearRef = useRef(initialYearData.year)
+    initialYearData,
+  ]);
+  const [isPending, startTransition] = useTransition();
+  const [hasMore, setHasMore] = useState(true);
+  const observerTarget = useRef<HTMLDivElement>(null);
+  const currentYearRef = useRef(initialYearData.year);
 
   const loadNextYear = useCallback(() => {
-    if (isPending || !hasMore) return
+    if (isPending || !hasMore) {
+      return;
+    }
 
-    const nextYear = currentYearRef.current - 1
+    const nextYear = currentYearRef.current - 1;
 
     startTransition(async () => {
       try {
-        let yearToTry = nextYear
-        let data = await getYearData(yearToTry)
+        let yearToTry = nextYear;
+        let data = await getYearData(yearToTry);
 
         // Skip years with no posts (gap years) until a lower bound
         while (data.posts.length === 0 && yearToTry > 2000) {
-          yearToTry -= 1
-          data = await getYearData(yearToTry)
+          yearToTry -= 1;
+          data = await getYearData(yearToTry);
         }
 
         if (data.posts.length === 0) {
-          setHasMore(false)
-          return
+          setHasMore(false);
+          return;
         }
 
-        currentYearRef.current = yearToTry
-        setYearDataList((prev) => [...prev, data])
+        currentYearRef.current = yearToTry;
+        setYearDataList((prev) => [...prev, data]);
       } catch (error) {
-        console.error('Failed to load year data:', error)
-        setHasMore(false)
+        console.error("Failed to load year data:", error);
+        setHasMore(false);
       }
-    })
-  }, [isPending, hasMore])
+    });
+  }, [isPending, hasMore]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore && !isPending) {
-          loadNextYear()
+          loadNextYear();
         }
       },
       { threshold: 0.1 }
-    )
+    );
 
-    const currentTarget = observerTarget.current
+    const currentTarget = observerTarget.current;
     if (currentTarget) {
-      observer.observe(currentTarget)
+      observer.observe(currentTarget);
     }
 
     return () => {
       if (currentTarget) {
-        observer.unobserve(currentTarget)
+        observer.unobserve(currentTarget);
       }
-    }
-  }, [hasMore, isPending, loadNextYear])
+    };
+  }, [hasMore, isPending, loadNextYear]);
 
   return (
     <div className="space-y-12">
@@ -155,5 +157,5 @@ export default function ArchiveList({ initialYearData }: ArchiveListProps) {
         </div>
       )}
     </div>
-  )
+  );
 }

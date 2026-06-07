@@ -1,31 +1,31 @@
-'use client'
+"use client";
 
-import { Button } from '@ykzts/ui/components/button'
+import { Button } from "@ykzts/ui/components/button";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  navigationMenuTriggerStyle
-} from '@ykzts/ui/components/navigation-menu'
+  navigationMenuTriggerStyle,
+} from "@ykzts/ui/components/navigation-menu";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger
-} from '@ykzts/ui/components/sheet'
-import { Menu } from 'lucide-react'
-import Link from 'next/link'
-import { useState } from 'react'
+  SheetTrigger,
+} from "@ykzts/ui/components/sheet";
+import { Menu } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 
 const navItems = [
-  { href: '/works' as const, label: 'Works' },
-  { href: '/posts' as const, label: 'Posts' }
-]
+  { href: "/works" as const, label: "Works" },
+  { href: "/posts" as const, label: "Posts" },
+];
 
 export default function Navigation() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -50,7 +50,7 @@ export default function Navigation() {
         <SheetTrigger
           render={
             <Button
-              aria-label={open ? 'メニューを閉じる' : 'メニューを開く'}
+              aria-label={open ? "メニューを閉じる" : "メニューを開く"}
               className="sm:hidden"
               size="icon-sm"
               variant="ghost"
@@ -81,5 +81,5 @@ export default function Navigation() {
         </SheetContent>
       </Sheet>
     </>
-  )
+  );
 }

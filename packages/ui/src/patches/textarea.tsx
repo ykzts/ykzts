@@ -1,3 +1,3 @@
-'use client'
+"use client";
 
-export * from '../components/textarea'
+export * from "../components/textarea";

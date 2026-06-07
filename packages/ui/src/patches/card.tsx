@@ -1,3 +1,3 @@
-'use client'
+"use client";
 
-export * from '../components/card'
+export * from "../components/card";

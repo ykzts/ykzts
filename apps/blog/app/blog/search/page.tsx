@@ -1,20 +1,20 @@
-import { getSiteName } from '@ykzts/site-config'
-import type { Metadata } from 'next'
-import { Suspense } from 'react'
-import SearchForm from '@/components/search-form'
-import SearchResults from '@/components/search-results'
-import { searchPosts } from '@/lib/supabase/posts'
+import { getSiteName } from "@ykzts/site-config";
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import SearchForm from "@/components/search-form";
+import SearchResults from "@/components/search-results";
+import { searchPosts } from "@/lib/supabase/posts";
 
-const siteName = getSiteName()
+const siteName = getSiteName();
 
-type SearchPageProps = {
-  searchParams: Promise<{ q?: string }>
+interface SearchPageProps {
+  searchParams: Promise<{ q?: string }>;
 }
 
 export async function generateMetadata({
-  searchParams
+  searchParams,
 }: SearchPageProps): Promise<Metadata> {
-  const { q } = await searchParams
+  const { q } = await searchParams;
 
   if (q) {
     return {
@@ -22,38 +22,38 @@ export async function generateMetadata({
       openGraph: {
         description: `「${q}」の検索結果`,
         title: `${q} - 検索結果 | Blog | ${siteName}`,
-        type: 'website',
-        url: `/blog/search?q=${encodeURIComponent(q)}`
+        type: "website",
+        url: `/blog/search?q=${encodeURIComponent(q)}`,
       },
-      title: `${q} - 検索結果`
-    }
+      title: `${q} - 検索結果`,
+    };
   }
 
   return {
-    description: 'ブログ記事を検索',
+    description: "ブログ記事を検索",
     openGraph: {
-      description: 'ブログ記事を検索',
+      description: "ブログ記事を検索",
       title: `Search | Blog | ${siteName}`,
-      type: 'website',
-      url: '/blog/search'
+      type: "website",
+      url: "/blog/search",
     },
-    title: 'Search'
-  }
+    title: "Search",
+  };
 }
 
 async function SearchContent({ searchParams }: SearchPageProps) {
-  const { q } = await searchParams
-  const query = q?.trim() || ''
+  const { q } = await searchParams;
+  const query = q?.trim() || "";
 
-  let results: Awaited<ReturnType<typeof searchPosts>> = []
-  let hasSearched = false
+  let results: Awaited<ReturnType<typeof searchPosts>> = [];
+  let hasSearched = false;
 
   if (query) {
-    hasSearched = true
+    hasSearched = true;
     try {
-      results = await searchPosts(query, 10)
+      results = await searchPosts(query, 10);
     } catch (error) {
-      console.error('Search error:', error)
+      console.error("Search error:", error);
       // Results will be empty array on error
     }
   }
@@ -63,7 +63,7 @@ async function SearchContent({ searchParams }: SearchPageProps) {
       <SearchForm className="mb-8" defaultQuery={query} />
       {hasSearched && <SearchResults query={query} results={results} />}
     </>
-  )
+  );
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
@@ -80,5 +80,5 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         </Suspense>
       </div>
     </main>
-  )
+  );
 }

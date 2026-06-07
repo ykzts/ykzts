@@ -1,121 +1,121 @@
-import { NextRequest } from 'next/server'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { NextRequest } from "next/server";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock environment variable
-vi.stubEnv('DRAFT_SECRET', 'test-draft-secret')
+vi.stubEnv("DRAFT_SECRET", "test-draft-secret");
 
 // Mock draftMode
-const mockEnable = vi.fn()
+const mockEnable = vi.fn();
 const mockDraftMode = vi.fn().mockResolvedValue({
-  enable: mockEnable
-})
+  enable: mockEnable,
+});
 
-vi.mock('next/headers', () => ({
-  draftMode: mockDraftMode
-}))
+vi.mock("next/headers", () => ({
+  draftMode: mockDraftMode,
+}));
 
 // Mock Supabase client
 const mockSupabase = {
-  from: vi.fn()
-}
+  from: vi.fn(),
+};
 
-vi.mock('@/lib/supabase/client', () => ({
+vi.mock("@/lib/supabase/client", () => ({
   supabase: mockSupabase,
-  supabaseAdmin: null
-}))
+  supabaseAdmin: null,
+}));
 
-describe('GET /api/blog/draft', () => {
+describe("GET /api/blog/draft", () => {
   beforeEach(() => {
-    vi.clearAllMocks()
-  })
+    vi.clearAllMocks();
+  });
 
-  it('should return 401 for missing secret', async () => {
-    const { GET } = await import('../route')
-
-    const request = new NextRequest(
-      'http://localhost:3000/api/blog/draft?slug=test-post',
-      {
-        method: 'GET'
-      }
-    )
-
-    const response = await GET(request)
-    const data = await response.json()
-
-    expect(response.status).toBe(401)
-    expect(data.message).toBe('Invalid token')
-    expect(mockDraftMode).not.toHaveBeenCalled()
-  })
-
-  it('should return 401 for invalid secret', async () => {
-    const { GET } = await import('../route')
+  it("should return 401 for missing secret", async () => {
+    const { GET } = await import("../route");
 
     const request = new NextRequest(
-      'http://localhost:3000/api/blog/draft?secret=wrong-secret&slug=test-post',
+      "http://localhost:3000/api/blog/draft?slug=test-post",
       {
-        method: 'GET'
+        method: "GET",
       }
-    )
+    );
 
-    const response = await GET(request)
-    const data = await response.json()
+    const response = await GET(request);
+    const data = await response.json();
 
-    expect(response.status).toBe(401)
-    expect(data.message).toBe('Invalid token')
-    expect(mockDraftMode).not.toHaveBeenCalled()
-  })
+    expect(response.status).toBe(401);
+    expect(data.message).toBe("Invalid token");
+    expect(mockDraftMode).not.toHaveBeenCalled();
+  });
 
-  it('should return 400 for missing slug', async () => {
-    const { GET } = await import('../route')
+  it("should return 401 for invalid secret", async () => {
+    const { GET } = await import("../route");
 
     const request = new NextRequest(
-      'http://localhost:3000/api/blog/draft?secret=test-draft-secret',
+      "http://localhost:3000/api/blog/draft?secret=wrong-secret&slug=test-post",
       {
-        method: 'GET'
+        method: "GET",
       }
-    )
+    );
 
-    const response = await GET(request)
-    const data = await response.json()
+    const response = await GET(request);
+    const data = await response.json();
 
-    expect(response.status).toBe(400)
-    expect(data.message).toBe('Missing slug parameter')
-    expect(mockDraftMode).not.toHaveBeenCalled()
-  })
+    expect(response.status).toBe(401);
+    expect(data.message).toBe("Invalid token");
+    expect(mockDraftMode).not.toHaveBeenCalled();
+  });
 
-  it('should enable draft mode and redirect to post with valid credentials', async () => {
-    const { GET } = await import('../route')
+  it("should return 400 for missing slug", async () => {
+    const { GET } = await import("../route");
 
-    const mockSelect = vi.fn().mockReturnThis()
-    const mockEq = vi.fn().mockReturnThis()
+    const request = new NextRequest(
+      "http://localhost:3000/api/blog/draft?secret=test-draft-secret",
+      {
+        method: "GET",
+      }
+    );
+
+    const response = await GET(request);
+    const data = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(data.message).toBe("Missing slug parameter");
+    expect(mockDraftMode).not.toHaveBeenCalled();
+  });
+
+  it("should enable draft mode and redirect to post with valid credentials", async () => {
+    const { GET } = await import("../route");
+
+    const mockSelect = vi.fn().mockReturnThis();
+    const mockEq = vi.fn().mockReturnThis();
     const mockMaybeSingle = vi.fn().mockResolvedValue({
       data: {
-        published_at: '2024-01-15T12:00:00Z',
-        slug: 'test-post'
+        published_at: "2024-01-15T12:00:00Z",
+        slug: "test-post",
       },
-      error: null
-    })
+      error: null,
+    });
 
     mockSupabase.from.mockReturnValue({
       eq: mockEq,
       maybeSingle: mockMaybeSingle,
-      select: mockSelect
-    })
+      select: mockSelect,
+    });
 
     const request = new NextRequest(
-      'http://localhost:3000/api/blog/draft?secret=test-draft-secret&slug=test-post',
+      "http://localhost:3000/api/blog/draft?secret=test-draft-secret&slug=test-post",
       {
-        method: 'GET'
+        method: "GET",
       }
-    )
+    );
 
-    const response = await GET(request)
+    const response = await GET(request);
 
-    expect(response.status).toBe(307)
-    expect(response.headers.get('location')).toBe(
-      'http://localhost:3000/blog/draft/test-post'
-    )
-    expect(mockDraftMode).toHaveBeenCalled()
-    expect(mockEnable).toHaveBeenCalled()
-  })
-})
+    expect(response.status).toBe(307);
+    expect(response.headers.get("location")).toBe(
+      "http://localhost:3000/blog/draft/test-post"
+    );
+    expect(mockDraftMode).toHaveBeenCalled();
+    expect(mockEnable).toHaveBeenCalled();
+  });
+});

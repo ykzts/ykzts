@@ -9,7 +9,7 @@ This is a pnpm workspace monorepo with the following structure:
 ```
 ├── apps/
 │   ├── blog-legacy/    # Docusaurus-based blog (ykzts.blog)
-│   ├── portfolio/      # Next.js portfolio site (ykzts.com)  
+│   ├── portfolio/      # Next.js portfolio site (ykzts.com)
 │   └── blog/           # (Future blog implementation)
 ├── packages/
 │   ├── supabase/       # Supabase database type definitions
@@ -56,22 +56,22 @@ This is a pnpm workspace monorepo with the following structure:
    ```bash
    npx supabase start
    ```
-   
+
    This command will:
    - Start local Supabase services (PostgreSQL, Studio, Auth, etc.)
    - Run all database migrations automatically
    - Display service URLs and credentials
-   
+
    **Access local Supabase Dashboard**:
    - Studio UI: `http://127.0.0.1:54323`
    - Database: `postgresql://postgres:postgres@127.0.0.1:54322/postgres`
    - API URL: `http://127.0.0.1:54321`
-   
+
    **Useful Supabase CLI commands**:
    - `npx supabase status` - Check running services status
    - `npx supabase stop` - Stop all services
    - `npx supabase db reset --local` - Reset database and rerun migrations
-   
+
    For more information, see the [Supabase CLI documentation](https://supabase.com/docs/guides/local-development).
 
 5. **Run development servers**:
@@ -156,7 +156,8 @@ This repository **strictly follows** the [Conventional Commits](https://www.conv
 
 1. **Run all checks locally**:
    ```bash
-   pnpm check          # Biome linting/formatting
+   pnpm check         # Ultracite check
+   pnpm fix           # Ultracite auto-fix
    pnpm test          # Run tests
    pnpm validate      # Run validation tasks
    pnpm typegen       # Generate TypeScript types
@@ -214,7 +215,7 @@ cd apps/portfolio && pnpm test:watch
 
 All pull requests must pass the following automated checks:
 
-1. **Linting**: `pnpm exec biome ci`
+1. **Linting**: `pnpm check`
 2. **Type Generation**: `pnpm typegen`
 3. **Tests**: `pnpm test`
 4. **Validation**: `pnpm validate`
@@ -303,7 +304,7 @@ The migration workflow requires the following secrets for **production deploymen
   - Generated at: Settings → Access Tokens
   - **Important**: Requires manual renewal (OIDC not supported)
   - **Used for**: Production deployment only (not required for PR validation)
-  
+
 - `SUPABASE_PROJECT_REF`: Your Supabase project reference ID
   - Found in: Project Settings → General → Project URL
   - Format: `abcdefghijklmnopqrst`

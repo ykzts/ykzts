@@ -2,19 +2,19 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CardTitle
-} from '@ykzts/ui/components/card'
-import { redirect } from 'next/navigation'
-import { Suspense } from 'react'
-import { getCurrentUser } from '@/lib/auth'
-import LoginForm from './login-form'
-import { LoginSkeleton } from './login-skeleton'
+  CardTitle,
+} from "@ykzts/ui/components/card";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import { getCurrentUser } from "@/lib/auth";
+import LoginForm from "./login-form";
+import { LoginSkeleton } from "./login-skeleton";
 
 async function LoginContent() {
-  const user = await getCurrentUser()
+  const user = await getCurrentUser();
 
   if (user) {
-    redirect('/')
+    redirect("/");
   }
 
   return (
@@ -31,7 +31,7 @@ async function LoginContent() {
         </CardContent>
       </Card>
     </main>
-  )
+  );
 }
 
 export default function LoginPage() {
@@ -39,5 +39,5 @@ export default function LoginPage() {
     <Suspense fallback={<LoginSkeleton />}>
       <LoginContent />
     </Suspense>
-  )
+  );
 }

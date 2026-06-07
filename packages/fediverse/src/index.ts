@@ -1,55 +1,57 @@
-import { lookup } from 'node:dns/promises'
-import ipaddr from 'ipaddr.js'
-import { z } from 'zod'
+import { lookup } from "node:dns/promises";
+import ipaddr from "ipaddr.js";
+import { z } from "zod";
 
 const webFingerJrdSchema = z.object({
   aliases: z.array(z.string()).optional(),
-  subject: z.string()
-})
+  subject: z.string(),
+});
 
-type WebFingerJrd = z.infer<typeof webFingerJrdSchema>
+type WebFingerJrd = z.infer<typeof webFingerJrdSchema>;
 
 function isValidPublicHostname(domain: string): boolean {
-  if (domain.length > 253 || domain === 'localhost') {
-    return false
+  if (domain.length > 253 || domain === "localhost") {
+    return false;
   }
 
-  if (!domain.includes('.')) {
-    return false
+  if (!domain.includes(".")) {
+    return false;
   }
 
-  return /^[a-z0-9.-]+$/i.test(domain)
+  return /^[a-z0-9.-]+$/i.test(domain);
 }
 
 function isPublicIpAddress(address: string): boolean {
-  if (!ipaddr.isValid(address)) return false
+  if (!ipaddr.isValid(address)) {
+    return false;
+  }
   try {
     // process() normalises IPv4-mapped IPv6 (::ffff:x.x.x.x) to plain IPv4
-    const addr = ipaddr.process(address)
-    return addr.range() === 'unicast'
+    const addr = ipaddr.process(address);
+    return addr.range() === "unicast";
   } catch {
-    return false
+    return false;
   }
 }
 
 async function isSafeDomain(domain: string): Promise<boolean> {
   if (!isValidPublicHostname(domain)) {
-    return false
+    return false;
   }
 
   try {
     const resolvedAddresses = await lookup(domain, {
       all: true,
-      verbatim: true
-    })
+      verbatim: true,
+    });
 
     if (resolvedAddresses.length === 0) {
-      return false
+      return false;
     }
 
-    return resolvedAddresses.every((entry) => isPublicIpAddress(entry.address))
+    return resolvedAddresses.every((entry) => isPublicIpAddress(entry.address));
   } catch {
-    return false
+    return false;
   }
 }
 
@@ -59,35 +61,35 @@ async function fetchWebFinger(
 ): Promise<WebFingerJrd | null> {
   try {
     if (!(await isSafeDomain(domain))) {
-      return null
+      return null;
     }
 
-    const url = new URL(`https://${domain}/.well-known/webfinger`)
-    url.searchParams.set('resource', resource)
+    const url = new URL(`https://${domain}/.well-known/webfinger`);
+    url.searchParams.set("resource", resource);
 
     const response = await fetch(url.toString(), {
-      headers: { Accept: 'application/jrd+json, application/json' },
-      redirect: 'manual',
-      signal: AbortSignal.timeout(5000)
-    })
+      headers: { Accept: "application/jrd+json, application/json" },
+      redirect: "manual",
+      signal: AbortSignal.timeout(5000),
+    });
 
     if (response.status >= 300 && response.status < 400) {
-      return null
+      return null;
     }
 
     if (!response.ok) {
-      return null
+      return null;
     }
 
-    const parsed = webFingerJrdSchema.safeParse(await response.json())
+    const parsed = webFingerJrdSchema.safeParse(await response.json());
 
     if (!parsed.success) {
-      return null
+      return null;
     }
 
-    return parsed.data
+    return parsed.data;
   } catch {
-    return null
+    return null;
   }
 }
 
@@ -99,19 +101,21 @@ export async function verifyFediverseHandle(
   acct: string,
   domain: string
 ): Promise<boolean> {
-  const jrd = await fetchWebFinger(`acct:${acct}`, domain)
+  const jrd = await fetchWebFinger(`acct:${acct}`, domain);
 
   if (!jrd) {
-    return false
+    return false;
   }
 
-  const expected = `acct:${acct}`.toLowerCase()
+  const expected = `acct:${acct}`.toLowerCase();
 
   if (jrd.subject.toLowerCase() === expected) {
-    return true
+    return true;
   }
 
-  return jrd.aliases?.some((alias) => alias.toLowerCase() === expected) ?? false
+  return (
+    jrd.aliases?.some((alias) => alias.toLowerCase() === expected) ?? false
+  );
 }
 
 /**
@@ -125,21 +129,21 @@ export async function extractFediverseHandleFromURL(
   urlString: string
 ): Promise<string | null> {
   try {
-    const url = new URL(urlString)
+    const url = new URL(urlString);
 
-    if (url.protocol !== 'https:') {
-      return null
+    if (url.protocol !== "https:") {
+      return null;
     }
 
-    const hostname = url.hostname.toLowerCase()
-    const jrd = await fetchWebFinger(urlString, hostname)
+    const hostname = url.hostname.toLowerCase();
+    const jrd = await fetchWebFinger(urlString, hostname);
 
-    if (!jrd?.subject.toLowerCase().startsWith('acct:')) {
-      return null
+    if (!jrd?.subject.toLowerCase().startsWith("acct:")) {
+      return null;
     }
 
-    return `@${jrd.subject.slice('acct:'.length)}`
+    return `@${jrd.subject.slice("acct:".length)}`;
   } catch {
-    return null
+    return null;
   }
 }

@@ -1,51 +1,53 @@
-import { getProfile } from '@ykzts/supabase/queries'
-import { notFound } from 'next/navigation'
-import { NextResponse } from 'next/server'
+import { getProfile } from "@ykzts/supabase/queries";
+import { notFound } from "next/navigation";
+import { NextResponse } from "next/server";
 
 export const size = {
   height: 256,
-  width: 256
-}
+  width: 256,
+};
 
 function isValidAvatarUrl(url: string): boolean {
   try {
-    const parsedUrl = new URL(url)
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const parsedUrl = new URL(url);
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
     if (!supabaseUrl) {
-      return false
+      return false;
     }
 
-    const allowedHost = new URL(supabaseUrl).hostname
+    const allowedHost = new URL(supabaseUrl).hostname;
 
     // Only allow HTTPS and validate hostname matches Supabase project
-    return parsedUrl.protocol === 'https:' && parsedUrl.hostname === allowedHost
+    return (
+      parsedUrl.protocol === "https:" && parsedUrl.hostname === allowedHost
+    );
   } catch {
-    return false
+    return false;
   }
 }
 
 export default async function Icon() {
-  const profile = await getProfile().catch(() => notFound())
+  const profile = await getProfile().catch(() => notFound());
 
   if (!profile.avatar_url) {
-    notFound()
+    notFound();
   }
 
   // Validate URL to prevent SSRF attacks
   if (!isValidAvatarUrl(profile.avatar_url)) {
-    notFound()
+    notFound();
   }
 
-  const res = await fetch(profile.avatar_url)
+  const res = await fetch(profile.avatar_url);
 
   if (!res.ok) {
-    notFound()
+    notFound();
   }
 
   return new NextResponse(res.body, {
     headers: {
-      'Content-Type': res.headers.get('Content-Type') ?? 'image/png'
-    }
-  })
+      "Content-Type": res.headers.get("Content-Type") ?? "image/png",
+    },
+  });
 }

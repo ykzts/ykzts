@@ -1,49 +1,49 @@
-import { getSiteName } from '@ykzts/site-config'
-import { getProfile } from '@ykzts/supabase/queries'
-import type { Metadata } from 'next'
-import BlogPagination from '@/components/blog-pagination'
-import PostCard from '@/components/post-card'
-import { getPosts, getTotalPages } from '@/lib/supabase/posts'
+import { getSiteName } from "@ykzts/site-config";
+import { getProfile } from "@ykzts/supabase/queries";
+import type { Metadata } from "next";
+import BlogPagination from "@/components/blog-pagination";
+import PostCard from "@/components/post-card";
+import { getPosts, getTotalPages } from "@/lib/supabase/posts";
 
-const siteName = getSiteName()
+const siteName = getSiteName();
 
 function buildDescription(profileName: string): string {
-  return `${profileName}の個人ブログ。さまざまなトピックについて発信しています。`
+  return `${profileName}の個人ブログ。さまざまなトピックについて発信しています。`;
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  let description = buildDescription('このサイト')
+  let description = buildDescription("このサイト");
 
   try {
-    const profile = await getProfile()
-    description = buildDescription(profile.name)
+    const profile = await getProfile();
+    description = buildDescription(profile.name);
   } catch (error) {
-    console.error('Failed to load profile for blog metadata:', error)
+    console.error("Failed to load profile for blog metadata:", error);
   }
 
   return {
     alternates: {
-      canonical: '/blog',
+      canonical: "/blog",
       types: {
-        'text/markdown': '/blog.md'
-      }
+        "text/markdown": "/blog.md",
+      },
     },
     description,
     openGraph: {
       description,
       title: `Blog | ${siteName}`,
-      type: 'website',
-      url: '/blog'
+      type: "website",
+      url: "/blog",
     },
     title: {
-      absolute: `Blog | ${siteName}`
-    }
-  }
+      absolute: `Blog | ${siteName}`,
+    },
+  };
 }
 
 export default async function HomePage() {
-  const posts = await getPosts(1)
-  const totalPages = await getTotalPages()
+  const posts = await getPosts(1);
+  const totalPages = await getTotalPages();
 
   return (
     <main className="px-6 py-8 md:px-12 lg:px-24">
@@ -60,5 +60,5 @@ export default async function HomePage() {
         )}
       </div>
     </main>
-  )
+  );
 }

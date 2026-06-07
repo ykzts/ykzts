@@ -1,5 +1,5 @@
-import { cn } from '@ykzts/ui/lib/utils'
-import type { ComponentProps } from 'react'
+import { cn } from "@ykzts/ui/lib/utils";
+import type { ComponentProps } from "react";
 
 /**
  * Panel component for reusable card containers with standardized styling.
@@ -23,14 +23,14 @@ import type { ComponentProps } from 'react'
  * </Panel>
  * ```
  */
-export function Panel({ className, ...props }: ComponentProps<'div'>) {
+export function Panel({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        'rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10',
+        "rounded-xl bg-card p-6 text-card-foreground ring-1 ring-foreground/10",
         className
       )}
       {...props}
     />
-  )
+  );
 }

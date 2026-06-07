@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   closestCenter,
@@ -7,168 +7,170 @@ import {
   KeyboardSensor,
   PointerSensor,
   useSensor,
-  useSensors
-} from '@dnd-kit/core'
+  useSensors,
+} from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
-  verticalListSortingStrategy
-} from '@dnd-kit/sortable'
-import type { Json } from '@ykzts/supabase/types'
-import { Button } from '@ykzts/ui/components/button'
-import { Input } from '@ykzts/ui/components/input'
-import { useActionState, useCallback, useEffect, useState } from 'react'
-import { toast } from 'sonner'
-import { RichTextEditor } from '@/components/portable-text-editor'
-import { DEFAULT_TIMEZONE, getCommonTimezones } from '@/lib/timezones'
-import { uploadImage } from '@/lib/upload-image'
-import { updateProfile } from '../actions'
-import { AvatarUpload } from './avatar-upload'
-import { SortableItem } from './sortable-item'
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import type { Json } from "@ykzts/supabase/types";
+import { Button } from "@ykzts/ui/components/button";
+import { Input } from "@ykzts/ui/components/input";
+import { useActionState, useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
+import { RichTextEditor } from "@/components/portable-text-editor";
+import { DEFAULT_TIMEZONE, getCommonTimezones } from "@/lib/timezones";
+import { uploadImage } from "@/lib/upload-image";
+import { updateProfile } from "../actions";
+import { AvatarUpload } from "./avatar-upload";
+import { SortableItem } from "./sortable-item";
 
-type ProfileFormProps = {
+interface ProfileFormProps {
   initialData?: {
-    about: Json | null
-    avatar_url: string | null
-    email: string | null
-    name: string
-    occupation: string | null
-    tagline: string | null
-    timezone: string
-  } | null
+    about: Json | null;
+    avatar_url: string | null;
+    email: string | null;
+    name: string;
+    occupation: string | null;
+    tagline: string | null;
+    timezone: string;
+  } | null;
   initialSocialLinks?: Array<{
-    id: string
-    service: string | null
-    sort_order: number
-    url: string
-    isNew?: boolean
-  }>
+    id: string;
+    service: string | null;
+    sort_order: number;
+    url: string;
+    isNew?: boolean;
+  }>;
   initialTechnologies?: Array<{
-    id: string
-    name: string
-    sort_order: number
-    isNew?: boolean
-  }>
+    id: string;
+    name: string;
+    sort_order: number;
+    isNew?: boolean;
+  }>;
 }
 
 export default function ProfileForm({
   initialData,
   initialSocialLinks = [],
-  initialTechnologies = []
+  initialTechnologies = [],
 }: ProfileFormProps) {
-  const [state, formAction, isPending] = useActionState(updateProfile, null)
+  const [state, formAction, isPending] = useActionState(updateProfile, null);
 
   useEffect(() => {
-    if (!state) return
-    if ('success' in state) {
-      toast.success('プロフィールを保存しました')
-    } else if ('error' in state) {
-      toast.error(state.error)
+    if (!state) {
+      return;
     }
-  }, [state])
+    if ("success" in state) {
+      toast.success("プロフィールを保存しました");
+    } else if ("error" in state) {
+      toast.error(state.error);
+    }
+  }, [state]);
 
   // Social links state
   const [socialLinks, setSocialLinks] = useState(
     initialSocialLinks.map((link) => ({
       id: link.id,
       isNew: link.isNew,
-      url: link.url
+      url: link.url,
     }))
-  )
+  );
 
   // Technologies state
   const [technologies, setTechnologies] = useState(
     initialTechnologies.map((tech) => ({
       id: tech.id,
       isNew: tech.isNew,
-      name: tech.name
+      name: tech.name,
     }))
-  )
+  );
 
   // Sensors for drag and drop
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates
+      coordinateGetter: sortableKeyboardCoordinates,
     })
-  )
+  );
 
   const addSocialLink = () => {
     setSocialLinks([
       ...socialLinks,
-      { id: crypto.randomUUID(), isNew: true, url: '' }
-    ])
-  }
+      { id: crypto.randomUUID(), isNew: true, url: "" },
+    ]);
+  };
 
   const removeSocialLink = (index: number) => {
-    setSocialLinks(socialLinks.filter((_, i) => i !== index))
-  }
+    setSocialLinks(socialLinks.filter((_, i) => i !== index));
+  };
 
   const updateSocialLink = (index: number, value: string) => {
     setSocialLinks(
       socialLinks.map((link, i) =>
         i === index ? { ...link, url: value } : link
       )
-    )
-  }
+    );
+  };
 
   const addTechnology = () => {
     setTechnologies([
       ...technologies,
-      { id: crypto.randomUUID(), isNew: true, name: '' }
-    ])
-  }
+      { id: crypto.randomUUID(), isNew: true, name: "" },
+    ]);
+  };
 
   const removeTechnology = (index: number) => {
-    setTechnologies(technologies.filter((_, i) => i !== index))
-  }
+    setTechnologies(technologies.filter((_, i) => i !== index));
+  };
 
   const updateTechnology = (index: number, value: string) => {
     setTechnologies(
       technologies.map((tech, i) =>
         i === index ? { ...tech, name: value } : tech
       )
-    )
-  }
+    );
+  };
 
   // Memoized drag handler for social links
   const handleSocialLinksDragEnd = useCallback((event: DragEndEvent) => {
-    const { active, over } = event
+    const { active, over } = event;
 
     if (over && active.id !== over.id) {
       setSocialLinks((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id)
-        const newIndex = items.findIndex((item) => item.id === over.id)
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
 
         // Defensive check: ensure both indices are valid
         if (oldIndex === -1 || newIndex === -1) {
-          return items
+          return items;
         }
 
-        return arrayMove(items, oldIndex, newIndex)
-      })
+        return arrayMove(items, oldIndex, newIndex);
+      });
     }
-  }, [])
+  }, []);
 
   // Memoized drag handler for technologies
   const handleTechnologiesDragEnd = useCallback((event: DragEndEvent) => {
-    const { active, over } = event
+    const { active, over } = event;
 
     if (over && active.id !== over.id) {
       setTechnologies((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id)
-        const newIndex = items.findIndex((item) => item.id === over.id)
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
 
         // Defensive check: ensure both indices are valid
         if (oldIndex === -1 || newIndex === -1) {
-          return items
+          return items;
         }
 
-        return arrayMove(items, oldIndex, newIndex)
-      })
+        return arrayMove(items, oldIndex, newIndex);
+      });
     }
-  }, [])
+  }, []);
 
   return (
     <form action={formAction} className="space-y-6">
@@ -180,7 +182,7 @@ export default function ProfileForm({
           名前 <span className="text-error">*</span>
         </label>
         <Input
-          defaultValue={initialData?.name ?? ''}
+          defaultValue={initialData?.name ?? ""}
           id="name"
           name="name"
           required
@@ -193,7 +195,7 @@ export default function ProfileForm({
           キャッチコピー
         </label>
         <Input
-          defaultValue={initialData?.tagline ?? ''}
+          defaultValue={initialData?.tagline ?? ""}
           id="tagline"
           name="tagline"
           type="text"
@@ -205,7 +207,7 @@ export default function ProfileForm({
           職種・専門領域
         </label>
         <Input
-          defaultValue={initialData?.occupation ?? ''}
+          defaultValue={initialData?.occupation ?? ""}
           id="occupation"
           name="occupation"
           type="text"
@@ -217,7 +219,7 @@ export default function ProfileForm({
           メールアドレス
         </label>
         <Input
-          defaultValue={initialData?.email ?? ''}
+          defaultValue={initialData?.email ?? ""}
           id="email"
           name="email"
           type="email"
@@ -253,7 +255,7 @@ export default function ProfileForm({
           id="about"
           initialValue={
             initialData?.about
-              ? typeof initialData.about === 'string'
+              ? typeof initialData.about === "string"
                 ? initialData.about
                 : JSON.stringify(initialData.about)
               : undefined
@@ -393,9 +395,9 @@ export default function ProfileForm({
 
       <div className="flex gap-4">
         <Button disabled={isPending} type="submit">
-          {isPending ? '保存中...' : '保存'}
+          {isPending ? "保存中..." : "保存"}
         </Button>
       </div>
     </form>
-  )
+  );
 }

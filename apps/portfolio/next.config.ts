@@ -1,18 +1,18 @@
-import createMDX from '@next/mdx'
-import { withMicrofrontends } from '@vercel/microfrontends/next/config'
-import { getSupabaseImageConfig } from '@ykzts/supabase/next-image-config'
+import createMDX from "@next/mdx";
+import { withMicrofrontends } from "@vercel/microfrontends/next/config";
+import { getSupabaseImageConfig } from "@ykzts/supabase/next-image-config";
 
-import type { NextConfig } from 'next'
+import type { NextConfig } from "next";
 
-const withMDX = createMDX()
+const withMDX = createMDX();
 
 // Build CSP img-src directive with Supabase Storage domain
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-let imgSrcCsp = "img-src 'self' data:"
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+let imgSrcCsp = "img-src 'self' data:";
 if (supabaseUrl) {
   try {
-    const url = new URL(supabaseUrl)
-    imgSrcCsp += ` ${url.protocol}//${url.host}`
+    const url = new URL(supabaseUrl);
+    imgSrcCsp += ` ${url.protocol}//${url.host}`;
   } catch {
     // Ignore invalid URL
   }
@@ -22,16 +22,16 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   experimental: {
     mdxRs: {
-      mdxType: 'gfm'
+      mdxType: "gfm",
     },
-    turbopackFileSystemCacheForDev: true
+    turbopackFileSystemCacheForDev: true,
   },
   headers() {
     return Promise.resolve([
       {
         headers: [
           {
-            key: 'Content-Security-Policy',
+            key: "Content-Security-Policy",
             value: [
               "base-uri 'none'",
               "connect-src 'self' https://vitals.vercel-insights.com https://challenges.cloudflare.com",
@@ -39,42 +39,42 @@ const nextConfig: NextConfig = {
               "font-src 'self'",
               "form-action 'none'",
               "frame-ancestors 'none'",
-              'frame-src https://challenges.cloudflare.com',
+              "frame-src https://challenges.cloudflare.com",
               imgSrcCsp,
               "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
-              "style-src 'self' 'unsafe-inline'"
-            ].join('; ')
+              "style-src 'self' 'unsafe-inline'",
+            ].join("; "),
           },
           {
-            key: 'Permissions-Policy',
-            value: 'camera=(), geolocation=(), microphone=()'
+            key: "Permissions-Policy",
+            value: "camera=(), geolocation=(), microphone=()",
           },
           {
-            key: 'Referrer-Policy',
-            value: 'no-referrer'
+            key: "Referrer-Policy",
+            value: "no-referrer",
           },
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff'
-          }
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
         ],
-        source: '/:path*'
-      }
-    ])
+        source: "/:path*",
+      },
+    ]);
   },
   images: {
     ...getSupabaseImageConfig(),
-    formats: ['image/avif', 'image/webp']
+    formats: ["image/avif", "image/webp"],
   },
   logging: {
     fetches: {
-      fullUrl: true
-    }
+      fullUrl: true,
+    },
   },
-  pageExtensions: ['tsx', 'ts', 'mdx'],
+  pageExtensions: ["tsx", "ts", "mdx"],
   reactCompiler: true,
   reactStrictMode: true,
-  typedRoutes: true
-}
+  typedRoutes: true,
+};
 
-export default withMicrofrontends(withMDX(nextConfig))
+export default withMicrofrontends(withMDX(nextConfig));

@@ -1,24 +1,24 @@
-import { notFound } from 'next/navigation'
-import { Suspense } from 'react'
-import { Panel } from '@/components/panel'
-import { getAllTechnologies, getWork } from '@/lib/data'
-import { WorkForm } from '../_components/work-form'
-import { WorkFormSkeleton } from '../_components/work-form-skeleton'
-import { deleteWork, updateWork } from './actions'
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import { Panel } from "@/components/panel";
+import { getAllTechnologies, getWork } from "@/lib/data";
+import { WorkForm } from "../_components/work-form";
+import { WorkFormSkeleton } from "../_components/work-form-skeleton";
+import { deleteWork, updateWork } from "./actions";
 
 export function generateStaticParams() {
   // Return dummy param for build-time validation with Cache Components
-  return [{ id: '_' }]
+  return [{ id: "_" }];
 }
 
 async function WorkEditContent({ id }: { id: string }) {
   const [work, allTechnologies] = await Promise.all([
     getWork(id),
-    getAllTechnologies()
-  ])
+    getAllTechnologies(),
+  ]);
 
   if (!work) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -30,15 +30,15 @@ async function WorkEditContent({ id }: { id: string }) {
         work={work}
       />
     </Panel>
-  )
+  );
 }
 
 export default async function EditWorkPage({
-  params
+  params,
 }: {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = await params
+  const { id } = await params;
 
   return (
     <div>
@@ -53,5 +53,5 @@ export default async function EditWorkPage({
         <WorkEditContent id={id} />
       </Suspense>
     </div>
-  )
+  );
 }

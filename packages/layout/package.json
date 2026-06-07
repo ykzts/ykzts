@@ -15,7 +15,7 @@
     "./styles/styles.css": "./src/styles/styles.css"
   },
   "scripts": {
-    "lint": "biome check .",
+    "lint": "ultracite check .",
     "test": "vitest --run",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

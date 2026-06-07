@@ -1,34 +1,34 @@
-import { Badge } from '@ykzts/ui/components/badge'
-import Link from 'next/link'
-import { Suspense } from 'react'
-import { AdminPagination } from '@/components/admin-pagination'
-import { Panel } from '@/components/panel'
-import { getDraftPreviewUrl } from '@/lib/blog-urls'
-import { getProfileTimezone } from '@/lib/data'
-import { getPosts } from '@/lib/posts'
-import { formatDateWithTimezone } from '@/lib/timezones'
-import { NewPostButton } from './_components/new-post-button'
-import { PostsFilters } from './_components/posts-filters'
-import { PostsSkeleton } from './_components/posts-skeleton'
-import { PublicUrlCell } from './_components/public-url-cell'
+import { Badge } from "@ykzts/ui/components/badge";
+import Link from "next/link";
+import { Suspense } from "react";
+import { AdminPagination } from "@/components/admin-pagination";
+import { Panel } from "@/components/panel";
+import { getDraftPreviewUrl } from "@/lib/blog-urls";
+import { getProfileTimezone } from "@/lib/data";
+import { getPosts } from "@/lib/posts";
+import { formatDateWithTimezone } from "@/lib/timezones";
+import { NewPostButton } from "./_components/new-post-button";
+import { PostsFilters } from "./_components/posts-filters";
+import { PostsSkeleton } from "./_components/posts-skeleton";
+import { PublicUrlCell } from "./_components/public-url-cell";
 
 async function PostsContent({
   page,
   perPage,
   search,
-  status
+  status,
 }: {
-  page: number
-  perPage: number
-  search?: string
-  status: 'draft' | 'scheduled' | 'published' | 'all'
+  page: number;
+  perPage: number;
+  search?: string;
+  status: "draft" | "scheduled" | "published" | "all";
 }) {
   const [result, timezone] = await Promise.all([
     getPosts({ page, perPage, search, status }),
-    getProfileTimezone()
-  ])
+    getProfileTimezone(),
+  ]);
 
-  const draftSecret = process.env.DRAFT_SECRET ?? null
+  const draftSecret = process.env.DRAFT_SECRET ?? null;
 
   return (
     <>
@@ -53,23 +53,23 @@ async function PostsContent({
                 {result.data.map((post) => (
                   <tr className="border-border border-b" key={post.id}>
                     <td className="px-4 py-3">
-                      {post.title || '(タイトルなし)'}
+                      {post.title || "(タイトルなし)"}
                     </td>
                     <td className="px-4 py-3">
-                      {post.status === 'published' && (
+                      {post.status === "published" && (
                         <Badge variant="default">公開</Badge>
                       )}
-                      {post.status === 'draft' && (
+                      {post.status === "draft" && (
                         <Badge variant="secondary">下書き</Badge>
                       )}
-                      {post.status === 'scheduled' && (
+                      {post.status === "scheduled" && (
                         <Badge variant="outline">予約</Badge>
                       )}
                     </td>
                     <td className="px-4 py-3">
                       <PublicUrlCell
                         draftPreviewUrl={
-                          post.status === 'draft' && post.slug && draftSecret
+                          post.status === "draft" && post.slug && draftSecret
                             ? getDraftPreviewUrl(post.slug, draftSecret)
                             : null
                         }
@@ -77,9 +77,9 @@ async function PostsContent({
                         slug={post.slug}
                         status={
                           post.status as
-                            | 'draft'
-                            | 'scheduled'
-                            | 'published'
+                            | "draft"
+                            | "scheduled"
+                            | "published"
                             | null
                         }
                       />
@@ -87,7 +87,7 @@ async function PostsContent({
                     <td className="px-4 py-3 text-muted-foreground">
                       {post.published_at
                         ? formatDateWithTimezone(post.published_at, timezone)
-                        : '-'}
+                        : "-"}
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">
                       {post.current_version?.version_date
@@ -95,10 +95,10 @@ async function PostsContent({
                             post.current_version.version_date,
                             timezone
                           )
-                        : '-'}
+                        : "-"}
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">
-                      {post.profile?.name || '不明'}
+                      {post.profile?.name || "不明"}
                     </td>
                     <td className="px-4 py-3 text-right">
                       <Link
@@ -120,18 +120,18 @@ async function PostsContent({
         <AdminPagination currentPage={page} totalPages={result.totalPages} />
       )}
     </>
-  )
+  );
 }
 
 export default function PostsPage({
-  searchParams
+  searchParams,
 }: {
   searchParams: Promise<{
-    page?: string
-    perPage?: string
-    search?: string
-    status?: string
-  }>
+    page?: string;
+    perPage?: string;
+    search?: string;
+    status?: string;
+  }>;
 }) {
   return (
     <div>
@@ -146,33 +146,37 @@ export default function PostsPage({
         <PostsContentAsync searchParams={searchParams} />
       </Suspense>
     </div>
-  )
+  );
 }
 
 async function PostsContentAsync({
-  searchParams
+  searchParams,
 }: {
   searchParams: Promise<{
-    page?: string
-    perPage?: string
-    search?: string
-    status?: string
-  }>
+    page?: string;
+    perPage?: string;
+    search?: string;
+    status?: string;
+  }>;
 }) {
-  const params = await searchParams
-  let page = Number.parseInt(params.page || '1', 10)
-  let perPage = Number.parseInt(params.perPage || '20', 10)
+  const params = await searchParams;
+  let page = Number.parseInt(params.page || "1", 10);
+  let perPage = Number.parseInt(params.perPage || "20", 10);
 
   // Validate pagination parameters
-  if (!Number.isFinite(page) || page < 1) page = 1
-  if (!Number.isFinite(perPage) || perPage < 1) perPage = 20
+  if (!Number.isFinite(page) || page < 1) {
+    page = 1;
+  }
+  if (!Number.isFinite(perPage) || perPage < 1) {
+    perPage = 20;
+  }
 
-  const search = params.search
-  const status = ['draft', 'scheduled', 'published', 'all'].includes(
-    params.status || ''
+  const search = params.search;
+  const status = ["draft", "scheduled", "published", "all"].includes(
+    params.status || ""
   )
-    ? (params.status as 'draft' | 'scheduled' | 'published' | 'all')
-    : 'all'
+    ? (params.status as "draft" | "scheduled" | "published" | "all")
+    : "all";
 
   return (
     <PostsContent
@@ -181,5 +185,5 @@ async function PostsContentAsync({
       search={search}
       status={status}
     />
-  )
+  );
 }

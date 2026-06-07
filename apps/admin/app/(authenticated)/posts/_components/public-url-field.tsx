@@ -1,39 +1,46 @@
-'use client'
+"use client";
 
-import { Field, FieldDescription, FieldLabel } from '@ykzts/ui/components/field'
-import { Input } from '@ykzts/ui/components/input'
+import {
+  Field,
+  FieldDescription,
+  FieldLabel,
+} from "@ykzts/ui/components/field";
+import { Input } from "@ykzts/ui/components/input";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
-  InputGroupInput
-} from '@ykzts/ui/components/input-group'
-import { Check, Copy, ExternalLink, Eye } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
-import { toast } from 'sonner'
-import { getBlogPostUrl } from '@/lib/blog-urls'
+  InputGroupInput,
+} from "@ykzts/ui/components/input-group";
+import { Check, Copy, ExternalLink, Eye } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import { getBlogPostUrl } from "@/lib/blog-urls";
 
-type PublicUrlFieldProps = {
-  slug: string | null
-  publishedAt: string | null
-  status: 'draft' | 'scheduled' | 'published'
-  draftPreviewUrl?: string | null
+interface PublicUrlFieldProps {
+  draftPreviewUrl?: string | null;
+  publishedAt: string | null;
+  slug: string | null;
+  status: "draft" | "scheduled" | "published";
 }
 
 export function PublicUrlField({
   slug,
   publishedAt,
   status,
-  draftPreviewUrl
+  draftPreviewUrl,
 }: PublicUrlFieldProps) {
-  const [copied, setCopied] = useState(false)
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [copied, setCopied] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current)
-    }
-  }, [])
+  useEffect(
+    () => () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    },
+    []
+  );
 
   if (!slug) {
     return (
@@ -44,11 +51,11 @@ export function PublicUrlField({
           スラッグを設定すると、URLが表示されます
         </FieldDescription>
       </Field>
-    )
+    );
   }
 
-  const url = getBlogPostUrl(slug, publishedAt)
-  const displayUrl = url ?? draftPreviewUrl ?? null
+  const url = getBlogPostUrl(slug, publishedAt);
+  const displayUrl = url ?? draftPreviewUrl ?? null;
 
   if (!displayUrl) {
     return (
@@ -56,44 +63,46 @@ export function PublicUrlField({
         <FieldLabel>公開URL</FieldLabel>
         <Input disabled type="text" value="公開日時が設定されていません" />
         <FieldDescription>
-          {status === 'draft'
-            ? '下書き状態のため、公開URLはありません'
-            : '公開日時を設定すると、URLが表示されます'}
+          {status === "draft"
+            ? "下書き状態のため、公開URLはありません"
+            : "公開日時を設定すると、URLが表示されます"}
         </FieldDescription>
       </Field>
-    )
+    );
   }
 
   const handleCopy = async (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
+    e.preventDefault();
+    e.stopPropagation();
 
     try {
-      await navigator.clipboard.writeText(displayUrl)
-      setCopied(true)
-      toast.success('URLをコピーしました')
+      await navigator.clipboard.writeText(displayUrl);
+      setCopied(true);
+      toast.success("URLをコピーしました");
 
-      if (timerRef.current) clearTimeout(timerRef.current)
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
       timerRef.current = setTimeout(() => {
-        setCopied(false)
-      }, 2000)
+        setCopied(false);
+      }, 2000);
     } catch (error) {
-      console.error('Failed to copy URL:', error)
-      toast.error('URLのコピーに失敗しました')
+      console.error("Failed to copy URL:", error);
+      toast.error("URLのコピーに失敗しました");
     }
-  }
+  };
 
   const handleOpenDraftPreview = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    window.open(draftPreviewUrl ?? '', '_blank', 'noopener,noreferrer')
-  }
+    e.preventDefault();
+    e.stopPropagation();
+    window.open(draftPreviewUrl ?? "", "_blank", "noopener,noreferrer");
+  };
 
   const handleOpenInNewTab = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    window.open(displayUrl, '_blank', 'noopener,noreferrer')
-  }
+    e.preventDefault();
+    e.stopPropagation();
+    window.open(displayUrl, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <Field>
@@ -139,11 +148,11 @@ export function PublicUrlField({
       </InputGroup>
       <FieldDescription>
         {!url && draftPreviewUrl
-          ? 'ドラフトプレビュー用のURL（公開前の確認に使用）'
+          ? "ドラフトプレビュー用のURL（公開前の確認に使用）"
           : url && draftPreviewUrl
-            ? '予約公開のURL（目のアイコンでドラフトプレビューを確認できます）'
-            : 'この投稿の公開URL'}
+            ? "予約公開のURL（目のアイコンでドラフトプレビューを確認できます）"
+            : "この投稿の公開URL"}
       </FieldDescription>
     </Field>
-  )
+  );
 }

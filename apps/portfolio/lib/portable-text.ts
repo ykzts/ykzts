@@ -1,27 +1,27 @@
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock } from "@portabletext/types";
 
-export type PortableTextValue = PortableTextBlock[]
+export type PortableTextValue = PortableTextBlock[];
 
 export interface CodeBlock {
-  _type: 'code'
-  code: string
-  language?: string
+  _type: "code";
+  code: string;
+  language?: string;
 }
 
 export function isPortableTextValue(
   value: unknown
 ): value is PortableTextValue {
   if (!Array.isArray(value)) {
-    return false
+    return false;
   }
 
   return value.every((item) => {
-    if (!item || typeof item !== 'object') {
-      return false
+    if (!item || typeof item !== "object") {
+      return false;
     }
 
-    const type = (item as { _type?: unknown })._type
+    const type = (item as { _type?: unknown })._type;
 
-    return typeof type === 'string'
-  })
+    return typeof type === "string";
+  });
 }

@@ -1,16 +1,16 @@
-import { getSupabaseImageConfig } from '@ykzts/supabase/next-image-config'
+import { getSupabaseImageConfig } from "@ykzts/supabase/next-image-config";
 
-import type { NextConfig } from 'next'
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
   experimental: {
-    turbopackFileSystemCacheForDev: true
+    turbopackFileSystemCacheForDev: true,
   },
   images: getSupabaseImageConfig(),
   reactCompiler: true,
   reactStrictMode: true,
-  typedRoutes: true
-}
+  typedRoutes: true,
+};
 
-export default nextConfig
+export default nextConfig;

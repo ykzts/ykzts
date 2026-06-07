@@ -1,79 +1,79 @@
-import { revalidateTag } from 'next/cache'
-import type { NextRequest } from 'next/server'
-import { NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase/client'
+import { revalidateTag } from "next/cache";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { supabaseAdmin } from "@/lib/supabase/client";
 
 export async function GET(request: NextRequest) {
   // Verify Vercel Cron Secret
-  const authHeader = request.headers.get('authorization')
-  const cronSecret = process.env.CRON_SECRET
+  const authHeader = request.headers.get("authorization");
+  const cronSecret = process.env.CRON_SECRET;
 
   if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   if (!supabaseAdmin) {
     return NextResponse.json(
-      { message: 'Supabase not configured' },
+      { message: "Supabase not configured" },
       { status: 500 }
-    )
+    );
   }
 
   try {
     // Find scheduled posts that should be published now
-    const now = new Date().toISOString()
+    const now = new Date().toISOString();
     const { data: scheduledPosts, error: queryError } = await supabaseAdmin
-      .from('posts')
-      .select('id, slug, title')
-      .eq('status', 'scheduled')
-      .lte('published_at', now)
+      .from("posts")
+      .select("id, slug, title")
+      .eq("status", "scheduled")
+      .lte("published_at", now);
 
     if (queryError) {
-      throw queryError
+      throw queryError;
     }
 
     if (!scheduledPosts || scheduledPosts.length === 0) {
       return NextResponse.json({
-        message: 'No posts to publish',
-        publishedCount: 0
-      })
+        message: "No posts to publish",
+        publishedCount: 0,
+      });
     }
 
     // Update posts to published status
-    const postIds = scheduledPosts.map((post) => post.id)
+    const postIds = scheduledPosts.map((post) => post.id);
     const { error: updateError } = await supabaseAdmin
-      .from('posts')
-      .update({ status: 'published' })
-      .in('id', postIds)
+      .from("posts")
+      .update({ status: "published" })
+      .in("id", postIds);
 
     if (updateError) {
-      throw updateError
+      throw updateError;
     }
 
     // Invalidate cache
-    revalidateTag('posts', 'max')
+    revalidateTag("posts", "max");
 
     return NextResponse.json({
       message: `Published ${scheduledPosts.length} post(s)`,
       posts: scheduledPosts.map((post) => ({
         id: post.id,
         slug: post.slug,
-        title: post.title
+        title: post.title,
       })),
-      publishedCount: scheduledPosts.length
-    })
+      publishedCount: scheduledPosts.length,
+    });
   } catch (error) {
-    console.error('Error publishing scheduled posts:', error)
+    console.error("Error publishing scheduled posts:", error);
     const errorMessage =
-      error && typeof error === 'object' && 'message' in error
+      error && typeof error === "object" && "message" in error
         ? String(error.message)
-        : 'Unknown error'
+        : "Unknown error";
     return NextResponse.json(
       {
         error: errorMessage,
-        message: 'Failed to publish scheduled posts'
+        message: "Failed to publish scheduled posts",
       },
       { status: 500 }
-    )
+    );
   }
 }

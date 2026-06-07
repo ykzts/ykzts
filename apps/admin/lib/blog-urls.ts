@@ -1,14 +1,14 @@
-import { getSiteOrigin } from '@ykzts/site-config'
+import { getSiteOrigin } from "@ykzts/site-config";
 
 function sanitizeSlugForUrl(slug: string): string | null {
-  const trimmed = slug.trim()
+  const trimmed = slug.trim();
   if (!trimmed) {
-    return null
+    return null;
   }
 
   // Encode the slug so it is safe to use as a single URL path segment.
   // This preserves valid slugs while percent-encoding special characters.
-  return encodeURIComponent(trimmed)
+  return encodeURIComponent(trimmed);
 }
 
 /**
@@ -21,18 +21,18 @@ export function getDraftPreviewUrl(
   slug: string,
   draftSecret: string
 ): string | null {
-  const trimmed = slug.trim()
-  if (!trimmed || !draftSecret) {
-    return null
+  const trimmed = slug.trim();
+  if (!(trimmed && draftSecret)) {
+    return null;
   }
 
   try {
-    const url = new URL('/api/blog/draft', getSiteOrigin())
-    url.searchParams.set('secret', draftSecret)
-    url.searchParams.set('slug', trimmed)
-    return url.toString()
+    const url = new URL("/api/blog/draft", getSiteOrigin());
+    url.searchParams.set("secret", draftSecret);
+    url.searchParams.set("slug", trimmed);
+    return url.toString();
   } catch {
-    return null
+    return null;
   }
 }
 
@@ -46,31 +46,31 @@ export function getBlogPostUrl(
   slug: string,
   publishedAt: string | null
 ): string | null {
-  if (!publishedAt || !slug) {
-    return null
+  if (!(publishedAt && slug)) {
+    return null;
   }
 
-  const safeSlug = sanitizeSlugForUrl(slug)
+  const safeSlug = sanitizeSlugForUrl(slug);
   if (!safeSlug) {
-    return null
+    return null;
   }
 
   try {
-    const date = new Date(publishedAt)
+    const date = new Date(publishedAt);
     // Check if date is valid
     if (Number.isNaN(date.getTime())) {
-      return null
+      return null;
     }
 
-    const year = date.getUTCFullYear()
-    const month = String(date.getUTCMonth() + 1).padStart(2, '0')
-    const day = String(date.getUTCDate()).padStart(2, '0')
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(date.getUTCDate()).padStart(2, "0");
 
     return new URL(
       `/blog/${year}/${month}/${day}/${safeSlug}`,
       getSiteOrigin()
-    ).toString()
+    ).toString();
   } catch {
-    return null
+    return null;
   }
 }

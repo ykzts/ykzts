@@ -1,38 +1,38 @@
-import { createServerClient } from '@ykzts/supabase/server'
-import { draftMode } from 'next/headers'
-import Link from 'next/link'
-import { Suspense } from 'react'
-import Header from '@/components/header'
-import { getOwnerProfile } from '@/lib/auth'
+import { createServerClient } from "@ykzts/supabase/server";
+import { draftMode } from "next/headers";
+import Link from "next/link";
+import { Suspense } from "react";
+import Header from "@/components/header";
+import { getOwnerProfile } from "@/lib/auth";
 
 async function MemoList() {
-  const { isEnabled: isDraftMode } = await draftMode()
-  const ownerProfile = await getOwnerProfile()
+  const { isEnabled: isDraftMode } = await draftMode();
+  const ownerProfile = await getOwnerProfile();
 
-  const supabase = await createServerClient()
+  const supabase = await createServerClient();
 
   let query = supabase
-    .from('memos')
+    .from("memos")
     .select(
-      'id, path, visibility, published_at, updated_at, memo_versions(title)'
+      "id, path, visibility, published_at, updated_at, memo_versions(title)"
     )
-    .order('updated_at', { ascending: false })
+    .order("updated_at", { ascending: false });
 
-  if (!isDraftMode || !ownerProfile) {
+  if (!(isDraftMode && ownerProfile)) {
     // Public access: only show public memos
-    query = query.eq('visibility', 'public')
+    query = query.eq("visibility", "public");
   }
 
-  const { data: memos, error } = await query
+  const { data: memos, error } = await query;
 
   if (error) {
     return (
       <p className="text-muted-foreground">メモの読み込みに失敗しました。</p>
-    )
+    );
   }
 
   if (!memos || memos.length === 0) {
-    return <p className="text-muted-foreground">メモがありません。</p>
+    return <p className="text-muted-foreground">メモがありません。</p>;
   }
 
   return (
@@ -40,8 +40,8 @@ async function MemoList() {
       {memos.map((memo) => {
         const version = Array.isArray(memo.memo_versions)
           ? memo.memo_versions[0]
-          : memo.memo_versions
-        const title = version?.title ?? memo.path
+          : memo.memo_versions;
+        const title = version?.title ?? memo.path;
         return (
           <li key={memo.id}>
             <Link
@@ -49,21 +49,21 @@ async function MemoList() {
               href={`/${memo.path}`}
             >
               <span className="flex-1 font-medium">{title}</span>
-              {memo.visibility === 'private' && (
+              {memo.visibility === "private" && (
                 <span className="rounded bg-muted px-1.5 py-0.5 text-muted-foreground text-xs">
                   非公開
                 </span>
               )}
             </Link>
           </li>
-        )
+        );
       })}
     </ul>
-  )
+  );
 }
 
 async function MemoListHeader() {
-  const ownerProfile = await getOwnerProfile()
+  const ownerProfile = await getOwnerProfile();
 
   return (
     <div className="mb-6 flex items-center justify-between">
@@ -77,7 +77,7 @@ async function MemoListHeader() {
         </Link>
       )}
     </div>
-  )
+  );
 }
 
 export default function HomePage() {
@@ -111,5 +111,5 @@ export default function HomePage() {
         </Suspense>
       </main>
     </div>
-  )
+  );
 }

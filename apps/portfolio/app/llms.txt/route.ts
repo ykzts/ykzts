@@ -1,22 +1,22 @@
-import { extractFirstParagraph } from '@ykzts/portable-text-utils'
-import { getProfile, getWorks } from '@ykzts/supabase/queries'
+import { extractFirstParagraph } from "@ykzts/portable-text-utils";
+import { getProfile, getWorks } from "@ykzts/supabase/queries";
 import {
   buildPostUrl,
   buildWorkUrl,
   getLlmsHeaderLines,
-  type ProfileForHeader
-} from '@/lib/llms'
-import { getPostsForLlms } from '@/lib/supabase'
+  type ProfileForHeader,
+} from "@/lib/llms";
+import { getPostsForLlms } from "@/lib/supabase";
 
 export async function GET() {
   const [works, posts, profile] = await Promise.all([
     getWorks(),
     getPostsForLlms(),
     getProfile().catch((err: unknown) => {
-      console.warn('Failed to fetch profile for llms.txt:', err)
-      return null
-    })
-  ])
+      console.warn("Failed to fetch profile for llms.txt:", err);
+      return null;
+    }),
+  ]);
 
   const profileForHeader: ProfileForHeader | null = profile
     ? {
@@ -24,35 +24,35 @@ export async function GET() {
         occupation: profile.occupation,
         profile_technologies: profile.profile_technologies,
         social_links: profile.social_links,
-        tagline: profile.tagline
+        tagline: profile.tagline,
       }
-    : null
+    : null;
 
   const lines: string[] = [
     ...getLlmsHeaderLines(profileForHeader),
-    '',
-    '## Works',
-    ''
-  ]
+    "",
+    "## Works",
+    "",
+  ];
 
   for (const work of works) {
-    const url = buildWorkUrl(work.slug)
-    const description = extractFirstParagraph(work.content)
-    const suffix = description ? `: ${description}` : ''
-    lines.push(`- [${work.title}](${url})${suffix}`)
+    const url = buildWorkUrl(work.slug);
+    const description = extractFirstParagraph(work.content);
+    const suffix = description ? `: ${description}` : "";
+    lines.push(`- [${work.title}](${url})${suffix}`);
   }
 
-  lines.push('', '## Articles', '')
+  lines.push("", "## Articles", "");
 
   for (const post of posts) {
-    const url = buildPostUrl(post.slug, post.published_at)
-    const suffix = post.excerpt ? `: ${post.excerpt}` : ''
-    lines.push(`- [${post.title}](${url})${suffix}`)
+    const url = buildPostUrl(post.slug, post.published_at);
+    const suffix = post.excerpt ? `: ${post.excerpt}` : "";
+    lines.push(`- [${post.title}](${url})${suffix}`);
   }
 
-  return new Response(lines.join('\n'), {
+  return new Response(lines.join("\n"), {
     headers: {
-      'Content-Type': 'text/plain; charset=utf-8'
-    }
-  })
+      "Content-Type": "text/plain; charset=utf-8",
+    },
+  });
 }

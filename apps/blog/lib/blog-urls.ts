@@ -1,4 +1,4 @@
-import type { Route } from 'next'
+import type { Route } from "next";
 
 /**
  * Constructs a date-based URL path for a blog post.
@@ -7,12 +7,12 @@ import type { Route } from 'next'
  * @returns Date-based URL in format /blog/YYYY/MM/DD/slug
  */
 export function getDateBasedUrl(slug: string, publishedAt: string): Route {
-  const date = new Date(publishedAt)
-  const year = date.getUTCFullYear()
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0')
-  const day = String(date.getUTCDate()).padStart(2, '0')
+  const date = new Date(publishedAt);
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
 
-  return `/blog/${year}/${month}/${day}/${slug}` as Route
+  return `/blog/${year}/${month}/${day}/${slug}` as Route;
 }
 
 /**
@@ -23,7 +23,7 @@ export function getDateBasedUrl(slug: string, publishedAt: string): Route {
  */
 export function getPostUrl(slug: string, publishedAt: string | null): Route {
   if (!publishedAt) {
-    return `/blog/draft/${slug}` as Route
+    return `/blog/draft/${slug}` as Route;
   }
-  return getDateBasedUrl(slug, publishedAt)
+  return getDateBasedUrl(slug, publishedAt);
 }

@@ -1,65 +1,65 @@
-'use server'
+"use server";
 
-import { createServerClient } from '@ykzts/supabase/server'
-import { revalidateTag } from 'next/cache'
-import { headers } from 'next/headers'
-import { redirect } from 'next/navigation'
+import { createServerClient } from "@ykzts/supabase/server";
+import { revalidateTag } from "next/cache";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function signInWithGitHub() {
-  const supabase = await createServerClient()
-  const headersList = await headers()
-  const origin = headersList.get('origin')
+  const supabase = await createServerClient();
+  const headersList = await headers();
+  const origin = headersList.get("origin");
 
-  let baseOrigin = origin
+  let baseOrigin = origin;
   if (!baseOrigin) {
-    const protocol = (headersList.get('x-forwarded-proto') ?? 'https')
-      .split(',')[0]
-      .trim()
-    const host = headersList.get('host')
+    const protocol = (headersList.get("x-forwarded-proto") ?? "https")
+      .split(",")[0]
+      .trim();
+    const host = headersList.get("host");
     if (!host) {
-      throw new Error('Unable to determine origin for OAuth redirect')
+      throw new Error("Unable to determine origin for OAuth redirect");
     }
-    baseOrigin = `${protocol}://${host}`
+    baseOrigin = `${protocol}://${host}`;
   }
 
-  const redirectTo = `${baseOrigin}/auth/callback`
+  const redirectTo = `${baseOrigin}/auth/callback`;
   const { data, error } = await supabase.auth.signInWithOAuth({
     options: {
-      redirectTo
+      redirectTo,
     },
-    provider: 'github'
-  })
+    provider: "github",
+  });
 
   if (error) {
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
 
-  return data.url ?? null
+  return data.url ?? null;
 }
 
 export async function signInWithPassword(email: string, password: string) {
   // Security: Only allow password auth in development
-  if (process.env.NODE_ENV !== 'development') {
-    throw new Error('Password authentication is only available in development')
+  if (process.env.NODE_ENV !== "development") {
+    throw new Error("Password authentication is only available in development");
   }
 
-  const supabase = await createServerClient()
+  const supabase = await createServerClient();
   const { error } = await supabase.auth.signInWithPassword({
     email,
-    password
-  })
+    password,
+  });
 
   if (error) {
-    return { error: error.message }
+    return { error: error.message };
   }
 
-  revalidateTag('auth-user', 'max')
-  redirect('/')
+  revalidateTag("auth-user", "max");
+  redirect("/");
 }
 
 export async function logout() {
-  const supabase = await createServerClient()
-  await supabase.auth.signOut()
-  revalidateTag('auth-user', 'max')
-  redirect('/login')
+  const supabase = await createServerClient();
+  await supabase.auth.signOut();
+  revalidateTag("auth-user", "max");
+  redirect("/login");
 }

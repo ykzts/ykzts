@@ -1,3 +1,3 @@
-'use client'
+"use client";
 
-export * from '../components/alert'
+export * from "../components/alert";

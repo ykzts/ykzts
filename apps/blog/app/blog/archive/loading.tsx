@@ -2,9 +2,9 @@ import {
   Card,
   CardContent,
   CardFooter,
-  CardHeader
-} from '@ykzts/ui/components/card'
-import { Skeleton } from '@ykzts/ui/components/skeleton'
+  CardHeader,
+} from "@ykzts/ui/components/card";
+import { Skeleton } from "@ykzts/ui/components/skeleton";
 
 export default function ArchiveLoading() {
   return (
@@ -37,5 +37,5 @@ export default function ArchiveLoading() {
         </div>
       </div>
     </main>
-  )
+  );
 }

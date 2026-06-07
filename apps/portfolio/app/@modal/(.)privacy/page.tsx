@@ -1,25 +1,25 @@
-'use client'
+"use client";
 
 import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle
-} from '@ykzts/ui/components/dialog'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import PrivacyContent from '@/docs/privacy.mdx'
+  DialogTitle,
+} from "@ykzts/ui/components/dialog";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import PrivacyContent from "@/docs/privacy.mdx";
 
 export default function PrivacyModal() {
-  const router = useRouter()
-  const [open, setOpen] = useState(true)
+  const router = useRouter();
+  const [open, setOpen] = useState(true);
 
   const handleOpenChange = (nextOpen: boolean) => {
-    setOpen(nextOpen)
+    setOpen(nextOpen);
     if (!nextOpen) {
-      router.back()
+      router.back();
     }
-  }
+  };
 
   return (
     <Dialog onOpenChange={handleOpenChange} open={open}>
@@ -34,5 +34,5 @@ export default function PrivacyModal() {
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

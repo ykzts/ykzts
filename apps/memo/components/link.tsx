@@ -1,5 +1,5 @@
-import NextLink from 'next/link'
-import type { ComponentProps } from 'react'
+import NextLink from "next/link";
+import type { ComponentProps } from "react";
 
 export default function Link({
   children,
@@ -7,27 +7,27 @@ export default function Link({
   rel,
   target,
   ...props
-}: ComponentProps<'a'>) {
+}: ComponentProps<"a">) {
   const isExternal =
-    !!href && (href.startsWith('https://') || href.startsWith('http://'))
-  const relList = new Set(rel ? rel.split(/\s+/) : [])
+    !!href && (href.startsWith("https://") || href.startsWith("http://"));
+  const relList = new Set(rel ? rel.split(/\s+/) : []);
 
   if (isExternal) {
-    relList.add('noreferrer')
-    relList.add('noopener')
+    relList.add("noreferrer");
+    relList.add("noopener");
   }
 
   if (isExternal || !href) {
     return (
       <a
         href={href}
-        rel={relList.size > 0 ? [...relList].join(' ') : undefined}
-        target={target ?? (isExternal ? '_blank' : undefined)}
+        rel={relList.size > 0 ? [...relList].join(" ") : undefined}
+        target={target ?? (isExternal ? "_blank" : undefined)}
         {...props}
       >
         {children}
       </a>
-    )
+    );
   }
 
   return (
@@ -35,5 +35,5 @@ export default function Link({
     <NextLink href={href} {...props}>
       {children}
     </NextLink>
-  )
+  );
 }

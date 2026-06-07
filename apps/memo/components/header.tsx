@@ -1,13 +1,13 @@
-import Link from 'next/link'
-import { logout } from '@/app/login/actions'
-import { getCurrentUser } from '@/lib/auth'
+import Link from "next/link";
+import { logout } from "@/app/login/actions";
+import { getCurrentUser } from "@/lib/auth";
 
-type HeaderProps = {
-  canEdit?: boolean
+interface HeaderProps {
+  canEdit?: boolean;
 }
 
 export default async function Header({ canEdit = false }: HeaderProps) {
-  const user = await getCurrentUser()
+  const user = await getCurrentUser();
 
   return (
     <header className="border-border border-b bg-background">
@@ -41,5 +41,5 @@ export default async function Header({ canEdit = false }: HeaderProps) {
         </nav>
       </div>
     </header>
-  )
+  );
 }

@@ -34,6 +34,6 @@ jobs:
       - run: pnpm install
       - run: pnpm typegen
       - run: pnpm typecheck
-      - run: pnpm exec biome ci --css-parse-tailwind-directives=true
+      - run: pnpm check
       - run: pnpm test
       - run: pnpm validate

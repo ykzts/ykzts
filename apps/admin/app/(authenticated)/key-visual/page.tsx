@@ -1,12 +1,12 @@
-import { Suspense } from 'react'
-import { Panel } from '@/components/panel'
-import { getKeyVisual } from '@/lib/data'
-import { KeyVisualForm } from './_components/key-visual-form'
+import { Suspense } from "react";
+import { Panel } from "@/components/panel";
+import { getKeyVisual } from "@/lib/data";
+import { KeyVisualForm } from "./_components/key-visual-form";
 
 async function KeyVisualFormWrapper() {
-  const keyVisual = await getKeyVisual()
+  const keyVisual = await getKeyVisual();
 
-  return <KeyVisualForm currentKeyVisual={keyVisual} />
+  return <KeyVisualForm currentKeyVisual={keyVisual} />;
 }
 
 export default function KeyVisualPage() {
@@ -26,5 +26,5 @@ export default function KeyVisualPage() {
         </Suspense>
       </Panel>
     </div>
-  )
+  );
 }

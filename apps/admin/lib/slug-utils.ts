@@ -7,7 +7,7 @@ export function cleanSlug(rawSlug: string): string {
   return rawSlug
     .trim()
     .toLowerCase()
-    .replace(/[^a-z0-9-]/g, '-') // Replace invalid chars with hyphens
-    .replace(/-+/g, '-') // Replace multiple hyphens with single
-    .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+    .replace(/[^a-z0-9-]/g, "-") // Replace invalid chars with hyphens
+    .replace(/-+/g, "-") // Replace multiple hyphens with single
+    .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
 }

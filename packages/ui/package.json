@@ -28,7 +28,7 @@
     "./styles/theme.css": "./src/styles/theme.css"
   },
   "scripts": {
-    "lint": "biome check .",
+    "lint": "ultracite check .",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

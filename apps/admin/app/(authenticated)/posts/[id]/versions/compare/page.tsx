@@ -1,24 +1,24 @@
-import { Button } from '@ykzts/ui/components/button'
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { Suspense } from 'react'
-import { Panel } from '@/components/panel'
-import { portableTextToMarkdown } from '@/lib/portable-text-to-markdown'
-import { compareVersions, getPostById } from '@/lib/posts'
-import { CompareSkeleton } from './_components/compare-skeleton'
-import { ContentDiff } from './_components/content-diff'
+import { Button } from "@ykzts/ui/components/button";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import { Panel } from "@/components/panel";
+import { portableTextToMarkdown } from "@/lib/portable-text-to-markdown";
+import { compareVersions, getPostById } from "@/lib/posts";
+import { CompareSkeleton } from "./_components/compare-skeleton";
+import { ContentDiff } from "./_components/content-diff";
 
 function DiffItem({
   label,
   oldValue,
-  newValue
+  newValue,
 }: {
-  label: string
-  newValue?: string | string[] | null
-  oldValue?: string | string[] | null
+  label: string;
+  newValue?: string | string[] | null;
+  oldValue?: string | string[] | null;
 }) {
-  const oldStr = Array.isArray(oldValue) ? oldValue.join(', ') : oldValue || ''
-  const newStr = Array.isArray(newValue) ? newValue.join(', ') : newValue || ''
+  const oldStr = Array.isArray(oldValue) ? oldValue.join(", ") : oldValue || "";
+  const newStr = Array.isArray(newValue) ? newValue.join(", ") : newValue || "";
 
   if (oldStr === newStr) {
     return (
@@ -26,9 +26,9 @@ function DiffItem({
         <div className="mb-2 font-medium text-muted-foreground text-sm">
           {label}
         </div>
-        <div className="text-sm">{newStr || '(空)'}</div>
+        <div className="text-sm">{newStr || "(空)"}</div>
       </div>
-    )
+    );
   }
 
   return (
@@ -42,7 +42,7 @@ function DiffItem({
             <span>− 古いバージョン</span>
           </div>
           <div className="text-red-900 text-sm dark:text-red-100">
-            {oldStr || '(空)'}
+            {oldStr || "(空)"}
           </div>
         </div>
         <div className="rounded bg-green-50 p-2 dark:bg-green-950/20">
@@ -50,33 +50,33 @@ function DiffItem({
             <span>+ 新しいバージョン</span>
           </div>
           <div className="text-green-900 text-sm dark:text-green-100">
-            {newStr || '(空)'}
+            {newStr || "(空)"}
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 async function CompareContent({
   fromId,
   postId,
-  toId
+  toId,
 }: {
-  fromId: string
-  postId: string
-  toId: string
+  fromId: string;
+  postId: string;
+  toId: string;
 }) {
   const [post, comparison] = await Promise.all([
     getPostById(postId),
-    compareVersions(fromId, toId, postId)
-  ])
+    compareVersions(fromId, toId, postId),
+  ]);
 
-  if (!post || !comparison.version1 || !comparison.version2) {
-    notFound()
+  if (!(post && comparison.version1 && comparison.version2)) {
+    notFound();
   }
 
-  const { version1, version2 } = comparison
+  const { version1, version2 } = comparison;
 
   return (
     <div className="space-y-6">
@@ -160,15 +160,15 @@ async function CompareContent({
         </Button>
       </div>
     </div>
-  )
+  );
 }
 
 export default function ComparePage({
   params,
-  searchParams
+  searchParams,
 }: {
-  params: Promise<{ id: string }>
-  searchParams: Promise<{ from?: string; to?: string }>
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ from?: string; to?: string }>;
 }) {
   return (
     <div>
@@ -177,20 +177,20 @@ export default function ComparePage({
         <ComparePageContent params={params} searchParams={searchParams} />
       </Suspense>
     </div>
-  )
+  );
 }
 
 async function ComparePageContent({
   params,
-  searchParams
+  searchParams,
 }: {
-  params: Promise<{ id: string }>
-  searchParams: Promise<{ from?: string; to?: string }>
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ from?: string; to?: string }>;
 }) {
-  const { id } = await params
-  const { from, to } = await searchParams
+  const { id } = await params;
+  const { from, to } = await searchParams;
 
-  if (!from || !to) {
+  if (!(from && to)) {
     return (
       <div>
         <Panel>
@@ -204,8 +204,8 @@ async function ComparePageContent({
           </Button>
         </Panel>
       </div>
-    )
+    );
   }
 
-  return <CompareContent fromId={from} postId={id} toId={to} />
+  return <CompareContent fromId={from} postId={id} toId={to} />;
 }

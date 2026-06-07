@@ -1,24 +1,25 @@
-'use client'
+"use client";
 
-import { diffLines } from 'diff'
-import { useMemo } from 'react'
+import { diffLines } from "diff";
+import { useMemo } from "react";
 
 interface ContentDiffProps {
-  newContent: string
-  oldContent: string
-  version1Number: number
-  version2Number: number
+  newContent: string;
+  oldContent: string;
+  version1Number: number;
+  version2Number: number;
 }
 
 export function ContentDiff({
   newContent,
   oldContent,
   version1Number,
-  version2Number
+  version2Number,
 }: ContentDiffProps) {
-  const diff = useMemo(() => {
-    return diffLines(oldContent, newContent)
-  }, [oldContent, newContent])
+  const diff = useMemo(
+    () => diffLines(oldContent, newContent),
+    [oldContent, newContent]
+  );
 
   return (
     <div className="space-y-3">
@@ -40,14 +41,14 @@ export function ContentDiff({
       <div className="overflow-auto rounded border border-border bg-muted/30">
         <pre className="p-4 text-sm">
           {diff.map((part, index) => {
-            const lines = part.value.split('\n')
+            const lines = part.value.split("\n");
             // Remove empty last line caused by split
-            if (lines[lines.length - 1] === '') {
-              lines.pop()
+            if (lines.at(-1) === "") {
+              lines.pop();
             }
 
             return lines.map((line, lineIndex) => {
-              const key = `${index}-${lineIndex}`
+              const key = `${index}-${lineIndex}`;
               if (part.added) {
                 return (
                   <div
@@ -55,11 +56,11 @@ export function ContentDiff({
                     key={key}
                   >
                     <span className="select-none text-green-600 dark:text-green-400">
-                      +{' '}
+                      +{" "}
                     </span>
-                    {line || ' '}
+                    {line || " "}
                   </div>
-                )
+                );
               }
               if (part.removed) {
                 return (
@@ -68,24 +69,24 @@ export function ContentDiff({
                     key={key}
                   >
                     <span className="select-none text-red-600 dark:text-red-400">
-                      -{' '}
+                      -{" "}
                     </span>
-                    {line || ' '}
+                    {line || " "}
                   </div>
-                )
+                );
               }
               return (
                 <div key={key}>
                   <span className="select-none text-muted-foreground">
-                    {'  '}
+                    {"  "}
                   </span>
-                  {line || ' '}
+                  {line || " "}
                 </div>
-              )
-            })
+              );
+            });
           })}
         </pre>
       </div>
     </div>
-  )
+  );
 }

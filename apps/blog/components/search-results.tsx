@@ -1,42 +1,42 @@
-import { Link } from '@vercel/microfrontends/next/client'
-import { extractFirstParagraph } from '@ykzts/portable-text-utils'
+import { Link } from "@vercel/microfrontends/next/client";
+import { extractFirstParagraph } from "@ykzts/portable-text-utils";
 import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
-} from '@ykzts/ui/components/card'
-import { getPostUrl } from '@/lib/blog-urls'
-import type { PortableTextValue } from '@/lib/portable-text'
-import DateDisplay from './date-display'
-import TagList from './tag-list'
+  CardTitle,
+} from "@ykzts/ui/components/card";
+import { getPostUrl } from "@/lib/blog-urls";
+import type { PortableTextValue } from "@/lib/portable-text";
+import DateDisplay from "./date-display";
+import TagList from "./tag-list";
 
-type SearchResult = {
-  excerpt: string | null
-  content?: PortableTextValue | null
-  id: string
-  published_at: string | null
-  similarity: number
-  slug: string
-  tags: string[] | null
-  title: string
+interface SearchResult {
+  content?: PortableTextValue | null;
+  excerpt: string | null;
+  id: string;
+  published_at: string | null;
+  similarity: number;
+  slug: string;
+  tags: string[] | null;
+  title: string;
 }
 
-type SearchResultsProps = {
-  query: string
-  results: SearchResult[]
+interface SearchResultsProps {
+  query: string;
+  results: SearchResult[];
 }
 
 function SimilarityBadge({ similarity }: { similarity: number }) {
-  const percentage = Math.round(similarity * 100)
+  const percentage = Math.round(similarity * 100);
   const colorClass =
     percentage >= 85
-      ? 'bg-green-100 text-green-800'
+      ? "bg-green-100 text-green-800"
       : percentage >= 70
-        ? 'bg-blue-100 text-blue-800'
-        : 'bg-gray-100 text-gray-800'
+        ? "bg-blue-100 text-blue-800"
+        : "bg-gray-100 text-gray-800";
 
   return (
     <span
@@ -44,7 +44,7 @@ function SimilarityBadge({ similarity }: { similarity: number }) {
     >
       関連度: {percentage}%
     </span>
-  )
+  );
 }
 
 export default function SearchResults({ query, results }: SearchResultsProps) {
@@ -58,7 +58,7 @@ export default function SearchResults({ query, results }: SearchResultsProps) {
           別のキーワードで検索してみてください
         </p>
       </div>
-    )
+    );
   }
 
   return (
@@ -67,9 +67,9 @@ export default function SearchResults({ query, results }: SearchResultsProps) {
         {results.length}件の記事が見つかりました
       </p>
       {results.map((result) => {
-        const url = getPostUrl(result.slug, result.published_at)
+        const url = getPostUrl(result.slug, result.published_at);
         const previewText =
-          result.excerpt || extractFirstParagraph(result.content)
+          result.excerpt || extractFirstParagraph(result.content);
 
         return (
           <Card key={result.id}>
@@ -97,8 +97,8 @@ export default function SearchResults({ query, results }: SearchResultsProps) {
               </CardFooter>
             )}
           </Card>
-        )
+        );
       })}
     </div>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-const FALLBACK_ORIGIN = 'https://example.com'
-const FALLBACK_NAME = 'example.com'
+const FALLBACK_ORIGIN = "https://example.com";
+const FALLBACK_NAME = "example.com";
 const FALLBACK_PORTFOLIO_DESCRIPTION =
-  'ウェブアプリケーション開発の実績や制作物を掲載したポートフォリオです。過去の実績、作品、各種ソーシャルネットワーキングサービスへのリンクなどの連絡先情報をまとめています。'
+  "ウェブアプリケーション開発の実績や制作物を掲載したポートフォリオです。過去の実績、作品、各種ソーシャルネットワーキングサービスへのリンクなどの連絡先情報をまとめています。";
 
 /**
  * Returns the site origin as a URL object.
@@ -10,9 +10,9 @@ const FALLBACK_PORTFOLIO_DESCRIPTION =
  */
 export function getSiteOrigin(): URL {
   try {
-    return new URL(process.env.NEXT_PUBLIC_SITE_ORIGIN ?? FALLBACK_ORIGIN)
+    return new URL(process.env.NEXT_PUBLIC_SITE_ORIGIN ?? FALLBACK_ORIGIN);
   } catch {
-    return new URL(FALLBACK_ORIGIN)
+    return new URL(FALLBACK_ORIGIN);
   }
 }
 
@@ -21,7 +21,7 @@ export function getSiteOrigin(): URL {
  * Useful for Go import paths, which use the bare host as a package prefix.
  */
 export function getSiteHost(): string {
-  return getSiteOrigin().host
+  return getSiteOrigin().host;
 }
 
 /**
@@ -29,7 +29,7 @@ export function getSiteHost(): string {
  * Reads `NEXT_PUBLIC_SITE_NAME` and falls back to `example.com` if absent.
  */
 export function getSiteName(): string {
-  return process.env.NEXT_PUBLIC_SITE_NAME ?? FALLBACK_NAME
+  return process.env.NEXT_PUBLIC_SITE_NAME ?? FALLBACK_NAME;
 }
 
 /**
@@ -40,5 +40,5 @@ export function getPortfolioDescription(): string {
   return (
     process.env.NEXT_PUBLIC_PORTFOLIO_DESCRIPTION ??
     FALLBACK_PORTFOLIO_DESCRIPTION
-  )
+  );
 }

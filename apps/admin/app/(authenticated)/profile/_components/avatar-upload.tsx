@@ -1,154 +1,156 @@
-'use client'
+"use client";
 
-import { Button } from '@ykzts/ui/components/button'
-import { Upload, UserCircle, X } from 'lucide-react'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import { useRef, useState } from 'react'
-import { deleteAvatar, uploadAvatar } from '@/lib/upload-avatar'
+import { Button } from "@ykzts/ui/components/button";
+import { Upload, UserCircle, X } from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+import { deleteAvatar, uploadAvatar } from "@/lib/upload-avatar";
 
-type AvatarUploadProps = {
-  currentAvatarUrl?: string | null
-  onUploadComplete?: (url: string) => void
-  onDeleteComplete?: () => void
+interface AvatarUploadProps {
+  currentAvatarUrl?: string | null;
+  onDeleteComplete?: () => void;
+  onUploadComplete?: (url: string) => void;
 }
 
 export function AvatarUpload({
   currentAvatarUrl,
   onUploadComplete,
-  onDeleteComplete
+  onDeleteComplete,
 }: AvatarUploadProps) {
-  const router = useRouter()
+  const router = useRouter();
   const [preview, setPreview] = useState<string | null>(
     currentAvatarUrl || null
-  )
-  const [uploading, setUploading] = useState(false)
-  const [deleting, setDeleting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [dragActive, setDragActive] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  );
+  const [uploading, setUploading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [dragActive, setDragActive] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (file: File | null) => {
     if (!file) {
-      setPreview(currentAvatarUrl || null)
-      setError(null)
-      return
+      setPreview(currentAvatarUrl || null);
+      setError(null);
+      return;
     }
 
     // Client-side validation
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
     if (!allowedTypes.includes(file.type)) {
       setError(
-        'サポートされていない画像形式です。JPEG、PNG、GIF、WebPのみアップロード可能です。'
-      )
-      return
+        "サポートされていない画像形式です。JPEG、PNG、GIF、WebPのみアップロード可能です。"
+      );
+      return;
     }
 
-    const maxSize = 5 * 1024 * 1024 // 5MB
+    const maxSize = 5 * 1024 * 1024; // 5MB
     if (file.size > maxSize) {
       setError(
-        'ファイルサイズが大きすぎます。5MB以下の画像をアップロードしてください。'
-      )
-      return
+        "ファイルサイズが大きすぎます。5MB以下の画像をアップロードしてください。"
+      );
+      return;
     }
 
-    setError(null)
+    setError(null);
 
     // Show preview
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.onloadend = () => {
-      setPreview(reader.result as string)
-    }
-    reader.readAsDataURL(file)
-  }
+      setPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleUpload = async () => {
-    const fileInput = fileInputRef.current
+    const fileInput = fileInputRef.current;
     if (!fileInput?.files?.[0]) {
-      setError('ファイルを選択してください。')
-      return
+      setError("ファイルを選択してください。");
+      return;
     }
 
-    setUploading(true)
-    setError(null)
+    setUploading(true);
+    setError(null);
 
     try {
-      const formData = new FormData()
-      formData.append('avatar', fileInput.files[0])
+      const formData = new FormData();
+      formData.append("avatar", fileInput.files[0]);
 
-      const result = await uploadAvatar(formData)
+      const result = await uploadAvatar(formData);
 
       if (result.error) {
-        setError(result.error)
-        setPreview(currentAvatarUrl || null)
+        setError(result.error);
+        setPreview(currentAvatarUrl || null);
       } else if (result.url) {
-        setPreview(result.url)
-        router.refresh()
-        onUploadComplete?.(result.url)
+        setPreview(result.url);
+        router.refresh();
+        onUploadComplete?.(result.url);
       }
-    } catch (_err) {
-      setError('アップロード中にエラーが発生しました。')
-      setPreview(currentAvatarUrl || null)
+    } catch {
+      setError("アップロード中にエラーが発生しました。");
+      setPreview(currentAvatarUrl || null);
     } finally {
-      setUploading(false)
+      setUploading(false);
     }
-  }
+  };
 
   const handleDelete = async () => {
-    if (!currentAvatarUrl) return
+    if (!currentAvatarUrl) {
+      return;
+    }
 
-    setDeleting(true)
-    setError(null)
+    setDeleting(true);
+    setError(null);
 
     try {
-      const result = await deleteAvatar()
+      const result = await deleteAvatar();
 
       if (result.error) {
-        setError(result.error)
+        setError(result.error);
       } else {
-        setPreview(null)
+        setPreview(null);
         if (fileInputRef.current) {
-          fileInputRef.current.value = ''
+          fileInputRef.current.value = "";
         }
-        router.refresh()
-        onDeleteComplete?.()
+        router.refresh();
+        onDeleteComplete?.();
       }
-    } catch (_err) {
-      setError('削除中にエラーが発生しました。')
+    } catch {
+      setError("削除中にエラーが発生しました。");
     } finally {
-      setDeleting(false)
+      setDeleting(false);
     }
-  }
+  };
 
   const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (e.type === 'dragenter' || e.type === 'dragover') {
-      setDragActive(true)
-    } else if (e.type === 'dragleave') {
-      setDragActive(false)
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
     }
-  }
+  };
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(false)
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
 
     if (e.dataTransfer.files?.[0]) {
-      const file = e.dataTransfer.files[0]
+      const file = e.dataTransfer.files[0];
       if (fileInputRef.current) {
         // Create a new FileList with the dropped file
-        const dataTransfer = new DataTransfer()
-        dataTransfer.items.add(file)
-        fileInputRef.current.files = dataTransfer.files
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInputRef.current.files = dataTransfer.files;
       }
-      handleFileChange(file)
+      handleFileChange(file);
     }
-  }
+  };
 
   const hasChanged =
-    fileInputRef.current?.files?.[0] && preview !== currentAvatarUrl
+    fileInputRef.current?.files?.[0] && preview !== currentAvatarUrl;
 
   return (
     <div className="space-y-4">
@@ -180,8 +182,8 @@ export function AvatarUpload({
               aria-describedby="avatar-upload-help"
               className={`flex min-h-32 w-full flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors ${
                 dragActive
-                  ? 'border-primary bg-primary/5'
-                  : 'border-border bg-muted/10'
+                  ? "border-primary bg-primary/5"
+                  : "border-border bg-muted/10"
               }`}
               onClick={() => fileInputRef.current?.click()}
               onDragEnter={handleDrag}
@@ -219,7 +221,7 @@ export function AvatarUpload({
                   size="sm"
                   type="button"
                 >
-                  {uploading ? 'アップロード中...' : 'アップロード'}
+                  {uploading ? "アップロード中..." : "アップロード"}
                 </Button>
               )}
               {currentAvatarUrl && !hasChanged && (
@@ -231,7 +233,7 @@ export function AvatarUpload({
                   variant="destructive"
                 >
                   {deleting ? (
-                    '削除中...'
+                    "削除中..."
                   ) : (
                     <>
                       <X className="mr-1 h-4 w-4" />
@@ -258,5 +260,5 @@ export function AvatarUpload({
         </p>
       </div>
     </div>
-  )
+  );
 }

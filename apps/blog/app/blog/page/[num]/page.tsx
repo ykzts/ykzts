@@ -1,73 +1,73 @@
-import type { Metadata } from 'next'
-import { notFound, redirect } from 'next/navigation'
-import BlogPagination from '@/components/blog-pagination'
-import PostCard from '@/components/post-card'
-import { getPosts, getTotalPages } from '@/lib/supabase/posts'
+import type { Metadata } from "next";
+import { notFound, redirect } from "next/navigation";
+import BlogPagination from "@/components/blog-pagination";
+import PostCard from "@/components/post-card";
+import { getPosts, getTotalPages } from "@/lib/supabase/posts";
 
-type PageProps = {
-  params: Promise<{ num: string }>
+interface PageProps {
+  params: Promise<{ num: string }>;
 }
 
 export async function generateStaticParams() {
-  const totalPages = await getTotalPages()
-  const pages = []
+  const totalPages = await getTotalPages();
+  const pages = [];
 
   // Generate pages 2 to totalPages (page 1 is the home page)
   for (let i = 2; i <= totalPages; i++) {
-    pages.push({ num: String(i) })
+    pages.push({ num: String(i) });
   }
 
   // Return placeholder if no pages to satisfy Next.js Cache Components requirement
   if (pages.length === 0) {
-    return [{ num: '2' }]
+    return [{ num: "2" }];
   }
 
-  return pages
+  return pages;
 }
 
 export async function generateMetadata({
-  params
+  params,
 }: PageProps): Promise<Metadata> {
-  const { num } = await params
-  const pageNum = Number.parseInt(num, 10)
+  const { num } = await params;
+  const pageNum = Number.parseInt(num, 10);
 
   if (Number.isNaN(pageNum) || pageNum < 1) {
     return {
-      title: 'ページ'
-    }
+      title: "ページ",
+    };
   }
 
   return {
-    title: `ページ ${pageNum}`
-  }
+    title: `ページ ${pageNum}`,
+  };
 }
 
 export default async function PaginationPage({ params }: PageProps) {
-  const { num } = await params
-  const pageNum = Number.parseInt(num, 10)
+  const { num } = await params;
+  const pageNum = Number.parseInt(num, 10);
 
   // Handle invalid page numbers (NaN or non-positive)
   if (Number.isNaN(pageNum) || pageNum < 1) {
-    notFound()
+    notFound();
   }
 
   // Redirect page 1 to home
   if (pageNum === 1) {
-    redirect('/blog')
+    redirect("/blog");
   }
 
-  const totalPages = await getTotalPages()
+  const totalPages = await getTotalPages();
 
   // Handle page numbers beyond total pages
   if (pageNum > totalPages) {
-    notFound()
+    notFound();
   }
 
-  const posts = await getPosts(pageNum)
+  const posts = await getPosts(pageNum);
 
   // If no posts found, show not found
   if (!posts || posts.length === 0) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -83,5 +83,5 @@ export default async function PaginationPage({ params }: PageProps) {
         </div>
       </div>
     </main>
-  )
+  );
 }

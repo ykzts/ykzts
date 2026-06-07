@@ -1,200 +1,200 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock environment variables
-vi.stubEnv('RESEND_API_KEY', 'test_api_key')
-vi.stubEnv('TURNSTILE_SECRET_KEY', 'test_turnstile_key')
-vi.stubEnv('NEXT_PUBLIC_SITE_NAME', 'example.com')
-vi.stubEnv('MAIL_FROM_ADDRESS', 'no-reply@example.com')
+vi.stubEnv("RESEND_API_KEY", "test_api_key");
+vi.stubEnv("TURNSTILE_SECRET_KEY", "test_turnstile_key");
+vi.stubEnv("NEXT_PUBLIC_SITE_NAME", "example.com");
+vi.stubEnv("MAIL_FROM_ADDRESS", "no-reply@example.com");
 
 // Mock getProfile from Supabase
-vi.mock('@ykzts/supabase/queries', () => ({
+vi.mock("@ykzts/supabase/queries", () => ({
   getProfile: vi.fn(async () => ({
     about: [],
-    email: 'admin@example.com',
-    id: 'test-id',
-    name: 'Test User',
+    email: "admin@example.com",
+    id: "test-id",
+    name: "Test User",
     profile_technologies: [],
     social_links: [],
-    tagline: 'Test'
-  }))
-}))
+    tagline: "Test",
+  })),
+}));
 
 // Mock Resend
-const mockSend = vi.fn()
-vi.mock('resend', () => ({
+const mockSend = vi.fn();
+vi.mock("resend", () => ({
   Resend: vi.fn(
     class {
       emails = {
-        send: mockSend
-      }
+        send: mockSend,
+      };
     }
-  )
-}))
+  ),
+}));
 
 // Mock fetch for Turnstile verification
-global.fetch = vi.fn()
+global.fetch = vi.fn();
 
-describe('Contact form action', () => {
+describe("Contact form action", () => {
   beforeEach(() => {
-    vi.clearAllMocks()
-    vi.spyOn(console, 'error').mockImplementation(() => {})
-  })
+    vi.clearAllMocks();
+    vi.spyOn(console, "error").mockImplementation(() => {});
+  });
 
   afterEach(() => {
-    vi.restoreAllMocks()
-  })
+    vi.restoreAllMocks();
+  });
 
-  describe('submitContactForm', () => {
-    it('should return field errors for invalid data', async () => {
-      const { submitContactForm } = await import('../contact')
+  describe("submitContactForm", () => {
+    it("should return field errors for invalid data", async () => {
+      const { submitContactForm } = await import("../contact");
 
-      const formData = new FormData()
-      formData.set('email', 'invalid-email')
-      formData.set('message', 'short')
-      formData.set('name', '')
-      formData.set('subject', '')
-      formData.set('turnstileToken', '')
+      const formData = new FormData();
+      formData.set("email", "invalid-email");
+      formData.set("message", "short");
+      formData.set("name", "");
+      formData.set("subject", "");
+      formData.set("turnstileToken", "");
       // privacyConsent is missing (unchecked)
 
-      const result = await submitContactForm(null, formData)
+      const result = await submitContactForm(null, formData);
 
-      expect(result.success).toBe(false)
-      expect(result.fieldErrors).toBeDefined()
-      expect(result.fieldErrors?.name).toBeDefined()
-      expect(result.fieldErrors?.email).toBeDefined()
-      expect(result.fieldErrors?.subject).toBeDefined()
-      expect(result.fieldErrors?.message).toBeDefined()
-    })
+      expect(result.success).toBe(false);
+      expect(result.fieldErrors).toBeDefined();
+      expect(result.fieldErrors?.name).toBeDefined();
+      expect(result.fieldErrors?.email).toBeDefined();
+      expect(result.fieldErrors?.subject).toBeDefined();
+      expect(result.fieldErrors?.message).toBeDefined();
+    });
 
-    it('should validate privacy consent is true', async () => {
-      const { submitContactForm } = await import('../contact')
+    it("should validate privacy consent is true", async () => {
+      const { submitContactForm } = await import("../contact");
 
-      const formData = new FormData()
-      formData.set('email', 'test@example.com')
-      formData.set('message', 'This is a test message that is long enough')
-      formData.set('name', 'Test User')
-      formData.set('subject', 'Test Subject')
-      formData.set('turnstileToken', 'test-token')
+      const formData = new FormData();
+      formData.set("email", "test@example.com");
+      formData.set("message", "This is a test message that is long enough");
+      formData.set("name", "Test User");
+      formData.set("subject", "Test Subject");
+      formData.set("turnstileToken", "test-token");
       // privacyConsent is missing (unchecked checkbox)
 
-      const result = await submitContactForm(null, formData)
+      const result = await submitContactForm(null, formData);
 
-      expect(result.success).toBe(false)
-      expect(result.fieldErrors?.privacyConsent).toBeDefined()
-    })
+      expect(result.success).toBe(false);
+      expect(result.fieldErrors?.privacyConsent).toBeDefined();
+    });
 
-    it('should accept valid data with privacy consent', async () => {
+    it("should accept valid data with privacy consent", async () => {
       // Mock successful Turnstile verification
-      ;(global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
-        json: async () => ({ success: true })
-      })
+      (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
+        json: async () => ({ success: true }),
+      });
 
       // Mock successful email send
       mockSend.mockResolvedValue({
         error: null,
-        id: 'test-email-id'
-      })
+        id: "test-email-id",
+      });
 
-      const { submitContactForm } = await import('../contact')
+      const { submitContactForm } = await import("../contact");
 
-      const formData = new FormData()
-      formData.set('email', 'test@example.com')
-      formData.set('message', 'This is a test message that is long enough')
-      formData.set('name', 'Test User')
-      formData.set('privacyConsent', 'on')
-      formData.set('subject', 'Test Subject')
-      formData.set('turnstileToken', 'test-token')
+      const formData = new FormData();
+      formData.set("email", "test@example.com");
+      formData.set("message", "This is a test message that is long enough");
+      formData.set("name", "Test User");
+      formData.set("privacyConsent", "on");
+      formData.set("subject", "Test Subject");
+      formData.set("turnstileToken", "test-token");
 
-      const result = await submitContactForm(null, formData)
+      const result = await submitContactForm(null, formData);
 
-      expect(result.success).toBe(true)
-      expect(result.error).toBeUndefined()
-      expect(mockSend).toHaveBeenCalled()
-    })
+      expect(result.success).toBe(true);
+      expect(result.error).toBeUndefined();
+      expect(mockSend).toHaveBeenCalled();
+    });
 
     it('should format sender name with "via example.com" suffix', async () => {
       // Mock successful Turnstile verification
-      ;(global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
-        json: async () => ({ success: true })
-      })
+      (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
+        json: async () => ({ success: true }),
+      });
 
       // Mock successful email send
       mockSend.mockResolvedValue({
         error: null,
-        id: 'test-email-id'
-      })
+        id: "test-email-id",
+      });
 
-      const { submitContactForm } = await import('../contact')
+      const { submitContactForm } = await import("../contact");
 
-      const formData = new FormData()
-      formData.set('email', 'test@example.com')
-      formData.set('message', 'This is a test message that is long enough')
-      formData.set('name', 'Test User')
-      formData.set('privacyConsent', 'on')
-      formData.set('subject', 'Test Subject')
-      formData.set('turnstileToken', 'test-token')
+      const formData = new FormData();
+      formData.set("email", "test@example.com");
+      formData.set("message", "This is a test message that is long enough");
+      formData.set("name", "Test User");
+      formData.set("privacyConsent", "on");
+      formData.set("subject", "Test Subject");
+      formData.set("turnstileToken", "test-token");
 
-      await submitContactForm(null, formData)
+      await submitContactForm(null, formData);
 
       // Verify mockSend was called with the correct format
       expect(mockSend).toHaveBeenCalledWith(
         expect.objectContaining({
-          from: 'Test User via example.com <no-reply@example.com>'
+          from: "Test User via example.com <no-reply@example.com>",
         })
-      )
-    })
+      );
+    });
 
-    it('should fail when Turnstile verification fails', async () => {
+    it("should fail when Turnstile verification fails", async () => {
       // Mock failed Turnstile verification
-      ;(global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
-        json: async () => ({ success: false })
-      })
+      (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
+        json: async () => ({ success: false }),
+      });
 
-      const { submitContactForm } = await import('../contact')
+      const { submitContactForm } = await import("../contact");
 
-      const formData = new FormData()
-      formData.set('email', 'test@example.com')
-      formData.set('message', 'This is a test message that is long enough')
-      formData.set('name', 'Test User')
-      formData.set('privacyConsent', 'on')
-      formData.set('subject', 'Test Subject')
-      formData.set('turnstileToken', 'invalid-token')
+      const formData = new FormData();
+      formData.set("email", "test@example.com");
+      formData.set("message", "This is a test message that is long enough");
+      formData.set("name", "Test User");
+      formData.set("privacyConsent", "on");
+      formData.set("subject", "Test Subject");
+      formData.set("turnstileToken", "invalid-token");
 
-      const result = await submitContactForm(null, formData)
+      const result = await submitContactForm(null, formData);
 
-      expect(result.success).toBe(false)
-      expect(result.error).toContain('スパム対策')
-      expect(mockSend).not.toHaveBeenCalled()
-    })
+      expect(result.success).toBe(false);
+      expect(result.error).toContain("スパム対策");
+      expect(mockSend).not.toHaveBeenCalled();
+    });
 
-    it('should handle Resend email sending errors', async () => {
+    it("should handle Resend email sending errors", async () => {
       // Mock successful Turnstile verification
-      ;(global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
-        json: async () => ({ success: true })
-      })
+      (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
+        json: async () => ({ success: true }),
+      });
 
       // Mock email send error
       mockSend.mockResolvedValue({
         error: {
-          message: 'Failed to send email',
-          name: 'EmailError'
-        }
-      })
+          message: "Failed to send email",
+          name: "EmailError",
+        },
+      });
 
-      const { submitContactForm } = await import('../contact')
+      const { submitContactForm } = await import("../contact");
 
-      const formData = new FormData()
-      formData.set('email', 'test@example.com')
-      formData.set('message', 'This is a test message that is long enough')
-      formData.set('name', 'Test User')
-      formData.set('privacyConsent', 'on')
-      formData.set('subject', 'Test Subject')
-      formData.set('turnstileToken', 'test-token')
+      const formData = new FormData();
+      formData.set("email", "test@example.com");
+      formData.set("message", "This is a test message that is long enough");
+      formData.set("name", "Test User");
+      formData.set("privacyConsent", "on");
+      formData.set("subject", "Test Subject");
+      formData.set("turnstileToken", "test-token");
 
-      const result = await submitContactForm(null, formData)
+      const result = await submitContactForm(null, formData);
 
-      expect(result.success).toBe(false)
-      expect(result.error).toContain('メールの送信に失敗')
-    })
-  })
-})
+      expect(result.success).toBe(false);
+      expect(result.error).toContain("メールの送信に失敗");
+    });
+  });
+});

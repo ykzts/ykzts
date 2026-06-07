@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { TablePlugin as LexicalTablePlugin } from '@lexical/react/LexicalTablePlugin'
+import { TablePlugin as LexicalTablePlugin } from "@lexical/react/LexicalTablePlugin";
 
 export function TablePlugin() {
   return (
@@ -9,5 +9,5 @@ export function TablePlugin() {
       hasCellMerge={false}
       hasHorizontalScroll={true}
     />
-  )
+  );
 }

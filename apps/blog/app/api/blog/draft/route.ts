@@ -1,47 +1,47 @@
-import { draftMode } from 'next/headers'
-import type { NextRequest } from 'next/server'
-import { NextResponse } from 'next/server'
-import { supabase, supabaseAdmin } from '@/lib/supabase/client'
+import { draftMode } from "next/headers";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { supabase, supabaseAdmin } from "@/lib/supabase/client";
 
 export async function GET(request: NextRequest) {
   // Verify secret token
-  const { searchParams } = new URL(request.url)
-  const secret = searchParams.get('secret')
-  const slug = searchParams.get('slug')
+  const { searchParams } = new URL(request.url);
+  const secret = searchParams.get("secret");
+  const slug = searchParams.get("slug");
 
   if (!secret || secret !== process.env.DRAFT_SECRET) {
-    return NextResponse.json({ message: 'Invalid token' }, { status: 401 })
+    return NextResponse.json({ message: "Invalid token" }, { status: 401 });
   }
 
   if (!slug) {
     return NextResponse.json(
-      { message: 'Missing slug parameter' },
+      { message: "Missing slug parameter" },
       { status: 400 }
-    )
+    );
   }
 
   // Use service role client to query draft posts (bypasses RLS)
-  const client = supabaseAdmin ?? supabase
+  const client = supabaseAdmin ?? supabase;
 
   if (!client) {
     // If Supabase is not configured, redirect to blog homepage
-    return NextResponse.redirect(new URL('/blog', request.url))
+    return NextResponse.redirect(new URL("/blog", request.url));
   }
 
   // Enable draft mode
-  const draft = await draftMode()
-  draft.enable()
+  const draft = await draftMode();
+  draft.enable();
 
   try {
     const { data: post, error: postError } = await client
-      .from('posts')
-      .select('slug, published_at')
-      .eq('slug', slug)
-      .maybeSingle()
+      .from("posts")
+      .select("slug, published_at")
+      .eq("slug", slug)
+      .maybeSingle();
 
     if (postError) {
-      console.error('Error fetching draft post:', postError.message)
-      return NextResponse.redirect(new URL('/blog', request.url))
+      console.error("Error fetching draft post:", postError.message);
+      return NextResponse.redirect(new URL("/blog", request.url));
     }
 
     if (post) {
@@ -50,12 +50,12 @@ export async function GET(request: NextRequest) {
           `/blog/draft/${encodeURIComponent(post.slug as string)}`,
           request.url
         )
-      )
+      );
     }
   } catch (error) {
-    console.error('Error fetching post for draft mode:', error)
+    console.error("Error fetching post for draft mode:", error);
   }
 
   // Fallback: redirect to blog homepage if post not found
-  return NextResponse.redirect(new URL('/blog', request.url))
+  return NextResponse.redirect(new URL("/blog", request.url));
 }

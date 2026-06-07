@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from '@ykzts/ui/components/card'
+import { Card, CardContent, CardHeader } from "@ykzts/ui/components/card";
 
 export function LoginSkeleton() {
   return (
@@ -25,5 +25,5 @@ export function LoginSkeleton() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

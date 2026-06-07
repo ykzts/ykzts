@@ -1,31 +1,31 @@
-'use server'
+"use server";
 
-import { getSiteName } from '@ykzts/site-config'
-import { getProfile } from '@ykzts/supabase/queries'
-import { Resend } from 'resend'
-import * as z from 'zod'
-import { verifyTurnstile } from '@/lib/turnstile'
+import { getSiteName } from "@ykzts/site-config";
+import { getProfile } from "@ykzts/supabase/queries";
+import { Resend } from "resend";
+import { z } from "zod";
+import { verifyTurnstile } from "@/lib/turnstile";
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const contactFormSchema = z.object({
-  email: z.email('有効なメールアドレスを入力してください'),
-  message: z.string().min(10, 'メッセージは10文字以上入力してください'),
-  name: z.string().min(1, 'お名前を入力してください'),
+  email: z.email("有効なメールアドレスを入力してください"),
+  message: z.string().min(10, "メッセージは10文字以上入力してください"),
+  name: z.string().min(1, "お名前を入力してください"),
   privacyConsent: z
     .boolean()
-    .refine((val) => val === true, 'プライバシーポリシーに同意してください'),
-  subject: z.string().min(1, '件名を入力してください'),
-  turnstileToken: z.string().min(1, 'スパム対策の確認が必要です')
-})
+    .refine((val) => val === true, "プライバシーポリシーに同意してください"),
+  subject: z.string().min(1, "件名を入力してください"),
+  turnstileToken: z.string().min(1, "スパム対策の確認が必要です"),
+});
 
-export type ContactFormData = z.infer<typeof contactFormSchema>
+export type ContactFormData = z.infer<typeof contactFormSchema>;
 
-export type ContactFormResponse = {
-  success: boolean
-  error?: string
-  fieldErrors?: Partial<Record<keyof ContactFormData, string>>
-  formData?: Partial<ContactFormData>
+export interface ContactFormResponse {
+  error?: string;
+  fieldErrors?: Partial<Record<keyof ContactFormData, string>>;
+  formData?: Partial<ContactFormData>;
+  success: boolean;
 }
 
 export async function submitContactForm(
@@ -34,109 +34,109 @@ export async function submitContactForm(
 ): Promise<ContactFormResponse> {
   // Extract form data
   const rawData = {
-    email: formData.get('email'),
-    message: formData.get('message'),
-    name: formData.get('name'),
-    privacyConsent: formData.get('privacyConsent') === 'on',
-    subject: formData.get('subject'),
-    turnstileToken: formData.get('turnstileToken')
-  }
+    email: formData.get("email"),
+    message: formData.get("message"),
+    name: formData.get("name"),
+    privacyConsent: formData.get("privacyConsent") === "on",
+    subject: formData.get("subject"),
+    turnstileToken: formData.get("turnstileToken"),
+  };
 
   const data: ContactFormData = {
-    email: typeof rawData.email === 'string' ? rawData.email : '',
-    message: typeof rawData.message === 'string' ? rawData.message : '',
-    name: typeof rawData.name === 'string' ? rawData.name : '',
+    email: typeof rawData.email === "string" ? rawData.email : "",
+    message: typeof rawData.message === "string" ? rawData.message : "",
+    name: typeof rawData.name === "string" ? rawData.name : "",
     privacyConsent: rawData.privacyConsent,
-    subject: typeof rawData.subject === 'string' ? rawData.subject : '',
+    subject: typeof rawData.subject === "string" ? rawData.subject : "",
     turnstileToken:
-      typeof rawData.turnstileToken === 'string' ? rawData.turnstileToken : ''
-  }
+      typeof rawData.turnstileToken === "string" ? rawData.turnstileToken : "",
+  };
 
   try {
     // Fetch contact email from Supabase profile server-side
-    const profile = await getProfile()
+    const profile = await getProfile();
 
     if (!profile.email) {
-      throw new Error('Contact email is not configured in profile')
+      throw new Error("Contact email is not configured in profile");
     }
 
-    const contactEmail = profile.email
+    const contactEmail = profile.email;
     // Validate form data
-    const validatedData = contactFormSchema.parse(data)
+    const validatedData = contactFormSchema.parse(data);
 
     // Verify Turnstile token
-    const isValidToken = await verifyTurnstile(validatedData.turnstileToken)
+    const isValidToken = await verifyTurnstile(validatedData.turnstileToken);
     if (!isValidToken) {
       return {
-        error: 'スパム対策の確認に失敗しました。もう一度お試しください。',
+        error: "スパム対策の確認に失敗しました。もう一度お試しください。",
         formData: data,
-        success: false
-      }
+        success: false,
+      };
     }
 
     // Send email using Resend
-    if (!process.env.RESEND_API_KEY || !contactEmail) {
+    if (!(process.env.RESEND_API_KEY && contactEmail)) {
       if (!process.env.RESEND_API_KEY) {
-        console.error('RESEND_API_KEY is not configured.')
+        console.error("RESEND_API_KEY is not configured.");
       }
 
       if (!contactEmail) {
-        console.error('contactEmail in profile is not configured.')
+        console.error("contactEmail in profile is not configured.");
       }
 
       return {
         error:
-          'メール送信の設定が正しくありません。管理者にお問い合わせください。',
+          "メール送信の設定が正しくありません。管理者にお問い合わせください。",
         formData: data,
-        success: false
-      }
+        success: false,
+      };
     }
 
-    const siteName = getSiteName()
-    const fromAddress = process.env.MAIL_FROM_ADDRESS ?? 'no-reply@example.com'
+    const siteName = getSiteName();
+    const fromAddress = process.env.MAIL_FROM_ADDRESS ?? "no-reply@example.com";
 
     const emailResult = await resend.emails.send({
       from: `${validatedData.name} via ${siteName} <${fromAddress}>`,
       replyTo: `${validatedData.name} <${validatedData.email}>`,
       subject: `[お問い合わせ] ${validatedData.subject}`,
       text: validatedData.message,
-      to: [contactEmail]
-    })
+      to: [contactEmail],
+    });
 
     if (emailResult.error) {
-      console.error('Resend error:', emailResult.error)
+      console.error("Resend error:", emailResult.error);
       return {
         error:
-          'メールの送信に失敗しました。しばらくしてからもう一度お試しください。',
+          "メールの送信に失敗しました。しばらくしてからもう一度お試しください。",
         formData: data,
-        success: false
-      }
+        success: false,
+      };
     }
 
     return {
-      success: true
-    }
+      success: true,
+    };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      const fieldErrors: Partial<Record<keyof ContactFormData, string>> = {}
+      const fieldErrors: Partial<Record<keyof ContactFormData, string>> = {};
       for (const issue of error.issues) {
-        const field = issue.path[0] as keyof ContactFormData
+        const field = issue.path[0] as keyof ContactFormData;
         if (field) {
-          fieldErrors[field] = issue.message
+          fieldErrors[field] = issue.message;
         }
       }
       return {
         fieldErrors,
         formData: data,
-        success: false
-      }
+        success: false,
+      };
     }
 
-    console.error('Unexpected error in submitContactForm:', error)
+    console.error("Unexpected error in submitContactForm:", error);
     return {
       error:
-        '予期しないエラーが発生しました。しばらくしてからもう一度お試しください。',
-      success: false
-    }
+        "予期しないエラーが発生しました。しばらくしてからもう一度お試しください。",
+      success: false,
+    };
   }
 }

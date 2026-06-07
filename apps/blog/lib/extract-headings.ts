@@ -1,10 +1,10 @@
-import type { PortableTextBlock } from '@portabletext/types'
-import type { PortableTextValue } from './portable-text'
+import type { PortableTextBlock } from "@portabletext/types";
+import type { PortableTextValue } from "./portable-text";
 
 export interface Heading {
-  id: string
-  level: number
-  text: string
+  id: string;
+  level: number;
+  text: string;
 }
 
 /**
@@ -13,57 +13,57 @@ export interface Heading {
  * @returns Array of heading objects with id, level, and text
  */
 export function extractHeadings(content: PortableTextValue): Heading[] {
-  const headings: Heading[] = []
-  const idCounts = new Map<string, number>()
+  const headings: Heading[] = [];
+  const idCounts = new Map<string, number>();
 
   for (const block of content) {
     // Check if this is a block with a heading style
     if (
-      block._type === 'block' &&
-      'style' in block &&
-      typeof block.style === 'string' &&
+      block._type === "block" &&
+      "style" in block &&
+      typeof block.style === "string" &&
       /^h[23]$/.test(block.style)
     ) {
       // Extract text from children
-      const text = extractTextFromBlock(block)
+      const text = extractTextFromBlock(block);
 
       if (text) {
-        const level = Number.parseInt(block.style.charAt(1), 10)
-        let id = generateHeadingId(text)
-        const count = idCounts.get(id) ?? 0
-        idCounts.set(id, count + 1)
+        const level = Number.parseInt(block.style.charAt(1), 10);
+        let id = generateHeadingId(text);
+        const count = idCounts.get(id) ?? 0;
+        idCounts.set(id, count + 1);
         if (count > 0) {
-          id = `${id}-${count}`
+          id = `${id}-${count}`;
         }
 
         headings.push({
           id,
           level,
-          text
-        })
+          text,
+        });
       }
     }
   }
 
-  return headings
+  return headings;
 }
 
 /**
  * Extracts plain text from a PortableText block's children
  */
 function extractTextFromBlock(block: PortableTextBlock): string {
-  if (!('children' in block) || !Array.isArray(block.children)) {
-    return ''
+  if (!("children" in block && Array.isArray(block.children))) {
+    return "";
   }
 
   return block.children
     .map((child) => {
-      if (typeof child === 'object' && child !== null && 'text' in child) {
-        return String(child.text)
+      if (typeof child === "object" && child !== null && "text" in child) {
+        return String(child.text);
       }
-      return ''
+      return "";
     })
-    .join('')
+    .join("");
 }
 
 /**
@@ -74,8 +74,8 @@ export function generateHeadingId(text: string): string {
   return text
     .toLowerCase()
     .trim()
-    .replace(/[^\p{L}\p{N}\s-]/gu, '') // Remove special chars but keep letters, numbers, spaces, hyphens
-    .replace(/\s+/g, '-') // Replace spaces with hyphens
-    .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
-    .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+    .replace(/[^\p{L}\p{N}\s-]/gu, "") // Remove special chars but keep letters, numbers, spaces, hyphens
+    .replace(/\s+/g, "-") // Replace spaces with hyphens
+    .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
+    .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
 }

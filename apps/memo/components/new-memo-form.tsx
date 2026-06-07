@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import { RichTextEditor } from '@ykzts/portable-text-editor'
-import { useActionState } from 'react'
-import { createMemo } from '@/app/new/actions'
-import { uploadImage } from '@/lib/upload-image'
+import { RichTextEditor } from "@ykzts/portable-text-editor";
+import { useActionState } from "react";
+import { createMemo } from "@/app/new/actions";
+import { uploadImage } from "@/lib/upload-image";
 
 export function NewMemoForm() {
-  const [state, formAction, isPending] = useActionState(createMemo, null)
+  const [state, formAction, isPending] = useActionState(createMemo, null);
 
   return (
     <form action={formAction}>
@@ -91,9 +91,9 @@ export function NewMemoForm() {
           disabled={isPending}
           type="submit"
         >
-          {isPending ? '作成中...' : '作成'}
+          {isPending ? "作成中..." : "作成"}
         </button>
       </div>
     </form>
-  )
+  );
 }

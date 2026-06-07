@@ -1,22 +1,22 @@
-import { portableTextToMarkdown } from '@ykzts/portable-text-utils'
-import { getProfile, getWorks } from '@ykzts/supabase/queries'
+import { portableTextToMarkdown } from "@ykzts/portable-text-utils";
+import { getProfile, getWorks } from "@ykzts/supabase/queries";
 import {
   buildPostUrl,
   buildWorkUrl,
   getLlmsHeaderLines,
-  type ProfileForHeader
-} from '@/lib/llms'
-import { getPostsForLlmsFull } from '@/lib/supabase'
+  type ProfileForHeader,
+} from "@/lib/llms";
+import { getPostsForLlmsFull } from "@/lib/supabase";
 
 export async function GET() {
   const [works, posts, profile] = await Promise.all([
     getWorks(),
     getPostsForLlmsFull(),
     getProfile().catch((err: unknown) => {
-      console.warn('Failed to fetch profile for llms-full.txt:', err)
-      return null
-    })
-  ])
+      console.warn("Failed to fetch profile for llms-full.txt:", err);
+      return null;
+    }),
+  ]);
 
   const profileForHeader: ProfileForHeader | null = profile
     ? {
@@ -27,44 +27,44 @@ export async function GET() {
         occupation: profile.occupation,
         profile_technologies: profile.profile_technologies,
         social_links: profile.social_links,
-        tagline: profile.tagline
+        tagline: profile.tagline,
       }
-    : null
+    : null;
 
   const sections: string[] = [
     ...getLlmsHeaderLines(profileForHeader),
-    '',
-    '## Works',
-    ''
-  ]
+    "",
+    "## Works",
+    "",
+  ];
 
   for (const work of works) {
-    const url = buildWorkUrl(work.slug)
-    sections.push(`### [${work.title}](${url})`, '')
-    const content = portableTextToMarkdown(work.content, { headingOffset: 3 })
+    const url = buildWorkUrl(work.slug);
+    sections.push(`### [${work.title}](${url})`, "");
+    const content = portableTextToMarkdown(work.content, { headingOffset: 3 });
     if (content) {
-      sections.push(content, '')
+      sections.push(content, "");
     }
-    sections.push('---', '')
+    sections.push("---", "");
   }
 
-  sections.push('## Articles', '')
+  sections.push("## Articles", "");
 
   for (const post of posts) {
-    const url = buildPostUrl(post.slug, post.published_at)
-    sections.push(`### [${post.title}](${url})`, '')
-    const content = portableTextToMarkdown(post.content, { headingOffset: 3 })
+    const url = buildPostUrl(post.slug, post.published_at);
+    sections.push(`### [${post.title}](${url})`, "");
+    const content = portableTextToMarkdown(post.content, { headingOffset: 3 });
     if (content) {
-      sections.push(content, '')
+      sections.push(content, "");
     } else if (post.excerpt) {
-      sections.push(post.excerpt, '')
+      sections.push(post.excerpt, "");
     }
-    sections.push('---', '')
+    sections.push("---", "");
   }
 
-  return new Response(sections.join('\n'), {
+  return new Response(sections.join("\n"), {
     headers: {
-      'Content-Type': 'text/plain; charset=utf-8'
-    }
-  })
+      "Content-Type": "text/plain; charset=utf-8",
+    },
+  });
 }

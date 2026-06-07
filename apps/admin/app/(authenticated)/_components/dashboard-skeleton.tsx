@@ -1,4 +1,4 @@
-import { Panel } from '@/components/panel'
+import { Panel } from "@/components/panel";
 
 export function DashboardSkeleton() {
   return (
@@ -25,5 +25,5 @@ export function DashboardSkeleton() {
         </Panel>
       ))}
     </div>
-  )
+  );
 }

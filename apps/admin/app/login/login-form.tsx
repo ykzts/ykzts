@@ -1,52 +1,52 @@
-'use client'
-import { Button } from '@ykzts/ui/components/button'
-import { Input } from '@ykzts/ui/components/input'
-import { Label } from '@ykzts/ui/components/label'
+"use client";
+import { Button } from "@ykzts/ui/components/button";
+import { Input } from "@ykzts/ui/components/input";
+import { Label } from "@ykzts/ui/components/label";
 
-import { useState, useTransition } from 'react'
-import { signInWithGitHub, signInWithPassword } from './actions'
+import { useState, useTransition } from "react";
+import { signInWithGitHub, signInWithPassword } from "./actions";
 
-type LoginFormProps = {
-  isDevelopment?: boolean
+interface LoginFormProps {
+  isDevelopment?: boolean;
 }
 
 export default function LoginForm({ isDevelopment = false }: LoginFormProps) {
-  const [isPending, startTransition] = useTransition()
-  const [error, setError] = useState<string | null>(null)
-  const [email, setEmail] = useState(isDevelopment ? 'test@example.com' : '')
-  const [password, setPassword] = useState(isDevelopment ? 'password123' : '')
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = useState(isDevelopment ? "test@example.com" : "");
+  const [password, setPassword] = useState(isDevelopment ? "password123" : "");
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
+    e.preventDefault();
+    setError(null);
     startTransition(async () => {
       try {
-        const result = await signInWithPassword(email, password)
+        const result = await signInWithPassword(email, password);
         if (result?.error) {
-          setError(result.error)
+          setError(result.error);
         }
       } catch {
-        setError('ログインに失敗しました。もう一度お試しください。')
+        setError("ログインに失敗しました。もう一度お試しください。");
       }
-    })
-  }
+    });
+  };
 
   const handleGitHubSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
+    e.preventDefault();
+    setError(null);
     startTransition(async () => {
       try {
-        const url = await signInWithGitHub()
+        const url = await signInWithGitHub();
         if (url) {
-          window.location.href = url
-          return
+          window.location.href = url;
+          return;
         }
-        setError('ログインURLの取得に失敗しました')
+        setError("ログインURLの取得に失敗しました");
       } catch {
-        setError('ログインに失敗しました。もう一度お試しください。')
+        setError("ログインに失敗しました。もう一度お試しください。");
       }
-    })
-  }
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -89,7 +89,7 @@ export default function LoginForm({ isDevelopment = false }: LoginFormProps) {
             </div>
 
             <Button className="w-full" disabled={isPending} type="submit">
-              {isPending ? 'ログイン中...' : 'ログイン'}
+              {isPending ? "ログイン中..." : "ログイン"}
             </Button>
           </form>
 
@@ -133,5 +133,5 @@ export default function LoginForm({ isDevelopment = false }: LoginFormProps) {
         </Button>
       </form>
     </div>
-  )
+  );
 }

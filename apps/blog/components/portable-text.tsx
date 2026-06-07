@@ -2,71 +2,71 @@ import {
   PortableText,
   type PortableTextBlockComponent,
   type PortableTextMarkComponentProps,
-  type PortableTextReactComponents
-} from '@portabletext/react'
-import Image from 'next/image'
-import { type ComponentProps, Suspense } from 'react'
-import Link from '@/components/link'
-import { generateHeadingId } from '@/lib/extract-headings'
+  type PortableTextReactComponents,
+} from "@portabletext/react";
+import Image from "next/image";
+import { type ComponentProps, Suspense } from "react";
+import Link from "@/components/link";
+import { generateHeadingId } from "@/lib/extract-headings";
 import type {
   CodeBlock,
   ImageBlock,
-  PortableTextValue
-} from '@/lib/portable-text'
-import { highlightCode } from '@/lib/shiki'
+  PortableTextValue,
+} from "@/lib/portable-text";
+import { highlightCode } from "@/lib/shiki";
 
 // Component to handle code block syntax highlighting
 async function CodeBlockHighlighter({
   language,
-  text
+  text,
 }: {
-  language?: string
-  text: string
+  language?: string;
+  text: string;
 }) {
   try {
-    const html = await highlightCode(text, language)
+    const html = await highlightCode(text, language);
 
     return (
       // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki generates safe HTML for syntax highlighting
       <div className="not-prose" dangerouslySetInnerHTML={{ __html: html }} />
-    )
+    );
   } catch (error) {
     // If highlighting fails, fall back to plain code block
-    console.error('Failed to highlight code block:', error)
+    console.error("Failed to highlight code block:", error);
     return (
       <pre className="not-prose overflow-x-auto rounded-lg bg-muted p-4">
         <code>{text}</code>
       </pre>
-    )
+    );
   }
 }
 
 // Helper function to extract text from block children
 function extractTextFromBlock(children: unknown): string {
   if (!Array.isArray(children)) {
-    return ''
+    return "";
   }
 
   return children
     .map((child) => {
-      if (typeof child === 'object' && child !== null && 'text' in child) {
-        return String(child.text)
+      if (typeof child === "object" && child !== null && "text" in child) {
+        return String(child.text);
       }
-      return ''
+      return "";
     })
-    .join('')
+    .join("");
 }
 
 // Named component for code blocks
 const CodeBlockComponent: PortableTextBlockComponent = (props) => {
   // Extract text from the block's children spans
-  const text = extractTextFromBlock(props.value.children)
+  const text = extractTextFromBlock(props.value.children);
 
   // Extract language if available
   const language =
-    'language' in props.value && typeof props.value.language === 'string'
+    "language" in props.value && typeof props.value.language === "string"
       ? props.value.language
-      : undefined
+      : undefined;
 
   return (
     <Suspense
@@ -78,59 +78,57 @@ const CodeBlockComponent: PortableTextBlockComponent = (props) => {
     >
       <CodeBlockHighlighter language={language} text={text} />
     </Suspense>
-  )
-}
+  );
+};
 
 async function InlineCodeBlockHighlighter({
   code,
-  language
+  language,
 }: {
-  code: string
-  language?: string
+  code: string;
+  language?: string;
 }) {
-  const html = await highlightCode(code, language)
+  const html = await highlightCode(code, language);
 
   return (
     // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki generates safe HTML for syntax highlighting
     <div dangerouslySetInnerHTML={{ __html: html }} />
-  )
+  );
 }
 
 // Heading components with IDs for ToC
-const createHeadingComponent = (
-  Tag: 'h2' | 'h3'
-): PortableTextBlockComponent => {
-  return (props) => {
-    const text = extractTextFromBlock(props.value.children)
-    const id = generateHeadingId(text)
+const createHeadingComponent =
+  (Tag: "h2" | "h3"): PortableTextBlockComponent =>
+  (props) => {
+    const text = extractTextFromBlock(props.value.children);
+    const id = generateHeadingId(text);
 
     return (
       <Tag className="scroll-mt-20" id={id}>
         {props.children}
       </Tag>
-    )
-  }
-}
+    );
+  };
 
 const portableTextComponents = {
   block: {
     code: CodeBlockComponent,
-    h2: createHeadingComponent('h2'),
-    h3: createHeadingComponent('h3')
+    h2: createHeadingComponent("h2"),
+    h3: createHeadingComponent("h3"),
   },
   marks: {
     link({
       children,
-      value
+      value,
     }: PortableTextMarkComponentProps<{ _type: string; href: string }>) {
-      const href = value?.href
+      const href = value?.href;
 
-      return <Link href={href}>{children}</Link>
-    }
+      return <Link href={href}>{children}</Link>;
+    },
   },
   types: {
     code({ value }: { value: CodeBlock }) {
-      const { code, language } = value
+      const { code, language } = value;
 
       return (
         <Suspense
@@ -142,14 +140,14 @@ const portableTextComponents = {
         >
           <InlineCodeBlockHighlighter code={code} language={language} />
         </Suspense>
-      )
+      );
     },
     image({ value }: { value: ImageBlock }) {
-      const { alt, asset, height, width } = value
-      const imageUrl = asset?.url
+      const { alt, asset, height, width } = value;
+      const imageUrl = asset?.url;
 
       if (!imageUrl) {
-        return null
+        return null;
       }
 
       const normalizeDimension = (
@@ -158,16 +156,16 @@ const portableTextComponents = {
       ) =>
         Number.isFinite(dimension) && (dimension as number) > 0
           ? Math.round(dimension as number)
-          : fallback
+          : fallback;
 
-      const normalizedHeight = normalizeDimension(height, 900)
-      const normalizedWidth = normalizeDimension(width, 1600)
+      const normalizedHeight = normalizeDimension(height, 900);
+      const normalizedWidth = normalizeDimension(width, 1600);
 
       return (
         <figure className="my-8">
           <div className="w-full">
             <Image
-              alt={alt || ''}
+              alt={alt || ""}
               className="h-auto w-full rounded-lg"
               height={normalizedHeight}
               sizes="(min-width: 1024px) 800px, 100vw"
@@ -181,22 +179,22 @@ const portableTextComponents = {
             </figcaption>
           )}
         </figure>
-      )
+      );
     },
     table({
-      value
+      value,
     }: {
       value: {
-        _key: string
+        _key: string;
         rows: Array<{
-          _key: string
-          cells: Array<{ _key: string; content: string; isHeader: boolean }>
-        }>
-      }
+          _key: string;
+          cells: Array<{ _key: string; content: string; isHeader: boolean }>;
+        }>;
+      };
     }) {
-      const hasHeader = value.rows[0]?.cells.every((cell) => cell.isHeader)
-      const headerRow = hasHeader ? value.rows[0] : null
-      const bodyRows = hasHeader ? value.rows.slice(1) : value.rows
+      const hasHeader = value.rows[0]?.cells.every((cell) => cell.isHeader);
+      const headerRow = hasHeader ? value.rows[0] : null;
+      const bodyRows = hasHeader ? value.rows.slice(1) : value.rows;
       return (
         <table>
           {headerRow && (
@@ -218,17 +216,17 @@ const portableTextComponents = {
             ))}
           </tbody>
         </table>
-      )
-    }
-  }
-} satisfies Partial<PortableTextReactComponents>
+      );
+    },
+  },
+} satisfies Partial<PortableTextReactComponents>;
 
 type PortableTextProps = Omit<
   ComponentProps<typeof PortableText>,
-  'components'
+  "components"
 > & {
-  value: PortableTextValue
-}
+  value: PortableTextValue;
+};
 
 export default function PortableTextBlock({
   value,
@@ -242,5 +240,5 @@ export default function PortableTextBlock({
         value={value}
       />
     </div>
-  )
+  );
 }

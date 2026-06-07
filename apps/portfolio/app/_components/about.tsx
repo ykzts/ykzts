@@ -1,8 +1,8 @@
-import { getProfile } from '@ykzts/supabase/queries'
-import { Suspense } from 'react'
-import Skeleton from '@/components/skeleton'
-import range from '@/lib/range'
-import PortableTextBlock from './portable-text'
+import { getProfile } from "@ykzts/supabase/queries";
+import { Suspense } from "react";
+import Skeleton from "@/components/skeleton";
+import range from "@/lib/range";
+import PortableTextBlock from "./portable-text";
 
 function AboutSkeleton() {
   return (
@@ -16,14 +16,14 @@ function AboutSkeleton() {
         ))}
       </div>
     </section>
-  )
+  );
 }
 
 async function AboutImpl() {
-  const profile = await getProfile()
+  const profile = await getProfile();
 
   if (!profile.about) {
-    return null
+    return null;
   }
 
   return (
@@ -35,7 +35,7 @@ async function AboutImpl() {
         <PortableTextBlock value={profile.about} />
       </div>
     </section>
-  )
+  );
 }
 
 export default function About() {
@@ -43,5 +43,5 @@ export default function About() {
     <Suspense fallback={<AboutSkeleton />}>
       <AboutImpl />
     </Suspense>
-  )
+  );
 }

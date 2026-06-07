@@ -1,31 +1,31 @@
-'use server'
+"use server";
 
-import { createServerClient } from '@ykzts/supabase/server'
+import { createServerClient } from "@ykzts/supabase/server";
 
 /**
  * Get all unique tags used across all posts
  */
 export async function getAllExistingTags(): Promise<string[]> {
-  const supabase = await createServerClient()
+  const supabase = await createServerClient();
 
   const { data, error } = await supabase
-    .from('posts')
-    .select('tags')
-    .not('tags', 'is', null)
+    .from("posts")
+    .select("tags")
+    .not("tags", "is", null);
 
   if (error) {
-    console.error('Failed to fetch existing tags:', error)
-    return []
+    console.error("Failed to fetch existing tags:", error);
+    return [];
   }
 
-  const allTags = new Set<string>()
+  const allTags = new Set<string>();
   for (const row of data ?? []) {
     if (row.tags) {
       for (const tag of row.tags) {
-        allTags.add(tag)
+        allTags.add(tag);
       }
     }
   }
 
-  return [...allTags].sort()
+  return [...allTags].sort();
 }

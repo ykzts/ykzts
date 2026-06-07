@@ -1,4 +1,4 @@
-import { Panel } from '@/components/panel'
+import { Panel } from "@/components/panel";
 
 export function WorksPageSkeleton() {
   return (
@@ -38,5 +38,5 @@ export function WorksPageSkeleton() {
         </table>
       </div>
     </Panel>
-  )
+  );
 }

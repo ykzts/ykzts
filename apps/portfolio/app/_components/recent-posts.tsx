@@ -1,34 +1,34 @@
-import { Link } from '@vercel/microfrontends/next/client'
-import { getPosts } from '@ykzts/supabase/queries'
-import { cacheLife } from 'next/cache'
-import { Suspense } from 'react'
-import Skeleton from '@/components/skeleton'
-import range from '@/lib/range'
+import { Link } from "@vercel/microfrontends/next/client";
+import { getPosts } from "@ykzts/supabase/queries";
+import { cacheLife } from "next/cache";
+import { Suspense } from "react";
+import Skeleton from "@/components/skeleton";
+import range from "@/lib/range";
 
-const RECENT_POSTS_COUNT = 5
+const RECENT_POSTS_COUNT = 5;
 
 function startOfHour(date: Date): Date {
-  const normalized = new Date(date)
-  normalized.setMinutes(0, 0, 0)
+  const normalized = new Date(date);
+  normalized.setMinutes(0, 0, 0);
 
-  return normalized
+  return normalized;
 }
 
 async function getCurrentTime(): Promise<Date> {
-  'use cache'
+  "use cache";
 
-  cacheLife('hours')
+  cacheLife("hours");
 
-  return startOfHour(new Date())
+  return startOfHour(new Date());
 }
 
 function getDateBasedUrl(slug: string, publishedAt: string): string {
-  const date = new Date(publishedAt)
-  const year = date.getUTCFullYear()
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0')
-  const day = String(date.getUTCDate()).padStart(2, '0')
+  const date = new Date(publishedAt);
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
 
-  return `/blog/${year}/${month}/${day}/${slug}`
+  return `/blog/${year}/${month}/${day}/${slug}`;
 }
 
 function RecentPostsSkeleton() {
@@ -51,19 +51,19 @@ function RecentPostsSkeleton() {
         ))}
       </div>
     </section>
-  )
+  );
 }
 
 async function RecentPostsImpl() {
-  const now = await getCurrentTime()
+  const now = await getCurrentTime();
 
-  let allPosts: Awaited<ReturnType<typeof getPosts>>
+  let allPosts: Awaited<ReturnType<typeof getPosts>>;
 
   try {
-    allPosts = await getPosts(1, now)
+    allPosts = await getPosts(1, now);
   } catch (error) {
-    console.error('Failed to load recent posts:', error)
-    return null
+    console.error("Failed to load recent posts:", error);
+    return null;
   }
 
   const posts = allPosts
@@ -71,10 +71,10 @@ async function RecentPostsImpl() {
       (post): post is typeof post & { published_at: string } =>
         post.published_at != null
     )
-    .slice(0, RECENT_POSTS_COUNT)
+    .slice(0, RECENT_POSTS_COUNT);
 
   if (posts.length === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -84,7 +84,7 @@ async function RecentPostsImpl() {
       </h2>
       <div className="space-y-6">
         {posts.map((post) => {
-          const url = getDateBasedUrl(post.slug, post.published_at)
+          const url = getDateBasedUrl(post.slug, post.published_at);
 
           return (
             <article
@@ -107,11 +107,11 @@ async function RecentPostsImpl() {
                     className="text-muted-foreground text-xs"
                     dateTime={post.published_at}
                   >
-                    {new Date(post.published_at).toLocaleDateString('ja-JP', {
-                      day: 'numeric',
-                      month: 'long',
-                      timeZone: 'UTC',
-                      year: 'numeric'
+                    {new Date(post.published_at).toLocaleDateString("ja-JP", {
+                      day: "numeric",
+                      month: "long",
+                      timeZone: "UTC",
+                      year: "numeric",
                     })}
                   </time>
                 )}
@@ -129,7 +129,7 @@ async function RecentPostsImpl() {
                 )}
               </div>
             </article>
-          )
+          );
         })}
       </div>
       <div className="mt-8 text-center">
@@ -141,7 +141,7 @@ async function RecentPostsImpl() {
         </Link>
       </div>
     </section>
-  )
+  );
 }
 
 export default function RecentPosts() {
@@ -149,5 +149,5 @@ export default function RecentPosts() {
     <Suspense fallback={<RecentPostsSkeleton />}>
       <RecentPostsImpl />
     </Suspense>
-  )
+  );
 }

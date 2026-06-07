@@ -1,1 +1,1 @@
-export { Skeleton as default } from '@ykzts/ui/components/skeleton'
+export { Skeleton as default } from "@ykzts/ui/components/skeleton";

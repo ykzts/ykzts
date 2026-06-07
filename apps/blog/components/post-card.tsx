@@ -1,57 +1,57 @@
-import { Link } from '@vercel/microfrontends/next/client'
-import { extractFirstParagraph } from '@ykzts/portable-text-utils'
-import { Badge } from '@ykzts/ui/components/badge'
+import { Link } from "@vercel/microfrontends/next/client";
+import { extractFirstParagraph } from "@ykzts/portable-text-utils";
+import { Badge } from "@ykzts/ui/components/badge";
 import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
-} from '@ykzts/ui/components/card'
-import { getPostUrl } from '@/lib/blog-urls'
-import type { PortableTextValue } from '@/lib/portable-text'
-import DateDisplay from './date-display'
-import TagList from './tag-list'
+  CardTitle,
+} from "@ykzts/ui/components/card";
+import { getPostUrl } from "@/lib/blog-urls";
+import type { PortableTextValue } from "@/lib/portable-text";
+import DateDisplay from "./date-display";
+import TagList from "./tag-list";
 
-type Post = {
-  slug: string
-  title: string
-  excerpt: string | null
-  content?: PortableTextValue | null
-  published_at: string | null
-  status?: string | null
-  tags: string[] | null
+interface Post {
+  content?: PortableTextValue | null;
+  excerpt: string | null;
   profile?: {
-    id: string
-    name: string
-  } | null
+    id: string;
+    name: string;
+  } | null;
+  published_at: string | null;
+  slug: string;
+  status?: string | null;
+  tags: string[] | null;
+  title: string;
 }
 
-type PostCardProps = {
-  isDraft?: boolean
-  post: Post
+interface PostCardProps {
+  isDraft?: boolean;
+  post: Post;
 }
 
 function getPostStatusBadge(
   status: string | null | undefined,
   publishedAt: string | null
-): { label: string; variant: 'secondary' | 'outline' } | null {
-  if (status === 'draft') {
-    return { label: '下書き', variant: 'secondary' }
+): { label: string; variant: "secondary" | "outline" } | null {
+  if (status === "draft") {
+    return { label: "下書き", variant: "secondary" };
   }
   if (publishedAt && new Date(publishedAt) > new Date()) {
-    return { label: '予約投稿', variant: 'outline' }
+    return { label: "予約投稿", variant: "outline" };
   }
-  return null
+  return null;
 }
 
 export default function PostCard({ isDraft = false, post }: PostCardProps) {
-  const url = getPostUrl(post.slug, post.published_at)
-  const previewText = post.excerpt || extractFirstParagraph(post.content)
+  const url = getPostUrl(post.slug, post.published_at);
+  const previewText = post.excerpt || extractFirstParagraph(post.content);
   const statusBadge = isDraft
     ? getPostStatusBadge(post.status, post.published_at)
-    : null
+    : null;
 
   return (
     <Card>
@@ -80,5 +80,5 @@ export default function PostCard({ isDraft = false, post }: PostCardProps) {
         </CardFooter>
       )}
     </Card>
-  )
+  );
 }

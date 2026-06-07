@@ -1,37 +1,37 @@
-import { Link } from '@vercel/microfrontends/next/client'
-import { extractFirstParagraph } from '@ykzts/portable-text-utils'
+import { Link } from "@vercel/microfrontends/next/client";
+import { extractFirstParagraph } from "@ykzts/portable-text-utils";
 import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
-} from '@ykzts/ui/components/card'
-import { getPostUrl } from '@/lib/blog-urls'
-import type { PortableTextValue } from '@/lib/portable-text'
-import DateDisplay from './date-display'
-import TagList from './tag-list'
+  CardTitle,
+} from "@ykzts/ui/components/card";
+import { getPostUrl } from "@/lib/blog-urls";
+import type { PortableTextValue } from "@/lib/portable-text";
+import DateDisplay from "./date-display";
+import TagList from "./tag-list";
 
-type SimilarPost = {
-  id: string
-  slug: string
-  title: string
-  excerpt: string | null
-  content?: PortableTextValue | null
-  published_at: string | null
-  tags: string[] | null
-  similarity: number
+interface SimilarPost {
+  content?: PortableTextValue | null;
+  excerpt: string | null;
+  id: string;
+  published_at: string | null;
+  similarity: number;
+  slug: string;
+  tags: string[] | null;
+  title: string;
 }
 
-type SimilarPostsProps = {
-  posts: SimilarPost[]
+interface SimilarPostsProps {
+  posts: SimilarPost[];
 }
 
 export default function SimilarPosts({ posts }: SimilarPostsProps) {
   // Don't render if there are no similar posts
   if (!posts || posts.length === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -41,9 +41,9 @@ export default function SimilarPosts({ posts }: SimilarPostsProps) {
       </h2>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => {
-          const url = getPostUrl(post.slug, post.published_at)
+          const url = getPostUrl(post.slug, post.published_at);
           const previewText =
-            post.excerpt || extractFirstParagraph(post.content)
+            post.excerpt || extractFirstParagraph(post.content);
           return (
             <Card key={post.id}>
               <CardHeader>
@@ -69,9 +69,9 @@ export default function SimilarPosts({ posts }: SimilarPostsProps) {
                 </CardFooter>
               )}
             </Card>
-          )
+          );
         })}
       </div>
     </section>
-  )
+  );
 }

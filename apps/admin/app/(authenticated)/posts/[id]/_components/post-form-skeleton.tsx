@@ -60,5 +60,5 @@ export function PostFormSkeleton() {
         <div className="h-10 w-20 rounded bg-muted/20" />
       </div>
     </div>
-  )
+  );
 }

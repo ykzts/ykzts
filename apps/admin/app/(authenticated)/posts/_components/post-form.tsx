@@ -1,78 +1,82 @@
-'use client'
+"use client";
 
-import { parseMarkdownForPost } from '@ykzts/portable-text-utils'
-import { Button } from '@ykzts/ui/components/button'
-import { Field, FieldDescription, FieldLabel } from '@ykzts/ui/components/field'
-import { Input } from '@ykzts/ui/components/input'
+import { parseMarkdownForPost } from "@ykzts/portable-text-utils";
+import { Button } from "@ykzts/ui/components/button";
+import {
+  Field,
+  FieldDescription,
+  FieldLabel,
+} from "@ykzts/ui/components/field";
+import { Input } from "@ykzts/ui/components/input";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
-  InputGroupInput
-} from '@ykzts/ui/components/input-group'
+  InputGroupInput,
+} from "@ykzts/ui/components/input-group";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from '@ykzts/ui/components/select'
-import { Textarea } from '@ykzts/ui/components/textarea'
-import { Clipboard, Sparkles } from 'lucide-react'
-import Link from 'next/link'
-import { useActionState, useState } from 'react'
-import { toast } from 'sonner'
-import { RichTextEditor } from '@/components/portable-text-editor'
-import { generateTagsWithAI } from '@/lib/generate-tags-with-ai'
-import type { PostWithDetails } from '@/lib/posts'
-import { generateSlugSmart, generateUniqueSlugForPost } from '@/lib/slug'
-import { getAllExistingTags } from '@/lib/tags'
-import { uploadImage } from '@/lib/upload-image'
-import { generateSlug } from '@/lib/utils'
-import { PublicUrlField } from './public-url-field'
+  SelectValue,
+} from "@ykzts/ui/components/select";
+import { Textarea } from "@ykzts/ui/components/textarea";
+import { Clipboard, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { useActionState, useState } from "react";
+import { toast } from "sonner";
+import { RichTextEditor } from "@/components/portable-text-editor";
+import { generateTagsWithAI } from "@/lib/generate-tags-with-ai";
+import type { PostWithDetails } from "@/lib/posts";
+import { generateSlugSmart, generateUniqueSlugForPost } from "@/lib/slug";
+import { getAllExistingTags } from "@/lib/tags";
+import { uploadImage } from "@/lib/upload-image";
+import { generateSlug } from "@/lib/utils";
+import { PublicUrlField } from "./public-url-field";
 
 const POST_STATUSES = [
-  { label: '下書き', value: 'draft' },
-  { label: '公開', value: 'published' }
-] as const
+  { label: "下書き", value: "draft" },
+  { label: "公開", value: "published" },
+] as const;
 
 function toLocalDateTimeString(date: Date): string {
   return new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000)
     .toISOString()
-    .slice(0, 16)
+    .slice(0, 16);
 }
 
 function formatPublishedAt(dateString: string): string {
   try {
-    return new Intl.DateTimeFormat('ja-JP', {
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      month: 'numeric',
-      year: 'numeric'
-    }).format(new Date(dateString))
+    return new Intl.DateTimeFormat("ja-JP", {
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      month: "numeric",
+      year: "numeric",
+    }).format(new Date(dateString));
   } catch {
-    return dateString
+    return dateString;
   }
 }
 
 type ActionState = {
-  error?: string
-  success?: boolean
-} | null
+  error?: string;
+  success?: boolean;
+} | null;
 
-type PostFormProps = {
-  post?: PostWithDetails
-  draftPreviewUrl?: string | null
+interface PostFormProps {
   createAction?: (
     prevState: ActionState,
     formData: FormData
-  ) => Promise<ActionState>
+  ) => Promise<ActionState>;
+  deleteAction?: (id: string) => Promise<void>;
+  draftPreviewUrl?: string | null;
+  post?: PostWithDetails;
   updateAction?: (
     prevState: ActionState,
     formData: FormData
-  ) => Promise<ActionState>
-  deleteAction?: (id: string) => Promise<void>
+  ) => Promise<ActionState>;
 }
 
 export function PostForm({
@@ -80,230 +84,241 @@ export function PostForm({
   draftPreviewUrl,
   createAction,
   updateAction,
-  deleteAction
+  deleteAction,
 }: PostFormProps) {
-  const isEditMode = !!post
+  const isEditMode = !!post;
   const isSlugEditable =
     !isEditMode ||
-    (post?.status !== 'published' && post?.status !== 'scheduled')
-  const formAction = isEditMode ? updateAction : createAction
+    (post?.status !== "published" && post?.status !== "scheduled");
+  const formAction = isEditMode ? updateAction : createAction;
 
   if (!formAction) {
-    throw new Error('Either createAction or updateAction must be provided')
+    throw new Error("Either createAction or updateAction must be provided");
   }
 
   const [state, submitAction, isPending] = useActionState<
     ActionState,
     FormData
-  >(formAction, null)
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [deleteError, setDeleteError] = useState<string | null>(null)
+  >(formAction, null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
-  const [tags, setTags] = useState<string[]>(post?.tags || [])
-  const [tagInput, setTagInput] = useState('')
+  const [tags, setTags] = useState<string[]>(post?.tags || []);
+  const [tagInput, setTagInput] = useState("");
   const [showPublishedAt, setShowPublishedAt] = useState(
-    post?.status === 'scheduled' || post?.status === 'published' || false
-  )
-  const [isGeneratingSlug, setIsGeneratingSlug] = useState(false)
-  const [slugValue, setSlugValue] = useState(post?.slug || '')
-  const [isGeneratingTags, setIsGeneratingTags] = useState(false)
-  const [suggestedTags, setSuggestedTags] = useState<string[]>([])
-  const [statusValue, setStatusValue] = useState<'draft' | 'published'>(
-    post?.status === 'published' || post?.status === 'scheduled'
-      ? 'published'
-      : 'draft'
-  )
+    post?.status === "scheduled" || post?.status === "published"
+  );
+  const [isGeneratingSlug, setIsGeneratingSlug] = useState(false);
+  const [slugValue, setSlugValue] = useState(post?.slug || "");
+  const [isGeneratingTags, setIsGeneratingTags] = useState(false);
+  const [suggestedTags, setSuggestedTags] = useState<string[]>([]);
+  const [statusValue, setStatusValue] = useState<"draft" | "published">(
+    post?.status === "published" || post?.status === "scheduled"
+      ? "published"
+      : "draft"
+  );
   const [publishedAtValue, setPublishedAtValue] = useState<string | null>(
     post?.published_at || null
-  )
-  const [titleValue, setTitleValue] = useState(post?.title || '')
-  const [excerptValue, setExcerptValue] = useState(post?.excerpt || '')
+  );
+  const [titleValue, setTitleValue] = useState(post?.title || "");
+  const [excerptValue, setExcerptValue] = useState(post?.excerpt || "");
   const [publishedAtDisplayValue, setPublishedAtDisplayValue] = useState(
-    post?.published_at ? toLocalDateTimeString(new Date(post.published_at)) : ''
-  )
-  const [editorKey, setEditorKey] = useState(0)
-  const [isLoadingClipboard, setIsLoadingClipboard] = useState(false)
+    post?.published_at ? toLocalDateTimeString(new Date(post.published_at)) : ""
+  );
+  const [editorKey, setEditorKey] = useState(0);
+  const [isLoadingClipboard, setIsLoadingClipboard] = useState(false);
 
   const initialContent = post?.current_version?.content
     ? JSON.stringify(post.current_version.content)
-    : undefined
+    : undefined;
   const [editorContent, setEditorContent] = useState<string | undefined>(
     initialContent
-  )
+  );
 
   const handleLoadFromClipboard = async () => {
-    setIsLoadingClipboard(true)
+    setIsLoadingClipboard(true);
     try {
-      const text = await navigator.clipboard.readText()
+      const text = await navigator.clipboard.readText();
       if (!text.trim()) {
-        toast.error('クリップボードにテキストがありません')
-        return
+        toast.error("クリップボードにテキストがありません");
+        return;
       }
       const {
         title,
         contentJson,
         tags: fmTags,
         excerpt,
-        publishedAt
-      } = parseMarkdownForPost(text)
+        publishedAt,
+      } = parseMarkdownForPost(text);
       if (title) {
-        setTitleValue(title)
+        setTitleValue(title);
       }
       if (fmTags.length > 0) {
-        setTags((prev) => [...new Set([...prev, ...fmTags])])
+        setTags((prev) => [...new Set([...prev, ...fmTags])]);
       }
       if (excerpt) {
-        setExcerptValue(excerpt)
+        setExcerptValue(excerpt);
       }
       if (publishedAt) {
-        setPublishedAtValue(publishedAt)
-        setPublishedAtDisplayValue(toLocalDateTimeString(new Date(publishedAt)))
-        setShowPublishedAt(true)
+        setPublishedAtValue(publishedAt);
+        setPublishedAtDisplayValue(
+          toLocalDateTimeString(new Date(publishedAt))
+        );
+        setShowPublishedAt(true);
       }
-      setEditorContent(contentJson)
-      setEditorKey((prev) => prev + 1)
-      toast.success('クリップボードから読み込みました')
+      setEditorContent(contentJson);
+      setEditorKey((prev) => prev + 1);
+      toast.success("クリップボードから読み込みました");
     } catch (error) {
-      console.error('Failed to read from clipboard:', error)
-      if (error instanceof DOMException && error.name === 'NotAllowedError') {
-        toast.error('クリップボードへのアクセスが拒否されました')
+      console.error("Failed to read from clipboard:", error);
+      if (error instanceof DOMException && error.name === "NotAllowedError") {
+        toast.error("クリップボードへのアクセスが拒否されました");
       } else {
-        toast.error('クリップボードの読み込みに失敗しました')
+        toast.error("クリップボードの読み込みに失敗しました");
       }
     } finally {
-      setIsLoadingClipboard(false)
+      setIsLoadingClipboard(false);
     }
-  }
+  };
 
   const handleDelete = async () => {
-    if (!deleteAction || !post) return
-
-    if (!confirm('本当にこの投稿を削除しますか？この操作は取り消せません。')) {
-      return
+    if (!(deleteAction && post)) {
+      return;
     }
 
-    setIsDeleting(true)
-    setDeleteError(null)
+    // biome-ignore lint/suspicious/noAlert: Temporary safeguard until custom destructive-confirmation dialog is introduced.
+    if (!confirm("本当にこの投稿を削除しますか？この操作は取り消せません。")) {
+      return;
+    }
+
+    setIsDeleting(true);
+    setDeleteError(null);
 
     try {
-      await deleteAction(post.id)
+      await deleteAction(post.id);
       // If successful, deleteAction will redirect
     } catch (error) {
-      setIsDeleting(false)
+      setIsDeleting(false);
       setDeleteError(
-        error instanceof Error ? error.message : '削除に失敗しました'
-      )
+        error instanceof Error ? error.message : "削除に失敗しました"
+      );
     }
-  }
+  };
 
   const handleAddTag = () => {
-    const newTag = tagInput.trim()
+    const newTag = tagInput.trim();
     if (newTag && !tags.includes(newTag)) {
-      setTags([...tags, newTag])
-      setTagInput('')
+      setTags([...tags, newTag]);
+      setTagInput("");
     }
-  }
+  };
 
   const handleRemoveTag = (tagToRemove: string) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove))
-  }
+    setTags(tags.filter((tag) => tag !== tagToRemove));
+  };
 
   const handleGenerateSlug = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    const form = e.currentTarget.form
-    if (!form) return
+    e.preventDefault();
+    const form = e.currentTarget.form;
+    if (!form) {
+      return;
+    }
 
     const titleInput = form.elements.namedItem(
-      'title'
-    ) as HTMLInputElement | null
-    const slugInput = form.elements.namedItem('slug') as HTMLInputElement | null
+      "title"
+    ) as HTMLInputElement | null;
+    const slugInput = form.elements.namedItem(
+      "slug"
+    ) as HTMLInputElement | null;
     const contentInput = form.elements.namedItem(
-      'content'
-    ) as HTMLInputElement | null
+      "content"
+    ) as HTMLInputElement | null;
 
     if (titleInput && slugInput && titleInput.value) {
-      setIsGeneratingSlug(true)
+      setIsGeneratingSlug(true);
       try {
         // Get content from the hidden input (PortableText JSON)
-        const content = contentInput?.value || '[]'
+        const content = contentInput?.value || "[]";
 
         // Use AI-powered slug generation with fallback, excluding current post
         const uniqueSlug = await generateSlugSmart({
           content,
           excludeId: post?.id,
-          table: 'posts',
-          title: titleInput.value
-        })
-        slugInput.value = uniqueSlug
-        setSlugValue(uniqueSlug)
+          table: "posts",
+          title: titleInput.value,
+        });
+        slugInput.value = uniqueSlug;
+        setSlugValue(uniqueSlug);
       } catch (error) {
         // Ultimate fallback to client-side generation if all else fails
-        console.error('Failed to generate unique slug:', error)
+        console.error("Failed to generate unique slug:", error);
         try {
           const uniqueSlug = await generateUniqueSlugForPost(
             titleInput.value,
             post?.id
-          )
-          slugInput.value = uniqueSlug
-          setSlugValue(uniqueSlug)
+          );
+          slugInput.value = uniqueSlug;
+          setSlugValue(uniqueSlug);
         } catch (fallbackError) {
-          console.error('Fallback slug generation also failed:', fallbackError)
-          const fallbackSlug = generateSlug(titleInput.value)
-          slugInput.value = fallbackSlug
-          setSlugValue(fallbackSlug)
+          console.error("Fallback slug generation also failed:", fallbackError);
+          const fallbackSlug = generateSlug(titleInput.value);
+          slugInput.value = fallbackSlug;
+          setSlugValue(fallbackSlug);
         }
       } finally {
-        setIsGeneratingSlug(false)
+        setIsGeneratingSlug(false);
       }
     }
-  }
+  };
 
   const handleSuggestTags = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    const form = e.currentTarget.form
-    if (!form) return
-
-    const titleInput = form.elements.namedItem(
-      'title'
-    ) as HTMLInputElement | null
-    const contentInput = form.elements.namedItem(
-      'content'
-    ) as HTMLInputElement | null
-
-    if (!titleInput?.value) {
-      toast.error('タイトルを入力してください')
-      return
+    e.preventDefault();
+    const form = e.currentTarget.form;
+    if (!form) {
+      return;
     }
 
-    setIsGeneratingTags(true)
-    setSuggestedTags([])
+    const titleInput = form.elements.namedItem(
+      "title"
+    ) as HTMLInputElement | null;
+    const contentInput = form.elements.namedItem(
+      "content"
+    ) as HTMLInputElement | null;
+
+    if (!titleInput?.value) {
+      toast.error("タイトルを入力してください");
+      return;
+    }
+
+    setIsGeneratingTags(true);
+    setSuggestedTags([]);
     try {
-      const content = contentInput?.value || '[]'
-      const existingTags = await getAllExistingTags()
+      const content = contentInput?.value || "[]";
+      const existingTags = await getAllExistingTags();
       const generated = await generateTagsWithAI({
         content,
         existingTags,
-        title: titleInput.value
-      })
-      const newSuggestions = generated.filter((tag) => !tags.includes(tag))
+        title: titleInput.value,
+      });
+      const newSuggestions = generated.filter((tag) => !tags.includes(tag));
       if (newSuggestions.length === 0 && generated.length > 0) {
-        toast.info('提案されたタグはすでにすべて追加されています')
+        toast.info("提案されたタグはすでにすべて追加されています");
       }
-      setSuggestedTags(newSuggestions)
+      setSuggestedTags(newSuggestions);
     } catch (error) {
-      console.error('Failed to generate tags:', error)
-      toast.error('タグの生成に失敗しました')
+      console.error("Failed to generate tags:", error);
+      toast.error("タグの生成に失敗しました");
     } finally {
-      setIsGeneratingTags(false)
+      setIsGeneratingTags(false);
     }
-  }
+  };
 
   const handleAddSuggestedTag = (tag: string) => {
     if (!tags.includes(tag)) {
-      setTags([...tags, tag])
+      setTags([...tags, tag]);
     }
-    setSuggestedTags((prev) => prev.filter((t) => t !== tag))
-  }
+    setSuggestedTags((prev) => prev.filter((t) => t !== tag));
+  };
 
   return (
     <div>
@@ -359,8 +374,8 @@ export function PostForm({
                 >
                   <Clipboard className="h-4 w-4" />
                   {isLoadingClipboard
-                    ? '読み込み中...'
-                    : 'クリップボードから読み込む'}
+                    ? "読み込み中..."
+                    : "クリップボードから読み込む"}
                 </Button>
               </div>
               <RichTextEditor
@@ -386,11 +401,11 @@ export function PostForm({
                   <input name="slug" type="hidden" value={slugValue} />
                 )}
                 <InputGroupInput
-                  defaultValue={post?.slug || ''}
+                  defaultValue={post?.slug || ""}
                   disabled={!isSlugEditable}
                   id="slug"
                   maxLength={256}
-                  name={isSlugEditable ? 'slug' : undefined}
+                  name={isSlugEditable ? "slug" : undefined}
                   onChange={(e) => setSlugValue(e.target.value)}
                   placeholder="url-friendly-slug"
                   required
@@ -401,19 +416,19 @@ export function PostForm({
                     disabled={
                       !isSlugEditable ||
                       isGeneratingSlug ||
-                      slugValue.trim() !== ''
+                      slugValue.trim() !== ""
                     }
                     onClick={handleGenerateSlug}
                     variant="secondary"
                   >
-                    {isGeneratingSlug ? '生成中...' : '自動生成'}
+                    {isGeneratingSlug ? "生成中..." : "自動生成"}
                   </InputGroupButton>
                 </InputGroupAddon>
               </InputGroup>
               <FieldDescription>
                 {isSlugEditable
-                  ? 'URL用の識別子（手動入力またはボタンで自動生成）'
-                  : '公開済み・予約済み投稿のスラッグは変更できません（SEO保護）'}
+                  ? "URL用の識別子（手動入力またはボタンで自動生成）"
+                  : "公開済み・予約済み投稿のスラッグは変更できません（SEO保護）"}
               </FieldDescription>
             </Field>
 
@@ -444,7 +459,7 @@ export function PostForm({
                   variant="outline"
                 >
                   <Sparkles className="h-4 w-4" />
-                  {isGeneratingTags ? '生成中...' : 'AIサジェスト'}
+                  {isGeneratingTags ? "生成中..." : "AIサジェスト"}
                 </Button>
               </div>
               <div className="flex gap-2">
@@ -452,9 +467,9 @@ export function PostForm({
                   id="tag-input"
                   onChange={(e) => setTagInput(e.target.value)}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault()
-                      handleAddTag()
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleAddTag();
                     }
                   }}
                   placeholder="タグを入力してEnter"
@@ -511,16 +526,16 @@ export function PostForm({
               <FieldLabel htmlFor="status">ステータス</FieldLabel>
               <Select
                 defaultValue={
-                  post?.status === 'published' || post?.status === 'scheduled'
-                    ? 'published'
-                    : 'draft'
+                  post?.status === "published" || post?.status === "scheduled"
+                    ? "published"
+                    : "draft"
                 }
                 items={POST_STATUSES}
                 name="status"
                 onValueChange={(value) => {
-                  const newStatus = value as 'draft' | 'published'
-                  setStatusValue(newStatus)
-                  setShowPublishedAt(newStatus === 'published')
+                  const newStatus = value as "draft" | "published";
+                  setStatusValue(newStatus);
+                  setShowPublishedAt(newStatus === "published");
                 }}
               >
                 <SelectTrigger className="w-full" id="status">
@@ -545,24 +560,24 @@ export function PostForm({
                   id="published_at"
                   name="published_at"
                   type="hidden"
-                  value={publishedAtValue ?? ''}
+                  value={publishedAtValue ?? ""}
                 />
                 {/* Visible datetime-local input for user interaction */}
                 <Input
-                  disabled={isEditMode && post?.status === 'published'}
+                  disabled={isEditMode && post?.status === "published"}
                   id="published_at_display"
                   min={
-                    !post?.published_at
-                      ? toLocalDateTimeString(new Date())
-                      : undefined
+                    post?.published_at
+                      ? undefined
+                      : toLocalDateTimeString(new Date())
                   }
                   name="published_at_display"
                   onChange={(e) => {
                     const newValue = e.currentTarget.value
                       ? new Date(e.currentTarget.value).toISOString()
-                      : ''
-                    setPublishedAtDisplayValue(e.currentTarget.value)
-                    setPublishedAtValue(newValue || null)
+                      : "";
+                    setPublishedAtDisplayValue(e.currentTarget.value);
+                    setPublishedAtValue(newValue || null);
                   }}
                   type="datetime-local"
                   value={publishedAtDisplayValue}
@@ -574,11 +589,11 @@ export function PostForm({
             )}
 
             {/* Publication status message */}
-            {statusValue === 'published' && (
+            {statusValue === "published" && (
               <p className="text-muted-foreground text-sm">
                 {publishedAtValue && new Date(publishedAtValue) > new Date()
                   ? `この投稿は ${formatPublishedAt(publishedAtValue)} に自動公開されます`
-                  : 'この投稿はすぐに公開されます'}
+                  : "この投稿はすぐに公開されます"}
               </p>
             )}
 
@@ -615,7 +630,7 @@ export function PostForm({
               type="button"
               variant="destructive"
             >
-              {isDeleting ? '削除中...' : '削除'}
+              {isDeleting ? "削除中..." : "削除"}
             </Button>
             <div className="flex gap-2">
               <Button
@@ -626,7 +641,7 @@ export function PostForm({
                 キャンセル
               </Button>
               <Button disabled={isPending || isDeleting} type="submit">
-                {isPending ? '保存中...' : '保存'}
+                {isPending ? "保存中..." : "保存"}
               </Button>
             </div>
           </div>
@@ -640,11 +655,11 @@ export function PostForm({
               キャンセル
             </Button>
             <Button disabled={isPending} type="submit">
-              {isPending ? '作成中...' : '作成'}
+              {isPending ? "作成中..." : "作成"}
             </Button>
           </div>
         )}
       </form>
     </div>
-  )
+  );
 }

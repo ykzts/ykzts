@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { Link } from '@vercel/microfrontends/next/client'
-import { Button } from '@ykzts/ui/components/button'
+import { Link } from "@vercel/microfrontends/next/client";
+import { Button } from "@ykzts/ui/components/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -9,37 +9,37 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle
-} from '@ykzts/ui/components/navigation-menu'
+  navigationMenuTriggerStyle,
+} from "@ykzts/ui/components/navigation-menu";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger
-} from '@ykzts/ui/components/sheet'
-import { ChevronDown, Menu } from 'lucide-react'
-import type { ReactNode } from 'react'
-import { useState } from 'react'
+  SheetTrigger,
+} from "@ykzts/ui/components/sheet";
+import { ChevronDown, Menu } from "lucide-react";
+import type { ReactNode } from "react";
+import { useState } from "react";
 
-type SubItem = {
-  href: string
-  label: string
+interface SubItem {
+  href: string;
+  label: string;
 }
 
-type NavItem = {
-  children?: readonly SubItem[]
-  href: string
-  label: string
+interface NavItem {
+  children?: readonly SubItem[];
+  href: string;
+  label: string;
 }
 
-type Props = {
-  actions?: ReactNode
-  navItems: readonly NavItem[]
+interface Props {
+  actions?: ReactNode;
+  navItems: readonly NavItem[];
 }
 
 export default function Navigation({ actions, navItems }: Props) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="flex items-center">
@@ -135,5 +135,5 @@ export default function Navigation({ actions, navItems }: Props) {
         </SheetContent>
       </Sheet>
     </div>
-  )
+  );
 }

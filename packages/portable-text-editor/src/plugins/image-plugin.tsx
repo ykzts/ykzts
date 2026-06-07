@@ -1,24 +1,24 @@
-'use client'
+"use client";
 
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import {
   $insertNodes,
   $isRootNode,
   COMMAND_PRIORITY_EDITOR,
-  createCommand
-} from 'lexical'
-import { useEffect } from 'react'
-import { $createImageNode } from '../nodes/image-node'
+  createCommand,
+} from "lexical";
+import { useEffect } from "react";
+import { $createImageNode } from "../nodes/image-node";
 
 export const INSERT_IMAGE_COMMAND = createCommand<{
-  altText: string
-  height?: number
-  src: string
-  width?: number
-}>('INSERT_IMAGE_COMMAND')
+  altText: string;
+  height?: number;
+  src: string;
+  width?: number;
+}>("INSERT_IMAGE_COMMAND");
 
 export function ImagePlugin() {
-  const [editor] = useLexicalComposerContext()
+  const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
     return editor.registerCommand(
@@ -28,23 +28,23 @@ export function ImagePlugin() {
           altText: payload.altText,
           height: payload.height,
           src: payload.src,
-          width: payload.width
-        })
-        $insertNodes([imageNode])
+          width: payload.width,
+        });
+        $insertNodes([imageNode]);
         // If the image ended up inside a non-root element (e.g. a code block),
         // move it to the root level so the serializer can find it.
-        const parent = imageNode.getParent()
+        const parent = imageNode.getParent();
         if (parent !== null && !$isRootNode(parent)) {
-          const topLevel = imageNode.getTopLevelElement()
+          const topLevel = imageNode.getTopLevelElement();
           if (topLevel !== null) {
-            topLevel.insertAfter(imageNode)
+            topLevel.insertAfter(imageNode);
           }
         }
-        return true
+        return true;
       },
       COMMAND_PRIORITY_EDITOR
-    )
-  }, [editor])
+    );
+  }, [editor]);
 
-  return null
+  return null;
 }

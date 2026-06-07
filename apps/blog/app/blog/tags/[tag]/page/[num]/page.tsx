@@ -1,68 +1,68 @@
-import type { Metadata } from 'next'
-import { notFound, redirect } from 'next/navigation'
-import BlogPagination from '@/components/blog-pagination'
-import PostCard from '@/components/post-card'
+import type { Metadata } from "next";
+import { notFound, redirect } from "next/navigation";
+import BlogPagination from "@/components/blog-pagination";
+import PostCard from "@/components/post-card";
 import {
   getPostCountByTag,
   getPostsByTag,
-  POSTS_PER_PAGE
-} from '@/lib/supabase/posts'
+  POSTS_PER_PAGE,
+} from "@/lib/supabase/posts";
 
-type PageProps = {
-  params: Promise<{ tag: string; num: string }>
+interface PageProps {
+  params: Promise<{ tag: string; num: string }>;
 }
 
 export async function generateStaticParams() {
   // Return placeholder to satisfy Next.js Cache Components requirement
   // Actual tag pagination pages will be generated on-demand
-  return [{ num: '2', tag: '_placeholder' }]
+  return [{ num: "2", tag: "_placeholder" }];
 }
 
 export async function generateMetadata({
-  params
+  params,
 }: PageProps): Promise<Metadata> {
-  const { tag, num } = await params
-  const decodedTag = decodeURIComponent(tag)
-  const pageNum = Number.parseInt(num, 10)
+  const { tag, num } = await params;
+  const decodedTag = decodeURIComponent(tag);
+  const pageNum = Number.parseInt(num, 10);
 
   if (Number.isNaN(pageNum) || pageNum < 1) {
     return {
-      title: 'ページ'
-    }
+      title: "ページ",
+    };
   }
 
   return {
-    title: `${decodedTag}タグの記事 - ページ ${pageNum}`
-  }
+    title: `${decodedTag}タグの記事 - ページ ${pageNum}`,
+  };
 }
 
 export default async function TagPaginationPage({ params }: PageProps) {
-  const { tag, num } = await params
-  const decodedTag = decodeURIComponent(tag)
-  const pageNum = Number.parseInt(num, 10)
+  const { tag, num } = await params;
+  const decodedTag = decodeURIComponent(tag);
+  const pageNum = Number.parseInt(num, 10);
 
   // Handle invalid page numbers
   if (Number.isNaN(pageNum) || pageNum < 1) {
-    notFound()
+    notFound();
   }
 
   // Redirect page 1 to tag index
   if (pageNum === 1) {
-    redirect(`/blog/tags/${encodeURIComponent(decodedTag)}`)
+    redirect(`/blog/tags/${encodeURIComponent(decodedTag)}`);
   }
 
-  const posts = await getPostsByTag(decodedTag, pageNum)
-  const postCount = await getPostCountByTag(decodedTag)
+  const posts = await getPostsByTag(decodedTag, pageNum);
+  const postCount = await getPostCountByTag(decodedTag);
 
   if (!posts || posts.length === 0) {
-    notFound()
+    notFound();
   }
 
-  const totalPages = Math.ceil(postCount / POSTS_PER_PAGE)
+  const totalPages = Math.ceil(postCount / POSTS_PER_PAGE);
 
   // Handle page numbers beyond total pages
   if (pageNum > totalPages) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -85,5 +85,5 @@ export default async function TagPaginationPage({ params }: PageProps) {
         </div>
       </div>
     </main>
-  )
+  );
 }

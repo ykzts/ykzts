@@ -1,15 +1,15 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from "react";
 
-type Props = {
-  artworkCredit?: ReactNode
-  copyright: ReactNode
-  privacyLink: ReactNode
+interface Props {
+  artworkCredit?: ReactNode;
+  copyright: ReactNode;
+  privacyLink: ReactNode;
 }
 
 export default function FooterContent({
   artworkCredit,
   copyright,
-  privacyLink
+  privacyLink,
 }: Props) {
   return (
     <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
@@ -19,5 +19,5 @@ export default function FooterContent({
       </div>
       {privacyLink}
     </div>
-  )
+  );
 }

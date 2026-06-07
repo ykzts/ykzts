@@ -1,14 +1,14 @@
-import { Link } from '@vercel/microfrontends/next/client'
-import { getSiteName } from '@ykzts/site-config'
-import type { ReactNode } from 'react'
-import NavigationWrapper from './navigation-wrapper'
+import { Link } from "@vercel/microfrontends/next/client";
+import { getSiteName } from "@ykzts/site-config";
+import type { ReactNode } from "react";
+import NavigationWrapper from "./navigation-wrapper";
 
-type Props = {
-  extra?: ReactNode
+interface Props {
+  extra?: ReactNode;
 }
 
 export default function Header({ extra }: Props) {
-  const siteName = getSiteName()
+  const siteName = getSiteName();
 
   return (
     <header className="sticky top-0 z-10 border-border border-b bg-background/90 px-6 backdrop-blur-sm md:px-12 lg:px-24">
@@ -26,5 +26,5 @@ export default function Header({ extra }: Props) {
         </div>
       </div>
     </header>
-  )
+  );
 }

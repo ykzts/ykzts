@@ -1,17 +1,17 @@
-import { getProfileOptional, getWorksOptional } from '@ykzts/supabase/queries'
-import { Suspense } from 'react'
-import SiteNavigation from './site-navigation'
+import { getProfileOptional, getWorksOptional } from "@ykzts/supabase/queries";
+import { Suspense } from "react";
+import SiteNavigation from "./site-navigation";
 
 async function NavigationImpl() {
   const [profile, works] = await Promise.all([
     getProfileOptional(),
-    getWorksOptional()
-  ])
+    getWorksOptional(),
+  ]);
 
-  const hasAbout = !!profile?.about
-  const hasWorks = works.length > 0
+  const hasAbout = !!profile?.about;
+  const hasWorks = works.length > 0;
 
-  return <SiteNavigation hasAbout={hasAbout} hasWorks={hasWorks} />
+  return <SiteNavigation hasAbout={hasAbout} hasWorks={hasWorks} />;
 }
 
 function NavigationSkeleton() {
@@ -20,7 +20,7 @@ function NavigationSkeleton() {
       aria-hidden="true"
       className="h-9 w-32 animate-pulse rounded-md bg-muted"
     />
-  )
+  );
 }
 
 export default function NavigationWrapper() {
@@ -28,5 +28,5 @@ export default function NavigationWrapper() {
     <Suspense fallback={<NavigationSkeleton />}>
       <NavigationImpl />
     </Suspense>
-  )
+  );
 }

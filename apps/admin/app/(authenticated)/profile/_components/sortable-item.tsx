@@ -1,10 +1,10 @@
-import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
-import type { ReactNode } from 'react'
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import type { ReactNode } from "react";
 
-type SortableItemProps = {
-  children: ReactNode
-  id: string
+interface SortableItemProps {
+  children: ReactNode;
+  id: string;
 }
 
 export function SortableItem({ children, id }: SortableItemProps) {
@@ -15,14 +15,14 @@ export function SortableItem({ children, id }: SortableItemProps) {
     setNodeRef,
     setActivatorNodeRef,
     transform,
-    transition
-  } = useSortable({ id })
+    transition,
+  } = useSortable({ id });
 
   const style = {
     opacity: isDragging ? 0.5 : 1,
     transform: CSS.Transform.toString(transform),
-    transition
-  }
+    transition,
+  };
 
   return (
     <div className="flex gap-2" ref={setNodeRef} style={style}>
@@ -51,5 +51,5 @@ export function SortableItem({ children, id }: SortableItemProps) {
       </button>
       {children}
     </div>
-  )
+  );
 }

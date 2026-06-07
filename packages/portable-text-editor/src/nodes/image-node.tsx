@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import type {
   DOMConversionMap,
   DOMConversionOutput,
@@ -9,29 +9,29 @@ import type {
   LexicalNode,
   NodeKey,
   SerializedLexicalNode,
-  Spread
-} from 'lexical'
-import { $getNodeByKey, DecoratorNode } from 'lexical'
-import type { ReactElement } from 'react'
-import { useState } from 'react'
-import { ImageAltDialog } from '../plugins/image-alt-dialog'
+  Spread,
+} from "lexical";
+import { $getNodeByKey, DecoratorNode } from "lexical";
+import type { ReactElement } from "react";
+import { useState } from "react";
+import { ImageAltDialog } from "../plugins/image-alt-dialog";
 
 export type SerializedImageNode = Spread<
   {
-    altText: string
-    height?: number
-    src: string
-    width?: number
+    altText: string;
+    height?: number;
+    src: string;
+    width?: number;
   },
   SerializedLexicalNode
->
+>;
 
-type ImageComponentProps = {
-  altText: string
-  height?: number
-  nodeKey: NodeKey
-  src: string
-  width?: number
+interface ImageComponentProps {
+  altText: string;
+  height?: number;
+  nodeKey: NodeKey;
+  src: string;
+  width?: number;
 }
 
 function ImageComponent({
@@ -39,19 +39,19 @@ function ImageComponent({
   height,
   nodeKey,
   src,
-  width
+  width,
 }: ImageComponentProps) {
-  const [editor] = useLexicalComposerContext()
-  const [showAltDialog, setShowAltDialog] = useState(false)
+  const [editor] = useLexicalComposerContext();
+  const [showAltDialog, setShowAltDialog] = useState(false);
 
   const handleAltConfirm = (newAlt: string) => {
     editor.update(() => {
-      const node = $getNodeByKey(nodeKey)
+      const node = $getNodeByKey(nodeKey);
       if ($isImageNode(node)) {
-        node.setAltText(newAlt)
+        node.setAltText(newAlt);
       }
-    })
-  }
+    });
+  };
 
   return (
     <>
@@ -59,7 +59,7 @@ function ImageComponent({
         aria-label={
           altText
             ? `${altText}（クリックしてalt属性を編集）`
-            : 'クリックしてalt属性を編集'
+            : "クリックしてalt属性を編集"
         }
         className="cursor-pointer border-0 bg-transparent p-0"
         onClick={() => setShowAltDialog(true)}
@@ -82,17 +82,17 @@ function ImageComponent({
         open={showAltDialog}
       />
     </>
-  )
+  );
 }
 
 export class ImageNode extends DecoratorNode<ReactElement> {
-  __src: string
-  __altText: string
-  __width?: number
-  __height?: number
+  __src: string;
+  __altText: string;
+  __width?: number;
+  __height?: number;
 
   static getType(): string {
-    return 'image'
+    return "image";
   }
 
   static clone(node: ImageNode): ImageNode {
@@ -102,13 +102,13 @@ export class ImageNode extends DecoratorNode<ReactElement> {
       node.__width,
       node.__height,
       node.__key
-    )
+    );
   }
 
   static importJSON(serializedNode: SerializedImageNode): ImageNode {
-    const { altText, height, src, width } = serializedNode
-    const node = $createImageNode({ altText, height, src, width })
-    return node
+    const { altText, height, src, width } = serializedNode;
+    const node = $createImageNode({ altText, height, src, width });
+    return node;
   }
 
   exportJSON(): SerializedImageNode {
@@ -116,10 +116,10 @@ export class ImageNode extends DecoratorNode<ReactElement> {
       altText: this.getAltText(),
       height: this.__height,
       src: this.getSrc(),
-      type: 'image',
+      type: "image",
       version: 1,
-      width: this.__width
-    }
+      width: this.__width,
+    };
   }
 
   constructor(
@@ -129,68 +129,68 @@ export class ImageNode extends DecoratorNode<ReactElement> {
     height?: number,
     key?: NodeKey
   ) {
-    super(key)
-    this.__src = src
-    this.__altText = altText
-    this.__width = width
-    this.__height = height
+    super(key);
+    this.__src = src;
+    this.__altText = altText;
+    this.__width = width;
+    this.__height = height;
   }
 
   exportDOM(): DOMExportOutput {
-    const element = document.createElement('img')
-    element.setAttribute('src', this.__src)
-    element.setAttribute('alt', this.__altText)
+    const element = document.createElement("img");
+    element.setAttribute("src", this.__src);
+    element.setAttribute("alt", this.__altText);
     if (this.__width) {
-      element.setAttribute('width', this.__width.toString())
+      element.setAttribute("width", this.__width.toString());
     }
     if (this.__height) {
-      element.setAttribute('height', this.__height.toString())
+      element.setAttribute("height", this.__height.toString());
     }
-    return { element }
+    return { element };
   }
 
   static importDOM(): DOMConversionMap | null {
     return {
       img: () => ({
         conversion: convertImageElement,
-        priority: 0
-      })
-    }
+        priority: 0,
+      }),
+    };
   }
 
   createDOM(config: EditorConfig): HTMLElement {
-    const span = document.createElement('span')
-    const theme = config.theme
-    const className = theme.image
+    const span = document.createElement("span");
+    const theme = config.theme;
+    const className = theme.image;
     if (className !== undefined) {
-      span.className = className
+      span.className = className;
     }
-    return span
+    return span;
   }
 
   updateDOM(): false {
-    return false
+    return false;
   }
 
   getSrc(): string {
-    return this.__src
+    return this.__src;
   }
 
   getAltText(): string {
-    return this.__altText
+    return this.__altText;
   }
 
   getWidth(): number | undefined {
-    return this.__width
+    return this.__width;
   }
 
   getHeight(): number | undefined {
-    return this.__height
+    return this.__height;
   }
 
   setAltText(altText: string): void {
-    const writable = this.getWritable()
-    writable.__altText = altText
+    const writable = this.getWritable();
+    writable.__altText = altText;
   }
 
   decorate(): ReactElement {
@@ -202,7 +202,7 @@ export class ImageNode extends DecoratorNode<ReactElement> {
         src={this.__src}
         width={this.__width}
       />
-    )
+    );
   }
 }
 
@@ -210,32 +210,32 @@ export function $createImageNode({
   altText,
   height,
   src,
-  width
+  width,
 }: {
-  altText: string
-  height?: number
-  src: string
-  width?: number
+  altText: string;
+  height?: number;
+  src: string;
+  width?: number;
 }): ImageNode {
-  return new ImageNode(src, altText, width, height)
+  return new ImageNode(src, altText, width, height);
 }
 
 export function $isImageNode(
   node: LexicalNode | null | undefined
 ): node is ImageNode {
-  return node instanceof ImageNode
+  return node instanceof ImageNode;
 }
 
 function convertImageElement(domNode: Node): null | DOMConversionOutput {
   if (domNode instanceof HTMLImageElement) {
-    const { alt: altText, src, width, height } = domNode
+    const { alt: altText, src, width, height } = domNode;
     const node = $createImageNode({
       altText,
       height: height ? Number(height) : undefined,
       src,
-      width: width ? Number(width) : undefined
-    })
-    return { node }
+      width: width ? Number(width) : undefined,
+    });
+    return { node };
   }
-  return null
+  return null;
 }

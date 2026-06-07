@@ -1,187 +1,188 @@
-'use client'
+"use client";
 
-import { Button } from '@ykzts/ui/components/button'
-import { Input } from '@ykzts/ui/components/input'
-import { ImageOff, Upload, X } from 'lucide-react'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import { useActionState, useRef, useState } from 'react'
-import { getImageDimensions } from '@/lib/upload-image'
-import { deleteKeyVisual, uploadKeyVisual } from '@/lib/upload-key-visual'
-import { saveKeyVisual } from '../actions'
+import { Button } from "@ykzts/ui/components/button";
+import { Input } from "@ykzts/ui/components/input";
+import { ImageOff, Upload, X } from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useActionState, useRef, useState } from "react";
+import { getImageDimensions } from "@/lib/upload-image";
+import { deleteKeyVisual, uploadKeyVisual } from "@/lib/upload-key-visual";
+import { saveKeyVisual } from "../actions";
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
 
-type KeyVisualData = {
-  alt_text: string | null
-  artist_name: string | null
-  artist_url: string | null
-  attribution: string | null
-  height: number
-  id: string
-  url: string
-  width: number
+interface KeyVisualData {
+  alt_text: string | null;
+  artist_name: string | null;
+  artist_url: string | null;
+  attribution: string | null;
+  height: number;
+  id: string;
+  url: string;
+  width: number;
 }
 
-type KeyVisualFormProps = {
-  currentKeyVisual?: KeyVisualData | null
+interface KeyVisualFormProps {
+  currentKeyVisual?: KeyVisualData | null;
 }
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: This form coordinates upload/delete/drag-and-drop and server-action state in one place.
 export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
-  const router = useRouter()
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const [state, formAction, isPending] = useActionState(saveKeyVisual, null)
+  const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [state, formAction, isPending] = useActionState(saveKeyVisual, null);
 
   const [currentUrl, setCurrentUrl] = useState<string | null>(
     currentKeyVisual?.url ?? null
-  )
+  );
   const [preview, setPreview] = useState<string | null>(
     currentKeyVisual?.url ?? null
-  )
+  );
   const [dimensions, setDimensions] = useState<{
-    height: number
-    width: number
+    height: number;
+    width: number;
   } | null>(
     currentKeyVisual
       ? { height: currentKeyVisual.height, width: currentKeyVisual.width }
       : null
-  )
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [uploading, setUploading] = useState(false)
-  const [deleting, setDeleting] = useState(false)
-  const [uploadError, setUploadError] = useState<string | null>(null)
-  const [dragActive, setDragActive] = useState(false)
+  );
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [dragActive, setDragActive] = useState(false);
 
   const handleFileChange = async (file: File | null) => {
     if (!file) {
-      setPreview(currentUrl)
-      setSelectedFile(null)
-      setUploadError(null)
-      return
+      setPreview(currentUrl);
+      setSelectedFile(null);
+      setUploadError(null);
+      return;
     }
 
     // Client-side validation
     if (!ALLOWED_TYPES.includes(file.type)) {
       setUploadError(
-        'サポートされていない画像形式です。JPEG、PNG、GIF、WebPのみアップロード可能です。'
-      )
-      return
+        "サポートされていない画像形式です。JPEG、PNG、GIF、WebPのみアップロード可能です。"
+      );
+      return;
     }
 
     if (file.size > MAX_FILE_SIZE) {
       setUploadError(
-        'ファイルサイズが大きすぎます。5MB以下の画像をアップロードしてください。'
-      )
-      return
+        "ファイルサイズが大きすぎます。5MB以下の画像をアップロードしてください。"
+      );
+      return;
     }
 
-    setUploadError(null)
-    setSelectedFile(file)
+    setUploadError(null);
+    setSelectedFile(file);
 
     // Show preview
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.onloadend = () => {
-      setPreview(reader.result as string)
-    }
-    reader.readAsDataURL(file)
+      setPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
 
     // Get dimensions
     try {
-      const dims = await getImageDimensions(file)
-      setDimensions(dims)
+      const dims = await getImageDimensions(file);
+      setDimensions(dims);
     } catch {
-      setDimensions(null)
+      setDimensions(null);
     }
-  }
+  };
 
   const handleUpload = async () => {
     if (!selectedFile) {
-      setUploadError('ファイルを選択してください。')
-      return
+      setUploadError("ファイルを選択してください。");
+      return;
     }
 
-    setUploading(true)
-    setUploadError(null)
+    setUploading(true);
+    setUploadError(null);
 
     try {
-      const formData = new FormData()
-      formData.append('key_visual', selectedFile)
+      const formData = new FormData();
+      formData.append("key_visual", selectedFile);
 
-      const result = await uploadKeyVisual(formData)
+      const result = await uploadKeyVisual(formData);
 
       if (result.error) {
-        setUploadError(result.error)
-        setPreview(currentUrl)
+        setUploadError(result.error);
+        setPreview(currentUrl);
       } else if (result.url) {
-        setCurrentUrl(result.url)
-        setPreview(result.url)
-        setSelectedFile(null)
+        setCurrentUrl(result.url);
+        setPreview(result.url);
+        setSelectedFile(null);
         if (fileInputRef.current) {
-          fileInputRef.current.value = ''
+          fileInputRef.current.value = "";
         }
       }
-    } catch (_err) {
-      setUploadError('アップロード中にエラーが発生しました。')
-      setPreview(currentUrl)
+    } catch {
+      setUploadError("アップロード中にエラーが発生しました。");
+      setPreview(currentUrl);
     } finally {
-      setUploading(false)
+      setUploading(false);
     }
-  }
+  };
 
   const handleDelete = async () => {
-    setDeleting(true)
-    setUploadError(null)
+    setDeleting(true);
+    setUploadError(null);
 
     try {
-      const result = await deleteKeyVisual()
+      const result = await deleteKeyVisual();
 
       if (result.error) {
-        setUploadError(result.error)
+        setUploadError(result.error);
       } else {
-        setCurrentUrl(null)
-        setPreview(null)
-        setDimensions(null)
-        setSelectedFile(null)
+        setCurrentUrl(null);
+        setPreview(null);
+        setDimensions(null);
+        setSelectedFile(null);
         if (fileInputRef.current) {
-          fileInputRef.current.value = ''
+          fileInputRef.current.value = "";
         }
-        router.refresh()
+        router.refresh();
       }
-    } catch (_err) {
-      setUploadError('削除中にエラーが発生しました。')
+    } catch {
+      setUploadError("削除中にエラーが発生しました。");
     } finally {
-      setDeleting(false)
+      setDeleting(false);
     }
-  }
+  };
 
   const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (e.type === 'dragenter' || e.type === 'dragover') {
-      setDragActive(true)
-    } else if (e.type === 'dragleave') {
-      setDragActive(false)
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
     }
-  }
+  };
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(false)
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
 
     if (e.dataTransfer.files?.[0]) {
-      const file = e.dataTransfer.files[0]
+      const file = e.dataTransfer.files[0];
       if (fileInputRef.current) {
-        const dataTransfer = new DataTransfer()
-        dataTransfer.items.add(file)
-        fileInputRef.current.files = dataTransfer.files
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInputRef.current.files = dataTransfer.files;
       }
-      handleFileChange(file)
+      handleFileChange(file);
     }
-  }
+  };
 
-  const hasNewFile = !!selectedFile
+  const hasNewFile = !!selectedFile;
 
   return (
     <form action={formAction} className="space-y-6">
@@ -211,8 +212,8 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
           aria-label="キービジュアルをアップロード"
           className={`flex min-h-32 w-full flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors ${
             dragActive
-              ? 'border-primary bg-primary/5'
-              : 'border-border bg-muted/10'
+              ? "border-primary bg-primary/5"
+              : "border-border bg-muted/10"
           }`}
           onClick={() => fileInputRef.current?.click()}
           onDragEnter={handleDrag}
@@ -232,7 +233,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
             JPEG、PNG、GIF、WebP（最大5MB）
           </p>
           <input
-            accept={ALLOWED_TYPES.join(',')}
+            accept={ALLOWED_TYPES.join(",")}
             aria-label="キービジュアルファイル"
             className="sr-only"
             onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
@@ -250,7 +251,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
               size="sm"
               type="button"
             >
-              {uploading ? 'アップロード中...' : 'アップロード'}
+              {uploading ? "アップロード中..." : "アップロード"}
             </Button>
           )}
           {currentUrl && !hasNewFile && (
@@ -262,7 +263,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
               variant="destructive"
             >
               {deleting ? (
-                '削除中...'
+                "削除中..."
               ) : (
                 <>
                   <X className="mr-1 h-4 w-4" />
@@ -322,7 +323,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
               代替テキスト (alt)
             </label>
             <Input
-              defaultValue={currentKeyVisual?.alt_text ?? ''}
+              defaultValue={currentKeyVisual?.alt_text ?? ""}
               id="key_visual_alt_text"
               name="key_visual_alt_text"
               placeholder="画像の説明"
@@ -338,7 +339,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
               アーティスト名
             </label>
             <Input
-              defaultValue={currentKeyVisual?.artist_name ?? ''}
+              defaultValue={currentKeyVisual?.artist_name ?? ""}
               id="key_visual_artist_name"
               name="key_visual_artist_name"
               placeholder="作者名"
@@ -354,7 +355,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
               アーティストURL
             </label>
             <Input
-              defaultValue={currentKeyVisual?.artist_url ?? ''}
+              defaultValue={currentKeyVisual?.artist_url ?? ""}
               id="key_visual_artist_url"
               name="key_visual_artist_url"
               placeholder="https://example.com/artist"
@@ -370,7 +371,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
               帰属情報
             </label>
             <Input
-              defaultValue={currentKeyVisual?.attribution ?? ''}
+              defaultValue={currentKeyVisual?.attribution ?? ""}
               id="key_visual_attribution"
               name="key_visual_attribution"
               placeholder="例: CC BY 4.0"
@@ -387,12 +388,12 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
       <div className="flex gap-4">
         {currentUrl && (
           <Button disabled={isPending || uploading || deleting} type="submit">
-            {isPending ? '保存中...' : '保存'}
+            {isPending ? "保存中..." : "保存"}
           </Button>
         )}
         <Button
           onClick={() => {
-            router.push('/profile')
+            router.push("/profile");
           }}
           type="button"
           variant="secondary"
@@ -401,5 +402,5 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
         </Button>
       </div>
     </form>
-  )
+  );
 }
