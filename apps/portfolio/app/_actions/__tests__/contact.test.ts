@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock environment variables
 vi.stubEnv('RESEND_API_KEY', 'test_api_key')
@@ -37,6 +37,11 @@ global.fetch = vi.fn()
 describe('Contact form action', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   describe('submitContactForm', () => {

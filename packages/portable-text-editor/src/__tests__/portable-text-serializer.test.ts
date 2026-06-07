@@ -39,7 +39,7 @@ import {
   $isTextNode,
   createEditor
 } from 'lexical'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { $createImageNode, $isImageNode, ImageNode } from '../nodes/image-node'
 import {
   initializeEditorWithPortableText,
@@ -473,7 +473,13 @@ describe('Portable Text Serializer', () => {
         nodes: [LinkNode, ImageNode, ListNode, ListItemNode]
       })
 
+      const consoleErrorSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {})
+
       initializeEditorWithPortableText(editor, 'invalid json')
+
+      consoleErrorSpy.mockRestore()
 
       // Should not throw and editor should remain usable
       editor.read(() => {

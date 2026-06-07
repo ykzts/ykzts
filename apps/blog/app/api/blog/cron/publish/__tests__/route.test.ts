@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock environment variable
 vi.stubEnv('CRON_SECRET', 'test-cron-secret')
@@ -22,6 +22,11 @@ vi.mock('@/lib/supabase/client', () => ({
 describe('GET /api/cron/publish', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   it('should return 401 for missing authorization header', async () => {
