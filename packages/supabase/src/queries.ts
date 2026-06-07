@@ -1,18 +1,26 @@
 import type { PortableTextBlock } from '@portabletext/types'
+import { createClient } from '@supabase/supabase-js'
 import { cacheTag } from 'next/cache'
-import { createBrowserClient } from './client'
+import type { Database } from './database.types.js'
 import type { Post, PostAuthor, PostSummary, Profile, Work } from './dto'
 
 const POSTS_PER_PAGE = 10
 
 function createSupabaseClient() {
-  if (
-    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
-    !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  ) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
     return null
   }
-  return createBrowserClient()
+
+  return createClient<Database>(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+      persistSession: false
+    }
+  })
 }
 
 function isPortableTextValue(value: unknown): value is PortableTextBlock[] {

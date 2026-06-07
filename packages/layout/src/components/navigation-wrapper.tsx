@@ -3,26 +3,10 @@ import { Suspense } from 'react'
 import SiteNavigation from './site-navigation'
 
 async function NavigationImpl() {
-  const [profileResult, worksResult] = await Promise.allSettled([
-    getProfile(),
-    getWorks()
-  ])
+  const [profile, works] = await Promise.all([getProfile(), getWorks()])
 
-  if (profileResult.status === 'rejected') {
-    console.error(
-      'Failed to load profile for navigation:',
-      profileResult.reason
-    )
-  }
-
-  if (worksResult.status === 'rejected') {
-    console.error('Failed to load works for navigation:', worksResult.reason)
-  }
-
-  const hasAbout =
-    profileResult.status === 'fulfilled' && !!profileResult.value.about
-  const hasWorks =
-    worksResult.status === 'fulfilled' && worksResult.value.length > 0
+  const hasAbout = !!profile.about
+  const hasWorks = works.length > 0
 
   return <SiteNavigation hasAbout={hasAbout} hasWorks={hasWorks} />
 }

@@ -1,5 +1,4 @@
 import './globals.css'
-import { Analytics } from '@vercel/analytics/next'
 import {
   PrefetchCrossZoneLinks,
   PrefetchCrossZoneLinksProvider
@@ -12,6 +11,7 @@ import { cn } from '@ykzts/ui/lib/utils'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Noto_Sans_JP } from 'next/font/google'
 import { Suspense } from 'react'
+import AnalyticsClient from '@/components/analytics-client'
 import DraftModeBanner from '@/components/draft-mode-banner'
 import SearchForm from '@/components/search-form'
 import ThemeProvider from '@/components/theme-provider'
@@ -19,14 +19,8 @@ import ThemeProvider from '@/components/theme-provider'
 const siteName = getSiteName()
 
 export async function generateMetadata(): Promise<Metadata> {
-  let fediverseCreator: string | null = null
-
-  try {
-    const profile = await getProfile()
-    fediverseCreator = profile.fediverse_creator?.trim() || null
-  } catch (error) {
-    console.error('Failed to load profile for blog layout metadata:', error)
-  }
+  const profile = await getProfile()
+  const fediverseCreator = profile.fediverse_creator?.trim() || null
 
   return {
     metadataBase: getSiteOrigin(),
@@ -102,7 +96,7 @@ export default function RootLayout({
             />
             {children}
             <SiteFooter />
-            <Analytics />
+            <AnalyticsClient />
             <PrefetchCrossZoneLinks />
           </PrefetchCrossZoneLinksProvider>
         </ThemeProvider>
