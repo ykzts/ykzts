@@ -5,7 +5,9 @@
 
 declare module '@vercel/microfrontends/next/client' {
   export const Link: import('react').ComponentType<Record<string, unknown>>
-  export const PrefetchCrossZoneLinks: import('react').ComponentType<Record<string, never>>
+  export const PrefetchCrossZoneLinks: import('react').ComponentType<
+    Record<string, never>
+  >
   export const PrefetchCrossZoneLinksProvider: import('react').ComponentType<{
     children?: import('react').ReactNode
   }>

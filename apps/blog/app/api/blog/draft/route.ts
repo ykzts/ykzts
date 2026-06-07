@@ -46,7 +46,10 @@ export async function GET(request: NextRequest) {
 
     if (post) {
       return NextResponse.redirect(
-        new URL(`/blog/draft/${encodeURIComponent(post.slug as string)}`, request.url)
+        new URL(
+          `/blog/draft/${encodeURIComponent(post.slug as string)}`,
+          request.url
+        )
       )
     }
   } catch (error) {
