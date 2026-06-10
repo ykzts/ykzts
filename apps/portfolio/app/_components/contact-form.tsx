@@ -1,31 +1,26 @@
 "use client";
 
-import { Turnstile } from "@marsidev/react-turnstile";
 import { Link } from "@vercel/microfrontends/next/client";
 import { Button } from "@ykzts/ui/components/button";
 import { Checkbox } from "@ykzts/ui/components/checkbox";
 import { Field, FieldError, FieldLabel } from "@ykzts/ui/components/field";
 import { Input } from "@ykzts/ui/components/input";
 import { Textarea } from "@ykzts/ui/components/textarea";
-import { useTheme } from "next-themes";
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { submitContactForm } from "../_actions/contact";
 
 export default function ContactForm() {
-  const { resolvedTheme } = useTheme();
   const [state, formAction, isPending] = useActionState(
     submitContactForm,
     null
   );
-  const [turnstileToken, setTurnstileToken] = useState<string>("");
   const formRef = useRef<HTMLFormElement>(null);
 
   // Handle success state - reset form on success
   useEffect(() => {
     if (state?.success) {
       formRef.current?.reset();
-      setTurnstileToken("");
     }
   }, [state?.success]);
 
@@ -128,7 +123,7 @@ export default function ContactForm() {
         )}
       </Field>
 
-      <div className="mb-5 flex cursor-pointer items-start gap-2.5 text-base text-muted-foreground">
+      <div className="mb-5 flex cursor-pointer items-center gap-2.5 text-base text-muted-foreground">
         <Checkbox
           aria-describedby={errors.privacyConsent ? "privacy-error" : undefined}
           aria-invalid={Boolean(errors.privacyConsent)}
@@ -150,29 +145,8 @@ export default function ContactForm() {
         )}
       </div>
 
-      <div className="mb-4">
-        <Turnstile
-          className="w-full"
-          onSuccess={(token) => {
-            setTurnstileToken(token);
-          }}
-          options={{
-            size: "flexible",
-            theme: resolvedTheme === "dark" ? "dark" : "light",
-          }}
-          siteKey={
-            process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
-            "1x00000000000000000000AA"
-          }
-        />
-        <input name="turnstileToken" type="hidden" value={turnstileToken} />
-        {errors.turnstileToken && (
-          <p className="mt-1.5 text-red-500 text-sm">{errors.turnstileToken}</p>
-        )}
-      </div>
-
       <div className="mt-6">
-        <Button disabled={isPending || !turnstileToken} type="submit">
+        <Button disabled={isPending} type="submit">
           {isPending ? "送信中..." : "送信する"}
         </Button>
       </div>

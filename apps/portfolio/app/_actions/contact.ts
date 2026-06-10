@@ -2,9 +2,9 @@
 
 import { getSiteName } from "@ykzts/site-config";
 import { getProfile } from "@ykzts/supabase/queries";
+import { checkBotId } from "botid/server";
 import { Resend } from "resend";
 import { z } from "zod";
-import { verifyTurnstile } from "@/lib/turnstile";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -16,7 +16,6 @@ const contactFormSchema = z.object({
     .boolean()
     .refine((val) => val === true, "プライバシーポリシーに同意してください"),
   subject: z.string().min(1, "件名を入力してください"),
-  turnstileToken: z.string().min(1, "スパム対策の確認が必要です"),
 });
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;
@@ -39,7 +38,6 @@ export async function submitContactForm(
     name: formData.get("name"),
     privacyConsent: formData.get("privacyConsent") === "on",
     subject: formData.get("subject"),
-    turnstileToken: formData.get("turnstileToken"),
   };
 
   const data: ContactFormData = {
@@ -48,9 +46,17 @@ export async function submitContactForm(
     name: typeof rawData.name === "string" ? rawData.name : "",
     privacyConsent: rawData.privacyConsent,
     subject: typeof rawData.subject === "string" ? rawData.subject : "",
-    turnstileToken:
-      typeof rawData.turnstileToken === "string" ? rawData.turnstileToken : "",
   };
+
+  const verification = await checkBotId();
+
+  if (verification.isBot) {
+    return {
+      error: "スパム対策の確認に失敗しました。もう一度お試しください。",
+      formData: data,
+      success: false,
+    };
+  }
 
   try {
     // Fetch contact email from Supabase profile server-side
@@ -63,16 +69,6 @@ export async function submitContactForm(
     const contactEmail = profile.email;
     // Validate form data
     const validatedData = contactFormSchema.parse(data);
-
-    // Verify Turnstile token
-    const isValidToken = await verifyTurnstile(validatedData.turnstileToken);
-    if (!isValidToken) {
-      return {
-        error: "スパム対策の確認に失敗しました。もう一度お試しください。",
-        formData: data,
-        success: false,
-      };
-    }
 
     // Send email using Resend
     if (!(process.env.RESEND_API_KEY && contactEmail)) {
