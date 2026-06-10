@@ -1,6 +1,7 @@
 import createMDX from "@next/mdx";
 import { withMicrofrontends } from "@vercel/microfrontends/next/config";
 import { getSupabaseImageConfig } from "@ykzts/supabase/next-image-config";
+import { withBotId } from "botid/next/config";
 
 import type { NextConfig } from "next";
 
@@ -77,4 +78,4 @@ const nextConfig: NextConfig = {
   typedRoutes: true,
 };
 
-export default withMicrofrontends(withMDX(nextConfig));
+export default withBotId(withMicrofrontends(withMDX(nextConfig)));
