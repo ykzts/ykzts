@@ -6,7 +6,7 @@
     "@portabletext/react": "6.2.0",
     "@portabletext/types": "4.0.2",
     "@react-email/render": "2.0.8",
-    "@supabase/supabase-js": "2.107.0",
+    "@supabase/supabase-js": "2.108.0",
     "@vercel/analytics": "2.0.1",
     "@vercel/microfrontends": "2.3.6",
     "@ykzts/layout": "workspace:*",
