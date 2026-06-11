@@ -9,22 +9,12 @@
   "linter": {
     "rules": {
       "complexity": {
-        "noExcessiveCognitiveComplexity": "warn"
-      },
-      "performance": {
-        "noBarrelFile": "warn",
-        "useTopLevelRegex": "warn"
-      },
-      "style": {
-        "noNestedTernary": "warn",
-        "useCollapsedIf": "warn"
-      },
-      "suspicious": {
-        "noArrayIndexKey": "warn",
-        "noBitwiseOperators": "warn",
-        "noEmptyBlockStatements": "warn",
-        "noEvolvingTypes": "warn",
-        "useAwait": "warn"
+        "noExcessiveCognitiveComplexity": {
+          "level": "error",
+          "options": {
+            "maxAllowedComplexity": 150
+          }
+        }
       }
     }
   },

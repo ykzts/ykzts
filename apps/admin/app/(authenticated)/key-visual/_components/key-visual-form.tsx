@@ -28,7 +28,6 @@ interface KeyVisualFormProps {
   currentKeyVisual?: KeyVisualData | null;
 }
 
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: This form coordinates upload/delete/drag-and-drop and server-action state in one place.
 export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);

@@ -1,6 +1,6 @@
 import { getProfile } from "@ykzts/supabase/queries";
+import { Skeleton } from "@ykzts/ui/components/skeleton";
 import { Suspense } from "react";
-import Skeleton from "@/components/skeleton";
 import range from "@/lib/range";
 import PortableTextBlock from "./portable-text";
 

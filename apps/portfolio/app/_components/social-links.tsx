@@ -1,7 +1,7 @@
 import { getProfile } from "@ykzts/supabase/queries";
+import { Skeleton } from "@ykzts/ui/components/skeleton";
 import { Suspense } from "react";
 import Link from "@/components/link";
-import Skeleton from "@/components/skeleton";
 import { getSocialInfo } from "@/lib/social-services";
 
 function SocialLinksSkeleton() {

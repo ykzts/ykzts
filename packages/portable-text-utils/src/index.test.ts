@@ -5,6 +5,10 @@ import {
   portableTextToMarkdown,
 } from "./index";
 
+const SECTION_HEADING_REGEX = /^## Section/m;
+const LOWER_BOUND_HEADING_REGEX = /^## Lower bound heading/m;
+const DATE_MATCH_2026_REGEX = /^2026-03-03/;
+
 describe("portableTextToMarkdown", () => {
   it("returns empty string for null input", () => {
     expect(portableTextToMarkdown(null)).toBe("");
@@ -174,7 +178,7 @@ describe("portableTextToMarkdown", () => {
     ];
     const result = portableTextToMarkdown(content, { headingOffset: 3 });
     expect(result).toContain("##### Section");
-    expect(result).not.toMatch(/^## Section/m);
+    expect(result).not.toMatch(SECTION_HEADING_REGEX);
   });
 
   it("clamps headings at h1 when headingOffset is negative", () => {
@@ -187,7 +191,7 @@ describe("portableTextToMarkdown", () => {
     ];
     const result = portableTextToMarkdown(content, { headingOffset: -5 });
     expect(result).toContain("# Lower bound heading");
-    expect(result).not.toMatch(/^## Lower bound heading/m);
+    expect(result).not.toMatch(LOWER_BOUND_HEADING_REGEX);
   });
 
   it("clamps headings at h6 when offset exceeds max", () => {
@@ -379,7 +383,7 @@ describe("parseMarkdownForPost", () => {
     const md = "---\ndate: 2026-03-03\n---\n\nContent.";
     const result = parseMarkdownForPost(md);
     expect(result.publishedAt).not.toBeNull();
-    expect(result.publishedAt).toMatch(/^2026-03-03/);
+    expect(result.publishedAt).toMatch(DATE_MATCH_2026_REGEX);
   });
 
   it("extracts publishedAt from frontmatter published_at field", () => {

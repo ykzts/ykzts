@@ -301,6 +301,26 @@ async function MemoContent({ path: memoPath }: { path: string }) {
 
   const dateOptions: Intl.DateTimeFormatOptions = { timeZone: "Asia/Tokyo" };
 
+  const getBody = () => {
+    if (canEdit) {
+      return (
+        <InlineMemoEditor
+          content={content}
+          memoId={memo.id}
+          memoPath={memo.path}
+          title={title}
+          visibility={memo.visibility}
+        />
+      );
+    }
+
+    if (content) {
+      return <MemoPortableText value={content} />;
+    }
+
+    return <p className="text-muted-foreground">コンテンツがありません。</p>;
+  };
+
   return (
     <>
       <Header canEdit={canEdit} />
@@ -317,19 +337,7 @@ async function MemoContent({ path: memoPath }: { path: string }) {
           </div>
         </div>
 
-        {canEdit ? (
-          <InlineMemoEditor
-            content={content}
-            memoId={memo.id}
-            memoPath={memo.path}
-            title={title}
-            visibility={memo.visibility}
-          />
-        ) : content ? (
-          <MemoPortableText value={content} />
-        ) : (
-          <p className="text-muted-foreground">コンテンツがありません。</p>
-        )}
+        {getBody()}
 
         <div className="mt-8 border-border border-t pt-4 text-muted-foreground text-sm">
           <p>

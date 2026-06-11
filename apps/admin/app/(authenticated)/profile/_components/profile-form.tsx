@@ -254,11 +254,11 @@ export default function ProfileForm({
         <RichTextEditor
           id="about"
           initialValue={
-            initialData?.about
-              ? typeof initialData.about === "string"
+            (!!initialData?.about &&
+              (typeof initialData.about === "string"
                 ? initialData.about
-                : JSON.stringify(initialData.about)
-              : undefined
+                : JSON.stringify(initialData.about))) ||
+            undefined
           }
           name="about"
           uploadImage={uploadImage}

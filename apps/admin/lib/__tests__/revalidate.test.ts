@@ -24,7 +24,9 @@ describe("invalidateCaches", () => {
 
   it("should skip cache invalidation when REVALIDATE_SECRET is not configured", async () => {
     delete process.env.REVALIDATE_SECRET;
-    const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {
+      /* no-op */
+    });
 
     await invalidateCaches("posts");
 
@@ -39,7 +41,9 @@ describe("invalidateCaches", () => {
   it("should skip cache invalidation when REVALIDATE_URLS is not configured", async () => {
     process.env.REVALIDATE_SECRET = "test-secret";
     delete process.env.REVALIDATE_URLS;
-    const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {
+      /* no-op */
+    });
 
     await invalidateCaches("posts");
 
@@ -54,7 +58,9 @@ describe("invalidateCaches", () => {
   it("should skip cache invalidation when REVALIDATE_URLS is empty", async () => {
     process.env.REVALIDATE_SECRET = "test-secret";
     process.env.REVALIDATE_URLS = "  ,  , ";
-    const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {
+      /* no-op */
+    });
 
     await invalidateCaches("posts");
 
@@ -114,7 +120,9 @@ describe("invalidateCaches", () => {
     process.env.REVALIDATE_SECRET = "test-secret";
     process.env.REVALIDATE_URLS = "https://example.blog/api/blog/revalidate";
     vi.mocked(fetch).mockRejectedValue(new Error("Network error"));
-    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {
+      /* no-op */
+    });
 
     await invalidateCaches("posts");
 
@@ -150,7 +158,9 @@ describe("invalidateCaches", () => {
         statusText: "Unauthorized",
       })
     );
-    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {
+      /* no-op */
+    });
 
     await invalidateCaches("posts");
 
@@ -197,7 +207,9 @@ describe("invalidateCaches", () => {
   it("should handle invalid URLs gracefully", async () => {
     process.env.REVALIDATE_SECRET = "test-secret";
     process.env.REVALIDATE_URLS = "not-a-valid-url";
-    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {
+      /* no-op */
+    });
 
     await invalidateCaches("posts");
 

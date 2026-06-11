@@ -37,8 +37,22 @@ import { generateSlug } from "@/lib/utils";
 import { SortableItem } from "./sortable-item";
 
 // Default Portable Text content (empty paragraph)
-const DEFAULT_PORTABLE_TEXT =
-  '[{"_type":"block","children":[{"_type":"span","marks":[],"text":""}],"markDefs":[],"style":"normal"}]';
+const DEFAULT_PORTABLE_TEXT = [
+  {
+    _type: "block",
+    children: [{ _type: "span", marks: [], text: "" }],
+    markDefs: [],
+    style: "normal",
+  },
+] as const;
+
+function getSubmitButtonLabel(isPending: boolean, isEditMode: boolean) {
+  if (isPending) {
+    return isEditMode ? "保存中..." : "作成中...";
+  }
+
+  return isEditMode ? "保存" : "作成";
+}
 
 export type ActionState = {
   error?: string;
@@ -263,13 +277,10 @@ export function WorkForm({
   };
 
   // Convert content to JSON string for editor
-  const contentString = work
-    ? typeof work.content === "string"
+  const contentString =
+    typeof work?.content === "string"
       ? work.content
-      : work.content == null
-        ? DEFAULT_PORTABLE_TEXT
-        : JSON.stringify(work.content)
-    : DEFAULT_PORTABLE_TEXT;
+      : JSON.stringify(work?.content ?? DEFAULT_PORTABLE_TEXT);
 
   return (
     <div>
@@ -511,13 +522,7 @@ export function WorkForm({
             </Button>
           )}
           <Button disabled={isPending || isDeleting} type="submit">
-            {isPending
-              ? isEditMode
-                ? "保存中..."
-                : "作成中..."
-              : isEditMode
-                ? "保存"
-                : "作成"}
+            {getSubmitButtonLabel(isPending, isEditMode)}
           </Button>
         </div>
       </form>

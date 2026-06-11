@@ -12,6 +12,8 @@ export type CreateMemoState = {
 
 const RESERVED_ROUTE_SEGMENTS = ["api", "auth", "login", "new"];
 
+const PATH_FORMAT_REGEX = /^[a-zA-Z0-9\-_/]+$/;
+
 export async function createMemo(
   _prevState: CreateMemoState,
   formData: FormData
@@ -41,7 +43,7 @@ export async function createMemo(
 
   // Validate path format: alphanumeric, hyphens, underscores, and forward slashes
   const normalizedPath = path.trim().replace(/^\/+|\/+$/g, "");
-  if (!/^[a-zA-Z0-9\-_/]+$/.test(normalizedPath)) {
+  if (!PATH_FORMAT_REGEX.test(normalizedPath)) {
     return {
       error:
         "パスは英数字、ハイフン、アンダースコア、スラッシュのみ使用できます",

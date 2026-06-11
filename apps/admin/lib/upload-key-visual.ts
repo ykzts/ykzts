@@ -22,6 +22,8 @@ const MIME_TO_EXT: Record<string, string> = {
   "image/webp": "webp",
 };
 
+const IMAGES_PATH_REGEX = /\/images\/(.+)/;
+
 /**
  * Extract storage path from a key visual URL in the images bucket
  * @param url - Full public URL to the image in Supabase Storage
@@ -30,7 +32,7 @@ const MIME_TO_EXT: Record<string, string> = {
 function extractStoragePath(url: string): string | null {
   try {
     const parsed = new URL(url);
-    const pathMatch = parsed.pathname.match(/\/images\/(.+)/);
+    const pathMatch = parsed.pathname.match(IMAGES_PATH_REGEX);
     return pathMatch ? pathMatch[1] : null;
   } catch {
     return null;

@@ -36,9 +36,9 @@ export async function GET() {
       : undefined;
 
   const feedCopyright = profileName
-    ? latestPostUpdatedAt
-      ? `Copyright © ${latestPostUpdatedAt.getFullYear()} ${profileName}`
-      : `Copyright © ${profileName}`
+    ? ["Copyright ©", latestPostUpdatedAt?.getFullYear(), profileName]
+        .filter(Boolean)
+        .join(" ")
     : undefined;
 
   const feed = new Feed({

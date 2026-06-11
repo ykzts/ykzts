@@ -5,8 +5,11 @@ import {
 import { escapeHTML, toHTML, uriLooksSafe } from "@portabletext/to-html";
 import type { PortableTextBlock } from "@portabletext/types";
 
-export type { MarkdownPostParseResult } from "./markdown-to-portable-text";
-export { parseMarkdownForPost } from "./markdown-to-portable-text";
+// biome-ignore lint/performance/noBarrelFile: this is library
+export {
+  type MarkdownPostParseResult,
+  parseMarkdownForPost,
+} from "./markdown-to-portable-text";
 
 /**
  * Extracts plain text from a PortableText block's children

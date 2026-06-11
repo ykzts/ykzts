@@ -27,6 +27,8 @@ const versions = [
   },
 ];
 
+const DIFF_HEADING_REGEX = /バージョン比較: v1 → v3/;
+
 describe("VersionCompare", () => {
   it("renders a list of versions", () => {
     render(<VersionCompare versions={versions} />);
@@ -89,7 +91,7 @@ describe("VersionCompare", () => {
     await user.click(checkboxes[2]); // v1
     await user.click(checkboxes[0]); // v3
 
-    expect(screen.getByText(/バージョン比較: v1 → v3/)).toBeInTheDocument();
+    expect(screen.getByText(DIFF_HEADING_REGEX)).toBeInTheDocument();
   });
 
   it("resets comparison when reset button is clicked", async () => {

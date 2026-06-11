@@ -99,7 +99,7 @@ export async function generateUniqueSlugForPost(
   title: string,
   excludePostId?: string
 ): Promise<string> {
-  return generateUniqueSlug(title, "posts", excludePostId);
+  return await generateUniqueSlug(title, "posts", excludePostId);
 }
 
 /**
@@ -110,7 +110,7 @@ export async function generateUniqueSlugForWork(
   title: string,
   excludeWorkId?: string
 ): Promise<string> {
-  return generateUniqueSlug(title, "works", excludeWorkId);
+  return await generateUniqueSlug(title, "works", excludeWorkId);
 }
 
 /**

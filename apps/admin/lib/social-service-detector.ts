@@ -12,6 +12,8 @@ const KNOWN_SERVICES: Record<string, string> = {
   "x.com": "x",
 };
 
+const IP_172_RANGE_REGEX = /^172\.(1[6-9]|2[0-9]|3[0-1])\./;
+
 /**
  * Detect social service from URL hostname
  */
@@ -68,7 +70,7 @@ async function tryNodeInfo(origin: string): Promise<string | null> {
       hostname.startsWith("10.") ||
       hostname.startsWith("192.168.") ||
       hostname.startsWith("169.254.") ||
-      /^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(hostname) ||
+      IP_172_RANGE_REGEX.test(hostname) ||
       hostname === "::1" ||
       hostname.startsWith("fe80:")
     ) {

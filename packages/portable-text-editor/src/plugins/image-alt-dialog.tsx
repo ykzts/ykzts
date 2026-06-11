@@ -15,8 +15,13 @@ import {
   FieldLabel,
 } from "@ykzts/ui/components/field";
 import { Input } from "@ykzts/ui/components/input";
-import type { FormEvent } from "react";
-import { useEffect, useRef, useState } from "react";
+import {
+  type SubmitEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 interface ImageAltDialogProps {
   initialAlt?: string;
@@ -50,24 +55,28 @@ export function ImageAltDialog({
     };
   }, [open, initialAlt]);
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = useCallback<SubmitEventHandler<HTMLFormElement>>(
+    (e) => {
+      e.preventDefault();
 
-    if (!alt.trim()) {
-      if (!warning) {
-        // First submission with empty alt: show warning and keep dialog open
-        setWarning(
-          "alt属性が空です。アクセシビリティのため、画像の内容を説明するテキストを入力することを推奨します。"
-        );
-        return;
+      if (!alt.trim()) {
+        // biome-ignore lint/style/useCollapsedIf: Avoid nested if by collapsing into a single condition
+        if (!warning) {
+          // First submission with empty alt: show warning and keep dialog open
+          setWarning(
+            "alt属性が空です。アクセシビリティのため、画像の内容を説明するテキストを入力することを推奨します。"
+          );
+          return;
+        }
+        // Warning already visible — user acknowledged it; proceed
       }
-      // Warning already visible — user acknowledged it; proceed
-    }
 
-    setWarning("");
-    onConfirm(alt);
-    onOpenChange(false);
-  };
+      setWarning("");
+      onConfirm(alt);
+      onOpenChange(false);
+    },
+    [alt, warning, onConfirm, onOpenChange]
+  );
 
   const handleCancel = () => {
     onOpenChange(false);

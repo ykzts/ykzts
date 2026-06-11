@@ -107,6 +107,8 @@ export type UploadImageFn = (options: {
   width?: number;
 }>;
 
+const FILE_EXTENSION_REGEX = /\.[^/.]+$/;
+
 export function ToolbarPlugin({
   uploadImage,
 }: {
@@ -270,7 +272,7 @@ export function ToolbarPlugin({
         } else if (result.url) {
           // Show the alt text dialog so the user can set/confirm the alt attribute
           setPendingImageUrl(result.url);
-          setPendingImageAlt(file.name.replace(/\.[^/.]+$/, ""));
+          setPendingImageAlt(file.name.replace(FILE_EXTENSION_REGEX, ""));
           setPendingImageWidth(result.width);
           setPendingImageHeight(result.height);
           setShowAltDialog(true);

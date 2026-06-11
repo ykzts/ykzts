@@ -1,3 +1,6 @@
+// biome-ignore-all lint/suspicious/noBitwiseOperators: Bitwise operators are used here to check text formatting flags efficiently, which is a common pattern in rich text editors. Refactoring to avoid bitwise operations would reduce performance and increase complexity without providing significant readability benefits.
+// biome-ignore-all lint/complexity/noExcessiveCognitiveComplexity: require refactor of processTextContent to reduce complexity
+
 "use client";
 
 import { $createCodeNode, $isCodeNode } from "@lexical/code";

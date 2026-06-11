@@ -23,6 +23,7 @@ describe("SiteNavigation", () => {
   it("renders Blog trigger with sub-items (Archive, Search)", async () => {
     render(<SiteNavigation />);
 
+    // biome-ignore lint/performance/useTopLevelRegex: test scope
     const blogTrigger = screen.getByRole("button", { name: /blog/i });
     expect(blogTrigger).toBeInTheDocument();
 
