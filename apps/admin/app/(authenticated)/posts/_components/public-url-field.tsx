@@ -17,6 +17,19 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { getBlogPostUrl } from "@/lib/blog-urls";
 
+function getURLDescription(
+  url: string | null,
+  draftPreviewUrl?: string | null
+) {
+  if (!url && draftPreviewUrl) {
+    return "ドラフトプレビュー用のURL (公開前の確認に使用)";
+  }
+
+  return url && draftPreviewUrl
+    ? "予約公開のURL (目のアイコンでドラフトプレビューを確認できます)"
+    : "この投稿の公開URL";
+}
+
 interface PublicUrlFieldProps {
   draftPreviewUrl?: string | null;
   publishedAt: string | null;
@@ -147,11 +160,7 @@ export function PublicUrlField({
         </InputGroupAddon>
       </InputGroup>
       <FieldDescription>
-        {!url && draftPreviewUrl
-          ? "ドラフトプレビュー用のURL（公開前の確認に使用）"
-          : url && draftPreviewUrl
-            ? "予約公開のURL（目のアイコンでドラフトプレビューを確認できます）"
-            : "この投稿の公開URL"}
+        {getURLDescription(url, draftPreviewUrl)}
       </FieldDescription>
     </Field>
   );

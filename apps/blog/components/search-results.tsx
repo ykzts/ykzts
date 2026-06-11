@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@ykzts/ui/components/card";
+import { cn } from "@ykzts/ui/lib/utils";
 import { getPostUrl } from "@/lib/blog-urls";
 import type { PortableTextValue } from "@/lib/portable-text";
 import DateDisplay from "./date-display";
@@ -31,16 +32,17 @@ interface SearchResultsProps {
 
 function SimilarityBadge({ similarity }: { similarity: number }) {
   const percentage = Math.round(similarity * 100);
-  const colorClass =
-    percentage >= 85
-      ? "bg-green-100 text-green-800"
-      : percentage >= 70
-        ? "bg-blue-100 text-blue-800"
-        : "bg-gray-100 text-gray-800";
 
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2 py-1 font-medium text-xs ${colorClass}`}
+      className={cn(
+        "inline-flex items-center rounded-full px-2 py-1 font-medium text-xs",
+        {
+          "bg-green-100 text-green-800": percentage >= 85,
+          "bg-blue-100 text-blue-800": percentage >= 70 && percentage < 85,
+          "bg-gray-100 text-gray-800": percentage < 70,
+        }
+      )}
     >
       関連度: {percentage}%
     </span>

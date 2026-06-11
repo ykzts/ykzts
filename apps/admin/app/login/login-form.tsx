@@ -1,9 +1,14 @@
 "use client";
+
 import { Button } from "@ykzts/ui/components/button";
 import { Input } from "@ykzts/ui/components/input";
 import { Label } from "@ykzts/ui/components/label";
-
-import { useState, useTransition } from "react";
+import {
+  type SubmitEventHandler,
+  useCallback,
+  useState,
+  useTransition,
+} from "react";
 import { signInWithGitHub, signInWithPassword } from "./actions";
 
 interface LoginFormProps {
@@ -16,22 +21,25 @@ export default function LoginForm({ isDevelopment = false }: LoginFormProps) {
   const [email, setEmail] = useState(isDevelopment ? "test@example.com" : "");
   const [password, setPassword] = useState(isDevelopment ? "password123" : "");
 
-  const handlePasswordSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    startTransition(async () => {
-      try {
-        const result = await signInWithPassword(email, password);
-        if (result?.error) {
-          setError(result.error);
+  const handlePasswordSubmit = useCallback<SubmitEventHandler>(
+    (e) => {
+      e.preventDefault();
+      setError(null);
+      startTransition(async () => {
+        try {
+          const result = await signInWithPassword(email, password);
+          if (result?.error) {
+            setError(result.error);
+          }
+        } catch {
+          setError("ログインに失敗しました。もう一度お試しください。");
         }
-      } catch {
-        setError("ログインに失敗しました。もう一度お試しください。");
-      }
-    });
-  };
+      });
+    },
+    [email, password]
+  );
 
-  const handleGitHubSubmit = async (e: React.FormEvent) => {
+  const handleGitHubSubmit = useCallback<SubmitEventHandler>((e) => {
     e.preventDefault();
     setError(null);
     startTransition(async () => {
@@ -46,7 +54,7 @@ export default function LoginForm({ isDevelopment = false }: LoginFormProps) {
         setError("ログインに失敗しました。もう一度お試しください。");
       }
     });
-  };
+  }, []);
 
   return (
     <div className="space-y-6">

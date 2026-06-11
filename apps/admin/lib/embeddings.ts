@@ -78,5 +78,5 @@ export async function generatePostEmbedding(params: {
     .trim()
     .slice(0, MAX_EMBED_CHARS);
 
-  return generateEmbedding(combinedText);
+  return await generateEmbedding(combinedText);
 }

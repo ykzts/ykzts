@@ -9,6 +9,8 @@ const webFingerJrdSchema = z.object({
 
 type WebFingerJrd = z.infer<typeof webFingerJrdSchema>;
 
+const PUBLIC_HOSTNAME_REGEX = /^[a-z0-9.-]+$/i;
+
 function isValidPublicHostname(domain: string): boolean {
   if (domain.length > 253 || domain === "localhost") {
     return false;
@@ -18,7 +20,7 @@ function isValidPublicHostname(domain: string): boolean {
     return false;
   }
 
-  return /^[a-z0-9.-]+$/i.test(domain);
+  return PUBLIC_HOSTNAME_REGEX.test(domain);
 }
 
 function isPublicIpAddress(address: string): boolean {

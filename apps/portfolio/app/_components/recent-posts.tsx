@@ -1,8 +1,8 @@
 import { Link } from "@vercel/microfrontends/next/client";
 import { getPosts } from "@ykzts/supabase/queries";
+import { Skeleton } from "@ykzts/ui/components/skeleton";
 import { cacheLife } from "next/cache";
 import { Suspense } from "react";
-import Skeleton from "@/components/skeleton";
 import range from "@/lib/range";
 
 const RECENT_POSTS_COUNT = 5;
@@ -14,6 +14,7 @@ function startOfHour(date: Date): Date {
   return normalized;
 }
 
+// biome-ignore lint/suspicious/useAwait: "use cache" functions must be async
 async function getCurrentTime(): Promise<Date> {
   "use cache";
 

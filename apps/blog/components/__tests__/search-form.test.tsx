@@ -11,6 +11,8 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
+const SEARCH_BUTTON_REGEX = /検索/;
+
 describe("SearchForm", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -22,14 +24,18 @@ describe("SearchForm", () => {
     expect(
       screen.getByPlaceholderText("キーワードを入力...")
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /検索/ })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: SEARCH_BUTTON_REGEX })
+    ).toBeInTheDocument();
   });
 
   it("does not navigate when submitting empty query", async () => {
     const user = userEvent.setup();
     render(<SearchForm />);
 
-    const submitButton = screen.getByRole("button", { name: /検索/ });
+    const submitButton = screen.getByRole("button", {
+      name: SEARCH_BUTTON_REGEX,
+    });
     await user.click(submitButton);
 
     expect(mockPush).not.toHaveBeenCalled();
@@ -42,7 +48,9 @@ describe("SearchForm", () => {
     const input = screen.getByPlaceholderText("キーワードを入力...");
     await user.type(input, "React");
 
-    const submitButton = screen.getByRole("button", { name: /検索/ });
+    const submitButton = screen.getByRole("button", {
+      name: SEARCH_BUTTON_REGEX,
+    });
     await user.click(submitButton);
 
     expect(mockPush).toHaveBeenCalledWith("/blog/search?q=React");
@@ -62,7 +70,9 @@ describe("SearchForm", () => {
     const input = screen.getByPlaceholderText("キーワードを入力...");
     await user.type(input, "  Next.js  ");
 
-    const submitButton = screen.getByRole("button", { name: /検索/ });
+    const submitButton = screen.getByRole("button", {
+      name: SEARCH_BUTTON_REGEX,
+    });
     await user.click(submitButton);
 
     expect(mockPush).toHaveBeenCalledWith("/blog/search?q=Next.js");

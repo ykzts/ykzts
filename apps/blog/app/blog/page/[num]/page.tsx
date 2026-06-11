@@ -10,7 +10,7 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const totalPages = await getTotalPages();
-  const pages = [];
+  const pages: { num: string }[] = [];
 
   // Generate pages 2 to totalPages (page 1 is the home page)
   for (let i = 2; i <= totalPages; i++) {

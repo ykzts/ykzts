@@ -22,6 +22,8 @@ const MIME_TO_EXT: Record<string, string> = {
   "image/webp": "webp",
 };
 
+const AVATARS_PATH_REGEX = /\/avatars\/(.+)/;
+
 /**
  * Extract storage path from avatar URL
  * @param avatarUrl - Full URL to the avatar in Supabase Storage
@@ -30,7 +32,7 @@ const MIME_TO_EXT: Record<string, string> = {
 function extractStoragePath(avatarUrl: string): string | null {
   try {
     const url = new URL(avatarUrl);
-    const pathMatch = url.pathname.match(/\/avatars\/(.+)/);
+    const pathMatch = url.pathname.match(AVATARS_PATH_REGEX);
     return pathMatch ? pathMatch[1] : null;
   } catch {
     return null;

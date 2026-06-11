@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@ykzts/ui/lib/utils";
 import { useCallback, useMemo, useState } from "react";
 import DateDisplay from "./date-display";
 
@@ -70,6 +71,17 @@ function computeDiff(oldText: string, newText: string): DiffLine[] {
   }
 
   return result;
+}
+
+function getLineIcon(type: "added" | "removed" | "unchanged") {
+  switch (type) {
+    case "added":
+      return "+";
+    case "removed":
+      return "-";
+    default:
+      return " ";
+  }
 }
 
 interface VersionCompareProps {
@@ -210,24 +222,19 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
             <div className="overflow-x-auto whitespace-pre-wrap p-0 font-mono text-sm">
               {diffResult.diff.map((line) => (
                 <div
-                  className={
-                    line.type === "added"
-                      ? "bg-green-100 text-green-900 dark:bg-green-950 dark:text-green-100"
-                      : line.type === "removed"
-                        ? "bg-red-100 text-red-900 dark:bg-red-950 dark:text-red-100"
-                        : "bg-transparent"
-                  }
+                  className={cn("bg-transparent", {
+                    "bg-green-100 text-green-900 dark:bg-green-950 dark:text-green-100":
+                      line.type === "added",
+                    "bg-red-100 text-red-900 dark:bg-red-950 dark:text-red-100":
+                      line.type === "removed",
+                  })}
                   key={line.key}
                 >
                   <span
                     aria-hidden="true"
                     className="inline-block w-6 select-none text-center opacity-60"
                   >
-                    {line.type === "added"
-                      ? "+"
-                      : line.type === "removed"
-                        ? "-"
-                        : " "}
+                    {getLineIcon(line.type)}
                   </span>
                   <span className="px-2">{line.text}</span>
                 </div>

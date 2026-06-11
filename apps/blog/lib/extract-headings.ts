@@ -1,6 +1,8 @@
 import type { PortableTextBlock } from "@portabletext/types";
 import type { PortableTextValue } from "./portable-text";
 
+const HEADING_STYLE_REGEX = /^h[23]$/;
+
 export interface Heading {
   id: string;
   level: number;
@@ -22,7 +24,7 @@ export function extractHeadings(content: PortableTextValue): Heading[] {
       block._type === "block" &&
       "style" in block &&
       typeof block.style === "string" &&
-      /^h[23]$/.test(block.style)
+      HEADING_STYLE_REGEX.test(block.style)
     ) {
       // Extract text from children
       const text = extractTextFromBlock(block);

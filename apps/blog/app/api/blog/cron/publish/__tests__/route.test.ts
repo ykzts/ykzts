@@ -22,7 +22,9 @@ vi.mock("@/lib/supabase/client", () => ({
 describe("GET /api/cron/publish", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.spyOn(console, "error").mockImplementation(() => {});
+    vi.spyOn(console, "error").mockImplementation(() => {
+      /* no-op */
+    });
   });
 
   afterEach(() => {

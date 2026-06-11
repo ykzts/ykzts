@@ -125,7 +125,7 @@ export async function uploadImage({
   }
 }
 
-export async function getImageDimensions(
+export function getImageDimensions(
   file: File
 ): Promise<{ height: number; width: number }> {
   return new Promise((resolve, reject) => {

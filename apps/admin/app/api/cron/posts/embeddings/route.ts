@@ -16,28 +16,6 @@ function extractVersionContent(currentVersion: unknown): Json | null {
   return version?.content ?? null;
 }
 
-/**
- * Cron endpoint to generate embeddings for posts
- * Should be called periodically by Vercel Cron or similar service
- *
- * GET /api/cron/posts/embeddings (default for Vercel Cron)
- * POST /api/cron/posts/embeddings
- * PUT /api/cron/posts/embeddings
- *
- * Authorization: Bearer <CRON_SECRET>
- */
-export async function GET(request: Request) {
-  return handleCronRequest(request);
-}
-
-export async function PUT(request: Request) {
-  return handleCronRequest(request);
-}
-
-export async function POST(request: Request) {
-  return handleCronRequest(request);
-}
-
 async function handleCronRequest(request: Request) {
   // Verify cron secret for security
   const authHeader = request.headers.get("authorization");
@@ -145,3 +123,17 @@ async function handleCronRequest(request: Request) {
     );
   }
 }
+
+/**
+ * Cron endpoint to generate embeddings for posts
+ * Should be called periodically by Vercel Cron or similar service
+ *
+ * GET /api/cron/posts/embeddings (default for Vercel Cron)
+ * POST /api/cron/posts/embeddings
+ * PUT /api/cron/posts/embeddings
+ *
+ * Authorization: Bearer <CRON_SECRET>
+ */
+export const GET = handleCronRequest;
+export const PUT = handleCronRequest;
+export const POST = handleCronRequest;

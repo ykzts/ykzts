@@ -8,7 +8,7 @@ export default function LoginForm() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  const handleGitHubSubmit = async (e: React.FormEvent) => {
+  const handleGitHubSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     startTransition(async () => {

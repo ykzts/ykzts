@@ -477,7 +477,9 @@ describe("Portable Text Serializer", () => {
 
       const consoleErrorSpy = vi
         .spyOn(console, "error")
-        .mockImplementation(() => {});
+        .mockImplementation(() => {
+          /* no-op */
+        });
 
       initializeEditorWithPortableText(editor, "invalid json");
 

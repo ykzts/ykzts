@@ -13,6 +13,65 @@ import {
   getPostVersions,
 } from "@/lib/supabase/posts";
 
+function VersionsContent({
+  versions,
+}: {
+  versions: Awaited<ReturnType<typeof getPostVersions>>;
+}) {
+  if (versions.length === 0) {
+    return <p className="text-muted-foreground">編集履歴がありません。</p>;
+  }
+
+  if (versions.length > 1) {
+    return (
+      <>
+        <p className="mb-4 text-muted-foreground text-sm">
+          比較したい2つのバージョンを選択してください。
+        </p>
+        <VersionCompare
+          versions={versions.map((version) => ({
+            change_summary: version.change_summary,
+            id: version.id,
+            markdownText: portableTextToMarkdown(version.content),
+            version_date: version.version_date,
+            version_number: version.version_number,
+          }))}
+        />
+      </>
+    );
+  }
+
+  return (
+    <ol className="space-y-4">
+      {versions.map((version, index) => (
+        <li className="rounded border border-border p-4" key={version.id}>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold">
+                  バージョン {version.version_number}
+                </span>
+                {index === 0 && (
+                  <span className="rounded bg-primary px-2 py-0.5 text-primary-foreground text-xs">
+                    最新
+                  </span>
+                )}
+              </div>
+              <DateDisplay
+                className="mt-1 text-muted-foreground text-sm"
+                date={version.version_date}
+              />
+              {version.change_summary && (
+                <p className="mt-2 text-sm">{version.change_summary}</p>
+              )}
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 interface PageProps {
   params: Promise<{
     year: string;
@@ -107,52 +166,7 @@ export default async function PostHistoryPage({ params }: PageProps) {
           </Link>
         </p>
 
-        {versions.length === 0 ? (
-          <p className="text-muted-foreground">編集履歴がありません。</p>
-        ) : versions.length === 1 ? (
-          <ol className="space-y-4">
-            {versions.map((version, index) => (
-              <li className="rounded border border-border p-4" key={version.id}>
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold">
-                        バージョン {version.version_number}
-                      </span>
-                      {index === 0 && (
-                        <span className="rounded bg-primary px-2 py-0.5 text-primary-foreground text-xs">
-                          最新
-                        </span>
-                      )}
-                    </div>
-                    <DateDisplay
-                      className="mt-1 text-muted-foreground text-sm"
-                      date={version.version_date}
-                    />
-                    {version.change_summary && (
-                      <p className="mt-2 text-sm">{version.change_summary}</p>
-                    )}
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <>
-            <p className="mb-4 text-muted-foreground text-sm">
-              比較したい2つのバージョンを選択してください。
-            </p>
-            <VersionCompare
-              versions={versions.map((version) => ({
-                change_summary: version.change_summary,
-                id: version.id,
-                markdownText: portableTextToMarkdown(version.content),
-                version_date: version.version_date,
-                version_number: version.version_number,
-              }))}
-            />
-          </>
-        )}
+        <VersionsContent versions={versions} />
 
         <div className="mt-8">
           <LinkButton href={postUrl} variant="outline">

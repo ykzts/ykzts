@@ -15,7 +15,9 @@ describe("getImageDimensions", () => {
       .mockReturnValue("blob:http://localhost/test-object-url");
     revokeObjectURLSpy = vi
       .spyOn(URL, "revokeObjectURL")
-      .mockImplementation(() => {});
+      .mockImplementation(() => {
+        /* no-op */
+      });
   });
 
   afterEach(() => {

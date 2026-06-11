@@ -20,7 +20,9 @@ vi.mock("@/lib/embeddings", () => ({
 describe("POST /api/blog/search", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.spyOn(console, "error").mockImplementation(() => {});
+    vi.spyOn(console, "error").mockImplementation(() => {
+      /* no-op */
+    });
   });
 
   afterEach(() => {

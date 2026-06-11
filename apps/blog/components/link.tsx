@@ -1,6 +1,8 @@
 import { Link as NextLink } from "@vercel/microfrontends/next/client";
 import type { ComponentProps } from "react";
 
+const SPACE_SPLIT_REGEX = /\s+/;
+
 export default function Link({
   children,
   href,
@@ -10,7 +12,7 @@ export default function Link({
 }: ComponentProps<"a">) {
   const isExternal =
     !!href && (href.startsWith("https://") || href.startsWith("http://"));
-  const relList = new Set(rel ? rel.split(/\s+/) : []);
+  const relList = new Set(rel ? rel.split(SPACE_SPLIT_REGEX) : []);
 
   if (isExternal) {
     relList.add("noreferrer");
