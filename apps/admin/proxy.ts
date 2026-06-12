@@ -16,6 +16,6 @@ export const config = {
      * - vc-ap- (microfrontends asset prefix)
      * Feel free to modify this pattern to include more paths.
      */
-    "/((?!api/|_next/static|_next/image|favicon.ico|vc-ap-|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!api/|_next/static|_next/image|favicon.ico|vc-ap-|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$|\\.well-known/workflow/).*)",
   ],
 };
