@@ -26,7 +26,7 @@ pnpm install
 pnpm dev
 ```
 
-Visit http://localhost:3001/admin
+Visit http://localhost:3100/admin
 
 ## Environment Variables
 
@@ -41,7 +41,7 @@ SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
 # Cache Revalidation
 # Comma-separated list of full revalidation endpoint URLs
 REVALIDATE_SECRET=your-secret-key
-REVALIDATE_URLS=http://localhost:3002/api/blog/revalidate,http://localhost:3000/api/revalidate
+REVALIDATE_URLS=http://localhost:3001/api/blog/revalidate,http://localhost:3000/api/revalidate
 
 # Cron Job Security
 CRON_SECRET=your-cron-secret

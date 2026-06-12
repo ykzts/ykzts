@@ -12,7 +12,7 @@
     "ghcr.io/devcontainers/features/docker-in-docker:3.0.1": {},
     "ghcr.io/devcontainers/features/github-cli:1.1.0": {}
   },
-  "forwardPorts": [3000],
+  "forwardPorts": [3024, 3100, 3101, 3102, 54321, 54323, 54324],
   "hostRequirements": {
     "cpus": 4
   },
@@ -21,5 +21,38 @@
     "source=ykzts-com-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
   ],
   "name": "ykzts.com",
+  "otherPortsAttributes": {
+    "onAutoForward": "ignore"
+  },
+  "portsAttributes": {
+    "3024": {
+      "label": "Main Site (Microfrontends Proxy)",
+      "onAutoForward": "silent"
+    },
+    "3100": {
+      "label": "Admin Dev Server",
+      "onAutoForward": "silent"
+    },
+    "3101": {
+      "label": "Memo Dev Server",
+      "onAutoForward": "silent"
+    },
+    "3102": {
+      "label": "Blog Legacy Dev Server",
+      "onAutoForward": "silent"
+    },
+    "54321": {
+      "label": "Supabase API",
+      "onAutoForward": "silent"
+    },
+    "54323": {
+      "label": "Supabase Studio",
+      "onAutoForward": "silent"
+    },
+    "54324": {
+      "label": "Mailpit",
+      "onAutoForward": "silent"
+    }
+  },
   "postCreateCommand": "./.devcontainer/post-create.sh"
 }
