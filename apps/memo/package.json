@@ -19,7 +19,7 @@
   "devDependencies": {
     "@portabletext/types": "4.0.2",
     "@tailwindcss/postcss": "4.3.0",
-    "@tailwindcss/typography": "0.5.19",
+    "@tailwindcss/typography": "0.5.20",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
