@@ -2,6 +2,11 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { vi } from "vitest";
 
+// Prevent "server-only" (and "client-only") guards from throwing or failing resolution
+// when running server-only modules under jsdom test environment.
+vi.mock("server-only", () => ({}));
+vi.mock("client-only", () => ({}));
+
 // Mock Next.js router
 vi.mock("next/navigation", () => ({
   usePathname: () => "/",

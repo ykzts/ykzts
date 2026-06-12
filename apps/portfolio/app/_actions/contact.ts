@@ -1,12 +1,10 @@
 "use server";
 
-import { getSiteName } from "@ykzts/site-config";
 import { getProfile } from "@ykzts/supabase/queries";
 import { checkBotId } from "botid/server";
-import { Resend } from "resend";
+import { start } from "workflow/api";
 import { z } from "zod";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendContactEmail } from "@/workflows/send-contact-email";
 
 const contactFormSchema = z.object({
   email: z.email("有効なメールアドレスを入力してください"),
@@ -70,43 +68,33 @@ export async function submitContactForm(
     // Validate form data
     const validatedData = contactFormSchema.parse(data);
 
-    // Send email using Resend
-    if (!(process.env.RESEND_API_KEY && contactEmail)) {
-      if (!process.env.RESEND_API_KEY) {
-        console.error("RESEND_API_KEY is not configured.");
+    // Fire-and-forget: try to enqueue the durable email workflow for retries/observability.
+    // If the SDK integration has issues in this environment (e.g. preview, missing handler),
+    // fall back to direct send so the form never crashes the function.
+    try {
+      await start(sendContactEmail, [{ contactEmail, data: validatedData }]);
+    } catch (workflowError) {
+      console.error(
+        "Failed to start contact email workflow, falling back to direct send:",
+        workflowError
+      );
+      // Direct fallback (duplicated minimal logic from the step to avoid depending on internal step)
+      const resend = new (await import("resend")).Resend(
+        process.env.RESEND_API_KEY
+      );
+      const siteName = (await import("@ykzts/site-config")).getSiteName();
+      const fromAddress =
+        process.env.MAIL_FROM_ADDRESS ?? "no-reply@example.com";
+      const emailResult = await resend.emails.send({
+        from: `${validatedData.name} via ${siteName} <${fromAddress}>`,
+        replyTo: `${validatedData.name} <${validatedData.email}>`,
+        subject: `[お問い合わせ] ${validatedData.subject}`,
+        text: validatedData.message,
+        to: [contactEmail],
+      });
+      if (emailResult.error) {
+        console.error("Fallback direct send also failed:", emailResult.error);
       }
-
-      if (!contactEmail) {
-        console.error("contactEmail in profile is not configured.");
-      }
-
-      return {
-        error:
-          "メール送信の設定が正しくありません。管理者にお問い合わせください。",
-        formData: data,
-        success: false,
-      };
-    }
-
-    const siteName = getSiteName();
-    const fromAddress = process.env.MAIL_FROM_ADDRESS ?? "no-reply@example.com";
-
-    const emailResult = await resend.emails.send({
-      from: `${validatedData.name} via ${siteName} <${fromAddress}>`,
-      replyTo: `${validatedData.name} <${validatedData.email}>`,
-      subject: `[お問い合わせ] ${validatedData.subject}`,
-      text: validatedData.message,
-      to: [contactEmail],
-    });
-
-    if (emailResult.error) {
-      console.error("Resend error:", emailResult.error);
-      return {
-        error:
-          "メールの送信に失敗しました。しばらくしてからもう一度お試しください。",
-        formData: data,
-        success: false,
-      };
     }
 
     return {

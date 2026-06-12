@@ -4,6 +4,19 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 // Mock environment variable
 vi.stubEnv("CRON_SECRET", "test-cron-secret");
 
+// Prevent server-only from failing resolution / throwing during vitest transform of server modules
+vi.mock("server-only", () => ({}));
+
+// Mock workflow start API so the route's start(publishScheduledPosts) executes
+// the (mocked) workflow function directly in the test environment.
+vi.mock("workflow/api", () => ({
+  start: vi.fn((workflowFn: any) => {
+    // 0-arg workflow in this case
+    const resultPromise = Promise.resolve(workflowFn());
+    return Promise.resolve({ returnValue: resultPromise });
+  }),
+}));
+
 // Mock revalidateTag
 const mockRevalidateTag = vi.fn();
 vi.mock("next/cache", () => ({

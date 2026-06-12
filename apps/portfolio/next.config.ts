@@ -2,8 +2,8 @@ import createMDX from "@next/mdx";
 import { withMicrofrontends } from "@vercel/microfrontends/next/config";
 import { getSupabaseImageConfig } from "@ykzts/supabase/next-image-config";
 import { withBotId } from "botid/next/config";
-
 import type { NextConfig } from "next";
+import { withWorkflow } from "workflow/next";
 
 const withMDX = createMDX();
 
@@ -42,7 +42,9 @@ const nextConfig: NextConfig = {
               "frame-ancestors 'none'",
               "frame-src https://challenges.cloudflare.com",
               imgSrcCsp,
-              "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
+              `script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com${
+                process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""
+              }`,
               "style-src 'self' 'unsafe-inline'",
             ].join("; "),
           },
@@ -78,4 +80,4 @@ const nextConfig: NextConfig = {
   typedRoutes: true,
 };
 
-export default withBotId(withMicrofrontends(withMDX(nextConfig)));
+export default withWorkflow(withBotId(withMicrofrontends(withMDX(nextConfig))));
