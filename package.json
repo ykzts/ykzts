@@ -8,7 +8,7 @@
     "@commitlint/types": "21.0.1",
     "lefthook": "2.1.9",
     "turbo": "2.9.16",
-    "ultracite": "7.8.1"
+    "ultracite": "7.8.2"
   },
   "license": "MIT",
   "name": "@ykzts/monorepo",
