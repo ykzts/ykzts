@@ -45,8 +45,8 @@ importers:
         specifier: 2.9.16
         version: 2.9.16
       ultracite:
-        specifier: 7.8.1
-        version: 7.8.1
+        specifier: 7.8.2
+        version: 7.8.2
 
   apps/admin:
     dependencies:
@@ -3380,6 +3380,10 @@ packages:
     resolution: {integrity: sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw==}
     engines: {node: '>=20'}
 
+  commander@15.0.0:
+    resolution: {integrity: sha512-z67u4ZhzCL/Tydu1lJARtEZYWbWaN7oYLHbsuzocr6y4N6WZAagG3RQ4FW61V1/0+jImpj293XfrcYnd1qxtPg==}
+    engines: {node: '>=22.12.0'}
+
   compressible@2.0.18:
     resolution: {integrity: sha512-AF3r7P5dWxL8MxyITRMlORQNaOA2IkAFaTr4k7BUumjPtRpGDTZpl0Pb1XCO6JeDCBdp126Cgs9sMxqSjgYyRg==}
     engines: {node: '>= 0.6'}
@@ -6416,8 +6420,8 @@ packages:
     resolution: {integrity: sha512-rvKSBiC5zqCCiDZ9kAOszZcDvdAHwwIKJG33Ykj43OKcWsnmcBRL09YTU4nOeHZ8Y2a7l1MgTd08SBe9A8Qj6A==}
     engines: {node: '>=18'}
 
-  ultracite@7.8.1:
-    resolution: {integrity: sha512-yVkUHR9gMvqt7uEzC45tkSgJNUfAYztJPqZLSK6Z/PkWksoQOWjSVAcff7pEQarQKUJF/KR2S41UJ7wVAlo44Q==}
+  ultracite@7.8.2:
+    resolution: {integrity: sha512-+XeWzAEsewEr/kM686bOIWWt5DN+Pww4JUEOQUqOx4p/Pi58FWV+vPtEo2wi5WVWSgIkf8NzfTWGXmJjdqMl8g==}
     hasBin: true
     peerDependencies:
       oxfmt: '>=0.1.0'
@@ -9723,6 +9727,8 @@ snapshots:
   commander@12.1.0: {}
 
   commander@14.0.3: {}
+
+  commander@15.0.0: {}
 
   compressible@2.0.18:
     dependencies:
@@ -13380,10 +13386,10 @@ snapshots:
 
   uint8array-extras@1.5.0: {}
 
-  ultracite@7.8.1:
+  ultracite@7.8.2:
     dependencies:
       '@clack/prompts': 1.5.1
-      commander: 14.0.3
+      commander: 15.0.0
       cross-spawn: 7.0.6
       deepmerge: 4.3.1
       glob: 13.0.6
