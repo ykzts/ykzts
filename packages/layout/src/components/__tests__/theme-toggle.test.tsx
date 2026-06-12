@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import ThemeToggle from "../theme-toggle";
 
 const mockSetTheme = vi.fn();
 let mockResolvedTheme = "light";
@@ -15,8 +16,6 @@ vi.mock("next-themes", () => ({
     setTheme: mockSetTheme,
   }),
 }));
-
-import ThemeToggle from "../theme-toggle";
 
 describe("ThemeToggle", () => {
   it("renders without crashing", () => {
