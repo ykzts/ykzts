@@ -16,7 +16,7 @@ vi.mock("next-themes", () => ({
   }),
 }));
 
-import ThemeToggle from "@ykzts/layout/components/theme-toggle";
+import ThemeToggle from "../theme-toggle";
 
 describe("ThemeToggle", () => {
   it("renders without crashing", () => {
