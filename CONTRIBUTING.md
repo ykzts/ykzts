@@ -124,6 +124,8 @@ pnpm will automatically enforce this when installing or updating packages.
 
 This repository **strictly follows** the [Conventional Commits](https://www.conventionalcommits.org/) specification. All commit messages must adhere to the `type(scope): subject` format.
 
+Commit messages are automatically enforced by `commitlint` (via the lefthook `commit-msg` hook). Commits with invalid messages will be rejected locally.
+
 ### Commit Types
 
 - **feat**: New features
@@ -148,27 +150,51 @@ This repository **strictly follows** the [Conventional Commits](https://www.conv
 
 - Use app names for application-specific changes: `portfolio`, `blog-legacy`, `blog`
 - Use package names for shared packages: `supabase`, `tsconfig`
+
+### Trailers for Provenance (AI-assisted commits)
+
+For commits that involved AI assistance, include a trailer to document the origin, following Linux Kernel-style conventions (current recommended form):
+
+```
+Assisted-by: Grok Build (xAI)
+```
+
+Use Git's native trailer support when committing (simple for humans):
+
+```sh
+git commit --trailer "Assisted-by: Grok Build (xAI)"
+```
+
+For convenience, you can set a local alias:
+
+```sh
+git config alias.commit-ai '!git commit --trailer "Assisted-by: Grok Build (xAI)"'
+```
+
+commitlint (via the conventional preset) accepts these trailers. Strict enforcement of presence is left to contributor discipline and review, to keep the commitlint configuration minimal and riding the de-facto preset.
 - Omit scope for repository-wide changes
 
 ## Pull Request Process
 
 ### Before Submitting
 
-1. **Run all checks locally**:
+1. **Git hooks (recommended)**: lefthook is configured (via `lefthook.yml`) to automatically run `ultracite fix` on staged files during `pre-commit`. After `pnpm install`, hooks are set up automatically via the `prepare` script. You can bypass with `git commit --no-verify` if needed.
+
+2. **Run all checks locally** (hooks will catch most issues early):
    ```bash
-   pnpm check         # Ultracite check
+   pnpm check         # Ultracite check (lint + format)
    pnpm fix           # Ultracite auto-fix
    pnpm test          # Run tests
    pnpm validate      # Run validation tasks
    pnpm typegen       # Generate TypeScript types
    ```
 
-2. **Build successfully**:
+3. **Build successfully**:
    ```bash
    pnpm build
    ```
 
-3. **Follow commit message conventions** (see above)
+4. **Follow commit message conventions** (see above)
 
 ### Pull Request Guidelines
 

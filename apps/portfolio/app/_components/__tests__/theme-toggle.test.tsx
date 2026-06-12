@@ -16,8 +16,7 @@ vi.mock("next-themes", () => ({
   }),
 }));
 
-// Import after mocks are set up
-const { default: ThemeToggle } = await import("../theme-toggle");
+import ThemeToggle from "@ykzts/layout/components/theme-toggle";
 
 describe("ThemeToggle", () => {
   it("renders without crashing", () => {

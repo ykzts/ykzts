@@ -1,0 +1,41 @@
+# lefthook.yml
+# Git hooks managed by lefthook (https://github.com/evilmartians/lefthook)
+# Run `pnpm install` (or `lefthook install`) to set up hooks.
+
+pre-commit:
+  parallel: true
+  commands:
+    # Auto-fix formatting and lint issues on staged files, then re-stage the fixes.
+    # This enforces the project's "pnpm check" requirement (via ultracite/Biome)
+    # before allowing a commit, per AGENTS.md and CONTRIBUTING.md.
+    ultracite:
+      glob: "**/*.{js,ts,jsx,tsx,json,css,md,mdx,yml,yaml}"
+      # {staged_files} を明示的に渡すために直接 ultracite を呼び出しています。
+      # `pnpm fix` だけだとプロジェクト全体を対象にしてしまうため、ステージされたファイルのみに絞っています。
+      # `pnpm fix -- {staged_files}` でも動作しますが、こちらの方が意図が明確です。
+      run: pnpm exec ultracite fix {staged_files}
+      stage_fixed: true
+      # If there are remaining issues that can't be auto-fixed, the command will fail
+      # and block the commit (user must fix manually or run pnpm fix).
+
+# pre-push runs before pushing to remote (good place for heavier checks).
+# `pnpm typecheck` already depends on `typegen` via turbo.json (see "dependsOn" in turbo.json),
+# so running typecheck automatically ensures generated types (e.g. Supabase database.types.ts) are up to date.
+pre-push:
+  commands:
+    typecheck:
+      run: pnpm typecheck
+    # test:
+    #   run: pnpm test
+    # validate:
+    #   run: pnpm validate
+
+commit-msg:
+  commands:
+    lint:
+      # Enforces Conventional Commits (see AGENTS.md and CONTRIBUTING.md).
+      # The commitlint.config.ts (proper TypeScript) is automatically discovered.
+      run: pnpm exec commitlint --edit {1}
+
+# To bypass hooks temporarily: git commit --no-verify
+# Or run `lefthook uninstall` / `lefthook install` to toggle.
