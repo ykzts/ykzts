@@ -39,7 +39,7 @@
   },
   "scripts": {
     "build": "next build",
-    "dev": "next dev --port 3003",
+    "dev": "next dev --port 3101",
     "start": "next start",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "typegen": "next typegen"
