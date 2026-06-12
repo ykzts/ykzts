@@ -21,6 +21,7 @@ allowBuilds:
   core-js-pure: false
   dtrace-provider: false
   esbuild: true
+  lefthook: true
   msw: false
   protobufjs: false
   re2: false

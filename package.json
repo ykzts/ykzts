@@ -1,9 +1,12 @@
 {
   "author": "Yamagishi Kazutoshi",
-  "dependencies": {},
   "description": "",
   "devDependencies": {
     "@biomejs/biome": "2.4.16",
+    "@commitlint/cli": "21.0.2",
+    "@commitlint/config-conventional": "21.0.2",
+    "@commitlint/types": "21.0.1",
+    "lefthook": "2.1.9",
     "turbo": "2.9.16",
     "ultracite": "7.8.2"
   },
@@ -21,6 +24,7 @@
     "check": "ultracite check",
     "fix": "ultracite fix",
     "lighthouse": "turbo run lighthouse",
+    "prepare": "lefthook install || echo 'lefthook install skipped (e.g. CI or non-git env)'",
     "test": "turbo run test",
     "test:a11y": "turbo run test:a11y",
     "typecheck": "turbo run typecheck",

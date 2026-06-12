@@ -131,6 +131,28 @@ This repository strictly follows the **Conventional Commits** specification. All
 - Use package names for shared packages: `supabase`, `tsconfig`
 - Omit scope for repository-wide changes
 
+### Trailers for AI-assisted commits
+For commits involving AI assistance, document the provenance using a Linux Kernel-style trailer (this is the current recommended form):
+
+```
+Assisted-by: Grok Build (xAI)
+```
+
+Add it using Git's built-in trailer support (keeps the workflow simple for humans):
+
+```sh
+git commit --trailer "Assisted-by: Grok Build (xAI)"
+```
+
+For convenience, you can set up a local alias once:
+
+```sh
+git config alias.commit-ai '!git commit --trailer "Assisted-by: Grok Build (xAI)"'
+# then use: git commit-ai -m "feat(ui): ..."
+```
+
+This approach follows the project's preference for riding established conventions (Conventional Commits + git trailers) rather than heavy custom tooling or strict enforcement in commitlint. commitlint (via the conventional preset) accepts these trailers without issue. The presence of the trailer for "AI cases" is handled by contributor discipline and review, keeping the commitlint configuration minimal and close to the de-facto preset.
+
 ## Best Practices for Contributors
 
 1. **Commit Messages**: Follow Conventional Commits specification strictly
