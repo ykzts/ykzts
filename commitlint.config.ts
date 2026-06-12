@@ -4,8 +4,11 @@ const config: UserConfig = {
   extends: ["@commitlint/config-conventional"],
 
   // Keep custom configuration to the absolute minimum.
-  // The project aims to ride the de-facto @commitlint/config-conventional preset as much as possible.
-  // Only the scope list is unavoidable for monorepo policy.
+  // We ride the de-facto @commitlint/config-conventional preset as much as possible.
+  // The only necessary overrides are:
+  // - scope-enum (required for monorepo policy)
+  // - body-max-line-length / footer-max-line-length (preset's 100 char limit is too strict
+  //   once you start using trailers like Assisted-by or writing detailed bodies)
   rules: {
     "scope-enum": [
       2,
@@ -36,6 +39,8 @@ const config: UserConfig = {
         "release",
       ],
     ],
+    "body-max-line-length": [0],
+    "footer-max-line-length": [0],
   },
 };
 
