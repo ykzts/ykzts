@@ -142,8 +142,8 @@ importers:
         specifier: 8.5.15
         version: 8.5.15
       shadcn:
-        specifier: 4.10.0
-        version: 4.10.0(@types/node@24.13.1)(typescript@6.0.3)
+        specifier: 4.11.0
+        version: 4.11.0(typescript@6.0.3)
       tailwindcss:
         specifier: 4.3.0
         version: 4.3.0
@@ -269,8 +269,8 @@ importers:
         specifier: 8.5.15
         version: 8.5.15
       shadcn:
-        specifier: 4.10.0
-        version: 4.10.0(@types/node@24.13.1)(typescript@6.0.3)
+        specifier: 4.11.0
+        version: 4.11.0(typescript@6.0.3)
       tailwindcss:
         specifier: 4.3.0
         version: 4.3.0
@@ -542,8 +542,8 @@ importers:
         specifier: 8.5.15
         version: 8.5.15
       shadcn:
-        specifier: 4.10.0
-        version: 4.10.0(@types/node@24.13.1)(typescript@6.0.3)
+        specifier: 4.11.0
+        version: 4.11.0(typescript@6.0.3)
       tailwindcss:
         specifier: 4.3.0
         version: 4.3.0
@@ -5965,8 +5965,8 @@ packages:
   setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
 
-  shadcn@4.10.0:
-    resolution: {integrity: sha512-84IJhUsK0xqSCRJx3QxyZe2NpUXj2Nwk8Vc8Ow/tCOND3yz4CT6uU4655vqicNXhzG9Q1cyUt+TBl2SiCJwNgg==}
+  shadcn@4.11.0:
+    resolution: {integrity: sha512-UV0cchFea9hO7poV1CuEP0wvmYjpAqcxCKdy23bndl2Du2ARtDs8A4xdzfhUjDBeOW1nNpJ6lXmsEpsply2SfQ==}
     hasBin: true
 
   sharp@0.34.5:
@@ -7788,7 +7788,8 @@ snapshots:
   '@img/sharp-win32-x64@0.34.5':
     optional: true
 
-  '@inquirer/ansi@2.0.6': {}
+  '@inquirer/ansi@2.0.6':
+    optional: true
 
   '@inquirer/confirm@6.1.0(@types/node@24.13.1)':
     dependencies:
@@ -7796,6 +7797,7 @@ snapshots:
       '@inquirer/type': 4.0.6(@types/node@24.13.1)
     optionalDependencies:
       '@types/node': 24.13.1
+    optional: true
 
   '@inquirer/core@11.2.0(@types/node@24.13.1)':
     dependencies:
@@ -7808,12 +7810,15 @@ snapshots:
       signal-exit: 4.1.0
     optionalDependencies:
       '@types/node': 24.13.1
+    optional: true
 
-  '@inquirer/figures@2.0.6': {}
+  '@inquirer/figures@2.0.6':
+    optional: true
 
   '@inquirer/type@4.0.6(@types/node@24.13.1)':
     optionalDependencies:
       '@types/node': 24.13.1
+    optional: true
 
   '@isaacs/fs-minipass@4.0.1':
     dependencies:
@@ -8166,6 +8171,7 @@ snapshots:
       is-node-process: 1.2.0
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
+    optional: true
 
   '@napi-rs/wasm-runtime@1.1.4(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)':
     dependencies:
@@ -8237,16 +8243,20 @@ snapshots:
 
   '@one-ini/wasm@0.2.1': {}
 
-  '@open-draft/deferred-promise@2.2.0': {}
+  '@open-draft/deferred-promise@2.2.0':
+    optional: true
 
-  '@open-draft/deferred-promise@3.0.0': {}
+  '@open-draft/deferred-promise@3.0.0':
+    optional: true
 
   '@open-draft/logger@0.3.0':
     dependencies:
       is-node-process: 1.2.0
       outvariant: 1.4.3
+    optional: true
 
-  '@open-draft/until@2.1.0': {}
+  '@open-draft/until@2.1.0':
+    optional: true
 
   '@opentelemetry/api-logs@0.218.0':
     dependencies:
@@ -9072,8 +9082,10 @@ snapshots:
   '@types/set-cookie-parser@2.4.10':
     dependencies:
       '@types/node': 24.13.1
+    optional: true
 
-  '@types/statuses@2.0.6': {}
+  '@types/statuses@2.0.6':
+    optional: true
 
   '@types/treeify@1.0.3': {}
 
@@ -9659,7 +9671,8 @@ snapshots:
 
   cli-width@2.2.1: {}
 
-  cli-width@4.1.0: {}
+  cli-width@4.1.0:
+    optional: true
 
   client-only@0.0.1: {}
 
@@ -10602,7 +10615,8 @@ snapshots:
 
   grapheme-splitter@1.0.4: {}
 
-  graphql@16.14.0: {}
+  graphql@16.14.0:
+    optional: true
 
   gray-matter@4.0.3:
     dependencies:
@@ -10699,6 +10713,7 @@ snapshots:
     dependencies:
       '@types/set-cookie-parser': 2.4.10
       set-cookie-parser: 3.1.0
+    optional: true
 
   hono@4.12.23: {}
 
@@ -10897,7 +10912,8 @@ snapshots:
 
   is-interactive@2.0.0: {}
 
-  is-node-process@1.2.0: {}
+  is-node-process@1.2.0:
+    optional: true
 
   is-number@7.0.0: {}
 
@@ -11842,10 +11858,12 @@ snapshots:
       typescript: 6.0.3
     transitivePeerDependencies:
       - '@types/node'
+    optional: true
 
   mute-stream@0.0.7: {}
 
-  mute-stream@4.0.0: {}
+  mute-stream@4.0.0:
+    optional: true
 
   mv@2.1.1:
     dependencies:
@@ -12052,7 +12070,8 @@ snapshots:
 
   os-tmpdir@1.0.2: {}
 
-  outvariant@1.4.3: {}
+  outvariant@1.4.3:
+    optional: true
 
   p-all@5.0.1:
     dependencies:
@@ -12672,7 +12691,8 @@ snapshots:
       onetime: 7.0.0
       signal-exit: 4.1.0
 
-  rettime@0.11.11: {}
+  rettime@0.11.11:
+    optional: true
 
   reusify@1.1.0: {}
 
@@ -12843,11 +12863,12 @@ snapshots:
 
   set-blocking@2.0.0: {}
 
-  set-cookie-parser@3.1.0: {}
+  set-cookie-parser@3.1.0:
+    optional: true
 
   setprototypeof@1.2.0: {}
 
-  shadcn@4.10.0(@types/node@24.13.1)(typescript@6.0.3):
+  shadcn@4.11.0(typescript@6.0.3):
     dependencies:
       '@babel/core': 7.29.7
       '@babel/parser': 7.29.7
@@ -12868,7 +12889,6 @@ snapshots:
       fuzzysort: 3.1.0
       https-proxy-agent: 7.0.6
       kleur: 4.1.5
-      msw: 2.14.6(@types/node@24.13.1)(typescript@6.0.3)
       node-fetch: 3.3.2
       open: 11.0.0
       ora: 8.2.0
@@ -12885,7 +12905,6 @@ snapshots:
       zod-to-json-schema: 3.25.2(zod@3.25.76)
     transitivePeerDependencies:
       - '@cfworker/json-schema'
-      - '@types/node'
       - babel-plugin-macros
       - supports-color
       - typescript
@@ -13062,7 +13081,8 @@ snapshots:
       - bare-abort-controller
       - react-native-b4a
 
-  strict-event-emitter@0.5.1: {}
+  strict-event-emitter@0.5.1:
+    optional: true
 
   string-width@2.1.1:
     dependencies:
@@ -13428,7 +13448,8 @@ snapshots:
 
   unpipe@1.0.0: {}
 
-  until-async@3.0.2: {}
+  until-async@3.0.2:
+    optional: true
 
   upath@3.0.7: {}
 
