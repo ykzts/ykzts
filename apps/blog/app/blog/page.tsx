@@ -1,9 +1,10 @@
 import { getSiteName } from "@ykzts/site-config";
 import { getProfile } from "@ykzts/supabase/queries";
 import type { Metadata } from "next";
-import BlogPagination from "@/components/blog-pagination";
-import PostCard from "@/components/post-card";
-import { getPosts, getTotalPages } from "@/lib/supabase/posts";
+import { Suspense } from "react";
+import { YearArchiveLinks } from "./_components/archive-links";
+import { Pagination } from "./_components/pagination";
+import { Posts, PostsSkeleton } from "./_components/posts";
 
 const siteName = getSiteName();
 
@@ -41,23 +42,27 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function HomePage() {
-  const posts = await getPosts(1);
-  const totalPages = await getTotalPages();
-
+export default function HomePage() {
   return (
     <main className="px-6 py-8 md:px-12 lg:px-24">
       <div className="mx-auto max-w-4xl">
-        <div className="space-y-6">
-          {posts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </div>
-        {totalPages > 1 && (
-          <div className="mt-8">
-            <BlogPagination currentPage={1} totalPages={totalPages} />
-          </div>
-        )}
+        <Suspense fallback={<PostsSkeleton count={5} />}>
+          <Posts />
+        </Suspense>
+
+        <Suspense
+          fallback={
+            <div className="mt-8 border-t pt-4">
+              <div className="h-4 w-48 animate-pulse rounded bg-muted" />
+            </div>
+          }
+        >
+          <YearArchiveLinks />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <Pagination />
+        </Suspense>
       </div>
     </main>
   );

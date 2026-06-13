@@ -1,5 +1,14 @@
+import { Link } from "@vercel/microfrontends/next/client";
 import { getSiteOrigin } from "@ykzts/site-config";
 import { getProfile } from "@ykzts/supabase/queries";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@ykzts/ui/components/breadcrumb";
 import { getDateBasedUrl } from "@ykzts/utils/blog-urls";
 import { isPortableTextValue } from "@ykzts/utils/portable-text";
 import type { Metadata, Route } from "next";
@@ -214,6 +223,28 @@ export default async function PostDetailPage({ params }: PageProps) {
         type="application/ld+json"
       />
       <main className="px-6 py-8 md:px-12 lg:px-24">
+        <div className="mx-auto max-w-4xl">
+          <Breadcrumb className="mb-6">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink render={<Link href="/blog" />}>
+                  ブログ
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink render={<Link href={`/blog/${year}`} />}>
+                  {year}年
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{post.title}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+
         {/* Grid layout: article body + ToC */}
         <div className="mx-auto max-w-4xl">
           {hasHeadings ? (

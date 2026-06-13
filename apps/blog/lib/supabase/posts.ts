@@ -324,6 +324,70 @@ export async function getAllPosts() {
   }));
 }
 
+/**
+ * Get distinct years that have published posts, sorted descending (newest first).
+ * Used for SSG of year archive pages and navigation.
+ */
+export async function getAvailableYears(isDraft = false): Promise<number[]> {
+  cacheTag("posts");
+
+  const client = getClient(isDraft);
+
+  if (!client) {
+    return [];
+  }
+
+  let query = client
+    .from("posts")
+    .select("published_at")
+    .not("published_at", "is", null);
+
+  if (!isDraft) {
+    query = query
+      .eq("status", "published")
+      .lte("published_at", new Date().toISOString());
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    throw new Error(`Failed to fetch available years: ${error.message}`);
+  }
+
+  const years = new Set<number>();
+  for (const row of data) {
+    if (row.published_at) {
+      const year = new Date(row.published_at as string).getUTCFullYear();
+      years.add(year);
+    }
+  }
+
+  return Array.from(years).sort((a, b) => b - a);
+}
+
+/**
+ * Get the adjacent years (previous = older, next = newer) that have published posts.
+ */
+export async function getAdjacentYears(
+  year: number,
+  isDraft = false
+): Promise<{
+  previousYear: number | null;
+  nextYear: number | null;
+}> {
+  const years = await getAvailableYears(isDraft);
+  const index = years.indexOf(year);
+
+  if (index === -1) {
+    return { previousYear: null, nextYear: null };
+  }
+
+  const previousYear = index + 1 < years.length ? years[index + 1] : null;
+  const nextYear = index > 0 ? years[index - 1] : null;
+
+  return { previousYear, nextYear };
+}
+
 export async function getPostsForFeed(limit = 20) {
   cacheTag("posts");
 

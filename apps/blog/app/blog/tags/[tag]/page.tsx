@@ -1,3 +1,12 @@
+import { Link } from "@vercel/microfrontends/next/client";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@ykzts/ui/components/breadcrumb";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BlogPagination from "@/components/blog-pagination";
@@ -54,6 +63,20 @@ export default async function TagArchivePage({ params }: PageProps) {
   return (
     <main className="px-6 py-8 md:px-12 lg:px-24">
       <div className="mx-auto max-w-4xl">
+        <Breadcrumb className="mb-4">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink render={<Link href="/blog" />}>
+                ブログ
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{decodedTag}タグ</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+
         <h1 className="mb-8 font-bold text-3xl">
           {decodedTag} ({postCount}件)
         </h1>

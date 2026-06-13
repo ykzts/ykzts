@@ -6,6 +6,7 @@
   "exports": {
     "./components/alert": "./src/components/alert.tsx",
     "./components/badge": "./src/components/badge.tsx",
+    "./components/breadcrumb": "./src/components/breadcrumb.tsx",
     "./components/button": "./src/components/button.tsx",
     "./components/card": "./src/components/card.tsx",
     "./components/checkbox": "./src/components/checkbox.tsx",
