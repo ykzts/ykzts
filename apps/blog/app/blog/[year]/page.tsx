@@ -20,6 +20,8 @@ import {
   getPostsByYear,
 } from "@/lib/supabase/posts";
 
+const YEAR_REGEX = /^\d{4}$/;
+
 const siteName = getSiteName();
 
 interface PageProps {
@@ -72,14 +74,13 @@ export async function generateMetadata({
     };
   }
 
-  const year = Number.parseInt(yearStr, 10);
-
-  if (Number.isNaN(year)) {
+  if (!YEAR_REGEX.test(yearStr)) {
     return {
-      description: "年別アーカイブ",
-      title: "アーカイブ",
+      title: "Not Found",
     };
   }
+
+  const year = Number.parseInt(yearStr, 10);
 
   const title = `${year}年の記事`;
   const description = `${year}年に公開された記事の一覧`;
@@ -106,11 +107,11 @@ export default async function YearArchivePage({ params }: PageProps) {
     notFound();
   }
 
-  const year = Number.parseInt(yearStr, 10);
-
-  if (Number.isNaN(year)) {
+  if (!YEAR_REGEX.test(yearStr)) {
     notFound();
   }
+
+  const year = Number.parseInt(yearStr, 10);
 
   const posts = (await getPostsByYear(year)) as Post[];
   const count = await getPostCountByYear(year);

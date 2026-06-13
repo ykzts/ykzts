@@ -10,7 +10,8 @@ import { supabase } from "@/lib/supabase/client";
 // Note: /blog/:year/:month paths are not treated as legacy; they are supported
 // convenience redirects to the year archive with the appropriate month anchor.
 // Real post paths (/blog/2025/05/12/slug) are not matched.
-const LEGACY_ARCHIVE_REGEX = /^\/blog\/(\d{4})\/(\d{1,2})(?:\/(\d{1,2}))?$/;
+const LEGACY_ARCHIVE_REGEX =
+  /^\/blog\/(\d{4})\/(0?[1-9]|1[0-2])(?:\/(0?[1-9]|[12][0-9]|3[01]))?$/;
 
 /**
  * Handles redirect from the old `/blog/archive` path to the most recent year
