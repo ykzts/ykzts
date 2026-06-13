@@ -42,18 +42,16 @@ function normalizeCspValues(value: CspValue | CspValue[]): string[] {
  * const csp = buildCsp({
  *   baseUri: [NONE],
  *   defaultSrc: [NONE],
- *   scriptSrc: [SELF, UNSAFE_INLINE, isDevelopment && UNSAFE_EVAL, 'https://challenges.cloudflare.com'],
+ *   scriptSrc: [SELF, UNSAFE_INLINE, isDevelopment && UNSAFE_EVAL],
  *   styleSrc: [SELF, UNSAFE_INLINE],
  *   imgSrc: getSupabaseStorageSrc(),
  *   connectSrc: [
  *     SELF,
  *     'https://vitals.vercel-insights.com',
- *     'https://challenges.cloudflare.com',
  *     isDevelopment && 'ws:',
  *     isDevelopment && 'wss:',
  *   ],
  *   fontSrc: [SELF],
- *   frameSrc: ['https://challenges.cloudflare.com'],
  *   // etc.
  * });
  * ```
@@ -84,17 +82,25 @@ export function buildCsp(
  *
  * Extracted here so the logic is not duplicated and can be reused by any app that sets a CSP.
  */
+export function getSupabaseHost(supabaseUrl?: string): string | undefined {
+  const url = supabaseUrl ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!url) {
+    return;
+  }
+  try {
+    const parsed = new URL(url);
+    return `${parsed.protocol}//${parsed.host}`;
+  } catch {
+    return;
+  }
+}
+
 export function getSupabaseStorageSrc(supabaseUrl?: string): string[] {
   const sources = [SELF, DATA];
 
-  const url = supabaseUrl ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
-  if (url) {
-    try {
-      const parsed = new URL(url);
-      sources.push(`${parsed.protocol}//${parsed.host}`);
-    } catch {
-      // Ignore invalid URL (consistent with previous inline logic)
-    }
+  const host = getSupabaseHost(supabaseUrl);
+  if (host) {
+    sources.push(host);
   }
 
   return sources;
@@ -107,3 +113,31 @@ export const UNSAFE_INLINE = "'unsafe-inline'";
 export const UNSAFE_EVAL = "'unsafe-eval'";
 export const DATA = "data:";
 export const BLOB = "blob:";
+
+/**
+ * Returns the baseline CSP directives used by default across apps
+ * (modeled exactly on the original portfolio policy to avoid regression).
+ *
+ * Most applications should prefer `getSecurityHeaders` from '@ykzts/utils/security-headers'
+ * instead of using this directly.
+ */
+export function getDefaultCspDirectives(
+  isDevelopment = process.env.NODE_ENV === "development"
+): Record<string, CspValue | CspValue[]> {
+  return {
+    baseUri: [NONE],
+    connectSrc: [
+      SELF,
+      "https://vitals.vercel-insights.com",
+      isDevelopment && "ws:",
+      isDevelopment && "wss:",
+    ],
+    defaultSrc: [NONE],
+    fontSrc: [SELF],
+    formAction: [NONE],
+    frameAncestors: [NONE],
+    imgSrc: getSupabaseStorageSrc(),
+    scriptSrc: [SELF, UNSAFE_INLINE, isDevelopment && UNSAFE_EVAL],
+    styleSrc: [SELF, UNSAFE_INLINE],
+  };
+}

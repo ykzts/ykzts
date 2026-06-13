@@ -7,6 +7,7 @@
  * dependency footprints small:
  *
  *   import { buildCsp, SELF, NONE } from '@ykzts/utils/csp';
+ *   import { getSecurityHeaders } from '@ykzts/utils/security-headers';
  *   import { getVisiblePages } from '@ykzts/utils/pagination';
  *   import { extractFirstParagraph, portableTextToMarkdown } from '@ykzts/utils/portable-text';
  *   import { verifyFediverseHandle } from '@ykzts/utils/fediverse';
@@ -15,5 +16,5 @@
  */
 
 // Intentionally left mostly empty for focus.
-// Other helpers live at '@ykzts/utils/*' subpaths (csp, pagination, portable-text, fediverse).
+// Other helpers live at '@ykzts/utils/*' subpaths (csp, security-headers, pagination, portable-text, fediverse).
 export {};

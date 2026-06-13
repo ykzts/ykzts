@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   buildCsp,
   DATA,
+  getSupabaseHost,
   getSupabaseStorageSrc,
   NONE,
   SELF,
@@ -59,19 +60,15 @@ describe("buildCsp", () => {
   it("produces the exact style used by the portfolio (with ; separator and spaces)", () => {
     const csp = buildCsp({
       baseUri: [NONE],
-      connectSrc: [
-        SELF,
-        "https://vitals.vercel-insights.com",
-        "https://challenges.cloudflare.com",
-      ],
+      connectSrc: [SELF, "https://vitals.vercel-insights.com"],
       defaultSrc: [NONE],
       imgSrc: [SELF, DATA, "https://example.supabase.co"],
-      scriptSrc: [SELF, UNSAFE_INLINE, "https://challenges.cloudflare.com"],
+      scriptSrc: [SELF, UNSAFE_INLINE],
       styleSrc: [SELF, UNSAFE_INLINE],
     });
     expect(csp).toContain("base-uri 'none'");
     expect(csp).toContain(
-      "; connect-src 'self' https://vitals.vercel-insights.com https://challenges.cloudflare.com;"
+      "; connect-src 'self' https://vitals.vercel-insights.com;"
     );
     expect(csp).toContain(
       "; img-src 'self' data: https://example.supabase.co;"
@@ -105,5 +102,27 @@ describe("getSupabaseStorageSrc", () => {
 
   it("ignores invalid URLs gracefully", () => {
     expect(getSupabaseStorageSrc("not-a-url")).toEqual([SELF, DATA]);
+  });
+});
+
+describe("getSupabaseHost", () => {
+  it("returns undefined when no URL is set", () => {
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", undefined);
+    expect(getSupabaseHost()).toBeUndefined();
+  });
+
+  it("returns protocol//host when env present", () => {
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://myproject.supabase.co");
+    expect(getSupabaseHost()).toBe("https://myproject.supabase.co");
+  });
+
+  it("respects explicit arg", () => {
+    expect(getSupabaseHost("https://override.supabase.co")).toBe(
+      "https://override.supabase.co"
+    );
+  });
+
+  it("ignores invalid URLs", () => {
+    expect(getSupabaseHost("not-a-url")).toBeUndefined();
   });
 });
