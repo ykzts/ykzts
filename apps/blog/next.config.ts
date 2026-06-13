@@ -1,5 +1,6 @@
 import { withMicrofrontends } from "@vercel/microfrontends/next/config";
 import { getSupabaseImageConfig } from "@ykzts/supabase/next-image-config";
+import { getSecurityHeaders } from "@ykzts/utils/security-headers";
 
 import type { NextConfig } from "next";
 
@@ -7,6 +8,14 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   experimental: {
     turbopackFileSystemCacheForDev: true,
+  },
+  headers() {
+    return Promise.resolve([
+      {
+        headers: getSecurityHeaders(),
+        source: "/:path*",
+      },
+    ]);
   },
   images: getSupabaseImageConfig(),
   reactCompiler: true,
