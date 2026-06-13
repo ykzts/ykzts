@@ -1,7 +1,9 @@
 "use server";
 
+import { getSiteName } from "@ykzts/site-config";
 import { getProfile } from "@ykzts/supabase/queries";
 import { checkBotId } from "botid/server";
+import { Resend } from "resend";
 import { start } from "workflow/api";
 import { z } from "zod";
 import { sendContactEmail } from "@/workflows/send-contact-email";
@@ -79,10 +81,9 @@ export async function submitContactForm(
         workflowError
       );
       // Direct fallback (duplicated minimal logic from the step to avoid depending on internal step)
-      const resend = new (await import("resend")).Resend(
-        process.env.RESEND_API_KEY
-      );
-      const siteName = (await import("@ykzts/site-config")).getSiteName();
+      // Static imports are used (dynamic was unnecessary for server-side code).
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      const siteName = getSiteName();
       const fromAddress =
         process.env.MAIL_FROM_ADDRESS ?? "no-reply@example.com";
       const emailResult = await resend.emails.send({
