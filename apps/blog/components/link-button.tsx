@@ -16,5 +16,11 @@ export default function LinkButton({
   href,
   ...props
 }: LinkButtonProps) {
-  return <Button render={<Link href={href}>{children}</Link>} {...props} />;
+  return (
+    <Button
+      nativeButton={false}
+      render={<Link href={href}>{children}</Link>}
+      {...props}
+    />
+  );
 }

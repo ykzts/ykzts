@@ -123,12 +123,17 @@ async function VersionDetailContent({
 
       <div className="flex justify-between">
         <Button
+          nativeButton={false}
           render={<Link href={`/posts/${postId}/versions`} />}
           variant="outline"
         >
           履歴に戻る
         </Button>
-        <Button render={<Link href={`/posts/${postId}`} />} variant="outline">
+        <Button
+          nativeButton={false}
+          render={<Link href={`/posts/${postId}`} />}
+          variant="outline"
+        >
           投稿編集
         </Button>
       </div>

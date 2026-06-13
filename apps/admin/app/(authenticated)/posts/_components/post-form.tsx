@@ -634,6 +634,7 @@ export function PostForm({
             </Button>
             <div className="flex gap-2">
               <Button
+                nativeButton={false}
                 render={<Link href="/posts" />}
                 type="button"
                 variant="outline"
@@ -648,6 +649,7 @@ export function PostForm({
         ) : (
           <div className="flex justify-end gap-2">
             <Button
+              nativeButton={false}
               render={<Link href="/posts" />}
               type="button"
               variant="outline"

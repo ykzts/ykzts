@@ -77,6 +77,7 @@ async function VersionsContent({ postId }: { postId: string }) {
                   </div>
                   <div className="flex gap-2">
                     <Button
+                      nativeButton={false}
                       render={
                         <Link
                           href={`/posts/${postId}/versions/${version.id}`}
@@ -89,6 +90,7 @@ async function VersionsContent({ postId }: { postId: string }) {
                     </Button>
                     {index > 0 && (
                       <Button
+                        nativeButton={false}
                         render={
                           <Link
                             href={`/posts/${postId}/versions/compare?from=${versions[index].id}&to=${versions[0].id}`}
@@ -124,10 +126,18 @@ async function VersionsContent({ postId }: { postId: string }) {
       </Panel>
 
       <div className="flex justify-between">
-        <Button render={<Link href={`/posts/${postId}`} />} variant="outline">
+        <Button
+          nativeButton={false}
+          render={<Link href={`/posts/${postId}`} />}
+          variant="outline"
+        >
           投稿編集に戻る
         </Button>
-        <Button render={<Link href="/posts" />} variant="outline">
+        <Button
+          nativeButton={false}
+          render={<Link href="/posts" />}
+          variant="outline"
+        >
           一覧に戻る
         </Button>
       </div>
