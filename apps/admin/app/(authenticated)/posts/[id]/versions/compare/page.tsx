@@ -150,12 +150,17 @@ async function CompareContent({
 
       <div className="flex justify-between">
         <Button
+          nativeButton={false}
           render={<Link href={`/posts/${postId}/versions`} />}
           variant="outline"
         >
           履歴に戻る
         </Button>
-        <Button render={<Link href={`/posts/${postId}`} />} variant="outline">
+        <Button
+          nativeButton={false}
+          render={<Link href={`/posts/${postId}`} />}
+          variant="outline"
+        >
           投稿編集
         </Button>
       </div>
@@ -197,6 +202,7 @@ async function ComparePageContent({
           <p className="text-error">比較するバージョンが指定されていません</p>
           <Button
             className="mt-4"
+            nativeButton={false}
             render={<Link href={`/posts/${id}/versions`} />}
             variant="outline"
           >

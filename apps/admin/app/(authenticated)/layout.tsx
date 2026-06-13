@@ -44,6 +44,7 @@ async function UserInfo() {
         <DropdownMenuSeparator />
         <form action={logout}>
           <DropdownMenuItem
+            nativeButton={true}
             render={<button className="w-full text-left" type="submit" />}
           >
             ログアウト
