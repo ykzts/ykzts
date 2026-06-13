@@ -5,19 +5,6 @@ vi.stubEnv("RESEND_API_KEY", "test_api_key");
 vi.stubEnv("NEXT_PUBLIC_SITE_NAME", "example.com");
 vi.stubEnv("MAIL_FROM_ADDRESS", "no-reply@example.com");
 
-// Prevent server-only from failing resolution / throwing during vitest transform of server modules
-vi.mock("server-only", () => ({}));
-
-// Mock workflow start API: in test env just invoke the workflow function directly
-// so that internal mocks (resend etc.) continue to work and we get the result.
-vi.mock("workflow/api", () => ({
-  start: vi.fn((workflowFn: any, args?: any[]) => {
-    const callArgs = Array.isArray(args) ? args : [];
-    const resultPromise = Promise.resolve(workflowFn(...callArgs));
-    return Promise.resolve({ returnValue: resultPromise });
-  }),
-}));
-
 // Mock getProfile from Supabase
 vi.mock("@ykzts/supabase/queries", () => ({
   getProfile: vi.fn(async () => ({
