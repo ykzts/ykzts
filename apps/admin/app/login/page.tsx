@@ -1,3 +1,4 @@
+import { getCurrentUser } from "@ykzts/supabase/auth";
 import {
   Card,
   CardContent,
@@ -6,7 +7,6 @@ import {
 } from "@ykzts/ui/components/card";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { getCurrentUser } from "@/lib/auth";
 import LoginForm from "./login-form";
 import { LoginSkeleton } from "./login-skeleton";
 

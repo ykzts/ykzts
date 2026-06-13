@@ -1,10 +1,10 @@
 "use server";
 
+import { getOwnerProfile } from "@ykzts/supabase/auth";
 import { createServerClient } from "@ykzts/supabase/server";
 import type { Json } from "@ykzts/supabase/types";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { getOwnerProfile } from "@/lib/auth";
 
 export type CreateMemoState = {
   error?: string;

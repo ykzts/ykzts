@@ -75,6 +75,46 @@ export function extractFirstParagraph(
 }
 
 /**
+ * Extract plain text content from PortableText (or Json from DB) for use cases
+ * like AI embeddings generation. Collects text from *all* text-bearing blocks
+ * (unlike extractFirstParagraph which targets only leading normal paragraphs).
+ */
+export function extractTextFromPortableText(content: unknown): string {
+  if (!content || typeof content !== "object") {
+    return "";
+  }
+
+  const blocks = Array.isArray(content) ? content : [content];
+  const blockTexts: string[] = [];
+
+  for (const block of blocks) {
+    if (
+      typeof block === "object" &&
+      block !== null &&
+      "children" in block &&
+      Array.isArray(block.children)
+    ) {
+      const blockText = block.children
+        .map((child: unknown) =>
+          typeof child === "object" &&
+          child !== null &&
+          "text" in child &&
+          typeof (child as { text?: unknown }).text === "string"
+            ? (child as { text: string }).text
+            : ""
+        )
+        .join("")
+        .trim();
+      if (blockText) {
+        blockTexts.push(blockText);
+      }
+    }
+  }
+
+  return blockTexts.join(" ");
+}
+
+/**
  * Convert PortableText to HTML string
  * @param content - PortableText content
  * @returns HTML string

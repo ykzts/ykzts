@@ -1,6 +1,6 @@
+import { getCurrentUser } from "@ykzts/supabase/auth";
 import { createServerClient } from "@ykzts/supabase/server";
 import { cacheTag } from "next/cache";
-import { getCurrentUser } from "./auth";
 import { DEFAULT_TIMEZONE } from "./timezones";
 
 export async function getProfile() {

@@ -1,11 +1,11 @@
 "use server";
 
+import { getCurrentUser } from "@ykzts/supabase/auth";
 import { createServerClient } from "@ykzts/supabase/server";
 import type { Json } from "@ykzts/supabase/types";
 import { extractFediverseHandleFromURL } from "@ykzts/utils/fediverse";
 import { revalidateTag } from "next/cache";
 import { z } from "zod";
-import { getCurrentUser } from "@/lib/auth";
 import { invalidateCaches } from "@/lib/revalidate";
 import { detectServiceFromURL } from "@/lib/social-service-detector";
 import { DEFAULT_TIMEZONE } from "@/lib/timezones";

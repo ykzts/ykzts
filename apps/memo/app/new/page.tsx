@@ -1,8 +1,8 @@
+import { getOwnerProfile } from "@ykzts/supabase/auth";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import Header from "@/components/header";
 import { NewMemoForm } from "@/components/new-memo-form";
-import { getOwnerProfile } from "@/lib/auth";
 
 async function NewMemoContent() {
   const ownerProfile = await getOwnerProfile();

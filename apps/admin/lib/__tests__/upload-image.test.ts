@@ -1,5 +1,5 @@
+import { getImageDimensions } from "@ykzts/supabase/image-upload";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { getImageDimensions } from "../upload-image";
 
 vi.mock("@ykzts/supabase/client", () => ({
   createBrowserClient: vi.fn(),

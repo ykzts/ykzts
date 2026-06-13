@@ -1,17 +1,18 @@
 "use client";
 
+import { getImageDimensions } from "@ykzts/supabase/image-upload";
+import {
+  ALLOWED_TYPES,
+  validateImageFile,
+} from "@ykzts/supabase/image-validation";
 import { Button } from "@ykzts/ui/components/button";
 import { Input } from "@ykzts/ui/components/input";
 import { ImageOff, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useActionState, useRef, useState } from "react";
-import { getImageDimensions } from "@/lib/upload-image";
 import { deleteKeyVisual, uploadKeyVisual } from "@/lib/upload-key-visual";
 import { saveKeyVisual } from "../actions";
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
 
 interface KeyVisualData {
   alt_text: string | null;
@@ -62,17 +63,12 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
     }
 
     // Client-side validation
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      setUploadError(
-        "サポートされていない画像形式です。JPEG、PNG、GIF、WebPのみアップロード可能です。"
-      );
-      return;
-    }
-
-    if (file.size > MAX_FILE_SIZE) {
-      setUploadError(
-        "ファイルサイズが大きすぎます。5MB以下の画像をアップロードしてください。"
-      );
+    const validation = validateImageFile(file);
+    if (validation?.error) {
+      setUploadError(validation.error);
+      setSelectedFile(null);
+      setDimensions(null);
+      setPreview(currentUrl);
       return;
     }
 

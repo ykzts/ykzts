@@ -1,4 +1,5 @@
 import { getSiteOrigin } from "@ykzts/site-config";
+import { getDateBasedUrl } from "@ykzts/utils/blog-urls";
 
 function sanitizeSlugForUrl(slug: string): string | null {
   const trimmed = slug.trim();
@@ -62,14 +63,9 @@ export function getBlogPostUrl(
       return null;
     }
 
-    const year = date.getUTCFullYear();
-    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-    const day = String(date.getUTCDate()).padStart(2, "0");
-
-    return new URL(
-      `/blog/${year}/${month}/${day}/${safeSlug}`,
-      getSiteOrigin()
-    ).toString();
+    // Reuse shared path builder (deduped date formatting logic)
+    const path = getDateBasedUrl(safeSlug, publishedAt);
+    return new URL(path, getSiteOrigin()).toString();
   } catch {
     return null;
   }

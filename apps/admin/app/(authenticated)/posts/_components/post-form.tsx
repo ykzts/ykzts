@@ -1,6 +1,7 @@
 "use client";
 
 import { RichTextEditor } from "@ykzts/editor";
+import { uploadImage } from "@ykzts/supabase/image-upload";
 import { Button } from "@ykzts/ui/components/button";
 import {
   Field,
@@ -31,7 +32,6 @@ import { generateTagsWithAI } from "@/lib/generate-tags-with-ai";
 import type { PostWithDetails } from "@/lib/posts";
 import { generateSlugSmart, generateUniqueSlugForPost } from "@/lib/slug";
 import { getAllExistingTags } from "@/lib/tags";
-import { uploadImage } from "@/lib/upload-image";
 import { generateSlug } from "@/lib/utils";
 import { PublicUrlField } from "./public-url-field";
 
