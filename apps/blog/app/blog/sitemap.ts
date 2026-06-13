@@ -1,6 +1,10 @@
 import { getSiteOrigin } from "@ykzts/site-config";
 import type { MetadataRoute } from "next";
-import { getAllPosts, getAllTags } from "@/lib/supabase/posts";
+import {
+  getAllPosts,
+  getAllTags,
+  getAvailableYears,
+} from "@/lib/supabase/posts";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getAllPosts();
@@ -39,5 +43,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${baseUrl}/tags/${encodeURIComponent(tag)}`,
   }));
 
-  return [homepageEntry, ...postEntries, ...tagEntries];
+  // Year archive pages
+  const yearEntries: MetadataRoute.Sitemap = (await getAvailableYears()).map(
+    (year) => ({
+      changeFrequency: "monthly",
+      lastModified: new Date(),
+      priority: 0.7,
+      url: `${baseUrl}/${year}`,
+    })
+  );
+
+  return [homepageEntry, ...postEntries, ...tagEntries, ...yearEntries];
 }

@@ -19,18 +19,18 @@ describe("Navigation", () => {
     expect(screen.getAllByText("Contact").length).toBeGreaterThan(0);
   });
 
-  it("renders Blog as a trigger with sub-items (Archive, Search)", async () => {
+  it("renders Blog as a direct link (no Archive/Search sub-items)", async () => {
     render(<Navigation />);
 
-    // biome-ignore lint/performance/useTopLevelRegex: test scope
-    const blogTrigger = screen.getByRole("button", { name: /blog/i });
-    expect(blogTrigger).toBeInTheDocument();
+    // Blog is now a direct link, not a dropdown trigger
+    expect(screen.getAllByText("Blog").length).toBeGreaterThan(0);
 
     const menuButton = screen.getByRole("button", { name: "メニューを開く" });
     await userEvent.click(menuButton);
 
-    expect(screen.getAllByText("Archive").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("Search").length).toBeGreaterThan(0);
+    // Archive and Search sub-items have been removed from navigation
+    expect(screen.queryByText("Archive")).not.toBeInTheDocument();
+    expect(screen.queryByText("Search")).not.toBeInTheDocument();
   });
 
   it("shows Works link when hasWorks is true", () => {

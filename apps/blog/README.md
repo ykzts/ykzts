@@ -22,7 +22,7 @@ This application powers the blog section at [ykzts.com/blog](https://ykzts.com/b
 - **Portable Text**: Rich text content rendering with `@portabletext/react`
 - **Table of Contents**: Auto-generated in-page navigation for long articles
 - **Tag Pages**: Articles grouped and browsable by tag
-- **Archive Pages**: Articles browsable by year/month
+- **Year Archive Pages**: Articles grouped by year with monthly sections and hash navigation
 - **Post Navigation**: Previous/next post navigation within the blog
 
 ## Development
