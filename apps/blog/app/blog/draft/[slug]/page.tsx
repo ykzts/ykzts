@@ -1,3 +1,4 @@
+import { isPortableTextValue } from "@ykzts/utils/portable-text";
 import type { Metadata } from "next";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
@@ -10,7 +11,6 @@ import SimilarPostsSkeleton from "@/components/similar-posts-skeleton";
 import TableOfContents from "@/components/table-of-contents";
 import { DEFAULT_POST_TITLE } from "@/lib/constants";
 import { extractHeadings } from "@/lib/extract-headings";
-import { isPortableTextValue } from "@/lib/portable-text";
 import {
   getAdjacentPosts,
   getPostBySlug,

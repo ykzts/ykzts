@@ -1,7 +1,9 @@
-import type { PortableTextBlock } from "@portabletext/types";
-import { extractFirstParagraph } from "@ykzts/portable-text-utils";
 import { getSiteOrigin } from "@ykzts/site-config";
 import { createServerClient } from "@ykzts/supabase/server";
+import {
+  extractFirstParagraph,
+  isPortableTextValue,
+} from "@ykzts/utils/portable-text";
 import type { Metadata } from "next";
 import { draftMode } from "next/headers";
 import Link from "next/link";
@@ -22,18 +24,6 @@ function isSupabaseConfigured() {
 
 interface Props {
   params: Promise<{ path: string[] }>;
-}
-
-function isPortableTextValue(value: unknown): value is PortableTextBlock[] {
-  if (!Array.isArray(value)) {
-    return false;
-  }
-  return value.every((item) => {
-    if (!item || typeof item !== "object") {
-      return false;
-    }
-    return typeof (item as { _type?: unknown })._type === "string";
-  });
 }
 
 function extractCurrentVersion<T>(

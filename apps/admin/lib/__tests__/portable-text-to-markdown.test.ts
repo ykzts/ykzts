@@ -1,5 +1,5 @@
+import { portableTextToMarkdown } from "@ykzts/utils/portable-text";
 import { describe, expect, it } from "vitest";
-import { portableTextToMarkdown } from "../portable-text-to-markdown";
 
 describe("portableTextToMarkdown", () => {
   it("should convert simple Portable Text to Markdown", () => {

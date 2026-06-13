@@ -1,11 +1,11 @@
 import { Link } from "@vercel/microfrontends/next/client";
-import { portableTextToMarkdown } from "@ykzts/portable-text-utils";
+import { getDateBasedUrl } from "@ykzts/utils/blog-urls";
+import { portableTextToMarkdown } from "@ykzts/utils/portable-text";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import DateDisplay from "@/components/date-display";
 import LinkButton from "@/components/link-button";
 import VersionCompare from "@/components/version-compare";
-import { getDateBasedUrl } from "@/lib/blog-urls";
 import { DEFAULT_POST_TITLE } from "@/lib/constants";
 import {
   getAllPosts,

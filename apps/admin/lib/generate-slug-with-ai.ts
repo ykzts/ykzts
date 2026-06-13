@@ -2,9 +2,9 @@
 
 import { createServerClient } from "@ykzts/supabase/server";
 import type { Json } from "@ykzts/supabase/types";
+import { portableTextToMarkdown } from "@ykzts/utils/portable-text";
 import { generateText, stepCountIs, tool } from "ai";
 import { z } from "zod";
-import { portableTextToMarkdown } from "./portable-text-to-markdown";
 import { cleanSlug } from "./slug-utils";
 
 /**

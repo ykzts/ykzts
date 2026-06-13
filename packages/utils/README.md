@@ -2,7 +2,9 @@
 
 Generic shared utility functions used across the ykzts monorepo applications.
 
-## Usage
+Domain-specific helpers are published under focused subpath exports (e.g. `@ykzts/utils/csp`, `@ykzts/utils/pagination`, `@ykzts/utils/portable-text`, `@ykzts/utils/fediverse`, `@ykzts/utils/blog-urls`) so that consumers only pay for the dependencies they actually need.
+
+## CSP
 
 ```ts
 import { buildCsp, getSupabaseStorageSrc, SELF, NONE, UNSAFE_INLINE, UNSAFE_EVAL } from '@ykzts/utils/csp';
@@ -30,6 +32,29 @@ const csp = buildCsp({
 });
 ```
 
-CSP helpers live under the focused subpath `@ykzts/utils/csp` so the main `@ykzts/utils` entry stays generic.
-
 See `src/csp.ts` for the full API.
+
+## Pagination
+
+```ts
+import { getVisiblePages } from '@ykzts/utils/pagination';
+
+const { pages, showStartEllipsis, showEndEllipsis } = getVisiblePages(currentPage, totalPages);
+```
+
+## Portable Text
+
+```ts
+import {
+  extractFirstParagraph,
+  portableTextToHTML,
+  portableTextToMarkdown,
+  parseMarkdownForPost,
+} from '@ykzts/utils/portable-text';
+```
+
+## Fediverse
+
+```ts
+import { verifyFediverseHandle, extractFediverseHandleFromURL } from '@ykzts/utils/fediverse';
+```

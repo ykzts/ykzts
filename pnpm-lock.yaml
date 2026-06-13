@@ -80,18 +80,9 @@ importers:
       '@vercel/microfrontends':
         specifier: 2.3.6
         version: 2.3.6(@vercel/analytics@2.0.1(next@16.2.9(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7))(next@16.2.9(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
-      '@ykzts/fediverse':
+      '@ykzts/editor':
         specifier: workspace:*
-        version: link:../../packages/fediverse
-      '@ykzts/pagination-utils':
-        specifier: workspace:*
-        version: link:../../packages/pagination-utils
-      '@ykzts/portable-text-editor':
-        specifier: workspace:*
-        version: link:../../packages/portable-text-editor
-      '@ykzts/portable-text-utils':
-        specifier: workspace:*
-        version: link:../../packages/portable-text-utils
+        version: link:../../packages/editor
       '@ykzts/site-config':
         specifier: workspace:*
         version: link:../../packages/site-config
@@ -101,6 +92,9 @@ importers:
       '@ykzts/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@ykzts/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       ai:
         specifier: 6.0.199
         version: 6.0.199(zod@4.4.3)
@@ -186,12 +180,6 @@ importers:
       '@ykzts/layout':
         specifier: workspace:*
         version: link:../../packages/layout
-      '@ykzts/pagination-utils':
-        specifier: workspace:*
-        version: link:../../packages/pagination-utils
-      '@ykzts/portable-text-utils':
-        specifier: workspace:*
-        version: link:../../packages/portable-text-utils
       '@ykzts/site-config':
         specifier: workspace:*
         version: link:../../packages/site-config
@@ -201,6 +189,9 @@ importers:
       '@ykzts/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@ykzts/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       ai:
         specifier: 6.0.199
         version: 6.0.199(zod@4.4.3)
@@ -344,12 +335,9 @@ importers:
       '@supabase/ssr':
         specifier: 0.12.0
         version: 0.12.0(@supabase/supabase-js@2.108.1)
-      '@ykzts/portable-text-editor':
+      '@ykzts/editor':
         specifier: workspace:*
-        version: link:../../packages/portable-text-editor
-      '@ykzts/portable-text-utils':
-        specifier: workspace:*
-        version: link:../../packages/portable-text-utils
+        version: link:../../packages/editor
       '@ykzts/site-config':
         specifier: workspace:*
         version: link:../../packages/site-config
@@ -359,6 +347,9 @@ importers:
       '@ykzts/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@ykzts/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       lucide-react:
         specifier: 1.17.0
         version: 1.17.0(react@19.2.7)
@@ -441,9 +432,6 @@ importers:
       '@ykzts/layout':
         specifier: workspace:*
         version: link:../../packages/layout
-      '@ykzts/portable-text-utils':
-        specifier: workspace:*
-        version: link:../../packages/portable-text-utils
       '@ykzts/site-config':
         specifier: workspace:*
         version: link:../../packages/site-config
@@ -578,18 +566,60 @@ importers:
         specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@24.13.1)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@24.13.1)(typescript@6.0.3))(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
 
-  packages/fediverse:
+  packages/editor:
     dependencies:
-      ipaddr.js:
-        specifier: 2.4.0
-        version: 2.4.0
-      zod:
-        specifier: 4.4.3
-        version: 4.4.3
+      '@lexical/code':
+        specifier: 0.45.0
+        version: 0.45.0
+      '@lexical/link':
+        specifier: 0.45.0
+        version: 0.45.0
+      '@lexical/list':
+        specifier: 0.45.0
+        version: 0.45.0
+      '@lexical/react':
+        specifier: 0.45.0
+        version: 0.45.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(yjs@13.6.31)
+      '@lexical/rich-text':
+        specifier: 0.45.0
+        version: 0.45.0
+      '@lexical/selection':
+        specifier: 0.45.0
+        version: 0.45.0
+      '@lexical/table':
+        specifier: 0.45.0
+        version: 0.45.0
+      '@lexical/utils':
+        specifier: 0.45.0
+        version: 0.45.0
+      '@ykzts/ui':
+        specifier: workspace:*
+        version: link:../ui
+      lexical:
+        specifier: 0.45.0
+        version: 0.45.0
+      lucide-react:
+        specifier: 1.17.0
+        version: 1.17.0(react@19.2.7)
+      react:
+        specifier: ^19.0.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.7(react@19.2.7)
+      sonner:
+        specifier: 2.0.7
+        version: 2.0.7(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
     devDependencies:
-      '@types/node':
+      '@types/react':
         specifier: 'catalog:'
-        version: 24.13.1
+        version: 19.2.17
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.3(@types/react@19.2.17)
+      '@vitejs/plugin-react':
+        specifier: 6.0.2
+        version: 6.0.2(babel-plugin-react-compiler@1.0.0)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
       '@ykzts/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -663,104 +693,6 @@ importers:
       vite-tsconfig-paths:
         specifier: 6.1.1
         version: 6.1.1(typescript@6.0.3)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
-      vitest:
-        specifier: 'catalog:'
-        version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@24.13.1)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@24.13.1)(typescript@6.0.3))(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
-
-  packages/pagination-utils:
-    devDependencies:
-      '@ykzts/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
-  packages/portable-text-editor:
-    dependencies:
-      '@lexical/code':
-        specifier: 0.45.0
-        version: 0.45.0
-      '@lexical/link':
-        specifier: 0.45.0
-        version: 0.45.0
-      '@lexical/list':
-        specifier: 0.45.0
-        version: 0.45.0
-      '@lexical/react':
-        specifier: 0.45.0
-        version: 0.45.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(yjs@13.6.31)
-      '@lexical/rich-text':
-        specifier: 0.45.0
-        version: 0.45.0
-      '@lexical/selection':
-        specifier: 0.45.0
-        version: 0.45.0
-      '@lexical/table':
-        specifier: 0.45.0
-        version: 0.45.0
-      '@lexical/utils':
-        specifier: 0.45.0
-        version: 0.45.0
-      '@ykzts/ui':
-        specifier: workspace:*
-        version: link:../ui
-      lexical:
-        specifier: 0.45.0
-        version: 0.45.0
-      lucide-react:
-        specifier: 1.17.0
-        version: 1.17.0(react@19.2.7)
-      react:
-        specifier: ^19.0.0
-        version: 19.2.7
-      react-dom:
-        specifier: ^19.0.0
-        version: 19.2.7(react@19.2.7)
-      sonner:
-        specifier: 2.0.7
-        version: 2.0.7(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-    devDependencies:
-      '@types/react':
-        specifier: 'catalog:'
-        version: 19.2.17
-      '@types/react-dom':
-        specifier: 'catalog:'
-        version: 19.2.3(@types/react@19.2.17)
-      '@vitejs/plugin-react':
-        specifier: 6.0.2
-        version: 6.0.2(babel-plugin-react-compiler@1.0.0)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
-      '@ykzts/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-      vitest:
-        specifier: 'catalog:'
-        version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@24.13.1)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@24.13.1)(typescript@6.0.3))(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
-
-  packages/portable-text-utils:
-    dependencies:
-      '@portabletext/markdown':
-        specifier: 1.4.0
-        version: 1.4.0
-      '@portabletext/to-html':
-        specifier: 5.0.2
-        version: 5.0.2
-      gray-matter:
-        specifier: 4.0.3
-        version: 4.0.3
-    devDependencies:
-      '@portabletext/types':
-        specifier: 4.0.2
-        version: 4.0.2
-      '@ykzts/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
       vitest:
         specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@24.13.1)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@24.13.1)(typescript@6.0.3))(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
@@ -851,7 +783,26 @@ importers:
         version: 6.0.3
 
   packages/utils:
+    dependencies:
+      '@portabletext/markdown':
+        specifier: 1.4.0
+        version: 1.4.0
+      '@portabletext/to-html':
+        specifier: 5.0.2
+        version: 5.0.2
+      gray-matter:
+        specifier: 4.0.3
+        version: 4.0.3
+      ipaddr.js:
+        specifier: 2.4.0
+        version: 2.4.0
+      zod:
+        specifier: 4.4.3
+        version: 4.4.3
     devDependencies:
+      '@portabletext/types':
+        specifier: 4.0.2
+        version: 4.0.2
       '@types/node':
         specifier: 'catalog:'
         version: 24.13.1

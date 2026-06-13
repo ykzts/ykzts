@@ -1,6 +1,6 @@
+import type { PortableTextValue } from "@ykzts/utils/portable-text";
 import { describe, expect, it } from "vitest";
 import { extractHeadings } from "../extract-headings";
-import type { PortableTextValue } from "../portable-text";
 
 describe("extractHeadings", () => {
   it("should extract h2 and h3 headings", () => {

@@ -28,14 +28,14 @@
     "./styles/styles.css": "./src/styles/styles.css"
   },
   "license": "MIT",
-  "name": "@ykzts/portable-text-editor",
+  "name": "@ykzts/editor",
   "peerDependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "private": true,
   "repository": {
-    "directory": "packages/portable-text-editor",
+    "directory": "packages/editor",
     "type": "git",
     "url": "https://github.com/ykzts/ykzts.git"
   },

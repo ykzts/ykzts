@@ -65,8 +65,7 @@ See `.env.example` for a complete list of required environment variables.
 
 ### Internal Dependencies
 
-- `@ykzts/pagination-utils`: Pagination helper utilities
-- `@ykzts/portable-text-utils`: Portable Text conversion utilities
+- `@ykzts/utils`: Shared utilities (pagination, portable-text, fediverse, blog-urls, csp, ...)
 - `@ykzts/site-config`: Shared site origin and name configuration
 - `@ykzts/supabase`: Supabase client and type definitions
 - `@ykzts/ui`: Shared UI component library

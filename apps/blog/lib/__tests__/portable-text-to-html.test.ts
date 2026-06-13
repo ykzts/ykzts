@@ -1,4 +1,4 @@
-import { portableTextToHTML } from "@ykzts/portable-text-utils";
+import { portableTextToHTML } from "@ykzts/utils/portable-text";
 import { describe, expect, test } from "vitest";
 
 describe("portableTextToHTML", () => {

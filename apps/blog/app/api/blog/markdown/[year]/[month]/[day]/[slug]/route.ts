@@ -1,6 +1,8 @@
-import { portableTextToMarkdown } from "@ykzts/portable-text-utils";
+import {
+  isPortableTextValue,
+  portableTextToMarkdown,
+} from "@ykzts/utils/portable-text";
 import type { NextRequest } from "next/server";
-import { isPortableTextValue } from "@/lib/portable-text";
 import { getPostBySlug } from "@/lib/supabase/posts";
 
 export async function GET(

@@ -3,7 +3,7 @@ import {
   parseMarkdownForPost,
   portableTextToHTML,
   portableTextToMarkdown,
-} from "./index";
+} from "./index.js";
 
 const SECTION_HEADING_REGEX = /^## Section/m;
 const LOWER_BOUND_HEADING_REGEX = /^## Lower bound heading/m;

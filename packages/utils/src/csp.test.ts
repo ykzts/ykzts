@@ -96,9 +96,11 @@ describe("getSupabaseStorageSrc", () => {
 
   it("respects an explicit url argument (overrides env)", () => {
     vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://env.supabase.co");
-    expect(getSupabaseStorageSrc("https://override.supabase.co")).toContain(
-      "https://override.supabase.co"
-    );
+    expect(getSupabaseStorageSrc("https://override.supabase.co")).toEqual([
+      SELF,
+      DATA,
+      "https://override.supabase.co",
+    ]);
   });
 
   it("ignores invalid URLs gracefully", () => {

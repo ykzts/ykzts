@@ -1,5 +1,5 @@
-import { extractFirstParagraph } from "@ykzts/portable-text-utils";
 import { getProfile, getWorks } from "@ykzts/supabase/queries";
+import { extractFirstParagraph } from "@ykzts/utils/portable-text";
 import {
   buildPostUrl,
   buildWorkUrl,

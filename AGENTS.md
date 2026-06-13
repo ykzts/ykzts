@@ -12,8 +12,13 @@ This is a pnpm workspace monorepo with the following structure:
 │   ├── portfolio/      # Next.js portfolio site (ykzts.com)  
 │   └── blog/           # (Future blog implementation)
 ├── packages/
+│   ├── editor/         # Lexical rich text editor (@ykzts/editor)
+│   ├── layout/         # Shared layout components
+│   ├── site-config/    # Shared site config
 │   ├── supabase/       # Supabase database type definitions
-│   └── tsconfig/       # Shared TypeScript configurations
+│   ├── tsconfig/       # Shared TypeScript configurations
+│   ├── ui/             # Shared UI component library
+│   └── utils/          # Shared utilities (@ykzts/utils + subpaths: csp, pagination, portable-text, fediverse, blog-urls, ...)
 ```
 
 ## Technology Stack
@@ -87,8 +92,13 @@ This is a pnpm workspace monorepo with the following structure:
 - **Theme**: Custom theme with dark mode support
 
 ### Shared Packages
-- **supabase**: Supabase database TypeScript type definitions
+- **editor**: Lexical-based rich text editor
+- **layout**: Shared layout components
+- **site-config**: Shared site configuration
+- **supabase**: Supabase database type definitions and clients
 - **tsconfig**: Shared TypeScript configurations
+- **ui**: Shared UI primitives and components
+- **utils**: Cross-cutting utilities (with focused subpath exports)
 
 ## Content and Localization
 
@@ -128,7 +138,7 @@ This repository strictly follows the **Conventional Commits** specification. All
 
 ### Scope Guidelines
 - Use app names for application-specific changes: `portfolio`, `blog-legacy`, `blog`
-- Use package names for shared packages: `supabase`, `tsconfig`
+- Use package names for shared packages: `editor`, `layout`, `site-config`, `supabase`, `tsconfig`, `ui`, `utils`
 - Omit scope for repository-wide changes
 
 ### Trailers for AI-assisted commits

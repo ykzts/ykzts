@@ -1,8 +1,8 @@
 import { createServerClient } from "@ykzts/supabase/server";
 import type { Database, Json } from "@ykzts/supabase/types";
+import { extractFirstParagraph } from "@ykzts/utils/portable-text";
 import { cacheTag } from "next/cache";
 import { getCurrentUser } from "./auth";
-import { extractFirstParagraph } from "./portable-text-utils";
 
 type Post = Database["public"]["Tables"]["posts"]["Row"];
 type PostVersion = Database["public"]["Tables"]["post_versions"]["Row"];

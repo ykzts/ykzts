@@ -1,6 +1,6 @@
 "use client";
 
-import { parseMarkdownForPost } from "@ykzts/portable-text-utils";
+import { RichTextEditor } from "@ykzts/editor";
 import { Button } from "@ykzts/ui/components/button";
 import {
   Field,
@@ -22,11 +22,11 @@ import {
   SelectValue,
 } from "@ykzts/ui/components/select";
 import { Textarea } from "@ykzts/ui/components/textarea";
+import { parseMarkdownForPost } from "@ykzts/utils/portable-text";
 import { Clipboard, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useActionState, useState } from "react";
 import { toast } from "sonner";
-import { RichTextEditor } from "@/components/portable-text-editor";
 import { generateTagsWithAI } from "@/lib/generate-tags-with-ai";
 import type { PostWithDetails } from "@/lib/posts";
 import { generateSlugSmart, generateUniqueSlugForPost } from "@/lib/slug";

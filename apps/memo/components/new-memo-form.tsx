@@ -1,6 +1,6 @@
 "use client";
 
-import { RichTextEditor } from "@ykzts/portable-text-editor";
+import { RichTextEditor } from "@ykzts/editor";
 import { useActionState } from "react";
 import { createMemo } from "@/app/new/actions";
 import { uploadImage } from "@/lib/upload-image";

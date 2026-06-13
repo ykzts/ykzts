@@ -14,6 +14,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { RichTextEditor } from "@ykzts/editor";
 import { Alert, AlertDescription } from "@ykzts/ui/components/alert";
 import { Button } from "@ykzts/ui/components/button";
 import {
@@ -30,7 +31,6 @@ import {
 } from "@ykzts/ui/components/input-group";
 import type { MouseEvent } from "react";
 import { useActionState, useCallback, useState } from "react";
-import { RichTextEditor } from "@/components/portable-text-editor";
 import { generateUniqueSlugForWork } from "@/lib/slug";
 import { uploadImage } from "@/lib/upload-image";
 import { generateSlug } from "@/lib/utils";
