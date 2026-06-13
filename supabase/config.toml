@@ -17,6 +17,11 @@ extra_search_path = ["public", "extensions"]
 # for accidental or malicious requests.
 max_rows = 1000
 
+# New tables in public are not auto-exposed to Data API roles.
+# Explicit GRANTs (in the creating migration) are required.
+# See the latest public schema migration for current grants and rationale.
+auto_expose_new_tables = false
+
 [api.tls]
 # Enable HTTPS endpoints locally using a self-signed certificate.
 enabled = false
