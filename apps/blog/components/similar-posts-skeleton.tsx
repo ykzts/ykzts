@@ -19,7 +19,7 @@ export default function SimilarPostsSkeleton({
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: count }).map((_, index) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: Static skeleton items don't need unique keys
-          <Card aria-hidden="true" key={`skeleton-${index}`}>
+          <Card aria-hidden="true" className="h-full" key={`skeleton-${index}`}>
             <CardHeader>
               <Skeleton className="mb-2 h-6 w-full" />
               <Skeleton className="h-4 w-24" />
@@ -28,7 +28,7 @@ export default function SimilarPostsSkeleton({
               <Skeleton className="mb-1 h-4 w-full" />
               <Skeleton className="h-4 w-3/4" />
             </CardContent>
-            <CardFooter>
+            <CardFooter className="mt-auto">
               <div className="flex gap-2">
                 <Skeleton className="h-6 w-16" />
                 <Skeleton className="h-6 w-20" />
