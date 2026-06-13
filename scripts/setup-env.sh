@@ -8,10 +8,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
 # Parse flags
+# -f / --force / -y / --yes : overwrite .env files without prompting (useful for CI/automation)
 FORCE=false
 for arg in "$@"; do
   case "$arg" in
-    -f|--force) FORCE=true ;;
+    -f|--force|-y|--yes) FORCE=true ;;
   esac
 done
 
@@ -19,7 +20,7 @@ done
 if command -v supabase &>/dev/null; then
   SUPABASE_CMD=(supabase)
 elif command -v npx &>/dev/null; then
-  SUPABASE_CMD=(npx supabase)
+  SUPABASE_CMD=(npx --yes supabase)
 else
   echo "Error: supabase CLI not found. Install it or ensure npx is available." >&2
   exit 1
