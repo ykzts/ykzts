@@ -1,9 +1,9 @@
 "use client";
 
 import { RichTextEditor } from "@ykzts/editor";
+import { uploadImage } from "@ykzts/supabase/image-upload";
 import { useActionState } from "react";
 import { createMemo } from "@/app/new/actions";
-import { uploadImage } from "@/lib/upload-image";
 
 export function NewMemoForm() {
   const [state, formAction, isPending] = useActionState(createMemo, null);

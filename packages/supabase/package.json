@@ -4,7 +4,8 @@
     "@portabletext/types": "4.0.2",
     "@supabase/ssr": "0.12.0",
     "@supabase/supabase-js": "2.108.1",
-    "next": "catalog:"
+    "next": "catalog:",
+    "zod": "4.4.3"
   },
   "description": "Supabase database type definitions for ykzts applications",
   "devDependencies": {
@@ -20,6 +21,10 @@
       "types": "./src/client.ts",
       "default": "./src/client.ts"
     },
+    "./image-upload": {
+      "types": "./src/image-upload.ts",
+      "default": "./src/image-upload.ts"
+    },
     "./dto": {
       "types": "./src/dto.ts",
       "default": "./src/dto.ts"
@@ -32,9 +37,21 @@
       "types": "./src/queries.ts",
       "default": "./src/queries.ts"
     },
+    "./revalidate": {
+      "types": "./src/revalidate.ts",
+      "default": "./src/revalidate.ts"
+    },
     "./server": {
       "types": "./src/server.ts",
       "default": "./src/server.ts"
+    },
+    "./auth": {
+      "types": "./src/auth.ts",
+      "default": "./src/auth.ts"
+    },
+    "./proxy": {
+      "types": "./src/proxy.ts",
+      "default": "./src/proxy.ts"
     },
     "./service-role": {
       "types": "./src/service-role.ts",

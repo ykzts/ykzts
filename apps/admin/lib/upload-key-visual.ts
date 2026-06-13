@@ -1,26 +1,16 @@
 "use server";
 
 import { randomUUID } from "node:crypto";
+import { getCurrentUser } from "@ykzts/supabase/auth";
+import { MIME_TO_EXT, validateImageFile } from "@ykzts/supabase/image-upload";
 import { createServerClient } from "@ykzts/supabase/server";
 import { revalidatePath } from "next/cache";
-import { getCurrentUser } from "./auth";
 import { invalidateCaches } from "./revalidate";
 
 export interface KeyVisualUploadResult {
   error?: string;
   url?: string;
 }
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-
-// Map MIME types to file extensions
-const MIME_TO_EXT: Record<string, string> = {
-  "image/gif": "gif",
-  "image/jpeg": "jpg",
-  "image/png": "png",
-  "image/webp": "webp",
-};
 
 const IMAGES_PATH_REGEX = /\/images\/(.+)/;
 
@@ -51,20 +41,9 @@ export async function uploadKeyVisual(
       };
     }
 
-    // Validate file type
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      return {
-        error:
-          "サポートされていない画像形式です。JPEG、PNG、GIF、WebPのみアップロード可能です。",
-      };
-    }
-
-    // Validate file size
-    if (file.size > MAX_FILE_SIZE) {
-      return {
-        error:
-          "ファイルサイズが大きすぎます。5MB以下の画像をアップロードしてください。",
-      };
+    const validation = validateImageFile(file);
+    if (validation) {
+      return validation;
     }
 
     // Get current user
@@ -113,11 +92,6 @@ export async function uploadKeyVisual(
 
     // Derive extension from MIME type for consistency
     const fileExt = MIME_TO_EXT[file.type];
-    if (!fileExt) {
-      return {
-        error: "不明な画像形式です。",
-      };
-    }
 
     // Generate unique filename with user ID and key-visuals prefix
     const fileName = `${randomUUID()}.${fileExt}`;

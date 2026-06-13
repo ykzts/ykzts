@@ -1,4 +1,5 @@
 import { getSiteOrigin } from "@ykzts/site-config";
+import { getOwnerProfile } from "@ykzts/supabase/auth";
 import { createServerClient } from "@ykzts/supabase/server";
 import {
   extractFirstParagraph,
@@ -12,7 +13,6 @@ import { Suspense } from "react";
 import Header from "@/components/header";
 import { InlineMemoEditor } from "@/components/inline-memo-editor";
 import MemoPortableText from "@/components/portable-text";
-import { getOwnerProfile } from "@/lib/auth";
 import { supabase } from "@/lib/supabase/client";
 
 function isSupabaseConfigured() {

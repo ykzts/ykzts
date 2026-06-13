@@ -1,5 +1,6 @@
 "use client";
 
+import { validateImageFile } from "@ykzts/supabase/image-upload";
 import { Button } from "@ykzts/ui/components/button";
 import { Upload, UserCircle, X } from "lucide-react";
 import Image from "next/image";
@@ -36,19 +37,9 @@ export function AvatarUpload({
     }
 
     // Client-side validation
-    const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-    if (!allowedTypes.includes(file.type)) {
-      setError(
-        "サポートされていない画像形式です。JPEG、PNG、GIF、WebPのみアップロード可能です。"
-      );
-      return;
-    }
-
-    const maxSize = 5 * 1024 * 1024; // 5MB
-    if (file.size > maxSize) {
-      setError(
-        "ファイルサイズが大きすぎます。5MB以下の画像をアップロードしてください。"
-      );
+    const validation = validateImageFile(file);
+    if (validation?.error) {
+      setError(validation.error);
       return;
     }
 

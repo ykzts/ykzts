@@ -1,9 +1,9 @@
+import { getOwnerProfile } from "@ykzts/supabase/auth";
 import { createServerClient } from "@ykzts/supabase/server";
 import { draftMode } from "next/headers";
 import Link from "next/link";
 import { Suspense } from "react";
 import Header from "@/components/header";
-import { getOwnerProfile } from "@/lib/auth";
 
 async function MemoList() {
   const { isEnabled: isDraftMode } = await draftMode();

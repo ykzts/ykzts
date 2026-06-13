@@ -1,44 +1,13 @@
 import type { Json } from "@ykzts/supabase/types";
-import { extractFirstParagraph } from "@ykzts/utils/portable-text";
+import {
+  extractFirstParagraph,
+  extractTextFromPortableText,
+} from "@ykzts/utils/portable-text";
 import { embed } from "ai";
 
 // Maximum character limit for embedding input to avoid exceeding token limits
 // text-embedding-3-small has 8191 token limit (~30000 chars ≈ ~7500 tokens)
 const MAX_EMBED_CHARS = 30_000;
-
-/**
- * Extract text content from Portable Text JSON for embedding generation
- */
-function extractTextFromPortableText(content: Json): string {
-  if (!content || typeof content !== "object") {
-    return "";
-  }
-
-  const blocks = Array.isArray(content) ? content : [content];
-  const texts: string[] = [];
-
-  for (const block of blocks) {
-    if (
-      typeof block === "object" &&
-      block !== null &&
-      "children" in block &&
-      Array.isArray(block.children)
-    ) {
-      for (const child of block.children) {
-        if (
-          typeof child === "object" &&
-          child !== null &&
-          "text" in child &&
-          typeof child.text === "string"
-        ) {
-          texts.push(child.text);
-        }
-      }
-    }
-  }
-
-  return texts.join(" ").trim();
-}
 
 /**
  * Generate embedding vector for text using Vercel AI SDK

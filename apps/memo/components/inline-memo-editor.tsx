@@ -2,10 +2,10 @@
 
 import type { PortableTextBlock } from "@portabletext/types";
 import { RichTextEditor } from "@ykzts/editor";
+import { uploadImage } from "@ykzts/supabase/image-upload";
 import { useActionState, useEffect, useState } from "react";
 import { updateMemo } from "@/app/[...path]/actions";
 import MemoPortableText from "@/components/portable-text";
-import { uploadImage } from "@/lib/upload-image";
 
 interface Props {
   content: PortableTextBlock[] | null;

@@ -1,10 +1,10 @@
 "use server";
 
+import { getCurrentUser } from "@ykzts/supabase/auth";
 import { createServerClient } from "@ykzts/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { getCurrentUser } from "@/lib/auth";
 import { invalidateCaches } from "@/lib/revalidate";
 
 const keyVisualSchema = z.object({

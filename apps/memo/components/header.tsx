@@ -1,6 +1,6 @@
+import { getCurrentUser } from "@ykzts/supabase/auth";
 import Link from "next/link";
 import { logout } from "@/app/login/actions";
-import { getCurrentUser } from "@/lib/auth";
 
 interface HeaderProps {
   canEdit?: boolean;

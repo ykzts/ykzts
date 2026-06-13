@@ -1,3 +1,4 @@
+import { getCurrentUser } from "@ykzts/supabase/auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +11,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { getCurrentUser } from "@/lib/auth";
 import { getProfile } from "@/lib/data";
 import { logout } from "../login/actions";
 import Navigation from "./_components/navigation";

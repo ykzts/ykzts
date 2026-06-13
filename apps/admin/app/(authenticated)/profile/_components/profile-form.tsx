@@ -16,13 +16,13 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { RichTextEditor } from "@ykzts/editor";
+import { uploadImage } from "@ykzts/supabase/image-upload";
 import type { Json } from "@ykzts/supabase/types";
 import { Button } from "@ykzts/ui/components/button";
 import { Input } from "@ykzts/ui/components/input";
 import { useActionState, useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { DEFAULT_TIMEZONE, getCommonTimezones } from "@/lib/timezones";
-import { uploadImage } from "@/lib/upload-image";
 import { updateProfile } from "../actions";
 import { AvatarUpload } from "./avatar-upload";
 import { SortableItem } from "./sortable-item";

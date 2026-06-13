@@ -1,6 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
-import type { Database } from "@ykzts/supabase/types";
 import { type NextRequest, NextResponse } from "next/server";
+import type { Database } from "./database.types.js";
 
 export async function updateSession(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
