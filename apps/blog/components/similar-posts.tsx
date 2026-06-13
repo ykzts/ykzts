@@ -45,7 +45,7 @@ export default function SimilarPosts({ posts }: SimilarPostsProps) {
           const previewText =
             post.excerpt || extractFirstParagraph(post.content);
           return (
-            <Card key={post.id}>
+            <Card className="h-full" key={post.id}>
               <CardHeader>
                 <CardTitle className="text-lg">
                   <Link className="hover:underline" href={url}>
@@ -64,7 +64,7 @@ export default function SimilarPosts({ posts }: SimilarPostsProps) {
                 </CardContent>
               )}
               {post.tags && post.tags.length > 0 && (
-                <CardFooter>
+                <CardFooter className="mt-auto">
                   <TagList className="flex flex-wrap gap-2" tags={post.tags} />
                 </CardFooter>
               )}
