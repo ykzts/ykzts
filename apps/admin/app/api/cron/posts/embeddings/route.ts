@@ -1,6 +1,20 @@
+import { createServiceRoleClient } from "@ykzts/supabase/service-role";
+import type { Json } from "@ykzts/supabase/types";
 import { NextResponse } from "next/server";
-import { start } from "workflow/api";
-import { generatePostEmbeddings } from "@/workflows/generate-post-embeddings";
+import { generatePostEmbedding } from "@/lib/embeddings";
+
+/**
+ * Extract content from current_version returned by database function
+ * The function returns a JSONB object with content and updated_at
+ */
+function extractVersionContent(currentVersion: unknown): Json | null {
+  if (!currentVersion || typeof currentVersion !== "object") {
+    return null;
+  }
+
+  const version = currentVersion as { content?: Json };
+  return version?.content ?? null;
+}
 
 async function handleCronRequest(request: Request) {
   // Verify cron secret for security
@@ -19,12 +33,82 @@ async function handleCronRequest(request: Request) {
   }
 
   try {
-    // Fire-and-forget: enqueue the durable workflow.
-    // The cron handler returns immediately; do not await run.returnValue.
-    const run = await start(generatePostEmbeddings, []);
+    // Use service role client to bypass RLS for system operations
+    const supabase = createServiceRoleClient();
+
+    // Use RPC function to query posts needing embeddings
+    // This function handles column-to-column timestamp comparison on the database side
+    // (PostgREST query builder cannot compare columns directly)
+    const { data: posts, error: postsError } = await supabase.rpc(
+      "get_posts_needing_embeddings",
+      { batch_size: 10 }
+    );
+
+    if (postsError) {
+      throw new Error(`Failed to fetch posts: ${postsError.message}`);
+    }
+
+    if (!posts || posts.length === 0) {
+      return NextResponse.json({
+        message: "No posts need embedding updates",
+        processed: 0,
+      });
+    }
+
+    let successCount = 0;
+    let failureCount = 0;
+    const errors: Array<{ id: string; error: string }> = [];
+
+    // Process each post
+    for (const post of posts) {
+      try {
+        // Extract content from current version
+        const content = extractVersionContent(post.current_version);
+
+        if (!content) {
+          errors.push({ error: "No content found", id: post.id });
+          failureCount++;
+          continue;
+        }
+
+        // Generate embedding
+        const embedding = await generatePostEmbedding({
+          content,
+          excerpt: post.excerpt,
+          title: post.title ?? "",
+        });
+
+        // Update post with embedding and set timestamp
+        // No need to preserve updated_at - we now compare with version_date instead
+        const { error: updateError } = await supabase
+          .from("posts")
+          .update({
+            embedding: JSON.stringify(embedding),
+            embedding_updated_at: new Date().toISOString(),
+          })
+          .eq("id", post.id);
+
+        if (updateError) {
+          errors.push({ error: updateError.message, id: post.id });
+          failureCount++;
+        } else {
+          successCount++;
+        }
+      } catch (error) {
+        errors.push({
+          error: error instanceof Error ? error.message : "Unknown error",
+          id: post.id,
+        });
+        failureCount++;
+      }
+    }
+
     return NextResponse.json({
-      message: "Workflow started for post embeddings",
-      runId: run.runId,
+      errors: errors.length > 0 ? errors : undefined,
+      failureCount,
+      message: "Embedding generation completed",
+      processed: posts.length,
+      successCount,
     });
   } catch (error) {
     console.error("Cron job error:", error);
