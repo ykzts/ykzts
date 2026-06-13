@@ -14,8 +14,7 @@
         "RESEND_API_KEY",
         "REVALIDATE_SECRET",
         "REVALIDATE_URLS",
-        "SUPABASE_SERVICE_ROLE_KEY",
-        "TURNSTILE_SECRET_KEY"
+        "SUPABASE_SERVICE_ROLE_KEY"
       ],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
@@ -36,8 +35,7 @@
         "RESEND_API_KEY",
         "REVALIDATE_SECRET",
         "REVALIDATE_URLS",
-        "SUPABASE_SERVICE_ROLE_KEY",
-        "TURNSTILE_SECRET_KEY"
+        "SUPABASE_SERVICE_ROLE_KEY"
       ],
       "outputs": [".lighthouseci/**"]
     },
@@ -65,8 +63,7 @@
         "RESEND_API_KEY",
         "REVALIDATE_SECRET",
         "REVALIDATE_URLS",
-        "SUPABASE_SERVICE_ROLE_KEY",
-        "TURNSTILE_SECRET_KEY"
+        "SUPABASE_SERVICE_ROLE_KEY"
       ],
       "outputs": [
         ".next/**",

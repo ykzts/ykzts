@@ -2,11 +2,6 @@ import { render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import Contact from "../contact";
 
-// Mock the intersection observer hook
-vi.mock("react-intersection-observer", () => ({
-  useInView: vi.fn(() => [vi.fn(), false]),
-}));
-
 // Mock the ContactForm component
 vi.mock("../contact-form", () => ({
   default: () => <div data-testid="contact-form">Contact Form</div>,
