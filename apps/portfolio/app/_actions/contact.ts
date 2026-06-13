@@ -1,12 +1,11 @@
 "use server";
 
-import { getSiteName } from "@ykzts/site-config";
 import { getProfile } from "@ykzts/supabase/queries";
 import { checkBotId } from "botid/server";
-import { Resend } from "resend";
+// @ts-expect-error - workflow/api subpath types not resolved by tsc in this setup (runtime works, next typegen succeeds)
+import { start } from "workflow/api";
 import { z } from "zod";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendContactEmail } from "@/workflows/send-contact-email";
 
 const contactFormSchema = z.object({
   email: z.email("有効なメールアドレスを入力してください"),
@@ -70,44 +69,11 @@ export async function submitContactForm(
     // Validate form data
     const validatedData = contactFormSchema.parse(data);
 
-    // Send email using Resend
-    if (!(process.env.RESEND_API_KEY && contactEmail)) {
-      if (!process.env.RESEND_API_KEY) {
-        console.error("RESEND_API_KEY is not configured.");
-      }
-
-      if (!contactEmail) {
-        console.error("contactEmail in profile is not configured.");
-      }
-
-      return {
-        error:
-          "メール送信の設定が正しくありません。管理者にお問い合わせください。",
-        formData: data,
-        success: false,
-      };
-    }
-
-    const siteName = getSiteName();
-    const fromAddress = process.env.MAIL_FROM_ADDRESS ?? "no-reply@example.com";
-
-    const emailResult = await resend.emails.send({
-      from: `${validatedData.name} via ${siteName} <${fromAddress}>`,
-      replyTo: `${validatedData.name} <${validatedData.email}>`,
-      subject: `[お問い合わせ] ${validatedData.subject}`,
-      text: validatedData.message,
-      to: [contactEmail],
-    });
-
-    if (emailResult.error) {
-      console.error("Resend error:", emailResult.error);
-      return {
-        error:
-          "メールの送信に失敗しました。しばらくしてからもう一度お試しください。",
-        formData: data,
-        success: false,
-      };
-    }
+    // Fire-and-forget: enqueue the durable email workflow.
+    // The form returns success immediately; the durable send (with retries/observability)
+    // happens in background via the workflow. If the run fails inside, it is retried by SDK
+    // and visible in the dashboard.
+    await start(sendContactEmail, [{ contactEmail, data: validatedData }]);
 
     return {
       success: true,

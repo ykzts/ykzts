@@ -1,7 +1,9 @@
-import { revalidateTag } from "next/cache";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+// @ts-expect-error - workflow/api subpath types not resolved by tsc in this setup (runtime works, next typegen succeeds)
+import { start } from "workflow/api";
 import { supabaseAdmin } from "@/lib/supabase/client";
+import { publishScheduledPosts } from "@/workflows/publish-scheduled-posts";
 
 export async function GET(request: NextRequest) {
   // Verify Vercel Cron Secret
@@ -20,47 +22,12 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Find scheduled posts that should be published now
-    const now = new Date().toISOString();
-    const { data: scheduledPosts, error: queryError } = await supabaseAdmin
-      .from("posts")
-      .select("id, slug, title")
-      .eq("status", "scheduled")
-      .lte("published_at", now);
-
-    if (queryError) {
-      throw queryError;
-    }
-
-    if (!scheduledPosts || scheduledPosts.length === 0) {
-      return NextResponse.json({
-        message: "No posts to publish",
-        publishedCount: 0,
-      });
-    }
-
-    // Update posts to published status
-    const postIds = scheduledPosts.map((post) => post.id);
-    const { error: updateError } = await supabaseAdmin
-      .from("posts")
-      .update({ status: "published" })
-      .in("id", postIds);
-
-    if (updateError) {
-      throw updateError;
-    }
-
-    // Invalidate cache
-    revalidateTag("posts", "max");
-
+    // Fire-and-forget: enqueue the durable workflow.
+    // The cron handler returns immediately; do not await run.returnValue.
+    const run = await start(publishScheduledPosts, []);
     return NextResponse.json({
-      message: `Published ${scheduledPosts.length} post(s)`,
-      posts: scheduledPosts.map((post) => ({
-        id: post.id,
-        slug: post.slug,
-        title: post.title,
-      })),
-      publishedCount: scheduledPosts.length,
+      message: "Workflow started for publishing scheduled posts",
+      runId: run.runId,
     });
   } catch (error) {
     console.error("Error publishing scheduled posts:", error);
