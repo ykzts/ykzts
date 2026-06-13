@@ -1,7 +1,7 @@
 import type { PortableTextBlock } from "@portabletext/types";
-import { extractFirstParagraph } from "@ykzts/portable-text-utils";
+import type { PortableTextValue } from "@ykzts/utils/portable-text";
+import { extractFirstParagraph } from "@ykzts/utils/portable-text";
 import { describe, expect, it } from "vitest";
-import type { PortableTextValue } from "../portable-text";
 
 describe("extractFirstParagraph", () => {
   it("should extract text from the first paragraph", () => {

@@ -1,9 +1,9 @@
 "use server";
 
 import type { Json } from "@ykzts/supabase/types";
+import { portableTextToMarkdown } from "@ykzts/utils/portable-text";
 import { generateText, Output } from "ai";
 import { z } from "zod";
-import { portableTextToMarkdown } from "./portable-text-to-markdown";
 
 const tagsSchema = z.object({
   tags: z

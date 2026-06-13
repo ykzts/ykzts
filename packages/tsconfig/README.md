@@ -44,8 +44,7 @@ Used by:
 ```
 
 Used by:
-- `@ykzts/pagination-utils`
-- `@ykzts/portable-text-utils`
+- `@ykzts/utils` (includes pagination, portable-text, etc via subpaths)
 - `@ykzts/ui`
 
 ## Available Configurations

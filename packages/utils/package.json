@@ -6,13 +6,25 @@
   "description": "Shared utility functions for ykzts applications",
   "exports": {
     ".": "./src/index.ts",
-    "./csp": "./src/csp.ts"
+    "./csp": "./src/csp.ts",
+    "./blog-urls": "./src/blog-urls.ts",
+    "./fediverse": "./src/fediverse/index.ts",
+    "./pagination": "./src/pagination/index.ts",
+    "./portable-text": "./src/portable-text/index.ts"
   },
   "scripts": {
     "test": "vitest --run",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "dependencies": {
+    "@portabletext/markdown": "1.4.0",
+    "@portabletext/to-html": "5.0.2",
+    "gray-matter": "4.0.3",
+    "ipaddr.js": "2.4.0",
+    "zod": "4.4.3"
+  },
   "devDependencies": {
+    "@portabletext/types": "4.0.2",
     "@types/node": "catalog:",
     "@ykzts/tsconfig": "workspace:*",
     "typescript": "catalog:",

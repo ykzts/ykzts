@@ -1,6 +1,6 @@
 import type { Json } from "@ykzts/supabase/types";
+import { extractFirstParagraph } from "@ykzts/utils/portable-text";
 import { embed } from "ai";
-import { extractFirstParagraph } from "./portable-text-utils";
 
 // Maximum character limit for embedding input to avoid exceeding token limits
 // text-embedding-3-small has 8191 token limit (~30000 chars ≈ ~7500 tokens)

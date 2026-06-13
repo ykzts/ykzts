@@ -1,8 +1,8 @@
 "use client";
 
+import type { PortableTextValue } from "@ykzts/utils/portable-text";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
-import type { PortableTextValue } from "@/lib/portable-text";
 import PortableTextBlock from "./portable-text";
 
 interface WorkUrl {

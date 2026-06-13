@@ -1,6 +1,6 @@
+import type { PortableTextValue } from "@ykzts/utils/portable-text";
 import type { Route } from "next";
 import type { Heading } from "@/lib/extract-headings";
-import type { PortableTextValue } from "@/lib/portable-text";
 import ArticleHeader from "./article-header";
 import PortableTextBlock from "./portable-text";
 import TableOfContents from "./table-of-contents";

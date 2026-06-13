@@ -1,9 +1,9 @@
 import { Button } from "@ykzts/ui/components/button";
+import { portableTextToMarkdown } from "@ykzts/utils/portable-text";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Panel } from "@/components/panel";
-import { portableTextToMarkdown } from "@/lib/portable-text-to-markdown";
 import { compareVersions, getPostById } from "@/lib/posts";
 import { CompareSkeleton } from "./_components/compare-skeleton";
 import { ContentDiff } from "./_components/content-diff";

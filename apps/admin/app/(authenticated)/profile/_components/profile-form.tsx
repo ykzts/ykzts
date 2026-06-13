@@ -15,12 +15,12 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { RichTextEditor } from "@ykzts/editor";
 import type { Json } from "@ykzts/supabase/types";
 import { Button } from "@ykzts/ui/components/button";
 import { Input } from "@ykzts/ui/components/input";
 import { useActionState, useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { RichTextEditor } from "@/components/portable-text-editor";
 import { DEFAULT_TIMEZONE, getCommonTimezones } from "@/lib/timezones";
 import { uploadImage } from "@/lib/upload-image";
 import { updateProfile } from "../actions";

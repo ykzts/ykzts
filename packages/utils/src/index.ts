@@ -3,14 +3,17 @@
  *
  * Shared generic utility functions for the ykzts monorepo.
  *
- * To keep the main entry focused, domain-specific or themed utilities are
- * exposed via subpath exports:
+ * Domain-specific utilities are exposed via subpath exports to keep
+ * dependency footprints small:
  *
  *   import { buildCsp, SELF, NONE } from '@ykzts/utils/csp';
+ *   import { getVisiblePages } from '@ykzts/utils/pagination';
+ *   import { extractFirstParagraph, portableTextToMarkdown } from '@ykzts/utils/portable-text';
+ *   import { verifyFediverseHandle } from '@ykzts/utils/fediverse';
  *
- * Add only truly generic, cross-cutting helpers directly to this entry in the future.
+ * Add only truly generic, cross-cutting helpers directly to the main entry.
  */
 
 // Intentionally left mostly empty for focus.
-// CSP-related helpers live at '@ykzts/utils/csp'.
+// Other helpers live at '@ykzts/utils/*' subpaths (csp, pagination, portable-text, fediverse).
 export {};

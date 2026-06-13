@@ -1,8 +1,8 @@
 "use server";
 
-import { extractFediverseHandleFromURL } from "@ykzts/fediverse";
 import { createServerClient } from "@ykzts/supabase/server";
 import type { Json } from "@ykzts/supabase/types";
+import { extractFediverseHandleFromURL } from "@ykzts/utils/fediverse";
 import { revalidateTag } from "next/cache";
 import { z } from "zod";
 import { getCurrentUser } from "@/lib/auth";

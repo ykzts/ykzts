@@ -1,6 +1,6 @@
-import { portableTextToHTML } from "@ykzts/portable-text-utils";
 import { getSiteName, getSiteOrigin } from "@ykzts/site-config";
 import { getProfile } from "@ykzts/supabase/queries";
+import { portableTextToHTML } from "@ykzts/utils/portable-text";
 import { Feed } from "feed";
 import { DEFAULT_POST_TITLE } from "@/lib/constants";
 import { getPostsForFeed } from "@/lib/supabase/posts";

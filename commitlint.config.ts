@@ -26,10 +26,8 @@ const config: UserConfig = {
         "layout",
         "supabase",
         "tsconfig",
-        "portable-text-editor",
-        "portable-text-utils",
-        "pagination-utils",
-        "fediverse",
+        "editor",
+        "utils",
         "site-config",
 
         // Cross-cutting

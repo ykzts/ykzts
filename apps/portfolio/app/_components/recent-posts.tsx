@@ -1,6 +1,7 @@
 import { Link } from "@vercel/microfrontends/next/client";
 import { getPosts } from "@ykzts/supabase/queries";
 import { Skeleton } from "@ykzts/ui/components/skeleton";
+import { getDateBasedUrl } from "@ykzts/utils/blog-urls";
 import { cacheLife } from "next/cache";
 import { Suspense } from "react";
 import range from "@/lib/range";
@@ -21,15 +22,6 @@ async function getCurrentTime(): Promise<Date> {
   cacheLife("hours");
 
   return startOfHour(new Date());
-}
-
-function getDateBasedUrl(slug: string, publishedAt: string): string {
-  const date = new Date(publishedAt);
-  const year = date.getUTCFullYear();
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-  const day = String(date.getUTCDate()).padStart(2, "0");
-
-  return `/blog/${year}/${month}/${day}/${slug}`;
 }
 
 function RecentPostsSkeleton() {

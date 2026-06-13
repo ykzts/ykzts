@@ -1,5 +1,7 @@
 import { getSiteOrigin } from "@ykzts/site-config";
 import { getProfile } from "@ykzts/supabase/queries";
+import { getDateBasedUrl } from "@ykzts/utils/blog-urls";
+import { isPortableTextValue } from "@ykzts/utils/portable-text";
 import type { Metadata, Route } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -8,10 +10,8 @@ import PostNavigation from "@/components/post-navigation";
 import SimilarPosts from "@/components/similar-posts";
 import SimilarPostsSkeleton from "@/components/similar-posts-skeleton";
 import TableOfContents from "@/components/table-of-contents";
-import { getDateBasedUrl } from "@/lib/blog-urls";
 import { DEFAULT_POST_TITLE } from "@/lib/constants";
 import { extractHeadings } from "@/lib/extract-headings";
-import { isPortableTextValue } from "@/lib/portable-text";
 import {
   getAdjacentPosts,
   getAllPosts,

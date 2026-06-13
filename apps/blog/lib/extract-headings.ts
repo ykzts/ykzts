@@ -1,5 +1,5 @@
 import type { PortableTextBlock } from "@portabletext/types";
-import type { PortableTextValue } from "./portable-text";
+import type { PortableTextValue } from "@ykzts/utils/portable-text";
 
 const HEADING_STYLE_REGEX = /^h[23]$/;
 

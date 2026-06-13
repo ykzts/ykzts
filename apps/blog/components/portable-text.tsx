@@ -4,15 +4,15 @@ import {
   type PortableTextMarkComponentProps,
   type PortableTextReactComponents,
 } from "@portabletext/react";
-import Image from "next/image";
-import { type ComponentProps, Suspense } from "react";
-import Link from "@/components/link";
-import { generateHeadingId } from "@/lib/extract-headings";
 import type {
   CodeBlock,
   ImageBlock,
   PortableTextValue,
-} from "@/lib/portable-text";
+} from "@ykzts/utils/portable-text";
+import Image from "next/image";
+import { type ComponentProps, Suspense } from "react";
+import Link from "@/components/link";
+import { generateHeadingId } from "@/lib/extract-headings";
 import { highlightCode } from "@/lib/shiki";
 
 // Component to handle code block syntax highlighting

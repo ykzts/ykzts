@@ -1,7 +1,7 @@
 "use client";
 
 import type { PortableTextBlock } from "@portabletext/types";
-import { RichTextEditor } from "@ykzts/portable-text-editor";
+import { RichTextEditor } from "@ykzts/editor";
 import { useActionState, useEffect, useState } from "react";
 import { updateMemo } from "@/app/[...path]/actions";
 import MemoPortableText from "@/components/portable-text";

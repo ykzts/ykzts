@@ -1,4 +1,4 @@
-import { parseMarkdownForPost } from "@ykzts/portable-text-utils";
+import { parseMarkdownForPost } from "@ykzts/utils/portable-text";
 import { describe, expect, it } from "vitest";
 
 describe("parseMarkdownForPost", () => {

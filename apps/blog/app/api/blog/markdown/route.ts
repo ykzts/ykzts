@@ -1,7 +1,9 @@
-import { portableTextToMarkdown } from "@ykzts/portable-text-utils";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
+import {
+  isPortableTextValue,
+  portableTextToMarkdown,
+} from "@ykzts/utils/portable-text";
 import { connection } from "next/server";
-import { getPostUrl } from "@/lib/blog-urls";
-import { isPortableTextValue } from "@/lib/portable-text";
 import { getPosts } from "@/lib/supabase/posts";
 
 const textEncoder = new TextEncoder();

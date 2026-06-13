@@ -10,7 +10,7 @@
     "@vercel/analytics": "2.0.1",
     "@vercel/microfrontends": "2.3.6",
     "@ykzts/layout": "workspace:*",
-    "@ykzts/portable-text-utils": "workspace:*",
+
     "@ykzts/site-config": "workspace:*",
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",

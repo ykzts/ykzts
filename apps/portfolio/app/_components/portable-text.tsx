@@ -4,9 +4,9 @@ import {
   type PortableTextMarkComponentProps,
   type PortableTextReactComponents,
 } from "@portabletext/react";
+import type { PortableTextValue } from "@ykzts/utils/portable-text";
 import { type ComponentProps, Suspense } from "react";
 import Link from "@/components/link";
-import type { PortableTextValue } from "@/lib/portable-text";
 import { highlightCode } from "@/lib/shiki";
 
 // Component to handle code block syntax highlighting

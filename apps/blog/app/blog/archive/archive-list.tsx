@@ -7,9 +7,9 @@ import {
   CardHeader,
 } from "@ykzts/ui/components/card";
 import { Skeleton } from "@ykzts/ui/components/skeleton";
+import type { PortableTextValue } from "@ykzts/utils/portable-text";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import PostCard from "@/components/post-card";
-import type { PortableTextValue } from "@/lib/portable-text";
 import { getYearData } from "./actions";
 
 interface Post {

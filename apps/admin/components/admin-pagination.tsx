@@ -1,6 +1,5 @@
 "use client";
 
-import { getVisiblePages } from "@ykzts/pagination-utils";
 import {
   Pagination,
   PaginationContent,
@@ -10,6 +9,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@ykzts/ui/components/pagination";
+import { getVisiblePages } from "@ykzts/utils/pagination";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 

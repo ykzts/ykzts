@@ -1,15 +1,11 @@
 import {
+  markdownToPortableText as convertFromMarkdown,
   portableTextToMarkdown as convertToMarkdown,
   type PortableTextBlockRenderer,
 } from "@portabletext/markdown";
 import { escapeHTML, toHTML, uriLooksSafe } from "@portabletext/to-html";
 import type { PortableTextBlock } from "@portabletext/types";
-
-// biome-ignore lint/performance/noBarrelFile: this is library
-export {
-  type MarkdownPostParseResult,
-  parseMarkdownForPost,
-} from "./markdown-to-portable-text";
+import matter from "gray-matter";
 
 /**
  * Extracts plain text from a PortableText block's children
@@ -31,12 +27,12 @@ function extractTextFromBlock(block: PortableTextBlock): string {
 
 /**
  * Extract the first paragraph from PortableText content
- * @param content - PortableText content (array of blocks)
+ * @param content - PortableText content (array of blocks, or Json from DB)
  * @param maxLength - Maximum length of content before ellipsis (default: 150). The returned string may be up to maxLength + 3 characters when truncated.
  * @returns Extracted text or empty string
  */
 export function extractFirstParagraph(
-  content: PortableTextBlock[] | null | undefined,
+  content: unknown,
   maxLength = 150
 ): string {
   if (!(content && Array.isArray(content))) {
@@ -44,8 +40,12 @@ export function extractFirstParagraph(
   }
 
   for (const block of content) {
+    if (typeof block !== "object" || block === null) {
+      continue;
+    }
+
     // Only process text blocks (not code, image, etc.)
-    if (block._type !== "block") {
+    if (!("_type" in block) || block._type !== "block") {
       continue;
     }
 
@@ -56,7 +56,7 @@ export function extractFirstParagraph(
       "children" in block &&
       Array.isArray(block.children)
     ) {
-      const text = extractTextFromBlock(block);
+      const text = extractTextFromBlock(block as PortableTextBlock);
       const trimmedText = text.trim();
 
       if (trimmedText) {
@@ -215,4 +215,229 @@ export function portableTextToMarkdown(
   } catch {
     return "";
   }
+}
+
+export type PortableTextValue = PortableTextBlock[];
+
+export interface CodeBlock {
+  _type: "code";
+  code: string;
+  language?: string;
+}
+
+export interface ImageBlock {
+  _type: "image";
+  alt?: string;
+  asset: {
+    _type: "reference";
+    url: string;
+  };
+  height?: number;
+  width?: number;
+}
+
+/**
+ * Type guard to check if a value is a valid Portable Text array.
+ * Used across apps for safe narrowing of content coming from Supabase/props.
+ */
+export function isPortableTextValue(
+  value: unknown
+): value is PortableTextValue {
+  if (!Array.isArray(value)) {
+    return false;
+  }
+
+  return value.every((item) => {
+    if (!item || typeof item !== "object") {
+      return false;
+    }
+
+    const type = (item as { _type?: unknown })._type;
+
+    return typeof type === "string";
+  });
+}
+
+// --- Markdown <-> Portable Text parsing (inlined from previous separate module to avoid
+// bundler resolution issues with explicit .js extension in relative re-exports under strict ESM + nodenext) ---
+
+interface PortableTextCodeBlock {
+  _key?: string;
+  _type: "code";
+  code?: string;
+  language?: string;
+  [key: string]: unknown;
+}
+
+interface PortableTextSpan {
+  _key?: string;
+  _type: "span";
+  text?: string;
+}
+
+interface InternalPortableTextBlock {
+  _key?: string;
+  _type: string;
+  children?: PortableTextSpan[];
+  style?: string;
+  [key: string]: unknown;
+}
+
+function isCodeBlock(
+  block: InternalPortableTextBlock
+): block is PortableTextCodeBlock {
+  return block._type === "code";
+}
+
+/**
+ * Transform blocks from @portabletext/markdown format to the internal format
+ * used by initializeEditorWithPortableText.
+ * Specifically, code blocks need to be transformed from:
+ *   { _type: 'code', language: '...', code: '...' }
+ * to:
+ *   { _type: 'block', style: 'code', language: '...', children: [...] }
+ */
+function transformBlock(
+  block: InternalPortableTextBlock
+): InternalPortableTextBlock {
+  if (isCodeBlock(block)) {
+    return {
+      _key: block._key,
+      _type: "block",
+      children: [
+        {
+          _key: crypto.randomUUID(),
+          _type: "span",
+          text: block.code ?? "",
+        },
+      ],
+      language: block.language,
+      markDefs: [],
+      style: "code",
+    };
+  }
+  return block;
+}
+
+/**
+ * Extract plain text from a Portable Text block's span children.
+ */
+function extractBlockText(block: InternalPortableTextBlock): string {
+  if (!Array.isArray(block.children)) {
+    return "";
+  }
+  return block.children
+    .map((span) => (span._type === "span" ? (span.text ?? "") : ""))
+    .join("");
+}
+
+/**
+ * Parse frontmatter tags value into a string array.
+ * Accepts a YAML sequence (string[]) or a comma-separated string.
+ */
+function parseTags(raw: unknown): string[] {
+  if (Array.isArray(raw)) {
+    return raw
+      .filter((t): t is string => typeof t === "string")
+      .map((t) => t.trim())
+      .filter(Boolean);
+  }
+  if (typeof raw === "string" && raw.trim()) {
+    return raw
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+  }
+  return [];
+}
+
+/**
+ * Parse a frontmatter date/datetime value into an ISO 8601 string.
+ * Returns null when the value is absent or cannot be parsed.
+ */
+function parsePublishedAt(raw: unknown): string | null {
+  if (raw === null || raw === undefined || raw === "") {
+    return null;
+  }
+  if (raw instanceof Date) {
+    return Number.isNaN(raw.getTime()) ? null : raw.toISOString();
+  }
+  if (typeof raw === "string" || typeof raw === "number") {
+    const d = new Date(raw);
+    return Number.isNaN(d.getTime()) ? null : d.toISOString();
+  }
+  return null;
+}
+
+export interface MarkdownPostParseResult {
+  contentJson: string;
+  excerpt: string;
+  publishedAt: string | null;
+  tags: string[];
+  title: string;
+}
+
+/**
+ * Parse a markdown string and extract the title and body content.
+ * Strips frontmatter first (using gray-matter), then converts the remaining
+ * markdown to Portable Text. The first h1 block is used as the title when no
+ * frontmatter title is present. Frontmatter fields title, tags, excerpt, and
+ * date/published_at are extracted into the result.
+ */
+export function parseMarkdownForPost(
+  markdown: string
+): MarkdownPostParseResult {
+  const { data: frontmatter, content: body } = matter(markdown);
+
+  let allBlocks: InternalPortableTextBlock[] = [];
+  try {
+    const converted = convertFromMarkdown(body);
+    allBlocks = converted as InternalPortableTextBlock[];
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error(
+      `Failed to convert Markdown to Portable Text: ${errorMessage}`
+    );
+    throw error;
+  }
+
+  let title =
+    typeof frontmatter.title === "string" ? frontmatter.title.trim() : "";
+  let titleBlockIndex = -1;
+
+  if (!title) {
+    for (let i = 0; i < allBlocks.length; i++) {
+      const block = allBlocks[i];
+      if (block._type === "block" && block.style === "h1") {
+        title = extractBlockText(block);
+        titleBlockIndex = i;
+        break;
+      }
+    }
+  }
+
+  const bodyBlocks =
+    titleBlockIndex >= 0
+      ? [
+          ...allBlocks.slice(0, titleBlockIndex),
+          ...allBlocks.slice(titleBlockIndex + 1),
+        ]
+      : allBlocks;
+
+  const portableText = bodyBlocks.map(transformBlock);
+
+  const tags = parseTags(frontmatter.tags);
+  const excerpt =
+    typeof frontmatter.excerpt === "string" ? frontmatter.excerpt.trim() : "";
+  const publishedAt =
+    parsePublishedAt(frontmatter.published_at) ??
+    parsePublishedAt(frontmatter.date);
+
+  return {
+    contentJson: JSON.stringify(portableText),
+    excerpt,
+    publishedAt,
+    tags,
+    title,
+  };
 }
