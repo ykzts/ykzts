@@ -9,6 +9,7 @@ import {
   BreadcrumbSeparator,
 } from "@ykzts/ui/components/breadcrumb";
 import type { PortableTextValue } from "@ykzts/utils/portable-text";
+import { Rss } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PostCard from "@/components/post-card";
@@ -164,9 +165,21 @@ export default async function YearArchivePage({ params }: PageProps) {
           </BreadcrumbList>
         </Breadcrumb>
 
-        <h1 className="mb-4 font-bold text-3xl">
-          {year}年 ({count}件)
-        </h1>
+        <div className="mb-8 flex items-baseline justify-between">
+          <h1 className="font-bold text-3xl">
+            {year}年 ({count}件)
+          </h1>
+          <a
+            aria-label="ブログのAtomフィードを購読"
+            className="inline-flex items-center gap-1 text-muted-foreground text-sm transition-colors hover:text-foreground"
+            href="/blog.atom"
+            rel="alternate"
+            type="application/atom+xml"
+          >
+            <Rss className="h-4 w-4" />
+            <span>Atom</span>
+          </a>
+        </div>
 
         {availableMonths.length > 1 && (
           <nav

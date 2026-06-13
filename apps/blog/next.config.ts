@@ -17,6 +17,16 @@ const nextConfig: NextConfig = {
       permanent: true,
       source: "/blog/atom.xml",
     },
+    {
+      destination: "/blog/tags/:tag.atom",
+      permanent: true,
+      source: "/blog/tags/:tag/atom",
+    },
+    {
+      destination: "/blog/tags/:tag.atom",
+      permanent: true,
+      source: "/blog/tags/:tag/atom.xml",
+    },
   ],
   rewrites: async () => ({
     beforeFiles: [
@@ -27,6 +37,10 @@ const nextConfig: NextConfig = {
       {
         destination: "/api/blog/markdown/:year/:month/:day/:slug",
         source: "/blog/:year/:month/:day/:slug.md",
+      },
+      {
+        destination: "/api/blog/tags/:tag/atom",
+        source: "/blog/tags/:tag.atom",
       },
     ],
   }),
