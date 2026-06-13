@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "extends": "@ykzts/tsconfig/basic.json",
+  "include": ["src"]
+}
