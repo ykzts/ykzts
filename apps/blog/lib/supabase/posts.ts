@@ -16,6 +16,15 @@ function getClient(isDraft = false) {
 
 const POSTS_PER_PAGE = 10;
 
+/**
+ * Maximum number of posts to include in Atom feeds.
+ * Main feed uses a smaller number (20). Tag feeds use this as default.
+ * We intentionally do not return "all" posts even for tags, as that can make
+ * the feed response very large (full content via portableTextToHTML is included
+ * for each item) and put unnecessary load on the database and feed readers.
+ */
+const FEED_LIMIT = 50;
+
 type Profile = {
   fediverse_creator?: string | null;
   id: string;
@@ -388,15 +397,15 @@ export async function getAdjacentYears(
   return { previousYear, nextYear };
 }
 
-export async function getPostsForFeed(limit = 20) {
-  cacheTag("posts");
+async function fetchFeedPosts(options: { limit?: number; tag?: string } = {}) {
+  const { limit, tag } = options;
 
   if (!supabase) {
     // Return empty array when Supabase is not configured (e.g., during build without env vars)
     return [];
   }
 
-  const { data, error } = await supabase
+  let query = supabase
     .from("posts")
     .select(
       `
@@ -412,9 +421,21 @@ export async function getPostsForFeed(limit = 20) {
     )
     .eq("status", "published")
     .lte("published_at", new Date().toISOString())
-    .not("slug", "is", null)
-    .order("published_at", { ascending: false })
-    .limit(limit);
+    .not("slug", "is", null);
+
+  if (tag) {
+    query = query.contains("tags", [tag]);
+  }
+
+  query = query.order("published_at", { ascending: false });
+
+  // Always apply a limit. Callers can pass a specific number (main feed passes 20).
+  // If no explicit limit, fall back to FEED_LIMIT. This prevents accidentally
+  // returning every matching post, which would be heavy for feeds.
+  const effectiveLimit = limit != null && limit > 0 ? limit : FEED_LIMIT;
+  query = query.limit(effectiveLimit);
+
+  const { data, error } = await query;
 
   if (error) {
     throw new Error(`Failed to fetch posts for feed: ${error.message}`);
@@ -430,6 +451,26 @@ export async function getPostsForFeed(limit = 20) {
     title: post.title as string,
     version_date: extractVersionDate(post.current_version),
   }));
+}
+
+export async function getPostsForFeed(limit = 20) {
+  cacheTag("posts");
+
+  return await fetchFeedPosts({ limit });
+}
+
+/**
+ * Fetch posts for a tag-specific Atom feed.
+ * Returns at most the most recent FEED_LIMIT posts for the tag (default 50).
+ * We cap the number instead of returning every post for the tag because:
+ * - Full post content (via portableTextToHTML) is embedded for each item.
+ * - Large feeds hurt performance, bandwidth, and feed reader experience.
+ * - "Latest N for this tag" is the useful behavior for subscribers.
+ */
+export async function getPostsByTagForFeed(tag: string, limit = FEED_LIMIT) {
+  cacheTag("posts");
+
+  return await fetchFeedPosts({ tag, limit });
 }
 
 export async function getTotalPostCount(isDraft = false) {

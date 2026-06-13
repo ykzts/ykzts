@@ -1,3 +1,4 @@
+import { Rss } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import BlogPagination from "@/components/blog-pagination";
@@ -68,9 +69,21 @@ export default async function TagPaginationPage({ params }: PageProps) {
   return (
     <main className="px-6 py-8 md:px-12 lg:px-24">
       <div className="mx-auto max-w-4xl">
-        <h1 className="mb-8 font-bold text-3xl">
-          {decodedTag} ({postCount}件)
-        </h1>
+        <div className="mb-8 flex items-baseline justify-between">
+          <h1 className="font-bold text-3xl">
+            {decodedTag} ({postCount}件)
+          </h1>
+          <a
+            aria-label={`${decodedTag}タグのAtomフィードを購読`}
+            className="inline-flex items-center gap-1 text-muted-foreground text-sm transition-colors hover:text-foreground"
+            href={`/blog/tags/${encodeURIComponent(decodedTag)}.atom`}
+            rel="alternate"
+            type="application/atom+xml"
+          >
+            <Rss className="h-4 w-4" />
+            <span>Atom</span>
+          </a>
+        </div>
         <div className="space-y-6">
           {posts.map((post) => (
             <PostCard key={post.id} post={post} />

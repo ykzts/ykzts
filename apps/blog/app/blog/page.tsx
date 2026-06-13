@@ -1,5 +1,6 @@
 import { getSiteName } from "@ykzts/site-config";
 import { getProfile } from "@ykzts/supabase/queries";
+import { Rss } from "lucide-react";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { YearArchiveLinks } from "./_components/archive-links";
@@ -26,6 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: {
       canonical: "/blog",
       types: {
+        "application/atom+xml": "/blog.atom",
         "text/markdown": "/blog.md",
       },
     },
@@ -46,6 +48,19 @@ export default function HomePage() {
   return (
     <main className="px-6 py-8 md:px-12 lg:px-24">
       <div className="mx-auto max-w-4xl">
+        <div className="mb-8 flex items-baseline justify-between">
+          <h1 className="font-bold text-3xl">ブログ</h1>
+          <a
+            aria-label="ブログのAtomフィードを購読"
+            className="inline-flex items-center gap-1 text-muted-foreground text-sm transition-colors hover:text-foreground"
+            href="/blog.atom"
+            rel="alternate"
+            type="application/atom+xml"
+          >
+            <Rss className="h-4 w-4" />
+            <span>Atom</span>
+          </a>
+        </div>
         <Suspense fallback={<PostsSkeleton count={5} />}>
           <Posts />
         </Suspense>
