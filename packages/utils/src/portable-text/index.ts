@@ -85,7 +85,7 @@ export function extractTextFromPortableText(content: unknown): string {
   }
 
   const blocks = Array.isArray(content) ? content : [content];
-  const texts: string[] = [];
+  const blockTexts: string[] = [];
 
   for (const block of blocks) {
     if (
@@ -94,20 +94,24 @@ export function extractTextFromPortableText(content: unknown): string {
       "children" in block &&
       Array.isArray(block.children)
     ) {
-      for (const child of block.children) {
-        if (
+      const blockText = block.children
+        .map((child: unknown) =>
           typeof child === "object" &&
           child !== null &&
           "text" in child &&
-          typeof child.text === "string"
-        ) {
-          texts.push(child.text);
-        }
+          typeof (child as { text?: unknown }).text === "string"
+            ? (child as { text: string }).text
+            : ""
+        )
+        .join("")
+        .trim();
+      if (blockText) {
+        blockTexts.push(blockText);
       }
     }
   }
 
-  return texts.join(" ").trim();
+  return blockTexts.join(" ");
 }
 
 /**

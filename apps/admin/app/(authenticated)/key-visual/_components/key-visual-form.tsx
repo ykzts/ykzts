@@ -1,10 +1,10 @@
 "use client";
 
+import { getImageDimensions } from "@ykzts/supabase/image-upload";
 import {
   ALLOWED_TYPES,
-  getImageDimensions,
   validateImageFile,
-} from "@ykzts/supabase/image-upload";
+} from "@ykzts/supabase/image-validation";
 import { Button } from "@ykzts/ui/components/button";
 import { Input } from "@ykzts/ui/components/input";
 import { ImageOff, Upload, X } from "lucide-react";
@@ -66,6 +66,9 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
     const validation = validateImageFile(file);
     if (validation?.error) {
       setUploadError(validation.error);
+      setSelectedFile(null);
+      setDimensions(null);
+      setPreview(currentUrl);
       return;
     }
 

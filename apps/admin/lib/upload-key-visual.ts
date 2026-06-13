@@ -2,7 +2,10 @@
 
 import { randomUUID } from "node:crypto";
 import { getCurrentUser } from "@ykzts/supabase/auth";
-import { MIME_TO_EXT, validateImageFile } from "@ykzts/supabase/image-upload";
+import {
+  MIME_TO_EXT,
+  validateImageFile,
+} from "@ykzts/supabase/image-validation";
 import { createServerClient } from "@ykzts/supabase/server";
 import { revalidatePath } from "next/cache";
 import { invalidateCaches } from "./revalidate";

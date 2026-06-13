@@ -25,6 +25,10 @@
       "types": "./src/image-upload.ts",
       "default": "./src/image-upload.ts"
     },
+    "./image-validation": {
+      "types": "./src/image-validation.ts",
+      "default": "./src/image-validation.ts"
+    },
     "./dto": {
       "types": "./src/dto.ts",
       "default": "./src/dto.ts"

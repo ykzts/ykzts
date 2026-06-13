@@ -1,6 +1,6 @@
 "use client";
 
-import { validateImageFile } from "@ykzts/supabase/image-upload";
+import { validateImageFile } from "@ykzts/supabase/image-validation";
 import { Button } from "@ykzts/ui/components/button";
 import { Upload, UserCircle, X } from "lucide-react";
 import Image from "next/image";
