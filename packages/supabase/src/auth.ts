@@ -1,5 +1,5 @@
+import { createServerClient } from "@ykzts/supabase/server";
 import { cacheTag } from "next/cache";
-import { createServerClient } from "./server.js";
 
 export async function getCurrentUser() {
   "use cache: private";
