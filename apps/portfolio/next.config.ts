@@ -1,23 +1,19 @@
 import createMDX from "@next/mdx";
 import { withMicrofrontends } from "@vercel/microfrontends/next/config";
 import { getSupabaseImageConfig } from "@ykzts/supabase/next-image-config";
+import {
+  buildCsp,
+  getSupabaseStorageSrc,
+  NONE,
+  SELF,
+  UNSAFE_EVAL,
+  UNSAFE_INLINE,
+} from "@ykzts/utils/csp";
 import { withBotId } from "botid/next/config";
 
 import type { NextConfig } from "next";
 
 const withMDX = createMDX();
-
-// Build CSP img-src directive with Supabase Storage domain
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-let imgSrcCsp = "img-src 'self' data:";
-if (supabaseUrl) {
-  try {
-    const url = new URL(supabaseUrl);
-    imgSrcCsp += ` ${url.protocol}//${url.host}`;
-  } catch {
-    // Ignore invalid URL
-  }
-}
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
@@ -28,23 +24,38 @@ const nextConfig: NextConfig = {
     turbopackFileSystemCacheForDev: true,
   },
   headers() {
+    const isDevelopment = process.env.NODE_ENV === "development";
+
+    const csp = buildCsp({
+      baseUri: [NONE],
+      connectSrc: [
+        SELF,
+        "https://vitals.vercel-insights.com",
+        "https://challenges.cloudflare.com",
+        isDevelopment && "ws:",
+        isDevelopment && "wss:",
+      ],
+      defaultSrc: [NONE],
+      fontSrc: [SELF],
+      formAction: [NONE],
+      frameAncestors: [NONE],
+      frameSrc: ["https://challenges.cloudflare.com"],
+      imgSrc: getSupabaseStorageSrc(),
+      scriptSrc: [
+        SELF,
+        UNSAFE_INLINE,
+        isDevelopment && UNSAFE_EVAL,
+        "https://challenges.cloudflare.com",
+      ],
+      styleSrc: [SELF, UNSAFE_INLINE],
+    });
+
     return Promise.resolve([
       {
         headers: [
           {
             key: "Content-Security-Policy",
-            value: [
-              "base-uri 'none'",
-              "connect-src 'self' https://vitals.vercel-insights.com https://challenges.cloudflare.com",
-              "default-src 'none'",
-              "font-src 'self'",
-              "form-action 'none'",
-              "frame-ancestors 'none'",
-              "frame-src https://challenges.cloudflare.com",
-              imgSrcCsp,
-              "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
-              "style-src 'self' 'unsafe-inline'",
-            ].join("; "),
+            value: csp,
           },
           {
             key: "Permissions-Policy",
