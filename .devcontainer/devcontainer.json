@@ -16,6 +16,7 @@
   "hostRequirements": {
     "cpus": 4
   },
+  "runArgs": ["--memory=12g", "--memory-swap=24g", "--cpus=4.0"],
   "image": "mcr.microsoft.com/devcontainers/typescript-node:4-24-bookworm",
   "mounts": [
     "source=ykzts-com-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
