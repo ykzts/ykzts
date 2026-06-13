@@ -283,9 +283,6 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
-      vite-tsconfig-paths:
-        specifier: 6.1.1
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
       vitest:
         specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@24.13.1)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@24.13.1)(typescript@6.0.3))(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
@@ -405,21 +402,12 @@ importers:
 
   apps/portfolio:
     dependencies:
-      '@marsidev/react-turnstile':
-        specifier: 1.5.3
-        version: 1.5.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      '@mdx-js/react':
-        specifier: 3.1.1
-        version: 3.1.1(@types/react@19.2.17)(react@19.2.7)
       '@portabletext/react':
         specifier: 6.2.0
         version: 6.2.0(react@19.2.7)
       '@portabletext/types':
         specifier: 4.0.2
         version: 4.0.2
-      '@react-email/render':
-        specifier: 2.0.8
-        version: 2.0.8(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@supabase/supabase-js':
         specifier: 2.108.1
         version: 2.108.1
@@ -462,9 +450,6 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
-      react-intersection-observer:
-        specifier: 10.0.3
-        version: 10.0.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       resend:
         specifier: 6.12.4
         version: 6.12.4(@react-email/render@2.0.8(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
@@ -490,6 +475,9 @@ importers:
       '@mdx-js/loader':
         specifier: 3.1.1
         version: 3.1.1
+      '@mdx-js/react':
+        specifier: 3.1.1
+        version: 3.1.1(@types/react@19.2.17)(react@19.2.7)
       '@next/mdx':
         specifier: 'catalog:'
         version: 16.2.9(@mdx-js/loader@3.1.1)(@mdx-js/react@3.1.1(@types/react@19.2.17)(react@19.2.7))
@@ -529,9 +517,6 @@ importers:
       '@ykzts/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
-      autoprefixer:
-        specifier: 10.5.0
-        version: 10.5.0(postcss@8.5.15)
       axe-core:
         specifier: 4.12.0
         version: 4.12.0
@@ -559,9 +544,6 @@ importers:
       vite:
         specifier: 8.0.16
         version: 8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0)
-      vite-tsconfig-paths:
-        specifier: 6.1.1
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
       vitest:
         specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@24.13.1)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@24.13.1)(typescript@6.0.3))(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
@@ -690,9 +672,6 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
-      vite-tsconfig-paths:
-        specifier: 6.1.1
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
       vitest:
         specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@24.13.1)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@24.13.1)(typescript@6.0.3))(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
@@ -1794,12 +1773,6 @@ packages:
 
   '@lhci/utils@0.15.1':
     resolution: {integrity: sha512-WclJnUQJeOMY271JSuaOjCv/aA0pgvuHZS29NFNdIeI14id8eiFsjith85EGKYhljgoQhJ2SiW4PsVfFiakNNw==}
-
-  '@marsidev/react-turnstile@1.5.3':
-    resolution: {integrity: sha512-8Dij2jiNGNczq1U4EKpO4do2XepcTPxSMc2ZzvHndO+gcp68tvMULm27z2P99rGkdB89hc3452NZeu2Rti4g6A==}
-    peerDependencies:
-      react: ^17.0.2 || ^18.0.0 || ^19.0
-      react-dom: ^17.0.2 || ^18.0.0 || ^19.0
 
   '@mdit/plugin-alert@0.23.2':
     resolution: {integrity: sha512-pXIil0FLy9ilhvT6d324A4X+mt5i/zG8ml0VIpZwiUYh2k1Wi6VnZhFHfsnONTRu6dPL2EwQBIhQgQ+269f7LA==}
@@ -3083,13 +3056,6 @@ packages:
   async-mutex@0.5.0:
     resolution: {integrity: sha512-1A94B18jkJ3DYq284ohPxoXbfTA5HsQ7/Mf4DEhcyLx3Bz27Rh59iScbB6EPiP+B+joue6YCxcMXSbFC1tZKwA==}
 
-  autoprefixer@10.5.0:
-    resolution: {integrity: sha512-FMhOoZV4+qR6aTUALKX2rEqGG+oyATvwBt9IIzVR5rMa2HRWPkxf+P+PAJLD1I/H5/II+HuZcBJYEFBpq39ong==}
-    engines: {node: ^10 || ^12 || >=14}
-    hasBin: true
-    peerDependencies:
-      postcss: ^8.1.0
-
   aws4@1.13.2:
     resolution: {integrity: sha512-lHe62zvbTB5eEABUVi/AwVh0ZKY9rMMDhmm+eeyuuUQbQ3+J+fONVQOZyj+DdrvD4BY33uYniyRJ4UJIaSKAfw==}
 
@@ -4116,9 +4082,6 @@ packages:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
     engines: {node: '>= 0.6'}
 
-  fraction.js@5.3.4:
-    resolution: {integrity: sha512-1X1NTtiJphryn/uLQz3whtY6jK3fTqoE3ohKs0tT+Ujr1W59oopxmoEh7Lu5p6vBaPbgoM0bzveAW4Qi5RyWDQ==}
-
   fresh@0.5.2:
     resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
@@ -4251,9 +4214,6 @@ packages:
   globalthis@1.0.4:
     resolution: {integrity: sha512-DpLKbNU4WylpxJykQujfCcwYWiV/Jhm50Goo0wrVILAv5jOr9d+H+UR3PhSCD2rCCEIg0uc+G+muBTwD54JhDQ==}
     engines: {node: '>= 0.4'}
-
-  globrex@0.1.2:
-    resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
 
   google-auth-library@10.6.2:
     resolution: {integrity: sha512-e27Z6EThmVNNvtYASwQxose/G57rkRuaRbQyxM2bvYLLX/GqWZ5chWq2EBoUchJbCc57eC9ArzO5wMsEmWftCw==}
@@ -5747,9 +5707,6 @@ packages:
     resolution: {integrity: sha512-orRsuYpJVw8LdAwqqLykBj9ecS5/cRHlI5+nvTo8LcCKmzDmqVORXtOIYEEQuL9D4BxtA1lm5isAqzQZCoQ6Eg==}
     engines: {node: '>=4'}
 
-  postcss-value-parser@4.2.0:
-    resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
-
   postcss@8.4.31:
     resolution: {integrity: sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==}
     engines: {node: ^10 || ^12 || >=14}
@@ -5872,15 +5829,6 @@ packages:
     resolution: {integrity: sha512-3DpCr5HVdZ0caUjYE/kIHBEJN0mNP3ZCgf16c48uJ5TbWjorKVp+YG8W3XqlJ7vJAVNw6wNIImyPXmFydwmyng==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
-
-  react-intersection-observer@10.0.3:
-    resolution: {integrity: sha512-luICLMbs0zxTO/70Zy7K5jOXkABPEVSAF8T3FdZUlctsrIaPLmx8TZe2SSA+CY2HGWfz2INyNTnp82pxNNsShA==}
-    peerDependencies:
-      react: ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
 
   react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
@@ -6519,16 +6467,6 @@ packages:
   ts-morph@26.0.0:
     resolution: {integrity: sha512-ztMO++owQnz8c/gIENcM9XfCEzgoGphTv+nKpYNM1bgsdOVC/jRZuEBf6N+mLLDNg68Kl+GgUZfOySaRiG1/Ug==}
 
-  tsconfck@3.1.6:
-    resolution: {integrity: sha512-ks6Vjr/jEw0P1gmOVwutM3B7fWxoWBL2KRDb1JfqGVawBmO5UsvmWOQFGHBPl5yxYz4eERr19E6L7NMv+Fej4w==}
-    engines: {node: ^18 || >=20}
-    hasBin: true
-    peerDependencies:
-      typescript: ^5.0.0
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
   tsconfig-paths@4.2.0:
     resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
     engines: {node: '>=6'}
@@ -6717,11 +6655,6 @@ packages:
 
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
-
-  vite-tsconfig-paths@6.1.1:
-    resolution: {integrity: sha512-2cihq7zliibCCZ8P9cKJrQBkfgdvcFkOOc3Y02o3GWUDLgqjWsZudaoiuOwO/gzTzy17cS5F7ZPo4bsnS4DGkg==}
-    peerDependencies:
-      vite: '*'
 
   vite@8.0.16:
     resolution: {integrity: sha512-h9bXPmJichP5fLmVQo3PyaGSDE2n3aPuomeAlVRm0JLmt4rY6zmPKd59HYI4LNW8oTK7tlTsuC7l/m7awx9Jcw==}
@@ -8399,11 +8332,6 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@marsidev/react-turnstile@1.5.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
-    dependencies:
-      react: 19.2.7
-      react-dom: 19.2.7(react@19.2.7)
-
   '@mdit/plugin-alert@0.23.2(markdown-it@14.2.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
@@ -8845,6 +8773,7 @@ snapshots:
       prettier: 3.8.3
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
+    optional: true
 
   '@redis/client@5.12.1(@opentelemetry/api@1.9.1)':
     dependencies:
@@ -8946,6 +8875,7 @@ snapshots:
     dependencies:
       domhandler: 5.0.3
       selderee: 0.11.0
+    optional: true
 
   '@sentry-internal/tracing@7.120.4':
     dependencies:
@@ -9688,15 +9618,6 @@ snapshots:
   async-mutex@0.5.0:
     dependencies:
       tslib: 2.8.1
-
-  autoprefixer@10.5.0(postcss@8.5.15):
-    dependencies:
-      browserslist: 4.28.2
-      caniuse-lite: 1.0.30001793
-      fraction.js: 5.3.4
-      picocolors: 1.1.1
-      postcss: 8.5.15
-      postcss-value-parser: 4.2.0
 
   aws4@1.13.2: {}
 
@@ -10753,8 +10674,6 @@ snapshots:
 
   forwarded@0.2.0: {}
 
-  fraction.js@5.3.4: {}
-
   fresh@0.5.2: {}
 
   fresh@2.0.0: {}
@@ -10914,8 +10833,6 @@ snapshots:
     dependencies:
       define-properties: 1.2.1
       gopd: 1.2.0
-
-  globrex@0.1.2: {}
 
   google-auth-library@10.6.2:
     dependencies:
@@ -11099,6 +11016,7 @@ snapshots:
       dom-serializer: 2.0.0
       htmlparser2: 8.0.2
       selderee: 0.11.0
+    optional: true
 
   html-void-elements@3.0.0: {}
 
@@ -11108,6 +11026,7 @@ snapshots:
       domhandler: 5.0.3
       domutils: 3.2.2
       entities: 4.5.0
+    optional: true
 
   http-cache-semantics@4.2.0: {}
 
@@ -11461,7 +11380,8 @@ snapshots:
 
   klona@2.0.6: {}
 
-  leac@0.6.0: {}
+  leac@0.6.0:
+    optional: true
 
   lefthook-darwin-arm64@2.1.9:
     optional: true
@@ -12596,6 +12516,7 @@ snapshots:
     dependencies:
       leac: 0.6.0
       peberminta: 0.9.0
+    optional: true
 
   parseurl@1.3.3: {}
 
@@ -12626,7 +12547,8 @@ snapshots:
 
   pathe@2.0.3: {}
 
-  peberminta@0.9.0: {}
+  peberminta@0.9.0:
+    optional: true
 
   pend@1.2.0: {}
 
@@ -12658,8 +12580,6 @@ snapshots:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss-value-parser@4.2.0: {}
-
   postcss@8.4.31:
     dependencies:
       nanoid: 3.3.12
@@ -12676,7 +12596,8 @@ snapshots:
 
   prettier@3.8.1: {}
 
-  prettier@3.8.3: {}
+  prettier@3.8.3:
+    optional: true
 
   pretty-cache-header@1.0.0:
     dependencies:
@@ -12797,12 +12718,6 @@ snapshots:
   react-error-boundary@6.1.2(react@19.2.7):
     dependencies:
       react: 19.2.7
-
-  react-intersection-observer@10.0.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
-    dependencies:
-      react: 19.2.7
-    optionalDependencies:
-      react-dom: 19.2.7(react@19.2.7)
 
   react-is@17.0.2: {}
 
@@ -13204,6 +13119,7 @@ snapshots:
   selderee@0.11.0:
     dependencies:
       parseley: 0.12.1
+    optional: true
 
   semver-compare@1.0.0: {}
 
@@ -13725,10 +13641,6 @@ snapshots:
       '@ts-morph/common': 0.27.0
       code-block-writer: 13.0.3
 
-  tsconfck@3.1.6(typescript@6.0.3):
-    optionalDependencies:
-      typescript: 6.0.3
-
   tsconfig-paths@4.2.0:
     dependencies:
       json5: 2.2.3
@@ -13909,16 +13821,6 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
-
-  vite-tsconfig-paths@6.1.1(typescript@6.0.3)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0)):
-    dependencies:
-      debug: 4.4.3
-      globrex: 0.1.2
-      tsconfck: 3.1.6(typescript@6.0.3)
-      vite: 8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0)
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
 
   vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0):
     dependencies:

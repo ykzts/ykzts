@@ -32,7 +32,7 @@ pnpm lighthouse # Run Lighthouse CI performance audit
 - **React Compiler**: Enhanced performance with React 19 optimizations
 - **MDX Support**: Rich content authoring with React components
 - **Supabase Integration**: PostgreSQL database with dynamic content management for portfolio entries
-- **Contact Form**: Secure contact form with Resend email service and Cloudflare Turnstile spam prevention
+- **Contact Form**: Secure contact form with Resend email service and botid spam prevention
 - **Vercel Analytics**: Performance monitoring and user analytics
 - **Responsive Design**: Mobile-first design with Tailwind CSS
 
@@ -65,10 +65,6 @@ NEXT_PUBLIC_PORTFOLIO_DESCRIPTION=
 # Mail Sender (Resend)
 RESEND_API_KEY=your-resend-api-key
 MAIL_FROM_ADDRESS=no-reply@example.com
-
-# Cloudflare Turnstile
-NEXT_PUBLIC_TURNSTILE_SITE_KEY=your-turnstile-site-key
-TURNSTILE_SECRET_KEY=your-turnstile-secret-key
 ```
 
 See `.env.example` for a complete list of required environment variables.
@@ -79,18 +75,15 @@ See `.env.example` for a complete list of required environment variables.
 - `@ykzts/tsconfig`: TypeScript configuration (next.json preset)
 
 ### External Dependencies
-- `next`: React framework with App Router (v15.6.0)
-- `react`: UI framework (v19.0.0)
-- `@mdx-js/react`: MDX component rendering
+- `next`: React framework with App Router (v16)
+- `react`: UI framework (v19)
 - `@portabletext/react`: Portable Text rich text rendering (compatible with Supabase JSONB storage)
-- `@react-email/render`: Email template rendering for Resend
 - `@supabase/supabase-js`: Supabase PostgreSQL database client
 - `@vercel/analytics`: Performance and user analytics
-- `react-hot-toast`: Toast notifications for form feedback
+- `botid`: Bot detection / spam prevention for contact form
 - `lucide-react`: Icon components library
-- `react-intersection-observer`: Viewport-based animations
-- `react-turnstile`: Cloudflare Turnstile spam prevention
 - `resend`: Email delivery service
+- `sonner`: Toast notifications
 - `zod`: Runtime type validation
 
 ### Dev Dependencies
@@ -107,7 +100,6 @@ See `.env.example` for a complete list of required environment variables.
 - `@tailwindcss/postcss`: PostCSS plugin for Tailwind v4
 - `@tailwindcss/typography`: Typography plugin for Tailwind CSS
 - `postcss`: CSS transformation tool
-- `autoprefixer`: PostCSS plugin for vendor prefixes
 
 ## Architecture
 

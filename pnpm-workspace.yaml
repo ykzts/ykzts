@@ -22,7 +22,6 @@ allowBuilds:
   dtrace-provider: false
   esbuild: true
   lefthook: true
-  msw: false
   protobufjs: false
   re2: false
   sharp: true
