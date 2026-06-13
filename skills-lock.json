@@ -42,6 +42,12 @@
       "sourceType": "github",
       "skillPath": "skills/vercel-microfrontends/SKILL.md",
       "computedHash": "cabdceabe3985a640fb5b5569aae0fdab7d0bcb2d077197ad43e485c1b05da07"
+    },
+    "workflow": {
+      "source": "vercel/workflow",
+      "sourceType": "github",
+      "skillPath": "skills/workflow/SKILL.md",
+      "computedHash": "d870ac314303f0b28cfeb8533567ac18df24f6e4d6b874e9f5261b5fddc29210"
     }
   }
 }

@@ -1,6 +1,6 @@
 import { getSupabaseImageConfig } from "@ykzts/supabase/next-image-config";
-
 import type { NextConfig } from "next";
+import { withWorkflow } from "workflow/next";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
@@ -13,4 +13,4 @@ const nextConfig: NextConfig = {
   typedRoutes: true,
 };
 
-export default nextConfig;
+export default withWorkflow(nextConfig);
