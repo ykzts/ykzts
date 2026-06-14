@@ -2,24 +2,9 @@
 
 This repository is a monorepo containing the personal website and blog of Yamagishi Kazutoshi (@ykzts), a Japanese software developer specializing in full-stack web applications.
 
-## Repository Structure
+**Important note for AI agents**: Before making changes involving auth, data, secrets, or cross-app concerns, read [docs/architecture.md](docs/architecture.md) for the overall architecture and [docs/security.md](docs/security.md) for security implementation details.
 
-This is a pnpm workspace monorepo with the following structure:
-
-```
-├── apps/
-│   ├── blog-legacy/    # Docusaurus-based blog (ykzts.blog)
-│   ├── portfolio/      # Next.js portfolio site (ykzts.com)
-│   └── blog/           # (Future blog implementation)
-├── packages/
-│   ├── editor/         # Lexical rich text editor (@ykzts/editor)
-│   ├── layout/         # Shared layout components
-│   ├── site-config/    # Shared site config
-│   ├── supabase/       # Supabase database type definitions
-│   ├── tsconfig/       # Shared TypeScript configurations
-│   ├── ui/             # Shared UI component library
-│   └── utils/          # Shared utilities (@ykzts/utils + subpaths: csp, pagination, portable-text, fediverse, blog-urls, ...)
-```
+See [docs/architecture.md](docs/architecture.md) for the detailed repository structure and architecture.
 
 ## Technology Stack
 
@@ -27,8 +12,7 @@ This is a pnpm workspace monorepo with the following structure:
 - **Build System**: Turbo (monorepo build orchestration)
 - **Language**: TypeScript (modern/strict configuration)
 - **Frontend Frameworks**:
-  - Next.js 15 (with Turbopack) for portfolio
-  - Docusaurus 3 for blog-legacy
+  - Next.js (portfolio, blog, and blog-legacy redirector)
   - React 19 across all applications
 - **Content Management**: Supabase (PostgreSQL database with Dashboard)
 - **Styling**: CSS Modules, modern CSS features
@@ -75,44 +59,42 @@ This is a pnpm workspace monorepo with the following structure:
 - Build dependencies are properly configured
 - Development tasks run persistently with cache disabled
 
-## Application-Specific Guidelines
+### Git Workflow and Branching
+- **Modern standard practice**: Always create a feature branch at the very beginning of any work. Never commit directly to `main`.
+- Before writing any code, documentation, or configuration changes that will be committed, the first step is:
+  ```sh
+  git checkout -b <type>/<scope>-<short-description>
+  # or, when addressing a specific issue:
+  git checkout -b <issue-number>/<short-description>
+  ```
+- Recommended branch naming conventions (aligns with Conventional Commits):
+  - `feat/...` for new features
+  - `fix/...` for bug fixes
+  - `docs/...` for documentation
+  - `refactor/...`, `chore/...`, `ci/...`, `perf/...`, `test/...`, `style/...`
+- Examples:
+  - `docs/4015-clarify-product-architecture-security`
+  - `feat/portfolio-contact-form-validation`
+  - `fix/admin-service-role-leak`
+- Push the branch and open a Pull Request for review. `main` is only updated through passing, reviewed PRs.
+- This rule applies to both human contributors and AI agents. Direct commits to `main` (even for documentation) are not acceptable.
 
-### Portfolio App (`apps/portfolio/`)
-- **Framework**: Next.js 15 with App Router
-- **Features**: SSG, React Compiler, MDX, Supabase integration
-- **Styling**: CSS Modules with modern CSS
-- **Performance**: Image optimization, Vercel Analytics
-- **Build**: Uses Turbopack for faster builds
-
-### Blog Legacy (`apps/blog-legacy/`)
-- **Framework**: Docusaurus 3
-- **Content**: MDX files in `blog/` directory
-- **Features**: Japanese localization, Algolia search, RSS feeds
-- **Plugins**: Vercel Analytics plugin
-- **Theme**: Custom theme with dark mode support
-
-### Shared Packages
-- **editor**: Lexical-based rich text editor
-- **layout**: Shared layout components
-- **site-config**: Shared site configuration
-- **supabase**: Supabase database type definitions and clients
-- **tsconfig**: Shared TypeScript configurations
-- **ui**: Shared UI primitives and components
-- **utils**: Cross-cutting utilities (with focused subpath exports)
+See [docs/architecture.md](docs/architecture.md) for the detailed product architecture and security implementation.
 
 ## Content and Localization
 
-- **Primary Language**: Japanese (ja)
-- **Content**: Technical blog posts, portfolio projects
-- **Author**: Yamagishi Kazutoshi (ykzts)
-- **Themes**: Software development, open source, web technologies
+- Primary language: Japanese.
+- Content focus: technical blog posts and portfolio projects by Yamagishi Kazutoshi (@ykzts).
+- See the apps and `profile/` package for actual content.
 
-## Deployment and Infrastructure
+## Deployment and Infrastructure (high-level)
 
-- **Hosting**: Vercel (inferred from analytics integration)
-- **Analytics**: Vercel Analytics integrated
-- **Content**: Supabase PostgreSQL database with Dashboard
-- **Domains**: ykzts.com (portfolio), ykzts.blog (blog)
+See [docs/architecture.md](docs/architecture.md) for the authoritative overview.
+
+Summary:
+- Vercel hosting. `portfolio` + `blog` use Vercel Microfrontends (single `ykzts.com` origin).
+- `admin`, `memo`, `blog-legacy` are standalone.
+- Content in Supabase. Secrets managed per Vercel project + local `.env` files.
 
 ## Commit Message Standards
 
@@ -137,27 +119,27 @@ This repository strictly follows the **Conventional Commits** specification. All
 - `refactor(portfolio): simplify component structure`
 
 ### Scope Guidelines
-- Use app names for application-specific changes: `portfolio`, `blog-legacy`, `blog`
+- Use app names for application-specific changes: `portfolio`, `blog-legacy`, `blog`, `admin`, `memo`
 - Use package names for shared packages: `editor`, `layout`, `site-config`, `supabase`, `tsconfig`, `ui`, `utils`
-- Omit scope for repository-wide changes
+- Omit scope for repository-wide changes (e.g. `docs`, `chore`, `ci`)
 
 ### Trailers for AI-assisted commits
 For commits involving AI assistance, document the provenance using a Linux Kernel-style trailer (this is the current recommended form):
 
 ```
-Assisted-by: Grok Build (xAI)
+Assisted-by: <AI System>
 ```
 
 Add it using Git's built-in trailer support (keeps the workflow simple for humans):
 
 ```sh
-git commit --trailer "Assisted-by: Grok Build (xAI)"
+git commit --trailer "Assisted-by: <AI System>"
 ```
 
 For convenience, you can set up a local alias once:
 
 ```sh
-git config alias.commit-ai '!git commit --trailer "Assisted-by: Grok Build (xAI)"'
+git config alias.commit-ai '!git commit --trailer "Assisted-by: <AI System>"'
 # then use: git commit-ai -m "feat(ui): ..."
 ```
 
@@ -165,14 +147,15 @@ This approach follows the project's preference for riding established convention
 
 ## Best Practices for Contributors
 
-1. **Commit Messages**: Follow Conventional Commits specification strictly
-2. **Formatting**: Run `pnpm check` before committing
-3. **Dependencies**: Add new dependencies to the appropriate workspace
-4. **TypeScript**: Ensure type safety, use proper imports
-5. **React**: Follow React 19 and Next.js 15 patterns
-6. **Performance**: Consider image optimization, bundle size
-7. **Accessibility**: Maintain semantic HTML and ARIA labels
-8. **Internationalization**: Respect Japanese content and formatting
+1. **Branching first**: Always create and switch to a feature branch *before* making any changes (see "Git Workflow and Branching" above). Never commit directly to `main`.
+2. **Commit Messages**: Follow Conventional Commits specification strictly
+3. **Formatting**: Run `pnpm check` before committing
+4. **Dependencies**: Add new dependencies to the appropriate workspace
+5. **TypeScript**: Ensure type safety, use proper imports
+6. **React**: Follow React 19 and Next.js patterns
+7. **Performance**: Consider image optimization, bundle size
+8. **Accessibility**: Maintain semantic HTML and ARIA labels
+9. **Internationalization**: Respect Japanese content and formatting
 
 ## File Naming Conventions
 

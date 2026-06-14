@@ -4,7 +4,7 @@ Next.js portfolio website showcasing projects, skills, and professional experien
 
 ## Purpose
 
-This application powers [ykzts.com](https://ykzts.com/), a professional portfolio website that showcases software development projects, technical skills, and professional experience. Built with Next.js 15 and featuring modern web technologies, it provides a fast, responsive, and accessible platform for professional presentation.
+This application powers [ykzts.com](https://ykzts.com/), a professional portfolio website that showcases software development projects, technical skills, and professional experience. Built with Next.js and featuring modern web technologies, it provides a fast, responsive, and accessible platform for professional presentation.
 
 ## Usage
 
@@ -28,7 +28,7 @@ pnpm lighthouse # Run Lighthouse CI performance audit
 
 ### Key Features
 
-- **App Router**: Next.js 15 with modern routing and layouts
+- **App Router**: Next.js with modern routing and layouts
 - **React Compiler**: Enhanced performance with React 19 optimizations
 - **MDX Support**: Rich content authoring with React components
 - **Supabase Integration**: PostgreSQL database with dynamic content management for portfolio entries
@@ -42,6 +42,25 @@ pnpm lighthouse # Run Lighthouse CI performance audit
 - **About Section**: MDX-based content with interactive components
 - **Contact Form**: Server-side form processing with email notifications
 - **Go Package Redirects**: Special routing for Go package documentation
+
+## Security, Authentication & Public Scope
+
+**Public scope**: The entire site is public. No authentication is required or supported for visitors. All portfolio data (`works`, public profile fields, etc.) is read via the Supabase anon key. RLS policies grant public `SELECT` on the relevant tables.
+
+**No privileged secrets for visitors**:
+- The contact form uses server-only `RESEND_API_KEY` and `MAIL_FROM_ADDRESS` (processed in a Server Action). Visitor input is never persisted to the database.
+- `REVALIDATE_SECRET` is accepted only on the internal `/api/revalidate` endpoint (header `x-revalidate-secret`). It is called by the admin app to invalidate caches after the owner publishes changes. The secret is never exposed to browsers.
+
+**Service role**: Portfolio does **not** use or configure `SUPABASE_SERVICE_ROLE_KEY`. All reads use the anon client.
+
+**CSP and security headers**:
+- Strict baseline applied via `@ykzts/utils/security-headers` on every route (see `next.config.ts`).
+- No Supabase host added to `connect-src` (Supabase calls for content and images are performed from Server Components or use only public image URLs).
+- Additional protections: botid for the contact form (spam), Permissions-Policy restrictions, `Referrer-Policy: no-referrer`, `X-Content-Type-Options: nosniff`.
+
+**Microfrontends**: Portfolio acts as the host application. The blog app is mounted under `/blog` routes at the edge. Security policy for the composed site is controlled here.
+
+**Image assets**: Served from Supabase Storage `images` / `avatars` buckets (public read + owner-controlled write policies on storage objects).
 
 ## Environment Variables
 

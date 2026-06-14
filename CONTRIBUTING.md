@@ -4,27 +4,30 @@ Thank you for your interest in contributing to this project! This repository con
 
 ## Repository Overview
 
-This is a pnpm workspace monorepo with the following structure:
+See [docs/architecture.md](docs/architecture.md) for the detailed architecture, repository structure, and high-level components.
 
-```
-├── apps/
-│   ├── blog-legacy/    # Docusaurus-based blog (ykzts.blog)
-│   ├── portfolio/      # Next.js portfolio site (ykzts.com)
-│   └── blog/           # (Future blog implementation)
-├── packages/
-│   ├── supabase/       # Supabase database type definitions
-│   └── tsconfig/       # Shared TypeScript configurations
-```
+This file focuses on contribution processes. Architecture details have been delegated to docs/ to avoid duplication.
+
+Quick orientation:
+- Public sites: `portfolio` + `blog` (via microfrontends)
+- Owner tools: `admin`, `memo`
+- Legacy redirects: `blog-legacy`
+- Shared packages: under `packages/`
+
+See `AGENTS.md` for AI agent instructions. App-specific details are in the individual `apps/*/README.md`.
 
 ## Technology Stack
 
-- **Package Manager**: pnpm
-- **Build System**: Turbo (monorepo build orchestration)
-- **Language**: TypeScript (modern/strict configuration)
-- **Frontend Frameworks**: Next.js 15, Docusaurus 3, React 19
-- **Styling**: Tailwind CSS v4 (portfolio), CSS (blog-legacy)
-- **Content Management**: Supabase (PostgreSQL database with Dashboard)
-- **Linting/Formatting**: Biome (replaces ESLint + Prettier)
+See [docs/architecture.md](docs/architecture.md) for the current architecture summary.
+
+Key points:
+- pnpm + Turbo monorepo
+- Next.js (portfolio, blog, and blog-legacy) + React 19
+- Supabase for data/auth/storage
+- Biome for lint/format
+- Strict TypeScript + modern React patterns
+
+Detailed coding standards are in `AGENTS.md` (Code Style section).
 
 ## Development Environment Setup
 
@@ -142,27 +145,27 @@ Commit messages are automatically enforced by `commitlint` (via the lefthook `co
 
 ### Scope Guidelines
 
-- Use app names for application-specific changes: `portfolio`, `blog-legacy`, `blog`
-- Use package names for shared packages: `supabase`, `tsconfig`
+- Use app names for application-specific changes: `portfolio`, `blog-legacy`, `blog`, `admin`, `memo`
+- Use package names for shared packages: `editor`, `layout`, `site-config`, `supabase`, `tsconfig`, `ui`, `utils`
 
 ### Trailers for Provenance (AI-assisted commits)
 
 For commits that involved AI assistance, include a trailer to document the origin, following Linux Kernel-style conventions (current recommended form):
 
 ```
-Assisted-by: Grok Build (xAI)
+Assisted-by: <AI System>
 ```
 
 Use Git's native trailer support when committing (simple for humans):
 
 ```sh
-git commit --trailer "Assisted-by: Grok Build (xAI)"
+git commit --trailer "Assisted-by: <AI System>"
 ```
 
 For convenience, you can set a local alias:
 
 ```sh
-git config alias.commit-ai '!git commit --trailer "Assisted-by: Grok Build (xAI)"'
+git config alias.commit-ai '!git commit --trailer "Assisted-by: <AI System>"'
 ```
 
 commitlint (via the conventional preset) accepts these trailers. Strict enforcement of presence is left to contributor discipline and review, to keep the commitlint configuration minimal and riding the de-facto preset.
@@ -437,15 +440,14 @@ All build tasks are orchestrated through Turbo:
 
 ### Application-Specific Notes
 
-#### Portfolio App (`apps/portfolio/`)
-- Uses Next.js 15 with App Router and React Compiler
-- Styled with Tailwind CSS
-- Integrated with Supabase for content management
+See the individual `apps/*/README.md` (especially the "Security, Authentication & Public Scope" sections) and `AGENTS.md` for authoritative per-app details, ports, auth model, and secrets usage.
 
-#### Blog Legacy (`apps/blog-legacy/`)
-- Docusaurus 3 with MDX content
-- Japanese localization
-- Custom theme with dark mode
+Quick pointers:
+- `portfolio`: public Next.js site + microfrontends shell (hosts blog). Contact form (Resend).
+- `blog`: blog under `/blog`, draft previews, crons (publish), revalidation endpoint.
+- `admin`: authenticated CMS, service role + CRON/REVALIDATE/DRAFT secrets, AI features, revalidation caller.
+- `memo`: public+private memos, auth only for owner editing + private view (draftMode after login).
+- `blog-legacy`: 301 redirector, no secrets.
 
 ### Content Guidelines
 

@@ -72,6 +72,19 @@ When adding or adjusting redirects:
 - `@types/react`
 - `@types/react-dom`
 
+## Security, Authentication & Public Scope
+
+**Public surface**: This is a completely public redirector. No authentication, no sessions, no database writes.
+
+- Most redirects are static (defined in `redirects.ts`).
+- A small number of "smart" redirects (old `/blog/archive` and `redirect_from` post fields) perform read-only anon-key queries against the `posts` table to compute the target. These use the public Supabase anon key and rely on RLS public read policies.
+- No secrets of any kind (`DRAFT_SECRET`, `CRON_*`, `REVALIDATE_*`, service role) are used or accepted.
+- No login pages, no forms that accept untrusted input beyond the incoming URL path.
+
+**CSP**: Baseline policy applied (via shared `getSecurityHeaders`).
+
+**Deployment note**: This app is attached to legacy custom domains. It should remain minimal and never grow privileged functionality.
+
 ## Configuration
 
 - **Base URL**: `https://ykzts.com` (configured in `next.config.ts`)
