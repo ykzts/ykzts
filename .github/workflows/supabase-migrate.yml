@@ -28,7 +28,8 @@ jobs:
   check:
     name: Validate migrations locally
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-24.04
+    runs-on: ubicloud-standard-2
+
     steps:
       - name: Checkout code
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
@@ -49,7 +50,7 @@ jobs:
           else
             echo "migration_success=false" >> $GITHUB_OUTPUT
           fi
-          
+
           # Save truncated output for PR comment (last 100 lines to avoid "Argument list too long" error)
           echo 'MIGRATION_OUTPUT<<EOF' >> $GITHUB_ENV
           tail -n 100 migration-output.txt >> $GITHUB_ENV
@@ -61,26 +62,26 @@ jobs:
           script: |
             const migrationSuccess = ${{ steps.migrate.outputs.migration_success }};
             const migrationOutput = process.env.MIGRATION_OUTPUT;
-            
+
             const body = `## 🔍 Supabase Migration Validation Results
-            
+
             ${migrationSuccess ? '✅ Migrations applied successfully to local Supabase' : '❌ Migration validation failed'}
-            
+
             <details>
             <summary>View migration output (last 100 lines)</summary>
-            
+
             \`\`\`
             ${migrationOutput}
             \`\`\`
-            
+
             </details>
-            
-            ${migrationSuccess ? 
-              '> ✨ Migrations validated locally. They will be applied to production after merging.' : 
+
+            ${migrationSuccess ?
+              '> ✨ Migrations validated locally. They will be applied to production after merging.' :
               '> ⚠️ Please review and fix the migration errors before merging.'
             }
             `;
-            
+
             // Find existing comment (with pagination)
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner,
@@ -88,12 +89,12 @@ jobs:
               issue_number: context.issue.number,
               per_page: 100,
             });
-            
-            const botComment = comments.find(comment => 
-              comment.user.type === 'Bot' && 
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
               comment.body.includes('🔍 Supabase Migration Validation Results')
             );
-            
+
             if (botComment) {
               // Update existing comment
               await github.rest.issues.updateComment({
@@ -121,8 +122,9 @@ jobs:
   deploy:
     name: Apply migration to production
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-24.04
+    runs-on: ubicloud-standard-2
     environment: production
+
     steps:
       - name: Checkout code
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
@@ -139,9 +141,9 @@ jobs:
         run: |
           # Link to production project
           supabase link --project-ref "$SUPABASE_PROJECT_REF"
-          
+
           # Apply migrations (idempotent - skips already applied migrations)
           echo "Applying migrations to production..."
           supabase db push
-          
+
           echo "✅ Migrations applied successfully!"

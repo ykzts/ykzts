@@ -4,11 +4,6 @@
 # working directory name when running `supabase init`.
 project_id = "ykzts"
 
-# New tables in public are not auto-exposed to Data API roles.
-# Explicit GRANTs (in the creating migration) are required.
-# See the latest public schema migration for current grants and rationale.
-auto_expose_new_tables = false
-
 [api]
 enabled = true
 # Port to use for the API URL.
