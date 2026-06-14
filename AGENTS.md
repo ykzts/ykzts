@@ -9,7 +9,7 @@ This is a pnpm workspace monorepo with the following structure:
 ```
 ├── apps/
 │   ├── blog-legacy/    # Docusaurus-based blog (ykzts.blog)
-│   ├── portfolio/      # Next.js portfolio site (ykzts.com)  
+│   ├── portfolio/      # Next.js portfolio site (ykzts.com)
 │   └── blog/           # (Future blog implementation)
 ├── packages/
 │   ├── editor/         # Lexical rich text editor (@ykzts/editor)
@@ -23,10 +23,10 @@ This is a pnpm workspace monorepo with the following structure:
 
 ## Technology Stack
 
-- **Package Manager**: pnpm (v10.17.1)
+- **Package Manager**: pnpm
 - **Build System**: Turbo (monorepo build orchestration)
 - **Language**: TypeScript (modern/strict configuration)
-- **Frontend Frameworks**: 
+- **Frontend Frameworks**:
   - Next.js 15 (with Turbopack) for portfolio
   - Docusaurus 3 for blog-legacy
   - React 19 across all applications
@@ -50,7 +50,7 @@ This is a pnpm workspace monorepo with the following structure:
 - Use modern ESM syntax (`"type": "module"`)
 - Leverage Next.js and React 19 features
 
-### React Guidelines  
+### React Guidelines
 - Use React 19 features (modern JSX transform, React Compiler)
 - Prefer function components with hooks
 - Use Next.js App Router conventions
@@ -84,7 +84,7 @@ This is a pnpm workspace monorepo with the following structure:
 - **Performance**: Image optimization, Vercel Analytics
 - **Build**: Uses Turbopack for faster builds
 
-### Blog Legacy (`apps/blog-legacy/`)  
+### Blog Legacy (`apps/blog-legacy/`)
 - **Framework**: Docusaurus 3
 - **Content**: MDX files in `blog/` directory
 - **Features**: Japanese localization, Algolia search, RSS feeds
@@ -185,7 +185,7 @@ This approach follows the project's preference for riding established convention
 ## Environment and Configuration
 
 - **Node.js**: Version 24
-- **Package Manager**: pnpm with Corepack
+- **Package Manager**: pnpm
 - **Editor**: VSCode configuration included
 - **Git**: Main branch, proper ignore files
 - **CI/CD**: GitHub Actions with Node.js workflow

@@ -18,7 +18,7 @@ This is a pnpm workspace monorepo with the following structure:
 
 ## Technology Stack
 
-- **Package Manager**: pnpm (v10.17.1)
+- **Package Manager**: pnpm
 - **Build System**: Turbo (monorepo build orchestration)
 - **Language**: TypeScript (modern/strict configuration)
 - **Frontend Frameworks**: Next.js 15, Docusaurus 3, React 19
@@ -31,7 +31,6 @@ This is a pnpm workspace monorepo with the following structure:
 ### Prerequisites
 
 - **Node.js**: Latest LTS version recommended (check with `node --version`)
-- **Corepack**: Enable with `corepack enable` after installing Node.js
 - **Docker**: Required for Supabase local development (admin and portfolio apps)
 
 ### Getting Started
@@ -42,17 +41,12 @@ This is a pnpm workspace monorepo with the following structure:
    cd ykzts
    ```
 
-2. **Enable pnpm**:
-   ```bash
-   corepack enable
-   ```
-
-3. **Install dependencies**:
+2. **Install dependencies**:
    ```bash
    pnpm install
    ```
 
-4. **Setup Supabase local stack** (required for admin and portfolio apps):
+3. **Setup Supabase local stack** (required for admin and portfolio apps):
    ```bash
    npx supabase start
    ```
@@ -74,12 +68,12 @@ This is a pnpm workspace monorepo with the following structure:
 
    For more information, see the [Supabase CLI documentation](https://supabase.com/docs/guides/local-development).
 
-5. **Run development servers**:
+4. **Run development servers**:
    ```bash
    pnpm dev
    ```
 
-6. **Build all applications**:
+5. **Build all applications**:
    ```bash
    pnpm build
    ```
