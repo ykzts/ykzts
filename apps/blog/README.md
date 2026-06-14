@@ -35,6 +35,33 @@ pnpm test       # Run unit tests with Vitest
 pnpm typegen    # Generate TypeScript types from Next.js
 ```
 
+## Security, Authentication & Public Scope
+
+**Public scope**:
+- All published posts (and metadata, tags, versions for history) are publicly readable. RLS policies on `posts` and `post_versions` grant public `SELECT`.
+- No authentication wall on normal blog pages, search, atom feeds, sitemaps, etc.
+
+**Draft preview (privileged but intentionally token-gated)**:
+- Unpublished or scheduled posts can be previewed by the owner via admin-generated links.
+- The flow: admin calls `/api/blog/draft?secret=${DRAFT_SECRET}&slug=...`. If the secret matches, the endpoint enables draft mode (sets a cookie) and redirects to the draft page.
+- Inside draft routes (`/blog/draft/[slug]`), `await draftMode()` is used to check `isEnabled`; if not enabled the page 404s. Data fetching for drafts uses the service-role client (bypassing RLS) only when the draft cookie is present.
+- This is a capability-token model (`DRAFT_SECRET`), **not** a login requirement, so previews can be shared with reviewers without giving full admin access.
+
+**Cron jobs (Vercel Cron)**:
+- `/api/blog/cron/publish` is protected by `Authorization: Bearer ${CRON_SECRET}`. It uses the service-role client to find and publish scheduled posts, then calls `revalidateTag`.
+- Unauthorized calls return 401.
+
+**Revalidation**:
+- `/api/blog/revalidate` accepts `x-revalidate-secret` header. Must match `REVALIDATE_SECRET`. Called by the admin app after mutations.
+
+**Service role usage**:
+- Only inside the protected draft and cron routes (blog manages its own `SUPABASE_SERVICE_ROLE_KEY` client), and in `lib/supabase/posts.ts` when `isDraft` flag is passed.
+- The anon key + RLS is used for all public traffic.
+
+**CSP**: Baseline policy (no extra Supabase connect-src because the blog app does not bundle a browser Supabase client for most features; data is fetched server-side).
+
+**Microfrontends composition**: This app is composed under the portfolio shell. Security headers are primarily controlled at the portfolio level for the combined origin.
+
 ## Environment Variables
 
 Copy `.env.example` to `.env.local` and configure the following:
