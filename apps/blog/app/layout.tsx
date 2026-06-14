@@ -9,7 +9,7 @@ import { getSiteName, getSiteOrigin } from "@ykzts/site-config";
 import { getProfileOptional } from "@ykzts/supabase/queries";
 import type { Metadata, Viewport } from "next";
 import AnalyticsClient from "@/components/analytics-client";
-import SearchForm from "@/components/search-form";
+import SearchModal from "@/components/search-modal";
 import ThemeProvider from "@/components/theme-provider";
 
 const siteName = getSiteName();
@@ -59,9 +59,7 @@ export default function RootLayout({
           enableSystem
         >
           <PrefetchCrossZoneLinksProvider>
-            <Header
-              extra={<SearchForm className="hidden md:block md:w-48 lg:w-64" />}
-            />
+            <Header extra={<SearchModal />} />
             {children}
             <SiteFooter />
             <AnalyticsClient />
