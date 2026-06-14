@@ -64,10 +64,11 @@ function SearchPanel({ onClose }: SearchPanelProps) {
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  // Debounced search
+  // Debounced search (longer debounce + min length to avoid high-frequency
+  // expensive embedding generation calls on every keystroke)
   useEffect(() => {
     const trimmed = query.trim();
-    if (!trimmed) {
+    if (!trimmed || trimmed.length < 2) {
       setResults([]);
       setError(null);
       setLoading(false);
@@ -103,7 +104,7 @@ function SearchPanel({ onClose }: SearchPanelProps) {
       } finally {
         setLoading(false);
       }
-    }, 200);
+    }, 600);
 
     return () => {
       clearTimeout(timeoutId);
@@ -124,7 +125,7 @@ function SearchPanel({ onClose }: SearchPanelProps) {
   }, [query, router, onClose]);
 
   const trimmedQuery = query.trim();
-  const hasQuery = trimmedQuery.length > 0;
+  const hasEffectiveQuery = trimmedQuery.length >= 2;
 
   return (
     <div className="flex flex-col gap-3">
@@ -145,25 +146,25 @@ function SearchPanel({ onClose }: SearchPanelProps) {
         aria-label="検索結果"
         className="-mr-1 max-h-[50vh] overflow-y-auto pr-1"
       >
-        {!hasQuery && (
+        {!hasEffectiveQuery && (
           <p className="py-8 text-center text-muted-foreground text-sm">
-            キーワードを入力すると関連記事が表示されます
+            2文字以上のキーワードを入力すると関連記事が表示されます
           </p>
         )}
 
-        {hasQuery && loading && (
+        {hasEffectiveQuery && loading && (
           <div className="py-6 text-center text-muted-foreground text-sm">
             検索中...
           </div>
         )}
 
-        {hasQuery && !loading && error && (
+        {hasEffectiveQuery && !loading && error && (
           <div className="py-6 text-center text-destructive text-sm">
             {error}
           </div>
         )}
 
-        {hasQuery && !loading && !error && results.length === 0 && (
+        {hasEffectiveQuery && !loading && !error && results.length === 0 && (
           <div className="py-6 text-center">
             <p className="text-muted-foreground text-sm">
               「{trimmedQuery}」の検索結果が見つかりませんでした
@@ -174,7 +175,7 @@ function SearchPanel({ onClose }: SearchPanelProps) {
           </div>
         )}
 
-        {hasQuery && !loading && !error && results.length > 0 && (
+        {hasEffectiveQuery && !loading && !error && results.length > 0 && (
           <>
             <p className="mb-1 text-muted-foreground text-xs">
               {results.length}件の結果
