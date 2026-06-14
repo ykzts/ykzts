@@ -7,7 +7,7 @@ import { supabase } from "@/lib/supabase/client";
 // Validation schema for search request
 const searchRequestSchema = z.object({
   limit: z.number().min(1).max(20).optional().default(5),
-  query: z.string().trim().min(1, "Search query must not be empty"),
+  query: z.string().trim().min(2, "Search query must be at least 2 characters"),
   threshold: z.number().min(0).max(1).optional().default(0.4),
 });
 
@@ -28,9 +28,9 @@ interface SearchResult {
  *
  * Request body:
  * {
- *   "query": "search query text",
- *   "limit": 5,        // Optional: number of results (1-20, default: 5)
- *   "threshold": 0.4   // Optional: minimum similarity score (0-1, default: 0.4)
+ *   "query": "search query text",  // Minimum 2 characters (to avoid expensive embedding calls for very short input)
+ *   "limit": 5,                    // Optional: number of results (1-20, default: 5)
+ *   "threshold": 0.4               // Optional: minimum similarity score (0-1, default: 0.4)
  * }
  *
  * Response:
@@ -96,7 +96,10 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error("Search error:", error);
-      return NextResponse.json({ error: "Search failed" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Search service temporarily unavailable" },
+        { status: 503 }
+      );
     }
 
     const results = (data as SearchResult[]) || [];
@@ -108,6 +111,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Search error:", error);
-    return NextResponse.json({ error: "Search failed" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Search service temporarily unavailable" },
+      { status: 503 }
+    );
   }
 }

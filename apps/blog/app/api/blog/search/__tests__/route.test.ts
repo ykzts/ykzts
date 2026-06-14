@@ -307,7 +307,7 @@ describe("POST /api/blog/search", () => {
     expect(data.results).toHaveLength(0);
   });
 
-  it("should return 500 when database error occurs", async () => {
+  it("should return 503 when database error occurs", async () => {
     const { POST } = await import("../route");
 
     const mockEmbedding = new Array(1536).fill(0.1);
@@ -328,11 +328,11 @@ describe("POST /api/blog/search", () => {
     const response = await POST(request);
     const data = await response.json();
 
-    expect(response.status).toBe(500);
-    expect(data.error).toBe("Search failed");
+    expect(response.status).toBe(503);
+    expect(data.error).toBe("Search service temporarily unavailable");
   });
 
-  it("should return 500 when embedding generation fails", async () => {
+  it("should return 503 when embedding generation fails", async () => {
     const { POST } = await import("../route");
 
     mockGenerateSearchEmbedding.mockRejectedValue(
@@ -350,8 +350,8 @@ describe("POST /api/blog/search", () => {
     const response = await POST(request);
     const data = await response.json();
 
-    expect(response.status).toBe(500);
-    expect(data.error).toBe("Search failed");
+    expect(response.status).toBe(503);
+    expect(data.error).toBe("Search service temporarily unavailable");
     expect(mockRpc).not.toHaveBeenCalled();
   });
 
