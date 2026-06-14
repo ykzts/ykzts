@@ -25,6 +25,7 @@ env:
 jobs:
   lighthouse:
     runs-on: ubicloud-standard-2
+    timeout-minutes: 25
     env:
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
