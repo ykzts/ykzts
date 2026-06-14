@@ -96,7 +96,10 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error("Search error:", error);
-      return NextResponse.json({ error: "Search failed" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Search service temporarily unavailable" },
+        { status: 503 }
+      );
     }
 
     const results = (data as SearchResult[]) || [];
@@ -108,6 +111,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Search error:", error);
-    return NextResponse.json({ error: "Search failed" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Search service temporarily unavailable" },
+      { status: 503 }
+    );
   }
 }
