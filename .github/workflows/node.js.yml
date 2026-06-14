@@ -19,6 +19,7 @@ env:
 jobs:
   build:
     runs-on: ubicloud-standard-2
+    timeout-minutes: 30
     env:
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}

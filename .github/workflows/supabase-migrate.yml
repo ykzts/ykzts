@@ -29,6 +29,7 @@ jobs:
     name: Validate migrations locally
     if: github.event_name == 'pull_request'
     runs-on: ubicloud-standard-2
+    timeout-minutes: 20
 
     steps:
       - name: Checkout code
@@ -123,6 +124,7 @@ jobs:
     name: Apply migration to production
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubicloud-standard-2
+    timeout-minutes: 10
     environment: production
 
     steps:
