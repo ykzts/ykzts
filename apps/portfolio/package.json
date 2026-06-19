@@ -13,7 +13,7 @@
     "@ykzts/ui": "workspace:*",
     "@ykzts/utils": "workspace:*",
     "botid": "1.5.11",
-    "lucide-react": "1.17.0",
+    "lucide-react": "1.20.0",
     "next": "catalog:",
     "next-themes": "0.4.6",
     "react": "catalog:",
