@@ -36,7 +36,7 @@ Visit http://localhost:3100/admin
 - Server-side `SUPABASE_SERVICE_ROLE_KEY` (via `createServiceRoleClient()`) is used for:
   - Cron embedding generation (`/api/cron/posts/embeddings` — protected by `CRON_SECRET` Bearer token).
   - Health check (`/api/health`).
-  - Invoking blog's protected draft preview endpoints via `/api/blog/draft?secret=...` (using `DRAFT_SECRET` header, similar to revalidation). Blog manages its own service-role client for draft queries.
+  - Invoking blog's protected draft preview endpoints via `/api/blog/draft/<token>` where the token is a short-lived HMAC signature created with `DRAFT_SECRET` (the secret itself is never embedded in URLs). Blog manages its own service-role client for draft queries.
 - Revalidation of blog/portfolio caches is performed by calling the revalidate endpoints with `REVALIDATE_SECRET` header (URLs are allow-listed in `REVALIDATE_URLS`).
 - AI calls (slug/tag generation) run server-side only.
 

@@ -1,6 +1,7 @@
 {
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
+    "@ykzts/utils": "workspace:*",
     "@portabletext/types": "4.0.2",
     "@supabase/ssr": "0.12.0",
     "@supabase/supabase-js": "2.108.2",

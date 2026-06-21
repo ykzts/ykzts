@@ -40,7 +40,7 @@ The following secrets / environment variables control privileged operations. The
 | Secret / Var                    | Apps that consume it                  | Purpose & Threat Model                                                                 | Sensitivity |
 |--------------------------------|---------------------------------------|----------------------------------------------------------------------------------------|-------------|
 | `SUPABASE_SERVICE_ROLE_KEY`    | admin, blog                           | Bypasses **all** RLS. Used only server-side for: cron jobs, draft preview queries, health checks, scheduled publish. Never sent to client. | Critical |
-| `DRAFT_SECRET`                 | admin (sets), blog (verifies)         | Allows unauthenticated preview of unpublished posts via `/api/blog/draft?secret=...`. Short-lived capability token embedded in admin-generated preview links. | High |
+| `DRAFT_SECRET`                 | admin (signs), blog (verifies)          | Signing key for short-lived HMAC draft preview tokens (`/api/blog/draft/<token>`). The secret value is never embedded in preview URLs. | High |
 | `CRON_SECRET`                  | admin (embeddings cron), blog (publish cron) | Bearer token (`Authorization: Bearer <secret>`) protecting `/api/cron/*` endpoints called by Vercel Cron (or equivalent). Prevents unauthorized triggering of expensive AI embedding jobs or publish side-effects. | High |
 | `REVALIDATE_SECRET`            | admin (caller), blog + portfolio (verifier) | Header (`x-revalidate-secret`) for cross-app on-demand cache invalidation (`/api/.../revalidate`). Admin calls the public revalidate endpoints of blog/portfolio after content mutations. | High |
 | `REVALIDATE_URLS`              | admin                               | Comma-separated list of revalidation endpoint URLs the admin is allowed to call (e.g. blog + portfolio instances). | Medium (config) |
@@ -95,7 +95,8 @@ Any new use must be reviewed: the caller must be protected by one of the secret 
 ## Authentication Boundaries
 - **Public apps** (portfolio, blog public views, blog-legacy, public memos): No session required. Anon key + RLS public policies.
 - **Owner apps** (admin entire surface, memo editing + private memos): Supabase Auth (session cookie) + profile ownership check (`getCurrentUser` + `getOwnerProfile`). Admin additionally uses hard middleware gate that redirects unauthenticated users before rendering.
-- **Draft preview (blog)**: Capability token (`DRAFT_SECRET`) + Next.js draftMode cookie. Does **not** require a logged-in user (intentionally, for sharing previews).
+- **Draft preview (blog)**: Short-lived HMAC token (signed with `DRAFT_SECRET`) + Next.js draftMode cookie. Token verification uses constant-time signature comparison. Does **not** require a logged-in user (intentionally, for sharing previews).
+- **Cron/revalidate**: Protected endpoints use `@ykzts/utils/secrets` for timing-safe secret comparison.
 - **Memo draft mode**: Only enabled after successful owner login (tied to auth session, then `draftMode.enable()`).
 - Session refresh is handled by `@supabase/ssr` + the proxy/middleware layer in each authenticated app.
 

@@ -1,5 +1,24 @@
 import { describe, expect, it } from "vitest";
-import { getBlogPostUrl } from "./blog-urls";
+import { getBlogPostUrl, getDraftPreviewUrl } from "./blog-urls";
+
+const DRAFT_PREVIEW_URL_PATTERN =
+  /^https:\/\/example\.com\/api\/blog\/draft\/.+/;
+
+describe("getDraftPreviewUrl", () => {
+  it("should generate a path-based token URL without exposing the secret", () => {
+    const url = getDraftPreviewUrl("my-post", "draft-secret-value");
+
+    expect(url).not.toBeNull();
+    expect(url).toMatch(DRAFT_PREVIEW_URL_PATTERN);
+    expect(url).not.toContain("secret=");
+    expect(url).not.toContain("draft-secret-value");
+  });
+
+  it("should return null for invalid inputs", () => {
+    expect(getDraftPreviewUrl("", "draft-secret-value")).toBeNull();
+    expect(getDraftPreviewUrl("my-post", "")).toBeNull();
+  });
+});
 
 describe("getBlogPostUrl", () => {
   it("should generate correct URL for a valid post", () => {

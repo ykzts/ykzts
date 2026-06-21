@@ -9,6 +9,8 @@
     "./csp": "./src/csp.ts",
     "./security-headers": "./src/security-headers.ts",
     "./blog-urls": "./src/blog-urls.ts",
+    "./draft-preview": "./src/draft-preview.ts",
+    "./secrets": "./src/secrets.ts",
     "./fediverse": "./src/fediverse/index.ts",
     "./pagination": "./src/pagination/index.ts",
     "./portable-text": "./src/portable-text/index.ts"
