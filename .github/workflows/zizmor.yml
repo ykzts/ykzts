@@ -1,0 +1,47 @@
+# GitHub Actions security static analysis with zizmor
+# https://docs.zizmor.sh/
+#
+# Scans workflows for issues such as:
+# - artipacked (persist-credentials not set on checkout)
+# - excessive-permissions
+# - template-injection
+# - etc.
+name: zizmor
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+    types: [opened, synchronize]
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/**'
+
+permissions: {}
+
+jobs:
+  zizmor:
+    name: zizmor
+    # Use ubicloud-standard-2 (consistent with other jobs that run Docker,
+    # e.g. supabase start in lighthouse/accessibility/migrate) to benefit
+    # from Docker image caching provided by Ubicloud.
+    runs-on: ubicloud-standard-2
+    timeout-minutes: 10
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Run zizmor 🌈
+        uses: zizmorcore/zizmor-action@5f14fd08f7cf1cb1609c1e344975f152c7ee938d # v0.5.6
+        with:
+          advanced-security: false
+          annotations: true
+          # Use "latest" because newer zizmor releases (1.26+) may not yet be
+          # listed in the action's bundled support/versions at the pinned action commit.
+          version: latest
