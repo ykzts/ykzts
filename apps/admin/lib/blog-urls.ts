@@ -1,5 +1,9 @@
 import { getSiteOrigin } from "@ykzts/site-config";
 import { getDateBasedUrl } from "@ykzts/utils/blog-urls";
+import {
+  createDraftPreviewToken,
+  getDraftPreviewApiPath,
+} from "@ykzts/utils/draft-preview";
 
 function sanitizeSlugForUrl(slug: string): string | null {
   const trimmed = slug.trim();
@@ -14,8 +18,9 @@ function sanitizeSlugForUrl(slug: string): string | null {
 
 /**
  * Constructs a draft preview URL for a blog post.
+ * Uses a short-lived HMAC token so DRAFT_SECRET is never exposed in the URL.
  * @param slug - The post slug
- * @param draftSecret - The draft mode secret token
+ * @param draftSecret - The draft mode signing secret
  * @returns Full URL to the draft preview endpoint (returns null if inputs are invalid)
  */
 export function getDraftPreviewUrl(
@@ -28,10 +33,9 @@ export function getDraftPreviewUrl(
   }
 
   try {
-    const url = new URL("/api/blog/draft", getSiteOrigin());
-    url.searchParams.set("secret", draftSecret);
-    url.searchParams.set("slug", trimmed);
-    return url.toString();
+    const token = createDraftPreviewToken(trimmed, draftSecret);
+    const path = getDraftPreviewApiPath(token);
+    return new URL(path, getSiteOrigin()).toString();
   } catch {
     return null;
   }

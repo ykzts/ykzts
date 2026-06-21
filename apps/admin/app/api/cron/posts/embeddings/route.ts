@@ -1,5 +1,6 @@
 import { createServiceRoleClient } from "@ykzts/supabase/service-role";
 import type { Json } from "@ykzts/supabase/types";
+import { verifyBearerSecret } from "@ykzts/utils/secrets";
 import { NextResponse } from "next/server";
 import { generatePostEmbedding } from "@/lib/embeddings";
 
@@ -28,7 +29,7 @@ async function handleCronRequest(request: Request) {
     );
   }
 
-  if (authHeader !== `Bearer ${cronSecret}`) {
+  if (!verifyBearerSecret(authHeader, cronSecret)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

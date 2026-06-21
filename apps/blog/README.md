@@ -43,7 +43,7 @@ pnpm typegen    # Generate TypeScript types from Next.js
 
 **Draft preview (privileged but intentionally token-gated)**:
 - Unpublished or scheduled posts can be previewed by the owner via admin-generated links.
-- The flow: admin calls `/api/blog/draft?secret=${DRAFT_SECRET}&slug=...`. If the secret matches, the endpoint enables draft mode (sets a cookie) and redirects to the draft page.
+- The flow: admin generates a short-lived HMAC token (signed with `DRAFT_SECRET`) and links to `/api/blog/draft/<token>`. If the token is valid, the endpoint enables draft mode (sets a cookie) and redirects to the draft page. `DRAFT_SECRET` itself is never placed in the URL.
 - Inside draft routes (`/blog/draft/[slug]`), `await draftMode()` is used to check `isEnabled`; if not enabled the page 404s. Data fetching for drafts uses the service-role client (bypassing RLS) only when the draft cookie is present.
 - This is a capability-token model (`DRAFT_SECRET`), **not** a login requirement, so previews can be shared with reviewers without giving full admin access.
 
