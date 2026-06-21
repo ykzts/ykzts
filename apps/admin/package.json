@@ -14,7 +14,7 @@
     "@ykzts/ui": "workspace:*",
     "ai": "6.0.208",
     "diff": "9.0.0",
-    "lucide-react": "1.20.0",
+    "lucide-react": "1.21.0",
     "next": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
