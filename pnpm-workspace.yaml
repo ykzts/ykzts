@@ -13,7 +13,7 @@ catalog:
   react: 19.2.7
   react-dom: 19.2.7
   typescript: 6.0.3
-  vitest: 4.1.8
+  vitest: 4.1.9
 
 allowBuilds:
   '@tailwindcss/oxide': true
