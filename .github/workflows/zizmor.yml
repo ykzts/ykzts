@@ -23,7 +23,10 @@ permissions: {}
 jobs:
   zizmor:
     name: zizmor
-    runs-on: ubuntu-latest
+    # Use ubicloud-standard-2 (consistent with other jobs that run Docker,
+    # e.g. supabase start in lighthouse/accessibility/migrate) to benefit
+    # from Docker image caching provided by Ubicloud.
+    runs-on: ubicloud-standard-2
     timeout-minutes: 10
     permissions:
       contents: read
