@@ -95,7 +95,8 @@ Any new use must be reviewed: the caller must be protected by one of the secret 
 ## Authentication Boundaries
 - **Public apps** (portfolio, blog public views, blog-legacy, public memos): No session required. Anon key + RLS public policies.
 - **Owner apps** (admin entire surface, memo editing + private memos): Supabase Auth (session cookie) + profile ownership check (`getCurrentUser` + `getOwnerProfile`). Admin additionally uses hard middleware gate that redirects unauthenticated users before rendering.
-- **Draft preview (blog)**: Short-lived HMAC token (signed with `DRAFT_SECRET`) + Next.js draftMode cookie. Does **not** require a logged-in user (intentionally, for sharing previews). Secret verification for cron/revalidate uses timing-safe comparison via `@ykzts/utils/secrets`.
+- **Draft preview (blog)**: Short-lived HMAC token (signed with `DRAFT_SECRET`) + Next.js draftMode cookie. Token verification uses constant-time signature comparison. Does **not** require a logged-in user (intentionally, for sharing previews).
+- **Cron/revalidate**: Protected endpoints use `@ykzts/utils/secrets` for timing-safe secret comparison.
 - **Memo draft mode**: Only enabled after successful owner login (tied to auth session, then `draftMode.enable()`).
 - Session refresh is handled by `@supabase/ssr` + the proxy/middleware layer in each authenticated app.
 

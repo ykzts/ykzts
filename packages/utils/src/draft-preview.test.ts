@@ -1,3 +1,4 @@
+import { createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import {
   createDraftPreviewToken,
@@ -38,6 +39,27 @@ describe("createDraftPreviewToken", () => {
 
     expect(
       verifyDraftPreviewToken(tampered, SECRET, { now: 1_700_000_000 })
+    ).toBeNull();
+  });
+
+  it("rejects invalid ttlSeconds", () => {
+    expect(() =>
+      createDraftPreviewToken("my-post", SECRET, { ttlSeconds: Number.NaN })
+    ).toThrow("ttlSeconds must be a positive integer");
+  });
+
+  it("rejects tokens with non-finite exp", () => {
+    const encodedPayload = Buffer.from(
+      JSON.stringify({ exp: Number.POSITIVE_INFINITY, slug: "my-post" }),
+      "utf8"
+    ).toString("base64url");
+    const signature = createHmac("sha256", SECRET)
+      .update(encodedPayload)
+      .digest("base64url");
+    const token = `${encodedPayload}.${signature}`;
+
+    expect(
+      verifyDraftPreviewToken(token, SECRET, { now: 1_700_000_000 })
     ).toBeNull();
   });
 

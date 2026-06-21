@@ -33,6 +33,10 @@ function timingSafeEqualBase64Url(a: string, b: string): boolean {
   return timingSafeEqual(bufferA, bufferB);
 }
 
+function isPositiveInteger(value: number): boolean {
+  return Number.isFinite(value) && Number.isInteger(value) && value > 0;
+}
+
 function parsePayload(encodedPayload: string): DraftPreviewPayload | null {
   try {
     const parsed: unknown = JSON.parse(base64UrlDecode(encodedPayload));
@@ -44,6 +48,7 @@ function parsePayload(encodedPayload: string): DraftPreviewPayload | null {
       "exp" in parsed &&
       typeof parsed.slug === "string" &&
       typeof parsed.exp === "number" &&
+      isPositiveInteger(parsed.exp) &&
       parsed.slug.length > 0
     ) {
       return { exp: parsed.exp, slug: parsed.slug };
@@ -78,6 +83,10 @@ export function createDraftPreviewToken(
 
   const now = options.now ?? Math.floor(Date.now() / 1000);
   const ttlSeconds = options.ttlSeconds ?? DEFAULT_TTL_SECONDS;
+  if (!isPositiveInteger(ttlSeconds)) {
+    throw new Error("ttlSeconds must be a positive integer");
+  }
+
   const payload: DraftPreviewPayload = {
     exp: now + ttlSeconds,
     slug: trimmedSlug,

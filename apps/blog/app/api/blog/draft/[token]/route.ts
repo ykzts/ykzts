@@ -14,7 +14,13 @@ export async function GET(
     return NextResponse.json({ message: "Invalid token" }, { status: 401 });
   }
 
-  const decodedToken = decodeURIComponent(token);
+  let decodedToken: string;
+  try {
+    decodedToken = decodeURIComponent(token);
+  } catch {
+    return NextResponse.json({ message: "Invalid token" }, { status: 401 });
+  }
+
   const verified = verifyDraftPreviewToken(decodedToken, draftSecret);
 
   if (!verified) {

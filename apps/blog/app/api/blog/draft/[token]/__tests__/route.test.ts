@@ -49,6 +49,24 @@ describe("GET /api/blog/draft/[token]", () => {
     expect(mockDraftMode).not.toHaveBeenCalled();
   });
 
+  it("should return 401 for malformed percent-encoding", async () => {
+    const { GET } = await import("../route");
+
+    const response = await GET(
+      new NextRequest("http://localhost:3000/api/blog/draft/%FF", {
+        method: "GET",
+      }),
+      {
+        params: Promise.resolve({ token: "%FF" }),
+      }
+    );
+    const data = await response.json();
+
+    expect(response.status).toBe(401);
+    expect(data.message).toBe("Invalid token");
+    expect(mockDraftMode).not.toHaveBeenCalled();
+  });
+
   it("should return 401 for an expired token", async () => {
     const { GET } = await import("../route");
     const token = createDraftPreviewToken("test-post", "test-draft-secret", {
@@ -98,5 +116,34 @@ describe("GET /api/blog/draft/[token]", () => {
     );
     expect(mockDraftMode).toHaveBeenCalled();
     expect(mockEnable).toHaveBeenCalled();
+  });
+
+  it("should not enable draft mode when the post is not found", async () => {
+    const { GET } = await import("../route");
+    const token = createDraftPreviewToken("missing-post", "test-draft-secret", {
+      now: Math.floor(Date.now() / 1000),
+    });
+
+    const mockSelect = vi.fn().mockReturnThis();
+    const mockEq = vi.fn().mockReturnThis();
+    const mockMaybeSingle = vi.fn().mockResolvedValue({
+      data: null,
+      error: null,
+    });
+
+    mockSupabase.from.mockReturnValue({
+      eq: mockEq,
+      maybeSingle: mockMaybeSingle,
+      select: mockSelect,
+    });
+
+    const response = await GET(createRequest(token), {
+      params: Promise.resolve({ token }),
+    });
+
+    expect(response.status).toBe(307);
+    expect(response.headers.get("location")).toBe("http://localhost:3000/blog");
+    expect(mockDraftMode).not.toHaveBeenCalled();
+    expect(mockEnable).not.toHaveBeenCalled();
   });
 });

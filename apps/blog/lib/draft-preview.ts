@@ -12,9 +12,6 @@ export async function enableDraftPreviewForSlug(
     return NextResponse.redirect(new URL("/blog", requestUrl));
   }
 
-  const draft = await draftMode();
-  draft.enable();
-
   try {
     const { data: post, error: postError } = await client
       .from("posts")
@@ -28,6 +25,9 @@ export async function enableDraftPreviewForSlug(
     }
 
     if (post) {
+      const draft = await draftMode();
+      draft.enable();
+
       return NextResponse.redirect(
         new URL(
           `/blog/draft/${encodeURIComponent(post.slug as string)}`,
