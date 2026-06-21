@@ -38,7 +38,7 @@ pre-commit:
         if command -v zizmor >/dev/null 2>&1; then
           zizmor $staged
         elif command -v uvx >/dev/null 2>&1; then
-          uvx "zizmor@1.26.1" $staged
+          uvx "zizmor@latest" $staged
         else
           echo 'zizmor: neither zizmor nor uvx found in PATH; skipping local scan.'
           echo '        Install uv (https://docs.astral.sh/uv/) or zizmor binary for pre-commit enforcement.'

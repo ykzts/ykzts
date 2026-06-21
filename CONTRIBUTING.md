@@ -187,7 +187,7 @@ commitlint (via the conventional preset) accepts these trailers. Strict enforcem
    ```
 
 3. **GitHub Actions security (zizmor, recommended for workflow changes)**: When editing `.github/workflows/*.yml`, the lefthook pre-commit and CI will run [zizmor](https://docs.zizmor.sh/) to catch issues like missing `persist-credentials: false`, over-broad permissions, etc.
-   - Local run (if not auto via hook): `uvx zizmor@1.26.1 .github/workflows/` or install the binary.
+   - Local run (if not auto via hook): `uvx zizmor@latest .github/workflows/` or install the binary.
    - To skip temporarily: `ZIZMOR_SKIP=1 git commit ...`
    - Installation: `uv` (https://docs.astral.sh/uv/) is the easiest (`uvx` downloads on demand). Alternatives: `cargo install zizmor`, prebuilt binaries from releases, or `pipx install zizmor`.
    - The CI job (`.github/workflows/zizmor.yml`) runs on PRs/pushes touching workflows and fails on findings (using GitHub annotations).

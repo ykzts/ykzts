@@ -42,4 +42,6 @@ jobs:
         with:
           advanced-security: false
           annotations: true
-          version: 1.26.1
+          # Use "latest" because newer zizmor releases (1.26+) may not yet be
+          # listed in the action's bundled support/versions at the pinned action commit.
+          version: latest
