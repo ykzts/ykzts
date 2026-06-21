@@ -50,7 +50,11 @@ describe("createDraftPreviewToken", () => {
 
   it("rejects tokens with non-finite exp", () => {
     const encodedPayload = Buffer.from(
-      JSON.stringify({ exp: Number.POSITIVE_INFINITY, slug: "my-post" }),
+      JSON.stringify({
+        // biome-ignore lint/correctness/noPrecisionLoss: for testing only.
+        exp: 1e309,
+        slug: "my-post",
+      }),
       "utf8"
     ).toString("base64url");
     const signature = createHmac("sha256", SECRET)
