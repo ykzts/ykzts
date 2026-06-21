@@ -18,6 +18,33 @@ pre-commit:
       # If there are remaining issues that can't be auto-fixed, the command will fail
       # and block the commit (user must fix manually or run pnpm fix).
 
+    # GitHub Actions workflow security scan (zizmor).
+    # Runs only on staged workflow files. Uses uvx (preferred, auto-downloads) or a
+    # locally installed `zizmor` binary. If neither is available the check is skipped
+    # (with a message) so that contributors without the tool are not blocked.
+    # See CONTRIBUTING.md for installation instructions.
+    zizmor:
+      glob: ".github/workflows/**/*.{yml,yaml}"
+      run: |
+        set -eu
+        if [ -n "${ZIZMOR_SKIP:-}" ]; then
+          echo 'zizmor skipped (ZIZMOR_SKIP set)'
+          exit 0
+        fi
+        staged="${staged_files:-}"
+        if [ -z "$staged" ]; then
+          exit 0
+        fi
+        if command -v zizmor >/dev/null 2>&1; then
+          zizmor $staged
+        elif command -v uvx >/dev/null 2>&1; then
+          uvx "zizmor@1.26.1" $staged
+        else
+          echo 'zizmor: neither zizmor nor uvx found in PATH; skipping local scan.'
+          echo '        Install uv (https://docs.astral.sh/uv/) or zizmor binary for pre-commit enforcement.'
+          exit 0
+        fi
+
 # pre-push runs before pushing to remote (good place for heavier checks).
 # `pnpm typecheck` already depends on `typegen` via turbo.json (see "dependsOn" in turbo.json),
 # so running typecheck automatically ensures generated types (e.g. Supabase database.types.ts) are up to date.

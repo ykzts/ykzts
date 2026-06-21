@@ -175,7 +175,7 @@ commitlint (via the conventional preset) accepts these trailers. Strict enforcem
 
 ### Before Submitting
 
-1. **Git hooks (recommended)**: lefthook is configured (via `lefthook.yml`) to automatically run `ultracite fix` on staged files during `pre-commit`. After `pnpm install`, hooks are set up automatically via the `prepare` script. You can bypass with `git commit --no-verify` if needed.
+1. **Git hooks (recommended)**: lefthook is configured (via `lefthook.yml`) to automatically run `ultracite fix` on staged files during `pre-commit`. A zizmor pre-commit hook also runs on `.github/workflows/**` changes (see below). After `pnpm install`, hooks are set up automatically via the `prepare` script. You can bypass with `git commit --no-verify` if needed.
 
 2. **Run all checks locally** (hooks will catch most issues early):
    ```bash
@@ -186,12 +186,18 @@ commitlint (via the conventional preset) accepts these trailers. Strict enforcem
    pnpm typegen       # Generate TypeScript types
    ```
 
-3. **Build successfully**:
+3. **GitHub Actions security (zizmor, recommended for workflow changes)**: When editing `.github/workflows/*.yml`, the lefthook pre-commit and CI will run [zizmor](https://docs.zizmor.sh/) to catch issues like missing `persist-credentials: false`, over-broad permissions, etc.
+   - Local run (if not auto via hook): `uvx zizmor@1.26.1 .github/workflows/` or install the binary.
+   - To skip temporarily: `ZIZMOR_SKIP=1 git commit ...`
+   - Installation: `uv` (https://docs.astral.sh/uv/) is the easiest (`uvx` downloads on demand). Alternatives: `cargo install zizmor`, prebuilt binaries from releases, or `pipx install zizmor`.
+   - The CI job (`.github/workflows/zizmor.yml`) runs on PRs/pushes touching workflows and fails on findings (using GitHub annotations).
+
+4. **Build successfully**:
    ```bash
    pnpm build
    ```
 
-4. **Follow commit message conventions** (see above)
+5. **Follow commit message conventions** (see above)
 
 ### Pull Request Guidelines
 
@@ -243,6 +249,7 @@ All pull requests must pass the following automated checks:
 3. **Tests**: `pnpm test`
 4. **Validation**: `pnpm validate`
 5. **Supabase Migration Dry-run**: Automatic check for migration changes
+6. **GitHub Actions security scan**: `zizmor` (runs when `.github/workflows/**` are changed)
 
 These checks run automatically on:
 - Pull request creation and updates
