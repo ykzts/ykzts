@@ -1,6 +1,9 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
+/** Profile name from supabase/seed.sql */
+const SEED_PROFILE_NAME = "田中 太郎";
+
 test.describe("Accessibility Tests", () => {
   test("homepage should not have any automatically detectable WCAG A/AA violations", async ({
     page,
@@ -39,7 +42,7 @@ test.describe("Accessibility Tests", () => {
     const h1Elements = page.locator("h1");
     await expect(h1Elements).toHaveCount(1);
     const h1Text = await h1Elements.first().textContent();
-    expect(h1Text).toContain("Test User");
+    expect(h1Text).toContain(SEED_PROFILE_NAME);
 
     // Should have h2 elements for sections
     const h2Elements = page.locator("h2");
@@ -57,7 +60,7 @@ test.describe("Accessibility Tests", () => {
     await expect(skipLink).toBeVisible();
 
     // Check social media links have proper aria-labels
-    const socialLinks = page.locator('[aria-label*="Test Userの"]');
+    const socialLinks = page.locator(`[aria-label*="${SEED_PROFILE_NAME}の"]`);
     const socialLinkCount = await socialLinks.count();
     expect(socialLinkCount).toBeGreaterThan(0);
   });
