@@ -21,6 +21,8 @@ permissions:
 env:
   # renovate: datasource=node-version depName=node
   NODE_VERSION: 24.16.0
+  # renovate: datasource=npm depName=@playwright/test
+  PLAYWRIGHT_VERSION: 1.60.0
   # renovate: datasource=github-releases depName=supabase/cli
   SUPABASE_VERSION: 2.106.0
 
@@ -53,7 +55,7 @@ jobs:
           ANON_KEY=$(supabase status -o json | jq -r '.ANON_KEY')
           echo "SUPABASE_ANON_KEY=${ANON_KEY}" >> $GITHUB_OUTPUT
       - name: Install Playwright browsers
-        run: pnpm dlx playwright install --with-deps chromium
+        run: pnpm dlx playwright@${{ env.PLAYWRIGHT_VERSION }} install --with-deps chromium
       - name: Run accessibility tests
         run: pnpm test:a11y
         env:
