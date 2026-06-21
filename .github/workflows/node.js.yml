@@ -14,7 +14,7 @@ permissions:
 
 env:
   # renovate: datasource=node-version depName=node
-  NODE_VERSION: 24.16.0
+  NODE_VERSION: 24.17.0
 
 jobs:
   build:
