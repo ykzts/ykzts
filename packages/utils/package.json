@@ -20,7 +20,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@portabletext/markdown": "1.4.0",
+    "@portabletext/markdown": "1.4.1",
     "@portabletext/to-html": "5.0.2",
     "gray-matter": "4.0.3",
     "ipaddr.js": "2.4.0",

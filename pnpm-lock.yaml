@@ -770,8 +770,8 @@ importers:
   packages/utils:
     dependencies:
       '@portabletext/markdown':
-        specifier: 1.4.0
-        version: 1.4.0
+        specifier: 1.4.1
+        version: 1.4.1
       '@portabletext/to-html':
         specifier: 5.0.2
         version: 5.0.2
@@ -2102,8 +2102,8 @@ packages:
     resolution: {integrity: sha512-nRqvPYO8xUVdgy/KhJuaCrWlVT/4uZr97Mpbuizsa6CmvtCQf3NuYnVvOOrpYiKUJcZYtEvm84OooJ8+lJytMQ==}
     engines: {node: '>=14.6'}
 
-  '@portabletext/markdown@1.4.0':
-    resolution: {integrity: sha512-RRYqyK+c5Hm7nzrEkTMiSoHUybU9KefGIN6WxS16L+ki6ehYsPzyySXYxRN3lZL4/ti0qq2icI2S/NRVfCLc1Q==}
+  '@portabletext/markdown@1.4.1':
+    resolution: {integrity: sha512-MulxTDXRfy8fV0Hzdt6jyjs3jKGQ69b6cOlVLpbjeZUJNUHF84wQUvqqn5Qrqzo1cz9OB0JSYd0s5hWeHRR3gQ==}
     engines: {node: '>=20.19 <22 || >=22.12'}
 
   '@portabletext/react@6.2.0':
@@ -2112,8 +2112,8 @@ packages:
     peerDependencies:
       react: ^18.2 || ^19
 
-  '@portabletext/schema@2.2.0':
-    resolution: {integrity: sha512-Dun3sZv+Dp+qF9SSbxldQ+mpn7O7nqGVjq/5DFxFARGRoGlnNHmb9tXS/NV9pqlFZ5+d1GAgnDkMLy4qyU1JZw==}
+  '@portabletext/schema@2.2.1':
+    resolution: {integrity: sha512-sreO5HzSc+PDMiYFv4lyh+zpSLp3CFPkyW3gQA2PJ3RQ05pHL7Nbdoopn4B1RvgBPsb1EnmtsUTNcj3VtTLhiA==}
     engines: {node: '>=20.19 <22 || >=22.12'}
 
   '@portabletext/to-html@5.0.2':
@@ -8636,10 +8636,10 @@ snapshots:
       write-file-atomic: 5.0.1
       write-yaml-file: 4.2.0
 
-  '@portabletext/markdown@1.4.0':
+  '@portabletext/markdown@1.4.1':
     dependencies:
       '@mdit/plugin-alert': 0.23.2(markdown-it@14.2.0)
-      '@portabletext/schema': 2.2.0
+      '@portabletext/schema': 2.2.1
       '@portabletext/toolkit': 5.0.2
       markdown-it: 14.2.0
 
@@ -8649,7 +8649,7 @@ snapshots:
       '@portabletext/types': 4.0.2
       react: 19.2.7
 
-  '@portabletext/schema@2.2.0': {}
+  '@portabletext/schema@2.2.1': {}
 
   '@portabletext/to-html@5.0.2':
     dependencies:
