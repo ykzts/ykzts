@@ -69,7 +69,7 @@ export default function SearchResults({ query, results }: SearchResultsProps) {
         {results.length}件の記事が見つかりました
       </p>
       {results.map((result) => {
-        const url = getPostUrl(result.slug, result.published_at);
+        const url = getPostUrl(result);
         const previewText =
           result.excerpt || extractFirstParagraph(result.content);
 

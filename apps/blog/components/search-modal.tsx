@@ -182,7 +182,7 @@ function SearchPanel({ onClose }: SearchPanelProps) {
             </p>
             <ul className="space-y-0.5">
               {results.map((result) => {
-                const url = getPostUrl(result.slug, result.published_at);
+                const url = getPostUrl(result);
                 return (
                   <li key={result.id}>
                     <Link

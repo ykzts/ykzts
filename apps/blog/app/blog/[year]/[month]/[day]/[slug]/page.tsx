@@ -9,7 +9,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@ykzts/ui/components/breadcrumb";
-import { getDateBasedUrl } from "@ykzts/utils/blog-urls";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { isPortableTextValue } from "@ykzts/utils/portable-text";
 import type { Metadata, Route } from "next";
 import { notFound } from "next/navigation";
@@ -109,13 +109,13 @@ export async function generateMetadata({
 
   const authorName = post.profile.name;
   const fediverseCreator = post.profile.fediverse_creator?.trim();
-  const url = getDateBasedUrl(slug, post.published_at);
+  const url = getPostUrl(post);
 
   return {
     alternates: {
-      canonical: url,
+      canonical: url ?? null,
       types: {
-        "text/markdown": `${url}.md`,
+        "text/markdown": getPostUrl(post, { markdown: true }),
       },
     },
     authors: [{ name: authorName }],
@@ -187,8 +187,7 @@ export default async function PostDetailPage({ params }: PageProps) {
     getAdjacentPosts(slug),
   ]);
 
-  const historyUrl =
-    `${getDateBasedUrl(slug, post.published_at)}/history` as Route;
+  const historyUrl = `${getPostUrl(post)}/history` as Route;
 
   // JSON-LD structured data for Article schema
   const baseUrl = getSiteOrigin().origin;

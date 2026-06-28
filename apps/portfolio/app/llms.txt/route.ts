@@ -1,17 +1,21 @@
-import { getProfile, getWorks } from "@ykzts/supabase/queries";
+import { getSiteOrigin } from "@ykzts/site-config";
+import {
+  getAllPublishedPosts,
+  getProfile,
+  getWorks,
+} from "@ykzts/supabase/queries";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { extractFirstParagraph } from "@ykzts/utils/portable-text";
 import {
-  buildPostUrl,
   buildWorkUrl,
   getLlmsHeaderLines,
   type ProfileForHeader,
 } from "@/lib/llms";
-import { getPostsForLlms } from "@/lib/supabase";
 
 export async function GET() {
   const [works, posts, profile] = await Promise.all([
     getWorks(),
-    getPostsForLlms(),
+    getAllPublishedPosts(),
     getProfile().catch((err: unknown) => {
       console.warn("Failed to fetch profile for llms.txt:", err);
       return null;
@@ -45,7 +49,11 @@ export async function GET() {
   lines.push("", "## Articles", "");
 
   for (const post of posts) {
-    const url = buildPostUrl(post.slug, post.published_at);
+    const url = getPostUrl(post, {
+      full: true,
+      markdown: true,
+      origin: getSiteOrigin(),
+    });
     const suffix = post.excerpt ? `: ${post.excerpt}` : "";
     lines.push(`- [${post.title}](${url})${suffix}`);
   }

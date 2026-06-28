@@ -41,7 +41,7 @@ export default function SimilarPosts({ posts }: SimilarPostsProps) {
       </h2>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => {
-          const url = getPostUrl(post.slug, post.published_at);
+          const url = getPostUrl(post);
           const previewText =
             post.excerpt || extractFirstParagraph(post.content);
           return (

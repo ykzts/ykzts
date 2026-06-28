@@ -54,6 +54,7 @@
       "types": "./src/auth.ts",
       "default": "./src/auth.ts"
     },
+
     "./proxy": {
       "types": "./src/proxy.ts",
       "default": "./src/proxy.ts"

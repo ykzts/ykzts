@@ -47,8 +47,12 @@ function getPostStatusBadge(
 }
 
 export default function PostCard({ isDraft = false, post }: PostCardProps) {
-  const url = getPostUrl(post.slug, post.published_at);
+  const url = getPostUrl(post);
   const previewText = post.excerpt || extractFirstParagraph(post.content);
+
+  if (!url) {
+    return null;
+  }
   const statusBadge = isDraft
     ? getPostStatusBadge(post.status, post.published_at)
     : null;

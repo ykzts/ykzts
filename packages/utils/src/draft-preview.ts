@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { getSiteOrigin } from "@ykzts/site-config";
 
 const DEFAULT_TTL_SECONDS = 60 * 60 * 24;
 
@@ -145,4 +146,26 @@ export function verifyDraftPreviewToken(
  */
 export function getDraftPreviewApiPath(token: string): string {
   return `/api/blog/draft/${encodeURIComponent(token)}`;
+}
+
+/**
+ * Constructs a draft preview URL for a blog post.
+ * Uses a short-lived HMAC token so the draft secret is never exposed in the URL.
+ */
+export function getDraftPreviewUrl(
+  slug: string,
+  draftSecret: string
+): string | null {
+  const trimmed = slug.trim();
+  if (!(trimmed && draftSecret)) {
+    return null;
+  }
+
+  try {
+    const token = createDraftPreviewToken(trimmed, draftSecret);
+    const path = getDraftPreviewApiPath(token);
+    return new URL(path, getSiteOrigin()).toString();
+  } catch {
+    return null;
+  }
 }

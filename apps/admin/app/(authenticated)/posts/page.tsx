@@ -1,9 +1,9 @@
 import { Badge } from "@ykzts/ui/components/badge";
+import { getDraftPreviewUrl } from "@ykzts/utils/draft-preview";
 import Link from "next/link";
 import { Suspense } from "react";
 import { AdminPagination } from "@/components/admin-pagination";
 import { Panel } from "@/components/panel";
-import { getDraftPreviewUrl } from "@/lib/blog-urls";
 import { getProfileTimezone } from "@/lib/data";
 import { getPosts } from "@/lib/posts";
 import { formatDateWithTimezone } from "@/lib/timezones";

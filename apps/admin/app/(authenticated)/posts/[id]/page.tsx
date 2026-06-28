@@ -1,7 +1,7 @@
+import { getDraftPreviewUrl } from "@ykzts/utils/draft-preview";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Panel } from "@/components/panel";
-import { getDraftPreviewUrl } from "@/lib/blog-urls";
 import { getPostById } from "@/lib/posts";
 import { PostForm } from "../_components/post-form";
 import { PostFormSkeleton } from "./_components/post-form-skeleton";

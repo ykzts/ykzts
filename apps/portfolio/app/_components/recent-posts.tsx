@@ -1,7 +1,7 @@
 import { Link } from "@vercel/microfrontends/next/client";
 import { getPosts } from "@ykzts/supabase/queries";
 import { Skeleton } from "@ykzts/ui/components/skeleton";
-import { getDateBasedUrl } from "@ykzts/utils/blog-urls";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { cacheLife } from "next/cache";
 import { Suspense } from "react";
 import range from "@/lib/range";
@@ -77,7 +77,7 @@ async function RecentPostsImpl() {
       </h2>
       <div className="space-y-6">
         {posts.map((post) => {
-          const url = getDateBasedUrl(post.slug, post.published_at);
+          const url = getPostUrl(post);
 
           return (
             <article

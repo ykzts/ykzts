@@ -36,6 +36,13 @@ const nextConfig: NextConfig = {
   pageExtensions: ["tsx", "ts", "mdx"],
   reactCompiler: true,
   reactStrictMode: true,
+  redirects: async () => [
+    {
+      destination: "/llms.txt",
+      permanent: true,
+      source: "/llms-full.txt",
+    },
+  ],
   typedRoutes: true,
 };
 

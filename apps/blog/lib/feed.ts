@@ -1,6 +1,7 @@
 import type { PortableTextBlock } from "@portabletext/types";
 import { getSiteOrigin } from "@ykzts/site-config";
 import { getProfile } from "@ykzts/supabase/queries";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { portableTextToHTML } from "@ykzts/utils/portable-text";
 import { Feed } from "feed";
 import { DEFAULT_POST_TITLE } from "@/lib/constants";
@@ -72,13 +73,10 @@ export async function createAtomFeed(
 
   for (const post of items) {
     const publishedDate = new Date(post.published_at);
-    const year = String(publishedDate.getUTCFullYear());
-    const month = String(publishedDate.getUTCMonth() + 1).padStart(2, "0");
-    const day = String(publishedDate.getUTCDate()).padStart(2, "0");
-    const postUrl = new URL(
-      `/blog/${year}/${month}/${day}/${encodeURIComponent(post.slug)}`,
-      siteOrigin
-    ).toString();
+    const postUrl = getPostUrl(post, { full: true, origin: siteOrigin });
+    if (!postUrl) {
+      continue;
+    }
 
     feed.addItem({
       content: portableTextToHTML(post.content),

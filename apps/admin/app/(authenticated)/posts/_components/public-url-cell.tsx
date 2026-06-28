@@ -1,8 +1,9 @@
 "use client";
 
+import { getSiteOrigin } from "@ykzts/site-config";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { ExternalLink } from "lucide-react";
 import { CopyUrlButton } from "@/components/copy-url-button";
-import { getBlogPostUrl } from "@/lib/blog-urls";
 
 interface PublicUrlCellProps {
   draftPreviewUrl?: string | null;
@@ -21,7 +22,10 @@ export function PublicUrlCell({
     return <span className="text-muted-foreground text-sm">-</span>;
   }
 
-  const url = getBlogPostUrl(slug, publishedAt);
+  const url = getPostUrl(
+    { slug, published_at: publishedAt },
+    { full: true, origin: getSiteOrigin() }
+  );
 
   if (!url) {
     if (status === "draft" && draftPreviewUrl) {

@@ -2,11 +2,12 @@ import type { PortableTextBlock } from "@portabletext/types";
 import { createClient } from "@supabase/supabase-js";
 import { cacheTag } from "next/cache";
 import type { Database } from "./database.types.js";
-import type { Post, Profile, Work } from "./dto";
+import type { Post, PostSummary, Profile, Work } from "./dto";
 
 export type { Post, PostAuthor, PostSummary, Profile, Work } from "./dto";
 
 const POSTS_PER_PAGE = 10;
+const ALL_POSTS_PAGE_SIZE = 1000;
 
 function createSupabaseClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -389,6 +390,67 @@ export async function getPosts(page = 1, now = new Date()): Promise<Post[]> {
     title: post.title as string,
     version_date: extractVersionDate(post.current_version),
   }));
+}
+
+/**
+ * Fetches all published posts for listings that need the complete archive.
+ *
+ * Paginates through results so callers are not limited by PostgREST row caps.
+ * Scheduled posts are excluded by RLS (`published_at <= now()`).
+ */
+export async function getAllPublishedPosts(
+  now = new Date()
+): Promise<PostSummary[]> {
+  "use cache";
+
+  cacheTag("posts");
+
+  const supabase = createSupabaseClient();
+
+  if (!supabase) {
+    return [];
+  }
+
+  const posts: PostSummary[] = [];
+  let offset = 0;
+
+  while (true) {
+    const { data, error } = await supabase
+      .from("posts")
+      .select("slug, title, excerpt, published_at")
+      .eq("status", "published")
+      .lte("published_at", now.toISOString())
+      .not("slug", "is", null)
+      .not("title", "is", null)
+      .not("published_at", "is", null)
+      .order("published_at", { ascending: false })
+      .range(offset, offset + ALL_POSTS_PAGE_SIZE - 1);
+
+    if (error) {
+      throw new Error(`Failed to fetch posts: ${error.message}`);
+    }
+
+    if (data.length === 0) {
+      break;
+    }
+
+    for (const post of data) {
+      posts.push({
+        excerpt: post.excerpt,
+        published_at: post.published_at as string,
+        slug: post.slug as string,
+        title: post.title as string,
+      });
+    }
+
+    if (data.length < ALL_POSTS_PAGE_SIZE) {
+      break;
+    }
+
+    offset += ALL_POSTS_PAGE_SIZE;
+  }
+
+  return posts;
 }
 
 export { POSTS_PER_PAGE };

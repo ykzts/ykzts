@@ -1,5 +1,5 @@
 import { Link } from "@vercel/microfrontends/next/client";
-import { getDateBasedUrl } from "@ykzts/utils/blog-urls";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { portableTextToMarkdown } from "@ykzts/utils/portable-text";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -154,7 +154,7 @@ export default async function PostHistoryPage({ params }: PageProps) {
 
   const versions = await getPostVersions(post.id);
 
-  const postUrl = getDateBasedUrl(slug, post.published_at);
+  const postUrl = getPostUrl({ slug, published_at: post.published_at });
 
   return (
     <main className="px-6 py-8 md:px-12 lg:px-24">

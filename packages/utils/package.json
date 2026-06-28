@@ -6,9 +6,10 @@
   "description": "Shared utility functions for ykzts applications",
   "exports": {
     ".": "./src/index.ts",
+    "./blog-urls": "./src/blog-urls.ts",
     "./csp": "./src/csp.ts",
     "./security-headers": "./src/security-headers.ts",
-    "./blog-urls": "./src/blog-urls.ts",
+
     "./draft-preview": "./src/draft-preview.ts",
     "./secrets": "./src/secrets.ts",
     "./fediverse": "./src/fediverse/index.ts",
@@ -20,6 +21,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@ykzts/site-config": "workspace:*",
     "@portabletext/markdown": "1.4.1",
     "@portabletext/to-html": "5.0.2",
     "gray-matter": "4.0.3",
