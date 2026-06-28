@@ -2,7 +2,7 @@
 
 Generic shared utility functions used across the ykzts monorepo applications.
 
-Domain-specific helpers are published under focused subpath exports (e.g. `@ykzts/utils/csp`, `@ykzts/utils/security-headers`, `@ykzts/utils/pagination`, `@ykzts/utils/portable-text`, `@ykzts/utils/fediverse`, `@ykzts/utils/blog-urls`) so that consumers only pay for the dependencies they actually need.
+Domain-specific helpers are published under focused subpath exports (e.g. `@ykzts/utils/csp`, `@ykzts/utils/security-headers`, `@ykzts/utils/pagination`, `@ykzts/utils/portable-text`, `@ykzts/utils/fediverse`) so that consumers only pay for the dependencies they actually need.
 
 ## CSP and Security Headers
 

@@ -1,4 +1,5 @@
 import { Link } from "@vercel/microfrontends/next/client";
+import { getPostUrl } from "@ykzts/supabase/blog-urls";
 import {
   Card,
   CardContent,
@@ -7,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@ykzts/ui/components/card";
-import { getPostUrl } from "@ykzts/utils/blog-urls";
 import type { PortableTextValue } from "@ykzts/utils/portable-text";
 import { extractFirstParagraph } from "@ykzts/utils/portable-text";
 import DateDisplay from "./date-display";
@@ -41,7 +41,7 @@ export default function SimilarPosts({ posts }: SimilarPostsProps) {
       </h2>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => {
-          const url = getPostUrl(post.slug, post.published_at);
+          const url = getPostUrl(post);
           const previewText =
             post.excerpt || extractFirstParagraph(post.content);
           return (

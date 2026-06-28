@@ -1,3 +1,4 @@
+import { getPostUrl } from "@ykzts/supabase/blog-urls";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase/client";
@@ -114,12 +115,10 @@ async function handleRedirectFrom(
     }
 
     if (post?.slug && post.published_at) {
-      const publishedDate = new Date(post.published_at);
-      const year = String(publishedDate.getUTCFullYear());
-      const month = String(publishedDate.getUTCMonth() + 1).padStart(2, "0");
-      const day = String(publishedDate.getUTCDate()).padStart(2, "0");
-
-      const canonicalUrl = `/blog/${year}/${month}/${day}/${post.slug}`;
+      const canonicalUrl = getPostUrl({
+        slug: post.slug,
+        published_at: post.published_at,
+      });
       return NextResponse.redirect(new URL(canonicalUrl, request.url), 301);
     }
   } catch (err) {

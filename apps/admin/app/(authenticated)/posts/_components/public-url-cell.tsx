@@ -1,8 +1,8 @@
 "use client";
 
+import { getBlogPostUrl } from "@ykzts/supabase/blog-urls";
 import { ExternalLink } from "lucide-react";
 import { CopyUrlButton } from "@/components/copy-url-button";
-import { getBlogPostUrl } from "@/lib/blog-urls";
 
 interface PublicUrlCellProps {
   draftPreviewUrl?: string | null;

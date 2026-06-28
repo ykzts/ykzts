@@ -1,3 +1,4 @@
+import { getPostUrl } from "@ykzts/supabase/blog-urls";
 import { draftMode } from "next/headers";
 import { NextResponse } from "next/server";
 import { supabase, supabaseAdmin } from "@/lib/supabase/client";
@@ -30,7 +31,7 @@ export async function enableDraftPreviewForSlug(
 
       return NextResponse.redirect(
         new URL(
-          `/blog/draft/${encodeURIComponent(post.slug as string)}`,
+          getPostUrl({ slug: post.slug as string, published_at: null }),
           requestUrl
         )
       );

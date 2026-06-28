@@ -1,5 +1,6 @@
 import { Link } from "@vercel/microfrontends/next/client";
 import { getSiteOrigin } from "@ykzts/site-config";
+import { getPostUrl } from "@ykzts/supabase/blog-urls";
 import { getProfile } from "@ykzts/supabase/queries";
 import {
   Breadcrumb,
@@ -9,7 +10,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@ykzts/ui/components/breadcrumb";
-import { getDateBasedUrl } from "@ykzts/utils/blog-urls";
 import { isPortableTextValue } from "@ykzts/utils/portable-text";
 import type { Metadata, Route } from "next";
 import { notFound } from "next/navigation";
@@ -109,13 +109,14 @@ export async function generateMetadata({
 
   const authorName = post.profile.name;
   const fediverseCreator = post.profile.fediverse_creator?.trim();
-  const url = getDateBasedUrl(slug, post.published_at);
+  const postId = { slug, published_at: post.published_at };
+  const url = getPostUrl(postId);
 
   return {
     alternates: {
       canonical: url,
       types: {
-        "text/markdown": `${url}.md`,
+        "text/markdown": getPostUrl(postId, { markdown: true }),
       },
     },
     authors: [{ name: authorName }],
@@ -188,7 +189,7 @@ export default async function PostDetailPage({ params }: PageProps) {
   ]);
 
   const historyUrl =
-    `${getDateBasedUrl(slug, post.published_at)}/history` as Route;
+    `${getPostUrl({ slug, published_at: post.published_at })}/history` as Route;
 
   // JSON-LD structured data for Article schema
   const baseUrl = getSiteOrigin().origin;

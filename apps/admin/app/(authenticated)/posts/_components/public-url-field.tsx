@@ -1,5 +1,6 @@
 "use client";
 
+import { getBlogPostUrl } from "@ykzts/supabase/blog-urls";
 import {
   Field,
   FieldDescription,
@@ -15,7 +16,6 @@ import {
 import { Check, Copy, ExternalLink, Eye } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { getBlogPostUrl } from "@/lib/blog-urls";
 
 function getURLDescription(
   url: string | null,

@@ -1,6 +1,7 @@
 "use client";
 
 import { Link } from "@vercel/microfrontends/next/client";
+import { getPostUrl } from "@ykzts/supabase/blog-urls";
 import {
   Dialog,
   DialogContent,
@@ -8,7 +9,6 @@ import {
 } from "@ykzts/ui/components/dialog";
 import { Input } from "@ykzts/ui/components/input";
 import { cn } from "@ykzts/ui/lib/utils";
-import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -182,7 +182,7 @@ function SearchPanel({ onClose }: SearchPanelProps) {
             </p>
             <ul className="space-y-0.5">
               {results.map((result) => {
-                const url = getPostUrl(result.slug, result.published_at);
+                const url = getPostUrl(result);
                 return (
                   <li key={result.id}>
                     <Link

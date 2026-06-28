@@ -1,4 +1,5 @@
 import { Link } from "@vercel/microfrontends/next/client";
+import { getPostUrl } from "@ykzts/supabase/blog-urls";
 import {
   Card,
   CardContent,
@@ -8,7 +9,6 @@ import {
   CardTitle,
 } from "@ykzts/ui/components/card";
 import { cn } from "@ykzts/ui/lib/utils";
-import { getPostUrl } from "@ykzts/utils/blog-urls";
 import type { PortableTextValue } from "@ykzts/utils/portable-text";
 import { extractFirstParagraph } from "@ykzts/utils/portable-text";
 import DateDisplay from "./date-display";
@@ -69,7 +69,7 @@ export default function SearchResults({ query, results }: SearchResultsProps) {
         {results.length}件の記事が見つかりました
       </p>
       {results.map((result) => {
-        const url = getPostUrl(result.slug, result.published_at);
+        const url = getPostUrl(result);
         const previewText =
           result.excerpt || extractFirstParagraph(result.content);
 

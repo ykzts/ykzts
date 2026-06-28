@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   createDraftPreviewToken,
   getDraftPreviewApiPath,
+  getDraftPreviewUrl,
   verifyDraftPreviewToken,
 } from "./draft-preview.js";
 
@@ -75,6 +76,25 @@ describe("createDraftPreviewToken", () => {
     expect(
       verifyDraftPreviewToken(token, "other-secret", { now: 1_700_000_000 })
     ).toBeNull();
+  });
+});
+
+const DRAFT_PREVIEW_URL_PATTERN =
+  /^https:\/\/example\.com\/api\/blog\/draft\/.+/;
+
+describe("getDraftPreviewUrl", () => {
+  it("should generate a full token URL without exposing the secret", () => {
+    const url = getDraftPreviewUrl("my-post", "draft-secret-value");
+
+    expect(url).not.toBeNull();
+    expect(url).toMatch(DRAFT_PREVIEW_URL_PATTERN);
+    expect(url).not.toContain("secret=");
+    expect(url).not.toContain("draft-secret-value");
+  });
+
+  it("should return null for invalid inputs", () => {
+    expect(getDraftPreviewUrl("", "draft-secret-value")).toBeNull();
+    expect(getDraftPreviewUrl("my-post", "")).toBeNull();
   });
 });
 

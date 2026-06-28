@@ -1,4 +1,4 @@
-import { getPostUrl } from "@ykzts/utils/blog-urls";
+import { getPostUrl } from "@ykzts/supabase/blog-urls";
 import LinkButton from "./link-button";
 
 interface PostNavigationItem {
@@ -21,12 +21,8 @@ export default function PostNavigation({
     return null;
   }
 
-  const prevUrl = previousPost
-    ? getPostUrl(previousPost.slug, previousPost.published_at)
-    : null;
-  const nextUrl = nextPost
-    ? getPostUrl(nextPost.slug, nextPost.published_at)
-    : null;
+  const prevUrl = previousPost ? getPostUrl(previousPost) : null;
+  const nextUrl = nextPost ? getPostUrl(nextPost) : null;
 
   return (
     <nav

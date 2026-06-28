@@ -1,4 +1,5 @@
-import { getPostUrl } from "@ykzts/utils/blog-urls";
+import { getSiteOrigin } from "@ykzts/site-config";
+import { getPostUrl } from "@ykzts/supabase/blog-urls";
 import {
   isPortableTextValue,
   portableTextToMarkdown,
@@ -40,7 +41,11 @@ export async function GET(request: Request) {
           continue;
         }
 
-        const url = `${getPostUrl(post.slug, post.published_at)}.md`;
+        const url = getPostUrl(post, {
+          full: true,
+          markdown: true,
+          origin: getSiteOrigin(),
+        });
 
         controller.enqueue(
           textEncoder.encode(`## [${post.title}](${url})\n\n`)
