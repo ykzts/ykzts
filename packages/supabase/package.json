@@ -1,7 +1,6 @@
 {
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
-    "@ykzts/site-config": "workspace:*",
     "@ykzts/utils": "workspace:*",
     "@portabletext/types": "4.0.2",
     "@supabase/ssr": "0.12.0",
@@ -13,8 +12,7 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "@ykzts/tsconfig": "workspace:*",
-    "typescript": "catalog:",
-    "vitest": "catalog:"
+    "typescript": "catalog:"
   },
   "exports": {
     ".": {
@@ -56,10 +54,7 @@
       "types": "./src/auth.ts",
       "default": "./src/auth.ts"
     },
-    "./blog-urls": {
-      "types": "./src/blog-urls.ts",
-      "default": "./src/blog-urls.ts"
-    },
+
     "./proxy": {
       "types": "./src/proxy.ts",
       "default": "./src/proxy.ts"
@@ -82,7 +77,6 @@
     "url": "https://github.com/ykzts/ykzts.git"
   },
   "scripts": {
-    "test": "vitest --run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "typegen": "./scripts/typegen.sh"
   },

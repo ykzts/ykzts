@@ -398,7 +398,9 @@ export async function getPosts(page = 1, now = new Date()): Promise<Post[]> {
  * Paginates through results so callers are not limited by PostgREST row caps.
  * Scheduled posts are excluded by RLS (`published_at <= now()`).
  */
-export async function getAllPublishedPosts(): Promise<PostSummary[]> {
+export async function getAllPublishedPosts(
+  now = new Date()
+): Promise<PostSummary[]> {
   "use cache";
 
   cacheTag("posts");
@@ -417,6 +419,7 @@ export async function getAllPublishedPosts(): Promise<PostSummary[]> {
       .from("posts")
       .select("slug, title, excerpt, published_at")
       .eq("status", "published")
+      .lte("published_at", now.toISOString())
       .not("slug", "is", null)
       .not("title", "is", null)
       .not("published_at", "is", null)

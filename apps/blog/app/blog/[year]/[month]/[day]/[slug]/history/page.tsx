@@ -1,5 +1,5 @@
 import { Link } from "@vercel/microfrontends/next/client";
-import { getPostUrl } from "@ykzts/supabase/blog-urls";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { portableTextToMarkdown } from "@ykzts/utils/portable-text";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";

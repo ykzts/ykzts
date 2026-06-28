@@ -1,6 +1,6 @@
 "use client";
 
-import { getBlogPostUrl } from "@ykzts/supabase/blog-urls";
+import { getSiteOrigin } from "@ykzts/site-config";
 import {
   Field,
   FieldDescription,
@@ -13,6 +13,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@ykzts/ui/components/input-group";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { Check, Copy, ExternalLink, Eye } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -67,7 +68,10 @@ export function PublicUrlField({
     );
   }
 
-  const url = getBlogPostUrl(slug, publishedAt);
+  const url = getPostUrl(
+    { slug, published_at: publishedAt },
+    { full: true, origin: getSiteOrigin() }
+  );
   const displayUrl = url ?? draftPreviewUrl ?? null;
 
   if (!displayUrl) {

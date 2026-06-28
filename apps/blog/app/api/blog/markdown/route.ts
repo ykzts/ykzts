@@ -1,5 +1,5 @@
 import { getSiteOrigin } from "@ykzts/site-config";
-import { getPostUrl } from "@ykzts/supabase/blog-urls";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import {
   isPortableTextValue,
   portableTextToMarkdown,

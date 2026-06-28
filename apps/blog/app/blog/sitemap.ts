@@ -1,5 +1,5 @@
 import { getSiteOrigin } from "@ykzts/site-config";
-import { getPostUrl } from "@ykzts/supabase/blog-urls";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import type { MetadataRoute } from "next";
 import {
   getAllPosts,
@@ -22,12 +22,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   };
 
   // Post detail pages
-  const postEntries: MetadataRoute.Sitemap = posts.map((post) => ({
-    changeFrequency: "monthly",
-    lastModified: new Date(post.version_date || post.published_at),
-    priority: 0.8,
-    url: getPostUrl(post, { full: true, origin: getSiteOrigin() }),
-  }));
+  const postEntries: MetadataRoute.Sitemap = posts.flatMap((post) => {
+    const url = getPostUrl(post, { full: true, origin: getSiteOrigin() });
+    if (!url) {
+      return [];
+    }
+
+    return [
+      {
+        changeFrequency: "monthly" as const,
+        lastModified: new Date(post.version_date || post.published_at),
+        priority: 0.8,
+        url,
+      },
+    ];
+  });
 
   // Tag archive pages
   const tagEntries: MetadataRoute.Sitemap = tags.map((tag) => ({

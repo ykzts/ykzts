@@ -1,5 +1,5 @@
 import { createHmac } from "node:crypto";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   createDraftPreviewToken,
   getDraftPreviewApiPath,
@@ -82,8 +82,14 @@ describe("createDraftPreviewToken", () => {
 const DRAFT_PREVIEW_URL_PATTERN =
   /^https:\/\/example\.com\/api\/blog\/draft\/.+/;
 
+afterEach(() => {
+  vi.unstubAllEnvs();
+});
+
 describe("getDraftPreviewUrl", () => {
   it("should generate a full token URL without exposing the secret", () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_ORIGIN", "https://example.com");
+
     const url = getDraftPreviewUrl("my-post", "draft-secret-value");
 
     expect(url).not.toBeNull();

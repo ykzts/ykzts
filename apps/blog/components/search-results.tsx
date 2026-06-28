@@ -1,5 +1,4 @@
 import { Link } from "@vercel/microfrontends/next/client";
-import { getPostUrl } from "@ykzts/supabase/blog-urls";
 import {
   Card,
   CardContent,
@@ -9,6 +8,7 @@ import {
   CardTitle,
 } from "@ykzts/ui/components/card";
 import { cn } from "@ykzts/ui/lib/utils";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import type { PortableTextValue } from "@ykzts/utils/portable-text";
 import { extractFirstParagraph } from "@ykzts/utils/portable-text";
 import DateDisplay from "./date-display";

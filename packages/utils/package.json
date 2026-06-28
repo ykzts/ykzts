@@ -6,6 +6,7 @@
   "description": "Shared utility functions for ykzts applications",
   "exports": {
     ".": "./src/index.ts",
+    "./blog-urls": "./src/blog-urls.ts",
     "./csp": "./src/csp.ts",
     "./security-headers": "./src/security-headers.ts",
 

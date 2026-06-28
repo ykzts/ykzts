@@ -1,7 +1,4 @@
 import type { PortableTextBlock } from "@portabletext/types";
-import type { Tables } from "./database.types.js";
-
-export type BlogPostUrlInput = Pick<Tables<"posts">, "slug" | "published_at">;
 
 export interface Profile {
   about: PortableTextBlock[] | null;

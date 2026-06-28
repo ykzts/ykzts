@@ -1,4 +1,4 @@
-import { getPostUrl } from "@ykzts/supabase/blog-urls";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase/client";
@@ -119,7 +119,9 @@ async function handleRedirectFrom(
         slug: post.slug,
         published_at: post.published_at,
       });
-      return NextResponse.redirect(new URL(canonicalUrl, request.url), 301);
+      if (canonicalUrl) {
+        return NextResponse.redirect(new URL(canonicalUrl, request.url), 301);
+      }
     }
   } catch (err) {
     console.error("Middleware error:", err);

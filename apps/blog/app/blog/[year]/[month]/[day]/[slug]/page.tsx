@@ -1,6 +1,5 @@
 import { Link } from "@vercel/microfrontends/next/client";
 import { getSiteOrigin } from "@ykzts/site-config";
-import { getPostUrl } from "@ykzts/supabase/blog-urls";
 import { getProfile } from "@ykzts/supabase/queries";
 import {
   Breadcrumb,
@@ -10,6 +9,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@ykzts/ui/components/breadcrumb";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { isPortableTextValue } from "@ykzts/utils/portable-text";
 import type { Metadata, Route } from "next";
 import { notFound } from "next/navigation";
@@ -109,14 +109,13 @@ export async function generateMetadata({
 
   const authorName = post.profile.name;
   const fediverseCreator = post.profile.fediverse_creator?.trim();
-  const postId = { slug, published_at: post.published_at };
-  const url = getPostUrl(postId);
+  const url = getPostUrl(post);
 
   return {
     alternates: {
-      canonical: url,
+      canonical: url ?? null,
       types: {
-        "text/markdown": getPostUrl(postId, { markdown: true }),
+        "text/markdown": getPostUrl(post, { markdown: true }),
       },
     },
     authors: [{ name: authorName }],
@@ -188,8 +187,7 @@ export default async function PostDetailPage({ params }: PageProps) {
     getAdjacentPosts(slug),
   ]);
 
-  const historyUrl =
-    `${getPostUrl({ slug, published_at: post.published_at })}/history` as Route;
+  const historyUrl = `${getPostUrl(post)}/history` as Route;
 
   // JSON-LD structured data for Article schema
   const baseUrl = getSiteOrigin().origin;

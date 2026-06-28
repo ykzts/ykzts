@@ -1,10 +1,10 @@
 import { getSiteOrigin } from "@ykzts/site-config";
-import { getPostUrl } from "@ykzts/supabase/blog-urls";
 import {
   getAllPublishedPosts,
   getProfile,
   getWorks,
 } from "@ykzts/supabase/queries";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { extractFirstParagraph } from "@ykzts/utils/portable-text";
 import {
   buildWorkUrl,

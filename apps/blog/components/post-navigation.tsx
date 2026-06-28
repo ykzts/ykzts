@@ -1,4 +1,4 @@
-import { getPostUrl } from "@ykzts/supabase/blog-urls";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import LinkButton from "./link-button";
 
 interface PostNavigationItem {

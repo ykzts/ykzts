@@ -1,7 +1,7 @@
 import { Link } from "@vercel/microfrontends/next/client";
-import { getPostUrl } from "@ykzts/supabase/blog-urls";
 import { getPosts } from "@ykzts/supabase/queries";
 import { Skeleton } from "@ykzts/ui/components/skeleton";
+import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { cacheLife } from "next/cache";
 import { Suspense } from "react";
 import range from "@/lib/range";
