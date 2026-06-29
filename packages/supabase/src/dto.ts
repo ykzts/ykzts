@@ -25,6 +25,7 @@ export interface Profile {
     } | null;
   }[];
   social_links: readonly {
+    id: string;
     service: string | null;
     url: string;
   }[];

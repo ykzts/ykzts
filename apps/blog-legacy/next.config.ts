@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   experimental: {
     turbopackFileSystemCacheForDev: true,
   },
+  partialPrefetching: true,
   reactCompiler: true,
   reactStrictMode: true,
   redirects() {

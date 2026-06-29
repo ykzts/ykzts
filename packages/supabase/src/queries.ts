@@ -153,7 +153,7 @@ async function fetchProfileData(): Promise<{
         email,
         fediverse_creator,
         avatar_url,
-        social_links(url, service),
+        social_links(id, url, service),
         profile_technologies(sort_order, technology:technologies(name)),
         key_visual:key_visuals(id, url, width, height, artist_name, artist_url, attribution, alt_text)
       `
