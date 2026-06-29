@@ -32,6 +32,7 @@ const nextConfig: NextConfig = {
     ]);
   },
   images: getSupabaseImageConfig(),
+  partialPrefetching: true,
   reactCompiler: true,
   reactStrictMode: true,
   typedRoutes: true,

@@ -31,7 +31,7 @@ async function SocialLinksImpl() {
         );
 
         return (
-          <li key={link.url}>
+          <li key={link.id}>
             <Link
               aria-label={label}
               className="inline-flex size-10 items-center justify-center rounded-lg border border-border text-muted-foreground transition-all duration-200 hover:border-primary hover:text-primary focus:outline-2 focus:outline-accent focus:outline-offset-2"
