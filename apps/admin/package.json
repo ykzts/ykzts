@@ -6,7 +6,7 @@
     "@dnd-kit/utilities": "3.2.2",
     "@supabase/ssr": "0.12.0",
     "@supabase/supabase-js": "2.110.2",
-    "@vercel/microfrontends": "2.3.6",
+    "@vercel/microfrontends": "2.4.0",
     "@ykzts/editor": "workspace:*",
     "@ykzts/utils": "workspace:*",
     "@ykzts/site-config": "workspace:*",

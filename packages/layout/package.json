@@ -20,7 +20,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@vercel/microfrontends": "2.3.6",
+    "@vercel/microfrontends": "2.4.0",
     "@ykzts/site-config": "workspace:*",
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
