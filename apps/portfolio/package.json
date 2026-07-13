@@ -5,7 +5,7 @@
     "@portabletext/types": "4.0.2",
     "@supabase/supabase-js": "2.110.2",
     "@vercel/analytics": "2.0.1",
-    "@vercel/microfrontends": "2.3.6",
+    "@vercel/microfrontends": "2.4.0",
     "@ykzts/layout": "workspace:*",
 
     "@ykzts/site-config": "workspace:*",
