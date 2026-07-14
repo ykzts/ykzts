@@ -59,6 +59,8 @@ export async function signInWithPassword(email: string, password: string) {
 
 export async function logout() {
   const supabase = await createServerClient();
+  // Establish caller identity before mutating session (sign-out is idempotent)
+  await supabase.auth.getUser();
   await supabase.auth.signOut();
   revalidateTag("auth-user", "max");
   redirect("/login");

@@ -1,6 +1,6 @@
 "use server";
 
-import { getOwnerProfile } from "@ykzts/supabase/auth";
+import { checkAuth, getOwnerProfile } from "@ykzts/supabase/auth";
 import { createServerClient } from "@ykzts/supabase/server";
 import type { Json } from "@ykzts/supabase/types";
 import { revalidatePath } from "next/cache";
@@ -18,6 +18,11 @@ export async function createMemo(
   _prevState: CreateMemoState,
   formData: FormData
 ): Promise<CreateMemoState> {
+  const user = await checkAuth();
+  if (!user) {
+    return { error: "認証が必要です" };
+  }
+
   const ownerProfile = await getOwnerProfile();
   if (!ownerProfile) {
     return { error: "認証が必要です" };

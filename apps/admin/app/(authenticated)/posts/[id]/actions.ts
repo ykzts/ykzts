@@ -1,5 +1,6 @@
 "use server";
 
+import { requireAuth } from "@ykzts/supabase/auth";
 import type { Json } from "@ykzts/supabase/types";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
@@ -46,6 +47,8 @@ export async function updatePostAction(
   _prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
+  await requireAuth();
+
   const publishedAtResult = parsePublishedAt(formData.get("published_at"));
   if (publishedAtResult.error) {
     return { error: publishedAtResult.error };
@@ -114,11 +117,10 @@ export async function updatePostAction(
 }
 
 export async function deletePostAction(id: string): Promise<void> {
+  await requireAuth();
+
   // Validate ID as UUID before querying the database
-  const idValidation = z
-    .string()
-    .uuid({ message: "無効なIDです" })
-    .safeParse(id);
+  const idValidation = z.uuid({ message: "無効なIDです" }).safeParse(id);
 
   if (!idValidation.success) {
     const [firstError] = idValidation.error.issues;

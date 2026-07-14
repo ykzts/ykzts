@@ -1,5 +1,6 @@
 "use server";
 
+import { requireAuth } from "@ykzts/supabase/auth";
 import type { Json } from "@ykzts/supabase/types";
 import { portableTextToMarkdown } from "@ykzts/utils/portable-text";
 import { generateText, Output } from "ai";
@@ -35,6 +36,8 @@ export async function generateTagsWithAI(params: {
   existingTags: string[];
   title: string;
 }): Promise<string[]> {
+  await requireAuth();
+
   const { content, existingTags, title } = params;
 
   // Convert PortableText to markdown for better context

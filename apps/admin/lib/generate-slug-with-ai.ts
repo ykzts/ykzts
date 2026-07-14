@@ -1,5 +1,6 @@
 "use server";
 
+import { requireAuth } from "@ykzts/supabase/auth";
 import { createServerClient } from "@ykzts/supabase/server";
 import type { Json } from "@ykzts/supabase/types";
 import { portableTextToMarkdown } from "@ykzts/utils/portable-text";
@@ -68,6 +69,8 @@ export async function generateSlugWithAI(params: {
   table: "posts" | "works";
   excludeId?: string;
 }): Promise<string> {
+  await requireAuth();
+
   const { title, content, table, excludeId } = params;
 
   // Convert PortableText to markdown for better context

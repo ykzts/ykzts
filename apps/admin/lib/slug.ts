@@ -1,5 +1,6 @@
 "use server";
 
+import { requireAuth } from "@ykzts/supabase/auth";
 import { createServerClient } from "@ykzts/supabase/server";
 import slugify from "slugify";
 
@@ -99,6 +100,7 @@ export async function generateUniqueSlugForPost(
   title: string,
   excludePostId?: string
 ): Promise<string> {
+  await requireAuth();
   return await generateUniqueSlug(title, "posts", excludePostId);
 }
 
@@ -110,6 +112,7 @@ export async function generateUniqueSlugForWork(
   title: string,
   excludeWorkId?: string
 ): Promise<string> {
+  await requireAuth();
   return await generateUniqueSlug(title, "works", excludeWorkId);
 }
 
@@ -123,6 +126,8 @@ export async function generateSlugSmart(params: {
   table: "posts" | "works";
   excludeId?: string;
 }): Promise<string> {
+  await requireAuth();
+
   try {
     // Try AI-powered generation first
     const { generateSlugWithAI } = await import("./generate-slug-with-ai");

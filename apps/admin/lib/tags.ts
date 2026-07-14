@@ -1,11 +1,14 @@
 "use server";
 
+import { requireAuth } from "@ykzts/supabase/auth";
 import { createServerClient } from "@ykzts/supabase/server";
 
 /**
  * Get all unique tags used across all posts
  */
 export async function getAllExistingTags(): Promise<string[]> {
+  await requireAuth();
+
   const supabase = await createServerClient();
 
   const { data, error } = await supabase
