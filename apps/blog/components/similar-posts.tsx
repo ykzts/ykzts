@@ -25,12 +25,12 @@ interface SimilarPost {
 }
 
 interface SimilarPostsProps {
-  posts: SimilarPost[];
+  posts?: SimilarPost[] | null;
 }
 
 export default function SimilarPosts({ posts }: SimilarPostsProps) {
   // Don't render if there are no similar posts
-  if (!posts || posts.length === 0) {
+  if (!posts?.length) {
     return null;
   }
 
@@ -56,7 +56,7 @@ export default function SimilarPosts({ posts }: SimilarPostsProps) {
                   <DateDisplay date={post.published_at} />
                 </CardDescription>
               </CardHeader>
-              {previewText && (
+              {!!previewText && (
                 <CardContent>
                   <p className="line-clamp-2 text-muted-foreground text-sm">
                     {previewText}

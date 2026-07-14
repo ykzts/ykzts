@@ -160,7 +160,7 @@ export class ImageNode extends DecoratorNode<ReactElement> {
 
   createDOM(config: EditorConfig): HTMLElement {
     const span = document.createElement("span");
-    const theme = config.theme;
+    const { theme } = config;
     const className = theme.image;
     if (className !== undefined) {
       span.className = className;

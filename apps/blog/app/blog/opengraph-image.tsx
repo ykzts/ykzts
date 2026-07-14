@@ -89,7 +89,7 @@ export default async function Image() {
         >
           Blog
         </div>
-        {profile?.tagline && (
+        {!!profile?.tagline && (
           <div
             style={{
               color: "rgba(255, 255, 255, 0.8)",

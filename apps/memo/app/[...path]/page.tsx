@@ -13,7 +13,7 @@ import { Suspense } from "react";
 import Header from "@/components/header";
 import { InlineMemoEditor } from "@/components/inline-memo-editor";
 import MemoPortableText from "@/components/portable-text";
-import { supabase } from "@/lib/supabase/client";
+import { supabase as browserSupabase } from "@/lib/supabase/client";
 
 function isSupabaseConfigured() {
   return Boolean(
@@ -40,12 +40,12 @@ function extractCurrentVersion<T>(
 const PLACEHOLDER_PARAMS = [{ path: ["_placeholder"] }];
 
 export async function generateStaticParams() {
-  if (!supabase) {
+  if (!browserSupabase) {
     // Return placeholder when Supabase is not configured (e.g., during build without env vars)
     return PLACEHOLDER_PARAMS;
   }
 
-  const { data: memos, error } = await supabase
+  const { data: memos, error } = await browserSupabase
     .from("memos")
     .select("path")
     .eq("visibility", "public");
@@ -65,7 +65,7 @@ export async function generateStaticParams() {
   for (const memo of memos) {
     pathSet.add(memo.path);
     const segments = memo.path.split("/");
-    for (let i = 1; i < segments.length; i++) {
+    for (let i = 1; i < segments.length; i += 1) {
       pathSet.add(segments.slice(0, i).join("/"));
     }
   }
@@ -334,7 +334,7 @@ async function MemoContent({ path: memoPath }: { path: string }) {
             更新日時:{" "}
             {new Date(memo.updated_at).toLocaleString("ja-JP", dateOptions)}
           </p>
-          {memo.published_at && (
+          {!!memo.published_at && (
             <p>
               公開日時:{" "}
               {new Date(memo.published_at).toLocaleString("ja-JP", dateOptions)}

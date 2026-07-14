@@ -129,7 +129,7 @@ export function AvatarUpload({
     setDragActive(false);
 
     if (e.dataTransfer.files?.[0]) {
-      const file = e.dataTransfer.files[0];
+      const [file] = e.dataTransfer.files;
       if (fileInputRef.current) {
         // Create a new FileList with the dropped file
         const dataTransfer = new DataTransfer();
@@ -205,7 +205,7 @@ export function AvatarUpload({
 
             {/* Action buttons */}
             <div className="mt-3 flex gap-2">
-              {hasChanged && (
+              {!!hasChanged && (
                 <Button
                   disabled={uploading || deleting}
                   onClick={handleUpload}
@@ -237,7 +237,7 @@ export function AvatarUpload({
           </div>
         </div>
 
-        {error && (
+        {!!error && (
           <div
             className="mt-2 rounded border border-error bg-error/10 p-3 text-error text-sm"
             role="alert"

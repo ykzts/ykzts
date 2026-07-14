@@ -219,7 +219,7 @@ export function PostForm({
 
   const handleGenerateSlug = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const form = e.currentTarget.form;
+    const { form } = e.currentTarget;
     if (!form) {
       return;
     }
@@ -273,7 +273,7 @@ export function PostForm({
 
   const handleSuggestTags = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const form = e.currentTarget.form;
+    const { form } = e.currentTarget;
     if (!form) {
       return;
     }
@@ -326,13 +326,13 @@ export function PostForm({
         {isEditMode && <input name="id" type="hidden" value={post.id} />}
         <input name="tags" type="hidden" value={JSON.stringify(tags)} />
 
-        {state?.error && (
+        {!!state?.error && (
           <div className="rounded border border-error bg-error/10 p-4 text-error">
             {state.error}
           </div>
         )}
 
-        {deleteError && (
+        {!!deleteError && (
           <div className="rounded border border-error bg-error/10 p-4 text-error">
             {deleteError}
           </div>
@@ -552,7 +552,7 @@ export function PostForm({
             </Field>
 
             {/* Published At */}
-            {showPublishedAt && (
+            {!!showPublishedAt && (
               <Field>
                 <FieldLabel htmlFor="published_at_display">公開日時</FieldLabel>
                 {/* Hidden input that holds the ISO 8601 value actually submitted */}

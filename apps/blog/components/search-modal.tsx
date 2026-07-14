@@ -33,9 +33,9 @@ function SimilarityBadge({ similarity }: { similarity: number }) {
       className={cn(
         "inline-flex items-center rounded-full px-1.5 py-0.5 font-medium text-[10px]",
         {
-          "bg-green-100 text-green-800": percentage >= 85,
           "bg-blue-100 text-blue-800": percentage >= 70 && percentage < 85,
           "bg-gray-100 text-gray-800": percentage < 70,
+          "bg-green-100 text-green-800": percentage >= 85,
         }
       )}
     >
@@ -82,11 +82,11 @@ function SearchPanel({ onClose }: SearchPanelProps) {
 
       try {
         const res = await fetch("/api/blog/search", {
-          method: "POST",
+          body: JSON.stringify({ limit: 6, query: trimmed }),
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ query: trimmed, limit: 6 }),
+          method: "POST",
           signal: controller.signal,
         });
 
@@ -152,7 +152,7 @@ function SearchPanel({ onClose }: SearchPanelProps) {
           </p>
         )}
 
-        {hasEffectiveQuery && loading && (
+        {!!hasEffectiveQuery && loading && (
           <div className="py-6 text-center text-muted-foreground text-sm">
             検索中...
           </div>
@@ -199,7 +199,7 @@ function SearchPanel({ onClose }: SearchPanelProps) {
                       <div className="text-muted-foreground text-xs">
                         <DateDisplay date={result.published_at} />
                       </div>
-                      {result.excerpt && (
+                      {!!result.excerpt && (
                         <p className="line-clamp-2 text-muted-foreground text-xs">
                           {result.excerpt}
                         </p>

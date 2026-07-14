@@ -28,7 +28,7 @@ export function getVisiblePages(
   }
 
   // Build pages array
-  for (let i = startPage; i <= endPage; i++) {
+  for (let i = startPage; i <= endPage; i += 1) {
     pages.push(i);
   }
 

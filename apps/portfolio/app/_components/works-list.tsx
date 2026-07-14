@@ -126,7 +126,7 @@ export default function WorksList({
               <h3 className="mb-4 font-semibold text-2xl text-card-foreground">
                 {work.title}
               </h3>
-              {work.content && (
+              {!!work.content && (
                 <div className="prose prose-theme prose-base max-w-none prose-p:text-base prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
                   <PortableTextBlock value={work.content} />
                 </div>

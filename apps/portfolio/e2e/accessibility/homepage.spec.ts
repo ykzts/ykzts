@@ -75,8 +75,9 @@ test.describe("Accessibility Tests", () => {
     const imageCount = await images.count();
 
     // Check each image has an alt attribute
-    for (let i = 0; i < imageCount; i++) {
+    for (let i = 0; i < imageCount; i += 1) {
       const img = images.nth(i);
+      // biome-ignore lint/performance/noAwaitInLoops: Playwright checks each image in turn
       const altAttribute = await img.getAttribute("alt");
       expect(altAttribute).not.toBeNull();
     }

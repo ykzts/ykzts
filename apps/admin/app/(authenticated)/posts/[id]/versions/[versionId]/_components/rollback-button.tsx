@@ -49,7 +49,7 @@ export function RollbackButton({
 
   return (
     <div>
-      {error && <div className="mb-2 text-error text-sm">{error}</div>}
+      {!!error && <div className="mb-2 text-error text-sm">{error}</div>}
       <Button
         disabled={isLoading}
         onClick={() => setIsConfirmOpen(true)}

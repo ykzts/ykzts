@@ -82,7 +82,6 @@ export async function uploadImage({
     const dimensions = await getImageDimensions(file).catch(
       (dimensionError) => {
         console.warn("Failed to read image dimensions:", dimensionError);
-        return;
       }
     );
 

@@ -167,7 +167,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
     setDragActive(false);
 
     if (e.dataTransfer.files?.[0]) {
-      const file = e.dataTransfer.files[0];
+      const [file] = e.dataTransfer.files;
       if (fileInputRef.current) {
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
@@ -181,7 +181,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
 
   return (
     <form action={formAction} className="space-y-6">
-      {state?.error && (
+      {!!state?.error && (
         <div className="rounded border border-error bg-error/10 p-4 text-error">
           {state.error}
         </div>
@@ -189,7 +189,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
 
       <div className="space-y-3">
         {/* Preview */}
-        {preview && (
+        {!!preview && (
           <div className="relative aspect-video w-full max-w-sm overflow-hidden rounded-lg border-2 border-border">
             <Image
               alt="キービジュアルのプレビュー"
@@ -269,7 +269,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
           )}
         </div>
 
-        {uploadError && (
+        {!!uploadError && (
           <div
             className="rounded border border-error bg-error/10 p-3 text-error text-sm"
             role="alert"
@@ -287,10 +287,10 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
       </div>
 
       {/* Hidden fields for form submission */}
-      {currentUrl && (
+      {!!currentUrl && (
         <>
           <input name="key_visual_url" type="hidden" value={currentUrl} />
-          {dimensions && (
+          {!!dimensions && (
             <>
               <input
                 name="key_visual_width"
@@ -308,7 +308,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
       )}
 
       {/* Metadata fields */}
-      {currentUrl && (
+      {!!currentUrl && (
         <div className="space-y-4">
           <div>
             <label
@@ -381,7 +381,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
       </p>
 
       <div className="flex gap-4">
-        {currentUrl && (
+        {!!currentUrl && (
           <Button disabled={isPending || uploading || deleting} type="submit">
             {isPending ? "保存中..." : "保存"}
           </Button>

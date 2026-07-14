@@ -29,8 +29,8 @@ function computeDiff(oldText: string, newText: string): DiffLine[] {
     new Array(n + 1).fill(0)
   );
 
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
+  for (let i = 1; i <= m; i += 1) {
+    for (let j = 1; j <= n; j += 1) {
       if (oldLines[i - 1] === newLines[j - 1]) {
         dp[i][j] = dp[i - 1][j - 1] + 1;
       } else {
@@ -46,27 +46,30 @@ function computeDiff(oldText: string, newText: string): DiffLine[] {
 
   while (i > 0 || j > 0) {
     if (i > 0 && j > 0 && oldLines[i - 1] === newLines[j - 1]) {
+      lineNum += 1;
       result.unshift({
-        key: `u-${lineNum++}`,
+        key: `u-${lineNum}`,
         text: oldLines[i - 1],
         type: "unchanged",
       });
-      i--;
-      j--;
+      i -= 1;
+      j -= 1;
     } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
+      lineNum += 1;
       result.unshift({
-        key: `a-${lineNum++}`,
+        key: `a-${lineNum}`,
         text: newLines[j - 1],
         type: "added",
       });
-      j--;
+      j -= 1;
     } else {
+      lineNum += 1;
       result.unshift({
-        key: `r-${lineNum++}`,
+        key: `r-${lineNum}`,
         text: oldLines[i - 1],
         type: "removed",
       });
-      i--;
+      i -= 1;
     }
   }
 
@@ -178,7 +181,7 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
                     className="mt-1 text-muted-foreground text-sm"
                     date={version.version_date}
                   />
-                  {version.change_summary && (
+                  {!!version.change_summary && (
                     <p className="mt-2 text-sm">{version.change_summary}</p>
                   )}
                 </label>

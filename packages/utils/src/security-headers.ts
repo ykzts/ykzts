@@ -63,7 +63,7 @@ export function getSecurityHeaders(
         let baseArr: CspValue[];
         if (Array.isArray(baseVal)) {
           baseArr = baseVal;
-        } else if (baseVal == null) {
+        } else if (baseVal === null || baseVal === undefined) {
           baseArr = [];
         } else {
           baseArr = [baseVal];

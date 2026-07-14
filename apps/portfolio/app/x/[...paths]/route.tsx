@@ -16,7 +16,7 @@ export async function GET(
 ) {
   const { paths } = await params;
   const path = paths.join("/");
-  const pkg = AVAILABLE_PACKAGES.find((pkg) => pkg.path === path);
+  const pkg = AVAILABLE_PACKAGES.find((item) => item.path === path);
 
   if (!pkg) {
     return new Response("Not Found", { status: 404 });

@@ -70,7 +70,7 @@ export async function updateProfile(
 
     const profileValidation = profileSchema.safeParse(rawProfileData);
     if (!profileValidation.success) {
-      const firstError = profileValidation.error.issues[0];
+      const [firstError] = profileValidation.error.issues;
       return {
         error: firstError.message,
       };
@@ -132,7 +132,7 @@ export async function updateProfile(
       let hasNewLinks = false;
       let hasUpdatedLinks = false;
       const submittedLinkIds = new Set<string>();
-      for (let i = 0; i < socialLinksCount; i++) {
+      for (let i = 0; i < socialLinksCount; i += 1) {
         const id = formData.get(`social_link_id_${i}`) as string;
         const url = formData.get(`social_link_url_${i}`) as string;
         if (!url || url.trim() === "") {
@@ -161,7 +161,7 @@ export async function updateProfile(
       } else {
         // Links changed - run WebFinger in parallel to re-determine fediverse_creator
         const candidateUrls: string[] = [];
-        for (let i = 0; i < socialLinksCount; i++) {
+        for (let i = 0; i < socialLinksCount; i += 1) {
           const url = formData.get(`social_link_url_${i}`) as string;
           if (!url || url.trim() === "") {
             continue;
@@ -244,7 +244,7 @@ export async function updateProfile(
     // Handle social links
     const socialLinksToKeep = new Set<string>();
 
-    for (let i = 0; i < socialLinksCount; i++) {
+    for (let i = 0; i < socialLinksCount; i += 1) {
       const id = formData.get(`social_link_id_${i}`) as string;
       const url = formData.get(`social_link_url_${i}`) as string;
 
@@ -264,7 +264,8 @@ export async function updateProfile(
         };
       }
 
-      // Detect service from URL
+      // Detect service from URL (sequential: order-sensitive form fields)
+      // biome-ignore lint/performance/noAwaitInLoops: sequential per-link service detection
       const service = await detectServiceFromURL(url.trim());
 
       const linkData = {
@@ -348,7 +349,7 @@ export async function updateProfile(
 
     const technologiesToKeep = new Set<string>();
 
-    for (let i = 0; i < technologiesCount; i++) {
+    for (let i = 0; i < technologiesCount; i += 1) {
       const id = formData.get(`technology_id_${i}`) as string | null;
       const techName = formData.get(`technology_name_${i}`) as string;
 
@@ -372,6 +373,7 @@ export async function updateProfile(
         // Update existing technology
         technologiesToKeep.add(id);
 
+        // biome-ignore lint/performance/noAwaitInLoops: ordered tech updates must stay sequential
         const { error: nameUpdateError } = await supabase
           .from("technologies")
           .update({ name: techName.trim() })

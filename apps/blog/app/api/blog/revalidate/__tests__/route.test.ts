@@ -201,6 +201,7 @@ describe("POST /api/blog/revalidate", () => {
         }
       );
 
+      // biome-ignore lint/performance/noAwaitInLoops: sequential per-tag assertions
       const response = await POST(request);
       const data = await response.json();
 

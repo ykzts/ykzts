@@ -14,10 +14,10 @@ export async function GET(
 
   if (posts.length === 0) {
     return new Response("Not Found", {
-      status: 404,
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
       },
+      status: 404,
     });
   }
 

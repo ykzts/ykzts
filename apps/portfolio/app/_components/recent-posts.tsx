@@ -62,7 +62,7 @@ async function RecentPostsImpl() {
   const posts = allPosts
     .filter(
       (post): post is typeof post & { published_at: string } =>
-        post.published_at != null
+        typeof post.published_at === "string"
     )
     .slice(0, RECENT_POSTS_COUNT);
 
@@ -89,13 +89,13 @@ async function RecentPostsImpl() {
                   {post.title}
                 </Link>
               </h3>
-              {post.excerpt && (
+              {!!post.excerpt && (
                 <p className="mb-3 line-clamp-2 text-muted-foreground text-sm leading-relaxed">
                   {post.excerpt}
                 </p>
               )}
               <div className="flex flex-wrap items-center gap-3">
-                {post.published_at && (
+                {!!post.published_at && (
                   <time
                     className="text-muted-foreground text-xs"
                     dateTime={post.published_at}

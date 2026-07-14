@@ -13,7 +13,7 @@ export async function generateStaticParams() {
   const pages: { num: string }[] = [];
 
   // Generate pages 2 to totalPages (page 1 is the home page)
-  for (let i = 2; i <= totalPages; i++) {
+  for (let i = 2; i <= totalPages; i += 1) {
     pages.push({ num: String(i) });
   }
 

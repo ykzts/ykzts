@@ -14,7 +14,7 @@ function extractVersionContent(currentVersion: unknown): Json | null {
   }
 
   const version = currentVersion as { content?: Json };
-  return version?.content ?? null;
+  return version.content ?? null;
 }
 
 async function handleCronRequest(request: Request) {
@@ -68,11 +68,12 @@ async function handleCronRequest(request: Request) {
 
         if (!content) {
           errors.push({ error: "No content found", id: post.id });
-          failureCount++;
+          failureCount += 1;
           continue;
         }
 
-        // Generate embedding
+        // Generate embedding (sequential to avoid provider rate limits)
+        // biome-ignore lint/performance/noAwaitInLoops: sequential embedding generation
         const embedding = await generatePostEmbedding({
           content,
           excerpt: post.excerpt,
@@ -91,16 +92,16 @@ async function handleCronRequest(request: Request) {
 
         if (updateError) {
           errors.push({ error: updateError.message, id: post.id });
-          failureCount++;
+          failureCount += 1;
         } else {
-          successCount++;
+          successCount += 1;
         }
       } catch (error) {
         errors.push({
           error: error instanceof Error ? error.message : "Unknown error",
           id: post.id,
         });
-        failureCount++;
+        failureCount += 1;
       }
     }
 

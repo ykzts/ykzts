@@ -256,12 +256,12 @@ export function ToolbarPlugin({
       if (!uploadImage) {
         return;
       }
-      const files = event.target.files;
+      const { files } = event.target;
       if (!files || files.length === 0) {
         return;
       }
 
-      const file = files[0];
+      const [file] = files;
       setIsUploading(true);
 
       try {
@@ -358,19 +358,19 @@ export function ToolbarPlugin({
   };
 
   const formatBlockType = (
-    blockType: "paragraph" | "h2" | "h3" | "h4" | "h5" | "h6" | "quote" | "code"
+    nextType: "paragraph" | "h2" | "h3" | "h4" | "h5" | "h6" | "quote" | "code"
   ) => {
     editor.update(() => {
       const selection = $getSelection();
       if ($isRangeSelection(selection)) {
-        if (blockType === "paragraph") {
+        if (nextType === "paragraph") {
           $setBlocksType(selection, () => $createParagraphNode());
-        } else if (blockType === "quote") {
+        } else if (nextType === "quote") {
           $setBlocksType(selection, () => $createQuoteNode());
-        } else if (blockType === "code") {
+        } else if (nextType === "code") {
           $setBlocksType(selection, () => $createCodeNode());
         } else {
-          $setBlocksType(selection, () => $createHeadingNode(blockType));
+          $setBlocksType(selection, () => $createHeadingNode(nextType));
         }
       }
     });
@@ -558,7 +558,7 @@ export function ToolbarPlugin({
           <Outdent className="size-4" />
         </button>
         <div className="mx-1 h-6 w-px self-center bg-border" />
-        {uploadImage && (
+        {!!uploadImage && (
           <>
             <button
               aria-label="画像"

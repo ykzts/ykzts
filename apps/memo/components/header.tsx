@@ -16,7 +16,7 @@ export default async function Header({ canEdit = false }: HeaderProps) {
           Memo
         </Link>
         <nav className="flex items-center gap-4">
-          {canEdit && (
+          {!!canEdit && (
             <span className="rounded bg-yellow-100 px-2 py-1 text-xs text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
               編集モード
             </span>

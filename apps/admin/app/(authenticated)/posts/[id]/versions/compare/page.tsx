@@ -115,7 +115,7 @@ async function CompareContent({
       <Panel>
         <h3 className="mb-4 font-bold text-lg">変更サマリー</h3>
         <div className="space-y-3">
-          {version1.change_summary && (
+          {!!version1.change_summary && (
             <div>
               <div className="mb-1 font-medium text-muted-foreground text-sm">
                 v{version1.version_number}
@@ -125,7 +125,7 @@ async function CompareContent({
               </div>
             </div>
           )}
-          {version2.change_summary && (
+          {!!version2.change_summary && (
             <div>
               <div className="mb-1 font-medium text-muted-foreground text-sm">
                 v{version2.version_number}

@@ -23,7 +23,7 @@ export function PublicUrlCell({
   }
 
   const url = getPostUrl(
-    { slug, published_at: publishedAt },
+    { published_at: publishedAt, slug },
     { full: true, origin: getSiteOrigin() }
   );
 

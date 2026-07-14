@@ -93,7 +93,7 @@ export default function TableOfContents({
             <ChevronDown className="h-4 w-4 text-muted-foreground" />
           )}
         </button>
-        {isOpen && (
+        {!!isOpen && (
           <nav
             aria-label="目次"
             className="mt-2 rounded-lg border border-border bg-card p-4"

@@ -4,11 +4,11 @@ import type { Route } from "next";
 
 interface TagListProps {
   className?: string;
-  tags: string[];
+  tags?: string[] | null;
 }
 
 export default function TagList({ tags, className }: TagListProps) {
-  if (!tags || tags.length === 0) {
+  if (!tags?.length) {
     return null;
   }
 

@@ -63,7 +63,7 @@ async function tryNodeInfo(origin: string): Promise<string | null> {
     }
 
     // Reject private IP ranges, loopback, and link-local addresses
-    const hostname = originUrl.hostname;
+    const { hostname } = originUrl;
     if (
       hostname === "localhost" ||
       hostname.startsWith("127.") ||
@@ -126,7 +126,7 @@ async function tryNodeInfo(origin: string): Promise<string | null> {
     }
 
     const nodeInfo = await nodeInfoResponse.json();
-    const software = nodeInfo.software as { name?: string };
+    const software = nodeInfo.software as { name?: string } | null | undefined;
 
     if (!software?.name) {
       return null;

@@ -143,7 +143,7 @@ export default async function Image({ params }: Props) {
         >
           {post.title || DEFAULT_POST_TITLE}
         </div>
-        {post.excerpt && (
+        {!!post.excerpt && (
           <div
             style={{
               color: "rgba(255, 255, 255, 0.8)",

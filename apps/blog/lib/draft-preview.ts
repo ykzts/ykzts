@@ -30,7 +30,7 @@ export async function enableDraftPreviewForSlug(
       draft.enable();
 
       const draftPath =
-        getPostUrl({ slug: post.slug as string, published_at: null }) ??
+        getPostUrl({ published_at: null, slug: post.slug as string }) ??
         "/blog";
 
       return NextResponse.redirect(new URL(draftPath, requestUrl));

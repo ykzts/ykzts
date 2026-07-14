@@ -84,7 +84,7 @@ export default async function Image() {
         >
           {process.env.NEXT_PUBLIC_SITE_NAME ?? "example.com"}
         </div>
-        {profile.tagline && (
+        {!!profile.tagline && (
           <div
             style={{
               color: "rgba(255, 255, 255, 0.8)",
@@ -119,7 +119,7 @@ export default async function Image() {
           }}
         >
           <div style={{ display: "flex", paddingRight: 32 }}>
-            {profile.avatar_url && (
+            {!!profile.avatar_url && (
               <>
                 {/* biome-ignore lint/performance/noImgElement: `<Image />` is unsupported. Uses @vercel/og to convert restricted JSX to SVG. */}
                 <img

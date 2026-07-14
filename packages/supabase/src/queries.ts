@@ -45,7 +45,7 @@ function isPortableTextValue(value: unknown): value is PortableTextBlock[] {
 function normalizePostAuthor(data: { profile?: unknown }): Post["profile"] {
   const profile = Array.isArray(data.profile) ? data.profile[0] : data.profile;
   if (
-    profile != null &&
+    profile !== null &&
     typeof profile === "object" &&
     "id" in profile &&
     "name" in profile
@@ -59,7 +59,7 @@ function extractVersionDate(currentVersion: unknown): string | null {
   if (Array.isArray(currentVersion)) {
     return currentVersion[0]?.version_date ?? null;
   }
-  return (currentVersion as { version_date?: string })?.version_date ?? null;
+  return (currentVersion as { version_date?: string }).version_date ?? null;
 }
 
 function extractVersionContent(
@@ -413,8 +413,10 @@ export async function getAllPublishedPosts(
 
   const posts: PostSummary[] = [];
   let offset = 0;
+  let hasMore = true;
 
-  while (true) {
+  while (hasMore) {
+    // biome-ignore lint/performance/noAwaitInLoops: paginated fetch must stay sequential
     const { data, error } = await supabase
       .from("posts")
       .select("slug, title, excerpt, published_at")
@@ -431,7 +433,8 @@ export async function getAllPublishedPosts(
     }
 
     if (data.length === 0) {
-      break;
+      hasMore = false;
+      continue;
     }
 
     for (const post of data) {
@@ -444,7 +447,8 @@ export async function getAllPublishedPosts(
     }
 
     if (data.length < ALL_POSTS_PAGE_SIZE) {
-      break;
+      hasMore = false;
+      continue;
     }
 
     offset += ALL_POSTS_PAGE_SIZE;

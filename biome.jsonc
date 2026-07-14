@@ -15,6 +15,12 @@
             "maxAllowedComplexity": 150
           }
         }
+      },
+      "performance": {
+        // All apps enable React Compiler, which auto-memoizes callbacks and
+        // components. Requiring manual useCallback for every JSX prop is
+        // noise and fights the compiler model.
+        "noJsxPropsBind": "off"
       }
     }
   },

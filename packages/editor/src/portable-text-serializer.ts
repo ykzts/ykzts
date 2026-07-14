@@ -442,8 +442,9 @@ export function initializeEditorWithPortableText(
           // Close any open lists
           closeAllLists();
 
-          // Handle image blocks
-          if (!block.asset?.url) {
+          // Handle image blocks. Types require asset, but malformed content may omit it.
+          const imageAsset = (block as { asset?: { url?: string } }).asset;
+          if (!imageAsset?.url) {
             continue;
           }
           const imageNode = $createImageNode({
@@ -452,7 +453,7 @@ export function initializeEditorWithPortableText(
               typeof block.height === "number" && Number.isFinite(block.height)
                 ? block.height
                 : undefined,
-            src: block.asset.url,
+            src: imageAsset.url,
             width:
               typeof block.width === "number" && Number.isFinite(block.width)
                 ? block.width
@@ -475,7 +476,7 @@ export function initializeEditorWithPortableText(
           );
 
           const tableRows = tableNode.getChildren();
-          for (let rowIndex = 0; rowIndex < block.rows.length; rowIndex++) {
+          for (let rowIndex = 0; rowIndex < block.rows.length; rowIndex += 1) {
             const portableRow = block.rows[rowIndex];
             const tableRowNode = tableRows[rowIndex];
             if (!$isTableRowNode(tableRowNode)) {
@@ -486,7 +487,7 @@ export function initializeEditorWithPortableText(
             for (
               let cellIndex = 0;
               cellIndex < portableRow.cells.length;
-              cellIndex++
+              cellIndex += 1
             ) {
               const portableCell = portableRow.cells[cellIndex];
               const tableCellNode = tableCells[cellIndex];
@@ -512,10 +513,8 @@ export function initializeEditorWithPortableText(
         } else if (block._type === "block") {
           // Create a map of mark definitions
           const markDefMap = new Map<string, PortableTextMarkDef>();
-          if (block.markDefs) {
-            for (const markDef of block.markDefs) {
-              markDefMap.set(markDef._key, markDef);
-            }
+          for (const markDef of block.markDefs) {
+            markDefMap.set(markDef._key, markDef);
           }
 
           // Process spans into text nodes
