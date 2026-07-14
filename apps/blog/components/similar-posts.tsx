@@ -25,12 +25,12 @@ interface SimilarPost {
 }
 
 interface SimilarPostsProps {
-  posts: SimilarPost[];
+  posts?: SimilarPost[] | null;
 }
 
 export default function SimilarPosts({ posts }: SimilarPostsProps) {
   // Don't render if there are no similar posts
-  if (posts.length === 0) {
+  if (!posts?.length) {
     return null;
   }
 

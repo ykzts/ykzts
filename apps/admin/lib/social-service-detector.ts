@@ -126,9 +126,9 @@ async function tryNodeInfo(origin: string): Promise<string | null> {
     }
 
     const nodeInfo = await nodeInfoResponse.json();
-    const software = nodeInfo.software as { name?: string };
+    const software = nodeInfo.software as { name?: string } | null | undefined;
 
-    if (!software.name) {
+    if (!software?.name) {
       return null;
     }
 
