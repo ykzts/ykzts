@@ -3,7 +3,7 @@
 import { checkAuth, getOwnerProfile } from "@ykzts/supabase/auth";
 import { createServerClient } from "@ykzts/supabase/server";
 import type { Json } from "@ykzts/supabase/types";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export type UpdateMemoState = {
   error?: string;
@@ -101,6 +101,7 @@ export async function updateMemo(
   }
 
   revalidatePath(`/${memoPath}`);
+  revalidateTag("memos", "max");
 
   return { success: true };
 }

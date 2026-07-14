@@ -12,7 +12,12 @@ export function generateStaticParams() {
   return [{ id: "_" }];
 }
 
-async function PostEditContent({ id }: { id: string }) {
+async function PostEditContent({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
   const post = await getPostById(id);
 
   if (!post) {
@@ -38,13 +43,11 @@ async function PostEditContent({ id }: { id: string }) {
   );
 }
 
-export default async function EditPostPage({
+export default function EditPostPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
-
   return (
     <div>
       <h1 className="mb-6 font-bold text-3xl">投稿編集</h1>
@@ -55,7 +58,7 @@ export default async function EditPostPage({
           </Panel>
         }
       >
-        <PostEditContent id={id} />
+        <PostEditContent params={params} />
       </Suspense>
     </div>
   );

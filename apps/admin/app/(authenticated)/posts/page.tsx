@@ -140,7 +140,13 @@ export default function PostsPage({
         <NewPostButton />
       </div>
 
-      <PostsFilters />
+      <Suspense
+        fallback={
+          <div className="mb-6 h-9 w-full max-w-md animate-pulse rounded bg-muted" />
+        }
+      >
+        <PostsFilters />
+      </Suspense>
 
       <Suspense fallback={<PostsSkeleton />}>
         <PostsContentAsync searchParams={searchParams} />

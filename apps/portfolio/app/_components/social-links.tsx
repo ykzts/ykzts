@@ -1,24 +1,8 @@
 import { getProfile } from "@ykzts/supabase/queries";
-import { Skeleton } from "@ykzts/ui/components/skeleton";
-import { Suspense } from "react";
 import Link from "@/components/link";
 import { getSocialInfo } from "@/lib/social-services";
 
-function SocialLinksSkeleton() {
-  const placeholders = ["one", "two", "three", "four", "five"];
-
-  return (
-    <ul className="flex gap-3">
-      {placeholders.map((placeholder) => (
-        <li key={`social-skeleton-${placeholder}`}>
-          <Skeleton className="size-10 rounded-lg" />
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-async function SocialLinksImpl() {
+export default async function SocialLinks() {
   const profile = await getProfile();
 
   return (
@@ -45,13 +29,5 @@ async function SocialLinksImpl() {
         );
       })}
     </ul>
-  );
-}
-
-export default function SocialLinks() {
-  return (
-    <Suspense fallback={<SocialLinksSkeleton />}>
-      <SocialLinksImpl />
-    </Suspense>
   );
 }

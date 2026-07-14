@@ -1,4 +1,3 @@
-import { getCurrentUser } from "@ykzts/supabase/auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +8,6 @@ import {
 import { User as UserIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { getProfile } from "@/lib/data";
 import { logout } from "../login/actions";
@@ -63,16 +61,18 @@ function UserInfoFallback() {
   );
 }
 
-async function AuthGuard({ children }: { children: React.ReactNode }) {
-  // Auth guard wrapped in Suspense - checks auth and redirects if needed
-  const user = await getCurrentUser();
-
-  if (!user) {
-    redirect("/login");
-  }
-
+/**
+ * Auth is enforced in proxy.ts (session refresh + redirect). The layout shell
+ * (header, nav, main frame) is static; only the user avatar menu streams from
+ * private cache.
+ */
+export default function AuthenticatedLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <>
+    <div className="min-h-screen bg-background">
       <header className="border-border border-b bg-card">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
@@ -91,18 +91,6 @@ async function AuthGuard({ children }: { children: React.ReactNode }) {
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {children}
       </main>
-    </>
-  );
-}
-
-function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="min-h-screen bg-background">
-      <Suspense fallback={<div className="min-h-screen bg-background" />}>
-        <AuthGuard>{children}</AuthGuard>
-      </Suspense>
     </div>
   );
 }
-
-export default AuthenticatedLayout;

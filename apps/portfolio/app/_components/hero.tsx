@@ -1,30 +1,8 @@
 import { getProfile } from "@ykzts/supabase/queries";
 import { Badge } from "@ykzts/ui/components/badge";
-import { Skeleton } from "@ykzts/ui/components/skeleton";
 import Image from "next/image";
-import { Suspense } from "react";
-import range from "@/lib/range";
 
-function HeroSkeleton() {
-  return (
-    <header className="px-6 py-20 md:px-12 lg:px-24 lg:py-28">
-      <div className="mx-auto flex max-w-4xl flex-col-reverse items-start gap-12 lg:flex-row lg:items-center lg:gap-16">
-        <div className="flex-1">
-          <Skeleton className="mb-4 h-12 w-48" />
-          <Skeleton className="mb-8 h-6 w-full" />
-          <div className="flex flex-wrap gap-2">
-            {Array.from(range(0, 10), (i) => (
-              <Skeleton className="h-8 w-24" key={`tech-${i}`} />
-            ))}
-          </div>
-        </div>
-        <Skeleton className="size-80 rounded-2xl" />
-      </div>
-    </header>
-  );
-}
-
-async function HeroImpl() {
+export default async function Hero() {
   const profile = await getProfile();
   const kv = Array.isArray(profile.key_visual)
     ? profile.key_visual[0]
@@ -73,13 +51,5 @@ async function HeroImpl() {
         </div>
       </div>
     </header>
-  );
-}
-
-export default function Hero() {
-  return (
-    <Suspense fallback={<HeroSkeleton />}>
-      <HeroImpl />
-    </Suspense>
   );
 }

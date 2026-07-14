@@ -1,6 +1,5 @@
 import { Link } from "@vercel/microfrontends/next/client";
 import { getProfile } from "@ykzts/supabase/queries";
-import { Suspense } from "react";
 import Footer from "./footer";
 import FooterContent from "./footer-content";
 
@@ -15,7 +14,7 @@ const privacyLink = (
   </Link>
 );
 
-async function SiteFooterImpl() {
+export default async function SiteFooter() {
   const profile = await getProfile();
   const kv = profile.key_visual;
 
@@ -45,24 +44,5 @@ async function SiteFooterImpl() {
         privacyLink={privacyLink}
       />
     </Footer>
-  );
-}
-
-function SiteFooterSkeleton() {
-  return (
-    <Footer>
-      <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-        <div className="h-10 w-48 animate-pulse rounded bg-muted" />
-        <div className="h-5 w-32 animate-pulse rounded bg-muted" />
-      </div>
-    </Footer>
-  );
-}
-
-export default function SiteFooter() {
-  return (
-    <Suspense fallback={<SiteFooterSkeleton />}>
-      <SiteFooterImpl />
-    </Suspense>
   );
 }

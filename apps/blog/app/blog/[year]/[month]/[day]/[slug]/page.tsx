@@ -13,11 +13,9 @@ import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { isPortableTextValue } from "@ykzts/utils/portable-text";
 import type { Metadata, Route } from "next";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import ArticleContent from "@/components/article-content";
 import PostNavigation from "@/components/post-navigation";
 import SimilarPosts from "@/components/similar-posts";
-import SimilarPostsSkeleton from "@/components/similar-posts-skeleton";
 import TableOfContents from "@/components/table-of-contents";
 import { DEFAULT_POST_TITLE } from "@/lib/constants";
 import { extractHeadings } from "@/lib/extract-headings";
@@ -289,9 +287,7 @@ export default async function PostDetailPage({ params }: PageProps) {
         {/* Full width: related articles */}
         <div className="mx-auto max-w-4xl">
           <div aria-atomic="false" aria-live="polite">
-            <Suspense fallback={<SimilarPostsSkeleton />}>
-              <SimilarPostsSection postId={post.id} />
-            </Suspense>
+            <SimilarPostsSection postId={post.id} />
           </div>
         </div>
       </main>

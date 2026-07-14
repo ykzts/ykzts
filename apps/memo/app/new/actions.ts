@@ -3,7 +3,7 @@
 import { checkAuth, getOwnerProfile } from "@ykzts/supabase/auth";
 import { createServerClient } from "@ykzts/supabase/server";
 import type { Json } from "@ykzts/supabase/types";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 export type CreateMemoState = {
@@ -155,6 +155,7 @@ export async function createMemo(
 
   revalidatePath("/");
   revalidatePath(`/${normalizedPath}`);
+  revalidateTag("memos", "max");
 
   redirect(`/${normalizedPath}`);
 }

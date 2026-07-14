@@ -10,19 +10,38 @@ import type {
   PortableTextValue,
 } from "@ykzts/utils/portable-text";
 import Image from "next/image";
-import { type ComponentProps, Suspense } from "react";
+import type { ComponentProps } from "react";
 import Link from "@/components/link";
 import { generateHeadingId } from "@/lib/extract-headings";
 import { highlightCode } from "@/lib/shiki";
 
-// Component to handle code block syntax highlighting
-async function CodeBlockHighlighter({
-  language,
-  text,
-}: {
-  language?: string;
-  text: string;
-}) {
+// Helper function to extract text from block children
+function extractTextFromBlock(children: unknown): string {
+  if (!Array.isArray(children)) {
+    return "";
+  }
+
+  return children
+    .map((child) => {
+      if (typeof child === "object" && child !== null && "text" in child) {
+        return String(child.text);
+      }
+      return "";
+    })
+    .join("");
+}
+
+// Named component for code blocks — highlightCode is "use cache", so it joins the static shell.
+const CodeBlockComponent: PortableTextBlockComponent = async (props) => {
+  // Extract text from the block's children spans
+  const text = extractTextFromBlock(props.value.children);
+
+  // Extract language if available
+  const language =
+    "language" in props.value && typeof props.value.language === "string"
+      ? props.value.language
+      : undefined;
+
   let html: string | null = null;
   try {
     html = await highlightCode(text, language);
@@ -43,49 +62,9 @@ async function CodeBlockHighlighter({
       <code>{text}</code>
     </pre>
   );
-}
-
-// Helper function to extract text from block children
-function extractTextFromBlock(children: unknown): string {
-  if (!Array.isArray(children)) {
-    return "";
-  }
-
-  return children
-    .map((child) => {
-      if (typeof child === "object" && child !== null && "text" in child) {
-        return String(child.text);
-      }
-      return "";
-    })
-    .join("");
-}
-
-// Named component for code blocks
-const CodeBlockComponent: PortableTextBlockComponent = (props) => {
-  // Extract text from the block's children spans
-  const text = extractTextFromBlock(props.value.children);
-
-  // Extract language if available
-  const language =
-    "language" in props.value && typeof props.value.language === "string"
-      ? props.value.language
-      : undefined;
-
-  return (
-    <Suspense
-      fallback={
-        <pre className="not-prose overflow-x-auto rounded-lg bg-muted p-4">
-          <code>{text}</code>
-        </pre>
-      }
-    >
-      <CodeBlockHighlighter language={language} text={text} />
-    </Suspense>
-  );
 };
 
-async function InlineCodeBlockHighlighter({
+async function InlineCodeBlock({
   code,
   language,
 }: {
@@ -134,17 +113,7 @@ const portableTextComponents = {
     code({ value }: { value: CodeBlock }) {
       const { code, language } = value;
 
-      return (
-        <Suspense
-          fallback={
-            <pre className="not-prose overflow-x-auto rounded-lg bg-muted p-4">
-              <code>{code}</code>
-            </pre>
-          }
-        >
-          <InlineCodeBlockHighlighter code={code} language={language} />
-        </Suspense>
-      );
+      return <InlineCodeBlock code={code} language={language} />;
     },
     image({ value }: { value: ImageBlock }) {
       const { alt, asset, height, width } = value;

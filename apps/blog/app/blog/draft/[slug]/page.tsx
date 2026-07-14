@@ -7,7 +7,6 @@ import ArticleContent from "@/components/article-content";
 import DraftModeBanner from "@/components/draft-mode-banner";
 import PostNavigation from "@/components/post-navigation";
 import SimilarPosts from "@/components/similar-posts";
-import SimilarPostsSkeleton from "@/components/similar-posts-skeleton";
 import TableOfContents from "@/components/table-of-contents";
 import { DEFAULT_POST_TITLE } from "@/lib/constants";
 import { extractHeadings } from "@/lib/extract-headings";
@@ -65,7 +64,23 @@ export async function generateMetadata({
   };
 }
 
-export default async function DraftPostPage({ params }: PageProps) {
+function DraftPostSkeleton() {
+  return (
+    <main className="px-6 py-8 md:px-12 lg:px-24">
+      <div className="mx-auto max-w-4xl space-y-6">
+        <div className="h-8 w-2/3 animate-pulse rounded bg-muted" />
+        <div className="h-4 w-1/4 animate-pulse rounded bg-muted" />
+        <div className="space-y-3 pt-4">
+          <div className="h-4 w-full animate-pulse rounded bg-muted" />
+          <div className="h-4 w-full animate-pulse rounded bg-muted" />
+          <div className="h-4 w-5/6 animate-pulse rounded bg-muted" />
+        </div>
+      </div>
+    </main>
+  );
+}
+
+async function DraftPostContent({ params }: PageProps) {
   const { slug } = await params;
 
   if (slug === "_placeholder") {
@@ -143,12 +158,18 @@ export default async function DraftPostPage({ params }: PageProps) {
 
       <div className="mx-auto max-w-4xl">
         <div aria-atomic="false" aria-live="polite">
-          <Suspense fallback={<SimilarPostsSkeleton />}>
-            <SimilarPostsSection postId={post.id} />
-          </Suspense>
+          <SimilarPostsSection postId={post.id} />
         </div>
       </div>
     </main>
+  );
+}
+
+export default function DraftPostPage({ params }: PageProps) {
+  return (
+    <Suspense fallback={<DraftPostSkeleton />}>
+      <DraftPostContent params={params} />
+    </Suspense>
   );
 }
 
