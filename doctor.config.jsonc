@@ -75,10 +75,7 @@
         // Dead-code / unused-dep scans are noisy in this monorepo (catalog deps,
         // package entry points, transitive peer usage). Prefer package-level audits.
         "files": ["package.json"],
-        "rules": [
-          "deslop/unused-dependency",
-          "deslop/unused-dev-dependency"
-        ]
+        "rules": ["deslop/unused-dependency", "deslop/unused-dev-dependency"]
       }
     ]
   }
