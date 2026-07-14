@@ -1,25 +1,7 @@
 import { getProfile } from "@ykzts/supabase/queries";
-import { Skeleton } from "@ykzts/ui/components/skeleton";
-import { Suspense } from "react";
-import range from "@/lib/range";
 import PortableTextBlock from "./portable-text";
 
-function AboutSkeleton() {
-  return (
-    <section className="mx-auto max-w-4xl py-20" id="about">
-      <h2 className="mb-10 font-semibold text-base text-muted-foreground uppercase tracking-widest">
-        About
-      </h2>
-      <div className="space-y-4">
-        {Array.from(range(0, 3), (i) => (
-          <Skeleton className="h-4 w-full" key={`about-${i}`} />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-async function AboutImpl() {
+export default async function About() {
   const profile = await getProfile();
 
   if (!profile.about) {
@@ -35,13 +17,5 @@ async function AboutImpl() {
         <PortableTextBlock value={profile.about} />
       </div>
     </section>
-  );
-}
-
-export default function About() {
-  return (
-    <Suspense fallback={<AboutSkeleton />}>
-      <AboutImpl />
-    </Suspense>
   );
 }

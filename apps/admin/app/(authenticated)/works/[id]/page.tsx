@@ -11,7 +11,12 @@ export function generateStaticParams() {
   return [{ id: "_" }];
 }
 
-async function WorkEditContent({ id }: { id: string }) {
+async function WorkEditContent({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
   const [work, allTechnologies] = await Promise.all([
     getWork(id),
     getAllTechnologies(),
@@ -33,13 +38,11 @@ async function WorkEditContent({ id }: { id: string }) {
   );
 }
 
-export default async function EditWorkPage({
+export default function EditWorkPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
-
   return (
     <div>
       <h1 className="mb-6 font-bold text-3xl">作品編集</h1>
@@ -50,7 +53,7 @@ export default async function EditWorkPage({
           </Panel>
         }
       >
-        <WorkEditContent id={id} />
+        <WorkEditContent params={params} />
       </Suspense>
     </div>
   );

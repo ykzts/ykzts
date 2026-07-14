@@ -1,14 +1,19 @@
 import { getCurrentUser } from "@ykzts/supabase/auth";
 import Link from "next/link";
+import { Suspense } from "react";
 import { logout } from "@/app/login/actions";
 
 interface HeaderProps {
   canEdit?: boolean;
 }
 
-export default async function Header({ canEdit = false }: HeaderProps) {
-  const user = await getCurrentUser();
-
+function HeaderChrome({
+  canEdit = false,
+  children,
+}: {
+  canEdit?: boolean;
+  children: React.ReactNode;
+}) {
   return (
     <header className="border-border border-b bg-background">
       <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
@@ -21,25 +26,58 @@ export default async function Header({ canEdit = false }: HeaderProps) {
               編集モード
             </span>
           )}
-          {user ? (
-            <form action={logout}>
-              <button
-                className="text-muted-foreground text-sm hover:text-foreground"
-                type="submit"
-              >
-                ログアウト
-              </button>
-            </form>
-          ) : (
-            <Link
-              className="text-muted-foreground text-sm hover:text-foreground"
-              href="/login"
-            >
-              ログイン
-            </Link>
-          )}
+          {children}
         </nav>
       </div>
     </header>
+  );
+}
+
+async function HeaderAuth() {
+  const user = await getCurrentUser();
+
+  if (user) {
+    return (
+      <form action={logout}>
+        <button
+          className="text-muted-foreground text-sm hover:text-foreground"
+          type="submit"
+        >
+          ログアウト
+        </button>
+      </form>
+    );
+  }
+
+  return (
+    <Link
+      className="text-muted-foreground text-sm hover:text-foreground"
+      href="/login"
+    >
+      ログイン
+    </Link>
+  );
+}
+
+function HeaderAuthFallback() {
+  return (
+    <span
+      aria-hidden="true"
+      className="inline-block h-5 w-16 animate-pulse rounded bg-muted"
+    />
+  );
+}
+
+/**
+ * Site header with static chrome in the shell and auth controls streamed
+ * behind a small Suspense boundary (private cache / cookies).
+ */
+export default function Header({ canEdit = false }: HeaderProps) {
+  return (
+    <HeaderChrome canEdit={canEdit}>
+      <Suspense fallback={<HeaderAuthFallback />}>
+        <HeaderAuth />
+      </Suspense>
+    </HeaderChrome>
   );
 }

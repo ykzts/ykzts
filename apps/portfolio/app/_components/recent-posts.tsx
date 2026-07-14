@@ -1,10 +1,7 @@
 import { Link } from "@vercel/microfrontends/next/client";
 import { getPosts } from "@ykzts/supabase/queries";
-import { Skeleton } from "@ykzts/ui/components/skeleton";
 import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { cacheLife } from "next/cache";
-import { Suspense } from "react";
-import range from "@/lib/range";
 
 const RECENT_POSTS_COUNT = 5;
 
@@ -24,30 +21,7 @@ async function getCurrentTime(): Promise<Date> {
   return startOfHour(new Date());
 }
 
-function RecentPostsSkeleton() {
-  return (
-    <section className="mx-auto max-w-4xl py-20" id="blog">
-      <h2 className="mb-12 font-semibold text-base text-muted-foreground uppercase tracking-widest">
-        Blog
-      </h2>
-      <div className="space-y-6">
-        {Array.from(range(0, RECENT_POSTS_COUNT - 1), (i) => (
-          <article
-            className="rounded-xl border border-border bg-card p-6"
-            key={`skeleton-${i}`}
-          >
-            <Skeleton className="mb-3 h-5 w-2/3" />
-            <Skeleton className="mb-2 h-4 w-full" />
-            <Skeleton className="mb-4 h-4 w-4/5" />
-            <Skeleton className="h-3 w-24" />
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-async function RecentPostsImpl() {
+export default async function RecentPosts() {
   const now = await getCurrentTime();
 
   let allPosts: Awaited<ReturnType<typeof getPosts>>;
@@ -134,13 +108,5 @@ async function RecentPostsImpl() {
         </Link>
       </div>
     </section>
-  );
-}
-
-export default function RecentPosts() {
-  return (
-    <Suspense fallback={<RecentPostsSkeleton />}>
-      <RecentPostsImpl />
-    </Suspense>
   );
 }

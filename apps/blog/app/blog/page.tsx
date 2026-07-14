@@ -2,10 +2,9 @@ import { getSiteName } from "@ykzts/site-config";
 import { getProfile } from "@ykzts/supabase/queries";
 import { Rss } from "lucide-react";
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { YearArchiveLinks } from "./_components/archive-links";
 import { Pagination } from "./_components/pagination";
-import { Posts, PostsSkeleton } from "./_components/posts";
+import { Posts } from "./_components/posts";
 
 const siteName = getSiteName();
 
@@ -61,23 +60,9 @@ export default function HomePage() {
             <span>Atom</span>
           </a>
         </div>
-        <Suspense fallback={<PostsSkeleton count={5} />}>
-          <Posts />
-        </Suspense>
-
-        <Suspense
-          fallback={
-            <div className="mt-8 border-t pt-4">
-              <div className="h-4 w-48 animate-pulse rounded bg-muted" />
-            </div>
-          }
-        >
-          <YearArchiveLinks />
-        </Suspense>
-
-        <Suspense fallback={null}>
-          <Pagination />
-        </Suspense>
+        <Posts />
+        <YearArchiveLinks />
+        <Pagination />
       </div>
     </main>
   );

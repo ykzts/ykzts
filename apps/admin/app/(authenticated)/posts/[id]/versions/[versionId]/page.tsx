@@ -141,18 +141,25 @@ async function VersionDetailContent({
   );
 }
 
-export default async function VersionDetailPage({
+async function VersionDetailFromParams({
   params,
 }: {
   params: Promise<{ id: string; versionId: string }>;
 }) {
   const { id, versionId } = await params;
+  return <VersionDetailContent postId={id} versionId={versionId} />;
+}
 
+export default function VersionDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string; versionId: string }>;
+}) {
   return (
     <div>
       <h1 className="mb-6 font-bold text-3xl">バージョン詳細</h1>
       <Suspense fallback={<VersionDetailSkeleton />}>
-        <VersionDetailContent postId={id} versionId={versionId} />
+        <VersionDetailFromParams params={params} />
       </Suspense>
     </div>
   );

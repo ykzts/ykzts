@@ -145,18 +145,25 @@ async function VersionsContent({ postId }: { postId: string }) {
   );
 }
 
-export default async function VersionsPage({
+async function VersionsContentFromParams({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  return <VersionsContent postId={id} />;
+}
 
+export default function VersionsPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   return (
     <div>
       <h1 className="mb-6 font-bold text-3xl">バージョン履歴</h1>
       <Suspense fallback={<VersionsSkeleton />}>
-        <VersionsContent postId={id} />
+        <VersionsContentFromParams params={params} />
       </Suspense>
     </div>
   );
