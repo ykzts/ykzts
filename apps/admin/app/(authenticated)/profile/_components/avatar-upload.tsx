@@ -75,6 +75,9 @@ export function AvatarUpload({
         setError(result.error);
         setPreview(currentAvatarUrl || null);
         setSelectedFile(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
       } else if (result.url) {
         setPreview(result.url);
         setSelectedFile(null);
@@ -88,6 +91,9 @@ export function AvatarUpload({
       setError("アップロード中にエラーが発生しました。");
       setPreview(currentAvatarUrl || null);
       setSelectedFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     } finally {
       setUploading(false);
     }

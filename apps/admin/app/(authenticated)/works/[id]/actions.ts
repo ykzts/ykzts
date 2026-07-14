@@ -16,7 +16,7 @@ export type ActionState = {
 // Zod schema for work validation
 const workSchema = z.object({
   content: z.string().min(1, "コンテンツは必須です"),
-  id: z.uuid("無効なIDです"),
+  id: z.uuid({ message: "無効なIDです" }),
   slug: z
     .string()
     .min(1, "スラッグは必須です")

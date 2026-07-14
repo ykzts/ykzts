@@ -51,6 +51,7 @@ const publishedAtFormatter = new Intl.DateTimeFormat("ja-JP", {
   hour: "2-digit",
   minute: "2-digit",
   month: "numeric",
+  timeZone: "Asia/Tokyo",
   year: "numeric",
 });
 
