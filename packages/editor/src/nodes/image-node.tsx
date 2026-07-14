@@ -172,6 +172,12 @@ export class ImageNode extends DecoratorNode<ReactElement> {
     return false;
   }
 
+  // Block-level image: root children must not be inline, or Lexical wraps
+  // the node in a paragraph (DecoratorNode.isInline() defaults to true).
+  isInline(): false {
+    return false;
+  }
+
   getSrc(): string {
     return this.__src;
   }
