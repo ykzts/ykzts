@@ -1,0 +1,85 @@
+{
+  "$schema": "https://react.doctor/schema/config.json",
+  // Intentional / known-noise suppressions for this monorepo.
+  // Prefer narrow `ignore.overrides` over global rule disables.
+  // Paths match each workspace package's project-relative file paths.
+  // Revisit when upgrading react-doctor.
+  "serverAuthFunctionNames": ["requireAuth", "checkAuth"],
+  "ignore": {
+    "rules": [
+      // React Compiler bailouts for features not implemented yet (try/finally,
+      // etc.). Not application defects — noise until the compiler catches up.
+      "react-hooks-js/todo",
+      // Fires on ordinary sequential setState in event handlers (not impure
+      // functional updaters). Track upstream; re-enable when the detector
+      // distinguishes real updater side effects.
+      "react-doctor/no-impure-state-updater",
+      // Large admin/editor forms and toolbar are intentionally cohesive for now.
+      "react-doctor/no-giant-component",
+      // shadcn/ui and Lexical plugins export helpers alongside components.
+      "react-doctor/only-export-components"
+    ],
+    "files": [
+      // Generated Supabase types (typegen); public surface is intentional.
+      "**/database.types.ts"
+    ],
+    "overrides": [
+      {
+        // Public contact form: auth is intentionally not required (bot check + validation).
+        "files": ["app/_actions/contact.ts"],
+        "rules": ["react-doctor/server-auth-actions"]
+      },
+      {
+        // Login / OAuth credential-establishing endpoints legitimately run unauthenticated.
+        "files": ["app/login/actions.ts"],
+        "rules": ["react-doctor/server-auth-actions"]
+      },
+      {
+        // Supabase OAuth callback: code/next query params are required by the protocol.
+        // open-redirect is already mitigated with a relative-path allowlist.
+        "files": ["app/auth/callback/route.ts"],
+        "rules": ["react-doctor/url-prefilled-privileged-action"]
+      },
+      {
+        // Sequential embedding generation avoids provider rate limits (documented in code).
+        "files": ["app/api/cron/posts/embeddings/route.ts"],
+        "rules": ["react-doctor/async-await-in-loop"]
+      },
+      {
+        // Shiki-highlighted HTML is trusted server-side output, not user HTML.
+        "files": [
+          "components/portable-text.tsx",
+          "app/_components/portable-text.tsx"
+        ],
+        "rules": ["react-doctor/dangerous-html-sink"]
+      },
+      {
+        // Atom feed alternate links must stay plain <a type="application/atom+xml">.
+        "files": ["app/blog/page.tsx", "app/blog/[year]/page.tsx"],
+        "rules": ["react-doctor/nextjs-no-a-element"]
+      },
+      {
+        // Lexical image nodes render inside contentEditable; next/image is a poor fit.
+        "files": ["src/nodes/image-node.tsx"],
+        "rules": ["react-doctor/nextjs-no-img-element"]
+      },
+      {
+        // Theme toggle / editor mount gates intentionally use client-only setState after paint.
+        "files": [
+          "src/components/theme-toggle.tsx",
+          "src/rich-text-editor.tsx"
+        ],
+        "rules": ["react-doctor/rendering-hydration-no-flicker"]
+      },
+      {
+        // Dead-code / unused-dep scans are noisy in this monorepo (catalog deps,
+        // package entry points, transitive peer usage). Prefer package-level audits.
+        "files": ["package.json"],
+        "rules": [
+          "deslop/unused-dependency",
+          "deslop/unused-dev-dependency"
+        ]
+      }
+    ]
+  }
+}
