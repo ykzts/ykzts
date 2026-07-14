@@ -16,9 +16,20 @@ export default function KeyVisualPage() {
       <Panel>
         <Suspense
           fallback={
-            <div className="animate-pulse space-y-4">
-              <div className="aspect-video w-full max-w-sm rounded-lg border-2 border-border bg-muted/10" />
-              <div className="h-32 w-full rounded-lg border-2 border-border border-dashed bg-muted/10" />
+            <div
+              aria-label="読み込み中..."
+              aria-live="polite"
+              className="space-y-4"
+              role="status"
+            >
+              <div
+                aria-hidden="true"
+                className="aspect-video w-full max-w-sm animate-pulse rounded-lg border-2 border-border bg-muted"
+              />
+              <div
+                aria-hidden="true"
+                className="h-32 w-full animate-pulse rounded-lg border-2 border-border border-dashed bg-muted"
+              />
             </div>
           }
         >

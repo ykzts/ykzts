@@ -1,50 +1,98 @@
 export default function ProfileEditSkeleton() {
   return (
-    <div className="animate-pulse space-y-6">
-      {/* Name field */}
+    <div
+      aria-label="読み込み中..."
+      aria-live="polite"
+      className="space-y-6"
+      role="status"
+    >
       <div>
-        <div className="mb-2 h-5 w-16 rounded bg-muted/20" />
-        <div className="h-10 w-full rounded-md border border-input bg-muted/10" />
+        <div
+          aria-hidden="true"
+          className="mb-2 h-5 w-16 animate-pulse rounded bg-muted"
+        />
+        <div
+          aria-hidden="true"
+          className="h-10 w-full animate-pulse rounded-md bg-muted"
+        />
       </div>
 
-      {/* Tagline field */}
       <div>
-        <div className="mb-2 h-5 w-32 rounded bg-muted/20" />
-        <div className="h-10 w-full rounded-md border border-input bg-muted/10" />
+        <div
+          aria-hidden="true"
+          className="mb-2 h-5 w-32 animate-pulse rounded bg-muted"
+        />
+        <div
+          aria-hidden="true"
+          className="h-10 w-full animate-pulse rounded-md bg-muted"
+        />
       </div>
 
-      {/* Email field */}
       <div>
-        <div className="mb-2 h-5 w-36 rounded bg-muted/20" />
-        <div className="h-10 w-full rounded-md border border-input bg-muted/10" />
+        <div
+          aria-hidden="true"
+          className="mb-2 h-5 w-36 animate-pulse rounded bg-muted"
+        />
+        <div
+          aria-hidden="true"
+          className="h-10 w-full animate-pulse rounded-md bg-muted"
+        />
       </div>
 
-      {/* About field */}
       <div>
-        <div className="mb-2 h-5 w-20 rounded bg-muted/20" />
-        <div className="h-32 w-full rounded-md border border-input bg-muted/10" />
+        <div
+          aria-hidden="true"
+          className="mb-2 h-5 w-20 animate-pulse rounded bg-muted"
+        />
+        <div
+          aria-hidden="true"
+          className="h-32 w-full animate-pulse rounded-md bg-muted"
+        />
       </div>
 
-      {/* Social links section */}
       <div>
         <div className="mb-3 flex items-center justify-between">
-          <div className="h-5 w-32 rounded bg-muted/20" />
-          <div className="h-8 w-16 rounded bg-muted/10" />
+          <div
+            aria-hidden="true"
+            className="h-5 w-32 animate-pulse rounded bg-muted"
+          />
+          <div
+            aria-hidden="true"
+            className="h-8 w-16 animate-pulse rounded bg-muted"
+          />
         </div>
+        <div
+          aria-hidden="true"
+          className="h-16 w-full animate-pulse rounded-md bg-muted"
+        />
       </div>
 
-      {/* Technologies section */}
       <div>
         <div className="mb-3 flex items-center justify-between">
-          <div className="h-5 w-24 rounded bg-muted/20" />
-          <div className="h-8 w-16 rounded bg-muted/10" />
+          <div
+            aria-hidden="true"
+            className="h-5 w-24 animate-pulse rounded bg-muted"
+          />
+          <div
+            aria-hidden="true"
+            className="h-8 w-16 animate-pulse rounded bg-muted"
+          />
         </div>
+        <div
+          aria-hidden="true"
+          className="h-16 w-full animate-pulse rounded-md bg-muted"
+        />
       </div>
 
-      {/* Buttons */}
       <div className="flex gap-4">
-        <div className="inline-flex h-10 w-20 cursor-default items-center justify-center gap-2 rounded-md bg-muted/10 px-4 py-2 font-medium text-sm" />
-        <div className="inline-flex h-10 w-24 cursor-default items-center justify-center gap-2 rounded-md bg-muted/10 px-4 py-2 font-medium text-sm" />
+        <div
+          aria-hidden="true"
+          className="h-10 w-20 animate-pulse rounded-md bg-muted"
+        />
+        <div
+          aria-hidden="true"
+          className="h-10 w-24 animate-pulse rounded-md bg-muted"
+        />
       </div>
     </div>
   );
