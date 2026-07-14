@@ -171,7 +171,7 @@ async function PostsContentAsync({
     perPage = 20;
   }
 
-  const search = params.search;
+  const { search } = params;
   const status = ["draft", "scheduled", "published", "all"].includes(
     params.status || ""
   )

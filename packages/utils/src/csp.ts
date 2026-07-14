@@ -91,7 +91,7 @@ export function getSupabaseHost(supabaseUrl?: string): string | undefined {
     const parsed = new URL(url);
     return `${parsed.protocol}//${parsed.host}`;
   } catch {
-    return;
+    // Invalid absolute URL — skip origin extraction.
   }
 }
 

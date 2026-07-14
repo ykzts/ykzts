@@ -51,11 +51,11 @@ export async function GET(request: Request) {
           textEncoder.encode(`## [${post.title}](${url})\n\n`)
         );
 
-        const body = isPortableTextValue(post.content)
+        const markdownBody = isPortableTextValue(post.content)
           ? portableTextToMarkdown(post.content, { headingOffset: 1 })
           : post.excerpt;
 
-        controller.enqueue(textEncoder.encode(`${body}\n\n`));
+        controller.enqueue(textEncoder.encode(`${markdownBody}\n\n`));
       }
 
       controller.close();

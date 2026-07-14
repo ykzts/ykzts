@@ -68,7 +68,7 @@ async function MemoListHeader() {
   return (
     <div className="mb-6 flex items-center justify-between">
       <h1 className="font-bold text-2xl">メモ一覧</h1>
-      {ownerProfile && (
+      {!!ownerProfile && (
         <Link
           className="rounded bg-primary px-3 py-1.5 text-primary-foreground text-sm hover:bg-primary/90"
           href="/new"

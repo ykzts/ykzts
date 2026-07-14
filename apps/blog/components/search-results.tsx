@@ -38,9 +38,9 @@ function SimilarityBadge({ similarity }: { similarity: number }) {
       className={cn(
         "inline-flex items-center rounded-full px-2 py-1 font-medium text-xs",
         {
-          "bg-green-100 text-green-800": percentage >= 85,
           "bg-blue-100 text-blue-800": percentage >= 70 && percentage < 85,
           "bg-gray-100 text-gray-800": percentage < 70,
+          "bg-green-100 text-green-800": percentage >= 85,
         }
       )}
     >
@@ -88,7 +88,7 @@ export default function SearchResults({ query, results }: SearchResultsProps) {
                 <DateDisplay date={result.published_at} />
               </CardDescription>
             </CardHeader>
-            {previewText && (
+            {!!previewText && (
               <CardContent>
                 <p className="text-muted-foreground">{previewText}</p>
               </CardContent>

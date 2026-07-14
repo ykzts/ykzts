@@ -109,7 +109,7 @@ export function ImageAltDialog({
                 type="text"
                 value={alt}
               />
-              {warning && (
+              {!!warning && (
                 <FieldDescription className="text-yellow-600" role="alert">
                   {warning}
                 </FieldDescription>

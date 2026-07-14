@@ -75,7 +75,7 @@ export function CopyUrlButton({
           ) : (
             <Copy className="h-4 w-4" />
           )}
-          {label && <span className="ml-1">{label}</span>}
+          {!!label && <span className="ml-1">{label}</span>}
         </Button>
         <Button
           aria-label="新しいタブで開く"
@@ -101,7 +101,7 @@ export function CopyUrlButton({
       variant={variant}
     >
       {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-      {label && <span className="ml-1">{label}</span>}
+      {!!label && <span className="ml-1">{label}</span>}
     </Button>
   );
 }

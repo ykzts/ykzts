@@ -10,6 +10,8 @@ const config: UserConfig = {
   // - body-max-line-length / footer-max-line-length (preset's 100 char limit is too strict
   //   once you start using trailers like Assisted-by or writing detailed bodies)
   rules: {
+    "body-max-line-length": [0],
+    "footer-max-line-length": [0],
     "scope-enum": [
       2,
       "always",
@@ -37,8 +39,6 @@ const config: UserConfig = {
         "release",
       ],
     ],
-    "body-max-line-length": [0],
-    "footer-max-line-length": [0],
   },
 };
 

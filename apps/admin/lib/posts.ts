@@ -250,7 +250,7 @@ export async function updatePost(params: {
   // Auto-generate excerpt from first paragraph if content is provided and excerpt is explicitly empty
   // undefined means "don't update excerpt" (preserve existing in database)
   // empty string means "clear excerpt" which triggers auto-generation when content is provided
-  let excerpt = params.excerpt;
+  let { excerpt } = params;
   if (
     params.content &&
     params.excerpt !== undefined &&
@@ -410,9 +410,9 @@ export async function getPostVersion(
   }
 
   // Verify post ownership
-  const post = (
-    data as PostVersionWithProfile & { post?: { profile_id: string } }
-  ).post as unknown as { profile_id: string };
+  const { post } = data as PostVersionWithProfile & {
+    post?: { profile_id: string };
+  };
   if (!post || post.profile_id !== profileData.id) {
     throw new Error("このバージョンにアクセス権がありません");
   }

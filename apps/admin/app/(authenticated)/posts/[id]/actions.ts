@@ -67,7 +67,7 @@ export async function updatePostAction(
   });
 
   if (!validation.success) {
-    const firstError = validation.error.issues[0];
+    const [firstError] = validation.error.issues;
     return { error: firstError?.message ?? "バリデーションエラー" };
   }
 
@@ -121,7 +121,7 @@ export async function deletePostAction(id: string): Promise<void> {
     .safeParse(id);
 
   if (!idValidation.success) {
-    const firstError = idValidation.error.issues[0];
+    const [firstError] = idValidation.error.issues;
     throw new Error(firstError?.message ?? "無効なIDです");
   }
 
@@ -135,7 +135,7 @@ export async function deletePostAction(id: string): Promise<void> {
     if (error instanceof Error) {
       throw error;
     }
-    throw new Error("不明なエラー");
+    throw new Error("不明なエラー", { cause: error });
   }
 
   redirect("/posts");

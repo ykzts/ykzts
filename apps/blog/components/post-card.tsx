@@ -64,16 +64,16 @@ export default function PostCard({ isDraft = false, post }: PostCardProps) {
           <Link className="hover:underline" href={url}>
             {post.title}
           </Link>
-          {statusBadge && (
+          {!!statusBadge && (
             <Badge variant={statusBadge.variant}>{statusBadge.label}</Badge>
           )}
         </CardTitle>
         <CardDescription className="flex items-center gap-4">
-          {post.profile?.name && <span>著者: {post.profile.name}</span>}
+          {!!post.profile?.name && <span>著者: {post.profile.name}</span>}
           <DateDisplay date={post.published_at} />
         </CardDescription>
       </CardHeader>
-      {previewText && (
+      {!!previewText && (
         <CardContent>
           <p className="text-muted-foreground">{previewText}</p>
         </CardContent>

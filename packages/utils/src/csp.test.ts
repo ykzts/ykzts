@@ -35,7 +35,7 @@ describe("buildCsp", () => {
   });
 
   it("filters falsy values (useful for dev/prod conditionals)", () => {
-    const isDev = true;
+    const isDev: boolean = true;
     const csp = buildCsp({
       scriptSrc: [
         SELF,

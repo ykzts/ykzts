@@ -81,7 +81,7 @@ describe("Post creation and update with auto-excerpt", () => {
       });
 
       expect(result).toBe("mock-post-id");
-      const call = mockRpc.mock.calls[0];
+      const [call] = mockRpc.mock.calls;
       expect(call[0]).toBe("create_post");
       expect(call[1].p_excerpt).toBe("This is auto-generated excerpt.");
     });
@@ -112,7 +112,7 @@ describe("Post creation and update with auto-excerpt", () => {
       });
 
       expect(result).toBe("mock-post-id");
-      const call = mockRpc.mock.calls[0];
+      const [call] = mockRpc.mock.calls;
       expect(call[0]).toBe("create_post");
       expect(call[1].p_excerpt).toBe("This is auto-generated excerpt.");
     });
@@ -182,7 +182,7 @@ describe("Post creation and update with auto-excerpt", () => {
       });
 
       expect(result).toBe("mock-post-id");
-      const call = mockRpc.mock.calls[0];
+      const [call] = mockRpc.mock.calls;
       expect(call[0]).toBe("update_post");
       expect(call[1].p_excerpt).toBe("Updated content for auto-excerpt.");
     });
@@ -212,7 +212,7 @@ describe("Post creation and update with auto-excerpt", () => {
       });
 
       expect(result).toBe("mock-post-id");
-      const call = mockRpc.mock.calls[0];
+      const [call] = mockRpc.mock.calls;
       expect(call[0]).toBe("update_post");
       // undefined means "don't update excerpt" - preserve existing in database
       expect(call[1].p_excerpt).toBeUndefined();
@@ -226,7 +226,7 @@ describe("Post creation and update with auto-excerpt", () => {
       });
 
       expect(result).toBe("mock-post-id");
-      const call = mockRpc.mock.calls[0];
+      const [call] = mockRpc.mock.calls;
       expect(call[0]).toBe("update_post");
       expect(call[1].p_excerpt).toBeUndefined();
     });
@@ -256,7 +256,7 @@ describe("Post creation and update with auto-excerpt", () => {
       });
 
       expect(result).toBe("mock-post-id");
-      const call = mockRpc.mock.calls[0];
+      const [call] = mockRpc.mock.calls;
       expect(call[0]).toBe("update_post");
       expect(call[1].p_excerpt).toBe("Keep this excerpt");
     });

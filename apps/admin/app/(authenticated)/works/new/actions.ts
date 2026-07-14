@@ -47,7 +47,7 @@ export async function createWork(
   const validation = workSchema.safeParse(rawData);
 
   if (!validation.success) {
-    const firstError = validation.error.issues[0];
+    const [firstError] = validation.error.issues;
     return { error: firstError?.message ?? "バリデーションエラー" };
   }
 
@@ -70,7 +70,7 @@ export async function createWork(
   }
   const workUrlInputs: WorkUrlInput[] = [];
 
-  for (let i = 0; i < workUrlsCount; i++) {
+  for (let i = 0; i < workUrlsCount; i += 1) {
     const label = formData.get(`work_url_label_${i}`);
     const url = formData.get(`work_url_url_${i}`);
 

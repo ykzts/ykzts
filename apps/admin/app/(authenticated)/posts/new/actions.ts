@@ -40,7 +40,7 @@ export async function createPostAction(
   });
 
   if (!validation.success) {
-    const firstError = validation.error.issues[0];
+    const [firstError] = validation.error.issues;
     return { error: firstError?.message ?? "バリデーションエラー" };
   }
 

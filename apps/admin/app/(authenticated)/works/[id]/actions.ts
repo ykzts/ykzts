@@ -67,7 +67,7 @@ export async function updateWork(
   });
 
   if (!validation.success) {
-    const firstError = validation.error.issues[0];
+    const [firstError] = validation.error.issues;
     return { error: firstError?.message ?? "バリデーションエラー" };
   }
 
@@ -90,7 +90,7 @@ export async function updateWork(
   }
   const workUrlInputs: WorkUrlInput[] = [];
 
-  for (let i = 0; i < workUrlsCount; i++) {
+  for (let i = 0; i < workUrlsCount; i += 1) {
     const label = formData.get(`work_url_label_${i}`);
     const url = formData.get(`work_url_url_${i}`);
 

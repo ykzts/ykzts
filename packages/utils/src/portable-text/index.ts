@@ -446,7 +446,7 @@ export function parseMarkdownForPost(
   let titleBlockIndex = -1;
 
   if (!title) {
-    for (let i = 0; i < allBlocks.length; i++) {
+    for (let i = 0; i < allBlocks.length; i += 1) {
       const block = allBlocks[i];
       if (block._type === "block" && block.style === "h1") {
         title = extractBlockText(block);

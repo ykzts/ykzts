@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { getPostUrl } from "./blog-urls.js";
 
 const publishedPost = {
-  slug: "my-post",
   published_at: "2024-02-15T10:30:00.000Z",
+  slug: "my-post",
 };
 
 describe("getPostUrl", () => {
@@ -14,14 +14,14 @@ describe("getPostUrl", () => {
   it("should encode special characters in slug", () => {
     expect(
       getPostUrl({
-        slug: "my awesome post",
         published_at: "2024-02-15T10:30:00.000Z",
+        slug: "my awesome post",
       })
     ).toBe("/blog/2024/02/15/my%20awesome%20post");
   });
 
   it("should return a draft path when published_at is null", () => {
-    expect(getPostUrl({ slug: "my-post", published_at: null })).toBe(
+    expect(getPostUrl({ published_at: null, slug: "my-post" })).toBe(
       "/blog/draft/my-post"
     );
   });
@@ -60,7 +60,7 @@ describe("getPostUrl", () => {
   it("should return a full draft URL when published_at is null", () => {
     expect(
       getPostUrl(
-        { slug: "my-post", published_at: null },
+        { published_at: null, slug: "my-post" },
         { full: true, origin: "https://example.com" }
       )
     ).toBe("https://example.com/blog/draft/my-post");
@@ -68,13 +68,13 @@ describe("getPostUrl", () => {
 
   it("should return null when slug is empty", () => {
     expect(
-      getPostUrl({ slug: "", published_at: "2024-02-15T10:30:00.000Z" })
+      getPostUrl({ published_at: "2024-02-15T10:30:00.000Z", slug: "" })
     ).toBeNull();
   });
 
   it("should return null when published_at is invalid", () => {
     expect(
-      getPostUrl({ slug: "my-post", published_at: "invalid-date" })
+      getPostUrl({ published_at: "invalid-date", slug: "my-post" })
     ).toBeNull();
   });
 });

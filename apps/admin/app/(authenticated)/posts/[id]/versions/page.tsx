@@ -105,13 +105,13 @@ async function VersionsContent({ postId }: { postId: string }) {
                   </div>
                 </div>
 
-                {version.change_summary && (
+                {!!version.change_summary && (
                   <div className="rounded-sm bg-muted px-3 py-2 text-sm">
                     {version.change_summary}
                   </div>
                 )}
 
-                {version.title && (
+                {!!version.title && (
                   <div className="mt-2">
                     <span className="font-medium text-muted-foreground text-sm">
                       タイトル:{" "}

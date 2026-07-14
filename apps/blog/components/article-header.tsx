@@ -33,7 +33,7 @@ export default function ArticleHeader({
             <span>
               更新: <DateDisplay date={versionDate} />
             </span>
-            {historyUrl && (
+            {!!historyUrl && (
               <Link
                 className="text-muted-foreground hover:underline"
                 href={historyUrl}

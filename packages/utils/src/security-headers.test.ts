@@ -49,10 +49,10 @@ describe("getSecurityHeaders", () => {
   it("appends additional sources from cspDirectives (extension use case)", () => {
     vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://ex.supabase.co");
     const headers = getSecurityHeaders({
-      dev: false,
       cspDirectives: {
         connectSrc: ["https://ex.supabase.co", "wss://ex.supabase.co"],
       },
+      dev: false,
     });
     const csp =
       headers.find((h) => h.key === "Content-Security-Policy")?.value ?? "";
@@ -63,10 +63,10 @@ describe("getSecurityHeaders", () => {
 
   it("supports kebab-case keys in cspDirectives overrides", () => {
     const headers = getSecurityHeaders({
-      dev: false,
       cspDirectives: {
         "frame-src": ["https://example.com"],
       },
+      dev: false,
     });
     const csp =
       headers.find((h) => h.key === "Content-Security-Policy")?.value ?? "";

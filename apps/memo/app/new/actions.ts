@@ -51,7 +51,7 @@ export async function createMemo(
   }
 
   // Reject paths that collide with static routes
-  const firstSegment = normalizedPath.split("/")[0];
+  const [firstSegment] = normalizedPath.split("/");
   if (RESERVED_ROUTE_SEGMENTS.includes(firstSegment)) {
     return {
       error: "このパスはシステムで予約されているため使用できません",

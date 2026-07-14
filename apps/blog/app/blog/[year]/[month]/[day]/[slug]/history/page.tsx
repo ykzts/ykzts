@@ -61,7 +61,7 @@ function VersionsContent({
                 className="mt-1 text-muted-foreground text-sm"
                 date={version.version_date}
               />
-              {version.change_summary && (
+              {!!version.change_summary && (
                 <p className="mt-2 text-sm">{version.change_summary}</p>
               )}
             </div>
@@ -154,7 +154,7 @@ export default async function PostHistoryPage({ params }: PageProps) {
 
   const versions = await getPostVersions(post.id);
 
-  const postUrl = getPostUrl({ slug, published_at: post.published_at });
+  const postUrl = getPostUrl({ published_at: post.published_at, slug });
 
   return (
     <main className="px-6 py-8 md:px-12 lg:px-24">

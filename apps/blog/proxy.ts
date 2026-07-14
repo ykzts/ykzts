@@ -83,7 +83,7 @@ function handleLegacyArchiveRedirect(
     return null;
   }
 
-  const year = match[1];
+  const [, year] = match;
   const month = match[2].padStart(2, "0");
   const target = `/blog/${year}#month-${month}`;
   return NextResponse.redirect(new URL(target, request.url), 301);
@@ -116,8 +116,8 @@ async function handleRedirectFrom(
 
     if (post?.slug && post.published_at) {
       const canonicalUrl = getPostUrl({
-        slug: post.slug,
         published_at: post.published_at,
+        slug: post.slug,
       });
       if (canonicalUrl) {
         return NextResponse.redirect(new URL(canonicalUrl, request.url), 301);

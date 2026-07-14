@@ -58,7 +58,7 @@ async function HeroImpl() {
         </div>
 
         <div className="w-full shrink-0 md:w-1/3">
-          {kv && (
+          {!!kv && (
             <Image
               alt={kv.alt_text ?? profile.name}
               className="h-auto w-full rounded-2xl shadow-lg"

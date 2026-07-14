@@ -69,7 +69,7 @@ export function PublicUrlField({
   }
 
   const url = getPostUrl(
-    { slug, published_at: publishedAt },
+    { published_at: publishedAt, slug },
     { full: true, origin: getSiteOrigin() }
   );
   const displayUrl = url ?? draftPreviewUrl ?? null;
@@ -132,7 +132,7 @@ export function PublicUrlField({
           value={displayUrl}
         />
         <InputGroupAddon align="inline-end">
-          {url && draftPreviewUrl && (
+          {!!url && draftPreviewUrl && (
             <InputGroupButton
               aria-label="ドラフトプレビューを開く"
               onClick={handleOpenDraftPreview}

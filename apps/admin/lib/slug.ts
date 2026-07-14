@@ -80,7 +80,7 @@ async function generateUniqueSlug(
   // Find the first available number starting from 2
   let nextNumber = 2;
   while (existingNumbers.has(nextNumber) && nextNumber < 1000) {
-    nextNumber++;
+    nextNumber += 1;
   }
 
   if (nextNumber >= 1000) {

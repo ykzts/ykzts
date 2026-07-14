@@ -443,7 +443,7 @@ export function initializeEditorWithPortableText(
           closeAllLists();
 
           // Handle image blocks
-          if (!block.asset?.url) {
+          if (!block.asset.url) {
             continue;
           }
           const imageNode = $createImageNode({
@@ -475,7 +475,7 @@ export function initializeEditorWithPortableText(
           );
 
           const tableRows = tableNode.getChildren();
-          for (let rowIndex = 0; rowIndex < block.rows.length; rowIndex++) {
+          for (let rowIndex = 0; rowIndex < block.rows.length; rowIndex += 1) {
             const portableRow = block.rows[rowIndex];
             const tableRowNode = tableRows[rowIndex];
             if (!$isTableRowNode(tableRowNode)) {
@@ -486,7 +486,7 @@ export function initializeEditorWithPortableText(
             for (
               let cellIndex = 0;
               cellIndex < portableRow.cells.length;
-              cellIndex++
+              cellIndex += 1
             ) {
               const portableCell = portableRow.cells[cellIndex];
               const tableCellNode = tableCells[cellIndex];
@@ -512,10 +512,8 @@ export function initializeEditorWithPortableText(
         } else if (block._type === "block") {
           // Create a map of mark definitions
           const markDefMap = new Map<string, PortableTextMarkDef>();
-          if (block.markDefs) {
-            for (const markDef of block.markDefs) {
-              markDefMap.set(markDef._key, markDef);
-            }
+          for (const markDef of block.markDefs) {
+            markDefMap.set(markDef._key, markDef);
           }
 
           // Process spans into text nodes

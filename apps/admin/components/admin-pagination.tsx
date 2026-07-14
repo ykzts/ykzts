@@ -85,7 +85,7 @@ export function AdminPagination({
           )}
         </PaginationItem>
 
-        {showStartEllipsis && (
+        {!!showStartEllipsis && (
           <>
             <PaginationItem>
               <PaginationLink
@@ -121,7 +121,7 @@ export function AdminPagination({
           </PaginationItem>
         ))}
 
-        {showEndEllipsis && (
+        {!!showEndEllipsis && (
           <>
             {(pages.at(-1) ?? 0) < totalPages - 1 && (
               <PaginationItem>

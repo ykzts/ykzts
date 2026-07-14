@@ -90,7 +90,7 @@ export function LinkDialog({ open, onOpenChange, onConfirm }: LinkDialogProps) {
                 type="url"
                 value={url}
               />
-              {error && (
+              {!!error && (
                 <FieldDescription
                   className="text-destructive"
                   id="link-url-error"

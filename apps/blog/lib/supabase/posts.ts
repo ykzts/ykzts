@@ -42,7 +42,7 @@ type Profile = {
 function normalizeProfile(data: { profile?: unknown }): Profile {
   const profile = Array.isArray(data.profile) ? data.profile[0] : data.profile;
   if (
-    profile != null &&
+    profile !== null &&
     typeof profile === "object" &&
     "id" in profile &&
     "name" in profile
@@ -63,7 +63,7 @@ function extractVersionDate(currentVersion: unknown): string | null {
   if (Array.isArray(currentVersion)) {
     return currentVersion[0]?.version_date ?? null;
   }
-  return (currentVersion as { version_date?: string })?.version_date ?? null;
+  return (currentVersion as { version_date?: string }).version_date ?? null;
 }
 
 export async function getPosts(page = 1, isDraft = false) {
@@ -388,13 +388,13 @@ export async function getAdjacentYears(
   const index = years.indexOf(year);
 
   if (index === -1) {
-    return { previousYear: null, nextYear: null };
+    return { nextYear: null, previousYear: null };
   }
 
   const previousYear = index + 1 < years.length ? years[index + 1] : null;
   const nextYear = index > 0 ? years[index - 1] : null;
 
-  return { previousYear, nextYear };
+  return { nextYear, previousYear };
 }
 
 async function fetchFeedPosts(options: { limit?: number; tag?: string } = {}) {
@@ -432,7 +432,7 @@ async function fetchFeedPosts(options: { limit?: number; tag?: string } = {}) {
   // Always apply a limit. Callers can pass a specific number (main feed passes 20).
   // If no explicit limit, fall back to FEED_LIMIT. This prevents accidentally
   // returning every matching post, which would be heavy for feeds.
-  const effectiveLimit = limit != null && limit > 0 ? limit : FEED_LIMIT;
+  const effectiveLimit = limit !== null && limit > 0 ? limit : FEED_LIMIT;
   query = query.limit(effectiveLimit);
 
   const { data, error } = await query;
@@ -470,7 +470,7 @@ export async function getPostsForFeed(limit = 20) {
 export async function getPostsByTagForFeed(tag: string, limit = FEED_LIMIT) {
   cacheTag("posts");
 
-  return await fetchFeedPosts({ tag, limit });
+  return await fetchFeedPosts({ limit, tag });
 }
 
 export async function getTotalPostCount(isDraft = false) {

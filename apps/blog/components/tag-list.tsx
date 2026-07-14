@@ -8,7 +8,7 @@ interface TagListProps {
 }
 
 export default function TagList({ tags, className }: TagListProps) {
-  if (!tags || tags.length === 0) {
+  if (tags.length === 0) {
     return null;
   }
 

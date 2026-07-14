@@ -980,10 +980,10 @@ describe("Portable Text Serializer", () => {
         const firstChild = root.getFirstChild();
         expect($isParagraphNode(firstChild)).toBe(true);
 
-        const secondChild = root.getChildren()[1];
+        const [, secondChild] = root.getChildren();
         expect($isListNode(secondChild)).toBe(true);
 
-        const thirdChild = root.getChildren()[2];
+        const [, , thirdChild] = root.getChildren();
         expect($isParagraphNode(thirdChild)).toBe(true);
       });
     });
@@ -1226,14 +1226,14 @@ describe("Portable Text Serializer", () => {
           expect(items.length).toBe(3);
 
           // First item
-          const item1 = items[0];
+          const [item1] = items;
           expect($isListItemNode(item1)).toBe(true);
           if ($isListItemNode(item1)) {
             expect(item1.getTextContent()).toBe("Item 1");
           }
 
           // Second item with nested list
-          const item2 = items[1];
+          const [, item2] = items;
           expect($isListItemNode(item2)).toBe(true);
           if ($isListItemNode(item2)) {
             const item2Children = item2.getChildren();
@@ -1255,7 +1255,7 @@ describe("Portable Text Serializer", () => {
           }
 
           // Third item
-          const item3 = items[2];
+          const [, , item3] = items;
           expect($isListItemNode(item3)).toBe(true);
           if ($isListItemNode(item3)) {
             expect(item3.getTextContent()).toBe("Item 3");
@@ -1430,7 +1430,7 @@ describe("Portable Text Serializer", () => {
 
           // The structure should be created even with skipped levels
           // Level 1 item should exist
-          const item1 = items[0];
+          const [item1] = items;
           expect($isListItemNode(item1)).toBe(true);
 
           if ($isListItemNode(item1)) {
@@ -2133,14 +2133,14 @@ describe("Portable Text Serializer", () => {
           const rows = tableNode.getChildren();
           expect(rows).toHaveLength(2);
 
-          const firstRow = rows[0];
+          const [firstRow] = rows;
           expect($isTableRowNode(firstRow)).toBe(true);
 
           if ($isTableRowNode(firstRow)) {
             const cells = firstRow.getChildren();
             expect(cells).toHaveLength(2);
 
-            const firstCell = cells[0];
+            const [firstCell] = cells;
             expect($isTableCellNode(firstCell)).toBe(true);
 
             if ($isTableCellNode(firstCell)) {
@@ -2151,10 +2151,10 @@ describe("Portable Text Serializer", () => {
             }
           }
 
-          const secondRow = rows[1];
+          const [, secondRow] = rows;
           if ($isTableRowNode(secondRow)) {
             const cells = secondRow.getChildren();
-            const firstCell = cells[0];
+            const [firstCell] = cells;
             if ($isTableCellNode(firstCell)) {
               expect(firstCell.hasHeaderState(TableCellHeaderStates.ROW)).toBe(
                 false

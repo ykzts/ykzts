@@ -60,7 +60,7 @@ async function VersionDetailContent({
             <dd>{version.profile?.name || "不明"}</dd>
           </div>
 
-          {version.change_summary && (
+          {!!version.change_summary && (
             <div>
               <dt className="font-medium text-muted-foreground text-sm">
                 変更内容
@@ -77,7 +77,7 @@ async function VersionDetailContent({
         <h2 className="mb-4 font-bold text-xl">コンテンツ</h2>
 
         <dl className="space-y-4">
-          {version.title && (
+          {!!version.title && (
             <>
               <dt className="mb-2 font-medium text-muted-foreground text-sm">
                 タイトル
@@ -86,7 +86,7 @@ async function VersionDetailContent({
             </>
           )}
 
-          {version.excerpt && (
+          {!!version.excerpt && (
             <>
               <dt className="mb-2 font-medium text-muted-foreground text-sm">
                 抜粋

@@ -121,8 +121,8 @@ export function WorkForm({
     ActionState,
     FormData
   >(formAction, null);
-  const [title, setTitle] = useState(work?.title ?? "");
-  const [slug, setSlug] = useState(work?.slug ?? "");
+  const [title, setTitle] = useState(work === undefined ? "" : work.title);
+  const [slug, setSlug] = useState(work === undefined ? "" : work.slug);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [isGeneratingSlug, setIsGeneratingSlug] = useState(false);
@@ -287,13 +287,13 @@ export function WorkForm({
       <form action={wrappedFormAction} className="space-y-6">
         {isEditMode && <input name="id" type="hidden" value={work.id} />}
 
-        {state?.error && (
+        {!!state?.error && (
           <Alert variant="destructive">
             <AlertDescription>{state.error}</AlertDescription>
           </Alert>
         )}
 
-        {deleteError && (
+        {!!deleteError && (
           <Alert variant="destructive">
             <AlertDescription>{deleteError}</AlertDescription>
           </Alert>
@@ -511,7 +511,7 @@ export function WorkForm({
             isEditMode ? "flex justify-between gap-4" : "flex justify-end"
           }
         >
-          {isEditMode && deleteAction && (
+          {!!isEditMode && deleteAction && (
             <Button
               disabled={isPending || isDeleting}
               onClick={handleDelete}

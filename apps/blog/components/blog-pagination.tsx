@@ -80,7 +80,7 @@ export default function BlogPagination({
           )}
         </PaginationItem>
 
-        {showStartEllipsis && (
+        {!!showStartEllipsis && (
           <>
             <PaginationItem>
               <PaginationLink href={getPageUrl(1)}>1</PaginationLink>
@@ -104,7 +104,7 @@ export default function BlogPagination({
           </PaginationItem>
         ))}
 
-        {showEndEllipsis && (
+        {!!showEndEllipsis && (
           <>
             {(pages.at(-1) ?? 0) < totalPages - 1 && (
               <PaginationItem>

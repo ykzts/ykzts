@@ -165,7 +165,7 @@ export function RichTextEditor({
           <ListPlugin />
           <CodeHighlightPlugin />
           <CodeExitPlugin />
-          {autoFocus && <AutoFocusPlugin />}
+          {!!autoFocus && <AutoFocusPlugin />}
           <LinkPlugin />
           <ImagePlugin />
           <TablePlugin />

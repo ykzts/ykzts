@@ -92,12 +92,13 @@ const portableTextComponents = {
         }>;
       };
     }) {
-      const hasHeader = value.rows[0]?.cells.every((cell) => cell.isHeader);
+      const hasHeader =
+        value.rows.at(0)?.cells.every((cell) => cell.isHeader) ?? false;
       const headerRow = hasHeader ? value.rows[0] : null;
       const bodyRows = hasHeader ? value.rows.slice(1) : value.rows;
       return (
         <table>
-          {headerRow && (
+          {!!headerRow && (
             <thead>
               <tr>
                 {headerRow.cells.map((cell) => (

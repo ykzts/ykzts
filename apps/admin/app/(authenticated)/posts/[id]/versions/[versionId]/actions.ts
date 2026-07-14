@@ -21,6 +21,6 @@ export async function rollbackAction(postId: string, versionId: string) {
     if (error instanceof Error) {
       throw error;
     }
-    throw new Error("不明なエラー");
+    throw new Error("不明なエラー", { cause: error });
   }
 }
