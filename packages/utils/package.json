@@ -25,10 +25,10 @@
     "@portabletext/to-html": "5.0.2",
     "gray-matter": "4.0.3",
     "ipaddr.js": "2.4.0",
-    "zod": "4.4.3"
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "@portabletext/types": "4.0.2",
+    "@portabletext/types": "catalog:",
     "@types/node": "catalog:",
     "@typescript/native": "catalog:",
     "@ykzts/tsconfig": "workspace:*",

@@ -2,11 +2,11 @@
   "author": "Yamagishi Kazutoshi",
   "dependencies": {
     "@ykzts/utils": "workspace:*",
-    "@portabletext/types": "4.0.2",
-    "@supabase/ssr": "0.12.0",
-    "@supabase/supabase-js": "2.110.2",
+    "@portabletext/types": "catalog:",
+    "@supabase/ssr": "catalog:",
+    "@supabase/supabase-js": "catalog:",
     "next": "catalog:",
-    "zod": "4.4.3"
+    "zod": "catalog:"
   },
   "description": "Supabase database type definitions for ykzts applications",
   "devDependencies": {
