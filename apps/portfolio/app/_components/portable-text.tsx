@@ -17,22 +17,26 @@ async function CodeBlockHighlighter({
   language?: string;
   text: string;
 }) {
+  let html: string | null = null;
   try {
-    const html = await highlightCode(text, language);
+    html = await highlightCode(text, language);
+  } catch (error) {
+    // If highlighting fails, fall back to plain code block
+    console.error("Failed to highlight code block:", error);
+  }
 
+  if (html) {
     return (
       // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki generates safe HTML for syntax highlighting
       <div dangerouslySetInnerHTML={{ __html: html }} />
     );
-  } catch (error) {
-    // If highlighting fails, fall back to plain code block
-    console.error("Failed to highlight code block:", error);
-    return (
-      <pre className="overflow-x-auto rounded-lg bg-muted p-4">
-        <code>{text}</code>
-      </pre>
-    );
   }
+
+  return (
+    <pre className="overflow-x-auto rounded-lg bg-muted p-4">
+      <code>{text}</code>
+    </pre>
+  );
 }
 
 // Named component for code blocks

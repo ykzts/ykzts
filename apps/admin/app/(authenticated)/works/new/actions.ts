@@ -1,5 +1,6 @@
 "use server";
 
+import { requireAuth } from "@ykzts/supabase/auth";
 import { createServerClient } from "@ykzts/supabase/server";
 import type { Json } from "@ykzts/supabase/types";
 import { revalidateTag } from "next/cache";
@@ -29,13 +30,15 @@ const workSchema = z.object({
 
 const workUrlSchema = z.object({
   label: z.string().min(1, "ラベルは必須です"),
-  url: z.string().url("有効なURLを入力してください"),
+  url: z.url("有効なURLを入力してください"),
 });
 
 export async function createWork(
   _prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
+  await requireAuth();
+
   // Extract and validate form data
   const rawData = {
     content: formData.get("content") ?? "",

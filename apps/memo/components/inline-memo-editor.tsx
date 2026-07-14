@@ -3,7 +3,7 @@
 import type { PortableTextBlock } from "@portabletext/types";
 import { RichTextEditor } from "@ykzts/editor";
 import { uploadImage } from "@ykzts/supabase/image-upload";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 import { updateMemo } from "@/app/[...path]/actions";
 import MemoPortableText from "@/components/portable-text";
 
@@ -24,12 +24,15 @@ export function InlineMemoEditor({
 }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [state, formAction, isPending] = useActionState(updateMemo, null);
-
-  useEffect(() => {
+  // Adjust state during render when the action reports success
+  // (preferred over setState-in-effect for action result mirroring).
+  const [prevState, setPrevState] = useState(state);
+  if (state !== prevState) {
+    setPrevState(state);
     if (state?.success) {
       setIsEditing(false);
     }
-  }, [state]);
+  }
 
   if (!isEditing) {
     return (

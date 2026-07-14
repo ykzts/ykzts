@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@ykzts/ui/lib/utils";
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import DateDisplay from "./date-display";
 
 interface Version {
@@ -95,54 +95,49 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
   const [selectedIds, setSelectedIds] = useState<[string, string] | null>(null);
   const [pendingId, setPendingId] = useState<string | null>(null);
 
-  const handleSelect = useCallback(
-    (id: string) => {
-      if (selectedIds) {
-        // If clicking one of the two selected versions, deselect just that one
-        // and keep the other as the pending pick
-        const otherId = selectedIds.find((x) => x !== id);
-        setSelectedIds(null);
-        setPendingId(otherId ?? id);
-        return;
-      }
-      if (pendingId === null) {
-        setPendingId(id);
-        return;
-      }
-      if (pendingId === id) {
-        setPendingId(null);
-        return;
-      }
-      setSelectedIds([pendingId, id]);
-      setPendingId(null);
-    },
-    [selectedIds, pendingId]
-  );
-
-  const isChecked = useCallback(
-    (id: string) => pendingId === id || (selectedIds?.includes(id) ?? false),
-    [pendingId, selectedIds]
-  );
-
-  const diffResult = useMemo(() => {
-    if (selectedIds === null) {
-      return null;
+  const handleSelect = (id: string) => {
+    if (selectedIds) {
+      // If clicking one of the two selected versions, deselect just that one
+      // and keep the other as the pending pick
+      const otherId = selectedIds.find((x) => x !== id);
+      setSelectedIds(null);
+      setPendingId(otherId ?? id);
+      return;
     }
+    if (pendingId === null) {
+      setPendingId(id);
+      return;
+    }
+    if (pendingId === id) {
+      setPendingId(null);
+      return;
+    }
+    setSelectedIds([pendingId, id]);
+    setPendingId(null);
+  };
+
+  const isChecked = (id: string) =>
+    pendingId === id || (selectedIds?.includes(id) ?? false);
+
+  let diffResult: {
+    diff: DiffLine[];
+    newerVersion: Version;
+    olderVersion: Version;
+  } | null = null;
+  if (selectedIds !== null) {
     const vA = versions.find((v) => v.id === selectedIds[0]);
     const vB = versions.find((v) => v.id === selectedIds[1]);
-    if (!(vA && vB)) {
-      return null;
+    if (vA && vB) {
+      const [older, newer] =
+        vA.version_number < vB.version_number ? [vA, vB] : [vB, vA];
+
+      diffResult = {
+        diff: computeDiff(older.markdownText, newer.markdownText),
+        newerVersion: newer,
+        olderVersion: older,
+      };
     }
-
-    const [older, newer] =
-      vA.version_number < vB.version_number ? [vA, vB] : [vB, vA];
-
-    return {
-      diff: computeDiff(older.markdownText, newer.markdownText),
-      newerVersion: newer,
-      olderVersion: older,
-    };
-  }, [selectedIds, versions]);
+  }
 
   return (
     <div>

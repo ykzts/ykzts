@@ -132,8 +132,8 @@ export function WorkForm({
     if (!work?.work_urls) {
       return [];
     }
-    return [...work.work_urls]
-      .sort((a, b) => a.sort_order - b.sort_order)
+    return work.work_urls
+      .toSorted((a, b) => a.sort_order - b.sort_order)
       .map((u) => ({ id: u.id, label: u.label, url: u.url }));
   });
 

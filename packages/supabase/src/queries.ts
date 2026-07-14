@@ -235,7 +235,7 @@ async function fetchWorksData(): Promise<{
     error: null,
     works: data.map((work) => {
       const work_urls = Array.isArray(work.work_urls)
-        ? [...work.work_urls].sort((a, b) => a.sort_order - b.sort_order)
+        ? work.work_urls.toSorted((a, b) => a.sort_order - b.sort_order)
         : [];
       const work_technologies = Array.isArray(work.work_technologies)
         ? work.work_technologies

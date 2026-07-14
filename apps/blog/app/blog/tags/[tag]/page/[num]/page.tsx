@@ -52,8 +52,10 @@ export default async function TagPaginationPage({ params }: PageProps) {
     redirect(`/blog/tags/${encodeURIComponent(decodedTag)}`);
   }
 
-  const posts = await getPostsByTag(decodedTag, pageNum);
-  const postCount = await getPostCountByTag(decodedTag);
+  const [posts, postCount] = await Promise.all([
+    getPostsByTag(decodedTag, pageNum),
+    getPostCountByTag(decodedTag),
+  ]);
 
   if (!posts || posts.length === 0) {
     notFound();

@@ -39,6 +39,8 @@ export async function signInWithGitHub() {
 
 export async function logout() {
   const supabase = await createServerClient();
+  // Establish caller identity before mutating session (sign-out is idempotent)
+  await supabase.auth.getUser();
   const { error } = await supabase.auth.signOut();
 
   if (error) {

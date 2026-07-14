@@ -2,7 +2,7 @@
 
 import type { PortableTextValue } from "@ykzts/utils/portable-text";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import PortableTextBlock from "./portable-text";
 
 interface WorkUrl {
@@ -41,19 +41,15 @@ export default function WorksList({
 
   const [showAll, setShowAll] = useState(false);
 
-  const allTechnologies = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          works.flatMap((work) =>
-            work.work_technologies
-              .map((wt) => wt.technology?.name)
-              .filter((name): name is string => name !== undefined)
-          )
-        )
-      ).sort(),
-    [works]
-  );
+  const allTechnologies = Array.from(
+    new Set(
+      works.flatMap((work) =>
+        work.work_technologies
+          .map((wt) => wt.technology?.name)
+          .filter((name): name is string => name !== undefined)
+      )
+    )
+  ).toSorted();
 
   const filteredWorks = activeTechnology
     ? works.filter((work) =>

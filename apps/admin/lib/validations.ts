@@ -13,7 +13,7 @@ export const postSchema = z.object({
     .optional(),
   published_at: z
     .union([
-      z.string().datetime({ message: "有効な日時形式で入力してください" }),
+      z.iso.datetime({ message: "有効な日時形式で入力してください" }),
       z.literal(""),
     ])
     .optional(),
@@ -40,5 +40,5 @@ export const postUpdateSchema = postSchema.extend({
     .trim()
     .max(500, "変更内容は500文字以内で入力してください")
     .optional(),
-  id: z.string().uuid({ message: "無効なIDです" }),
+  id: z.uuid({ message: "無効なIDです" }),
 });

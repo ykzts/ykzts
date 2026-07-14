@@ -61,6 +61,59 @@ export function getCommonTimezones() {
   ];
 }
 
+const dateOnlyFormatters = new Map<string, Intl.DateTimeFormat>();
+const dateTimeFormatters = new Map<string, Intl.DateTimeFormat>();
+const dateWithTimezoneFormatters = new Map<string, Intl.DateTimeFormat>();
+
+function getDateOnlyFormatter(timezone: string): Intl.DateTimeFormat {
+  let formatter = dateOnlyFormatters.get(timezone);
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat("ja-JP", {
+      day: "numeric",
+      month: "numeric",
+      timeZone: timezone,
+      year: "numeric",
+    });
+    dateOnlyFormatters.set(timezone, formatter);
+  }
+  return formatter;
+}
+
+function getDateTimeFormatter(timezone: string): Intl.DateTimeFormat {
+  let formatter = dateTimeFormatters.get(timezone);
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat("ja-JP", {
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      month: "numeric",
+      second: "2-digit",
+      timeZone: timezone,
+      timeZoneName: "short",
+      year: "numeric",
+    });
+    dateTimeFormatters.set(timezone, formatter);
+  }
+  return formatter;
+}
+
+function getDateWithTimezoneFormatter(timezone: string): Intl.DateTimeFormat {
+  let formatter = dateWithTimezoneFormatters.get(timezone);
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat("ja-JP", {
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      month: "numeric",
+      timeZone: timezone,
+      timeZoneName: "short",
+      year: "numeric",
+    });
+    dateWithTimezoneFormatters.set(timezone, formatter);
+  }
+  return formatter;
+}
+
 /**
  * Format a date string with timezone support
  * @param dateString - ISO date string from database
@@ -75,21 +128,21 @@ export function formatDateWithTimezone(
   try {
     const date = new Date(dateString);
 
-    // Default options for consistent formatting
-    const defaultOptions: Intl.DateTimeFormatOptions = {
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      month: "numeric",
-      timeZoneName: "short",
-      year: "numeric",
-      ...options,
-    };
+    // Custom options: build a one-off formatter (cannot reuse the cache).
+    if (Object.keys(options).length > 0) {
+      return new Intl.DateTimeFormat("ja-JP", {
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        month: "numeric",
+        timeZone: timezone,
+        timeZoneName: "short",
+        year: "numeric",
+        ...options,
+      }).format(date);
+    }
 
-    return new Intl.DateTimeFormat("ja-JP", {
-      ...defaultOptions,
-      timeZone: timezone,
-    }).format(date);
+    return getDateWithTimezoneFormatter(timezone).format(date);
   } catch (error) {
     console.error(
       `Error formatting date in formatDateWithTimezone: dateString=${dateString}, timezone=${timezone}`,
@@ -110,13 +163,7 @@ export function formatDateOnly(
 ): string {
   try {
     const date = new Date(dateString);
-
-    return new Intl.DateTimeFormat("ja-JP", {
-      day: "numeric",
-      month: "numeric",
-      timeZone: timezone,
-      year: "numeric",
-    }).format(date);
+    return getDateOnlyFormatter(timezone).format(date);
   } catch (error) {
     console.error(
       `Error formatting date in formatDateOnly: dateString=${dateString}, timezone=${timezone}`,
@@ -137,17 +184,7 @@ export function formatDateTimeWithTimezone(
 ): string {
   try {
     const date = new Date(dateString);
-
-    return new Intl.DateTimeFormat("ja-JP", {
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      month: "numeric",
-      second: "2-digit",
-      timeZone: timezone,
-      timeZoneName: "short",
-      year: "numeric",
-    }).format(date);
+    return getDateTimeFormatter(timezone).format(date);
   } catch (error) {
     console.error(
       `Error formatting date in formatDateTimeWithTimezone: dateString=${dateString}, timezone=${timezone}`,

@@ -46,15 +46,18 @@ function toLocalDateTimeString(date: Date): string {
     .slice(0, 16);
 }
 
+const publishedAtFormatter = new Intl.DateTimeFormat("ja-JP", {
+  day: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+  month: "numeric",
+  timeZone: "Asia/Tokyo",
+  year: "numeric",
+});
+
 function formatPublishedAt(dateString: string): string {
   try {
-    return new Intl.DateTimeFormat("ja-JP", {
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      month: "numeric",
-      year: "numeric",
-    }).format(new Date(dateString));
+    return publishedAtFormatter.format(new Date(dateString));
   } catch {
     return dateString;
   }
@@ -300,7 +303,8 @@ export function PostForm({
         existingTags,
         title: titleInput.value,
       });
-      const newSuggestions = generated.filter((tag) => !tags.includes(tag));
+      const tagSet = new Set(tags);
+      const newSuggestions = generated.filter((tag) => !tagSet.has(tag));
       if (newSuggestions.length === 0 && generated.length > 0) {
         toast.info("提案されたタグはすでにすべて追加されています");
       }

@@ -23,6 +23,7 @@ export function AvatarUpload({
   const [preview, setPreview] = useState<string | null>(
     currentAvatarUrl || null
   );
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,6 +33,7 @@ export function AvatarUpload({
   const handleFileChange = (file: File | null) => {
     if (!file) {
       setPreview(currentAvatarUrl || null);
+      setSelectedFile(null);
       setError(null);
       return;
     }
@@ -44,6 +46,7 @@ export function AvatarUpload({
     }
 
     setError(null);
+    setSelectedFile(file);
 
     // Show preview
     const reader = new FileReader();
@@ -54,8 +57,7 @@ export function AvatarUpload({
   };
 
   const handleUpload = async () => {
-    const fileInput = fileInputRef.current;
-    if (!fileInput?.files?.[0]) {
+    if (!selectedFile) {
       setError("ファイルを選択してください。");
       return;
     }
@@ -65,21 +67,33 @@ export function AvatarUpload({
 
     try {
       const formData = new FormData();
-      formData.append("avatar", fileInput.files[0]);
+      formData.append("avatar", selectedFile);
 
       const result = await uploadAvatar(formData);
 
       if (result.error) {
         setError(result.error);
         setPreview(currentAvatarUrl || null);
+        setSelectedFile(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
       } else if (result.url) {
         setPreview(result.url);
+        setSelectedFile(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
         router.refresh();
         onUploadComplete?.(result.url);
       }
     } catch {
       setError("アップロード中にエラーが発生しました。");
       setPreview(currentAvatarUrl || null);
+      setSelectedFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     } finally {
       setUploading(false);
     }
@@ -100,6 +114,7 @@ export function AvatarUpload({
         setError(result.error);
       } else {
         setPreview(null);
+        setSelectedFile(null);
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
@@ -140,8 +155,7 @@ export function AvatarUpload({
     }
   };
 
-  const hasChanged =
-    fileInputRef.current?.files?.[0] && preview !== currentAvatarUrl;
+  const hasChanged = selectedFile !== null && preview !== currentAvatarUrl;
 
   return (
     <div className="space-y-4">

@@ -1,0 +1,48 @@
+# React Doctor — scan React/Next apps for security, performance, and
+# correctness regressions on pull requests and main.
+# https://www.react.doctor/docs/ci-and-prs/github-actions-setup
+#
+# Advisory by default (blocking: none). Tighten to error/warning once the
+# baseline and doctor.config.json ignores are trusted.
+name: React Doctor
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  # Sticky PR summary comments use the issues API.
+  issues: write
+  # Inline review comments on changed lines.
+  pull-requests: write
+  # Commit status with score / counts.
+  statuses: write
+
+concurrency:
+  group: react-doctor-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  react-doctor:
+    runs-on: ubicloud-standard-2
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          # Full history so --scope changed can compute the PR merge base.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: millionco/react-doctor@938008119a288f2fb47c66a69cd9279a21f31784 # v2.2.7
+        with:
+          # Report new issues on PRs without failing the check until the team
+          # is ready to enforce (see doctor.config.json for intentional ignores).
+          blocking: none
+          # On pull_request: only issues introduced vs base. On push to main:
+          # the Action always scans the full project regardless of this value.
+          scope: changed
+          project: "*"
+          node-version: "24"

@@ -1,5 +1,6 @@
 "use server";
 
+import { requireAuth } from "@ykzts/supabase/auth";
 import type { Json } from "@ykzts/supabase/types";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
@@ -16,6 +17,8 @@ export async function createPostAction(
   _prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
+  await requireAuth();
+
   // Extract and validate FormData values with Zod
   const publishedAtRaw = formData.get("published_at");
 

@@ -1,5 +1,6 @@
 "use server";
 
+import { requireAuth } from "@ykzts/supabase/auth";
 import { createServerClient } from "@ykzts/supabase/server";
 import type { Json } from "@ykzts/supabase/types";
 import { revalidateTag } from "next/cache";
@@ -15,7 +16,7 @@ export type ActionState = {
 // Zod schema for work validation
 const workSchema = z.object({
   content: z.string().min(1, "コンテンツは必須です"),
-  id: z.string().uuid("無効なIDです"),
+  id: z.uuid({ message: "無効なIDです" }),
   slug: z
     .string()
     .min(1, "スラッグは必須です")
@@ -32,13 +33,15 @@ const workSchema = z.object({
 
 const workUrlSchema = z.object({
   label: z.string().min(1, "ラベルは必須です"),
-  url: z.string().url("有効なURLを入力してください"),
+  url: z.url("有効なURLを入力してください"),
 });
 
 export async function updateWork(
   _prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
+  await requireAuth();
+
   // Extract and validate FormData values
   const id = formData.get("id");
   const title = formData.get("title");
@@ -231,6 +234,8 @@ export async function updateWork(
 }
 
 export async function deleteWork(id: string): Promise<void> {
+  await requireAuth();
+
   const supabase = await createServerClient();
 
   // Delete and return the deleted row to verify success

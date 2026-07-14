@@ -1,10 +1,13 @@
 "use server";
 
+import { requireAuth } from "@ykzts/supabase/auth";
 import { revalidateTag } from "next/cache";
 import { getPostVersion, rollbackToVersion } from "@/lib/posts";
 import { invalidateCaches } from "@/lib/revalidate";
 
 export async function rollbackAction(postId: string, versionId: string) {
+  await requireAuth();
+
   try {
     // Validate that the version belongs to the post
     const version = await getPostVersion(versionId);
