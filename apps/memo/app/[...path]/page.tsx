@@ -199,8 +199,10 @@ async function getChildMemos(pathPrefix: string, isDraftMode: boolean) {
 }
 
 async function MemoContent({ path: memoPath }: { path: string }) {
-  const { isEnabled: isDraftMode } = await draftMode();
-  const ownerProfile = await getOwnerProfile();
+  const [{ isEnabled: isDraftMode }, ownerProfile] = await Promise.all([
+    draftMode(),
+    getOwnerProfile(),
+  ]);
 
   const { data: memo, error } = await getMemo(memoPath, isDraftMode);
 

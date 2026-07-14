@@ -8,8 +8,11 @@ import {
 } from "@/lib/supabase/posts";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const posts = await getAllPosts();
-  const tags = await getAllTags();
+  const [posts, tags, years] = await Promise.all([
+    getAllPosts(),
+    getAllTags(),
+    getAvailableYears(),
+  ]);
 
   const baseUrl = new URL("/blog", getSiteOrigin()).toString();
 
@@ -47,14 +50,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Year archive pages
-  const yearEntries: MetadataRoute.Sitemap = (await getAvailableYears()).map(
-    (year) => ({
-      changeFrequency: "monthly",
-      lastModified: new Date(),
-      priority: 0.7,
-      url: `${baseUrl}/${year}`,
-    })
-  );
+  const yearEntries: MetadataRoute.Sitemap = years.map((year) => ({
+    changeFrequency: "monthly",
+    lastModified: new Date(),
+    priority: 0.7,
+    url: `${baseUrl}/${year}`,
+  }));
 
   return [homepageEntry, ...postEntries, ...tagEntries, ...yearEntries];
 }

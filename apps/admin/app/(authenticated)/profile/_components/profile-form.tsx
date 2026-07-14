@@ -20,7 +20,7 @@ import { uploadImage } from "@ykzts/supabase/image-upload";
 import type { Json } from "@ykzts/supabase/types";
 import { Button } from "@ykzts/ui/components/button";
 import { Input } from "@ykzts/ui/components/input";
-import { useActionState, useCallback, useEffect, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { DEFAULT_TIMEZONE, getCommonTimezones } from "@/lib/timezones";
 import { updateProfile } from "../actions";
@@ -70,8 +70,8 @@ export default function ProfileForm({
     }
   }, [state]);
 
-  // Social links state
-  const [socialLinks, setSocialLinks] = useState(
+  // Social links state (lazy init so map() does not re-run on every render)
+  const [socialLinks, setSocialLinks] = useState(() =>
     initialSocialLinks.map((link) => ({
       id: link.id,
       isNew: link.isNew,
@@ -80,7 +80,7 @@ export default function ProfileForm({
   );
 
   // Technologies state
-  const [technologies, setTechnologies] = useState(
+  const [technologies, setTechnologies] = useState(() =>
     initialTechnologies.map((tech) => ({
       id: tech.id,
       isNew: tech.isNew,
@@ -134,8 +134,7 @@ export default function ProfileForm({
     );
   };
 
-  // Memoized drag handler for social links
-  const handleSocialLinksDragEnd = useCallback((event: DragEndEvent) => {
+  const handleSocialLinksDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
@@ -151,10 +150,9 @@ export default function ProfileForm({
         return arrayMove(items, oldIndex, newIndex);
       });
     }
-  }, []);
+  };
 
-  // Memoized drag handler for technologies
-  const handleTechnologiesDragEnd = useCallback((event: DragEndEvent) => {
+  const handleTechnologiesDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
@@ -170,7 +168,7 @@ export default function ProfileForm({
         return arrayMove(items, oldIndex, newIndex);
       });
     }
-  }, []);
+  };
 
   return (
     <form action={formAction} className="space-y-6">

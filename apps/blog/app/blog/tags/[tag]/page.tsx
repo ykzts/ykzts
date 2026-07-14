@@ -52,8 +52,10 @@ export default async function TagArchivePage({ params }: PageProps) {
   const { tag } = await params;
   const decodedTag = decodeURIComponent(tag);
 
-  const posts = await getPostsByTag(decodedTag, 1);
-  const postCount = await getPostCountByTag(decodedTag);
+  const [posts, postCount] = await Promise.all([
+    getPostsByTag(decodedTag, 1),
+    getPostCountByTag(decodedTag),
+  ]);
 
   if (!posts || posts.length === 0) {
     notFound();

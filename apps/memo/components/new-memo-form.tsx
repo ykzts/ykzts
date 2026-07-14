@@ -4,6 +4,7 @@ import { RichTextEditor } from "@ykzts/editor";
 import { uploadImage } from "@ykzts/supabase/image-upload";
 import { useActionState } from "react";
 import { createMemo } from "@/app/new/actions";
+import Link from "@/components/link";
 
 export function NewMemoForm() {
   const [state, formAction, isPending] = useActionState(createMemo, null);
@@ -80,12 +81,12 @@ export function NewMemoForm() {
       )}
 
       <div className="flex justify-end gap-2">
-        <a
+        <Link
           className="rounded border border-border px-4 py-2 text-sm hover:bg-muted/20"
           href="/"
         >
           キャンセル
-        </a>
+        </Link>
         <button
           className="rounded bg-primary px-4 py-2 text-primary-foreground text-sm hover:bg-primary/90 disabled:opacity-50"
           disabled={isPending}

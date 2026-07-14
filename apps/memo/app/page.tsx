@@ -6,10 +6,8 @@ import { Suspense } from "react";
 import Header from "@/components/header";
 
 async function MemoList() {
-  const { isEnabled: isDraftMode } = await draftMode();
-  const ownerProfile = await getOwnerProfile();
-
-  const supabase = await createServerClient();
+  const [{ isEnabled: isDraftMode }, ownerProfile, supabase] =
+    await Promise.all([draftMode(), getOwnerProfile(), createServerClient()]);
 
   let query = supabase
     .from("memos")

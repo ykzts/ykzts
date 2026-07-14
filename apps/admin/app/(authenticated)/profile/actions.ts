@@ -315,9 +315,12 @@ export async function updateProfile(
       .eq("profile_id", profileId);
 
     if (currentSocialLinks) {
-      const idsToDelete = currentSocialLinks
-        .map((link) => link.id)
-        .filter((id) => !socialLinksToKeep.has(id));
+      const idsToDelete: string[] = [];
+      for (const link of currentSocialLinks) {
+        if (!socialLinksToKeep.has(link.id)) {
+          idsToDelete.push(link.id);
+        }
+      }
 
       if (idsToDelete.length > 0) {
         const { error: deleteError } = await supabase
@@ -442,9 +445,12 @@ export async function updateProfile(
     }
 
     if (existingProfileTechs) {
-      const idsToDelete = existingProfileTechs
-        .map((pt) => pt.technology_id)
-        .filter((id) => !technologiesToKeep.has(id));
+      const idsToDelete: string[] = [];
+      for (const pt of existingProfileTechs) {
+        if (!technologiesToKeep.has(pt.technology_id)) {
+          idsToDelete.push(pt.technology_id);
+        }
+      }
 
       if (idsToDelete.length > 0) {
         const { error: ptDeleteError } = await supabase

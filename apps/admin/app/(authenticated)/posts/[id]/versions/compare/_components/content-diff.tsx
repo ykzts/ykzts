@@ -1,7 +1,6 @@
 "use client";
 
 import { diffLines } from "diff";
-import { useMemo } from "react";
 
 interface ContentDiffProps {
   newContent: string;
@@ -16,10 +15,7 @@ export function ContentDiff({
   version1Number,
   version2Number,
 }: ContentDiffProps) {
-  const diff = useMemo(
-    () => diffLines(oldContent, newContent),
-    [oldContent, newContent]
-  );
+  const diff = diffLines(oldContent, newContent);
 
   return (
     <div className="space-y-3">

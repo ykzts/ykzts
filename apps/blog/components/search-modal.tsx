@@ -11,7 +11,7 @@ import { cn } from "@ykzts/ui/lib/utils";
 import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import DateDisplay from "./date-display";
 
@@ -56,6 +56,14 @@ function SearchPanel({ onClose }: SearchPanelProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const trimmedQuery = query.trim();
+  const hasEffectiveQuery = trimmedQuery.length >= 2;
+  // Derive empty results during render when the query is too short —
+  // avoids synchronous setState in an effect for the clear path.
+  const displayResults = hasEffectiveQuery ? results : [];
+  const displayError = hasEffectiveQuery ? error : null;
+  const displayLoading = hasEffectiveQuery ? loading : false;
+
   // Auto-focus the search input when the modal/panel opens
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
@@ -67,11 +75,7 @@ function SearchPanel({ onClose }: SearchPanelProps) {
   // Debounced search (longer debounce + min length to avoid high-frequency
   // expensive embedding generation calls on every keystroke)
   useEffect(() => {
-    const trimmed = query.trim();
-    if (!trimmed || trimmed.length < 2) {
-      setResults([]);
-      setError(null);
-      setLoading(false);
+    if (!hasEffectiveQuery) {
       return;
     }
 
@@ -82,7 +86,7 @@ function SearchPanel({ onClose }: SearchPanelProps) {
 
       try {
         const res = await fetch("/api/blog/search", {
-          body: JSON.stringify({ limit: 6, query: trimmed }),
+          body: JSON.stringify({ limit: 6, query: trimmedQuery }),
           headers: {
             "Content-Type": "application/json",
           },
@@ -110,22 +114,18 @@ function SearchPanel({ onClose }: SearchPanelProps) {
       clearTimeout(timeoutId);
       controller.abort();
     };
-  }, [query]);
+  }, [hasEffectiveQuery, trimmedQuery]);
 
-  const handleResultClick = useCallback(() => {
+  const handleResultClick = () => {
     onClose();
-  }, [onClose]);
+  };
 
-  const handleViewAll = useCallback(() => {
-    const trimmed = query.trim();
-    if (trimmed) {
+  const handleViewAll = () => {
+    if (trimmedQuery) {
       onClose();
-      router.push(`/blog/search?q=${encodeURIComponent(trimmed)}`);
+      router.push(`/blog/search?q=${encodeURIComponent(trimmedQuery)}`);
     }
-  }, [query, router, onClose]);
-
-  const trimmedQuery = query.trim();
-  const hasEffectiveQuery = trimmedQuery.length >= 2;
+  };
 
   return (
     <div className="flex flex-col gap-3">
@@ -152,74 +152,80 @@ function SearchPanel({ onClose }: SearchPanelProps) {
           </p>
         )}
 
-        {!!hasEffectiveQuery && loading && (
+        {!!hasEffectiveQuery && displayLoading && (
           <div className="py-6 text-center text-muted-foreground text-sm">
             検索中...
           </div>
         )}
 
-        {hasEffectiveQuery && !loading && error && (
+        {hasEffectiveQuery && !displayLoading && displayError && (
           <div className="py-6 text-center text-destructive text-sm">
-            {error}
+            {displayError}
           </div>
         )}
 
-        {hasEffectiveQuery && !loading && !error && results.length === 0 && (
-          <div className="py-6 text-center">
-            <p className="text-muted-foreground text-sm">
-              「{trimmedQuery}」の検索結果が見つかりませんでした
-            </p>
-            <p className="mt-1 text-muted-foreground text-xs">
-              別のキーワードをお試しください
-            </p>
-          </div>
-        )}
-
-        {hasEffectiveQuery && !loading && !error && results.length > 0 && (
-          <>
-            <p className="mb-1 text-muted-foreground text-xs">
-              {results.length}件の結果
-            </p>
-            <ul className="space-y-0.5">
-              {results.map((result) => {
-                const url = getPostUrl(result);
-                return (
-                  <li key={result.id}>
-                    <Link
-                      className="group flex flex-col gap-0.5 rounded-md px-2 py-1.5 hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
-                      href={url}
-                      onClick={handleResultClick}
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <span className="line-clamp-1 font-medium text-sm group-hover:underline">
-                          {result.title}
-                        </span>
-                        <SimilarityBadge similarity={result.similarity} />
-                      </div>
-                      <div className="text-muted-foreground text-xs">
-                        <DateDisplay date={result.published_at} />
-                      </div>
-                      {!!result.excerpt && (
-                        <p className="line-clamp-2 text-muted-foreground text-xs">
-                          {result.excerpt}
-                        </p>
-                      )}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-            <div className="mt-2 flex justify-end">
-              <button
-                className="text-muted-foreground text-xs underline-offset-2 hover:text-foreground hover:underline"
-                onClick={handleViewAll}
-                type="button"
-              >
-                すべての検索結果を見る →
-              </button>
+        {hasEffectiveQuery &&
+          !displayLoading &&
+          !displayError &&
+          displayResults.length === 0 && (
+            <div className="py-6 text-center">
+              <p className="text-muted-foreground text-sm">
+                「{trimmedQuery}」の検索結果が見つかりませんでした
+              </p>
+              <p className="mt-1 text-muted-foreground text-xs">
+                別のキーワードをお試しください
+              </p>
             </div>
-          </>
-        )}
+          )}
+
+        {hasEffectiveQuery &&
+          !displayLoading &&
+          !displayError &&
+          displayResults.length > 0 && (
+            <>
+              <p className="mb-1 text-muted-foreground text-xs">
+                {displayResults.length}件の結果
+              </p>
+              <ul className="space-y-0.5">
+                {displayResults.map((result) => {
+                  const url = getPostUrl(result);
+                  return (
+                    <li key={result.id}>
+                      <Link
+                        className="group flex flex-col gap-0.5 rounded-md px-2 py-1.5 hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
+                        href={url}
+                        onClick={handleResultClick}
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <span className="line-clamp-1 font-medium text-sm group-hover:underline">
+                            {result.title}
+                          </span>
+                          <SimilarityBadge similarity={result.similarity} />
+                        </div>
+                        <div className="text-muted-foreground text-xs">
+                          <DateDisplay date={result.published_at} />
+                        </div>
+                        {!!result.excerpt && (
+                          <p className="line-clamp-2 text-muted-foreground text-xs">
+                            {result.excerpt}
+                          </p>
+                        )}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+              <div className="mt-2 flex justify-end">
+                <button
+                  className="text-muted-foreground text-xs underline-offset-2 hover:text-foreground hover:underline"
+                  onClick={handleViewAll}
+                  type="button"
+                >
+                  すべての検索結果を見る →
+                </button>
+              </div>
+            </>
+          )}
       </section>
     </div>
   );
@@ -260,13 +266,13 @@ export default function SearchModal({ className }: SearchModalProps) {
     };
   }, []);
 
-  const handleOpenChange = useCallback((nextOpen: boolean) => {
+  const handleOpenChange = (nextOpen: boolean) => {
     setOpen(nextOpen);
-  }, []);
+  };
 
-  const close = useCallback(() => {
+  const close = () => {
     setOpen(false);
-  }, []);
+  };
 
   return (
     <Dialog onOpenChange={handleOpenChange} open={open}>

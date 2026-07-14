@@ -156,14 +156,18 @@ const SIMILAR_POSTS_LIMIT = 3;
 const SIMILAR_POSTS_THRESHOLD = 0.5;
 
 async function SimilarPostsSection({ postId }: { postId: string }) {
-  try {
-    const similarPosts = await getSimilarPosts(
-      postId,
-      SIMILAR_POSTS_LIMIT,
-      SIMILAR_POSTS_THRESHOLD
-    );
-    return <SimilarPosts posts={similarPosts} />;
-  } catch {
+  const result = await getSimilarPosts(
+    postId,
+    SIMILAR_POSTS_LIMIT,
+    SIMILAR_POSTS_THRESHOLD
+  ).then(
+    (posts) => ({ ok: true as const, posts }),
+    () => ({ ok: false as const })
+  );
+
+  if (!result.ok) {
     return null;
   }
+
+  return <SimilarPosts posts={result.posts} />;
 }

@@ -1,7 +1,19 @@
+import { Link } from "@vercel/microfrontends/next/client";
 import { getProfile } from "@ykzts/supabase/queries";
 import { Suspense } from "react";
 import Footer from "./footer";
 import FooterContent from "./footer-content";
+
+// Cross-zone path (portfolio microfrontend). Use the microfrontends Link so
+// navigation stays on the composed origin with client-side routing.
+const privacyLink = (
+  <Link
+    className="transition-colors duration-200 hover:text-primary"
+    href="/privacy"
+  >
+    プライバシーポリシー
+  </Link>
+);
 
 async function SiteFooterImpl() {
   const profile = await getProfile();
@@ -24,15 +36,6 @@ async function SiteFooterImpl() {
       )}
     </span>
   ) : undefined;
-
-  const privacyLink = (
-    <a
-      className="transition-colors duration-200 hover:text-primary"
-      href="/privacy"
-    >
-      プライバシーポリシー
-    </a>
-  );
 
   return (
     <Footer>
