@@ -442,8 +442,9 @@ export function initializeEditorWithPortableText(
           // Close any open lists
           closeAllLists();
 
-          // Handle image blocks
-          if (!block.asset.url) {
+          // Handle image blocks. Types require asset, but malformed content may omit it.
+          const imageAsset = (block as { asset?: { url?: string } }).asset;
+          if (!imageAsset?.url) {
             continue;
           }
           const imageNode = $createImageNode({
@@ -452,7 +453,7 @@ export function initializeEditorWithPortableText(
               typeof block.height === "number" && Number.isFinite(block.height)
                 ? block.height
                 : undefined,
-            src: block.asset.url,
+            src: imageAsset.url,
             width:
               typeof block.width === "number" && Number.isFinite(block.width)
                 ? block.width
