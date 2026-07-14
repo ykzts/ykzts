@@ -9,7 +9,7 @@
     }
   },
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:3.0.1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:4.0.0": {},
     "ghcr.io/devcontainers/features/github-cli:1.1.0": {}
   },
   "forwardPorts": [3024, 3100, 3101, 3102, 54321, 54323, 54324],
