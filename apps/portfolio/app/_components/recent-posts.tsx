@@ -62,7 +62,7 @@ async function RecentPostsImpl() {
   const posts = allPosts
     .filter(
       (post): post is typeof post & { published_at: string } =>
-        post.published_at !== null
+        typeof post.published_at === "string"
     )
     .slice(0, RECENT_POSTS_COUNT);
 

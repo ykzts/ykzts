@@ -432,7 +432,8 @@ async function fetchFeedPosts(options: { limit?: number; tag?: string } = {}) {
   // Always apply a limit. Callers can pass a specific number (main feed passes 20).
   // If no explicit limit, fall back to FEED_LIMIT. This prevents accidentally
   // returning every matching post, which would be heavy for feeds.
-  const effectiveLimit = limit !== null && limit > 0 ? limit : FEED_LIMIT;
+  const effectiveLimit =
+    typeof limit === "number" && limit > 0 ? limit : FEED_LIMIT;
   query = query.limit(effectiveLimit);
 
   const { data, error } = await query;
