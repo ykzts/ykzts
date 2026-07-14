@@ -11,6 +11,7 @@
   "description": "Supabase database type definitions for ykzts applications",
   "devDependencies": {
     "@types/node": "catalog:",
+    "@typescript/native": "catalog:",
     "@ykzts/tsconfig": "workspace:*",
     "typescript": "catalog:"
   },
@@ -54,7 +55,6 @@
       "types": "./src/auth.ts",
       "default": "./src/auth.ts"
     },
-
     "./proxy": {
       "types": "./src/proxy.ts",
       "default": "./src/proxy.ts"

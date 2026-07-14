@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "EditorConfig.EditorConfig",
+    "TypeScriptTeam.native-preview",
     "biomejs.biome",
     "unifiedjs.vscode-mdx"
   ]

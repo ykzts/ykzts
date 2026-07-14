@@ -23,6 +23,7 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "@typescript/native": "catalog:",
     "@ykzts/tsconfig": "workspace:*",
     "postcss": "8.5.16",
     "tailwindcss": "4.3.2",

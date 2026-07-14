@@ -9,7 +9,6 @@
     "./blog-urls": "./src/blog-urls.ts",
     "./csp": "./src/csp.ts",
     "./security-headers": "./src/security-headers.ts",
-
     "./draft-preview": "./src/draft-preview.ts",
     "./secrets": "./src/secrets.ts",
     "./fediverse": "./src/fediverse/index.ts",
@@ -31,6 +30,7 @@
   "devDependencies": {
     "@portabletext/types": "4.0.2",
     "@types/node": "catalog:",
+    "@typescript/native": "catalog:",
     "@ykzts/tsconfig": "workspace:*",
     "typescript": "catalog:",
     "vitest": "catalog:"
