@@ -48,7 +48,6 @@
   "devDependencies": {
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@typescript/native": "catalog:",
     "@ykzts/tsconfig": "workspace:*",
     "typescript": "catalog:"
   }

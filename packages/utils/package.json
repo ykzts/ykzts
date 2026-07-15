@@ -30,7 +30,6 @@
   "devDependencies": {
     "@portabletext/types": "catalog:",
     "@types/node": "catalog:",
-    "@typescript/native": "catalog:",
     "@ykzts/tsconfig": "workspace:*",
     "typescript": "catalog:",
     "vitest": "catalog:"

@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   experimental: {
     turbopackFileSystemCacheForBuild: true,
     turbopackRustReactCompiler: true,
+    useTypeScriptCli: true,
   },
   partialPrefetching: true,
   reactCompiler: true,
