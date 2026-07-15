@@ -1,6 +1,6 @@
 # Architecture Overview
 
-This document gives a high-level view of the ykzts monorepo. For security details see [docs/security.md](./security.md). For AI agent / contributor instructions see [AGENTS.md](../AGENTS.md).
+This document gives a high-level view of the ykzts monorepo. For the canonical security model see [skills/repo-security](../skills/repo-security/SKILL.md) (`/repo-security`). For AI agent / contributor instructions see [AGENTS.md](../AGENTS.md).
 
 ## High-Level Components
 
@@ -43,7 +43,7 @@ This document gives a high-level view of the ykzts monorepo. For security detail
 5. Memo: public reads see only `visibility=public`; owner login enables draft mode for private content; all writes owner-checked + RLS.
 6. Legacy domains always 301 to current canonical URLs.
 
-## Key Security Invariants (see docs/security.md for full details)
+## Key Security Invariants (see [skills/repo-security](../skills/repo-security/SKILL.md) for full details)
 
 - Service role key is **server-only** and used only behind `CRON_SECRET` / `DRAFT_SECRET` / owner-auth gates.
 - Public content never requires secrets.
@@ -54,7 +54,7 @@ This document gives a high-level view of the ykzts monorepo. For security detail
 
 ## Environment Variable Centralization
 
-See the detailed table and guidelines in [docs/security.md](./security.md#secret-management).
+See the detailed table and guidelines in [skills/repo-security](../skills/repo-security/SKILL.md) (Secret management).
 
 Per-app examples live next to the apps:
 - `apps/admin/.env.example`
