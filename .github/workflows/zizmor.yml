@@ -38,10 +38,8 @@ jobs:
           persist-credentials: false
 
       - name: Run zizmor 🌈
-        uses: zizmorcore/zizmor-action@192e21d79ab29983730a13d1382995c2307fbcaa # v0.5.7
+        uses: zizmorcore/zizmor-action@6599ee8b7a49aef6a770f63d261d214911a7ce02 # v0.6.0
         with:
           advanced-security: false
           annotations: true
-          # Use "latest" because newer zizmor releases (1.26+) may not yet be
-          # listed in the action's bundled support/versions at the pinned action commit.
-          version: latest
+          version: 1.27.0
