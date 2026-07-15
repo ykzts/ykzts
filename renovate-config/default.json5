@@ -37,7 +37,7 @@
       groupName: 'immich docker containers',
       groupSlug: 'immich',
       matchDatasources: ['docker'],
-      matchPackageNames: ['ghcr.io/immich-app/**'],
+      matchPackageNames: ['ghcr.io/immich-app/**']
     },
     {
       groupName: 'mastodon docker containers',
@@ -49,6 +49,11 @@
       groupName: 'google terraform providers',
       matchDatasources: ['terraform-provider'],
       matchDepNames: ['google', 'google-beta']
+    },
+    {
+      description: 'Limit renovate package updates to once a week',
+      extends: ['schedule:weekly'],
+      matchPackageNames: ['renovate']
     },
     {
       groupName: 'skaffold',
