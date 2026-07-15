@@ -14,7 +14,8 @@ const nextConfig: NextConfig = {
     mdxRs: {
       mdxType: "gfm",
     },
-    turbopackFileSystemCacheForDev: true,
+    turbopackFileSystemCacheForBuild: true,
+    turbopackRustReactCompiler: true,
   },
   headers() {
     return Promise.resolve([

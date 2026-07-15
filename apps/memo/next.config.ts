@@ -9,7 +9,8 @@ const HTTPS_PROTOCOL_RE = /^https:/;
 const nextConfig: NextConfig = {
   cacheComponents: true,
   experimental: {
-    turbopackFileSystemCacheForDev: true,
+    turbopackFileSystemCacheForBuild: true,
+    turbopackRustReactCompiler: true,
   },
   headers() {
     const supabaseHost = getSupabaseHost();

@@ -5,7 +5,8 @@ import { createLegacyRedirects } from "./redirects";
 const nextConfig: NextConfig = {
   cacheComponents: true,
   experimental: {
-    turbopackFileSystemCacheForDev: true,
+    turbopackFileSystemCacheForBuild: true,
+    turbopackRustReactCompiler: true,
   },
   partialPrefetching: true,
   reactCompiler: true,
