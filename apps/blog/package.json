@@ -34,7 +34,6 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@typescript/native": "catalog:",
     "@vercel/config": "catalog:",
     "@vitejs/plugin-react": "catalog:",
     "@ykzts/tsconfig": "workspace:*",

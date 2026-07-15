@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   experimental: {
     turbopackFileSystemCacheForBuild: true,
     turbopackRustReactCompiler: true,
+    useTypeScriptCli: true,
   },
   headers() {
     return Promise.resolve([

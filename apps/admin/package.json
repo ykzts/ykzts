@@ -29,7 +29,6 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@typescript/native": "catalog:",
     "@vercel/config": "catalog:",
     "@ykzts/tsconfig": "workspace:*",
     "postcss": "catalog:",
