@@ -12,9 +12,8 @@ description: >
 # Repo Security
 
 This skill is the **canonical** technical security model for the ykzts
-monorepo. There is no separate `docs/security.md`. Keep this file updated
-when the security model, secret surface, or allowed service-role call sites
-change.
+monorepo. Keep this file updated when the security model, secret surface, or
+allowed service-role call sites change.
 
 Do **not** invent new secret names, trust boundaries, or service-role call
 sites without aligning to this skill and the packages it points to.
