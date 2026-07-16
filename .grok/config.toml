@@ -93,7 +93,34 @@ deny = [
   'Read(**/id_ed25519)',
   'Edit(**/id_ed25519)',
   'Read(**/.grok/auth.json)',
-  'Edit(**/.grok/auth.json)'
+  'Edit(**/.grok/auth.json)',
+
+  # Same secret paths via Bash (deny wins over allow for cat/cp/sed/etc.)
+  # Patterns match the full command string; keep .env.example out of these lists.
+  'Bash(*.env)',
+  'Bash(*.env *)',
+  'Bash(*.env.local)',
+  'Bash(*.env.local *)',
+  'Bash(*.env.development)',
+  'Bash(*.env.development *)',
+  'Bash(*.env.development.local)',
+  'Bash(*.env.development.local *)',
+  'Bash(*.env.test)',
+  'Bash(*.env.test *)',
+  'Bash(*.env.test.local)',
+  'Bash(*.env.test.local *)',
+  'Bash(*.env.production)',
+  'Bash(*.env.production *)',
+  'Bash(*.env.production.local)',
+  'Bash(*.env.production.local *)',
+  'Bash(*.pem)',
+  'Bash(*.pem *)',
+  'Bash(*id_rsa)',
+  'Bash(*id_rsa *)',
+  'Bash(*id_ed25519)',
+  'Bash(*id_ed25519 *)',
+  'Bash(*.grok/auth.json)',
+  'Bash(*.grok/auth.json *)'
 ]
 
 # ---------------------------------------------------------------------------
@@ -192,12 +219,7 @@ allow = [
   'Bash(test *)',
   'Bash([ *)',
   'Bash(mkdir *)',
-  'Bash(touch *)',
-  'Bash(cp *)',
-  'Bash(mv *)',
   'Bash(diff *)',
-  'Bash(patch *)',
-  'Bash(sed *)',
   'Bash(awk *)',
   'Bash(xargs *)',
   'Bash(find *)',
