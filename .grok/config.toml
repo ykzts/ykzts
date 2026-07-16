@@ -1,0 +1,212 @@
+# Project-scoped Grok config for the ykzts monorepo.
+# Only [permission], [mcp_servers], [plugins], and [mcp] load from this file;
+# other settings come from ~/.grok/config.toml.
+#
+# Rules merge with global/user config. Evaluation order is deny > ask > allow.
+# Bash allow rules match the full command string only; pair them with deny rules
+# so chained commands cannot smuggle dangerous segments after a safe prefix.
+# See: https://github.com/xai-org (user guide: 22-permissions-and-safety.md)
+#
+# Changes apply on the next Grok session.
+
+[permission]
+# ---------------------------------------------------------------------------
+# Deny first: unconditional blocks (win over allow / ask)
+# ---------------------------------------------------------------------------
+deny = [
+  # Destructive filesystem / privilege escalation
+  'Bash(rm -rf *)',
+  'Bash(rm -fr *)',
+  'Bash(sudo *)',
+  'Bash(pkill *)',
+  'Bash(kill *)',
+  'Bash(killall *)',
+  'Bash(chmod *)',
+  'Bash(chown *)',
+  'Bash(chgrp *)',
+
+  # Dangerous git operations (never auto-approve)
+  'Bash(git push --force*)',
+  'Bash(git push -f *)',
+  'Bash(git push -f)',
+  'Bash(git push --force-with-lease*)',
+  'Bash(git reset --hard*)',
+  'Bash(git clean *)',
+  'Bash(git branch -D *)',
+  'Bash(git checkout -- .)',
+  'Bash(git restore --source=*)',
+  'Bash(git update-ref *)',
+  'Bash(git filter-branch *)',
+  'Bash(git filter-repo *)',
+  'Bash(git push * main)',
+  'Bash(git push * master)',
+  'Bash(git push origin main)',
+  'Bash(git push origin master)',
+  'Bash(git commit --no-verify*)',
+  'Bash(git commit -n *)',
+  'Bash(git commit -n)',
+
+  # Remote code execution / opaque installers
+  'Bash(curl *|*)',
+  'Bash(wget *|*)',
+  'Bash(curl *| sh*)',
+  'Bash(curl *| bash*)',
+  'Bash(wget *| sh*)',
+  'Bash(wget *| bash*)',
+  'Bash(eval *)',
+  'Bash(dd *)',
+  'Bash(mkfs *)',
+
+  # Process env dumps can leak tokens / API keys from the shell environment
+  'Bash(env)',
+  'Bash(env *)',
+  'Bash(printenv)',
+  'Bash(printenv *)',
+  'Bash(export)',
+  'Bash(export -p*)',
+  'Bash(declare -x*)',
+  'Bash(set)',
+  'Bash(compgen -e*)',
+
+  # Secrets / local credentials — do not auto-read or edit
+  # Keep .env.example readable/editable; only real env files are denied.
+  'Read(**/.env)',
+  'Edit(**/.env)',
+  'Read(**/.env.local)',
+  'Edit(**/.env.local)',
+  'Read(**/.env.development)',
+  'Edit(**/.env.development)',
+  'Read(**/.env.development.local)',
+  'Edit(**/.env.development.local)',
+  'Read(**/.env.test)',
+  'Edit(**/.env.test)',
+  'Read(**/.env.test.local)',
+  'Edit(**/.env.test.local)',
+  'Read(**/.env.production)',
+  'Edit(**/.env.production)',
+  'Read(**/.env.production.local)',
+  'Edit(**/.env.production.local)',
+  'Read(**/*.pem)',
+  'Edit(**/*.pem)',
+  'Read(**/id_rsa)',
+  'Edit(**/id_rsa)',
+  'Read(**/id_ed25519)',
+  'Edit(**/id_ed25519)',
+  'Read(**/.grok/auth.json)',
+  'Edit(**/.grok/auth.json)'
+]
+
+# ---------------------------------------------------------------------------
+# Ask: still prompt even when an allow rule or built-in auto-approval would pass
+# ---------------------------------------------------------------------------
+ask = [
+  # File mutations — always confirm before writing
+  'Edit',
+  'Write',
+
+  # Network-visible or hard-to-reverse git / GitHub actions
+  'Bash(git push *)',
+  'Bash(git push)',
+  'Bash(gh pr create *)',
+  'Bash(gh pr create)',
+  'Bash(gh pr merge *)',
+  'Bash(gh pr close *)',
+  'Bash(gh release *)',
+  'Bash(gh api *)',
+  'Bash(gh repo *)',
+
+  # Local data wipes / destructive Supabase
+  'Bash(npx supabase db reset *)',
+  'Bash(npx supabase db reset)',
+  'Bash(supabase db reset *)',
+  'Bash(supabase db reset)',
+  'Bash(pnpm dlx supabase db reset *)',
+
+  # Broad install / package mutation outside routine scripts
+  'Bash(pnpm add *)',
+  'Bash(pnpm remove *)',
+  'Bash(pnpm update *)',
+  'Bash(pnpm up *)',
+  'Bash(pnpm install -g *)',
+  'Bash(npm install -g *)',
+  'Bash(npm i -g *)'
+]
+
+# ---------------------------------------------------------------------------
+# Allow: safe / high-frequency operations for this monorepo
+# ---------------------------------------------------------------------------
+allow = [
+  # Built-in tools (explicit; many of these already auto-approve as read-only)
+  'Read',
+  'Grep',
+  'WebSearch',
+  'WebFetch',
+
+  # Package manager & monorepo scripts (root package.json + Turbo)
+  'Bash(pnpm *)',
+  'Bash(pnpm)',
+  'Bash(corepack *)',
+  'Bash(turbo *)',
+  'Bash(npx turbo *)',
+
+  # Lint / format / type tools used via scripts or direct invocation
+  'Bash(ultracite *)',
+  'Bash(biome *)',
+  'Bash(npx biome *)',
+  'Bash(npx ultracite *)',
+  'Bash(tsc *)',
+  'Bash(npx tsc *)',
+  'Bash(vitest *)',
+  'Bash(npx vitest *)',
+  'Bash(playwright *)',
+  'Bash(npx playwright *)',
+
+  # Local Supabase (db reset stays under ask)
+  'Bash(npx supabase *)',
+  'Bash(supabase *)',
+  'Bash(pnpm dlx supabase *)',
+  'Bash(./scripts/setup-env.sh *)',
+  'Bash(./scripts/setup-env.sh)',
+  'Bash(bash scripts/setup-env.sh *)',
+  'Bash(bash ./scripts/setup-env.sh *)',
+
+  # Git: day-to-day workflow (force/push-to-main/reset --hard denied or asked above)
+  'Bash(git *)',
+
+  # GitHub CLI: status/view/list auto-ok; create/merge/etc. asked above
+  'Bash(gh *)',
+  'Bash(GH_PAGER=cat gh *)',
+
+  # Inspection / formatting helpers commonly composed in agent shells
+  'Bash(node *)',
+  'Bash(jq *)',
+  'Bash(rg *)',
+  'Bash(fd *)',
+  'Bash(which *)',
+  'Bash(command -v *)',
+  'Bash(type *)',
+  'Bash(echo *)',
+  'Bash(printf *)',
+  'Bash(true)',
+  'Bash(false)',
+  'Bash(test *)',
+  'Bash([ *)',
+  'Bash(mkdir *)',
+  'Bash(touch *)',
+  'Bash(cp *)',
+  'Bash(mv *)',
+  'Bash(diff *)',
+  'Bash(patch *)',
+  'Bash(sed *)',
+  'Bash(awk *)',
+  'Bash(xargs *)',
+  'Bash(find *)',
+  'Bash(dirname *)',
+  'Bash(basename *)',
+  'Bash(realpath *)',
+  'Bash(mktemp *)',
+  'Bash(timeout *)',
+  'Bash(docker info*)',
+  'Bash(docker ps*)',
+  'Bash(docker compose *)'
+]
