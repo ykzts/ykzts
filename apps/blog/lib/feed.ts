@@ -27,7 +27,7 @@ export async function createAtomFeed(
   let profileName: string | null = null;
   try {
     const profile = await getProfile();
-    if (profile.name?.trim()) {
+    if (profile.name.trim()) {
       profileName = profile.name.trim();
     }
   } catch (error) {
