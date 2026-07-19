@@ -232,8 +232,10 @@ function PostBreadcrumbFallback() {
 }
 
 async function PostJsonLd({ params }: PageProps) {
-  const { post } = await resolvePublishedPost(params);
-  const publisherProfile = await getProfile().catch(() => null);
+  const [{ post }, publisherProfile] = await Promise.all([
+    resolvePublishedPost(params),
+    getProfile().catch(() => null),
+  ]);
   const baseUrl = getSiteOrigin().origin;
   const publisherName = publisherProfile?.name ?? post.profile.name;
   const jsonLd = {
