@@ -4,6 +4,7 @@ import {
   type PortableTextMarkComponentProps,
   type PortableTextReactComponents,
 } from "@portabletext/react";
+import { proseContent } from "@ykzts/ui/lib/prose";
 import type {
   CodeBlock,
   ImageBlock,
@@ -207,7 +208,7 @@ export default function PortableTextBlock({
   ...props
 }: PortableTextProps) {
   return (
-    <div className="prose prose-theme max-w-none prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
+    <div className={proseContent("max-w-none")}>
       <PortableText
         {...props}
         components={portableTextComponents}

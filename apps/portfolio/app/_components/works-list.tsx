@@ -1,5 +1,6 @@
 "use client";
 
+import { proseContent } from "@ykzts/ui/lib/prose";
 import type { PortableTextValue } from "@ykzts/utils/portable-text";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -123,7 +124,7 @@ export default function WorksList({
                 {work.title}
               </h3>
               {!!work.content && (
-                <div className="prose prose-theme prose-base max-w-none prose-p:text-base prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
+                <div className={proseContent("max-w-none")}>
                   <PortableTextBlock value={work.content} />
                 </div>
               )}

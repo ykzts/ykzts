@@ -25,6 +25,7 @@
     "./components/sonner": "./src/components/sonner.tsx",
     "./components/table": "./src/components/table.tsx",
     "./components/textarea": "./src/components/textarea.tsx",
+    "./lib/prose": "./src/lib/prose.ts",
     "./lib/utils": "./src/lib/utils.ts",
     "./styles/theme.css": "./src/styles/theme.css"
   },

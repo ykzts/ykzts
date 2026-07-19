@@ -1,10 +1,11 @@
 import { Link } from "@vercel/microfrontends/next/client";
+import { proseContent } from "@ykzts/ui/lib/prose";
 import { ArrowLeft } from "lucide-react";
 
 export default function DocsLayout({ children }: LayoutProps<"/">) {
   return (
     <div className="min-h-dvh px-6 py-16 md:px-12 lg:px-24">
-      <main className="prose prose-theme mx-auto max-w-3xl prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
+      <main className={proseContent("mx-auto max-w-3xl")}>
         {children}
 
         <p className="mt-16">

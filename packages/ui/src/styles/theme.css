@@ -179,6 +179,18 @@
   --tw-prose-td-borders: var(--color-border);
 }
 
+/*
+ * Lexical table cells always wrap content in <p>. Default prose paragraph
+ * margins break cell layout; keep cell text flush like published plain cells.
+ */
+.prose :where(td, th) :where(p) {
+  margin: 0;
+}
+
+.prose :where(td, th) :where(p + p) {
+  margin-top: 0.5em;
+}
+
 @utility shiki {
   @apply rounded-lg overflow-y-auto p-2 text-sm;
 }

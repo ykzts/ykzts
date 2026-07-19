@@ -12,9 +12,14 @@ import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
+import { proseContent } from "@ykzts/ui/lib/prose";
 import type { EditorState, LexicalEditor } from "lexical";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ImageNode } from "./nodes/image-node";
+import {
+  $createProseTableNode,
+  ProseTableNode,
+} from "./nodes/prose-table-node";
 import { CodeExitPlugin } from "./plugins/code-exit-plugin";
 import { CodeHighlightPlugin } from "./plugins/code-highlight-plugin";
 import { EditorStatePlugin } from "./plugins/editor-state-plugin";
@@ -27,7 +32,8 @@ import {
   lexicalToPortableText,
 } from "./portable-text-serializer";
 
-// Minimal theme - @tailwindcss/typography handles most styling
+// Minimal theme — visual styling comes from @tailwindcss/typography (proseContent).
+// Only Lexical runtime needs (syntax tokens, nested-list marker fix) live here.
 const editorTheme = {
   code: "block overflow-x-auto whitespace-pre font-mono text-sm not-prose bg-muted/20 border border-border rounded p-4 my-2",
   codeHighlight: {
@@ -61,6 +67,12 @@ const editorTheme = {
     tag: "text-red-600 dark:text-red-400",
     url: "text-blue-600 dark:text-blue-400",
     variable: "text-orange-600 dark:text-orange-400",
+  },
+  // Nested list items wrap a nested list; hide the outer marker (Lexical requirement)
+  list: {
+    nested: {
+      listitem: "list-none",
+    },
   },
 };
 
@@ -106,7 +118,13 @@ export function RichTextEditor({
       ListItemNode,
       HeadingNode,
       QuoteNode,
-      TableNode,
+      // table > tbody > tr for @tailwindcss/typography
+      ProseTableNode,
+      {
+        replace: TableNode,
+        with: () => $createProseTableNode(),
+        withKlass: ProseTableNode,
+      },
       TableCellNode,
       TableRowNode,
     ],
@@ -149,7 +167,9 @@ export function RichTextEditor({
             <RichTextPlugin
               contentEditable={
                 <ContentEditable
-                  className="prose prose-theme prose-sm min-h-37.5 max-w-none overflow-auto px-4 py-3 text-foreground outline-none"
+                  className={proseContent(
+                    "min-h-37.5 max-w-none overflow-auto px-4 py-3 outline-none"
+                  )}
                   id={id}
                 />
               }
