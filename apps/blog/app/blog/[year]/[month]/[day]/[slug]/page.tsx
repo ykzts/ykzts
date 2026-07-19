@@ -9,13 +9,16 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@ykzts/ui/components/breadcrumb";
+import { Skeleton } from "@ykzts/ui/components/skeleton";
 import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { isPortableTextValue } from "@ykzts/utils/portable-text";
 import type { Metadata, Route } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import ArticleContent from "@/components/article-content";
 import PostNavigation from "@/components/post-navigation";
 import SimilarPosts from "@/components/similar-posts";
+import SimilarPostsSkeleton from "@/components/similar-posts-skeleton";
 import TableOfContents from "@/components/table-of-contents";
 import { DEFAULT_POST_TITLE } from "@/lib/constants";
 import { extractHeadings } from "@/lib/extract-headings";
@@ -34,6 +37,18 @@ interface PageProps {
     slug: string;
   }>;
 }
+
+type ResolvedPost = NonNullable<Awaited<ReturnType<typeof getPostBySlug>>> & {
+  content: NonNullable<
+    NonNullable<Awaited<ReturnType<typeof getPostBySlug>>>["content"]
+  >;
+  profile: {
+    fediverse_creator?: string | null;
+    id: string;
+    name: string;
+  };
+  published_at: string;
+};
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -64,6 +79,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
+  "use cache";
+
   const { year, month, day, slug } = await params;
   const post = await getPostBySlug(slug);
 
@@ -138,7 +155,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function PostDetailPage({ params }: PageProps) {
+async function resolvePublishedPost(
+  params: PageProps["params"]
+): Promise<{ post: ResolvedPost; year: string }> {
   const { year, month, day, slug } = await params;
   const post = await getPostBySlug(slug);
 
@@ -146,7 +165,6 @@ export default async function PostDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  // Validate URL date components match the post's published_at date
   if (post.published_at) {
     const publishedDate = new Date(post.published_at);
     const expectedYear = String(publishedDate.getUTCFullYear());
@@ -164,30 +182,60 @@ export default async function PostDetailPage({ params }: PageProps) {
       notFound();
     }
   } else {
-    // Draft posts with no published_at cannot be accessed via date-based URL
     notFound();
   }
 
-  // Validate content is valid PortableText
   if (!(post.content && isPortableTextValue(post.content))) {
     notFound();
   }
 
-  // Profile is required for author information
   if (!post.profile?.name) {
     notFound();
   }
 
-  // Fetch publisher profile and adjacent posts concurrently.
-  // getProfile() failure is tolerated; fall back to post.profile.name for publisher.
-  const [publisherProfile, { previousPost, nextPost }] = await Promise.all([
+  return {
+    post: post as ResolvedPost,
+    year,
+  };
+}
+
+async function PostBreadcrumb({ params }: PageProps) {
+  const { post, year } = await resolvePublishedPost(params);
+
+  return (
+    <Breadcrumb className="mb-6">
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink render={<Link href="/blog" />}>ブログ</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink render={<Link href={`/blog/${year}`} />}>
+            {year}年
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>{post.title}</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+}
+
+function PostBreadcrumbFallback() {
+  return (
+    <div aria-hidden="true" className="mb-6">
+      <Skeleton className="h-4 w-56" />
+    </div>
+  );
+}
+
+async function PostJsonLd({ params }: PageProps) {
+  const [{ post }, publisherProfile] = await Promise.all([
+    resolvePublishedPost(params),
     getProfile().catch(() => null),
-    getAdjacentPosts(slug),
   ]);
-
-  const historyUrl = `${getPostUrl(post)}/history` as Route;
-
-  // JSON-LD structured data for Article schema
   const baseUrl = getSiteOrigin().origin;
   const publisherName = publisherProfile?.name ?? post.profile.name;
   const jsonLd = {
@@ -208,99 +256,87 @@ export default async function PostDetailPage({ params }: PageProps) {
     },
   };
 
-  // Extract headings for Table of Contents
+  return (
+    <script
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe with JSON.stringify
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      type="application/ld+json"
+    />
+  );
+}
+
+async function PostArticle({ params }: PageProps) {
+  const { post } = await resolvePublishedPost(params);
+  const historyUrl = `${getPostUrl(post)}/history` as Route;
   const headings = extractHeadings(post.content);
   const hasHeadings = headings.length > 0;
 
+  if (hasHeadings) {
+    return (
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
+        <ArticleContent
+          authorName={post.profile.name}
+          className="min-w-0"
+          content={post.content}
+          headings={headings}
+          historyUrl={historyUrl}
+          publishedAt={post.published_at}
+          tags={post.tags}
+          title={post.title}
+          versionDate={post.version_date}
+        />
+        <div className="hidden lg:block">
+          <TableOfContents headings={headings} variant="desktop" />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <>
-      <script
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe with JSON.stringify
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        type="application/ld+json"
-      />
-      <main className="px-6 py-8 md:px-12 lg:px-24">
-        <div className="mx-auto max-w-4xl">
-          <Breadcrumb className="mb-6">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/blog" />}>
-                  ブログ
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href={`/blog/${year}`} />}>
-                  {year}年
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>{post.title}</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-
-        {/* Grid layout: article body + ToC */}
-        <div className="mx-auto max-w-4xl">
-          {hasHeadings ? (
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
-              {/* Main content */}
-              <ArticleContent
-                authorName={post.profile.name}
-                className="min-w-0"
-                content={post.content}
-                headings={headings}
-                historyUrl={historyUrl}
-                publishedAt={post.published_at}
-                tags={post.tags}
-                title={post.title}
-                versionDate={post.version_date}
-              />
-
-              {/* Desktop ToC sidebar */}
-              <div className="hidden lg:block">
-                <TableOfContents headings={headings} variant="desktop" />
-              </div>
-            </div>
-          ) : (
-            <ArticleContent
-              authorName={post.profile.name}
-              className="mx-auto max-w-3xl"
-              content={post.content}
-              headings={headings}
-              historyUrl={historyUrl}
-              publishedAt={post.published_at}
-              tags={post.tags}
-              title={post.title}
-              versionDate={post.version_date}
-            />
-          )}
-        </div>
-
-        {/* Full width: article navigation */}
-        <div className="mx-auto max-w-4xl">
-          <PostNavigation nextPost={nextPost} previousPost={previousPost} />
-        </div>
-
-        {/* Full width: related articles */}
-        <div className="mx-auto max-w-4xl">
-          <div aria-atomic="false" aria-live="polite">
-            <SimilarPostsSection postId={post.id} />
-          </div>
-        </div>
-      </main>
-    </>
+    <ArticleContent
+      authorName={post.profile.name}
+      className="mx-auto max-w-3xl"
+      content={post.content}
+      headings={headings}
+      historyUrl={historyUrl}
+      publishedAt={post.published_at}
+      tags={post.tags}
+      title={post.title}
+      versionDate={post.version_date}
+    />
   );
+}
+
+function PostArticleFallback() {
+  return (
+    <div aria-hidden="true" className="space-y-6">
+      <Skeleton className="h-10 w-3/4" />
+      <Skeleton className="h-4 w-1/3" />
+      <div className="space-y-3 pt-4">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-5/6" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-2/3" />
+      </div>
+    </div>
+  );
+}
+
+async function PostAdjacentNav({ params }: PageProps) {
+  const { post } = await resolvePublishedPost(params);
+  const { previousPost, nextPost } = await getAdjacentPosts(post.slug);
+
+  return <PostNavigation nextPost={nextPost} previousPost={previousPost} />;
 }
 
 const SIMILAR_POSTS_LIMIT = 3;
 const SIMILAR_POSTS_THRESHOLD = 0.5;
 
-async function SimilarPostsSection({ postId }: { postId: string }) {
+async function SimilarPostsSection({ params }: PageProps) {
+  const { post } = await resolvePublishedPost(params);
   const result = await getSimilarPosts(
-    postId,
+    post.id,
     SIMILAR_POSTS_LIMIT,
     SIMILAR_POSTS_THRESHOLD
   ).then(
@@ -314,4 +350,41 @@ async function SimilarPostsSection({ postId }: { postId: string }) {
   }
 
   return <SimilarPosts posts={result.posts} />;
+}
+
+export default function PostDetailPage({ params }: PageProps) {
+  return (
+    <>
+      <Suspense fallback={null}>
+        <PostJsonLd params={params} />
+      </Suspense>
+      <main className="px-6 py-8 md:px-12 lg:px-24">
+        <div className="mx-auto max-w-4xl">
+          <Suspense fallback={<PostBreadcrumbFallback />}>
+            <PostBreadcrumb params={params} />
+          </Suspense>
+        </div>
+
+        <div className="mx-auto max-w-4xl">
+          <Suspense fallback={<PostArticleFallback />}>
+            <PostArticle params={params} />
+          </Suspense>
+        </div>
+
+        <div className="mx-auto max-w-4xl">
+          <Suspense fallback={null}>
+            <PostAdjacentNav params={params} />
+          </Suspense>
+        </div>
+
+        <div className="mx-auto max-w-4xl">
+          <div aria-atomic="false" aria-live="polite">
+            <Suspense fallback={<SimilarPostsSkeleton />}>
+              <SimilarPostsSection params={params} />
+            </Suspense>
+          </div>
+        </div>
+      </main>
+    </>
+  );
 }

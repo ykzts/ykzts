@@ -9,6 +9,8 @@ interface TagLayoutProps {
 export async function generateMetadata({
   params,
 }: TagLayoutProps): Promise<Metadata> {
+  "use cache";
+
   const { tag } = await params;
   const decodedTag = decodeURIComponent(tag);
   const encodedTag = encodeURIComponent(decodedTag);
@@ -23,5 +25,5 @@ export async function generateMetadata({
 }
 
 export default function TagLayout({ children }: { children: ReactNode }) {
-  return <>{children}</>;
+  return children;
 }
