@@ -327,6 +327,8 @@ export function ToolbarPlugin({
     (rows: number, columns: number) => {
       editor.dispatchCommand(INSERT_TABLE_COMMAND, {
         columns: String(columns),
+        // Match Portable Text display: first row is header, not first column
+        includeHeaders: { columns: false, rows: true },
         rows: String(rows),
       });
     },

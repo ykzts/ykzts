@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@ykzts/ui/components/dialog";
+import { proseContent } from "@ykzts/ui/lib/prose";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import PrivacyContent from "@/docs/privacy.mdx";
@@ -28,7 +29,7 @@ export default function PrivacyModal() {
           <DialogTitle>プライバシーポリシー</DialogTitle>
         </DialogHeader>
         <div className="-mx-4 min-h-0 flex-1 overflow-y-auto px-8">
-          <div className="prose prose-theme prose-base max-w-none prose-p:text-base prose-p:leading-relaxed prose-a:no-underline prose-a:hover:underline">
+          <div className={proseContent("max-w-none")}>
             <PrivacyContent />
           </div>
         </div>

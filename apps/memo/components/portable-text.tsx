@@ -4,6 +4,7 @@ import {
   type PortableTextReactComponents,
 } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
+import { proseContent } from "@ykzts/ui/lib/prose";
 import type { ComponentProps } from "react";
 import Link from "@/components/link";
 
@@ -36,7 +37,7 @@ export default function MemoPortableText({
   ...props
 }: PortableTextProps) {
   return (
-    <div className="prose max-w-none">
+    <div className={proseContent("max-w-none")}>
       <PortableText
         {...props}
         components={portableTextComponents}
