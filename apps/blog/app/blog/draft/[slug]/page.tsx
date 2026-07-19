@@ -123,10 +123,10 @@ async function DraftPostContent({ params }: PageProps) {
 
       <div className="mx-auto max-w-4xl">
         {hasHeadings ? (
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_12rem]">
             <ArticleContent
               authorName={post.profile.name}
-              className="mx-auto min-w-0 max-w-3xl lg:mx-0 lg:max-w-none"
+              className="min-w-0"
               content={post.content}
               headings={headings}
               publishedAt={post.published_at}
@@ -141,7 +141,6 @@ async function DraftPostContent({ params }: PageProps) {
         ) : (
           <ArticleContent
             authorName={post.profile.name}
-            className="mx-auto max-w-3xl"
             content={post.content}
             headings={headings}
             publishedAt={post.published_at}
