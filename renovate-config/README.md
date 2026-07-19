@@ -47,7 +47,7 @@ None - this is a configuration-only package
 - **Immediate PRs**: Creates pull requests without delay
 
 ### Specialized Groupings
-- **Docker Containers**: Groups container updates by project (Immich, Mastodon)
+- **Docker Containers**: Groups container updates by project (Baserow, Immich, Mastodon)
 - **Terraform Providers**: Groups Google Cloud provider updates
 - **Build Tools**: Special handling for development and build dependencies
 
