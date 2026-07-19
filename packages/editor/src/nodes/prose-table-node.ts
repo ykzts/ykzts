@@ -233,10 +233,15 @@ export class ProseTableNode extends TableNode {
           return null;
         }
 
-        // Drop empty thead if no header rows (keeps markup tidy)
+        // Drop empty sections (header-only or body-only tables)
         const thead = tableElement.tHead;
         if (thead && thead.rows.length === 0) {
           thead.remove();
+        }
+        for (const tbody of [...tableElement.tBodies]) {
+          if (tbody.rows.length === 0) {
+            tbody.remove();
+          }
         }
         return tableElement;
       },
