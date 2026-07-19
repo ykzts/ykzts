@@ -273,7 +273,7 @@ async function PostArticle({ params }: PageProps) {
 
   if (hasHeadings) {
     return (
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_16rem]">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_12rem]">
         <ArticleContent
           authorName={post.profile.name}
           className="min-w-0"
@@ -295,7 +295,6 @@ async function PostArticle({ params }: PageProps) {
   return (
     <ArticleContent
       authorName={post.profile.name}
-      className="mx-auto max-w-3xl"
       content={post.content}
       headings={headings}
       historyUrl={historyUrl}
