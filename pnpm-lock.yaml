@@ -85,8 +85,8 @@ catalogs:
       specifier: 0.0.1
       version: 0.0.1
     shadcn:
-      specifier: 4.13.0
-      version: 4.13.0
+      specifier: 4.13.1
+      version: 4.13.1
     shiki:
       specifier: 4.3.1
       version: 4.3.1
@@ -227,7 +227,7 @@ importers:
         version: 8.5.20
       shadcn:
         specifier: 'catalog:'
-        version: 4.13.0(supports-color@7.2.0)(typescript@7.0.2)
+        version: 4.13.1(supports-color@7.2.0)(typescript@7.0.2)
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -351,7 +351,7 @@ importers:
         version: 8.5.20
       shadcn:
         specifier: 'catalog:'
-        version: 4.13.0(supports-color@7.2.0)(typescript@7.0.2)
+        version: 4.13.1(supports-color@7.2.0)(typescript@7.0.2)
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -609,7 +609,7 @@ importers:
         version: 8.5.20
       shadcn:
         specifier: 'catalog:'
-        version: 4.13.0(supports-color@7.2.0)(typescript@7.0.2)
+        version: 4.13.1(supports-color@7.2.0)(typescript@7.0.2)
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -6535,8 +6535,8 @@ packages:
   setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
 
-  shadcn@4.13.0:
-    resolution: {integrity: sha512-5fuJ4jI/GcPeA/iTL4cJivCZuYQGXz/N3bIzyd+Gd/FM6xUCy2MxGG+LaDQuw2cjNy9zGPSFPTEmI048UwPTZA==}
+  shadcn@4.13.1:
+    resolution: {integrity: sha512-pSNPND8mVWGBytdd8l4Cksg7MyRZOsv28HpvNCtFtLwZoxLSGM6v3NMUpmpbOaIoreopS/UOpQvnCyttOHVLAQ==}
     engines: {node: '>=20.18.1'}
     hasBin: true
 
@@ -13898,7 +13898,7 @@ snapshots:
 
   setprototypeof@1.2.0: {}
 
-  shadcn@4.13.0(supports-color@7.2.0)(typescript@7.0.2):
+  shadcn@4.13.1(supports-color@7.2.0)(typescript@7.0.2):
     dependencies:
       '@babel/core': 7.29.7(supports-color@7.2.0)
       '@babel/parser': 7.29.7
