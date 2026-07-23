@@ -74,11 +74,11 @@ export function NewMemoForm() {
         </select>
       </div>
 
-      {state?.error && (
+      {state?.error ? (
         <p className="mb-4 rounded bg-destructive/10 px-3 py-2 text-destructive text-sm">
           {state.error}
         </p>
-      )}
+      ) : null}
 
       <div className="flex justify-end gap-2">
         <Link

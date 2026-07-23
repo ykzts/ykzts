@@ -118,7 +118,7 @@ const portableTextComponents = {
     },
     image({ value }: { value: ImageBlock }) {
       const { alt, asset, height, width } = value;
-      const imageUrl = asset?.url;
+      const imageUrl = asset.url;
 
       if (!imageUrl) {
         return null;

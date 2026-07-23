@@ -22,7 +22,7 @@ export default function LoginForm({ isDevelopment = false }: LoginFormProps) {
     startTransition(async () => {
       try {
         const result = await signInWithPassword(email, password);
-        if (result?.error) {
+        if (result.error) {
           setError(result.error);
         }
       } catch {
@@ -50,16 +50,16 @@ export default function LoginForm({ isDevelopment = false }: LoginFormProps) {
 
   return (
     <div className="space-y-6">
-      {error && (
+      {error ? (
         <p
           className="rounded-md bg-red-50 p-3 text-red-600 text-sm"
           role="alert"
         >
           {error}
         </p>
-      )}
+      ) : null}
 
-      {isDevelopment && (
+      {isDevelopment ? (
         <>
           <form className="space-y-4" onSubmit={handlePasswordSubmit}>
             <div className="space-y-2">
@@ -104,9 +104,9 @@ export default function LoginForm({ isDevelopment = false }: LoginFormProps) {
             </div>
           </div>
         </>
-      )}
+      ) : null}
 
-      {!isDevelopment && (
+      {isDevelopment ? null : (
         <p className="text-muted-foreground text-sm">
           GitHub アカウントでログインしてください
         </p>

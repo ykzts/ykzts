@@ -28,14 +28,14 @@ export default function LoginForm() {
 
   return (
     <div className="space-y-6">
-      {error && (
+      {error ? (
         <p
           className="rounded-md bg-red-50 p-3 text-red-600 text-sm"
           role="alert"
         >
           {error}
         </p>
-      )}
+      ) : null}
 
       <p className="text-muted-foreground text-sm">
         GitHub アカウントでログインしてください
