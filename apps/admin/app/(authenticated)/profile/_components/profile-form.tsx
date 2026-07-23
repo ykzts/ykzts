@@ -180,7 +180,7 @@ export default function ProfileForm({
           名前 <span className="text-error">*</span>
         </label>
         <Input
-          defaultValue={initialData?.name ?? ""}
+          defaultValue={initialData ? initialData.name : ""}
           id="name"
           name="name"
           required
@@ -230,7 +230,7 @@ export default function ProfileForm({
         </label>
         <select
           className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-          defaultValue={initialData?.timezone ?? DEFAULT_TIMEZONE}
+          defaultValue={initialData ? initialData.timezone : DEFAULT_TIMEZONE}
           id="timezone"
           name="timezone"
         >

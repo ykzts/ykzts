@@ -35,10 +35,10 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
   const [state, formAction, isPending] = useActionState(saveKeyVisual, null);
 
   const [currentUrl, setCurrentUrl] = useState<string | null>(
-    currentKeyVisual?.url ?? null
+    currentKeyVisual ? currentKeyVisual.url : null
   );
   const [preview, setPreview] = useState<string | null>(
-    currentKeyVisual?.url ?? null
+    currentKeyVisual ? currentKeyVisual.url : null
   );
   const [dimensions, setDimensions] = useState<{
     height: number;

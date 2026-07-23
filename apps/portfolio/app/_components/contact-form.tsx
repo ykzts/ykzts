@@ -66,7 +66,9 @@ export default function ContactForm() {
           required
           type="text"
         />
-        {errors.name && <FieldError id="name-error">{errors.name}</FieldError>}
+        {errors.name ? (
+          <FieldError id="name-error">{errors.name}</FieldError>
+        ) : null}
       </Field>
 
       <Field className="mb-5">
@@ -82,9 +84,9 @@ export default function ContactForm() {
           required
           type="email"
         />
-        {errors.email && (
+        {errors.email ? (
           <FieldError id="email-error">{errors.email}</FieldError>
-        )}
+        ) : null}
       </Field>
 
       <Field className="mb-5">
@@ -100,9 +102,9 @@ export default function ContactForm() {
           required
           type="text"
         />
-        {errors.subject && (
+        {errors.subject ? (
           <FieldError id="subject-error">{errors.subject}</FieldError>
-        )}
+        ) : null}
       </Field>
 
       <Field className="mb-5">
@@ -118,9 +120,9 @@ export default function ContactForm() {
           required
           rows={6}
         />
-        {errors.message && (
+        {errors.message ? (
           <FieldError id="message-error">{errors.message}</FieldError>
-        )}
+        ) : null}
       </Field>
 
       <div className="mb-5 flex cursor-pointer items-center gap-2.5 text-base text-muted-foreground">
@@ -138,11 +140,11 @@ export default function ContactForm() {
           </Link>
           に同意します <span className="text-red-500">*</span>
         </span>
-        {errors.privacyConsent && (
+        {errors.privacyConsent ? (
           <p className="mt-1.5 w-full text-red-500 text-sm" id="privacy-error">
             {errors.privacyConsent}
           </p>
-        )}
+        ) : null}
       </div>
 
       <div className="mt-6">
