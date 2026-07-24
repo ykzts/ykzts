@@ -5,7 +5,7 @@ packages:
   - renovate-config
 
 catalog:
-  '@next/mdx': 16.3.0-preview.8
+  '@next/mdx': 16.3.0-preview.9
   '@portabletext/react': 6.2.0
   '@portabletext/types': 4.0.2
   '@supabase/ssr': 0.12.3
@@ -25,7 +25,7 @@ catalog:
   ai: 7.0.34
   jsdom: 29.1.1
   lucide-react: 1.25.0
-  next: 16.3.0-preview.8
+  next: 16.3.0-preview.9
   next-themes: 0.4.6
   postcss: 8.5.21
   react: 19.2.8
