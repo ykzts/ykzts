@@ -10,8 +10,8 @@ catalogs:
       specifier: 16.3.0-preview.9
       version: 16.3.0-preview.9
     '@portabletext/react':
-      specifier: 6.2.0
-      version: 6.2.0
+      specifier: 7.0.1
+      version: 7.0.1
     '@portabletext/types':
       specifier: 4.0.2
       version: 4.0.2
@@ -245,7 +245,7 @@ importers:
     dependencies:
       '@portabletext/react':
         specifier: 'catalog:'
-        version: 6.2.0(react@19.2.8)
+        version: 7.0.1(react@19.2.8)
       '@supabase/supabase-js':
         specifier: 'catalog:'
         version: 2.110.8
@@ -406,7 +406,7 @@ importers:
     dependencies:
       '@portabletext/react':
         specifier: 'catalog:'
-        version: 6.2.0(react@19.2.8)
+        version: 7.0.1(react@19.2.8)
       '@supabase/ssr':
         specifier: 'catalog:'
         version: 0.12.3(@supabase/supabase-js@2.110.8)
@@ -482,7 +482,7 @@ importers:
     dependencies:
       '@portabletext/react':
         specifier: 'catalog:'
-        version: 6.2.0(react@19.2.8)
+        version: 7.0.1(react@19.2.8)
       '@portabletext/types':
         specifier: 'catalog:'
         version: 4.0.2
@@ -2330,11 +2330,11 @@ packages:
     resolution: {integrity: sha512-XNzCKBHaZ9e/4cB5qI+mpZBSFYvWNwSft7EYQ90kIT1e7nm++rwcOmF6BEjlpMnkny72NAhhgVH5stmqO2Eykg==}
     engines: {node: '>=20.19 <22 || >=22.12'}
 
-  '@portabletext/react@6.2.0':
-    resolution: {integrity: sha512-Z0J/AWrvg7GyDfEBQRRhi6ZpxLOsN4/QbU8KhTwfa6r2ELiRaMa4gkHE9wfs3V1ozNDrTG4IRr+8yBnHNDnAqA==}
+  '@portabletext/react@7.0.1':
+    resolution: {integrity: sha512-NMedRgByZMSbV6dA7tdM6Jom4J/AfV7xIXcZk3kQMs8bCq6faeY9GbjtgYIYsomdjXvNsVIVx3PXvVPpiUa7mA==}
     engines: {node: '>=20.19 <22 || >=22.12'}
     peerDependencies:
-      react: ^18.2 || ^19
+      react: ^19
 
   '@portabletext/schema@2.2.3':
     resolution: {integrity: sha512-C3+BvyDmUk3ZMgdTXowVdzqxHHPotgy2tFsiuuaxhOsXCeb1+iYUnxoDQKV+7HO9CYwA3H6I85/t+1b5VJWPEA==}
@@ -9230,7 +9230,7 @@ snapshots:
       '@portabletext/toolkit': 5.0.2
       markdown-it: 14.3.0
 
-  '@portabletext/react@6.2.0(react@19.2.8)':
+  '@portabletext/react@7.0.1(react@19.2.8)':
     dependencies:
       '@portabletext/toolkit': 5.0.2
       '@portabletext/types': 4.0.2
