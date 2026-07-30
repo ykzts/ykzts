@@ -7,7 +7,7 @@
     "@commitlint/config-conventional": "21.2.0",
     "@commitlint/types": "21.2.0",
     "lefthook": "2.1.10",
-    "turbo": "2.10.6",
+    "turbo": "2.10.7",
     "ultracite": "7.9.4"
   },
   "license": "MIT",
