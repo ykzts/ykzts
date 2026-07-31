@@ -30,7 +30,7 @@
     "@mdx-js/loader": "3.1.1",
     "@mdx-js/react": "3.1.1",
     "@next/mdx": "catalog:",
-    "@playwright/test": "1.61.1",
+    "@playwright/test": "1.62.0",
     "@tailwindcss/postcss": "catalog:",
     "@tailwindcss/typography": "catalog:",
     "@testing-library/jest-dom": "catalog:",
