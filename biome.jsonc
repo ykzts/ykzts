@@ -21,6 +21,9 @@
         // components. Requiring manual useCallback for every JSX prop is
         // noise and fights the compiler model.
         "noJsxPropsBind": "off"
+      },
+      "suspicious": {
+        "noUnnecessaryConditions": "warn"
       }
     }
   },
