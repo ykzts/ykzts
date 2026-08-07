@@ -1,17 +1,17 @@
 {
-  "author": "Yamagishi Kazutoshi",
-  "dependencies": {},
-  "description": "Professional profile and biography content for Yamagishi Kazutoshi",
-  "devDependencies": {},
-  "license": "MIT",
   "name": "@ykzts/profile",
+  "version": "1.0.0",
   "private": true,
+  "description": "Professional profile and biography content for Yamagishi Kazutoshi",
   "repository": {
-    "directory": "profile",
     "type": "git",
-    "url": "https://github.com/ykzts/ykzts.git"
+    "url": "https://github.com/ykzts/ykzts.git",
+    "directory": "profile"
   },
-  "scripts": {},
+  "license": "MIT",
+  "author": "Yamagishi Kazutoshi",
   "type": "module",
-  "version": "1.0.0"
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
 }

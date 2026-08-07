@@ -71,7 +71,7 @@ export async function updatePostAction(
 
   if (!validation.success) {
     const [firstError] = validation.error.issues;
-    return { error: firstError?.message ?? "バリデーションエラー" };
+    return { error: firstError.message };
   }
 
   const validatedData = validation.data;
@@ -124,7 +124,7 @@ export async function deletePostAction(id: string): Promise<void> {
 
   if (!idValidation.success) {
     const [firstError] = idValidation.error.issues;
-    throw new Error(firstError?.message ?? "無効なIDです");
+    throw new Error(firstError.message);
   }
 
   try {

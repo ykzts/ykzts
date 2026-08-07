@@ -49,7 +49,7 @@ export function PublicUrlField({
 
   useEffect(
     () => () => {
-      if (timerRef.current) {
+      if (timerRef.current !== null) {
         clearTimeout(timerRef.current);
       }
     },
@@ -97,7 +97,7 @@ export function PublicUrlField({
       setCopied(true);
       toast.success("URLをコピーしました");
 
-      if (timerRef.current) {
+      if (timerRef.current !== null) {
         clearTimeout(timerRef.current);
       }
       timerRef.current = setTimeout(() => {

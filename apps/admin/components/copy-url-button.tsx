@@ -25,7 +25,7 @@ export function CopyUrlButton({
 
   useEffect(
     () => () => {
-      if (timerRef.current) {
+      if (timerRef.current !== null) {
         clearTimeout(timerRef.current);
       }
     },
@@ -41,7 +41,7 @@ export function CopyUrlButton({
       setCopied(true);
       toast.success("URLをコピーしました");
 
-      if (timerRef.current) {
+      if (timerRef.current !== null) {
         clearTimeout(timerRef.current);
       }
       timerRef.current = setTimeout(() => {

@@ -1,21 +1,21 @@
 {
-  "author": "Yamagishi Kazutoshi",
-  "dependencies": {},
+  "name": "@ykzts/renovate-config",
+  "version": "1.0.0",
+  "private": true,
   "description": "Shared Renovate configuration for repository maintenance and dependency updates",
-  "devDependencies": {
-    "renovate": "44.4.5"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.git",
+    "directory": "renovate-config"
   },
   "license": "MIT",
-  "name": "@ykzts/renovate-config",
-  "private": true,
-  "repository": {
-    "directory": "renovate-config",
-    "type": "git",
-    "url": "https://github.com/ykzts/ykzts.git"
-  },
+  "author": "Yamagishi Kazutoshi",
+  "type": "module",
   "scripts": {
     "validate": "renovate-config-validator --strict *.json5"
   },
-  "type": "module",
-  "version": "1.0.0"
+  "dependencies": {},
+  "devDependencies": {
+    "renovate": "44.4.5"
+  }
 }

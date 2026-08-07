@@ -113,7 +113,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
         setCurrentUrl(result.url);
         setPreview(result.url);
         setSelectedFile(null);
-        if (fileInputRef.current) {
+        if (fileInputRef.current !== null) {
           fileInputRef.current.value = "";
         }
       }
@@ -139,7 +139,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
         setPreview(null);
         setDimensions(null);
         setSelectedFile(null);
-        if (fileInputRef.current) {
+        if (fileInputRef.current !== null) {
           fileInputRef.current.value = "";
         }
         router.refresh();
@@ -168,7 +168,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
 
     if (e.dataTransfer.files?.[0]) {
       const [file] = e.dataTransfer.files;
-      if (fileInputRef.current) {
+      if (fileInputRef.current !== null) {
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
         fileInputRef.current.files = dataTransfer.files;

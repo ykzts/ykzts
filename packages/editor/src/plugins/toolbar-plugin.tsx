@@ -283,7 +283,7 @@ export function ToolbarPlugin({
       } finally {
         setIsUploading(false);
         // Reset file input
-        if (fileInputRef.current) {
+        if (fileInputRef.current !== null) {
           fileInputRef.current.value = "";
         }
       }

@@ -75,13 +75,13 @@ export function AvatarUpload({
         setError(result.error);
         setPreview(currentAvatarUrl || null);
         setSelectedFile(null);
-        if (fileInputRef.current) {
+        if (fileInputRef.current !== null) {
           fileInputRef.current.value = "";
         }
       } else if (result.url) {
         setPreview(result.url);
         setSelectedFile(null);
-        if (fileInputRef.current) {
+        if (fileInputRef.current !== null) {
           fileInputRef.current.value = "";
         }
         router.refresh();
@@ -91,7 +91,7 @@ export function AvatarUpload({
       setError("アップロード中にエラーが発生しました。");
       setPreview(currentAvatarUrl || null);
       setSelectedFile(null);
-      if (fileInputRef.current) {
+      if (fileInputRef.current !== null) {
         fileInputRef.current.value = "";
       }
     } finally {
@@ -115,7 +115,7 @@ export function AvatarUpload({
       } else {
         setPreview(null);
         setSelectedFile(null);
-        if (fileInputRef.current) {
+        if (fileInputRef.current !== null) {
           fileInputRef.current.value = "";
         }
         router.refresh();
@@ -145,7 +145,7 @@ export function AvatarUpload({
 
     if (e.dataTransfer.files?.[0]) {
       const [file] = e.dataTransfer.files;
-      if (fileInputRef.current) {
+      if (fileInputRef.current !== null) {
         // Create a new FileList with the dropped file
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
