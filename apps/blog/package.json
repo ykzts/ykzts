@@ -1,15 +1,34 @@
 {
+  "name": "@ykzts/blog",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Next.js blog application for ykzts.blog",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.git",
+    "directory": "apps/blog"
+  },
+  "license": "MIT",
   "author": "Yamagishi Kazutoshi",
+  "type": "module",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --port $(microfrontends port)",
+    "start": "next start",
+    "test": "vitest --run",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typegen": "next typegen"
+  },
   "dependencies": {
     "@portabletext/react": "catalog:",
     "@supabase/supabase-js": "catalog:",
     "@vercel/analytics": "catalog:",
     "@vercel/microfrontends": "catalog:",
     "@ykzts/layout": "workspace:*",
-    "@ykzts/utils": "workspace:*",
     "@ykzts/site-config": "workspace:*",
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
+    "@ykzts/utils": "workspace:*",
     "ai": "catalog:",
     "feed": "6.0.0",
     "lucide-react": "catalog:",
@@ -22,7 +41,6 @@
     "tailwind-merge": "catalog:",
     "zod": "catalog:"
   },
-  "description": "Next.js blog application for ykzts.blog",
   "devDependencies": {
     "@portabletext/types": "catalog:",
     "@tailwindcss/postcss": "catalog:",
@@ -44,23 +62,5 @@
     "tw-animate-css": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
-  },
-  "license": "MIT",
-  "name": "@ykzts/blog",
-  "private": true,
-  "repository": {
-    "directory": "apps/blog",
-    "type": "git",
-    "url": "https://github.com/ykzts/ykzts.git"
-  },
-  "scripts": {
-    "build": "next build",
-    "dev": "next dev --port $(microfrontends port)",
-    "start": "next start",
-    "test": "vitest --run",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
-    "typegen": "next typegen"
-  },
-  "type": "module",
-  "version": "1.0.0"
+  }
 }

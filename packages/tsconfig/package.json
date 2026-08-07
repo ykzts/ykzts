@@ -1,17 +1,17 @@
 {
-  "author": "Yamagishi Kazutoshi",
-  "dependencies": {},
-  "description": "Shared TypeScript configuration presets for Node.js and Next.js projects",
-  "devDependencies": {},
-  "license": "MIT",
   "name": "@ykzts/tsconfig",
+  "version": "1.0.0",
   "private": true,
+  "description": "Shared TypeScript configuration presets for Node.js and Next.js projects",
   "repository": {
-    "directory": "packages/tsconfig",
     "type": "git",
-    "url": "https://github.com/ykzts/ykzts.git"
+    "url": "https://github.com/ykzts/ykzts.git",
+    "directory": "packages/tsconfig"
   },
-  "scripts": {},
+  "license": "MIT",
+  "author": "Yamagishi Kazutoshi",
   "type": "module",
-  "version": "1.0.0"
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
 }

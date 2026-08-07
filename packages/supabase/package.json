@@ -1,19 +1,16 @@
 {
-  "author": "Yamagishi Kazutoshi",
-  "dependencies": {
-    "@ykzts/utils": "workspace:*",
-    "@portabletext/types": "catalog:",
-    "@supabase/ssr": "catalog:",
-    "@supabase/supabase-js": "catalog:",
-    "next": "catalog:",
-    "zod": "catalog:"
-  },
+  "name": "@ykzts/supabase",
+  "version": "1.0.0",
+  "private": true,
   "description": "Supabase database type definitions for ykzts applications",
-  "devDependencies": {
-    "@types/node": "catalog:",
-    "@ykzts/tsconfig": "workspace:*",
-    "typescript": "catalog:"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.git",
+    "directory": "packages/supabase"
   },
+  "license": "MIT",
+  "author": "Yamagishi Kazutoshi",
+  "type": "module",
   "exports": {
     ".": {
       "types": "./src/types.ts"
@@ -67,19 +64,22 @@
       "default": "./src/types.ts"
     }
   },
-  "license": "MIT",
-  "name": "@ykzts/supabase",
-  "private": true,
-  "repository": {
-    "directory": "packages/supabase",
-    "type": "git",
-    "url": "https://github.com/ykzts/ykzts.git"
-  },
+  "types": "./src/types.ts",
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "typegen": "./scripts/typegen.sh"
   },
-  "type": "module",
-  "types": "./src/types.ts",
-  "version": "1.0.0"
+  "dependencies": {
+    "@portabletext/types": "catalog:",
+    "@supabase/ssr": "catalog:",
+    "@supabase/supabase-js": "catalog:",
+    "@ykzts/utils": "workspace:*",
+    "next": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@ykzts/tsconfig": "workspace:*",
+    "typescript": "catalog:"
+  }
 }

@@ -139,7 +139,7 @@ export function RichTextEditor({
       const portableText = lexicalToPortableText(editor);
       const jsonString = JSON.stringify(portableText);
 
-      if (hiddenInputRef.current) {
+      if (hiddenInputRef.current !== null) {
         hiddenInputRef.current.value = jsonString;
       }
 

@@ -1,36 +1,23 @@
 {
-  "author": "Yamagishi Kazutoshi <ykzts@desire.sh>",
-  "bugs": {
-    "email": "ykzts@desire.sh",
-    "url": "https://github.com/ykzts/ykzts/issues"
-  },
-  "dependencies": {
-    "@vercel/analytics": "catalog:",
-    "@ykzts/site-config": "workspace:*",
-    "next": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:"
-  },
-  "description": "Next.js redirect gateway for legacy blog domains",
-  "devDependencies": {
-    "@types/node": "catalog:",
-    "@types/react": "catalog:",
-    "@types/react-dom": "catalog:",
-    "@ykzts/tsconfig": "workspace:*",
-    "typescript": "catalog:",
-    "vitest": "catalog:"
-  },
-  "homepage": "https://ykzts.blog/",
-  "keywords": [],
-  "license": "MIT",
-  "main": "n/a",
   "name": "@ykzts/blog-legacy",
+  "version": "1.0.0",
   "private": true,
-  "repository": {
-    "directory": "apps/blog-legacy",
-    "type": "git",
-    "url": "https://github.com/ykzts/ykzts.git"
+  "description": "Next.js redirect gateway for legacy blog domains",
+  "keywords": [],
+  "homepage": "https://ykzts.blog/",
+  "bugs": {
+    "url": "https://github.com/ykzts/ykzts/issues",
+    "email": "ykzts@desire.sh"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.git",
+    "directory": "apps/blog-legacy"
+  },
+  "license": "MIT",
+  "author": "Yamagishi Kazutoshi <ykzts@desire.sh>",
+  "type": "module",
+  "main": "n/a",
   "scripts": {
     "build": "next build",
     "dev": "next dev --port 3102",
@@ -39,6 +26,19 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "typegen": "next typegen"
   },
-  "type": "module",
-  "version": "1.0.0"
+  "dependencies": {
+    "@vercel/analytics": "catalog:",
+    "@ykzts/site-config": "workspace:*",
+    "next": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@ykzts/tsconfig": "workspace:*",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
 }

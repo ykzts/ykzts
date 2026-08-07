@@ -51,7 +51,7 @@ export async function createWork(
 
   if (!validation.success) {
     const [firstError] = validation.error.issues;
-    return { error: firstError?.message ?? "バリデーションエラー" };
+    return { error: firstError.message };
   }
 
   const validatedData = validation.data;

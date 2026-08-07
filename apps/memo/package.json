@@ -1,13 +1,31 @@
 {
+  "name": "@ykzts/memo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Memo application for ykzts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.git",
+    "directory": "apps/memo"
+  },
+  "license": "MIT",
   "author": "Yamagishi Kazutoshi",
+  "type": "module",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --port 3101",
+    "start": "next start",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typegen": "next typegen"
+  },
   "dependencies": {
     "@portabletext/react": "catalog:",
     "@supabase/ssr": "catalog:",
     "@ykzts/editor": "workspace:*",
-    "@ykzts/utils": "workspace:*",
     "@ykzts/site-config": "workspace:*",
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
+    "@ykzts/utils": "workspace:*",
     "lucide-react": "catalog:",
     "next": "catalog:",
     "react": "catalog:",
@@ -15,7 +33,6 @@
     "server-only": "catalog:",
     "sonner": "catalog:"
   },
-  "description": "Memo application for ykzts",
   "devDependencies": {
     "@portabletext/types": "catalog:",
     "@tailwindcss/postcss": "catalog:",
@@ -28,22 +45,5 @@
     "tailwindcss": "catalog:",
     "tw-animate-css": "catalog:",
     "typescript": "catalog:"
-  },
-  "license": "MIT",
-  "name": "@ykzts/memo",
-  "private": true,
-  "repository": {
-    "directory": "apps/memo",
-    "type": "git",
-    "url": "https://github.com/ykzts/ykzts.git"
-  },
-  "scripts": {
-    "build": "next build",
-    "dev": "next dev --port 3101",
-    "start": "next start",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
-    "typegen": "next typegen"
-  },
-  "type": "module",
-  "version": "1.0.0"
+  }
 }

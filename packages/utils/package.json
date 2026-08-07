@@ -2,8 +2,8 @@
   "name": "@ykzts/utils",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "description": "Shared utility functions for ykzts applications",
+  "type": "module",
   "exports": {
     ".": "./src/index.ts",
     "./blog-urls": "./src/blog-urls.ts",
@@ -20,9 +20,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@ykzts/site-config": "workspace:*",
     "@portabletext/markdown": "1.4.4",
     "@portabletext/to-html": "5.0.2",
+    "@ykzts/site-config": "workspace:*",
     "gray-matter": "4.0.3",
     "ipaddr.js": "2.4.0",
     "zod": "catalog:"

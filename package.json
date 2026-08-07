@@ -1,27 +1,19 @@
 {
-  "author": "Yamagishi Kazutoshi",
-  "description": "",
-  "devDependencies": {
-    "@biomejs/biome": "2.5.6",
-    "@commitlint/cli": "21.2.1",
-    "@commitlint/config-conventional": "21.2.0",
-    "@commitlint/types": "21.2.0",
-    "lefthook": "2.1.10",
-    "turbo": "2.10.8",
-    "ultracite": "7.9.4"
-  },
-  "license": "MIT",
   "name": "@ykzts/monorepo",
-  "packageManager": "pnpm@11.20.0",
+  "version": "1.0.0",
   "private": true,
+  "description": "",
   "repository": {
     "type": "git",
     "url": "https://github.com/ykzts/ykzts.git"
   },
+  "license": "MIT",
+  "author": "Yamagishi Kazutoshi",
+  "type": "module",
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
     "check": "ultracite check",
+    "dev": "turbo run dev",
     "fix": "ultracite fix",
     "lighthouse": "turbo run lighthouse",
     "prepare": "lefthook install || echo 'lefthook install skipped (e.g. CI or non-git env)'",
@@ -31,6 +23,14 @@
     "typegen": "turbo run typegen",
     "validate": "turbo run validate"
   },
-  "type": "module",
-  "version": "1.0.0"
+  "devDependencies": {
+    "@biomejs/biome": "2.5.6",
+    "@commitlint/cli": "21.2.1",
+    "@commitlint/config-conventional": "21.2.0",
+    "@commitlint/types": "21.2.0",
+    "lefthook": "2.1.10",
+    "turbo": "2.10.8",
+    "ultracite": "7.10.0"
+  },
+  "packageManager": "pnpm@11.20.0"
 }

@@ -1,5 +1,26 @@
 {
+  "name": "@ykzts/portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Next.js portfolio website showcasing projects, skills, and professional experience",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ykzts/ykzts.git",
+    "directory": "apps/portfolio"
+  },
+  "license": "MIT",
   "author": "Yamagishi Kazutoshi",
+  "type": "module",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --port $(microfrontends port)",
+    "lighthouse": "lhci autorun || echo \"LHCI failed!\"",
+    "start": "next start",
+    "test": "vitest --run",
+    "test:a11y": "playwright test",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typegen": "next typegen"
+  },
   "dependencies": {
     "@portabletext/react": "catalog:",
     "@portabletext/types": "catalog:",
@@ -23,7 +44,6 @@
     "tailwind-merge": "catalog:",
     "zod": "catalog:"
   },
-  "description": "Next.js portfolio website showcasing projects, skills, and professional experience",
   "devDependencies": {
     "@axe-core/playwright": "4.12.1",
     "@lhci/cli": "0.15.1",
@@ -52,25 +72,5 @@
     "typescript": "catalog:",
     "vite": "8.2.0",
     "vitest": "catalog:"
-  },
-  "license": "MIT",
-  "name": "@ykzts/portfolio",
-  "private": true,
-  "repository": {
-    "directory": "apps/portfolio",
-    "type": "git",
-    "url": "https://github.com/ykzts/ykzts.git"
-  },
-  "scripts": {
-    "build": "next build",
-    "dev": "next dev --port $(microfrontends port)",
-    "lighthouse": "lhci autorun || echo \"LHCI failed!\"",
-    "start": "next start",
-    "test": "vitest --run",
-    "test:a11y": "playwright test",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
-    "typegen": "next typegen"
-  },
-  "type": "module",
-  "version": "1.0.0"
+  }
 }
