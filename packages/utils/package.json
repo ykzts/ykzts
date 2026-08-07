@@ -24,7 +24,7 @@
     "@portabletext/to-html": "5.0.2",
     "@ykzts/site-config": "workspace:*",
     "gray-matter": "4.0.3",
-    "ipaddr.js": "2.4.0",
+    "ipaddr.js": "2.5.0",
     "zod": "catalog:"
   },
   "devDependencies": {
