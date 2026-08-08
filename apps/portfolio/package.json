@@ -62,7 +62,7 @@
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "catalog:",
     "@ykzts/tsconfig": "workspace:*",
-    "axe-core": "4.12.1",
+    "axe-core": "4.13.0",
     "babel-plugin-react-compiler": "1.0.0",
     "jsdom": "catalog:",
     "postcss": "catalog:",
