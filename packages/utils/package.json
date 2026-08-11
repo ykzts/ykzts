@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@portabletext/markdown": "1.4.4",
-    "@portabletext/to-html": "5.0.2",
+    "@portabletext/to-html": "5.0.3",
     "@ykzts/site-config": "workspace:*",
     "gray-matter": "4.0.3",
     "ipaddr.js": "2.5.0",
