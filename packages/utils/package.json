@@ -20,7 +20,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@portabletext/markdown": "1.4.6",
+    "@portabletext/markdown": "1.4.7",
     "@portabletext/to-html": "5.0.3",
     "@ykzts/site-config": "workspace:*",
     "gray-matter": "4.0.3",
