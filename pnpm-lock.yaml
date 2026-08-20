@@ -851,8 +851,8 @@ importers:
         specifier: 1.4.7
         version: 1.4.7
       '@portabletext/to-html':
-        specifier: 5.0.3
-        version: 5.0.3
+        specifier: 6.0.0
+        version: 6.0.0
       '@ykzts/site-config':
         specifier: workspace:*
         version: link:../site-config
@@ -2243,9 +2243,9 @@ packages:
     resolution: {integrity: sha512-pTDrGxBk2LFVK4awpyBBOEkwGZwQOUWFyQAnhPfuLHIIgjcljOhzGHB+Mz89ddxi+zAXlxJ/A3U2xmFibe8qNQ==}
     engines: {node: '>=20.19 <22 || >=22.12'}
 
-  '@portabletext/to-html@5.0.3':
-    resolution: {integrity: sha512-62xml8ywsBjsNHfaQsMEZbj5VvJhWcGq5e4PCZpyb5yWl5zxukBRKal42201t5nu2Vt+JEMj9ezKU776C0elrQ==}
-    engines: {node: '>=20.19 <22 || >=22.12'}
+  '@portabletext/to-html@6.0.0':
+    resolution: {integrity: sha512-kMqr55pJDBsIyOHLeVccFMFfJxSdozS+A1TeYhiihIinSDhb6ibUxpQIpg0B1n54vZJJW8rDs+QayP3vQqLKUg==}
+    engines: {node: '>=22.12'}
 
   '@portabletext/toolkit@5.0.2':
     resolution: {integrity: sha512-Njc1LE1PMJkTx/wEPqZ6sOWGgFgX2B47fxpOQ/Ia4ByhsZoA5Sq8dNvvV5F052j/xE8TbOLiBEjS848FkKADDQ==}
@@ -8990,9 +8990,9 @@ snapshots:
 
   '@portabletext/schema@2.2.4': {}
 
-  '@portabletext/to-html@5.0.3':
+  '@portabletext/to-html@6.0.0':
     dependencies:
-      '@portabletext/toolkit': 5.0.2
+      '@portabletext/toolkit': 6.0.0
       '@portabletext/types': 4.0.2
 
   '@portabletext/toolkit@5.0.2':
