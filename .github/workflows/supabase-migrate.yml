@@ -13,7 +13,7 @@ on:
 
 env:
   # renovate: datasource=github-releases depName=supabase/cli
-  SUPABASE_VERSION: 2.114.0
+  SUPABASE_VERSION: 2.115.0
 
 # Prevent concurrent migrations to the same environment
 concurrency:
