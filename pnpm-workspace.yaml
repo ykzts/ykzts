@@ -17,7 +17,7 @@ catalog:
   '@testing-library/user-event': 14.6.5
   '@types/node': 24.13.3
   '@types/react': 19.2.18
-  '@types/react-dom': 19.2.4
+  '@types/react-dom': 19.2.5
   '@vercel/analytics': 2.0.1
   '@vercel/config': 0.6.1
   '@vercel/microfrontends': 2.4.0
