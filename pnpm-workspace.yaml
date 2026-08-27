@@ -9,7 +9,7 @@ catalog:
   '@portabletext/react': 8.0.0
   '@portabletext/types': 4.0.2
   '@supabase/ssr': 0.12.4
-  '@supabase/supabase-js': 2.112.3
+  '@supabase/supabase-js': 2.112.4
   '@tailwindcss/postcss': 4.3.3
   '@tailwindcss/typography': 0.5.20
   '@testing-library/jest-dom': 7.0.1
