@@ -10,8 +10,8 @@ catalogs:
       specifier: 16.3.3
       version: 16.3.3
     '@portabletext/react':
-      specifier: 8.0.0
-      version: 8.0.0
+      specifier: 8.0.1
+      version: 8.0.1
     '@portabletext/types':
       specifier: 4.0.2
       version: 4.0.2
@@ -245,7 +245,7 @@ importers:
     dependencies:
       '@portabletext/react':
         specifier: 'catalog:'
-        version: 8.0.0(react@19.2.8)
+        version: 8.0.1(react@19.2.8)
       '@supabase/supabase-js':
         specifier: 'catalog:'
         version: 2.112.3(@opentelemetry/api@1.9.1)
@@ -406,7 +406,7 @@ importers:
     dependencies:
       '@portabletext/react':
         specifier: 'catalog:'
-        version: 8.0.0(react@19.2.8)
+        version: 8.0.1(react@19.2.8)
       '@supabase/ssr':
         specifier: 'catalog:'
         version: 0.12.4(@supabase/supabase-js@2.112.3(@opentelemetry/api@1.9.1))
@@ -482,7 +482,7 @@ importers:
     dependencies:
       '@portabletext/react':
         specifier: 'catalog:'
-        version: 8.0.0(react@19.2.8)
+        version: 8.0.1(react@19.2.8)
       '@portabletext/types':
         specifier: 'catalog:'
         version: 4.0.2
@@ -2233,8 +2233,8 @@ packages:
     resolution: {integrity: sha512-TLlWrsLT6kXUeE4Fn6KWW+NMOBB/epT5qZiD92+15cJje6R7xmmQ/orCwViSicCiQ77t1/zwguilCUzdNB4XDA==}
     engines: {node: '>=20.19 <22 || >=22.12'}
 
-  '@portabletext/react@8.0.0':
-    resolution: {integrity: sha512-xXWm0LvJrWPqv1BI2wR95q/+YNQW2hFl0wG26hoF0YUoQFhXz5jWZHlsvTtLx/IkFcPd+LCsfoYRgEHnLJslIQ==}
+  '@portabletext/react@8.0.1':
+    resolution: {integrity: sha512-Fy9UxVhppgEckEvczZytg4bBxiPcZIM49NrJ3sizEoz19aNzJWEYoUj7f3TI94907psEk0yfR145eoOgkedM2A==}
     engines: {node: '>=22.12'}
     peerDependencies:
       react: ^19
@@ -8986,7 +8986,7 @@ snapshots:
       '@portabletext/toolkit': 5.0.2
       markdown-it: 14.3.0
 
-  '@portabletext/react@8.0.0(react@19.2.8)':
+  '@portabletext/react@8.0.1(react@19.2.8)':
     dependencies:
       '@portabletext/toolkit': 6.0.0
       '@portabletext/types': 4.0.2
