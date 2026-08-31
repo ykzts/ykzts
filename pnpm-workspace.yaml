@@ -21,7 +21,7 @@ catalog:
   '@vercel/analytics': 2.0.1
   '@vercel/config': 0.6.1
   '@vercel/microfrontends': 2.4.0
-  '@vitejs/plugin-react': 6.1.0
+  '@vitejs/plugin-react': 6.1.1
   ai: 7.0.79
   jsdom: 30.0.1
   lucide-react: 1.34.0
