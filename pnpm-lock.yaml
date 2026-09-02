@@ -49,8 +49,8 @@ catalogs:
       specifier: 2.0.1
       version: 2.0.1
     '@vercel/config':
-      specifier: 0.6.1
-      version: 0.6.1
+      specifier: 0.7.0
+      version: 0.7.0
     '@vercel/microfrontends':
       specifier: 2.4.0
       version: 2.4.0
@@ -218,7 +218,7 @@ importers:
         version: 19.2.5(@types/react@19.2.18)
       '@vercel/config':
         specifier: 'catalog:'
-        version: 0.6.1
+        version: 0.7.0
       '@ykzts/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -336,7 +336,7 @@ importers:
         version: 19.2.5(@types/react@19.2.18)
       '@vercel/config':
         specifier: 'catalog:'
-        version: 0.6.1
+        version: 0.7.0
       '@vitejs/plugin-react':
         specifier: 'catalog:'
         version: 6.1.0(babel-plugin-react-compiler@1.0.0)(vite@8.2.2(@types/node@24.13.3)(jiti@2.7.0)(yaml@2.9.0))
@@ -3016,8 +3016,8 @@ packages:
       vue-router:
         optional: true
 
-  '@vercel/config@0.6.1':
-    resolution: {integrity: sha512-t/+LQFT0zIN2U2y0fIPC3jI/Ms2OowSOIHy7yGKlrH96YIYGNNHgfx6TZGHAMvIq9ClLBeatXWf6fbKuio93cA==}
+  '@vercel/config@0.7.0':
+    resolution: {integrity: sha512-aWwF0zTnkfgn0t9/7inwyEjyY781thrgFe0PTaVwdyy0vmxZB+FF44EYIKKmUyIF6hv7HqgOSU7T0KZRnQZPWA==}
     hasBin: true
 
   '@vercel/microfrontends@2.4.0':
@@ -9651,7 +9651,7 @@ snapshots:
       next: 16.3.3(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@24.13.3)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react: 19.2.8
 
-  '@vercel/config@0.6.1':
+  '@vercel/config@0.7.0':
     dependencies:
       '@vercel/routing-utils': 6.5.0
       pretty-cache-header: 1.0.0
