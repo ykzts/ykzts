@@ -58,8 +58,8 @@ catalogs:
       specifier: 6.1.1
       version: 6.1.1
     ai:
-      specifier: 7.0.87
-      version: 7.0.87
+      specifier: 7.0.88
+      version: 7.0.88
     jsdom:
       specifier: 30.0.1
       version: 30.0.1
@@ -175,7 +175,7 @@ importers:
         version: link:../../packages/utils
       ai:
         specifier: 'catalog:'
-        version: 7.0.87(zod@4.5.4)
+        version: 7.0.88(zod@4.5.4)
       diff:
         specifier: 9.0.0
         version: 9.0.0
@@ -272,7 +272,7 @@ importers:
         version: link:../../packages/utils
       ai:
         specifier: 'catalog:'
-        version: 7.0.87(zod@4.5.4)
+        version: 7.0.88(zod@4.5.4)
       feed:
         specifier: 6.0.0
         version: 6.0.0
@@ -3219,8 +3219,8 @@ packages:
     resolution: {integrity: sha512-kja8j7PjmncONqaTsB8fQ+wE2mSU2DJ9D4XKoJ5PFWIdRMa6SLSN1ff4mOr4jCbfRSsxR4keIiySJU0N9T5hIQ==}
     engines: {node: '>= 8.0.0'}
 
-  ai@7.0.87:
-    resolution: {integrity: sha512-/hrT7toRx8vLIyr/lTKOOPDxCGdxk2tVs5viHDwIPlUsge5FBaLe9h3BhPAr7cOmEAXkN/Cf2+2N8HYGCjJbHg==}
+  ai@7.0.88:
+    resolution: {integrity: sha512-8+tPsIXE6IqajzLWiJ+hnpsV4y+S+E9jbPDX0zqRUT1d3o/AfuNJtKqy7PiYgZjUrl2sGpMj56/P83TcQxAKxA==}
     engines: {node: '>=22'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -9967,7 +9967,7 @@ snapshots:
     dependencies:
       humanize-ms: 1.2.1
 
-  ai@7.0.87(zod@4.5.4):
+  ai@7.0.88(zod@4.5.4):
     dependencies:
       '@ai-sdk/gateway': 4.0.70(zod@4.5.4)
       '@ai-sdk/provider': 4.0.9
