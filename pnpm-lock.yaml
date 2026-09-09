@@ -236,8 +236,8 @@ importers:
         specifier: 2.10.12
         version: 2.10.12
       ultracite:
-        specifier: 7.10.8
-        version: 7.10.8
+        specifier: 7.11.0
+        version: 7.11.0(@biomejs/biome@2.5.12)(prettier@3.8.1)
 
   apps/admin:
     dependencies:
@@ -7079,16 +7079,28 @@ packages:
     resolution: {integrity: sha512-rvKSBiC5zqCCiDZ9kAOszZcDvdAHwwIKJG33Ykj43OKcWsnmcBRL09YTU4nOeHZ8Y2a7l1MgTd08SBe9A8Qj6A==}
     engines: {node: '>=18'}
 
-  ultracite@7.10.8:
-    resolution: {integrity: sha512-oSPLhcMMX7BtfPtDvs5KrPMQxOr2kitBK4jsCbGAj/F863GJO000bLaKrT5ElpAKyuL+LgnvdsGzCh/dlWMC7Q==}
+  ultracite@7.11.0:
+    resolution: {integrity: sha512-HJByeIoO4Lhcing1k2sabI7BCHRqeMztXGYZm4Zcir7NXvidXLwDgLNZgSR4w3oPKPgx7CRTqzJitt/oPR34NA==}
     hasBin: true
     peerDependencies:
-      oxfmt: '>=0.1.0'
+      '@biomejs/biome': ^2.5.0
+      eslint: ^10.0.0
+      oxfmt: '>=0.40.0'
       oxlint: ^1.79.0
+      prettier: ^3.0.0
+      stylelint: ^17.0.0
     peerDependenciesMeta:
+      '@biomejs/biome':
+        optional: true
+      eslint:
+        optional: true
       oxfmt:
         optional: true
       oxlint:
+        optional: true
+      prettier:
+        optional: true
+      stylelint:
         optional: true
 
   underscore@1.13.8:
@@ -14422,7 +14434,7 @@ snapshots:
 
   uint8array-extras@1.5.0: {}
 
-  ultracite@7.10.8:
+  ultracite@7.11.0(@biomejs/biome@2.5.12)(prettier@3.8.1):
     dependencies:
       '@clack/prompts': 1.7.0
       cli-truncate: 6.1.1
@@ -14437,9 +14449,13 @@ snapshots:
       magicast: 0.5.4
       nypm: 0.6.9
       resolve.exports: 2.0.3
+      semver: 7.8.5
       string-width: 8.2.2
       yaml: 2.9.0
       zod: 4.5.4
+    optionalDependencies:
+      '@biomejs/biome': 2.5.12
+      prettier: 3.8.1
 
   underscore@1.13.8: {}
 
