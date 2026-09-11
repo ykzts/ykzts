@@ -8,7 +8,7 @@ catalog:
   '@next/mdx': 16.3.4
   '@portabletext/react': 8.0.1
   '@portabletext/types': 4.0.2
-  '@supabase/ssr': 0.12.6
+  '@supabase/ssr': 0.12.7
   '@supabase/supabase-js': 2.116.0
   '@tailwindcss/postcss': 4.3.3
   '@tailwindcss/typography': 0.5.20
