@@ -267,8 +267,8 @@ catalogs:
       specifier: 4.1.11
       version: 4.1.11
     zod:
-      specifier: 4.6.0
-      version: 4.6.0
+      specifier: 4.6.1
+      version: 4.6.1
 
 importers:
 
@@ -333,7 +333,7 @@ importers:
         version: link:../../packages/utils
       ai:
         specifier: 'catalog:'
-        version: 7.0.97(zod@4.6.0)
+        version: 7.0.97(zod@4.6.1)
       diff:
         specifier: 9.0.0
         version: 9.0.0
@@ -357,7 +357,7 @@ importers:
         version: 2.0.8(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       zod:
         specifier: 'catalog:'
-        version: 4.6.0
+        version: 4.6.1
     devDependencies:
       '@tailwindcss/postcss':
         specifier: 'catalog:'
@@ -430,7 +430,7 @@ importers:
         version: link:../../packages/utils
       ai:
         specifier: 'catalog:'
-        version: 7.0.97(zod@4.6.0)
+        version: 7.0.97(zod@4.6.1)
       feed:
         specifier: 6.0.0
         version: 6.0.0
@@ -460,7 +460,7 @@ importers:
         version: 3.6.0
       zod:
         specifier: 'catalog:'
-        version: 4.6.0
+        version: 4.6.1
     devDependencies:
       '@portabletext/types':
         specifier: 'catalog:'
@@ -700,7 +700,7 @@ importers:
         version: 3.6.0
       zod:
         specifier: 'catalog:'
-        version: 4.6.0
+        version: 4.6.1
     devDependencies:
       '@axe-core/playwright':
         specifier: 4.13.0
@@ -946,7 +946,7 @@ importers:
         version: 16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@24.13.4)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       zod:
         specifier: 'catalog:'
-        version: 4.6.0
+        version: 4.6.1
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -1022,7 +1022,7 @@ importers:
         version: 2.5.0
       zod:
         specifier: 'catalog:'
-        version: 4.6.0
+        version: 4.6.1
     devDependencies:
       '@portabletext/types':
         specifier: 'catalog:'
@@ -7585,8 +7585,8 @@ packages:
   zod@4.4.3:
     resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
-  zod@4.6.0:
-    resolution: {integrity: sha512-iIvwyDnebKYpww2ta0DjaNOL8RnVLmPMhgWyOzlW9y0EIIxv5gl+H6Y0ONpt83HqjGqkk78uWp6xWtpxzZdPbw==}
+  zod@4.6.1:
+    resolution: {integrity: sha512-341aRWQsve0rvronKNTqZpjmzdbUDlFuzHaI/XLg/Ej82qffDJRRfBTCuv7+9q/rMjB6LSLyEBnW4InJeMtt/Q==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -7595,21 +7595,21 @@ snapshots:
 
   '@adobe/css-tools@4.5.0': {}
 
-  '@ai-sdk/gateway@4.0.78(zod@4.6.0)':
+  '@ai-sdk/gateway@4.0.78(zod@4.6.1)':
     dependencies:
       '@ai-sdk/provider': 4.0.13
-      '@ai-sdk/provider-utils': 5.0.39(zod@4.6.0)
+      '@ai-sdk/provider-utils': 5.0.39(zod@4.6.1)
       '@vercel/oidc': 3.2.0
-      zod: 4.6.0
+      zod: 4.6.1
 
-  '@ai-sdk/provider-utils@5.0.39(zod@4.6.0)':
+  '@ai-sdk/provider-utils@5.0.39(zod@4.6.1)':
     dependencies:
       '@ai-sdk/provider': 4.0.13
       '@standard-schema/spec': 1.1.0
       '@workflow/serde': 4.1.0
       eventsource-parser: 3.1.1
       undici: 7.29.0
-      zod: 4.6.0
+      zod: 4.6.1
 
   '@ai-sdk/provider@4.0.13':
     dependencies:
@@ -9348,7 +9348,7 @@ snapshots:
       fs-extra: 11.4.0
       toml-eslint-parser: 1.0.3
       upath: 3.0.8
-      zod: 4.6.0
+      zod: 4.6.1
 
   '@renovatebot/good-enough-parser@2.0.1':
     dependencies:
@@ -10141,12 +10141,12 @@ snapshots:
     dependencies:
       humanize-ms: 1.2.1
 
-  ai@7.0.97(zod@4.6.0):
+  ai@7.0.97(zod@4.6.1):
     dependencies:
-      '@ai-sdk/gateway': 4.0.78(zod@4.6.0)
+      '@ai-sdk/gateway': 4.0.78(zod@4.6.1)
       '@ai-sdk/provider': 4.0.13
-      '@ai-sdk/provider-utils': 5.0.39(zod@4.6.0)
-      zod: 4.6.0
+      '@ai-sdk/provider-utils': 5.0.39(zod@4.6.1)
+      zod: 4.6.1
 
   ajv-formats@2.1.1(ajv@8.20.0):
     optionalDependencies:
@@ -14510,7 +14510,7 @@ snapshots:
       semver: 7.8.5
       string-width: 8.2.2
       yaml: 2.9.0
-      zod: 4.6.0
+      zod: 4.6.1
     optionalDependencies:
       '@biomejs/biome': 2.5.12
       prettier: 3.8.1
@@ -14921,6 +14921,6 @@ snapshots:
 
   zod@4.4.3: {}
 
-  zod@4.6.0: {}
+  zod@4.6.1: {}
 
   zwitch@2.0.4: {}
