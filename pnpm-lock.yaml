@@ -1006,8 +1006,8 @@ importers:
   packages/utils:
     dependencies:
       '@portabletext/markdown':
-        specifier: 2.1.0
-        version: 2.1.0
+        specifier: 2.2.0
+        version: 2.2.0
       '@portabletext/to-html':
         specifier: 6.0.0
         version: 6.0.0
@@ -2425,8 +2425,8 @@ packages:
     resolution: {integrity: sha512-nRqvPYO8xUVdgy/KhJuaCrWlVT/4uZr97Mpbuizsa6CmvtCQf3NuYnVvOOrpYiKUJcZYtEvm84OooJ8+lJytMQ==}
     engines: {node: '>=14.6'}
 
-  '@portabletext/markdown@2.1.0':
-    resolution: {integrity: sha512-utbtGnLDI7s6seVX1e1zVe2Ux+Pr1/AVePzSE1t0G9IVHmkbq/QZKos+HpMHkn+Gf57g68ZKKXRYEnK242aqMQ==}
+  '@portabletext/markdown@2.2.0':
+    resolution: {integrity: sha512-rvmbm/pPhu3vekjuo9p9F8UlplQGRQ2zWMCljEKvFe/FtLtkhG/qEOKeD1tQH3nbFpP4tSGeE13TxAfTq9qzEA==}
     engines: {node: '>=22.12'}
 
   '@portabletext/react@8.0.1':
@@ -2627,6 +2627,10 @@ packages:
 
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
+
+  '@sanity/diff-match-patch@3.2.0':
+    resolution: {integrity: sha512-4hPADs0qUThFZkBK/crnfKKHg71qkRowfktBljH2UIxGHHTxIzt8g8fBiXItyCjxkuNy+zpYOdRMifQNv8+Yww==}
+    engines: {node: '>=18.18'}
 
   '@sec-ant/readable-stream@0.4.1':
     resolution: {integrity: sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg==}
@@ -9305,11 +9309,12 @@ snapshots:
       write-file-atomic: 5.0.1
       write-yaml-file: 4.2.0
 
-  '@portabletext/markdown@2.1.0':
+  '@portabletext/markdown@2.2.0':
     dependencies:
       '@mdit/plugin-alert': 0.23.2(markdown-it@14.3.1)
       '@portabletext/schema': 3.0.0
       '@portabletext/toolkit': 6.0.0
+      '@sanity/diff-match-patch': 3.2.0
       linkify-it: 5.0.2
       markdown-it: 14.3.1
 
@@ -9462,6 +9467,8 @@ snapshots:
     optional: true
 
   '@rolldown/pluginutils@1.0.1': {}
+
+  '@sanity/diff-match-patch@3.2.0': {}
 
   '@sec-ant/readable-stream@0.4.1': {}
 
