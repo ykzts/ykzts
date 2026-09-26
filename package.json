@@ -29,7 +29,7 @@
     "@commitlint/config-conventional": "21.2.3",
     "@commitlint/types": "21.2.3",
     "lefthook": "2.1.14",
-    "turbo": "2.11.2",
+    "turbo": "2.11.3",
     "ultracite": "7.12.0"
   },
   "packageManager": "pnpm@12.5.1"
