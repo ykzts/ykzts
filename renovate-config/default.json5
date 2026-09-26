@@ -16,8 +16,8 @@
       description: 'Update `build.image` in Fly.io `fly.toml` files.',
       managerFilePatterns: ['**/fly.toml', '**/fly.*.toml'],
       matchStrings: [
-        '(?:^|\\n)\\[build\\][^\\[]*',
-        '\\bimage\\s*=\\s*["\'][^"\'\\n]+',
+        '(?:^|\\n)\\[build\\][^\\n]*(?:\\n(?:[ \\t]*[^\\s\\[][^\\n]*|[ \\t]*))*',
+        '\\n[ \\t]*image[ \\t]*=[ \\t]*["\'][^"\'\\n]+',
         '(?<depName>[^"\'\\s:@]+(?::[0-9]+/[^"\'\\s:@]+)?)(?::(?<currentValue>[^"\'\\s@]+))?(?:@(?<currentDigest>sha256:[a-f0-9]+))?$'
       ],
       matchStringsStrategy: 'recursive'
