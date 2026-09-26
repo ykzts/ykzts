@@ -10,7 +10,7 @@
   },
   customManagers: [
     {
-      autoReplaceStringTemplate: '{{depName}}{{#if newValue}}:{{newValue}}{{/if}}{{#if newDigest}}@{{newDigest}}{{/if}}',
+      autoReplaceStringTemplate: '{{depName}}{{#if newValue}}:{{newValue}}{{/if}}',
       customType: 'regex',
       datasourceTemplate: 'docker',
       description: 'Update `build.image` in Fly.io `fly.toml` files.',
@@ -18,7 +18,7 @@
       matchStrings: [
         '(?:^|\\n)\\[build\\][^\\n]*(?:\\n(?:[ \\t]*[^\\s\\[][^\\n]*|[ \\t]*))*',
         '\\n[ \\t]*image[ \\t]*=[ \\t]*["\'][^"\'\\n]+',
-        '(?<depName>[^"\'\\s:@]+(?::[0-9]+/[^"\'\\s:@]+)?)(?::(?<currentValue>[^"\'\\s@]+))?(?:@(?<currentDigest>sha256:[a-f0-9]+))?$'
+        '(?<depName>[^"\'\\s:@]+(?::[0-9]+/[^"\'\\s:@]+)?)(?::(?<currentValue>[^"\'\\s@]+))?$'
       ],
       matchStringsStrategy: 'recursive'
     }
@@ -70,6 +70,12 @@
       groupName: 'google terraform providers',
       matchDatasources: ['terraform-provider'],
       matchDepNames: ['google', 'google-beta']
+    },
+    {
+      description: 'Fly.io does not support image digests in `fly.toml` `build.image`',
+      matchFileNames: ['**/fly.toml', '**/fly.*.toml'],
+      matchManagers: ['custom.regex'],
+      pinDigests: false
     },
     {
       description: 'Limit renovate package updates to once a week',
