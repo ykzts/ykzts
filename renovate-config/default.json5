@@ -8,6 +8,21 @@
       ]
     }
   },
+  customManagers: [
+    {
+      autoReplaceStringTemplate: '{{depName}}{{#if newValue}}:{{newValue}}{{/if}}{{#if newDigest}}@{{newDigest}}{{/if}}',
+      customType: 'regex',
+      datasourceTemplate: 'docker',
+      description: 'Update `build.image` in Fly.io `fly.toml` files.',
+      managerFilePatterns: ['**/fly.toml', '**/fly.*.toml'],
+      matchStrings: [
+        '(?:^|\\n)\\[build\\][^\\[]*',
+        '\\bimage\\s*=\\s*["\'][^"\'\\n]+',
+        '(?<depName>[^"\'\\s:@]+(?::[0-9]+/[^"\'\\s:@]+)?)(?::(?<currentValue>[^"\'\\s@]+))?(?:@(?<currentDigest>sha256:[a-f0-9]+))?$'
+      ],
+      matchStringsStrategy: 'recursive'
+    }
+  ],
   dependencyDashboardLabels: ['dependencies'],
   extends: [
     'config:best-practices',
