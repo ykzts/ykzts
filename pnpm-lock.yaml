@@ -789,6 +789,9 @@ importers:
       '@lexical/code':
         specifier: 0.51.0
         version: 0.51.0(typescript@7.0.2)
+      '@lexical/code-prism':
+        specifier: 0.51.0
+        version: 0.51.0(typescript@7.0.2)
       '@lexical/link':
         specifier: 0.51.0
         version: 0.51.0(typescript@7.0.2)
@@ -1873,6 +1876,14 @@ packages:
 
   '@lexical/code-core@0.51.0':
     resolution: {integrity: sha512-D35OqZF2cY78jSRNu/v/IjyEP8qY6dOfjKUBZISJcLkJBHnJAxiWMF1+J2I3dTuu8OvKRib2+uNgzEg/VuTOsQ==}
+    peerDependencies:
+      typescript: '>=5.2'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
+  '@lexical/code-prism@0.51.0':
+    resolution: {integrity: sha512-iw2AkQefB7JP9E5TKHCBx2ew/u1uFGP9WNJRIYmErS2R0thhuPFrjDJ+cGkp9s1Wk8Zo0fi5BWJ2xbYXe/WjqQ==}
     peerDependencies:
       typescript: '>=5.2'
     peerDependenciesMeta:
@@ -6298,6 +6309,10 @@ packages:
     resolution: {integrity: sha512-HzMy3Geq23nVALD/M2LliU+F+M+gVNsvkQWWqeBZ8HDiCgzo6YPJ/Omrmtq24EFrIsk0a3EkQGEd7bDOo+IhGA==}
     engines: {node: '>=18'}
 
+  prismjs@1.30.0:
+    resolution: {integrity: sha512-DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw==}
+    engines: {node: '>=6'}
+
   proc-log@7.0.0:
     resolution: {integrity: sha512-FYgfaA69XZ93zaXLoMNQ+ViDXGGBgR8aLh03txzcFhV+9xOXx7+8DLCULrKKpR9+GsH9ZfHm82aSUPpozX0Ztg==}
     engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
@@ -8605,6 +8620,15 @@ snapshots:
       '@lexical/internal': 0.51.0(typescript@7.0.2)
       '@lexical/utils': 0.51.0(typescript@7.0.2)
       lexical: 0.51.0(typescript@7.0.2)
+    optionalDependencies:
+      typescript: 7.0.2
+
+  '@lexical/code-prism@0.51.0(typescript@7.0.2)':
+    dependencies:
+      '@lexical/code-core': 0.51.0(typescript@7.0.2)
+      '@lexical/extension': 0.51.0(typescript@7.0.2)
+      lexical: 0.51.0(typescript@7.0.2)
+      prismjs: 1.30.0
     optionalDependencies:
       typescript: 7.0.2
 
@@ -13295,6 +13319,8 @@ snapshots:
   pretty-ms@9.3.1:
     dependencies:
       parse-ms: 4.0.0
+
+  prismjs@1.30.0: {}
 
   proc-log@7.0.0:
     optional: true
