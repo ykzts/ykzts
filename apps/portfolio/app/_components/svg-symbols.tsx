@@ -103,7 +103,6 @@ function XLogo({ as = "svg", ref, ...props }: SVGRootProps) {
 
 export default function SVGSymbols() {
   return (
-    // biome-ignore lint/a11y/noSvgWithoutTitle: this svg is decorative.
     <svg aria-hidden className="hidden">
       <defs>
         <FacebookLogo as="symbol" id="facebook-logo" />
