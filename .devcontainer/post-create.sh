@@ -14,3 +14,8 @@ sudo apt-get install -y fonts-noto-cjk
 curl -fsSL https://x.ai/cli/install.sh | bash
 
 pnpm install
+
+# Agents rely on gh for GitHub access (issues, PRs, API); remind when it is not logged in.
+if ! gh auth status >/dev/null 2>&1; then
+  echo 'GitHub CLI is not authenticated. Run `gh auth login` before starting agent workflows.' >&2
+fi

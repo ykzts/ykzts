@@ -1,6 +1,5 @@
 {
   "permissions": {
-    "defaultMode": "default",
     "deny": [
       "Bash(rm -rf *)",
       "Bash(rm -fr *)",
@@ -98,8 +97,6 @@
       "Bash(*.grok/auth.json *)"
     ],
     "ask": [
-      "Edit",
-      "Write",
       "Bash(git push *)",
       "Bash(git push)",
       "Bash(gh pr create *)",
