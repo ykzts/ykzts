@@ -10,6 +10,8 @@ This repository is a monorepo containing the personal website and blog of Yamagi
 - [skills/local-dev](skills/local-dev/SKILL.md) (`/local-dev`) — install, Supabase, env, ports, `pnpm dev` / test / build
 - [skills/repo-security](skills/repo-security/SKILL.md) (`/repo-security`) — security model
 
+Skill layout: internal skills live in `skills/<name>/`. `.agents/skills/` is the canonical agent skills directory (symlinks to the internal skills plus third-party skills tracked in `skills-lock.json`). `.claude/skills/<name>` symlinks to `.agents/skills/<name>` so Claude Code can invoke them; add a matching symlink when adding a skill.
+
 See [docs/architecture.md](docs/architecture.md) for the detailed repository structure and architecture.
 
 ## Technology Stack
@@ -53,6 +55,7 @@ See [docs/architecture.md](docs/architecture.md) for the detailed repository str
 - **Feature branch first** — never commit directly to `main` (details: `/create-pr`)
 - **Conventional Commits** for subjects and PR titles; AI commits use `Assisted-by` trailer (`/create-pr`)
 - Run `pnpm check` before committing when code changed
+- Use `gh` for GitHub access (issues, PRs, API), not `curl` piped to other commands (denied in `.claude/settings.json`); if `gh` is unauthenticated, ask the user to run `gh auth login`
 
 ### Common commands
 (See `/local-dev` for bootstrap, ports, env, and troubleshooting.)

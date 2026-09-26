@@ -228,25 +228,26 @@ Fill the template:
 4. Link issues with `Fixes #N` / `Closes #N` when known; do not invent issue numbers
 5. Prefer short, complete sentences. Lead with **why**, then **what**, then validation
 
-Write the body under a temp directory (not the working tree; do not commit it):
-
-```bash
-tmpdir=$(mktemp -d)
-body_file="$tmpdir/<change-derived-name>.md"
-```
+Pass the body to `gh` on standard input (`--body-file -`) with a quoted
+HEREDOC. Do not write a temp file: nothing to clean up, and nothing lands in
+the working tree by accident.
 
 ### Create the PR
+
+Run the push and the PR creation as **separate** commands (each needs its own
+approval):
 
 ```bash
 GH_PAGER=cat gh pr create \
   --base main \
   --title "<conventional-commit-title>" \
-  --body-file "$body_file"
+  --body-file - <<'EOF'
+<filled template>
+EOF
 ```
 
 - Override `--base` only when the user names a different base branch
 - Add `--draft` when the user asks for a draft PR
-- After create/edit (or on abort once the body is unused): `rm -rf "$tmpdir"`
 - Return the PR URL to the user
 
 ### Existing PR on this branch
@@ -256,13 +257,24 @@ GH_PAGER=cat gh pr create \
 - Update body only when the user asks, or when it is still unfilled template text:
 
 ```bash
-GH_PAGER=cat gh pr edit --body-file "$body_file"
+GH_PAGER=cat gh pr edit --body-file - <<'EOF'
+<filled template>
+EOF
 ```
 
 ### PR hard rules (additional)
 
 - Never ship empty or placeholder-only sections when the diff already supplies context
-- Always `rm -rf "$tmpdir"` when finished
+- Do not create temp files for the PR body; `rm -rf` is denied by
+  `.claude/settings.json`, so a cleanup step would always be rejected
+
+### GitHub access
+
+Use `gh` (`gh pr view`, `gh issue view`, `gh api ...`) for anything on GitHub.
+Do not fall back to `curl https://api.github.com/... | ...`: piping `curl`
+output is denied by `.claude/settings.json` (to block `curl | sh`). If `gh` is
+not authenticated, ask the user to run `gh auth login` rather than working
+around it.
 
 ---
 

@@ -26,6 +26,7 @@ Architecture overview: `docs/architecture.md`.
 | **Docker** | Required for local Supabase |
 | **jq** | Required by `scripts/setup-env.sh` |
 | **Supabase CLI** | `supabase` on PATH, or `npx supabase` |
+| **GitHub CLI** | `gh`, authenticated; used for issues, PRs, and GitHub API access |
 
 Use **pnpm only** (not npm/yarn). Install from the **repository root**.
 
@@ -33,7 +34,13 @@ Use **pnpm only** (not npm/yarn). Install from the **repository root**.
 node --version    # expect v24.x
 pnpm --version
 docker info       # daemon must be running for Supabase
+gh auth status    # must be logged in for GitHub work
 ```
+
+If `gh auth status` reports that you are not logged in (the devcontainer
+`post-create.sh` prints a reminder in that case), ask the user to run
+`gh auth login` (in Claude Code: `! gh auth login`). Do not work around it with
+`curl` against `api.github.com`; see `/create-pr`.
 
 ## Bootstrap (first time or clean machine)
 
