@@ -4,7 +4,7 @@
     "paths": {
       "@ykzts/layout/*": ["./src/*"]
     },
-    "types": ["@testing-library/jest-dom", "node", "vitest/globals"]
+    "types": ["@testing-library/jest-dom/vitest", "node", "vitest/globals"]
   },
   "exclude": ["node_modules", "dist"],
   "extends": "@ykzts/tsconfig/next.json",
