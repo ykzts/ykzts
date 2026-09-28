@@ -687,8 +687,8 @@ importers:
         specifier: 'catalog:'
         version: 19.3.0(react@19.3.0)
       resend:
-        specifier: 6.28.1
-        version: 6.28.1
+        specifier: 6.30.0
+        version: 6.30.0
       shiki:
         specifier: 'catalog:'
         version: 4.4.3
@@ -6498,8 +6498,8 @@ packages:
   reselect@5.3.0:
     resolution: {integrity: sha512-XGoLeRAVzUTcJ1qkxPQhDJyIZ5d6zzZD9nT7AEZOaaU9UbWclhycElmhO+VD5bFeLuzhPBaOV2oXC8uG35ZSpg==}
 
-  resend@6.28.1:
-    resolution: {integrity: sha512-5VWOcDiWKBt0NWYKXwzY9WJ+LbpQLYw9M6j1DDJYPk7TloHfWOJyaY4EFKoR/KPL0N4m5yO3o96iDoYOX7v+GA==}
+  resend@6.30.0:
+    resolution: {integrity: sha512-rED9rVw8N6cUvjmpYQwfZKBzd/cgWT+jURekVxtjFV2+YyK2/Tu2JOnE68sgqXlMBSYRoWgI6R0xlx3ANc/xeA==}
     engines: {node: '>=20'}
     peerDependencies:
       '@react-email/render': '*'
@@ -13737,7 +13737,7 @@ snapshots:
 
   reselect@5.3.0: {}
 
-  resend@6.28.1:
+  resend@6.30.0:
     dependencies:
       postal-mime: 2.7.6
       standardwebhooks: 1.1.1
