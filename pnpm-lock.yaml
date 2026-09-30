@@ -315,7 +315,7 @@ importers:
         version: 2.117.2(@opentelemetry/api@1.9.1)
       '@vercel/microfrontends':
         specifier: 'catalog:'
-        version: 2.4.0(@vercel/analytics@2.0.1(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0))(debug@4.4.3(supports-color@7.2.0))(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vite@8.3.0(@types/node@24.13.6))
+        version: 2.4.0(@vercel/analytics@2.0.1(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0))(debug@4.4.3(supports-color@7.2.0))(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vite@8.3.1(@types/node@24.13.6))
       '@ykzts/editor':
         specifier: workspace:*
         version: link:../../packages/editor
@@ -397,7 +397,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.0)(vite@8.3.0(@types/node@24.13.6))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.0)(vite@8.3.1(@types/node@24.13.6))
 
   apps/blog:
     dependencies:
@@ -412,7 +412,7 @@ importers:
         version: 2.0.1(next@16.3.6(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)
       '@vercel/microfrontends':
         specifier: 'catalog:'
-        version: 2.4.0(@vercel/analytics@2.0.1(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0))(debug@4.4.3(supports-color@7.2.0))(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vite@8.3.0(@types/node@24.13.6))
+        version: 2.4.0(@vercel/analytics@2.0.1(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0))(debug@4.4.3(supports-color@7.2.0))(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vite@8.3.1(@types/node@24.13.6))
       '@ykzts/layout':
         specifier: workspace:*
         version: link:../../packages/layout
@@ -476,7 +476,7 @@ importers:
         version: 10.4.2
       '@testing-library/jest-dom':
         specifier: 'catalog:'
-        version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.0(@types/node@24.13.6)))
+        version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.1(@types/node@24.13.6)))
       '@testing-library/react':
         specifier: 'catalog:'
         version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -497,7 +497,7 @@ importers:
         version: 0.7.2
       '@vitejs/plugin-react':
         specifier: 'catalog:'
-        version: 6.1.1(babel-plugin-react-compiler@1.0.0)(vite@8.3.0(@types/node@24.13.6))
+        version: 6.1.1(babel-plugin-react-compiler@1.0.0)(vite@8.3.1(@types/node@24.13.6))
       '@ykzts/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -521,7 +521,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.0(@types/node@24.13.6))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.1(@types/node@24.13.6))
 
   apps/blog-legacy:
     dependencies:
@@ -558,7 +558,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.0)(vite@8.3.0(@types/node@24.13.6))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.0)(vite@8.3.1(@types/node@24.13.6))
 
   apps/memo:
     dependencies:
@@ -652,7 +652,7 @@ importers:
         version: 2.0.1(next@16.3.6(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)
       '@vercel/microfrontends':
         specifier: 'catalog:'
-        version: 2.4.0(@vercel/analytics@2.0.1(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0))(debug@4.4.3(supports-color@7.2.0))(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vite@8.3.0(@types/node@24.13.6))
+        version: 2.4.0(@vercel/analytics@2.0.1(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0))(debug@4.4.3(supports-color@7.2.0))(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vite@8.3.1(@types/node@24.13.6))
       '@ykzts/layout':
         specifier: workspace:*
         version: link:../../packages/layout
@@ -728,7 +728,7 @@ importers:
         version: 0.5.20(tailwindcss@4.3.3)
       '@testing-library/jest-dom':
         specifier: 'catalog:'
-        version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.0(@types/node@24.13.6)))
+        version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.1(@types/node@24.13.6)))
       '@testing-library/react':
         specifier: 'catalog:'
         version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -749,7 +749,7 @@ importers:
         version: 19.3.0(@types/react@19.3.0)
       '@vitejs/plugin-react':
         specifier: 'catalog:'
-        version: 6.1.1(babel-plugin-react-compiler@1.0.0)(vite@8.3.0(@types/node@24.13.6))
+        version: 6.1.1(babel-plugin-react-compiler@1.0.0)(vite@8.3.1(@types/node@24.13.6))
       '@ykzts/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -778,11 +778,11 @@ importers:
         specifier: 'catalog:'
         version: 7.0.2
       vite:
-        specifier: 8.3.0
-        version: 8.3.0(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1)
+        specifier: 8.3.1
+        version: 8.3.1(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.0(@types/node@24.13.6))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.1(@types/node@24.13.6))
 
   packages/editor:
     dependencies:
@@ -840,7 +840,7 @@ importers:
         version: 19.3.0(@types/react@19.3.0)
       '@vitejs/plugin-react':
         specifier: 'catalog:'
-        version: 6.1.1(vite@8.3.0(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1))
+        version: 6.1.1(vite@8.3.1(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1))
       '@ykzts/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -849,13 +849,13 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.6.2)(jsdom@30.1.0)(vite@8.3.0(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.6.2)(jsdom@30.1.0)(vite@8.3.1(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/layout:
     dependencies:
       '@vercel/microfrontends':
         specifier: 'catalog:'
-        version: 2.4.0(@vercel/analytics@2.0.1(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0))(debug@4.4.3(supports-color@7.2.0))(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vite@8.3.0(@types/node@24.13.6))
+        version: 2.4.0(@vercel/analytics@2.0.1(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0))(debug@4.4.3(supports-color@7.2.0))(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vite@8.3.1(@types/node@24.13.6))
       '@ykzts/site-config':
         specifier: workspace:*
         version: link:../site-config
@@ -880,7 +880,7 @@ importers:
     devDependencies:
       '@testing-library/jest-dom':
         specifier: 'catalog:'
-        version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.0(@types/node@24.13.6)))
+        version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.1(@types/node@24.13.6)))
       '@testing-library/react':
         specifier: 'catalog:'
         version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -898,7 +898,7 @@ importers:
         version: 19.3.0(@types/react@19.3.0)
       '@vitejs/plugin-react':
         specifier: 'catalog:'
-        version: 6.1.1(babel-plugin-react-compiler@1.0.0)(vite@8.3.0(@types/node@24.13.6))
+        version: 6.1.1(babel-plugin-react-compiler@1.0.0)(vite@8.3.1(@types/node@24.13.6))
       '@ykzts/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -913,7 +913,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.0(@types/node@24.13.6))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.1(@types/node@24.13.6))
 
   packages/site-config:
     devDependencies:
@@ -928,7 +928,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.0)(vite@8.3.0(@types/node@24.13.6))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.0)(vite@8.3.1(@types/node@24.13.6))
 
   packages/supabase:
     dependencies:
@@ -1041,7 +1041,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.0)(vite@8.3.0(@types/node@24.13.6))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.0)(vite@8.3.1(@types/node@24.13.6))
 
   profile: {}
 
@@ -7217,8 +7217,8 @@ packages:
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
 
-  vite@8.3.0:
-    resolution: {integrity: sha512-lhZBVvEHefgE+HQZC9O7EBJgCU/nVzFNl7vkS4RE0APtWLP02/8QVIkQtzBxPquh7lq5/78NHipTj7ODQ6XuyQ==}
+  vite@8.3.1:
+    resolution: {integrity: sha512-/bvH9E9tmCXRGp2uXY3WbOldqpTwFkbha/8ANaEQ6VkxhH60KyqLwgZq6lG2y+4uT55x9+9eUHMpQ7uGnOCKjA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -9645,7 +9645,7 @@ snapshots:
       picocolors: 1.1.1
       pretty-format: 27.5.1
 
-  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.0(@types/node@24.13.6)))':
+  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.1(@types/node@24.13.6)))':
     dependencies:
       '@adobe/css-tools': 4.5.0
       '@testing-library/dom': 10.4.2
@@ -9655,7 +9655,7 @@ snapshots:
       picocolors: 1.1.1
       redent: 3.0.0
     optionalDependencies:
-      vitest: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.0(@types/node@24.13.6))
+      vitest: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.1(@types/node@24.13.6))
 
   '@testing-library/react@16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
@@ -9898,7 +9898,7 @@ snapshots:
       pretty-cache-header: 1.0.0
       zod: 3.25.76
 
-  '@vercel/microfrontends@2.4.0(@vercel/analytics@2.0.1(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0))(debug@4.4.3(supports-color@7.2.0))(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vite@8.3.0(@types/node@24.13.6))':
+  '@vercel/microfrontends@2.4.0(@vercel/analytics@2.0.1(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0))(debug@4.4.3(supports-color@7.2.0))(next@16.3.6(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vite@8.3.1(@types/node@24.13.6))':
     dependencies:
       '@next/env': 16.0.10
       '@types/md5': 2.3.6
@@ -9917,7 +9917,7 @@ snapshots:
       next: 16.3.6(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.13.6)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
-      vite: 8.3.0(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.1(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1)
     transitivePeerDependencies:
       - debug
 
@@ -9930,35 +9930,35 @@ snapshots:
     optionalDependencies:
       ajv: 6.15.0
 
-  '@vitejs/plugin-react@6.1.1(babel-plugin-react-compiler@1.0.0)(vite@8.3.0(@types/node@24.13.6))':
+  '@vitejs/plugin-react@6.1.1(babel-plugin-react-compiler@1.0.0)(vite@8.3.1(@types/node@24.13.6))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
-      vite: 8.3.0(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.1(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1)
     optionalDependencies:
       babel-plugin-react-compiler: 1.0.0
 
-  '@vitejs/plugin-react@6.1.1(vite@8.3.0(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1))':
+  '@vitejs/plugin-react@6.1.1(vite@8.3.1(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
-      vite: 8.3.0(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.1(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1)
 
-  '@vitest/mocker@5.0.2(vite@8.3.0(@types/node@24.13.6))':
+  '@vitest/mocker@5.0.2(vite@8.3.1(@types/node@24.13.6))':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       '@vitest/spy': 5.0.2
       estree-walker: 3.0.3
       magic-string: 1.4.2
     optionalDependencies:
-      vite: 8.3.0(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.1(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1)
 
-  '@vitest/mocker@5.0.2(vite@8.3.0(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1))':
+  '@vitest/mocker@5.0.2(vite@8.3.1(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       '@vitest/spy': 5.0.2
       estree-walker: 3.0.3
       magic-string: 1.4.2
     optionalDependencies:
-      vite: 8.3.0(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.1(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1)
 
   '@vitest/spy@5.0.2': {}
 
@@ -14518,7 +14518,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite@8.3.0(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1):
+  vite@8.3.1(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -14531,7 +14531,7 @@ snapshots:
       jiti: 2.7.0
       yaml: 2.9.1
 
-  vite@8.3.0(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1):
+  vite@8.3.1(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -14544,10 +14544,10 @@ snapshots:
       jiti: 2.7.0
       yaml: 2.9.1
 
-  vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.0)(vite@8.3.0(@types/node@24.13.6)):
+  vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.0)(vite@8.3.1(@types/node@24.13.6)):
     dependencies:
       '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.2(vite@8.3.0(@types/node@24.13.6))
+      '@vitest/mocker': 5.0.2(vite@8.3.1(@types/node@24.13.6))
       chai: 6.2.2
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
@@ -14558,7 +14558,7 @@ snapshots:
       tinybench: 6.1.4
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
-      vite: 8.3.0(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.1(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1)
       why-is-node-running: 3.2.2
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
@@ -14567,10 +14567,10 @@ snapshots:
     transitivePeerDependencies:
       - msw
 
-  vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.0(@types/node@24.13.6)):
+  vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@24.13.6)(jsdom@30.1.1)(vite@8.3.1(@types/node@24.13.6)):
     dependencies:
       '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.2(vite@8.3.0(@types/node@24.13.6))
+      '@vitest/mocker': 5.0.2(vite@8.3.1(@types/node@24.13.6))
       chai: 6.2.2
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
@@ -14581,7 +14581,7 @@ snapshots:
       tinybench: 6.1.4
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
-      vite: 8.3.0(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.1(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1)
       why-is-node-running: 3.2.2
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
@@ -14590,10 +14590,10 @@ snapshots:
     transitivePeerDependencies:
       - msw
 
-  vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.6.2)(jsdom@30.1.0)(vite@8.3.0(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1)):
+  vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.6.2)(jsdom@30.1.0)(vite@8.3.1(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1)):
     dependencies:
       '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.2(vite@8.3.0(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1))
+      '@vitest/mocker': 5.0.2(vite@8.3.1(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1))
       chai: 6.2.2
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
@@ -14604,7 +14604,7 @@ snapshots:
       tinybench: 6.1.4
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
-      vite: 8.3.0(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.1(@types/node@26.6.2)(jiti@2.7.0)(yaml@2.9.1)
       why-is-node-running: 3.2.2
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
