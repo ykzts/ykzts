@@ -30,7 +30,7 @@
     "@commitlint/types": "21.2.3",
     "lefthook": "2.1.14",
     "turbo": "2.11.5",
-    "ultracite": "7.12.1"
+    "ultracite": "7.12.2"
   },
   "packageManager": "pnpm@12.8.1"
 }
