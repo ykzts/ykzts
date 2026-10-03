@@ -1,5 +1,7 @@
 {
   "$schema": "./node_modules/turbo/schema.json",
+  "cacheMaxAge": "7d",
+  "cacheMaxSize": "10GB",
   "globalDependencies": ["**/.env.*local"],
   "tasks": {
     "build": {
