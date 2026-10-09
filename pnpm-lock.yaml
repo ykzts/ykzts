@@ -243,8 +243,8 @@ catalogs:
       specifier: 0.0.1
       version: 0.0.1
     shadcn:
-      specifier: 4.21.1
-      version: 4.21.1
+      specifier: 4.21.3
+      version: 4.21.3
     shiki:
       specifier: 4.5.0
       version: 4.5.0
@@ -385,7 +385,7 @@ importers:
         version: 8.5.28
       shadcn:
         specifier: 'catalog:'
-        version: 4.21.1(supports-color@7.2.0)(typescript@7.0.2)
+        version: 4.21.3(supports-color@7.2.0)
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -509,7 +509,7 @@ importers:
         version: 8.5.28
       shadcn:
         specifier: 'catalog:'
-        version: 4.21.1(supports-color@7.2.0)(typescript@7.0.2)
+        version: 4.21.3(supports-color@7.2.0)
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -767,7 +767,7 @@ importers:
         version: 8.5.28
       shadcn:
         specifier: 'catalog:'
-        version: 4.21.1(supports-color@7.2.0)(typescript@7.0.2)
+        version: 4.21.3(supports-color@7.2.0)
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2663,8 +2663,8 @@ packages:
     resolution: {integrity: sha512-zCKpyDIWKHwtervNK2ZlaK8mMV7gVUijAgFeJStH+CU/imcdquizV3pFLlSQYRswG+Lbyd6CT/LGRh3IbtkCFw==}
     engines: {node: '>=8'}
 
-  '@shadcn/registry@0.1.0':
-    resolution: {integrity: sha512-eMF6tPNi9SWZgPvqBvPQFhJN7gV9PcjRdF3kPiiWo5yZJocWqVgxFuspCHrOij3bIJ797NIGZ+j/v7AiXfA6qg==}
+  '@shadcn/registry@0.1.2':
+    resolution: {integrity: sha512-yN+z+I9lBPI0b5DOr5IwrC4E1kkoSMkdO3M6pNALz07c0if9zFE/cH+Ekfp7AT93FBN0d49rSiVyKwqIAsrEsg==}
     engines: {node: '>=20.18.1'}
 
   '@shikijs/core@4.5.0':
@@ -5201,8 +5201,8 @@ packages:
     resolution: {integrity: sha512-U69YGDNsZ7R+umeSzdLzORNCHQFz/w4LKyNTjJQcGrQRQCr8hlCJfJwwm9sqq9Uc5N6dImS58ywURA0FkqoHlg==}
     hasBin: true
 
-  legacy-javascript@0.0.1:
-    resolution: {integrity: sha512-lPyntS4/aS7jpuvOlitZDFifBCb4W8L/3QU0PLbUTUj+zYah8rfVjYic88yG7ZKTxhS5h9iz7duT8oUXKszLhg==}
+  legacy-javascript@0.0.3:
+    resolution: {integrity: sha512-1r6MT4dVaJyXt4G07Cm2cQ0AUaLJdefiEp4SmIAylA++gnEQ82YvmzE58RkM5EP0fk5hROLCslUPGnwIYdZQVA==}
 
   lexical@0.52.0:
     resolution: {integrity: sha512-mePejqwCDaW0GR89IoofJTTlk/EiwwlGhbs1D8qOx/Iw6ieG5D3nh7PSPLv0Csia0UC58HpuV91DilJjqeAWSw==}
@@ -6615,8 +6615,8 @@ packages:
   setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
 
-  shadcn@4.21.1:
-    resolution: {integrity: sha512-keQmMdKI1eLKTtYpwFwrFfFegsskOpUgt1l3aF359pbCFt0taq0TMuZ75yK+q/StcV2YvjmBMenrs0diWoezXQ==}
+  shadcn@4.21.3:
+    resolution: {integrity: sha512-r88yKaFvIwz2DInrE/DZn0XZVSuKWahouQVJBjYxVAcZ3GRkfh+3VDhIeCc18eYiIOuMgZoGaPYjhzhaON2mzw==}
     engines: {node: '>=20.18.1'}
     hasBin: true
 
@@ -9116,7 +9116,7 @@ snapshots:
 
   '@paulirish/trace_engine@0.0.53':
     dependencies:
-      legacy-javascript: 0.0.1
+      legacy-javascript: 0.0.3
       third-party-web: 0.30.0
 
   '@pkgjs/parseargs@0.11.0':
@@ -9389,7 +9389,7 @@ snapshots:
     dependencies:
       '@sentry/types': 7.120.4
 
-  '@shadcn/registry@0.1.0(supports-color@7.2.0)(typescript@7.0.2)':
+  '@shadcn/registry@0.1.2(supports-color@7.2.0)':
     dependencies:
       '@babel/core': 7.29.7(supports-color@7.2.0)
       '@babel/parser': 7.29.9
@@ -9397,7 +9397,6 @@ snapshots:
       '@babel/preset-typescript': 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
       '@dotenvx/dotenvx': 1.75.1
       cn: 0.2.6
-      cosmiconfig: 9.0.2(typescript@7.0.2)
       deepmerge: 4.3.1
       execa: 9.6.1
       fast-glob: 3.3.3
@@ -9417,7 +9416,6 @@ snapshots:
       zod: 3.25.76
     transitivePeerDependencies:
       - supports-color
-      - typescript
 
   '@shikijs/core@4.5.0':
     dependencies:
@@ -11959,7 +11957,7 @@ snapshots:
       lefthook-windows-arm64: 2.1.16
       lefthook-windows-x64: 2.1.16
 
-  legacy-javascript@0.0.1: {}
+  legacy-javascript@0.0.3: {}
 
   lexical@0.52.0(typescript@7.0.2):
     dependencies:
@@ -13812,7 +13810,7 @@ snapshots:
 
   setprototypeof@1.2.0: {}
 
-  shadcn@4.21.1(supports-color@7.2.0)(typescript@7.0.2):
+  shadcn@4.21.3(supports-color@7.2.0):
     dependencies:
       '@babel/core': 7.29.7(supports-color@7.2.0)
       '@babel/parser': 7.29.9
@@ -13820,12 +13818,11 @@ snapshots:
       '@babel/preset-typescript': 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0)
       '@dotenvx/dotenvx': 1.75.1
       '@modelcontextprotocol/sdk': 1.31.0(supports-color@7.2.0)(zod@3.25.76)
-      '@shadcn/registry': 0.1.0(supports-color@7.2.0)(typescript@7.0.2)
+      '@shadcn/registry': 0.1.2(supports-color@7.2.0)
       '@types/validate-npm-package-name': 4.0.2
       browserslist: 4.29.3
       cn: 0.2.6
       commander: 14.0.3
-      cosmiconfig: 9.0.2(typescript@7.0.2)
       dedent: 1.7.2
       deepmerge: 4.3.1
       diff: 8.0.4
@@ -13852,7 +13849,6 @@ snapshots:
       - '@cfworker/json-schema'
       - babel-plugin-macros
       - supports-color
-      - typescript
 
   sharp@0.35.5(@types/node@24.19.0):
     dependencies:
