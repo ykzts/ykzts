@@ -207,8 +207,8 @@ catalogs:
       specifier: 2.0.1
       version: 2.0.1
     '@vercel/config':
-      specifier: 0.9.0
-      version: 0.9.0
+      specifier: 0.11.0
+      version: 0.11.0
     '@vercel/microfrontends':
       specifier: 2.4.0
       version: 2.4.0
@@ -376,7 +376,7 @@ importers:
         version: 19.3.0(@types/react@19.3.0)
       '@vercel/config':
         specifier: 'catalog:'
-        version: 0.9.0
+        version: 0.11.0
       '@ykzts/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -494,7 +494,7 @@ importers:
         version: 19.3.0(@types/react@19.3.0)
       '@vercel/config':
         specifier: 'catalog:'
-        version: 0.9.0
+        version: 0.11.0
       '@vitejs/plugin-react':
         specifier: 'catalog:'
         version: 6.1.1(babel-plugin-react-compiler@1.0.0)(vite@8.3.1(@types/node@24.19.0)(jiti@2.7.0)(yaml@2.9.1))
@@ -3231,8 +3231,8 @@ packages:
       vue-router:
         optional: true
 
-  '@vercel/config@0.9.0':
-    resolution: {integrity: sha512-xifSW36Ixe9Y2mCKmViPsm+wdR6c59efLY9rJCS0UWcIKT9vW5qf5/aW/9YpcEoiN9KJpPIDA/XO9r2kV1w80w==}
+  '@vercel/config@0.11.0':
+    resolution: {integrity: sha512-Vnw8GiRgfChftk/+xZZc1Qr7MCa7FQLJpl4TWpT95rPIzYvDil/0QTqQrqiJ7ZNVYeI3Va9yiATpgb8bsQVjvA==}
     hasBin: true
 
   '@vercel/microfrontends@2.4.0':
@@ -5201,8 +5201,8 @@ packages:
     resolution: {integrity: sha512-U69YGDNsZ7R+umeSzdLzORNCHQFz/w4LKyNTjJQcGrQRQCr8hlCJfJwwm9sqq9Uc5N6dImS58ywURA0FkqoHlg==}
     hasBin: true
 
-  legacy-javascript@0.0.1:
-    resolution: {integrity: sha512-lPyntS4/aS7jpuvOlitZDFifBCb4W8L/3QU0PLbUTUj+zYah8rfVjYic88yG7ZKTxhS5h9iz7duT8oUXKszLhg==}
+  legacy-javascript@0.0.3:
+    resolution: {integrity: sha512-1r6MT4dVaJyXt4G07Cm2cQ0AUaLJdefiEp4SmIAylA++gnEQ82YvmzE58RkM5EP0fk5hROLCslUPGnwIYdZQVA==}
 
   lexical@0.52.0:
     resolution: {integrity: sha512-mePejqwCDaW0GR89IoofJTTlk/EiwwlGhbs1D8qOx/Iw6ieG5D3nh7PSPLv0Csia0UC58HpuV91DilJjqeAWSw==}
@@ -9116,7 +9116,7 @@ snapshots:
 
   '@paulirish/trace_engine@0.0.53':
     dependencies:
-      legacy-javascript: 0.0.1
+      legacy-javascript: 0.0.3
       third-party-web: 0.30.0
 
   '@pkgjs/parseargs@0.11.0':
@@ -9887,7 +9887,7 @@ snapshots:
       next: 16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@24.19.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       react: 19.3.0
 
-  '@vercel/config@0.9.0':
+  '@vercel/config@0.11.0':
     dependencies:
       '@vercel/routing-utils': 6.6.0
       pretty-cache-header: 1.0.0
@@ -11959,7 +11959,7 @@ snapshots:
       lefthook-windows-arm64: 2.1.16
       lefthook-windows-x64: 2.1.16
 
-  legacy-javascript@0.0.1: {}
+  legacy-javascript@0.0.3: {}
 
   lexical@0.52.0(typescript@7.0.2):
     dependencies:
