@@ -22,7 +22,7 @@ env:
   # renovate: datasource=node-version depName=node
   NODE_VERSION: 24.22.0
   # renovate: datasource=npm depName=@playwright/test
-  PLAYWRIGHT_VERSION: 1.64.0
+  PLAYWRIGHT_VERSION: 1.64.1
   # renovate: datasource=github-releases depName=supabase/cli
   SUPABASE_VERSION: 2.120.0
 
