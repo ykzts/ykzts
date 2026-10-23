@@ -1009,8 +1009,8 @@ importers:
   packages/utils:
     dependencies:
       '@portabletext/markdown':
-        specifier: 2.5.1
-        version: 2.5.1
+        specifier: 2.5.2
+        version: 2.5.2
       '@portabletext/to-html':
         specifier: 6.0.0
         version: 6.0.0
@@ -2444,8 +2444,8 @@ packages:
     resolution: {integrity: sha512-nRqvPYO8xUVdgy/KhJuaCrWlVT/4uZr97Mpbuizsa6CmvtCQf3NuYnVvOOrpYiKUJcZYtEvm84OooJ8+lJytMQ==}
     engines: {node: '>=14.6'}
 
-  '@portabletext/markdown@2.5.1':
-    resolution: {integrity: sha512-E7JxW2f+z7e6RJITPuQ2pUL4W4p6Zn7qUeGI7iF5iyUUdAindDlQ0smMnVcY1wVqqupFE3qMU4T8FIgUC+r46Q==}
+  '@portabletext/markdown@2.5.2':
+    resolution: {integrity: sha512-WpzFoaZg0eYYxj1miGgvT3ArWFSGXn23DrZNyH0xgLBSijveXxoqbj0bD/Xwlw+4NG2EmFuzmlWzPUXzPER+lQ==}
     engines: {node: '>=22.12'}
 
   '@portabletext/react@8.0.1':
@@ -2454,8 +2454,8 @@ packages:
     peerDependencies:
       react: ^19
 
-  '@portabletext/schema@3.0.1':
-    resolution: {integrity: sha512-kVs12KNNtKfIYt7GbIYPVB7qJY8ZuErIa5C8NGBHR/sRN8ciR7C0UpOCTbcIvKSCiqjc47hJxEkWIyPg8XZGUQ==}
+  '@portabletext/schema@3.1.0':
+    resolution: {integrity: sha512-Th8x0I21GDDv+yQEqF1w/G9iuyLkFdUM424VSSCCdZRSnfor2m23m+GFdf3pVTte6TPOzu4Ku89FwqyRRJ2vxQ==}
     engines: {node: '>=22.12'}
 
   '@portabletext/to-html@6.0.0':
@@ -9227,10 +9227,10 @@ snapshots:
       write-file-atomic: 5.0.1
       write-yaml-file: 4.2.0
 
-  '@portabletext/markdown@2.5.1':
+  '@portabletext/markdown@2.5.2':
     dependencies:
       '@mdit/plugin-alert': 2.0.2(markdown-it@15.0.3)
-      '@portabletext/schema': 3.0.1
+      '@portabletext/schema': 3.1.0
       '@portabletext/toolkit': 6.0.0
       '@sanity/diff-match-patch': 3.2.1
       linkify-it: 6.1.0
@@ -9242,7 +9242,7 @@ snapshots:
       '@portabletext/types': 4.0.2
       react: 19.3.1
 
-  '@portabletext/schema@3.0.1': {}
+  '@portabletext/schema@3.1.0': {}
 
   '@portabletext/to-html@6.0.0':
     dependencies:
