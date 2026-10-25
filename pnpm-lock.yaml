@@ -293,8 +293,8 @@ importers:
         specifier: 2.11.10
         version: 2.11.10
       ultracite:
-        specifier: 8.0.1
-        version: 8.0.1(@biomejs/biome@2.5.15)(prettier@3.9.9)
+        specifier: 8.0.2
+        version: 8.0.2(@biomejs/biome@2.5.15)(prettier@3.9.9)
 
   apps/admin:
     dependencies:
@@ -5232,8 +5232,8 @@ packages:
     resolution: {integrity: sha512-37fYHAhL12r1twaEV0PA5TwoIT491eTGGYjhhXxlYNMq3DSkiGZBQ++Jfk5maXj0vq52NRauLtMikBKtbNJs3Q==}
     hasBin: true
 
-  legacy-javascript@0.0.3:
-    resolution: {integrity: sha512-1r6MT4dVaJyXt4G07Cm2cQ0AUaLJdefiEp4SmIAylA++gnEQ82YvmzE58RkM5EP0fk5hROLCslUPGnwIYdZQVA==}
+  legacy-javascript@0.0.4:
+    resolution: {integrity: sha512-UTmeKBVxnfJcpmpOvzzNnLsQT99BXHpPlc/ZKddIRmWmrR0fw6335I3lq4+sJoP60UTbBNaYsGYVPc65YB1x3A==}
 
   lexical@0.52.0:
     resolution: {integrity: sha512-mePejqwCDaW0GR89IoofJTTlk/EiwwlGhbs1D8qOx/Iw6ieG5D3nh7PSPLv0Csia0UC58HpuV91DilJjqeAWSw==}
@@ -7100,8 +7100,8 @@ packages:
     resolution: {integrity: sha512-8iAasVS4wUx0gPLjH8Xtz2PeDzTSiy8QiLGu2DT3X5GU+egFEQhpnbtkehbAwjvDcxIERmCYcysiODFmE3Ud0Q==}
     engines: {node: '>=18'}
 
-  ultracite@8.0.1:
-    resolution: {integrity: sha512-4XtB3My7o/O8uveSBPjMO6aPwkO7LEGDf2RCuR4jMVSJ4JByLNIb8+xpCR5M+HssgPrl0aSTQ/40od80ItmiqQ==}
+  ultracite@8.0.2:
+    resolution: {integrity: sha512-fXAMds8JnXvwizV4Ee3PFQNIu9zPvZtd2/+X6gh6ZWSvuzpiLkSWeUlsZvXIWRync+oLHgyKAje5cPgpeb61jw==}
     engines: {node: '>=22.18.0'}
     hasBin: true
     peerDependencies:
@@ -9159,7 +9159,7 @@ snapshots:
 
   '@paulirish/trace_engine@0.0.53':
     dependencies:
-      legacy-javascript: 0.0.3
+      legacy-javascript: 0.0.4
       third-party-web: 0.30.0
 
   '@pkgjs/parseargs@0.11.0':
@@ -12020,7 +12020,7 @@ snapshots:
       lefthook-windows-arm64: 2.2.2
       lefthook-windows-x64: 2.2.2
 
-  legacy-javascript@0.0.3: {}
+  legacy-javascript@0.0.4: {}
 
   lexical@0.52.0(typescript@7.0.2):
     dependencies:
@@ -14419,7 +14419,7 @@ snapshots:
 
   uint8array-extras@1.6.0: {}
 
-  ultracite@8.0.1(@biomejs/biome@2.5.15)(prettier@3.9.9):
+  ultracite@8.0.2(@biomejs/biome@2.5.15)(prettier@3.9.9):
     dependencies:
       '@clack/prompts': 1.8.1
       cli-truncate: 6.1.1
