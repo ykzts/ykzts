@@ -20,7 +20,7 @@ env:
   # renovate: datasource=node-version depName=node
   NODE_VERSION: 24.22.1
   # renovate: datasource=github-releases depName=supabase/cli
-  SUPABASE_VERSION: 2.121.0
+  SUPABASE_VERSION: 2.122.0
 
 jobs:
   lighthouse:
