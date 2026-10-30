@@ -1009,8 +1009,8 @@ importers:
   packages/utils:
     dependencies:
       '@portabletext/markdown':
-        specifier: 2.7.1
-        version: 2.7.1
+        specifier: 2.8.1
+        version: 2.8.1
       '@portabletext/to-html':
         specifier: 6.0.0
         version: 6.0.0
@@ -2444,8 +2444,8 @@ packages:
     resolution: {integrity: sha512-nRqvPYO8xUVdgy/KhJuaCrWlVT/4uZr97Mpbuizsa6CmvtCQf3NuYnVvOOrpYiKUJcZYtEvm84OooJ8+lJytMQ==}
     engines: {node: '>=14.6'}
 
-  '@portabletext/markdown@2.7.1':
-    resolution: {integrity: sha512-rtVmC7Q1ozBUY+LBA289gfZmhJQ8qSuvr9kLRDqhzuiMx19a5DHcoFF3dkBDxEe2L7KVwXvokNO6Y1YRfBFinQ==}
+  '@portabletext/markdown@2.8.1':
+    resolution: {integrity: sha512-qFCveIOvpedRgjSRcnc+26PIL+jHNneJLDlXMpIVQGcoDwBUS14tNtiUqORdvY5pBZ98QQ0thM2a+LcWdC8Ssg==}
     engines: {node: '>=22.12'}
 
   '@portabletext/react@8.0.1':
@@ -9232,7 +9232,7 @@ snapshots:
       write-file-atomic: 5.0.1
       write-yaml-file: 4.2.0
 
-  '@portabletext/markdown@2.7.1':
+  '@portabletext/markdown@2.8.1':
     dependencies:
       '@mdit/plugin-alert': 2.0.3(markdown-it@15.0.3)
       '@portabletext/schema': 3.1.0
