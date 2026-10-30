@@ -20,7 +20,7 @@ permissions:
 
 env:
   # renovate: datasource=node-version depName=node
-  NODE_VERSION: 24.22.1
+  NODE_VERSION: 24.22.2
   # renovate: datasource=npm depName=@playwright/test
   PLAYWRIGHT_VERSION: 1.64.1
   # renovate: datasource=github-releases depName=supabase/cli
