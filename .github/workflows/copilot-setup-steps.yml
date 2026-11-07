@@ -45,7 +45,7 @@ jobs:
         uses: supabase/setup-cli@689adcfb80d947100a1eab127289b97d1fb07b13 # v3.2.0
         with:
           # renovate: datasource=github-releases depName=supabase/cli
-          version: 2.122.0
+          version: 2.122.1
 
       - name: Start Supabase local stack
         run: supabase start
