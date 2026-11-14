@@ -59,19 +59,11 @@ export async function generateTagsWithAI(params: {
       : "";
 
   const result = await generateText({
-    messages: [
-      {
-        content:
-          'You are a blog post tag generator. Analyze the title and content and suggest 3 to 5 tags. Tags must be lowercase English words or hyphenated phrases (e.g. "javascript", "react", "web-development"). If existing tags are provided, reuse them when they closely match the content.',
-        role: "system",
-      },
-      {
-        content: `Title: ${title}\n\nContent: ${truncatedContent}${existingTagsSection}`,
-        role: "user",
-      },
-    ],
+    instructions:
+      'You are a blog post tag generator. Analyze the title and content and suggest 3 to 5 tags. Tags must be lowercase English words or hyphenated phrases (e.g. "javascript", "react", "web-development"). If existing tags are provided, reuse them when they closely match the content.',
     model: "openai/gpt-4o-mini",
     output: Output.object({ schema: tagsSchema }),
+    prompt: `Title: ${title}\n\nContent: ${truncatedContent}${existingTagsSection}`,
   });
 
   return result.output.tags;
