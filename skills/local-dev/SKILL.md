@@ -77,7 +77,7 @@ Useful commands:
 ```bash
 npx supabase status
 npx supabase stop
-npx supabase db reset --local    # wipe + reapply migrations + seed
+npx supabase db reset            # wipe + reapply migrations + seed
 npx supabase migration up        # pending migrations only (no full reset)
 ```
 
@@ -187,7 +187,7 @@ pnpm --filter @ykzts/blog test
 After changing SQL under `supabase/migrations/`:
 
 ```bash
-npx supabase db reset --local   # or migration up
+npx supabase db reset           # or migration up
 pnpm typegen
 ```
 

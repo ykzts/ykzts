@@ -39,7 +39,7 @@ cd packages/supabase
 pnpm typegen
 ```
 
-This runs `supabase gen types typescript --local` with the Supabase CLI pinned in this package's `devDependencies` (kept in sync with `SUPABASE_VERSION` in the GitHub Actions workflows), then formats `src/database.types.ts` with Biome. Pinning the CLI keeps the generated output reproducible; an unpinned `npx supabase` resolves to the latest release, whose generator output may differ.
+This runs `supabase gen types typescript` (which targets the local database by default) with the Supabase CLI pinned in this package's `devDependencies` (kept in sync with `SUPABASE_VERSION` in the GitHub Actions workflows), then formats `src/database.types.ts` with Biome. Pinning the CLI keeps the generated output reproducible; an unpinned `npx supabase` resolves to the latest release, whose generator output may differ.
 
 ### Using Remote Supabase Project
 
@@ -52,7 +52,7 @@ npx supabase gen types typescript --project-id YOUR_PROJECT_ID > packages/supaba
 Or using the project reference from your linked project:
 
 ```bash
-npx supabase gen types typescript --linked > packages/supabase/src/database.types.ts
+npx supabase gen types typescript --remote > packages/supabase/src/database.types.ts
 ```
 
 ## Tables
@@ -64,7 +64,7 @@ npx supabase gen types typescript --linked > packages/supabase/src/database.type
 ## Development Workflow
 
 1. Make schema changes in `supabase/migrations/`
-2. Apply migrations: `supabase db push` (or `supabase migration up` for local)
+2. Apply migrations locally: `supabase migration up` (production is updated by CI with `supabase db push --remote`)
 3. Regenerate types: `cd packages/supabase && pnpm typegen`
 4. Commit the updated `database.types.ts` file
 

@@ -33,7 +33,7 @@
 - [ ] Tests added/updated when behavior changes (`pnpm test`)
 - [ ] Docs updated when user-facing behavior or setup changes
 - [ ] No secrets or credentials in the diff
-- [ ] Supabase migrations tested locally when schema changes (`npx supabase db reset --local` or equivalent)
+- [ ] Supabase migrations tested locally when schema changes (`npx supabase db reset` or equivalent)
 
 ## Notes for reviewers
 

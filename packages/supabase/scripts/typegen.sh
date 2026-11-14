@@ -33,7 +33,7 @@ fi
 
 # Generate types to a temporary file
 echo "Generating TypeScript types from Supabase schema using ${SUPABASE_CMD[*]}..."
-if ! "${SUPABASE_CMD[@]}" gen types typescript --local > "$TEMP_FILE"; then
+if ! "${SUPABASE_CMD[@]}" gen types typescript > "$TEMP_FILE"; then
   echo "Warning: Failed to generate types (is local Supabase running with 'supabase start'?). Keeping existing committed types."
   rm -f "$TEMP_FILE" || true
   exit 0

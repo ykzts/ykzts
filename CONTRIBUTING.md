@@ -67,7 +67,7 @@ Detailed coding standards are in `AGENTS.md` (Code Style section).
    **Useful Supabase CLI commands**:
    - `npx supabase status` - Check running services status
    - `npx supabase stop` - Stop all services
-   - `npx supabase db reset --local` - Reset database and rerun migrations
+   - `npx supabase db reset` - Reset database and rerun migrations
 
    For more information, see the [Supabase CLI documentation](https://supabase.com/docs/guides/local-development).
 
@@ -300,7 +300,7 @@ When you create or update a PR with migration changes:
 When your PR is merged to the `main` branch:
 
 1. **Automatic Application**: GitHub Actions applies migrations to production
-   - Runs `supabase db push` on `ubuntu-24.04` (more stable)
+   - Runs `supabase db push --remote --yes` on `ubuntu-24.04` (more stable)
    - Uses `concurrency` to prevent simultaneous migrations
    - Protected by GitHub `production` environment
 

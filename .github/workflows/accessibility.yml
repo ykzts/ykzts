@@ -24,7 +24,7 @@ env:
   # renovate: datasource=npm depName=@playwright/test
   PLAYWRIGHT_VERSION: 1.65.0
   # renovate: datasource=github-releases depName=supabase/cli
-  SUPABASE_VERSION: 2.122.1
+  SUPABASE_VERSION: 3.1.0
 
 jobs:
   accessibility:
