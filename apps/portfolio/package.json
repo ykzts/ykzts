@@ -70,7 +70,7 @@
     "tailwindcss": "catalog:",
     "tw-animate-css": "catalog:",
     "typescript": "catalog:",
-    "vite": "8.3.7",
+    "vite": "8.3.8",
     "vitest": "catalog:"
   }
 }
