@@ -223,6 +223,14 @@ npx supabase status -o json
 **Docker / Supabase won't start** — ensure Docker daemon is up; free ports
 54321–54323 (and DB 54322).
 
+**Dev Container: Docker disk usage** — the Docker-in-Docker daemon keeps its
+data in volumes that survive rebuilds. `.devcontainer/daemon.json` caps the
+BuildKit build cache at 10 GB, and `.devcontainer/post-start.sh` runs
+`docker image prune -af --filter until=168h` on every container start
+(images used by any container are kept). After `npx supabase stop` the
+Supabase images are no longer protected, so the next `supabase start` may pull
+them again. Check usage with `docker system df`.
+
 **App can't read data / auth broken** — confirm `.env` has local URL and keys
 from `supabase status`, not production placeholders; restart `pnpm dev` after
 env changes.
