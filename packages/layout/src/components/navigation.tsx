@@ -100,7 +100,7 @@ export default function Navigation({ actions, navItems }: Props) {
             {navItems.map((item) =>
               item.children ? (
                 <details className="group" key={item.href}>
-                  <summary className="flex cursor-pointer list-none items-center justify-between rounded-md px-4 py-3 font-medium text-foreground text-lg transition-colors hover:bg-accent hover:text-accent-foreground">
+                  <summary className="flex cursor-pointer list-none items-center justify-between rounded-md px-4 py-3 text-lg font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground">
                     {item.label}
                     <ChevronDown
                       aria-hidden="true"
@@ -122,7 +122,7 @@ export default function Navigation({ actions, navItems }: Props) {
                 </details>
               ) : (
                 <Link
-                  className="rounded-md px-4 py-3 font-medium text-foreground text-lg transition-colors hover:bg-accent hover:text-accent-foreground"
+                  className="rounded-md px-4 py-3 text-lg font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
                   href={item.href}
                   key={item.href}
                   onClick={() => setOpen(false)}

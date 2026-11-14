@@ -46,7 +46,7 @@ export default async function RecentPosts() {
 
   return (
     <section className="mx-auto max-w-4xl py-20" id="blog">
-      <h2 className="mb-12 font-semibold text-base text-muted-foreground uppercase tracking-widest">
+      <h2 className="mb-12 text-base font-semibold tracking-widest text-muted-foreground uppercase">
         Blog
       </h2>
       <div className="space-y-6">
@@ -58,20 +58,20 @@ export default async function RecentPosts() {
               className="group rounded-xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:border-primary/50 hover:shadow-md"
               key={post.id}
             >
-              <h3 className="mb-2 font-semibold text-card-foreground text-lg">
+              <h3 className="mb-2 text-lg font-semibold text-card-foreground">
                 <Link className="hover:text-primary hover:underline" href={url}>
                   {post.title}
                 </Link>
               </h3>
               {!!post.excerpt && (
-                <p className="mb-3 line-clamp-2 text-muted-foreground text-sm leading-relaxed">
+                <p className="mb-3 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
                   {post.excerpt}
                 </p>
               )}
               <div className="flex flex-wrap items-center gap-3">
                 {!!post.published_at && (
                   <time
-                    className="text-muted-foreground text-xs"
+                    className="text-xs text-muted-foreground"
                     dateTime={post.published_at}
                   >
                     {new Date(post.published_at).toLocaleDateString("ja-JP", {
@@ -86,7 +86,7 @@ export default async function RecentPosts() {
                   <div className="flex flex-wrap gap-1.5">
                     {post.tags.map((tag) => (
                       <span
-                        className="rounded-full bg-muted px-2.5 py-0.5 font-medium text-muted-foreground text-xs"
+                        className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground"
                         key={tag}
                       >
                         {tag}

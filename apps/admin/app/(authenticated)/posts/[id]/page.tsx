@@ -50,7 +50,7 @@ export default function EditPostPage({
 }) {
   return (
     <div>
-      <h1 className="mb-6 font-bold text-3xl">投稿編集</h1>
+      <h1 className="mb-6 text-3xl font-bold">投稿編集</h1>
       <Suspense
         fallback={
           <Panel>

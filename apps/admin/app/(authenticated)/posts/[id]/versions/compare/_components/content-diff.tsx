@@ -51,7 +51,7 @@ export function ContentDiff({
                     className="bg-green-100 text-green-900 dark:bg-green-950/40 dark:text-green-100"
                     key={key}
                   >
-                    <span className="select-none text-green-600 dark:text-green-400">
+                    <span className="text-green-600 select-none dark:text-green-400">
                       +{" "}
                     </span>
                     {line || " "}
@@ -64,7 +64,7 @@ export function ContentDiff({
                     className="bg-red-100 text-red-900 dark:bg-red-950/40 dark:text-red-100"
                     key={key}
                   >
-                    <span className="select-none text-red-600 dark:text-red-400">
+                    <span className="text-red-600 select-none dark:text-red-400">
                       -{" "}
                     </span>
                     {line || " "}
@@ -73,7 +73,7 @@ export function ContentDiff({
               }
               return (
                 <div key={key}>
-                  <span className="select-none text-muted-foreground">
+                  <span className="text-muted-foreground select-none">
                     {"  "}
                   </span>
                   {line || " "}

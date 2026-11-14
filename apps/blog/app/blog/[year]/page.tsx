@@ -24,7 +24,7 @@ import {
 } from "@/lib/supabase/posts";
 import { PostsSkeleton } from "../_components/posts";
 
-const YEAR_REGEX = /^\d{4}$/;
+const YEAR_REGEX = /^\d{4}$/u;
 
 const siteName = getSiteName();
 
@@ -152,12 +152,12 @@ async function YearHeading({ params }: PageProps) {
 
   return (
     <div className="mb-8 flex items-baseline justify-between">
-      <h1 className="font-bold text-3xl">
+      <h1 className="text-3xl font-bold">
         {year}年 ({count}件)
       </h1>
       <a
         aria-label="ブログのAtomフィードを購読"
-        className="inline-flex items-center gap-1 text-muted-foreground text-sm transition-colors hover:text-foreground"
+        className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
         href="/blog.atom"
         rel="alternate"
         type="application/atom+xml"
@@ -260,7 +260,7 @@ async function YearPosts({ params }: PageProps) {
         const anchor = `month-${String(group.month).padStart(2, "0")}`;
         return (
           <section className="group scroll-mt-16" id={anchor} key={group.month}>
-            <h2 className="mb-6 font-bold text-2xl group-target:-ml-2 group-target:rounded group-target:border-primary group-target:border-l-4 group-target:bg-muted/60 group-target:pr-2 group-target:pl-3 group-target:font-semibold group-target:transition-colors">
+            <h2 className="mb-6 text-2xl font-bold group-target:-ml-2 group-target:rounded group-target:border-l-4 group-target:border-primary group-target:bg-muted/60 group-target:pr-2 group-target:pl-3 group-target:font-semibold group-target:transition-colors">
               {group.month}月 ({group.posts.length}件)
             </h2>
             <div className="space-y-6">

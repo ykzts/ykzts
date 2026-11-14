@@ -27,7 +27,7 @@ function DisabledButton({
   return (
     <span
       aria-disabled="true"
-      className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-transparent px-4 font-medium text-muted-foreground text-sm transition-colors"
+      className="inline-flex h-9 items-center justify-center gap-2 rounded-lg bg-transparent px-4 text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors"
     >
       {icon}
       {children}

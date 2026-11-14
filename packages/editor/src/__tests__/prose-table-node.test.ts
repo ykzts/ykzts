@@ -13,8 +13,8 @@ import {
   ProseTableNode,
 } from "../nodes/prose-table-node";
 
-const THEAD_CONTAINS_TR = /<thead[^>]*>[\s\S]*<tr/;
-const TBODY_CONTAINS_TR = /<tbody[^>]*>[\s\S]*<tr/;
+const THEAD_CONTAINS_TR = /<thead[^>]*>[\s\S]*<tr/u;
+const TBODY_CONTAINS_TR = /<tbody[^>]*>[\s\S]*<tr/u;
 
 function createTestEditor() {
   return createEditor({

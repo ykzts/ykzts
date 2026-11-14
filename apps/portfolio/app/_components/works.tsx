@@ -30,7 +30,7 @@ export default async function Works() {
 
   return (
     <section className="mx-auto max-w-4xl py-20" id="works">
-      <h2 className="mb-12 font-semibold text-base text-muted-foreground uppercase tracking-widest">
+      <h2 className="mb-12 text-base font-semibold tracking-widest text-muted-foreground uppercase">
         Works
       </h2>
       <Suspense fallback={<WorksListFallback />}>

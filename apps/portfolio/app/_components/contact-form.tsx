@@ -34,7 +34,7 @@ export default function ContactForm() {
   if (state?.success) {
     return (
       <div className="rounded-lg border border-primary/30 bg-primary/10 p-6 text-center">
-        <h3 className="mb-3 font-semibold text-foreground text-xl">送信完了</h3>
+        <h3 className="mb-3 text-xl font-semibold text-foreground">送信完了</h3>
         <p className="mb-3 text-base text-muted-foreground">
           お問い合わせいただきありがとうございます。内容を確認次第、ご返信させていただきます。
         </p>
@@ -141,7 +141,7 @@ export default function ContactForm() {
           に同意します <span className="text-red-500">*</span>
         </span>
         {errors.privacyConsent ? (
-          <p className="mt-1.5 w-full text-red-500 text-sm" id="privacy-error">
+          <p className="mt-1.5 w-full text-sm text-red-500" id="privacy-error">
             {errors.privacyConsent}
           </p>
         ) : null}

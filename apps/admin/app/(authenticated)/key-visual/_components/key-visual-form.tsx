@@ -182,7 +182,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
   return (
     <form action={formAction} className="space-y-6">
       {!!state?.error && (
-        <div className="rounded border border-error bg-error/10 p-4 text-error">
+        <div className="border-error bg-error/10 text-error rounded border p-4">
           {state.error}
         </div>
       )}
@@ -222,7 +222,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
             ドラッグ&amp;ドロップまたはクリックして画像を選択
           </p>
           <p
-            className="mb-3 text-center text-muted-foreground text-xs"
+            className="mb-3 text-center text-xs text-muted-foreground"
             id="key-visual-upload-help"
           >
             JPEG、PNG、GIF、WebP（最大5MB）
@@ -271,7 +271,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
 
         {!!uploadError && (
           <div
-            className="rounded border border-error bg-error/10 p-3 text-error text-sm"
+            className="border-error bg-error/10 text-error rounded border p-3 text-sm"
             role="alert"
           >
             {uploadError}
@@ -279,7 +279,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
         )}
 
         {!currentUrl && (
-          <div className="flex items-center gap-2 text-muted-foreground text-sm">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <ImageOff className="h-4 w-4" />
             <span>キービジュアルが設定されていません</span>
           </div>
@@ -376,7 +376,7 @@ export function KeyVisualForm({ currentKeyVisual }: KeyVisualFormProps) {
         </div>
       )}
 
-      <p className="text-muted-foreground text-sm">
+      <p className="text-sm text-muted-foreground">
         プロフィールページのヘッダーに表示される背景画像です。
       </p>
 

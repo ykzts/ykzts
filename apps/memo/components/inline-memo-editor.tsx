@@ -39,7 +39,7 @@ export function InlineMemoEditor({
       <div>
         <div className="mb-4 flex justify-end">
           <button
-            className="rounded bg-primary px-3 py-1.5 text-primary-foreground text-sm hover:bg-primary/90"
+            className="rounded bg-primary px-3 py-1.5 text-sm text-primary-foreground hover:bg-primary/90"
             onClick={() => setIsEditing(true)}
             type="button"
           >
@@ -63,11 +63,11 @@ export function InlineMemoEditor({
       <input name="memoPath" type="hidden" value={memoPath} />
 
       <div className="mb-4">
-        <label className="mb-1 block font-medium text-sm" htmlFor="memo-title">
+        <label className="mb-1 block text-sm font-medium" htmlFor="memo-title">
           タイトル
         </label>
         <input
-          className="w-full rounded border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full rounded border border-border bg-background px-3 py-2 text-foreground focus:ring-2 focus:ring-primary focus:outline-none"
           defaultValue={title}
           id="memo-title"
           name="title"
@@ -78,7 +78,7 @@ export function InlineMemoEditor({
 
       <div className="mb-4">
         <label
-          className="mb-1 block font-medium text-sm"
+          className="mb-1 block text-sm font-medium"
           htmlFor="memo-content"
         >
           コンテンツ
@@ -94,13 +94,13 @@ export function InlineMemoEditor({
 
       <div className="mb-4">
         <label
-          className="mb-1 block font-medium text-sm"
+          className="mb-1 block text-sm font-medium"
           htmlFor="memo-visibility"
         >
           公開設定
         </label>
         <select
-          className="rounded border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          className="rounded border border-border bg-background px-3 py-2 text-foreground focus:ring-2 focus:ring-primary focus:outline-none"
           defaultValue={visibility}
           id="memo-visibility"
           name="visibility"
@@ -111,7 +111,7 @@ export function InlineMemoEditor({
       </div>
 
       {state?.error ? (
-        <p className="mb-4 rounded bg-destructive/10 px-3 py-2 text-destructive text-sm">
+        <p className="mb-4 rounded bg-destructive/10 px-3 py-2 text-sm text-destructive">
           {state.error}
         </p>
       ) : null}
@@ -126,7 +126,7 @@ export function InlineMemoEditor({
           キャンセル
         </button>
         <button
-          className="rounded bg-primary px-4 py-2 text-primary-foreground text-sm hover:bg-primary/90 disabled:opacity-50"
+          className="rounded bg-primary px-4 py-2 text-sm text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           disabled={isPending}
           type="submit"
         >

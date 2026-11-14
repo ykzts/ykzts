@@ -4,16 +4,16 @@ name: Accessibility Testing
 on:
   pull_request:
     paths:
-      - 'apps/portfolio/**'
-      - 'e2e/**'
-      - '.github/workflows/accessibility.yml'
-    types: [opened, synchronize]
+      - "apps/portfolio/**"
+      - "e2e/**"
+      - ".github/workflows/accessibility.yml"
+    types: [ opened, synchronize ]
   push:
-    branches: [main]
+    branches: [ main ]
     paths:
-      - 'apps/portfolio/**'
-      - 'e2e/**'
-      - '.github/workflows/accessibility.yml'
+      - "apps/portfolio/**"
+      - "e2e/**"
+      - ".github/workflows/accessibility.yml"
 
 permissions:
   contents: read

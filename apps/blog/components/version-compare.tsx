@@ -167,13 +167,13 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
                       バージョン {version.version_number}
                     </span>
                     {index === 0 && (
-                      <span className="rounded bg-primary px-2 py-0.5 text-primary-foreground text-xs">
+                      <span className="rounded bg-primary px-2 py-0.5 text-xs text-primary-foreground">
                         最新
                       </span>
                     )}
                   </div>
                   <DateDisplay
-                    className="mt-1 text-muted-foreground text-sm"
+                    className="mt-1 text-sm text-muted-foreground"
                     date={version.version_date}
                   />
                   {!!version.change_summary && (
@@ -187,19 +187,19 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
       </ol>
 
       {pendingId !== null && selectedIds === null && (
-        <p className="mt-4 text-muted-foreground text-sm">
+        <p className="mt-4 text-sm text-muted-foreground">
           比較するもう一つのバージョンを選択してください。
         </p>
       )}
 
       {diffResult !== null && (
         <section aria-label="バージョン比較結果" className="mt-8">
-          <h2 className="mb-4 font-bold text-xl">
+          <h2 className="mb-4 text-xl font-bold">
             バージョン比較: v{diffResult.olderVersion.version_number} → v
             {diffResult.newerVersion.version_number}
           </h2>
           <div className="overflow-x-auto rounded border border-border">
-            <div className="flex gap-4 border-border border-b bg-muted px-4 py-2 text-muted-foreground text-sm">
+            <div className="flex gap-4 border-b border-border bg-muted px-4 py-2 text-sm text-muted-foreground">
               <span className="flex items-center gap-1.5">
                 <span
                   aria-hidden="true"
@@ -217,7 +217,7 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
                 <DateDisplay date={diffResult.newerVersion.version_date} />)
               </span>
             </div>
-            <div className="overflow-x-auto whitespace-pre-wrap p-0 font-mono text-sm">
+            <div className="overflow-x-auto p-0 font-mono text-sm whitespace-pre-wrap">
               {diffResult.diff.map((line) => (
                 <div
                   className={cn("bg-transparent", {
@@ -230,7 +230,7 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
                 >
                   <span
                     aria-hidden="true"
-                    className="inline-block w-6 select-none text-center opacity-60"
+                    className="inline-block w-6 text-center opacity-60 select-none"
                   >
                     {getLineIcon(line.type)}
                   </span>
@@ -241,7 +241,7 @@ export default function VersionCompare({ versions }: VersionCompareProps) {
           </div>
           <button
             aria-label="バージョン比較をリセット"
-            className="mt-4 text-muted-foreground text-sm underline-offset-2 hover:text-foreground hover:underline"
+            className="mt-4 text-sm text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
             onClick={() => setSelectedIds(null)}
             type="button"
           >

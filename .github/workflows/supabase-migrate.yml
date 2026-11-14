@@ -2,14 +2,14 @@ name: Supabase Migration
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [ opened, synchronize ]
     paths:
-      - 'supabase/migrations/**'
-      - '.github/workflows/supabase-migrate.yml'
+      - "supabase/migrations/**"
+      - ".github/workflows/supabase-migrate.yml"
   push:
-    branches: [main]
+    branches: [ main ]
     paths:
-      - 'supabase/migrations/**'
+      - "supabase/migrations/**"
 
 env:
   # renovate: datasource=github-releases depName=supabase/cli

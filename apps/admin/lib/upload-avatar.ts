@@ -15,7 +15,7 @@ export interface AvatarUploadResult {
   url?: string;
 }
 
-const AVATARS_PATH_REGEX = /\/avatars\/(.+)/;
+const AVATARS_PATH_REGEX = /\/avatars\/(?<path>.+)/u;
 
 /**
  * Extract storage path from avatar URL
@@ -26,7 +26,7 @@ function extractStoragePath(avatarUrl: string): string | null {
   try {
     const url = new URL(avatarUrl);
     const pathMatch = url.pathname.match(AVATARS_PATH_REGEX);
-    return pathMatch ? pathMatch[1] : null;
+    return pathMatch?.groups?.path ?? null;
   } catch {
     return null;
   }

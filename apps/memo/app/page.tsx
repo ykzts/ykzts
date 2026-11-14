@@ -30,7 +30,7 @@ function MemoListItems({
           >
             <span className="flex-1 font-medium">{memo.title}</span>
             {memo.visibility === "private" && (
-              <span className="rounded bg-muted px-1.5 py-0.5 text-muted-foreground text-xs">
+              <span className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
                 非公開
               </span>
             )}
@@ -121,7 +121,7 @@ async function NewMemoButton() {
 
   return (
     <Link
-      className="rounded bg-primary px-3 py-1.5 text-primary-foreground text-sm hover:bg-primary/90"
+      className="rounded bg-primary px-3 py-1.5 text-sm text-primary-foreground hover:bg-primary/90"
       href="/new"
     >
       新規作成
@@ -135,7 +135,7 @@ export default function HomePage() {
       <Header />
       <main className="mx-auto max-w-3xl px-4 py-8">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="font-bold text-2xl">メモ一覧</h1>
+          <h1 className="text-2xl font-bold">メモ一覧</h1>
           <Suspense fallback={null}>
             <NewMemoButton />
           </Suspense>

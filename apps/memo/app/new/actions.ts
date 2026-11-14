@@ -12,7 +12,7 @@ export type CreateMemoState = {
 
 const RESERVED_ROUTE_SEGMENTS = ["api", "auth", "login", "new"];
 
-const PATH_FORMAT_REGEX = /^[a-zA-Z0-9\-_/]+$/;
+const PATH_FORMAT_REGEX = /^[a-zA-Z0-9\-_/]+$/u;
 
 export async function createMemo(
   _prevState: CreateMemoState,
@@ -47,7 +47,7 @@ export async function createMemo(
   }
 
   // Validate path format: alphanumeric, hyphens, underscores, and forward slashes
-  const normalizedPath = path.trim().replace(/^\/+|\/+$/g, "");
+  const normalizedPath = path.trim().replace(/^\/+|\/+$/gu, "");
   if (!PATH_FORMAT_REGEX.test(normalizedPath)) {
     return {
       error:

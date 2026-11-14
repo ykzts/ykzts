@@ -12,10 +12,10 @@ export default async function Hero() {
     <header className="px-6 py-20 md:px-12 lg:px-24 lg:py-28">
       <div className="mx-auto flex max-w-4xl flex-col-reverse items-start gap-12 lg:flex-row lg:items-center lg:gap-16">
         <div className="flex-1">
-          <h1 className="mb-4 font-bold text-5xl text-foreground tracking-tight md:text-6xl lg:text-7xl">
+          <h1 className="mb-4 text-5xl font-bold tracking-tight text-foreground md:text-6xl lg:text-7xl">
             {profile.name}
           </h1>
-          <p className="mb-8 max-w-2xl text-muted-foreground text-xl leading-relaxed">
+          <p className="mb-8 max-w-2xl text-xl leading-relaxed text-muted-foreground">
             {profile.tagline}
           </p>
 

@@ -5,9 +5,9 @@ import {
   portableTextToMarkdown,
 } from "./index.js";
 
-const SECTION_HEADING_REGEX = /^## Section/m;
-const LOWER_BOUND_HEADING_REGEX = /^## Lower bound heading/m;
-const DATE_MATCH_2026_REGEX = /^2026-03-03/;
+const SECTION_HEADING_REGEX = /^## Section/mu;
+const LOWER_BOUND_HEADING_REGEX = /^## Lower bound heading/mu;
+const DATE_MATCH_2026_REGEX = /^2026-03-03/u;
 
 describe("portableTextToMarkdown", () => {
   it("returns empty string for null input", () => {

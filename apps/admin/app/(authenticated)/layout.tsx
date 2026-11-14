@@ -18,7 +18,7 @@ async function UserInfo() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-muted transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+      <DropdownMenuTrigger className="flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-muted transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none">
         {profile?.avatar_url ? (
           <Image
             alt={`${profile?.name ?? "ユーザー"}のプロフィール画像`}
@@ -73,11 +73,11 @@ export default function AuthenticatedLayout({
 }) {
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-border border-b bg-card">
+      <header className="border-b border-border bg-card">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link className="font-bold text-xl" href="/">
+              <Link className="text-xl font-bold" href="/">
                 管理画面
               </Link>
               <Navigation />

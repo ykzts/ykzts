@@ -21,7 +21,7 @@ const workSchema = z.object({
     .string()
     .min(1, "スラッグは必須です")
     .regex(
-      /^[a-zA-Z0-9\-_]+$/,
+      /^[a-zA-Z0-9\-_]+$/u,
       "スラッグは英数字、ハイフン、アンダースコアのみ使用できます"
     ),
   starts_at: z.string().min(1, "開始日は必須です"),

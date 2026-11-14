@@ -229,7 +229,7 @@ export default function ProfileForm({
           タイムゾーン
         </label>
         <select
-          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none"
           defaultValue={initialData ? initialData.timezone : DEFAULT_TIMEZONE}
           id="timezone"
           name="timezone"
@@ -240,7 +240,7 @@ export default function ProfileForm({
             </option>
           ))}
         </select>
-        <p className="mt-2 text-muted-foreground text-sm">
+        <p className="mt-2 text-sm text-muted-foreground">
           日時の表示に使用するタイムゾーンを選択してください
         </p>
       </div>
@@ -323,7 +323,7 @@ export default function ProfileForm({
           type="hidden"
           value={socialLinks.length}
         />
-        <p className="mt-2 text-muted-foreground text-sm">
+        <p className="mt-2 text-sm text-muted-foreground">
           URLから自動的にサービスを検出します (GitHub, X, Facebook, Mastodon
           など)
         </p>

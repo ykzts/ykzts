@@ -24,7 +24,9 @@ export interface SecurityHeadersOptions {
 }
 
 function toCamelCase(key: string): string {
-  return key.replace(/-([a-z0-9])/gi, (_, c: string) => c.toUpperCase());
+  return key.replace(/-(?<char>[a-z0-9])/giu, (_, char: string) =>
+    char.toUpperCase()
+  );
 }
 
 /**

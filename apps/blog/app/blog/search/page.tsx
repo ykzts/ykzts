@@ -70,7 +70,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   return (
     <main className="px-6 py-8 md:px-12 lg:px-24">
       <div className="mx-auto max-w-4xl">
-        <h1 className="mb-6 font-bold text-3xl">ブログ記事検索</h1>
+        <h1 className="mb-6 text-3xl font-bold">ブログ記事検索</h1>
         <p className="mb-8 text-muted-foreground">
           キーワードを入力して、関連する記事を検索できます。
         </p>

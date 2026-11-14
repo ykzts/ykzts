@@ -49,6 +49,7 @@ export default function TableOfContents({
 
     // Observe all heading elements
     const headingElements = headings
+      // biome-ignore lint/style/useDomQuerySelector: heading ids are derived from arbitrary heading text, which querySelector would need CSS.escape for
       .map((heading) => document.getElementById(heading.id))
       .filter((el): el is HTMLElement => el !== null);
 
@@ -63,6 +64,7 @@ export default function TableOfContents({
 
   // Smooth scroll to heading
   const scrollToHeading = (id: string) => {
+    // biome-ignore lint/style/useDomQuerySelector: heading ids are derived from arbitrary heading text, which querySelector would need CSS.escape for
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -86,7 +88,7 @@ export default function TableOfContents({
           onClick={() => setIsOpen(!isOpen)}
           type="button"
         >
-          <span className="font-semibold text-foreground text-sm">目次</span>
+          <span className="text-sm font-semibold text-foreground">目次</span>
           {isOpen ? (
             <ChevronUp className="h-4 w-4 text-muted-foreground" />
           ) : (
@@ -132,8 +134,8 @@ export default function TableOfContents({
       className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto"
     >
       <nav>
-        <p className="mb-4 font-semibold text-foreground text-sm">目次</p>
-        <ol className="space-y-2 border-border border-l-2 pl-4">
+        <p className="mb-4 text-sm font-semibold text-foreground">目次</p>
+        <ol className="space-y-2 border-l-2 border-border pl-4">
           {headings.map((heading) => (
             <li className={heading.level === 3 ? "ml-4" : ""} key={heading.id}>
               <button

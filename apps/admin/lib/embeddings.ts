@@ -43,7 +43,7 @@ export async function generatePostEmbedding(params: {
   // Weight title more heavily by including it twice
   // Truncate to safe character limit to avoid exceeding token limits
   const combinedText = `${title} ${title} ${excerptText} ${contentText}`
-    .replace(/\s+/g, " ")
+    .replace(/\s+/gu, " ")
     .trim()
     .slice(0, MAX_EMBED_CHARS);
 

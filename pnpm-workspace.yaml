@@ -5,23 +5,23 @@ packages:
   - renovate-config
 
 catalog:
-  '@next/mdx': 16.4.6
-  '@portabletext/react': 8.0.1
-  '@portabletext/types': 4.0.2
-  '@supabase/ssr': 0.12.7
-  '@supabase/supabase-js': 2.119.0
-  '@tailwindcss/postcss': 4.3.5
-  '@tailwindcss/typography': 0.5.20
-  '@testing-library/jest-dom': 7.0.1
-  '@testing-library/react': 16.3.3
-  '@testing-library/user-event': 14.6.9
-  '@types/node': 24.19.2
-  '@types/react': 19.3.0
-  '@types/react-dom': 19.3.0
-  '@vercel/analytics': 2.0.1
-  '@vercel/config': 0.14.1
-  '@vercel/microfrontends': 2.4.2
-  '@vitejs/plugin-react': 6.3.0
+  "@next/mdx": 16.4.6
+  "@portabletext/react": 8.0.1
+  "@portabletext/types": 4.0.2
+  "@supabase/ssr": 0.12.7
+  "@supabase/supabase-js": 2.119.0
+  "@tailwindcss/postcss": 4.3.5
+  "@tailwindcss/typography": 0.5.20
+  "@testing-library/jest-dom": 7.0.1
+  "@testing-library/react": 16.3.3
+  "@testing-library/user-event": 14.6.9
+  "@types/node": 24.19.2
+  "@types/react": 19.3.0
+  "@types/react-dom": 19.3.0
+  "@vercel/analytics": 2.0.1
+  "@vercel/config": 0.14.1
+  "@vercel/microfrontends": 2.4.2
+  "@vitejs/plugin-react": 6.3.0
   ai: 7.0.169
   jsdom: 31.0.0
   lucide-react: 1.71.0
@@ -42,7 +42,7 @@ catalog:
   zod: 4.6.7
 
 allowBuilds:
-  '@tailwindcss/oxide': true
+  "@tailwindcss/oxide": true
   better-sqlite3: false
   core-js-pure: false
   dtrace-provider: false
@@ -55,8 +55,8 @@ allowBuilds:
 
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
-  - '@next/*'
+  - "@next/*"
   - eslint-config-next
   - next
   - renovate
-savePrefix: ''
+savePrefix: ""

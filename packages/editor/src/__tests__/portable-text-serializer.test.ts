@@ -38,6 +38,7 @@ import {
   $isParagraphNode,
   $isTextNode,
   createEditor,
+  type LexicalNode,
 } from "lexical";
 import { describe, expect, it, vi } from "vitest";
 import { $createImageNode, $isImageNode, ImageNode } from "../nodes/image-node";
@@ -69,6 +70,20 @@ interface PortableTextTestNode {
 
 const toPortableText = (editor: ReturnType<typeof createEditor>) =>
   lexicalToPortableText(editor) as unknown as PortableTextTestNode[];
+
+/**
+ * Fails the test unless `node` passes `guard`, and narrows it for the lines
+ * after it, so a node of the wrong type fails the test instead of skipping the
+ * assertions about it.
+ */
+function assertNode<T extends LexicalNode>(
+  node: LexicalNode | null | undefined,
+  guard: (node: LexicalNode | null | undefined) => node is T
+): asserts node is T {
+  if (!guard(node)) {
+    throw new Error(`Unexpected node: ${node?.getType() ?? String(node)}`);
+  }
+}
 
 describe("Portable Text Serializer", () => {
   describe("lexicalToPortableText", () => {
@@ -287,15 +302,10 @@ describe("Portable Text Serializer", () => {
       editor.read(() => {
         const root = $getRoot();
         const paragraph = root.getFirstChild();
-        expect($isParagraphNode(paragraph)).toBe(true);
-
-        if ($isParagraphNode(paragraph)) {
-          const text = paragraph.getFirstChild();
-          expect($isTextNode(text)).toBe(true);
-          if ($isTextNode(text)) {
-            expect(text.getTextContent()).toBe("Hello world");
-          }
-        }
+        assertNode(paragraph, $isParagraphNode);
+        const text = paragraph.getFirstChild();
+        assertNode(text, $isTextNode);
+        expect(text.getTextContent()).toBe("Hello world");
       });
     });
 
@@ -319,13 +329,11 @@ describe("Portable Text Serializer", () => {
         const root = $getRoot();
         const paragraph = root.getFirstChild();
 
-        if ($isParagraphNode(paragraph)) {
-          const text = paragraph.getFirstChild();
-          if ($isTextNode(text)) {
-            expect(text.getTextContent()).toBe("bold text");
-            expect(text.hasFormat("bold")).toBe(true);
-          }
-        }
+        assertNode(paragraph, $isParagraphNode);
+        const text = paragraph.getFirstChild();
+        assertNode(text, $isTextNode);
+        expect(text.getTextContent()).toBe("bold text");
+        expect(text.hasFormat("bold")).toBe(true);
       });
     });
 
@@ -349,13 +357,11 @@ describe("Portable Text Serializer", () => {
         const root = $getRoot();
         const paragraph = root.getFirstChild();
 
-        if ($isParagraphNode(paragraph)) {
-          const text = paragraph.getFirstChild();
-          if ($isTextNode(text)) {
-            expect(text.getTextContent()).toBe("italic text");
-            expect(text.hasFormat("italic")).toBe(true);
-          }
-        }
+        assertNode(paragraph, $isParagraphNode);
+        const text = paragraph.getFirstChild();
+        assertNode(text, $isTextNode);
+        expect(text.getTextContent()).toBe("italic text");
+        expect(text.hasFormat("italic")).toBe(true);
       });
     });
 
@@ -381,13 +387,11 @@ describe("Portable Text Serializer", () => {
         const root = $getRoot();
         const paragraph = root.getFirstChild();
 
-        if ($isParagraphNode(paragraph)) {
-          const text = paragraph.getFirstChild();
-          if ($isTextNode(text)) {
-            expect(text.getTextContent()).toBe("underline text");
-            expect(text.hasFormat("underline")).toBe(true);
-          }
-        }
+        assertNode(paragraph, $isParagraphNode);
+        const text = paragraph.getFirstChild();
+        assertNode(text, $isTextNode);
+        expect(text.getTextContent()).toBe("underline text");
+        expect(text.hasFormat("underline")).toBe(true);
       });
     });
 
@@ -417,13 +421,11 @@ describe("Portable Text Serializer", () => {
         const root = $getRoot();
         const paragraph = root.getFirstChild();
 
-        if ($isParagraphNode(paragraph)) {
-          const text = paragraph.getFirstChild();
-          if ($isTextNode(text)) {
-            expect(text.getTextContent()).toBe("strikethrough text");
-            expect(text.hasFormat("strikethrough")).toBe(true);
-          }
-        }
+        assertNode(paragraph, $isParagraphNode);
+        const text = paragraph.getFirstChild();
+        assertNode(text, $isTextNode);
+        expect(text.getTextContent()).toBe("strikethrough text");
+        expect(text.hasFormat("strikethrough")).toBe(true);
       });
     });
 
@@ -460,13 +462,11 @@ describe("Portable Text Serializer", () => {
         const root = $getRoot();
         const paragraph = root.getFirstChild();
 
-        if ($isParagraphNode(paragraph)) {
-          const text = paragraph.getFirstChild();
-          if ($isTextNode(text)) {
-            expect(text.getTextContent()).toBe("inline code");
-            expect(text.hasFormat("code")).toBe(true);
-          }
-        }
+        assertNode(paragraph, $isParagraphNode);
+        const text = paragraph.getFirstChild();
+        assertNode(text, $isTextNode);
+        expect(text.getTextContent()).toBe("inline code");
+        expect(text.hasFormat("code")).toBe(true);
       });
     });
 
@@ -570,11 +570,10 @@ describe("Portable Text Serializer", () => {
 
       expect(portableText).toHaveLength(1);
       expect(portableText[0]._type).toBe("image");
-      if (portableText[0]._type === "image") {
-        expect(portableText[0].alt).toBe("Test image");
-        expect(portableText[0].asset.url).toBe("https://example.com/image.jpg");
-        expect(portableText[0]._key).toBeDefined();
-      }
+      expect(portableText[0]._type).toBe("image");
+      expect(portableText[0].alt).toBe("Test image");
+      expect(portableText[0].asset.url).toBe("https://example.com/image.jpg");
+      expect(portableText[0]._key).toBeDefined();
     });
 
     it("should deserialize image from Portable Text", () => {
@@ -599,12 +598,9 @@ describe("Portable Text Serializer", () => {
       editor.read(() => {
         const root = $getRoot();
         const imageNode = root.getFirstChild();
-        expect($isImageNode(imageNode)).toBe(true);
-
-        if ($isImageNode(imageNode)) {
-          expect(imageNode.getAltText()).toBe("Test image");
-          expect(imageNode.getSrc()).toBe("https://example.com/image.jpg");
-        }
+        assertNode(imageNode, $isImageNode);
+        expect(imageNode.getAltText()).toBe("Test image");
+        expect(imageNode.getSrc()).toBe("https://example.com/image.jpg");
       });
     });
 
@@ -634,12 +630,11 @@ describe("Portable Text Serializer", () => {
 
       expect(portableText2).toHaveLength(1);
       expect(portableText2[0]._type).toBe("image");
-      if (portableText2[0]._type === "image") {
-        expect(portableText2[0].alt).toBe("Round trip image");
-        expect(portableText2[0].asset.url).toBe(
-          "https://example.com/roundtrip.png"
-        );
-      }
+      expect(portableText2[0]._type).toBe("image");
+      expect(portableText2[0].alt).toBe("Round trip image");
+      expect(portableText2[0].asset.url).toBe(
+        "https://example.com/roundtrip.png"
+      );
     });
 
     it("should handle mixed content with images and text blocks", () => {
@@ -677,15 +672,12 @@ describe("Portable Text Serializer", () => {
       expect(portableText[1]._type).toBe("image");
       expect(portableText[2]._type).toBe("block");
 
-      if (portableText[0]._type === "block") {
-        expect(portableText[0].children[0].text).toBe("Text before image");
-      }
-      if (portableText[1]._type === "image") {
-        expect(portableText[1].alt).toBe("Middle image");
-      }
-      if (portableText[2]._type === "block") {
-        expect(portableText[2].children[0].text).toBe("Text after image");
-      }
+      expect(portableText[0]._type).toBe("block");
+      expect(portableText[0].children[0].text).toBe("Text before image");
+      expect(portableText[1]._type).toBe("image");
+      expect(portableText[1].alt).toBe("Middle image");
+      expect(portableText[2]._type).toBe("block");
+      expect(portableText[2].children[0].text).toBe("Text after image");
     });
 
     it("should handle malformed image blocks gracefully", () => {
@@ -840,23 +832,18 @@ describe("Portable Text Serializer", () => {
         const root = $getRoot();
 
         const list = root.getFirstChild();
-        expect($isListNode(list)).toBe(true);
+        assertNode(list, $isListNode);
+        expect(list.getListType()).toBe("bullet");
+        const items = list.getChildren();
+        expect(items).toHaveLength(2);
 
-        if ($isListNode(list)) {
-          expect(list.getListType()).toBe("bullet");
-          const items = list.getChildren();
-          expect(items).toHaveLength(2);
+        assertNode(items[0], $isListItemNode);
+        const firstItemText = items[0].getTextContent();
+        expect(firstItemText).toBe("Item 1");
 
-          if ($isListItemNode(items[0])) {
-            const firstItemText = items[0].getTextContent();
-            expect(firstItemText).toBe("Item 1");
-          }
-
-          if ($isListItemNode(items[1])) {
-            const secondItemText = items[1].getTextContent();
-            expect(secondItemText).toBe("Item 2");
-          }
-        }
+        assertNode(items[1], $isListItemNode);
+        const secondItemText = items[1].getTextContent();
+        expect(secondItemText).toBe("Item 2");
       });
     });
 
@@ -890,23 +877,18 @@ describe("Portable Text Serializer", () => {
         const root = $getRoot();
 
         const list = root.getFirstChild();
-        expect($isListNode(list)).toBe(true);
+        assertNode(list, $isListNode);
+        expect(list.getListType()).toBe("number");
+        const items = list.getChildren();
+        expect(items).toHaveLength(2);
 
-        if ($isListNode(list)) {
-          expect(list.getListType()).toBe("number");
-          const items = list.getChildren();
-          expect(items).toHaveLength(2);
+        assertNode(items[0], $isListItemNode);
+        const firstItemText = items[0].getTextContent();
+        expect(firstItemText).toBe("Step 1");
 
-          if ($isListItemNode(items[0])) {
-            const firstItemText = items[0].getTextContent();
-            expect(firstItemText).toBe("Step 1");
-          }
-
-          if ($isListItemNode(items[1])) {
-            const secondItemText = items[1].getTextContent();
-            expect(secondItemText).toBe("Step 2");
-          }
-        }
+        assertNode(items[1], $isListItemNode);
+        const secondItemText = items[1].getTextContent();
+        expect(secondItemText).toBe("Step 2");
       });
     });
 
@@ -1219,48 +1201,35 @@ describe("Portable Text Serializer", () => {
         const root = $getRoot();
         const list = root.getFirstChild();
 
-        expect($isListNode(list)).toBe(true);
+        assertNode(list, $isListNode);
+        const items = list.getChildren();
+        expect(items.length).toBe(3);
 
-        if ($isListNode(list)) {
-          const items = list.getChildren();
-          expect(items.length).toBe(3);
+        // First item
+        const [item1] = items;
+        assertNode(item1, $isListItemNode);
+        expect(item1.getTextContent()).toBe("Item 1");
 
-          // First item
-          const [item1] = items;
-          expect($isListItemNode(item1)).toBe(true);
-          if ($isListItemNode(item1)) {
-            expect(item1.getTextContent()).toBe("Item 1");
-          }
+        // Second item with nested list
+        const [, item2] = items;
+        assertNode(item2, $isListItemNode);
+        const item2Children = item2.getChildren();
+        // Should have text and nested list
+        expect(item2Children.length).toBe(2);
 
-          // Second item with nested list
-          const [, item2] = items;
-          expect($isListItemNode(item2)).toBe(true);
-          if ($isListItemNode(item2)) {
-            const item2Children = item2.getChildren();
-            // Should have text and nested list
-            expect(item2Children.length).toBe(2);
+        const nestedList = item2Children.find((child) => $isListNode(child));
+        expect(nestedList).toBeDefined();
 
-            const nestedList = item2Children.find((child) =>
-              $isListNode(child)
-            );
-            expect(nestedList).toBeDefined();
+        assertNode(nestedList, $isListNode);
+        const nestedItems = nestedList.getChildren();
+        expect(nestedItems.length).toBe(1);
+        assertNode(nestedItems[0], $isListItemNode);
+        expect(nestedItems[0].getTextContent()).toBe("Nested 2.1");
 
-            if (nestedList && $isListNode(nestedList)) {
-              const nestedItems = nestedList.getChildren();
-              expect(nestedItems.length).toBe(1);
-              if ($isListItemNode(nestedItems[0])) {
-                expect(nestedItems[0].getTextContent()).toBe("Nested 2.1");
-              }
-            }
-          }
-
-          // Third item
-          const [, , item3] = items;
-          expect($isListItemNode(item3)).toBe(true);
-          if ($isListItemNode(item3)) {
-            expect(item3.getTextContent()).toBe("Item 3");
-          }
-        }
+        // Third item
+        const [, , item3] = items;
+        assertNode(item3, $isListItemNode);
+        expect(item3.getTextContent()).toBe("Item 3");
       });
     });
 
@@ -1422,23 +1391,17 @@ describe("Portable Text Serializer", () => {
         const root = $getRoot();
         const list = root.getFirstChild();
 
-        expect($isListNode(list)).toBe(true);
+        assertNode(list, $isListNode);
+        const items = list.getChildren();
+        expect(items.length).toBeGreaterThan(0);
 
-        if ($isListNode(list)) {
-          const items = list.getChildren();
-          expect(items.length).toBeGreaterThan(0);
-
-          // The structure should be created even with skipped levels
-          // Level 1 item should exist
-          const [item1] = items;
-          expect($isListItemNode(item1)).toBe(true);
-
-          if ($isListItemNode(item1)) {
-            const item1Text = item1.getTextContent();
-            // First item contains either "Level 1" or empty text
-            expect(item1Text).toBeTruthy();
-          }
-        }
+        // The structure should be created even with skipped levels
+        // Level 1 item should exist
+        const [item1] = items;
+        assertNode(item1, $isListItemNode);
+        const item1Text = item1.getTextContent();
+        // First item contains either "Level 1" or empty text
+        expect(item1Text).toBeTruthy();
       });
     });
   });
@@ -1530,12 +1493,9 @@ describe("Portable Text Serializer", () => {
       editor.read(() => {
         const root = $getRoot();
         const heading = root.getFirstChild();
-        expect($isHeadingNode(heading)).toBe(true);
-
-        if ($isHeadingNode(heading)) {
-          expect(heading.getTag()).toBe("h2");
-          expect(heading.getTextContent()).toBe("Main Heading");
-        }
+        assertNode(heading, $isHeadingNode);
+        expect(heading.getTag()).toBe("h2");
+        expect(heading.getTextContent()).toBe("Main Heading");
       });
     });
 
@@ -1579,22 +1539,18 @@ describe("Portable Text Serializer", () => {
 
         expect(children).toHaveLength(4);
 
-        if ($isHeadingNode(children[0])) {
-          expect(children[0].getTag()).toBe("h3");
-          expect(children[0].getTextContent()).toBe("H3");
-        }
-        if ($isHeadingNode(children[1])) {
-          expect(children[1].getTag()).toBe("h4");
-          expect(children[1].getTextContent()).toBe("H4");
-        }
-        if ($isHeadingNode(children[2])) {
-          expect(children[2].getTag()).toBe("h5");
-          expect(children[2].getTextContent()).toBe("H5");
-        }
-        if ($isHeadingNode(children[3])) {
-          expect(children[3].getTag()).toBe("h6");
-          expect(children[3].getTextContent()).toBe("H6");
-        }
+        assertNode(children[0], $isHeadingNode);
+        expect(children[0].getTag()).toBe("h3");
+        expect(children[0].getTextContent()).toBe("H3");
+        assertNode(children[1], $isHeadingNode);
+        expect(children[1].getTag()).toBe("h4");
+        expect(children[1].getTextContent()).toBe("H4");
+        assertNode(children[2], $isHeadingNode);
+        expect(children[2].getTag()).toBe("h5");
+        expect(children[2].getTextContent()).toBe("H5");
+        assertNode(children[3], $isHeadingNode);
+        expect(children[3].getTag()).toBe("h6");
+        expect(children[3].getTextContent()).toBe("H6");
       });
     });
 
@@ -1665,10 +1621,9 @@ describe("Portable Text Serializer", () => {
         expect($isHeadingNode(children[1])).toBe(true);
         expect($isParagraphNode(children[2])).toBe(true);
 
-        if ($isHeadingNode(children[1])) {
-          expect(children[1].getTag()).toBe("h2");
-          expect(children[1].getTextContent()).toBe("Heading text");
-        }
+        assertNode(children[1], $isHeadingNode);
+        expect(children[1].getTag()).toBe("h2");
+        expect(children[1].getTextContent()).toBe("Heading text");
       });
     });
   });
@@ -1727,11 +1682,8 @@ describe("Portable Text Serializer", () => {
       editor.read(() => {
         const root = $getRoot();
         const quote = root.getFirstChild();
-        expect($isQuoteNode(quote)).toBe(true);
-
-        if ($isQuoteNode(quote)) {
-          expect(quote.getTextContent()).toBe("Quoted text");
-        }
+        assertNode(quote, $isQuoteNode);
+        expect(quote.getTextContent()).toBe("Quoted text");
       });
     });
 
@@ -1823,9 +1775,8 @@ describe("Portable Text Serializer", () => {
         expect($isQuoteNode(children[1])).toBe(true);
         expect($isParagraphNode(children[2])).toBe(true);
 
-        if ($isQuoteNode(children[1])) {
-          expect(children[1].getTextContent()).toBe("Quote text");
-        }
+        assertNode(children[1], $isQuoteNode);
+        expect(children[1].getTextContent()).toBe("Quote text");
       });
     });
   });
@@ -1888,11 +1839,8 @@ describe("Portable Text Serializer", () => {
       editor.read(() => {
         const root = $getRoot();
         const code = root.getFirstChild();
-        expect($isCodeNode(code)).toBe(true);
-
-        if ($isCodeNode(code)) {
-          expect(code.getTextContent()).toBe("function test() {}");
-        }
+        assertNode(code, $isCodeNode);
+        expect(code.getTextContent()).toBe("function test() {}");
       });
     });
 
@@ -2001,12 +1949,9 @@ describe("Portable Text Serializer", () => {
       editor.read(() => {
         const root = $getRoot();
         const code = root.getFirstChild();
-        expect($isCodeNode(code)).toBe(true);
-
-        if ($isCodeNode(code)) {
-          expect(code.getTextContent()).toBe("function test() {}");
-          expect(code.getLanguage()).toBe("javascript");
-        }
+        assertNode(code, $isCodeNode);
+        expect(code.getTextContent()).toBe("function test() {}");
+        expect(code.getLanguage()).toBe("javascript");
       });
     });
 
@@ -2080,10 +2025,9 @@ describe("Portable Text Serializer", () => {
 
       expect(portableText).toHaveLength(1);
       expect(portableText[0]._type).toBe("table");
-      if (portableText[0]._type === "table") {
-        expect(portableText[0].rows).toHaveLength(2);
-        expect(portableText[0].rows[0].cells).toHaveLength(2);
-      }
+      expect(portableText[0]._type).toBe("table");
+      expect(portableText[0].rows).toHaveLength(2);
+      expect(portableText[0].rows[0].cells).toHaveLength(2);
     });
 
     it("should deserialize a table from Portable Text", () => {
@@ -2127,42 +2071,28 @@ describe("Portable Text Serializer", () => {
       editor.read(() => {
         const root = $getRoot();
         const tableNode = root.getFirstChild();
-        expect($isTableNode(tableNode)).toBe(true);
+        assertNode(tableNode, $isTableNode);
+        const rows = tableNode.getChildren();
+        expect(rows).toHaveLength(2);
 
-        if ($isTableNode(tableNode)) {
-          const rows = tableNode.getChildren();
-          expect(rows).toHaveLength(2);
+        const [firstRow] = rows;
+        assertNode(firstRow, $isTableRowNode);
+        const cells = firstRow.getChildren();
+        expect(cells).toHaveLength(2);
 
-          const [firstRow] = rows;
-          expect($isTableRowNode(firstRow)).toBe(true);
+        const [firstCell] = cells;
+        assertNode(firstCell, $isTableCellNode);
+        expect(firstCell.hasHeaderState(TableCellHeaderStates.ROW)).toBe(true);
+        expect(firstCell.getTextContent()).toBe("Name");
 
-          if ($isTableRowNode(firstRow)) {
-            const cells = firstRow.getChildren();
-            expect(cells).toHaveLength(2);
-
-            const [firstCell] = cells;
-            expect($isTableCellNode(firstCell)).toBe(true);
-
-            if ($isTableCellNode(firstCell)) {
-              expect(firstCell.hasHeaderState(TableCellHeaderStates.ROW)).toBe(
-                true
-              );
-              expect(firstCell.getTextContent()).toBe("Name");
-            }
-          }
-
-          const [, secondRow] = rows;
-          if ($isTableRowNode(secondRow)) {
-            const cells = secondRow.getChildren();
-            const [firstCell] = cells;
-            if ($isTableCellNode(firstCell)) {
-              expect(firstCell.hasHeaderState(TableCellHeaderStates.ROW)).toBe(
-                false
-              );
-              expect(firstCell.getTextContent()).toBe("foo");
-            }
-          }
-        }
+        const [, secondRow] = rows;
+        assertNode(secondRow, $isTableRowNode);
+        const [secondRowFirstCell] = secondRow.getChildren();
+        assertNode(secondRowFirstCell, $isTableCellNode);
+        expect(
+          secondRowFirstCell.hasHeaderState(TableCellHeaderStates.ROW)
+        ).toBe(false);
+        expect(secondRowFirstCell.getTextContent()).toBe("foo");
       });
     });
 
@@ -2204,10 +2134,9 @@ describe("Portable Text Serializer", () => {
       const portableText2 = toPortableText(editor2);
 
       expect(portableText2[0]._type).toBe("table");
-      if (portableText2[0]._type === "table") {
-        expect(portableText2[0].rows).toHaveLength(2);
-        expect(portableText2[0].rows[0].cells).toHaveLength(3);
-      }
+      expect(portableText2[0]._type).toBe("table");
+      expect(portableText2[0].rows).toHaveLength(2);
+      expect(portableText2[0].rows[0].cells).toHaveLength(3);
     });
   });
 });

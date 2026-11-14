@@ -16,7 +16,7 @@ export default function DraftModeBannerClient({
 
   return (
     <div
-      className="fixed top-4 left-1/2 z-50 -translate-x-1/2 rounded-md bg-yellow-500 px-4 py-2 font-medium text-black text-sm shadow-lg"
+      className="fixed top-4 left-1/2 z-50 -translate-x-1/2 rounded-md bg-yellow-500 px-4 py-2 text-sm font-medium text-black shadow-lg"
       role="alert"
     >
       ドラフトモード有効中 - 下書きと予約投稿が表示されます

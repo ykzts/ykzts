@@ -12,7 +12,7 @@ async function KeyVisualFormWrapper() {
 export default function KeyVisualPage() {
   return (
     <div>
-      <h1 className="mb-6 font-bold text-3xl">キービジュアル</h1>
+      <h1 className="mb-6 text-3xl font-bold">キービジュアル</h1>
       <Panel>
         <Suspense
           fallback={
@@ -28,7 +28,7 @@ export default function KeyVisualPage() {
               />
               <div
                 aria-hidden="true"
-                className="h-32 w-full animate-pulse rounded-lg border-2 border-border border-dashed bg-muted"
+                className="h-32 w-full animate-pulse rounded-lg border-2 border-dashed border-border bg-muted"
               />
             </div>
           }

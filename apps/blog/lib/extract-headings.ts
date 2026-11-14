@@ -1,7 +1,7 @@
 import type { PortableTextBlock } from "@portabletext/types";
 import type { PortableTextValue } from "@ykzts/utils/portable-text";
 
-const HEADING_STYLE_REGEX = /^h[23]$/;
+const HEADING_STYLE_REGEX = /^h[23]$/u;
 
 export interface Heading {
   id: string;
@@ -77,7 +77,7 @@ export function generateHeadingId(text: string): string {
     .toLowerCase()
     .trim()
     .replace(/[^\p{L}\p{N}\s-]/gu, "") // Remove special chars but keep letters, numbers, spaces, hyphens
-    .replace(/\s+/g, "-") // Replace spaces with hyphens
-    .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
-    .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
+    .replace(/\s+/gu, "-") // Replace spaces with hyphens
+    .replace(/-+/gu, "-") // Replace multiple hyphens with single hyphen
+    .replace(/^-|-$/gu, ""); // Remove leading/trailing hyphens
 }

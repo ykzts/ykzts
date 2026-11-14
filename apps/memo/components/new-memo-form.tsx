@@ -12,28 +12,28 @@ export function NewMemoForm() {
   return (
     <form action={formAction}>
       <div className="mb-4">
-        <label className="mb-1 block font-medium text-sm" htmlFor="memo-path">
+        <label className="mb-1 block text-sm font-medium" htmlFor="memo-path">
           パス
         </label>
         <input
-          className="w-full rounded border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full rounded border border-border bg-background px-3 py-2 text-foreground focus:ring-2 focus:ring-primary focus:outline-none"
           id="memo-path"
           name="path"
           placeholder="my-memo または category/my-memo"
           required
           type="text"
         />
-        <p className="mt-1 text-muted-foreground text-xs">
+        <p className="mt-1 text-xs text-muted-foreground">
           URLのパス部分です。英数字、ハイフン、アンダースコア、スラッシュが使用できます。
         </p>
       </div>
 
       <div className="mb-4">
-        <label className="mb-1 block font-medium text-sm" htmlFor="memo-title">
+        <label className="mb-1 block text-sm font-medium" htmlFor="memo-title">
           タイトル
         </label>
         <input
-          className="w-full rounded border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full rounded border border-border bg-background px-3 py-2 text-foreground focus:ring-2 focus:ring-primary focus:outline-none"
           id="memo-title"
           name="title"
           required
@@ -43,7 +43,7 @@ export function NewMemoForm() {
 
       <div className="mb-4">
         <label
-          className="mb-1 block font-medium text-sm"
+          className="mb-1 block text-sm font-medium"
           htmlFor="memo-content"
         >
           コンテンツ
@@ -58,13 +58,13 @@ export function NewMemoForm() {
 
       <div className="mb-4">
         <label
-          className="mb-1 block font-medium text-sm"
+          className="mb-1 block text-sm font-medium"
           htmlFor="memo-visibility"
         >
           公開設定
         </label>
         <select
-          className="rounded border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          className="rounded border border-border bg-background px-3 py-2 text-foreground focus:ring-2 focus:ring-primary focus:outline-none"
           defaultValue="private"
           id="memo-visibility"
           name="visibility"
@@ -75,7 +75,7 @@ export function NewMemoForm() {
       </div>
 
       {state?.error ? (
-        <p className="mb-4 rounded bg-destructive/10 px-3 py-2 text-destructive text-sm">
+        <p className="mb-4 rounded bg-destructive/10 px-3 py-2 text-sm text-destructive">
           {state.error}
         </p>
       ) : null}
@@ -88,7 +88,7 @@ export function NewMemoForm() {
           キャンセル
         </Link>
         <button
-          className="rounded bg-primary px-4 py-2 text-primary-foreground text-sm hover:bg-primary/90 disabled:opacity-50"
+          className="rounded bg-primary px-4 py-2 text-sm text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           disabled={isPending}
           type="submit"
         >

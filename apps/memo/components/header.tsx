@@ -15,9 +15,9 @@ function HeaderChrome({
   children: React.ReactNode;
 }) {
   return (
-    <header className="border-border border-b bg-background">
+    <header className="border-b border-border bg-background">
       <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-        <Link className="font-bold text-xl" href="/">
+        <Link className="text-xl font-bold" href="/">
           Memo
         </Link>
         <nav className="flex items-center gap-4">
@@ -40,7 +40,7 @@ async function HeaderAuth() {
     return (
       <form action={logout}>
         <button
-          className="text-muted-foreground text-sm hover:text-foreground"
+          className="text-sm text-muted-foreground hover:text-foreground"
           type="submit"
         >
           ログアウト
@@ -51,7 +51,7 @@ async function HeaderAuth() {
 
   return (
     <Link
-      className="text-muted-foreground text-sm hover:text-foreground"
+      className="text-sm text-muted-foreground hover:text-foreground"
       href="/login"
     >
       ログイン

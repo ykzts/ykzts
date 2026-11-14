@@ -148,7 +148,7 @@ const portableTextComponents = {
             />
           </div>
           {!!alt && (
-            <figcaption className="mt-2 text-center text-muted-foreground text-sm">
+            <figcaption className="mt-2 text-center text-sm text-muted-foreground">
               {alt}
             </figcaption>
           )}

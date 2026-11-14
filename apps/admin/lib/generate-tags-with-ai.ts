@@ -11,12 +11,12 @@ const tagsSchema = z.object({
     .string()
     .trim()
     .toLowerCase()
-    .transform((val) => val.replaceAll(/\s+/g, "-"))
+    .transform((val) => val.replaceAll(/\s+/gu, "-"))
     .pipe(
       z
         .string()
         .regex(
-          /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
+          /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/u,
           "Tag must be lowercase alphanumeric with hyphens, starting and ending with alphanumeric"
         )
     )

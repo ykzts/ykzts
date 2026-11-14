@@ -215,10 +215,10 @@ function renderMemoView({
       <main className="mx-auto max-w-3xl px-4 py-8">
         <div className="mb-6 flex items-start justify-between">
           <div>
-            <h1 className="font-bold text-3xl">{title}</h1>
-            <p className="mt-1 text-muted-foreground text-sm">/{memo.path}</p>
+            <h1 className="text-3xl font-bold">{title}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">/{memo.path}</p>
             {memo.visibility === "private" && (
-              <span className="mt-2 inline-block rounded bg-muted px-2 py-0.5 text-muted-foreground text-xs">
+              <span className="mt-2 inline-block rounded bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                 非公開
               </span>
             )}
@@ -227,7 +227,7 @@ function renderMemoView({
 
         {body}
 
-        <div className="mt-8 border-border border-t pt-4 text-muted-foreground text-sm">
+        <div className="mt-8 border-t border-border pt-4 text-sm text-muted-foreground">
           <p>
             更新日時:{" "}
             {new Date(memo.updated_at).toLocaleString("ja-JP", dateOptions)}
@@ -265,10 +265,10 @@ function renderIndexView({
     <>
       <Header canEdit={canEdit} />
       <main className="mx-auto max-w-3xl px-4 py-8">
-        <h1 className="mb-2 font-bold text-3xl">
+        <h1 className="mb-2 text-3xl font-bold">
           /{memoPath.split("/").at(-1) ?? memoPath}
         </h1>
-        <p className="mb-6 text-muted-foreground text-sm">/{memoPath}</p>
+        <p className="mb-6 text-sm text-muted-foreground">/{memoPath}</p>
         <ul className="space-y-2">
           {children.map((child) => {
             const version = extractCurrentVersion(child.current_version);
@@ -280,11 +280,11 @@ function renderIndexView({
                   href={`/${child.path}`}
                 >
                   <span className="flex-1 font-medium">{title}</span>
-                  <span className="text-muted-foreground text-sm">
+                  <span className="text-sm text-muted-foreground">
                     /{child.path}
                   </span>
                   {child.visibility === "private" && (
-                    <span className="rounded bg-muted px-1.5 py-0.5 text-muted-foreground text-xs">
+                    <span className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
                       非公開
                     </span>
                   )}

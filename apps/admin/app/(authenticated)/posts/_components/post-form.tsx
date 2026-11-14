@@ -331,13 +331,13 @@ export function PostForm({
         <input name="tags" type="hidden" value={JSON.stringify(tags)} />
 
         {!!state?.error && (
-          <div className="rounded border border-error bg-error/10 p-4 text-error">
+          <div className="border-error bg-error/10 text-error rounded border p-4">
             {state.error}
           </div>
         )}
 
         {!!deleteError && (
-          <div className="rounded border border-error bg-error/10 p-4 text-error">
+          <div className="border-error bg-error/10 text-error rounded border p-4">
             {deleteError}
           </div>
         )}
@@ -506,7 +506,7 @@ export function PostForm({
               )}
               {suggestedTags.length > 0 && (
                 <div className="mt-2">
-                  <p className="mb-1 text-muted-foreground text-xs">
+                  <p className="mb-1 text-xs text-muted-foreground">
                     AIの提案（クリックで追加）:
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -594,7 +594,7 @@ export function PostForm({
 
             {/* Publication status message */}
             {statusValue === "published" && (
-              <p className="text-muted-foreground text-sm">
+              <p className="text-sm text-muted-foreground">
                 {publishedAtValue && new Date(publishedAtValue) > new Date()
                   ? `この投稿は ${formatPublishedAt(publishedAtValue)} に自動公開されます`
                   : "この投稿はすぐに公開されます"}
@@ -617,7 +617,7 @@ export function PostForm({
         {isEditMode && (post.version_count ?? 0) > 1 && (
           <div>
             <Link
-              className="text-primary text-sm hover:underline"
+              className="text-sm text-primary hover:underline"
               href={`/posts/${post.id}/versions`}
             >
               バージョン履歴を表示

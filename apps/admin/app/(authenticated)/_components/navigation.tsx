@@ -69,7 +69,7 @@ export default function Navigation() {
           >
             {navItems.map((item) => (
               <Link
-                className="rounded-md px-4 py-3 font-medium text-foreground text-lg transition-colors hover:bg-accent hover:text-accent-foreground"
+                className="rounded-md px-4 py-3 text-lg font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
                 href={item.href}
                 key={item.href}
                 onClick={() => setOpen(false)}

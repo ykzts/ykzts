@@ -11,7 +11,7 @@ export default async function About() {
 
   return (
     <section className="mx-auto max-w-4xl py-20" id="about">
-      <h2 className="mb-10 font-semibold text-base text-muted-foreground uppercase tracking-widest">
+      <h2 className="mb-10 text-base font-semibold tracking-widest text-muted-foreground uppercase">
         About
       </h2>
       <div className={proseContent("max-w-none")}>

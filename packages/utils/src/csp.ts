@@ -10,7 +10,9 @@ export interface BuildCspOptions {
  * so object keys in JS/TS can use the more natural camelCase style.
  */
 function toKebabCase(key: string): string {
-  return key.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+  return key
+    .replace(/(?<lower>[a-z0-9])(?<upper>[A-Z])/gu, "$<lower>-$<upper>")
+    .toLowerCase();
 }
 
 /**

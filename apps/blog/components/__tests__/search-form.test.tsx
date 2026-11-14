@@ -11,7 +11,7 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
-const SEARCH_BUTTON_REGEX = /検索/;
+const SEARCH_BUTTON_REGEX = /検索/u;
 
 describe("SearchForm", () => {
   beforeEach(() => {
