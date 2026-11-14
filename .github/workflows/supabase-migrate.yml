@@ -151,8 +151,10 @@ jobs:
           # Link to production project
           supabase link --project-ref "$SUPABASE_PROJECT_REF"
 
-          # Apply migrations (idempotent - skips already applied migrations)
+          # Apply migrations (idempotent - skips already applied migrations).
+          # Supabase CLI v3 targets the local stack by default and requires
+          # explicit consent for hosted changes in non-interactive runs.
           echo "Applying migrations to production..."
-          supabase db push
+          supabase db push --remote --yes
 
           echo "✅ Migrations applied successfully!"
