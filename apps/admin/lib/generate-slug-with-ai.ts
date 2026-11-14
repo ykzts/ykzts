@@ -87,18 +87,10 @@ export async function generateSlugWithAI(params: {
   const truncatedContent = contentText.slice(0, 500);
 
   const result = await generateText({
-    messages: [
-      {
-        content:
-          "You are a URL slug generator. Generate SEO-friendly URL slugs using only lowercase English letters, numbers, and hyphens. Make the slug concise (3-8 words max), descriptive, and focused on the main topic. For Japanese content, translate key concepts to English. Return ONLY the slug without any explanation.",
-        role: "system",
-      },
-      {
-        content: `Title: ${title}\n\nContent: ${truncatedContent}\n\nGenerate an optimal URL slug for this ${table === "posts" ? "blog post" : "portfolio work"}.`,
-        role: "user",
-      },
-    ],
+    instructions:
+      "You are a URL slug generator. Generate SEO-friendly URL slugs using only lowercase English letters, numbers, and hyphens. Make the slug concise (3-8 words max), descriptive, and focused on the main topic. For Japanese content, translate key concepts to English. Return ONLY the slug without any explanation.",
     model: "openai/gpt-4o-mini",
+    prompt: `Title: ${title}\n\nContent: ${truncatedContent}\n\nGenerate an optimal URL slug for this ${table === "posts" ? "blog post" : "portfolio work"}.`,
     stopWhen: stepCountIs(5),
     tools: {
       checkSlugAvailability: createSlugAvailabilityTool(table, excludeId),
