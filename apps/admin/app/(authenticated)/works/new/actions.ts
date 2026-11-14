@@ -121,9 +121,14 @@ export async function createWork(
     const supabase = await createServerClient();
 
     // Parse content as JSON for Portable Text format
-    let contentJson: Json;
+    let contentJson: NonNullable<Json>;
     try {
-      contentJson = JSON.parse(validatedData.content) as Json;
+      const parsed = JSON.parse(validatedData.content) as Json;
+      // works.content is NOT NULL, so reject a literal `null` payload.
+      if (parsed === null) {
+        return { error: "コンテンツのJSON形式が無効です" };
+      }
+      contentJson = parsed;
     } catch {
       return { error: "コンテンツのJSON形式が無効です" };
     }

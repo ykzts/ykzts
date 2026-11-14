@@ -3,5 +3,13 @@
   extends: [
     'github>ykzts/ykzts//renovate-config/default.json5',
     ':reviewer(ykzts)'
+  ],
+  packageRules: [
+    {
+      description: 'Keep the pinned Supabase CLI (npm) in sync with the version used in GitHub Actions',
+      groupName: 'supabase cli',
+      groupSlug: 'supabase-cli',
+      matchPackageNames: ['supabase', 'supabase/cli']
+    }
   ]
 }

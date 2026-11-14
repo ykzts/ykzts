@@ -63,9 +63,14 @@ export async function createMemo(
     };
   }
 
-  let contentJson: Json;
+  let contentJson: NonNullable<Json>;
   try {
-    contentJson = JSON.parse(content) as Json;
+    const parsed = JSON.parse(content) as Json;
+    // memo_versions.content is NOT NULL, so reject a literal `null` payload.
+    if (parsed === null) {
+      return { error: "コンテンツのフォーマットが正しくありません" };
+    }
+    contentJson = parsed;
   } catch {
     return { error: "コンテンツのフォーマットが正しくありません" };
   }

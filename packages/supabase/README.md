@@ -24,7 +24,7 @@ The types in this package are generated from the Supabase database schema and ar
 
 ### When CI Runs
 
-The `typegen` script is safe to run in CI - it will skip type generation if Supabase CLI is not installed, since the types are already committed to the repository.
+The `typegen` script is safe to run in CI - it will skip type generation if local Supabase is not running (or no Supabase CLI is available), since the types are already committed to the repository.
 
 ### Regenerating Types Locally
 
@@ -39,7 +39,7 @@ cd packages/supabase
 pnpm typegen
 ```
 
-This runs: `supabase gen types typescript --local > src/database.types.ts`
+This runs `supabase gen types typescript --local` with the Supabase CLI pinned in this package's `devDependencies` (kept in sync with `SUPABASE_VERSION` in the GitHub Actions workflows), then formats `src/database.types.ts` with Biome. Pinning the CLI keeps the generated output reproducible; an unpinned `npx supabase` resolves to the latest release, whose generator output may differ.
 
 ### Using Remote Supabase Project
 
