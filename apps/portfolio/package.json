@@ -32,7 +32,7 @@
     "@ykzts/supabase": "workspace:*",
     "@ykzts/ui": "workspace:*",
     "@ykzts/utils": "workspace:*",
-    "botid": "1.5.12",
+    "botid": "1.5.13",
     "lucide-react": "catalog:",
     "next": "catalog:",
     "next-themes": "catalog:",
