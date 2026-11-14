@@ -6,7 +6,7 @@ export function WorksPageSkeleton() {
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-border border-b">
+            <tr className="border-b border-border">
               <th className="px-4 py-3 text-left">タイトル</th>
               <th className="px-4 py-3 text-left">スラッグ</th>
               <th className="px-4 py-3 text-left">開始日</th>
@@ -16,7 +16,7 @@ export function WorksPageSkeleton() {
           </thead>
           <tbody>
             {[0, 1, 2, 3, 4].map((i) => (
-              <tr className="border-border border-b" key={`skeleton-row-${i}`}>
+              <tr className="border-b border-border" key={`skeleton-row-${i}`}>
                 <td className="px-4 py-3">
                   <div className="h-5 w-32 animate-pulse rounded bg-muted" />
                 </td>

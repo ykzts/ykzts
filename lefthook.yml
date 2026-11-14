@@ -17,7 +17,6 @@ pre-commit:
       stage_fixed: true
       # If there are remaining issues that can't be auto-fixed, the command will fail
       # and block the commit (user must fix manually or run pnpm fix).
-
     # GitHub Actions workflow security scan (zizmor).
     # Runs only on staged workflow files. Uses uvx (preferred, auto-downloads) or a
     # locally installed `zizmor` binary. If neither is available the check is skipped

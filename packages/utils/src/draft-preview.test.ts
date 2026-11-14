@@ -80,7 +80,7 @@ describe("createDraftPreviewToken", () => {
 });
 
 const DRAFT_PREVIEW_URL_PATTERN =
-  /^https:\/\/example\.com\/api\/blog\/draft\/.+/;
+  /^https:\/\/example\.com\/api\/blog\/draft\/.+/u;
 
 afterEach(() => {
   vi.unstubAllEnvs();

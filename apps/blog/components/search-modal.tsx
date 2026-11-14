@@ -31,7 +31,7 @@ function SimilarityBadge({ similarity }: { similarity: number }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-1.5 py-0.5 font-medium text-[10px]",
+        "inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium",
         {
           "bg-blue-100 text-blue-800": percentage >= 70 && percentage < 85,
           "bg-gray-100 text-gray-800": percentage < 70,
@@ -147,19 +147,19 @@ function SearchPanel({ onClose }: SearchPanelProps) {
         className="-mr-1 max-h-[50vh] overflow-y-auto pr-1"
       >
         {!hasEffectiveQuery && (
-          <p className="py-8 text-center text-muted-foreground text-sm">
+          <p className="py-8 text-center text-sm text-muted-foreground">
             2文字以上のキーワードを入力すると関連記事が表示されます
           </p>
         )}
 
         {!!hasEffectiveQuery && displayLoading && (
-          <div className="py-6 text-center text-muted-foreground text-sm">
+          <div className="py-6 text-center text-sm text-muted-foreground">
             検索中...
           </div>
         )}
 
         {hasEffectiveQuery && !displayLoading && displayError && (
-          <div className="py-6 text-center text-destructive text-sm">
+          <div className="py-6 text-center text-sm text-destructive">
             {displayError}
           </div>
         )}
@@ -169,10 +169,10 @@ function SearchPanel({ onClose }: SearchPanelProps) {
           !displayError &&
           displayResults.length === 0 && (
             <div className="py-6 text-center">
-              <p className="text-muted-foreground text-sm">
+              <p className="text-sm text-muted-foreground">
                 「{trimmedQuery}」の検索結果が見つかりませんでした
               </p>
-              <p className="mt-1 text-muted-foreground text-xs">
+              <p className="mt-1 text-xs text-muted-foreground">
                 別のキーワードをお試しください
               </p>
             </div>
@@ -183,7 +183,7 @@ function SearchPanel({ onClose }: SearchPanelProps) {
           !displayError &&
           displayResults.length > 0 && (
             <>
-              <p className="mb-1 text-muted-foreground text-xs">
+              <p className="mb-1 text-xs text-muted-foreground">
                 {displayResults.length}件の結果
               </p>
               <ul className="space-y-0.5">
@@ -197,16 +197,16 @@ function SearchPanel({ onClose }: SearchPanelProps) {
                         onClick={handleResultClick}
                       >
                         <div className="flex items-start justify-between gap-2">
-                          <span className="line-clamp-1 font-medium text-sm group-hover:underline">
+                          <span className="line-clamp-1 text-sm font-medium group-hover:underline">
                             {result.title}
                           </span>
                           <SimilarityBadge similarity={result.similarity} />
                         </div>
-                        <div className="text-muted-foreground text-xs">
+                        <div className="text-xs text-muted-foreground">
                           <DateDisplay date={result.published_at} />
                         </div>
                         {!!result.excerpt && (
-                          <p className="line-clamp-2 text-muted-foreground text-xs">
+                          <p className="line-clamp-2 text-xs text-muted-foreground">
                             {result.excerpt}
                           </p>
                         )}
@@ -217,7 +217,7 @@ function SearchPanel({ onClose }: SearchPanelProps) {
               </ul>
               <div className="mt-2 flex justify-end">
                 <button
-                  className="text-muted-foreground text-xs underline-offset-2 hover:text-foreground hover:underline"
+                  className="text-xs text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
                   onClick={handleViewAll}
                   type="button"
                 >
@@ -279,7 +279,7 @@ export default function SearchModal({ className }: SearchModalProps) {
       {/* Desktop: text-field-like button */}
       <button
         className={cn(
-          "hidden h-8 w-48 items-center gap-2 rounded-lg border border-input bg-background/60 px-3 text-left text-muted-foreground text-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:flex lg:w-64",
+          "hidden h-8 w-48 items-center gap-2 rounded-lg border border-input bg-background/60 px-3 text-left text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:flex lg:w-64",
           className
         )}
         onClick={() => setOpen(true)}
@@ -287,7 +287,7 @@ export default function SearchModal({ className }: SearchModalProps) {
       >
         <Search className="size-4 shrink-0" />
         <span className="truncate">記事を検索...</span>
-        <kbd className="ml-auto hidden select-none rounded border bg-muted px-1 font-mono text-[10px] text-muted-foreground lg:inline">
+        <kbd className="ml-auto hidden rounded border bg-muted px-1 font-mono text-[10px] text-muted-foreground select-none lg:inline">
           /
         </kbd>
       </button>

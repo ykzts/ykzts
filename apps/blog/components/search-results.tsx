@@ -36,7 +36,7 @@ function SimilarityBadge({ similarity }: { similarity: number }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-2 py-1 font-medium text-xs",
+        "inline-flex items-center rounded-full px-2 py-1 text-xs font-medium",
         {
           "bg-blue-100 text-blue-800": percentage >= 70 && percentage < 85,
           "bg-gray-100 text-gray-800": percentage < 70,
@@ -56,7 +56,7 @@ export default function SearchResults({ query, results }: SearchResultsProps) {
         <p className="text-lg text-muted-foreground">
           「{query}」の検索結果が見つかりませんでした
         </p>
-        <p className="mt-2 text-muted-foreground text-sm">
+        <p className="mt-2 text-sm text-muted-foreground">
           別のキーワードで検索してみてください
         </p>
       </div>

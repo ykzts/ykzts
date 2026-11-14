@@ -20,16 +20,16 @@ async function VersionsContent({ postId }: { postId: string }) {
   return (
     <div className="space-y-6">
       <Panel>
-        <h2 className="mb-4 font-bold text-xl">投稿情報</h2>
+        <h2 className="mb-4 text-xl font-bold">投稿情報</h2>
         <dl className="space-y-2">
           <div>
-            <dt className="font-medium text-muted-foreground text-sm">
+            <dt className="text-sm font-medium text-muted-foreground">
               タイトル
             </dt>
             <dd>{post.title || "(タイトルなし)"}</dd>
           </div>
           <div>
-            <dt className="font-medium text-muted-foreground text-sm">
+            <dt className="text-sm font-medium text-muted-foreground">
               スラッグ
             </dt>
             <dd>
@@ -37,7 +37,7 @@ async function VersionsContent({ postId }: { postId: string }) {
             </dd>
           </div>
           <div>
-            <dt className="font-medium text-muted-foreground text-sm">
+            <dt className="text-sm font-medium text-muted-foreground">
               現在のバージョン
             </dt>
             <dd>
@@ -50,7 +50,7 @@ async function VersionsContent({ postId }: { postId: string }) {
       </Panel>
 
       <Panel>
-        <h2 className="mb-4 font-bold text-xl">バージョン履歴</h2>
+        <h2 className="mb-4 text-xl font-bold">バージョン履歴</h2>
 
         {versions.length === 0 ? (
           <p className="text-muted-foreground">バージョン履歴がありません</p>
@@ -69,7 +69,7 @@ async function VersionsContent({ postId }: { postId: string }) {
                       </span>
                       {index === 0 && <Badge variant="default">現在</Badge>}
                     </div>
-                    <p className="mt-1 text-muted-foreground text-sm">
+                    <p className="mt-1 text-sm text-muted-foreground">
                       {new Date(version.version_date).toLocaleString("ja-JP")}
                       {" • "}
                       {version.profile?.name || "不明"}
@@ -113,7 +113,7 @@ async function VersionsContent({ postId }: { postId: string }) {
 
                 {!!version.title && (
                   <div className="mt-2">
-                    <span className="font-medium text-muted-foreground text-sm">
+                    <span className="text-sm font-medium text-muted-foreground">
                       タイトル:{" "}
                     </span>
                     <span className="text-sm">{version.title}</span>
@@ -161,7 +161,7 @@ export default function VersionsPage({
 }) {
   return (
     <div>
-      <h1 className="mb-6 font-bold text-3xl">バージョン履歴</h1>
+      <h1 className="mb-6 text-3xl font-bold">バージョン履歴</h1>
       <Suspense fallback={<VersionsSkeleton />}>
         <VersionsContentFromParams params={params} />
       </Suspense>

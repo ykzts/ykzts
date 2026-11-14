@@ -36,7 +36,7 @@ export default function SimilarPosts({ posts }: SimilarPostsProps) {
 
   return (
     <section aria-labelledby="similar-posts-heading" className="mt-16">
-      <h2 className="mb-6 font-bold text-2xl" id="similar-posts-heading">
+      <h2 className="mb-6 text-2xl font-bold" id="similar-posts-heading">
         関連記事
       </h2>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -58,7 +58,7 @@ export default function SimilarPosts({ posts }: SimilarPostsProps) {
               </CardHeader>
               {!!previewText && (
                 <CardContent>
-                  <p className="line-clamp-2 text-muted-foreground text-sm">
+                  <p className="line-clamp-2 text-sm text-muted-foreground">
                     {previewText}
                   </p>
                 </CardContent>

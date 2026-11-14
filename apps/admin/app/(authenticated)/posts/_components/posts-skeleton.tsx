@@ -8,7 +8,7 @@ export function PostsSkeleton() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-border border-b">
+              <tr className="border-b border-border">
                 <th className="px-4 py-3 text-left">タイトル</th>
                 <th className="px-4 py-3 text-left">ステータス</th>
                 <th className="px-4 py-3 text-left">公開日時</th>
@@ -21,7 +21,7 @@ export function PostsSkeleton() {
               {/* Render 5 skeleton rows */}
               {[0, 1, 2, 3, 4].map((i) => (
                 <tr
-                  className="border-border border-b"
+                  className="border-b border-border"
                   key={`post-skeleton-${i}`}
                 >
                   <td className="px-4 py-3">

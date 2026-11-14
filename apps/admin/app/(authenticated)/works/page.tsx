@@ -20,7 +20,7 @@ async function WorksContent() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-border border-b">
+              <tr className="border-b border-border">
                 <th className="px-4 py-3 text-left">タイトル</th>
                 <th className="px-4 py-3 text-left">スラッグ</th>
                 <th className="px-4 py-3 text-left">開始日</th>
@@ -30,7 +30,7 @@ async function WorksContent() {
             </thead>
             <tbody>
               {works.map((work) => (
-                <tr className="border-border border-b" key={work.id}>
+                <tr className="border-b border-border" key={work.id}>
                   <td className="px-4 py-3">{work.title}</td>
                   <td className="px-4 py-3 text-muted-foreground">
                     {work.slug}
@@ -63,7 +63,7 @@ export default function WorksPage() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="font-bold text-3xl">Works</h1>
+        <h1 className="text-3xl font-bold">Works</h1>
         <NewWorkButton />
       </div>
 

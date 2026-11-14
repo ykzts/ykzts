@@ -15,7 +15,7 @@ export interface KeyVisualUploadResult {
   url?: string;
 }
 
-const IMAGES_PATH_REGEX = /\/images\/(.+)/;
+const IMAGES_PATH_REGEX = /\/images\/(?<path>.+)/u;
 
 /**
  * Extract storage path from a key visual URL in the images bucket
@@ -26,7 +26,7 @@ function extractStoragePath(url: string): string | null {
   try {
     const parsed = new URL(url);
     const pathMatch = parsed.pathname.match(IMAGES_PATH_REGEX);
-    return pathMatch ? pathMatch[1] : null;
+    return pathMatch?.groups?.path ?? null;
   } catch {
     return null;
   }

@@ -27,7 +27,7 @@ const versions = [
   },
 ];
 
-const DIFF_HEADING_REGEX = /バージョン比較: v1 → v3/;
+const DIFF_HEADING_REGEX = /バージョン比較: v1 → v3/u;
 
 describe("VersionCompare", () => {
   it("renders a list of versions", () => {

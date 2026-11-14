@@ -12,7 +12,7 @@ import { supabase } from "@/lib/supabase/client";
 // convenience redirects to the year archive with the appropriate month anchor.
 // Real post paths (/blog/2025/05/12/slug) are not matched.
 const LEGACY_ARCHIVE_REGEX =
-  /^\/blog\/(\d{4})\/(0?[1-9]|1[0-2])(?:\/(0?[1-9]|[12][0-9]|3[01]))?$/;
+  /^\/blog\/(?<year>\d{4})\/(?<month>0?[1-9]|1[0-2])(?:\/(?:0?[1-9]|[12][0-9]|3[01]))?$/u;
 
 /**
  * Handles redirect from the old `/blog/archive` path to the most recent year
@@ -78,14 +78,12 @@ function handleLegacyArchiveRedirect(
   request: NextRequest
 ): NextResponse | null {
   const { pathname } = request.nextUrl;
-  const match = pathname.match(LEGACY_ARCHIVE_REGEX);
-  if (!match) {
+  const { year, month } = pathname.match(LEGACY_ARCHIVE_REGEX)?.groups ?? {};
+  if (!(year && month)) {
     return null;
   }
 
-  const [, year] = match;
-  const month = match[2].padStart(2, "0");
-  const target = `/blog/${year}#month-${month}`;
+  const target = `/blog/${year}#month-${month.padStart(2, "0")}`;
   return NextResponse.redirect(new URL(target, request.url), 301);
 }
 

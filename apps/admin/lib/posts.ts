@@ -100,9 +100,9 @@ export async function getPosts(filter: PostsFilter = {}) {
     // Escape special characters to prevent SQL injection in LIKE patterns
     const escapedSearch = search
       .trim()
-      .replace(/\\/g, "\\\\")
-      .replace(/%/g, "\\%")
-      .replace(/_/g, "\\_");
+      .replace(/\\/gu, "\\\\")
+      .replace(/%/gu, "\\%")
+      .replace(/_/gu, "\\_");
     query = query.ilike("excerpt", `%${escapedSearch}%`);
   }
 

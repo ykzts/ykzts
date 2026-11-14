@@ -12,7 +12,7 @@ const KNOWN_SERVICES: Record<string, string> = {
   "x.com": "x",
 };
 
-const IP_172_RANGE_REGEX = /^172\.(1[6-9]|2[0-9]|3[0-1])\./;
+const IP_172_RANGE_REGEX = /^172\.(?:1[6-9]|2[0-9]|3[0-1])\./u;
 
 /**
  * Detect social service from URL hostname

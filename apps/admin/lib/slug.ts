@@ -64,7 +64,8 @@ async function generateUniqueSlug(
 
   // Extract numbers from existing slugs and find the next available
   const pattern = new RegExp(
-    `^${baseSlug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}-(\\d+)$`
+    `^${baseSlug.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}-(\\d+)$`,
+    "u"
   );
   const existingNumbers = new Set(
     (existingSlugs || [])

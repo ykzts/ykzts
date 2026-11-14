@@ -30,14 +30,14 @@ export default function LoginForm() {
     <div className="space-y-6">
       {error ? (
         <p
-          className="rounded-md bg-red-50 p-3 text-red-600 text-sm"
+          className="rounded-md bg-red-50 p-3 text-sm text-red-600"
           role="alert"
         >
           {error}
         </p>
       ) : null}
 
-      <p className="text-muted-foreground text-sm">
+      <p className="text-sm text-muted-foreground">
         GitHub アカウントでログインしてください
       </p>
 

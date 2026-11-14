@@ -19,7 +19,7 @@ export function PublicUrlCell({
   draftPreviewUrl,
 }: PublicUrlCellProps) {
   if (!slug) {
-    return <span className="text-muted-foreground text-sm">-</span>;
+    return <span className="text-sm text-muted-foreground">-</span>;
   }
 
   const url = getPostUrl(
@@ -32,7 +32,7 @@ export function PublicUrlCell({
       return (
         <div className="flex items-center gap-2">
           <a
-            className="flex max-w-[200px] items-center gap-1 truncate text-primary text-sm hover:underline"
+            className="flex max-w-[200px] items-center gap-1 truncate text-sm text-primary hover:underline"
             href={draftPreviewUrl}
             rel="noopener noreferrer"
             target="_blank"
@@ -46,13 +46,13 @@ export function PublicUrlCell({
       );
     }
 
-    return <span className="text-muted-foreground text-sm">-</span>;
+    return <span className="text-sm text-muted-foreground">-</span>;
   }
 
   return (
     <div className="flex items-center gap-2">
       <a
-        className="flex max-w-[200px] items-center gap-1 truncate text-primary text-sm hover:underline"
+        className="flex max-w-[200px] items-center gap-1 truncate text-sm text-primary hover:underline"
         href={url}
         rel="noopener noreferrer"
         target="_blank"

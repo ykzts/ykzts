@@ -4,7 +4,7 @@ import { getSecurityHeaders } from "@ykzts/utils/security-headers";
 
 import type { NextConfig } from "next";
 
-const HTTPS_PROTOCOL_RE = /^https:/;
+const HTTPS_PROTOCOL_RE = /^https:/u;
 
 const nextConfig: NextConfig = {
   cacheComponents: true,

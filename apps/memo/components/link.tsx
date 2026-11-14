@@ -1,7 +1,7 @@
 import NextLink from "next/link";
 import type { ComponentProps } from "react";
 
-const SPACE_SPLIT_REGEX = /\s+/;
+const SPACE_SPLIT_REGEX = /\s+/u;
 
 export default function Link({
   children,

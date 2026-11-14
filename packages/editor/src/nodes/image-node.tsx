@@ -158,7 +158,7 @@ export class ImageNode extends DecoratorNode<ReactElement> {
     };
   }
 
-  createDOM(config: EditorConfig): HTMLElement {
+  override createDOM(config: EditorConfig): HTMLElement {
     const span = document.createElement("span");
     const { theme } = config;
     const className = theme.image;
@@ -168,13 +168,13 @@ export class ImageNode extends DecoratorNode<ReactElement> {
     return span;
   }
 
-  updateDOM(): false {
+  override updateDOM(): false {
     return false;
   }
 
   // Block-level image: root children must not be inline, or Lexical wraps
   // the node in a paragraph (DecoratorNode.isInline() defaults to true).
-  isInline(): false {
+  override isInline(): false {
     return false;
   }
 

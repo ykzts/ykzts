@@ -13,7 +13,7 @@ export function CompareSkeleton() {
         <div className="space-y-6">
           {[0, 1, 2, 3].map((i) => (
             <div
-              className="border-border border-t pt-4"
+              className="border-t border-border pt-4"
               key={`compare-skeleton-${i}`}
             >
               <div className="mb-3 h-5 w-20 animate-pulse rounded bg-muted" />

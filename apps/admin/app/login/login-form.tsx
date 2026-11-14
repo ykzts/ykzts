@@ -52,7 +52,7 @@ export default function LoginForm({ isDevelopment = false }: LoginFormProps) {
     <div className="space-y-6">
       {error ? (
         <p
-          className="rounded-md bg-red-50 p-3 text-red-600 text-sm"
+          className="rounded-md bg-red-50 p-3 text-sm text-red-600"
           role="alert"
         >
           {error}
@@ -107,7 +107,7 @@ export default function LoginForm({ isDevelopment = false }: LoginFormProps) {
       ) : null}
 
       {isDevelopment ? null : (
-        <p className="text-muted-foreground text-sm">
+        <p className="text-sm text-muted-foreground">
           GitHub アカウントでログインしてください
         </p>
       )}

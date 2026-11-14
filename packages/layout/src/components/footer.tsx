@@ -6,7 +6,7 @@ interface Props {
 
 export default function Footer({ children }: Props) {
   return (
-    <footer className="border-border border-t px-6 py-12 md:px-12 lg:px-24">
+    <footer className="border-t border-border px-6 py-12 md:px-12 lg:px-24">
       <div className="mx-auto max-w-4xl text-base text-muted-foreground">
         {children}
       </div>

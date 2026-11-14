@@ -9,7 +9,7 @@ function NewMemoSkeleton() {
     <>
       <Header />
       <main className="mx-auto max-w-3xl px-4 py-8">
-        <h1 className="mb-6 font-bold text-2xl">新規メモ作成</h1>
+        <h1 className="mb-6 text-2xl font-bold">新規メモ作成</h1>
         <div className="space-y-4">
           <div className="h-10 w-full animate-pulse rounded bg-muted" />
           <div className="h-40 w-full animate-pulse rounded bg-muted" />
@@ -31,7 +31,7 @@ async function NewMemoContent() {
     <>
       <Header canEdit={true} />
       <main className="mx-auto max-w-3xl px-4 py-8">
-        <h1 className="mb-6 font-bold text-2xl">新規メモ作成</h1>
+        <h1 className="mb-6 text-2xl font-bold">新規メモ作成</h1>
         <NewMemoForm />
       </main>
     </>

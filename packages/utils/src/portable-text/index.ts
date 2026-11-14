@@ -212,7 +212,7 @@ export function portableTextToMarkdown(
   };
 
   const getFence = (code: string): string => {
-    const runs = code.match(/`+/g) ?? [];
+    const runs = code.match(/`+/gu) ?? [];
     const maxRun = runs.reduce((max, run) => Math.max(max, run.length), 0);
     return "`".repeat(Math.max(3, maxRun + 1));
   };

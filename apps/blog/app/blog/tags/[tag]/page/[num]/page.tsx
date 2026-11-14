@@ -72,12 +72,12 @@ export default async function TagPaginationPage({ params }: PageProps) {
     <main className="px-6 py-8 md:px-12 lg:px-24">
       <div className="mx-auto max-w-4xl">
         <div className="mb-8 flex items-baseline justify-between">
-          <h1 className="font-bold text-3xl">
+          <h1 className="text-3xl font-bold">
             {decodedTag} ({postCount}件)
           </h1>
           <a
             aria-label={`${decodedTag}タグのAtomフィードを購読`}
-            className="inline-flex items-center gap-1 text-muted-foreground text-sm transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
             href={`/blog/tags/${encodeURIComponent(decodedTag)}.atom`}
             rel="alternate"
             type="application/atom+xml"

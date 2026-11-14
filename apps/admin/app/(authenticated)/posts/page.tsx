@@ -39,7 +39,7 @@ async function PostsContent({
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-border border-b">
+                <tr className="border-b border-border">
                   <th className="px-4 py-3 text-left">タイトル</th>
                   <th className="px-4 py-3 text-left">ステータス</th>
                   <th className="px-4 py-3 text-left">公開URL</th>
@@ -51,7 +51,7 @@ async function PostsContent({
               </thead>
               <tbody>
                 {result.data.map((post) => (
-                  <tr className="border-border border-b" key={post.id}>
+                  <tr className="border-b border-border" key={post.id}>
                     <td className="px-4 py-3">
                       {post.title || "(タイトルなし)"}
                     </td>
@@ -136,7 +136,7 @@ export default function PostsPage({
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="font-bold text-3xl">Posts</h1>
+        <h1 className="text-3xl font-bold">Posts</h1>
         <NewPostButton />
       </div>
 

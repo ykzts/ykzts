@@ -11,17 +11,17 @@ async function DashboardContent() {
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
       <Link className="block" href="/works">
         <Panel className="transition-shadow hover:shadow-md">
-          <h2 className="mb-2 font-semibold text-xl">Works</h2>
-          <p className="font-bold text-3xl text-primary">{counts.works}</p>
-          <p className="mt-2 text-muted-foreground text-sm">作品情報を管理</p>
+          <h2 className="mb-2 text-xl font-semibold">Works</h2>
+          <p className="text-3xl font-bold text-primary">{counts.works}</p>
+          <p className="mt-2 text-sm text-muted-foreground">作品情報を管理</p>
         </Panel>
       </Link>
 
       <Link className="block" href="/posts">
         <Panel className="transition-shadow hover:shadow-md">
-          <h2 className="mb-2 font-semibold text-xl">Posts</h2>
-          <p className="font-bold text-3xl text-primary">{counts.posts}</p>
-          <p className="mt-2 text-muted-foreground text-sm">投稿情報を管理</p>
+          <h2 className="mb-2 text-xl font-semibold">Posts</h2>
+          <p className="text-3xl font-bold text-primary">{counts.posts}</p>
+          <p className="mt-2 text-sm text-muted-foreground">投稿情報を管理</p>
         </Panel>
       </Link>
     </div>
@@ -31,7 +31,7 @@ async function DashboardContent() {
 export default function AdminDashboard() {
   return (
     <div>
-      <h1 className="mb-8 font-bold text-3xl">ダッシュボード</h1>
+      <h1 className="mb-8 text-3xl font-bold">ダッシュボード</h1>
       <Suspense fallback={<DashboardSkeleton />}>
         <DashboardContent />
       </Suspense>

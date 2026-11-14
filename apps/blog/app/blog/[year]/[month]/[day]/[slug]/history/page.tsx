@@ -25,7 +25,7 @@ function VersionsContent({
   if (versions.length > 1) {
     return (
       <>
-        <p className="mb-4 text-muted-foreground text-sm">
+        <p className="mb-4 text-sm text-muted-foreground">
           比較したい2つのバージョンを選択してください。
         </p>
         <VersionCompare
@@ -52,13 +52,13 @@ function VersionsContent({
                   バージョン {version.version_number}
                 </span>
                 {index === 0 && (
-                  <span className="rounded bg-primary px-2 py-0.5 text-primary-foreground text-xs">
+                  <span className="rounded bg-primary px-2 py-0.5 text-xs text-primary-foreground">
                     最新
                   </span>
                 )}
               </div>
               <DateDisplay
-                className="mt-1 text-muted-foreground text-sm"
+                className="mt-1 text-sm text-muted-foreground"
                 date={version.version_date}
               />
               {!!version.change_summary && (
@@ -159,7 +159,7 @@ export default async function PostHistoryPage({ params }: PageProps) {
   return (
     <main className="px-6 py-8 md:px-12 lg:px-24">
       <div className="mx-auto max-w-4xl">
-        <h1 className="mb-2 font-bold text-3xl">編集履歴</h1>
+        <h1 className="mb-2 text-3xl font-bold">編集履歴</h1>
         <p className="mb-6 text-muted-foreground">
           <Link className="hover:underline" href={postUrl}>
             {post.title || DEFAULT_POST_TITLE}

@@ -107,7 +107,7 @@ export type UploadImageFn = (options: {
   width?: number;
 }>;
 
-const FILE_EXTENSION_REGEX = /\.[^/.]+$/;
+const FILE_EXTENSION_REGEX = /\.[^/.]+$/u;
 
 export function ToolbarPlugin({
   uploadImage,
@@ -396,7 +396,7 @@ export function ToolbarPlugin({
   };
 
   return (
-    <div className="border-border border-b bg-muted/5">
+    <div className="border-b border-border bg-muted/5">
       <div className="flex flex-wrap gap-1 p-2">
         <Select
           items={BLOCK_TYPES}
@@ -584,7 +584,7 @@ export function ToolbarPlugin({
         )}
         <button
           aria-label="テーブル"
-          className="rounded px-3 py-1 text-muted-foreground text-sm transition-colors hover:bg-muted/20"
+          className="rounded px-3 py-1 text-sm text-muted-foreground transition-colors hover:bg-muted/20"
           onClick={() => setShowTableDialog(true)}
           type="button"
         >

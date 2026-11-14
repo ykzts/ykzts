@@ -11,12 +11,12 @@ name: zizmor
 on:
   pull_request:
     paths:
-      - '.github/workflows/**'
-    types: [opened, synchronize]
+      - ".github/workflows/**"
+    types: [ opened, synchronize ]
   push:
-    branches: [main]
+    branches: [ main ]
     paths:
-      - '.github/workflows/**'
+      - ".github/workflows/**"
 
 permissions: {}
 

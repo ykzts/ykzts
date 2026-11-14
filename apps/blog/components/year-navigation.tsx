@@ -20,13 +20,13 @@ export default function YearNavigation({
   return (
     <nav
       aria-label="年別アーカイブナビゲーション"
-      className="mt-12 flex flex-col gap-4 border-gray-200 border-t pt-8 sm:flex-row sm:justify-between"
+      className="mt-12 flex flex-col gap-4 border-t border-gray-200 pt-8 sm:flex-row sm:justify-between"
     >
       {prevUrl && previousYear ? (
         <div className="flex flex-1 flex-col gap-1">
-          <span className="text-muted-foreground text-sm">前の年</span>
+          <span className="text-sm text-muted-foreground">前の年</span>
           <LinkButton
-            className="h-auto justify-start whitespace-normal p-4 text-left"
+            className="h-auto justify-start p-4 text-left whitespace-normal"
             href={prevUrl}
             variant="outline"
           >
@@ -39,11 +39,11 @@ export default function YearNavigation({
 
       {nextUrl && nextYear ? (
         <div className="flex flex-1 flex-col gap-1">
-          <span className="text-muted-foreground text-sm sm:text-right">
+          <span className="text-sm text-muted-foreground sm:text-right">
             次の年
           </span>
           <LinkButton
-            className="h-auto justify-start whitespace-normal p-4 text-left sm:text-right"
+            className="h-auto justify-start p-4 text-left whitespace-normal sm:text-right"
             href={nextUrl}
             variant="outline"
           >

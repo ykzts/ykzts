@@ -202,7 +202,7 @@ export function AvatarUpload({
                 ドラッグ&amp;ドロップまたはクリックして画像を選択
               </p>
               <p
-                className="mb-3 text-center text-muted-foreground text-xs"
+                className="mb-3 text-center text-xs text-muted-foreground"
                 id="avatar-upload-help"
               >
                 JPEG、PNG、GIF、WebP（最大5MB）
@@ -253,14 +253,14 @@ export function AvatarUpload({
 
         {!!error && (
           <div
-            className="mt-2 rounded border border-error bg-error/10 p-3 text-error text-sm"
+            className="border-error bg-error/10 text-error mt-2 rounded border p-3 text-sm"
             role="alert"
           >
             {error}
           </div>
         )}
 
-        <p className="mt-2 text-muted-foreground text-sm">
+        <p className="mt-2 text-sm text-muted-foreground">
           プロフィール画像は管理画面、ブログ、ポートフォリオサイト全体で表示されます。
         </p>
       </div>

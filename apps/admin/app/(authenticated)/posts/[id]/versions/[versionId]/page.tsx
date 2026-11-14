@@ -31,7 +31,7 @@ async function VersionDetailContent({
       <Panel>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h2 className="font-bold text-xl">
+            <h2 className="text-xl font-bold">
               バージョン {version.version_number}
             </h2>
             {isCurrent && <Badge variant="default">現在のバージョン</Badge>}
@@ -47,14 +47,14 @@ async function VersionDetailContent({
 
         <dl className="space-y-3">
           <div>
-            <dt className="font-medium text-muted-foreground text-sm">
+            <dt className="text-sm font-medium text-muted-foreground">
               バージョン日時
             </dt>
             <dd>{new Date(version.version_date).toLocaleString("ja-JP")}</dd>
           </div>
 
           <div>
-            <dt className="font-medium text-muted-foreground text-sm">
+            <dt className="text-sm font-medium text-muted-foreground">
               作成者
             </dt>
             <dd>{version.profile?.name || "不明"}</dd>
@@ -62,7 +62,7 @@ async function VersionDetailContent({
 
           {!!version.change_summary && (
             <div>
-              <dt className="font-medium text-muted-foreground text-sm">
+              <dt className="text-sm font-medium text-muted-foreground">
                 変更内容
               </dt>
               <dd className="rounded bg-muted px-3 py-2">
@@ -74,21 +74,21 @@ async function VersionDetailContent({
       </Panel>
 
       <Panel>
-        <h2 className="mb-4 font-bold text-xl">コンテンツ</h2>
+        <h2 className="mb-4 text-xl font-bold">コンテンツ</h2>
 
         <dl className="space-y-4">
           {!!version.title && (
             <>
-              <dt className="mb-2 font-medium text-muted-foreground text-sm">
+              <dt className="mb-2 text-sm font-medium text-muted-foreground">
                 タイトル
               </dt>
-              <dd className="font-medium text-lg">{version.title}</dd>
+              <dd className="text-lg font-medium">{version.title}</dd>
             </>
           )}
 
           {!!version.excerpt && (
             <>
-              <dt className="mb-2 font-medium text-muted-foreground text-sm">
+              <dt className="mb-2 text-sm font-medium text-muted-foreground">
                 抜粋
               </dt>
               <dd className="text-muted-foreground">{version.excerpt}</dd>
@@ -97,7 +97,7 @@ async function VersionDetailContent({
 
           {version.tags && version.tags.length > 0 && (
             <>
-              <dt className="mb-2 font-medium text-muted-foreground text-sm">
+              <dt className="mb-2 text-sm font-medium text-muted-foreground">
                 タグ
               </dt>
               <dd className="flex flex-wrap gap-2">
@@ -110,7 +110,7 @@ async function VersionDetailContent({
             </>
           )}
 
-          <dt className="mb-2 font-medium text-muted-foreground text-sm">
+          <dt className="mb-2 text-sm font-medium text-muted-foreground">
             本文（JSON）
           </dt>
           <dd>
@@ -157,7 +157,7 @@ export default function VersionDetailPage({
 }) {
   return (
     <div>
-      <h1 className="mb-6 font-bold text-3xl">バージョン詳細</h1>
+      <h1 className="mb-6 text-3xl font-bold">バージョン詳細</h1>
       <Suspense fallback={<VersionDetailSkeleton />}>
         <VersionDetailFromParams params={params} />
       </Suspense>

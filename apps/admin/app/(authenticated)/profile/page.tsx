@@ -23,7 +23,7 @@ async function ProfileFormWrapper() {
 export default function ProfilePage() {
   return (
     <div>
-      <h1 className="mb-6 font-bold text-3xl">プロフィール編集</h1>
+      <h1 className="mb-6 text-3xl font-bold">プロフィール編集</h1>
       <Panel>
         <Suspense fallback={<ProfileFormSkeleton />}>
           <ProfileFormWrapper />
