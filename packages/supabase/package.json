@@ -80,6 +80,7 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "@ykzts/tsconfig": "workspace:*",
+    "supabase": "2.122.1",
     "typescript": "catalog:"
   }
 }

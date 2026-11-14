@@ -124,9 +124,14 @@ export async function updateWork(
     .filter((v): v is string => typeof v === "string" && v.trim() !== "");
 
   // Parse content as JSON
-  let contentJson: Json;
+  let contentJson: NonNullable<Json>;
   try {
-    contentJson = JSON.parse(validatedData.content) as Json;
+    const parsed = JSON.parse(validatedData.content) as Json;
+    // works.content is NOT NULL, so reject a literal `null` payload.
+    if (parsed === null) {
+      return { error: "コンテンツのフォーマットが正しくありません" };
+    }
+    contentJson = parsed;
   } catch {
     return { error: "コンテンツのフォーマットが正しくありません" };
   }
