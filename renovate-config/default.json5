@@ -23,7 +23,9 @@
       matchStringsStrategy: 'recursive'
     }
   ],
-  dependencyDashboardLabels: ['dependencies'],
+  dependencyDashboard: {
+    labels: ['dependencies']
+  },
   extends: [
     'config:best-practices',
     'customManagers:githubActionsVersions',
