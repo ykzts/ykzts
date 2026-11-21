@@ -5,11 +5,28 @@ vi.mock("@ykzts/supabase/client", () => ({
   createBrowserClient: vi.fn(),
 }));
 
+let shouldLoadImage = true;
+
+class MockImage {
+  onload: (() => void) | null = null;
+  onerror: (() => void) | null = null;
+  width = 1920;
+  height = 1080;
+  set src(_: string) {
+    if (shouldLoadImage) {
+      this.onload?.();
+    } else {
+      this.onerror?.();
+    }
+  }
+}
+
 describe("getImageDimensions", () => {
   let createObjectURLSpy: ReturnType<typeof vi.spyOn>;
   let revokeObjectURLSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
+    shouldLoadImage = true;
     createObjectURLSpy = vi
       .spyOn(URL, "createObjectURL")
       .mockReturnValue("blob:http://localhost/test-object-url");
@@ -25,18 +42,7 @@ describe("getImageDimensions", () => {
   });
 
   it("resolves with width and height when image loads", async () => {
-    vi.stubGlobal(
-      "Image",
-      class {
-        onload: (() => void) | null = null;
-        onerror: (() => void) | null = null;
-        width = 1920;
-        height = 1080;
-        set src(_: string) {
-          this.onload?.();
-        }
-      }
-    );
+    vi.stubGlobal("Image", MockImage);
 
     const file = new File(["dummy"], "test.jpg", { type: "image/jpeg" });
     const result = await getImageDimensions(file);
@@ -49,16 +55,8 @@ describe("getImageDimensions", () => {
   });
 
   it("rejects with error when image fails to load", async () => {
-    vi.stubGlobal(
-      "Image",
-      class {
-        onload: (() => void) | null = null;
-        onerror: (() => void) | null = null;
-        set src(_: string) {
-          this.onerror?.();
-        }
-      }
-    );
+    shouldLoadImage = false;
+    vi.stubGlobal("Image", MockImage);
 
     const file = new File(["dummy"], "bad.jpg", { type: "image/jpeg" });
 
