@@ -1,8 +1,5 @@
-import {
-  buildCsp,
-  type CspValue,
-  getDefaultCspDirectives,
-} from "@ykzts/utils/csp";
+import type { CspValue } from "@ykzts/utils/csp";
+import { buildCsp, getDefaultCspDirectives } from "@ykzts/utils/csp";
 
 /**
  * Options for getSecurityHeaders.

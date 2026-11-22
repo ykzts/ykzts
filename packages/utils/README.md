@@ -7,25 +7,29 @@ Domain-specific helpers are published under focused subpath exports (e.g. `@ykzt
 ## CSP and Security Headers
 
 ```ts
-import { buildCsp, getSupabaseStorageSrc, getSupabaseHost, SELF, NONE, UNSAFE_INLINE, UNSAFE_EVAL } from '@ykzts/utils/csp';
+import {
+  buildCsp,
+  getSupabaseStorageSrc,
+  getSupabaseHost,
+  SELF,
+  NONE,
+  UNSAFE_INLINE,
+  UNSAFE_EVAL,
+} from "@ykzts/utils/csp";
 
 // Example: building a strict CSP (used in next.config headers)
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = process.env.NODE_ENV === "development";
 
 const csp = buildCsp({
   baseUri: [NONE],
   defaultSrc: [NONE],
-  scriptSrc: [
-    SELF,
-    UNSAFE_INLINE,
-    isDev && UNSAFE_EVAL,
-  ],
+  scriptSrc: [SELF, UNSAFE_INLINE, isDev && UNSAFE_EVAL],
   imgSrc: getSupabaseStorageSrc(),
   connectSrc: [
     SELF,
-    'https://vitals.vercel-insights.com',
-    isDev && 'ws:',
-    isDev && 'wss:',
+    "https://vitals.vercel-insights.com",
+    isDev && "ws:",
+    isDev && "wss:",
   ],
   // ...
 });
@@ -38,14 +42,14 @@ CSP + `Permissions-Policy` / `Referrer-Policy` / `X-Content-Type-Options` across
 
 ```ts
 // next.config.ts
-import { getSecurityHeaders } from '@ykzts/utils/security-headers';
+import { getSecurityHeaders } from "@ykzts/utils/security-headers";
 
 const nextConfig: NextConfig = {
   // ...
   headers() {
     return Promise.resolve([
       {
-        source: '/:path*',
+        source: "/:path*",
         headers: getSecurityHeaders(),
       },
     ]);
@@ -86,9 +90,12 @@ See `src/csp.ts` for the full API (also includes `getDefaultCspDirectives`, `get
 ## Pagination
 
 ```ts
-import { getVisiblePages } from '@ykzts/utils/pagination';
+import { getVisiblePages } from "@ykzts/utils/pagination";
 
-const { pages, showStartEllipsis, showEndEllipsis } = getVisiblePages(currentPage, totalPages);
+const { pages, showStartEllipsis, showEndEllipsis } = getVisiblePages(
+  currentPage,
+  totalPages
+);
 ```
 
 ## Portable Text
@@ -99,11 +106,14 @@ import {
   portableTextToHTML,
   portableTextToMarkdown,
   parseMarkdownForPost,
-} from '@ykzts/utils/portable-text';
+} from "@ykzts/utils/portable-text";
 ```
 
 ## Fediverse
 
 ```ts
-import { verifyFediverseHandle, extractFediverseHandleFromURL } from '@ykzts/utils/fediverse';
+import {
+  verifyFediverseHandle,
+  extractFediverseHandleFromURL,
+} from "@ykzts/utils/fediverse";
 ```

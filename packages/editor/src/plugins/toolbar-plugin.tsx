@@ -9,12 +9,12 @@ import {
   REMOVE_LIST_COMMAND,
 } from "@lexical/list";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import type { HeadingNode } from "@lexical/rich-text";
 import {
   $createHeadingNode,
   $createQuoteNode,
   $isHeadingNode,
   $isQuoteNode,
-  type HeadingNode,
 } from "@lexical/rich-text";
 import { $setBlocksType } from "@lexical/selection";
 import { INSERT_TABLE_COMMAND } from "@lexical/table";

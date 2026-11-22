@@ -9,6 +9,7 @@ See [docs/architecture.md](docs/architecture.md) for the detailed architecture, 
 This file focuses on contribution processes. Architecture details have been delegated to docs/ to avoid duplication.
 
 Quick orientation:
+
 - Public sites: `portfolio` + `blog` (via microfrontends)
 - Owner tools: `admin`, `memo`
 - Legacy redirects: `blog-legacy`
@@ -21,6 +22,7 @@ See `AGENTS.md` for AI agent instructions. App-specific details are in the indiv
 See [docs/architecture.md](docs/architecture.md) for the current architecture summary.
 
 Key points:
+
 - pnpm + Turbo monorepo
 - Next.js (portfolio, blog, and blog-legacy) + React 19
 - Supabase for data/auth/storage
@@ -39,17 +41,20 @@ Detailed coding standards are in `AGENTS.md` (Code Style section).
 ### Getting Started
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/ykzts/ykzts.git
    cd ykzts
    ```
 
 2. **Install dependencies**:
+
    ```bash
    pnpm install
    ```
 
 3. **Setup Supabase local stack** (required for admin and portfolio apps):
+
    ```bash
    npx supabase start
    ```
@@ -72,11 +77,13 @@ Detailed coding standards are in `AGENTS.md` (Code Style section).
    For more information, see the [Supabase CLI documentation](https://supabase.com/docs/guides/local-development).
 
 4. **Run development servers**:
+
    ```bash
    pnpm dev
    ```
 
 5. **Build all applications**:
+
    ```bash
    pnpm build
    ```
@@ -169,6 +176,7 @@ git config alias.commit-ai '!git commit --trailer "Assisted-by: <AI System>"'
 ```
 
 commitlint (via the conventional preset) accepts these trailers. Strict enforcement of presence is left to contributor discipline and review, to keep the commitlint configuration minimal and riding the de-facto preset.
+
 - Omit scope for repository-wide changes
 
 ## Pull Request Process
@@ -178,6 +186,7 @@ commitlint (via the conventional preset) accepts these trailers. Strict enforcem
 1. **Git hooks (recommended)**: lefthook is configured (via `lefthook.yml`) to automatically run `ultracite fix` on staged files during `pre-commit`. A zizmor pre-commit hook also runs on `.github/workflows/**` changes (see below). After `pnpm install`, hooks are set up automatically via the `prepare` script. You can bypass with `git commit --no-verify` if needed.
 
 2. **Run all checks locally** (hooks will catch most issues early):
+
    ```bash
    pnpm check         # Ultracite check (lint + format)
    pnpm fix           # Ultracite auto-fix
@@ -193,6 +202,7 @@ commitlint (via the conventional preset) accepts these trailers. Strict enforcem
    - The CI job (`.github/workflows/zizmor.yml`) runs on PRs/pushes touching workflows and fails on findings (using GitHub annotations).
 
 4. **Build successfully**:
+
    ```bash
    pnpm build
    ```
@@ -252,6 +262,7 @@ All pull requests must pass the following automated checks:
 6. **GitHub Actions security scan**: `zizmor` (runs when `.github/workflows/**` are changed)
 
 These checks run automatically on:
+
 - Pull request creation and updates
 - Pushes to the main branch
 
@@ -271,6 +282,7 @@ Migrations are stored in `supabase/migrations/` directory with timestamp-based n
 ```
 
 **Best Practices:**
+
 - Use descriptive names that explain what the migration does
 - Test migrations locally before committing
 - Keep migrations focused on a single logical change
@@ -386,22 +398,24 @@ CREATE POLICY "policy_name" ON table_name
   USING (true);
 ```
 
-
 ### Troubleshooting
 
 **Migration validation fails in PR:**
+
 - Review the error message in the PR comment
 - Fix SQL syntax errors or schema conflicts
 - Test locally with `supabase start` to reproduce the issue
 - Push fixes to your PR branch
 
 **Production deployment fails:**
+
 - Check GitHub Actions logs for error details
 - Verify secrets are correctly configured (`SUPABASE_ACCESS_TOKEN`, `SUPABASE_PROJECT_REF`)
 - Ensure no manual changes conflict with migration
 - Contact @ykzts if issues persist
 
 **Type generation out of sync:**
+
 - Run `pnpm typegen` after applying migrations
 - Commit updated type files in `packages/supabase/`
 
@@ -440,6 +454,7 @@ For security vulnerabilities, please contact @ykzts directly rather than opening
 ### Turbo Tasks
 
 All build tasks are orchestrated through Turbo:
+
 - `pnpm build` - Build all applications
 - `pnpm dev` - Start development servers
 - `pnpm test` - Run tests with dependencies
@@ -450,6 +465,7 @@ All build tasks are orchestrated through Turbo:
 See the individual `apps/*/README.md` (especially the "Security, Authentication & Public Scope" sections) and `AGENTS.md` for authoritative per-app details, ports, auth model, and secrets usage.
 
 Quick pointers:
+
 - `portfolio`: public Next.js site + microfrontends shell (hosts blog). Contact form (Resend).
 - `blog`: blog under `/blog`, draft previews, crons (publish), revalidation endpoint.
 - `admin`: authenticated CMS, service role + CRON/REVALIDATE/DRAFT secrets, AI features, revalidation caller.

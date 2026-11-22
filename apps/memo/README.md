@@ -46,11 +46,13 @@ See `.env.example` for the complete (minimal) list. Memo does **not** require `S
 ## Security, Authentication & Public Scope
 
 **Authentication boundary**:
+
 - Public visitors: No authentication. Only `visibility = 'public'` memos (and their versions) are returned by queries and allowed by RLS.
 - Owner: Logs in at `/login` (Supabase Auth). On successful callback, `/api/draft` is called which verifies the user via `getUser()` and then calls `const draft = await draftMode(); draft.enable()`. Subsequent requests from the logged-in browser will see private memos.
 - All owner actions (create, update, new version, delete) call `getOwnerProfile()` first. If no profile row links the auth user, writes are rejected at the application layer (in addition to RLS).
 
 **RLS + visibility (the source of truth)**:
+
 - `memos` and `memo_versions` have Row Level Security enabled.
 - Public SELECT policy: `visibility = 'public'`.
 - Owner SELECT (authenticated): any memo belonging to the user's profile.
@@ -58,24 +60,30 @@ See `.env.example` for the complete (minimal) list. Memo does **not** require `S
 - Additional constraints on memo_versions: updates/deletes only allowed while the memo is still private (public memos are append-only).
 
 **No service role**:
+
 - Memo never loads or uses `SUPABASE_SERVICE_ROLE_KEY`. All data access goes through the anon key + user JWT (or public anon for visitors).
 
 **Draft mode**:
+
 - Unlike the blog app's draft preview (which uses a shared `DRAFT_SECRET` capability token for unauthenticated preview links), memo draft mode is **strictly tied to an authenticated owner session**. There is no secret-token bypass.
 - `/api/draft/disable` simply calls `const draft = await draftMode(); draft.disable()` (no auth check needed to turn it off).
 
 **CSP**:
+
 - Applies the monorepo baseline + Supabase host (https + wss) in `connect-src` (see `next.config.ts` + `@ykzts/utils/security-headers` and `@ykzts/utils/csp`).
 
 **Proxy / session handling**:
+
 - `proxy.ts` (middleware) uses Supabase SSR to refresh the session cookie on every request. It does **not** perform hard route gating (visibility filtering + RLS are sufficient and keep the app simpler for public content).
 
 **Storage**:
+
 - If memo ever uses image uploads, it reuses the shared `images` bucket policies (owner = auth.uid()).
 
 ## Dependencies
 
 ### Internal Dependencies
+
 - `@ykzts/editor`: Rich text editor
 - `@ykzts/utils`: portable-text, etc.
 - `@ykzts/site-config`: site origin / name
@@ -83,6 +91,7 @@ See `.env.example` for the complete (minimal) list. Memo does **not** require `S
 - `@ykzts/ui`: Card, Button, etc.
 
 ### External Dependencies
+
 - `next`, `react`, `react-dom`
 - `@portabletext/react`
 - `@supabase/ssr`
@@ -98,6 +107,7 @@ See `.env.example` for the complete (minimal) list. Memo does **not** require `S
 ## Maintenance
 
 When adding new memo-related tables or columns:
+
 1. Write a new timestamped migration in `supabase/migrations/`.
 2. Include `ALTER TABLE ... ENABLE ROW LEVEL SECURITY;`, the appropriate `CREATE POLICY` statements (public read + owner writes), and the required `GRANT` statements for anon/authenticated/service_role (see `20260613000000_add_data_api_grants.sql` pattern).
 3. Run `pnpm typegen` (or `cd packages/supabase && pnpm typegen`) after applying.

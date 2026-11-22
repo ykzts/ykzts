@@ -19,14 +19,14 @@ Architecture overview: `docs/architecture.md`.
 
 ## Prerequisites
 
-| Requirement | Notes |
-| --- | --- |
-| **Node.js** | **24** (see `AGENTS.md` / project tooling) |
-| **pnpm** | Via Corepack or install; repo `packageManager` pins the version |
-| **Docker** | Required for local Supabase |
-| **jq** | Required by `scripts/setup-env.sh` |
-| **Supabase CLI** | `supabase` on PATH, or `npx supabase` |
-| **GitHub CLI** | `gh`, authenticated; used for issues, PRs, and GitHub API access |
+| Requirement      | Notes                                                            |
+| ---------------- | ---------------------------------------------------------------- |
+| **Node.js**      | **24** (see `AGENTS.md` / project tooling)                       |
+| **pnpm**         | Via Corepack or install; repo `packageManager` pins the version  |
+| **Docker**       | Required for local Supabase                                      |
+| **jq**           | Required by `scripts/setup-env.sh`                               |
+| **Supabase CLI** | `supabase` on PATH, or `npx supabase`                            |
+| **GitHub CLI**   | `gh`, authenticated; used for issues, PRs, and GitHub API access |
 
 Use **pnpm only** (not npm/yarn). Install from the **repository root**.
 
@@ -66,11 +66,11 @@ npx supabase start
 
 Typical local endpoints (confirm with `npx supabase status`):
 
-| Service | URL |
-| --- | --- |
-| API | `http://127.0.0.1:54321` |
+| Service  | URL                                                       |
+| -------- | --------------------------------------------------------- |
+| API      | `http://127.0.0.1:54321`                                  |
 | Database | `postgresql://postgres:postgres@127.0.0.1:54322/postgres` |
-| Studio | `http://127.0.0.1:54323` |
+| Studio   | `http://127.0.0.1:54323`                                  |
 
 Useful commands:
 
@@ -111,13 +111,13 @@ pnpm build
 
 ## Dev server ports
 
-| App | Package | Port / entry | Role |
-| --- | --- | --- | --- |
-| **portfolio** | `@ykzts/portfolio` | **3000** (microfrontends shell) | Public site; hosts blog routes in composition |
-| **blog** | `@ykzts/blog` | **3001** (microfrontends local) | Blog + `/api/blog/*`; composed under portfolio |
-| **admin** | `@ykzts/admin` | **3100** | CMS (`http://localhost:3100/admin`) |
-| **memo** | `@ykzts/memo` | **3101** | Memos (standalone) |
-| **blog-legacy** | `@ykzts/blog-legacy` | **3102** | Legacy 301 redirector |
+| App             | Package              | Port / entry                    | Role                                           |
+| --------------- | -------------------- | ------------------------------- | ---------------------------------------------- |
+| **portfolio**   | `@ykzts/portfolio`   | **3000** (microfrontends shell) | Public site; hosts blog routes in composition  |
+| **blog**        | `@ykzts/blog`        | **3001** (microfrontends local) | Blog + `/api/blog/*`; composed under portfolio |
+| **admin**       | `@ykzts/admin`       | **3100**                        | CMS (`http://localhost:3100/admin`)            |
+| **memo**        | `@ykzts/memo`        | **3101**                        | Memos (standalone)                             |
+| **blog-legacy** | `@ykzts/blog-legacy` | **3102**                        | Legacy 301 redirector                          |
 
 Microfrontends: `apps/portfolio/microfrontends.json` — local portfolio **3000**,
 blog **3001**. In dev, use the portfolio origin for integrated `/blog` paths
@@ -141,13 +141,13 @@ pnpm --filter @ykzts/blog dev
 
 ## Environment files
 
-| App | `.env.example` | Notes |
-| --- | --- | --- |
-| admin | yes | Supabase + service role, `REVALIDATE_*`, `CRON_SECRET`, `DRAFT_SECRET` |
-| blog | yes | Supabase + service role, revalidate, cron, draft |
-| portfolio | yes | Supabase anon, revalidate, Resend / mail |
-| memo | yes | Supabase URL + anon only (minimal) |
-| blog-legacy | no | No secrets |
+| App         | `.env.example` | Notes                                                                  |
+| ----------- | -------------- | ---------------------------------------------------------------------- |
+| admin       | yes            | Supabase + service role, `REVALIDATE_*`, `CRON_SECRET`, `DRAFT_SECRET` |
+| blog        | yes            | Supabase + service role, revalidate, cron, draft                       |
+| portfolio   | yes            | Supabase anon, revalidate, Resend / mail                               |
+| memo        | yes            | Supabase URL + anon only (minimal)                                     |
+| blog-legacy | no             | No secrets                                                             |
 
 After `setup-env.sh`, ensure capability secrets are set for the apps you run
 (admin/blog at minimum for full CMS → publish/preview flows). Never commit
@@ -161,19 +161,19 @@ when testing absolute URLs.
 
 All from repo root unless noted:
 
-| Command | Purpose |
-| --- | --- |
-| `pnpm install` | Install workspace deps |
-| `pnpm dev` | All app dev servers (Turbo) |
-| `pnpm build` | Build all |
-| `pnpm check` | Ultracite/Biome lint + format check |
-| `pnpm fix` | Auto-fix lint/format |
-| `pnpm test` | Vitest (Turbo) |
-| `pnpm test:a11y` | Playwright a11y (where configured, e.g. portfolio) |
-| `pnpm typegen` | Generate types (incl. Supabase) |
-| `pnpm typecheck` | TypeScript check |
-| `pnpm validate` | Validation tasks |
-| `pnpm lighthouse` | Lighthouse (portfolio pipeline) |
+| Command           | Purpose                                            |
+| ----------------- | -------------------------------------------------- |
+| `pnpm install`    | Install workspace deps                             |
+| `pnpm dev`        | All app dev servers (Turbo)                        |
+| `pnpm build`      | Build all                                          |
+| `pnpm check`      | Ultracite/Biome lint + format check                |
+| `pnpm fix`        | Auto-fix lint/format                               |
+| `pnpm test`       | Vitest (Turbo)                                     |
+| `pnpm test:a11y`  | Playwright a11y (where configured, e.g. portfolio) |
+| `pnpm typegen`    | Generate types (incl. Supabase)                    |
+| `pnpm typecheck`  | TypeScript check                                   |
+| `pnpm validate`   | Validation tasks                                   |
+| `pnpm lighthouse` | Lighthouse (portfolio pipeline)                    |
 
 Package-scoped:
 
@@ -198,13 +198,13 @@ Production migration deploy is CI-only after merge; see `CONTRIBUTING.md`.
 
 ## App quick map (what needs what)
 
-| App | Needs Supabase local? | Auth | Notes |
-| --- | --- | --- | --- |
-| portfolio | Yes (content) | No (public) | MFE shell; contact form needs Resend vars to send mail |
-| blog | Yes | Draft via secret link | Cron/draft/revalidate secrets for those features |
-| admin | Yes | Supabase Auth | Full CMS; revalidate URLs must point at local blog/portfolio |
-| memo | Yes | Auth for edit/private | Minimal env |
-| blog-legacy | No | No | Redirects only |
+| App         | Needs Supabase local? | Auth                  | Notes                                                        |
+| ----------- | --------------------- | --------------------- | ------------------------------------------------------------ |
+| portfolio   | Yes (content)         | No (public)           | MFE shell; contact form needs Resend vars to send mail       |
+| blog        | Yes                   | Draft via secret link | Cron/draft/revalidate secrets for those features             |
+| admin       | Yes                   | Supabase Auth         | Full CMS; revalidate URLs must point at local blog/portfolio |
+| memo        | Yes                   | Auth for edit/private | Minimal env                                                  |
+| blog-legacy | No                    | No                    | Redirects only                                               |
 
 Per-app detail: `apps/*/README.md`.
 

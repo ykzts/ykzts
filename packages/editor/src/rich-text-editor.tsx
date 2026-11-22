@@ -26,7 +26,8 @@ import { EditorStatePlugin } from "./plugins/editor-state-plugin";
 import { ImagePlugin } from "./plugins/image-plugin";
 import { LinkPlugin } from "./plugins/link-plugin";
 import { TablePlugin } from "./plugins/table-plugin";
-import { ToolbarPlugin, type UploadImageFn } from "./plugins/toolbar-plugin";
+import type { UploadImageFn } from "./plugins/toolbar-plugin";
+import { ToolbarPlugin } from "./plugins/toolbar-plugin";
 import {
   initializeEditorWithPortableText,
   lexicalToPortableText,

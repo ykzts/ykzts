@@ -15,13 +15,8 @@ import {
   FieldLabel,
 } from "@ykzts/ui/components/field";
 import { Input } from "@ykzts/ui/components/input";
-import {
-  type SubmitEventHandler,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import type { SubmitEventHandler } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface ImageAltDialogProps {
   initialAlt?: string;

@@ -1,7 +1,7 @@
+import type { PortableTextBlockRenderer } from "@portabletext/markdown";
 import {
   markdownToPortableText as convertFromMarkdown,
   portableTextToMarkdown as convertToMarkdown,
-  type PortableTextBlockRenderer,
 } from "@portabletext/markdown";
 import { escapeHTML, toHTML, uriLooksSafe } from "@portabletext/to-html";
 import type { PortableTextBlock } from "@portabletext/types";

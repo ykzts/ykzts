@@ -48,12 +48,14 @@ pnpm lighthouse # Run Lighthouse CI performance audit
 **Public scope**: The entire site is public. No authentication is required or supported for visitors. All portfolio data (`works`, public profile fields, etc.) is read via the Supabase anon key. RLS policies grant public `SELECT` on the relevant tables.
 
 **No privileged secrets for visitors**:
+
 - The contact form uses server-only `RESEND_API_KEY` and `MAIL_FROM_ADDRESS` (processed in a Server Action). Visitor input is never persisted to the database.
 - `REVALIDATE_SECRET` is accepted only on the internal `/api/revalidate` endpoint (header `x-revalidate-secret`). It is called by the admin app to invalidate caches after the owner publishes changes. The secret is never exposed to browsers.
 
 **Service role**: Portfolio does **not** use or configure `SUPABASE_SERVICE_ROLE_KEY`. All reads use the anon client.
 
 **CSP and security headers**:
+
 - Strict baseline applied via `@ykzts/utils/security-headers` on every route (see `next.config.ts`).
 - No Supabase host added to `connect-src` (Supabase calls for content and images are performed from Server Components or use only public image URLs).
 - Additional protections: botid for the contact form (spam), Permissions-Policy restrictions, `Referrer-Policy: no-referrer`, `X-Content-Type-Options: nosniff`.
@@ -91,9 +93,11 @@ See `.env.example` for a complete list of required environment variables.
 ## Dependencies
 
 ### Internal Dependencies
+
 - `@ykzts/tsconfig`: TypeScript configuration (next.json preset)
 
 ### External Dependencies
+
 - `next`: React framework with App Router (v16)
 - `react`: UI framework (v19)
 - `@portabletext/react`: Portable Text rich text rendering (compatible with Supabase JSONB storage)
@@ -106,6 +110,7 @@ See `.env.example` for a complete list of required environment variables.
 - `zod`: Runtime type validation
 
 ### Dev Dependencies
+
 - `typescript`: Type checking and development tooling
 - `@next/mdx`: Next.js MDX integration
 - `@mdx-js/loader`: MDX compilation for Webpack
@@ -133,11 +138,13 @@ See `.env.example` for a complete list of required environment variables.
 This application maintains high performance and quality standards through:
 
 ### Lighthouse CI Integration
+
 - **Automated Audits**: Lighthouse CI runs on every PR via GitHub Actions
 - **Performance Thresholds**: Minimum score of 95 for Performance, Best Practices, SEO, and Accessibility
 - **Continuous Monitoring**: Ensures no performance regressions over time
 
 ### Optimization Strategies
+
 - **Image Optimization**: AVIF and WebP formats with Next.js Image component
 - **Font Loading**: Optimized Google Fonts with `font-display: swap`
 - **Code Splitting**: Automatic with CSS Modules and Next.js
@@ -147,6 +154,7 @@ This application maintains high performance and quality standards through:
 - **Partial Prerendering (PPR)**: Next.js experimental feature for improved performance
 
 ### CI/CD Quality Gates
+
 - **Node.js CI**: Runs build, tests, and linting on every PR
 - **Accessibility Testing**: Automated WCAG compliance checks with axe-core
 - **Lighthouse CI**: Performance, Best Practices, SEO, and Accessibility audits

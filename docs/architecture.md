@@ -57,6 +57,7 @@ This document gives a high-level view of the ykzts monorepo. For the canonical s
 See the detailed table and guidelines in [skills/repo-security](../skills/repo-security/SKILL.md) (Secret management).
 
 Per-app examples live next to the apps:
+
 - `apps/admin/.env.example`
 - `apps/blog/.env.example`
 - `apps/portfolio/.env.example`
@@ -75,6 +76,7 @@ Local bootstrap for Supabase credentials: `scripts/setup-env.sh`.
 - Microfrontends wiring: `apps/portfolio/microfrontends.json` + the two apps' `next.config.ts`
 
 This architecture prioritizes:
+
 - Strong separation between public content and owner tools.
 - RLS as the single source of truth for data access.
 - Capability tokens (secrets) only for narrow automation / preview use cases.
