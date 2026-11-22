@@ -19,6 +19,7 @@ Import the appropriate configuration preset in your project's `tsconfig.json`:
 ```
 
 Used by:
+
 - `@ykzts/admin`
 - `@ykzts/blog`
 - `@ykzts/blog-legacy`
@@ -33,6 +34,7 @@ Used by:
 ```
 
 Used by:
+
 - `@ykzts/supabase`
 
 ### For React Component Libraries
@@ -44,12 +46,14 @@ Used by:
 ```
 
 Used by:
+
 - `@ykzts/utils` (includes pagination, portable-text, etc via subpaths)
 - `@ykzts/ui`
 
 ## Available Configurations
 
 ### `basic.json`
+
 - Target: ES2023
 - Module: NodeNext with NodeNext module resolution
 - Strict mode enabled
@@ -57,6 +61,7 @@ Used by:
 - Optimized for Node.js and modern ESM-compatible environments
 
 ### `react-library.json`
+
 - Target: ES2023
 - Module: ESNext with bundler module resolution
 - JSX: react-jsx (for component libraries)
@@ -64,6 +69,7 @@ Used by:
 - Library support: DOM, DOM iterable, ES2023
 
 ### `next.json`
+
 - Target: ES2023
 - Module: ESNext with bundler module resolution
 - JSX: preserve (for React components)
@@ -73,9 +79,11 @@ Used by:
 ## Dependencies
 
 ### Internal Dependencies
+
 None - this is a foundational package
 
 ### External Dependencies
+
 None - provides configuration only
 
 ## Features

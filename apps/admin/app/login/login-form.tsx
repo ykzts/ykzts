@@ -3,7 +3,8 @@
 import { Button } from "@ykzts/ui/components/button";
 import { Input } from "@ykzts/ui/components/input";
 import { Label } from "@ykzts/ui/components/label";
-import { type SubmitEventHandler, useState, useTransition } from "react";
+import type { SubmitEventHandler } from "react";
+import { useState, useTransition } from "react";
 import { signInWithGitHub, signInWithPassword } from "./actions";
 
 interface LoginFormProps {

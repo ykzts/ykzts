@@ -29,6 +29,7 @@ See [docs/architecture.md](docs/architecture.md) for the detailed repository str
 ## Code Style and Standards
 
 ### Biome Configuration
+
 - **Quotes**: Single quotes for JavaScript/CSS
 - **Semicolons**: As needed (ASI-safe)
 - **Trailing Commas**: None
@@ -37,12 +38,14 @@ See [docs/architecture.md](docs/architecture.md) for the detailed repository str
 - **CSS**: CSS Modules support, single quotes
 
 ### TypeScript Guidelines
+
 - Use strict TypeScript configuration
 - Prefer type imports (`import type`)
 - Use modern ESM syntax (`"type": "module"`)
 - Leverage Next.js and React 19 features
 
 ### React Guidelines
+
 - Use React 19 features (modern JSX transform, React Compiler)
 - Prefer function components with hooks
 - Use Next.js App Router conventions
@@ -51,6 +54,7 @@ See [docs/architecture.md](docs/architecture.md) for the detailed repository str
 ## Development Workflow
 
 ### Always-on rules
+
 - Use `pnpm` exclusively (not npm/yarn); `workspace:*` for internal packages; install from root
 - **Feature branch first** — never commit directly to `main` (details: `/create-pr`)
 - **Conventional Commits** for subjects and PR titles; AI commits use `Assisted-by` trailer (`/create-pr`)
@@ -58,6 +62,7 @@ See [docs/architecture.md](docs/architecture.md) for the detailed repository str
 - Use `gh` for GitHub access (issues, PRs, API), not `curl` piped to other commands (denied in `.claude/settings.json`); if `gh` is unauthenticated, ask the user to run `gh auth login`
 
 ### Common commands
+
 (See `/local-dev` for bootstrap, ports, env, and troubleshooting.)
 
 - `pnpm install` — install dependencies
@@ -68,6 +73,7 @@ See [docs/architecture.md](docs/architecture.md) for the detailed repository str
 - `pnpm test` / `pnpm validate` — tests and validation
 
 ### Turbo
+
 - Tasks are orchestrated through Turbo
 - `dev` is persistent with cache disabled
 
@@ -82,6 +88,7 @@ See [docs/architecture.md](docs/architecture.md) for the detailed repository str
 See [docs/architecture.md](docs/architecture.md) for the authoritative overview.
 
 Summary:
+
 - Vercel hosting. `portfolio` + `blog` use Vercel Microfrontends (single `ykzts.com` origin).
 - `admin`, `memo`, `blog-legacy` are standalone.
 - Content in Supabase. Secrets managed per Vercel project + local `.env` files (`/repo-security`, `/local-dev`).

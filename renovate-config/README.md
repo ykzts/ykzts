@@ -33,25 +33,30 @@ pnpm validate  # Validates configuration syntax and rules
 ## Dependencies
 
 ### Internal Dependencies
+
 None - this is a configuration-only package
 
 ### External Dependencies
+
 - `renovate` (dev): Configuration validation tool
 
 ## Configuration Details
 
 ### Update Strategies
+
 - **Patch/Minor Combining**: Groups non-breaking updates together
 - **Major Separation**: Handles major version updates separately
 - **Lock File Maintenance**: Weekly updates for package-lock files
 - **Immediate PRs**: Creates pull requests without delay
 
 ### Specialized Groupings
+
 - **Docker Containers**: Groups container updates by project (Baserow, Immich, Mastodon)
 - **Terraform Providers**: Groups Google Cloud provider updates
 - **Build Tools**: Special handling for development and build dependencies
 
 ### Security & Quality
+
 - **Vulnerability Alerts**: Automatic security update labeling
 - **Preserve Semver**: Maintains existing version range patterns
 - **Dependency Dashboard**: Centralized overview of pending updates

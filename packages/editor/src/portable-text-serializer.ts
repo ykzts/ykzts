@@ -4,21 +4,21 @@
 "use client";
 
 import { $createCodeNode, $isCodeNode } from "@lexical/code";
-import { $createLinkNode, $isLinkNode, type LinkNode } from "@lexical/link";
+import type { LinkNode } from "@lexical/link";
+import { $createLinkNode, $isLinkNode } from "@lexical/link";
+import type { ListItemNode, ListNode } from "@lexical/list";
 import {
   $createListItemNode,
   $createListNode,
   $isListItemNode,
   $isListNode,
-  type ListItemNode,
-  type ListNode,
 } from "@lexical/list";
+import type { HeadingNode } from "@lexical/rich-text";
 import {
   $createHeadingNode,
   $createQuoteNode,
   $isHeadingNode,
   $isQuoteNode,
-  type HeadingNode,
 } from "@lexical/rich-text";
 import {
   $createTableNodeWithDimensions,
@@ -27,15 +27,13 @@ import {
   $isTableRowNode,
   TableCellHeaderStates,
 } from "@lexical/table";
+import type { ElementNode, LexicalEditor, TextNode } from "lexical";
 import {
   $createParagraphNode,
   $createTextNode,
   $getRoot,
   $isParagraphNode,
   $isTextNode,
-  type ElementNode,
-  type LexicalEditor,
-  type TextNode,
 } from "lexical";
 import { $createImageNode, $isImageNode } from "./nodes/image-node";
 

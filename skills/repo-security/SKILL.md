@@ -44,16 +44,16 @@ If the task is only UI copy or styling with no data/auth surface, skip.
 
 Locate real code (do not reimplement helpers):
 
-| Concern | Source of truth |
-| --- | --- |
-| CSP + headers | `packages/utils/src/csp.ts`, `packages/utils/src/security-headers.ts` |
-| Secret compare (cron / revalidate) | `packages/utils/src/secrets.ts` (`@ykzts/utils/secrets`) |
-| Draft preview HMAC | `packages/utils/src/draft-preview.ts` |
-| Server / browser / service-role clients | `packages/supabase/src/{server,client,service-role,proxy,auth}.ts` |
-| Revalidate handler | `packages/supabase/src/revalidate.ts` |
-| Image upload validation | `packages/supabase/src/image-validation.ts`, `image-upload.ts` |
-| Env surface for Turbo | `turbo.json` + each app's `.env.example` |
-| Schema / RLS / grants | `supabase/migrations/*` |
+| Concern                                 | Source of truth                                                       |
+| --------------------------------------- | --------------------------------------------------------------------- |
+| CSP + headers                           | `packages/utils/src/csp.ts`, `packages/utils/src/security-headers.ts` |
+| Secret compare (cron / revalidate)      | `packages/utils/src/secrets.ts` (`@ykzts/utils/secrets`)              |
+| Draft preview HMAC                      | `packages/utils/src/draft-preview.ts`                                 |
+| Server / browser / service-role clients | `packages/supabase/src/{server,client,service-role,proxy,auth}.ts`    |
+| Revalidate handler                      | `packages/supabase/src/revalidate.ts`                                 |
+| Image upload validation                 | `packages/supabase/src/image-validation.ts`, `image-upload.ts`        |
+| Env surface for Turbo                   | `turbo.json` + each app's `.env.example`                              |
+| Schema / RLS / grants                   | `supabase/migrations/*`                                               |
 
 ---
 
@@ -100,17 +100,17 @@ The following secrets / environment variables control privileged operations.
 They must never be committed or exposed to the browser. They are configured
 per-environment in Vercel (and locally via `.env.local`).
 
-| Secret / Var | Apps that consume it | Purpose & threat model | Sensitivity |
-| --- | --- | --- | --- |
-| `SUPABASE_SERVICE_ROLE_KEY` | admin, blog | Bypasses **all** RLS. Used only server-side for: cron jobs, draft preview queries, health checks, scheduled publish. Never sent to client. | Critical |
-| `DRAFT_SECRET` | admin (signs), blog (verifies) | Signing key for short-lived HMAC draft preview tokens (`/api/blog/draft/<token>`). The secret value is never embedded in preview URLs. | High |
-| `CRON_SECRET` | admin (embeddings cron), blog (publish cron) | Bearer token (`Authorization: Bearer <secret>`) protecting `/api/cron/*` endpoints called by Vercel Cron (or equivalent). Prevents unauthorized triggering of expensive AI embedding jobs or publish side-effects. | High |
-| `REVALIDATE_SECRET` | admin (caller), blog + portfolio (verifier) | Header (`x-revalidate-secret`) for cross-app on-demand cache invalidation (`/api/.../revalidate`). Admin calls the public revalidate endpoints of blog/portfolio after content mutations. | High |
-| `REVALIDATE_URLS` | admin | Comma-separated list of revalidation endpoint URLs the admin is allowed to call (e.g. blog + portfolio instances). | Medium (config) |
-| `OPENAI_API_KEY` | admin (AI slug/tag gen via Vercel AI Gateway or direct) | Used server-side only for LLM-powered slug and tag generation. Not required in all environments (falls back to local slugify). | High |
-| `RESEND_API_KEY` | portfolio | Powers the public contact form email delivery. Server-only. | High |
-| `MAIL_FROM_ADDRESS` | portfolio | From address for contact form emails. | Low-Medium |
-| `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` | all (public reads + client auth in admin/memo) | Public anon key. Combined with RLS policies for safe public + owner-scoped access. | Public / Low (anon key is designed to be public) |
+| Secret / Var                                                 | Apps that consume it                                    | Purpose & threat model                                                                                                                                                                                             | Sensitivity                                      |
+| ------------------------------------------------------------ | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------ |
+| `SUPABASE_SERVICE_ROLE_KEY`                                  | admin, blog                                             | Bypasses **all** RLS. Used only server-side for: cron jobs, draft preview queries, health checks, scheduled publish. Never sent to client.                                                                         | Critical                                         |
+| `DRAFT_SECRET`                                               | admin (signs), blog (verifies)                          | Signing key for short-lived HMAC draft preview tokens (`/api/blog/draft/<token>`). The secret value is never embedded in preview URLs.                                                                             | High                                             |
+| `CRON_SECRET`                                                | admin (embeddings cron), blog (publish cron)            | Bearer token (`Authorization: Bearer <secret>`) protecting `/api/cron/*` endpoints called by Vercel Cron (or equivalent). Prevents unauthorized triggering of expensive AI embedding jobs or publish side-effects. | High                                             |
+| `REVALIDATE_SECRET`                                          | admin (caller), blog + portfolio (verifier)             | Header (`x-revalidate-secret`) for cross-app on-demand cache invalidation (`/api/.../revalidate`). Admin calls the public revalidate endpoints of blog/portfolio after content mutations.                          | High                                             |
+| `REVALIDATE_URLS`                                            | admin                                                   | Comma-separated list of revalidation endpoint URLs the admin is allowed to call (e.g. blog + portfolio instances).                                                                                                 | Medium (config)                                  |
+| `OPENAI_API_KEY`                                             | admin (AI slug/tag gen via Vercel AI Gateway or direct) | Used server-side only for LLM-powered slug and tag generation. Not required in all environments (falls back to local slugify).                                                                                     | High                                             |
+| `RESEND_API_KEY`                                             | portfolio                                               | Powers the public contact form email delivery. Server-only.                                                                                                                                                        | High                                             |
+| `MAIL_FROM_ADDRESS`                                          | portfolio                                               | From address for contact form emails.                                                                                                                                                                              | Low-Medium                                       |
+| `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` | all (public reads + client auth in admin/memo)          | Public anon key. Combined with RLS policies for safe public + owner-scoped access.                                                                                                                                 | Public / Low (anon key is designed to be public) |
 
 ### Guidelines
 
@@ -220,13 +220,13 @@ browser bundles, or `NEXT_PUBLIC_*` paths.
 - Session refresh is handled by `@supabase/ssr` + the proxy/middleware layer
   in each authenticated app.
 
-| Surface | Auth model |
-| --- | --- |
-| portfolio, blog public, blog-legacy, public memos | No session; anon key + RLS public policies |
-| admin (all), memo edit + private memos | Supabase Auth cookie + owner profile; admin middleware redirects unauthenticated |
-| blog draft preview | HMAC (`DRAFT_SECRET`) + draftMode cookie; not owner login |
-| cron / revalidate routes | Shared secret via `@ykzts/utils/secrets` |
-| memo draftMode | Enabled only after successful owner login |
+| Surface                                           | Auth model                                                                       |
+| ------------------------------------------------- | -------------------------------------------------------------------------------- |
+| portfolio, blog public, blog-legacy, public memos | No session; anon key + RLS public policies                                       |
+| admin (all), memo edit + private memos            | Supabase Auth cookie + owner profile; admin middleware redirects unauthenticated |
+| blog draft preview                                | HMAC (`DRAFT_SECRET`) + draftMode cookie; not owner login                        |
+| cron / revalidate routes                          | Shared secret via `@ykzts/utils/secrets`                                         |
+| memo draftMode                                    | Enabled only after successful owner login                                        |
 
 ---
 
@@ -241,7 +241,7 @@ browser bundles, or `NEXT_PUBLIC_*` paths.
 4. **RLS is the authorization source of truth** — every user-facing table
    enabled; owner writes via profile; memos visibility rules as above.
 5. **New tables / migrations ship complete access control** — RLS + policies
-   + GRANTs (+ storage policies if buckets change) in the same migration when possible.
+   - GRANTs (+ storage policies if buckets change) in the same migration when possible.
 6. **CSP baseline is centralized** in `packages/utils`; apps only compose.
 7. **Storage writes stay owner-gated** with validation helpers.
 8. **Capability endpoints** keep timing-safe secret checks and allowlists.

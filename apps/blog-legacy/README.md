@@ -34,7 +34,7 @@ pnpm typegen    # Generate Next.js route types
 ## How Redirects Work
 
 - Redirect rules are defined in `redirects.ts` as tuples:
-	- `[source, destination]`
+  - `[source, destination]`
 - `next.config.ts` maps these rules to Next.js `redirects()` and applies status code `301`.
 - `destination` values are path-based and resolved against `baseUrl`.
 - A catch-all rule forwards unknown legacy paths to `/blog/:path*`.
@@ -58,15 +58,18 @@ When adding or adjusting redirects:
 ## Dependencies
 
 ### Internal Dependencies
+
 - `@ykzts/tsconfig`
 
 ### External Dependencies
+
 - `next`
 - `react`
 - `react-dom`
 - `@vercel/analytics`
 
 ### Dev Dependencies
+
 - `typescript`
 - `@types/node`
 - `@types/react`

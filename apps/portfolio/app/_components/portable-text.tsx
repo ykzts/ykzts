@@ -1,11 +1,12 @@
-import {
-  PortableText,
-  type PortableTextBlockComponent,
-  type PortableTextMarkComponentProps,
-  type PortableTextReactComponents,
+import type {
+  PortableTextBlockComponent,
+  PortableTextMarkComponentProps,
+  PortableTextReactComponents,
 } from "@portabletext/react";
+import { PortableText } from "@portabletext/react";
 import type { PortableTextValue } from "@ykzts/utils/portable-text";
-import { type ComponentProps, Suspense } from "react";
+import type { ComponentProps } from "react";
+import { Suspense } from "react";
 import Link from "@/components/link";
 import { highlightCode } from "@/lib/shiki";
 

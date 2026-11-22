@@ -31,6 +31,7 @@ import {
   TableNode,
   TableRowNode,
 } from "@lexical/table";
+import type { LexicalNode } from "lexical";
 import {
   $createParagraphNode,
   $createTextNode,
@@ -38,7 +39,6 @@ import {
   $isParagraphNode,
   $isTextNode,
   createEditor,
-  type LexicalNode,
 } from "lexical";
 import { describe, expect, it, vi } from "vitest";
 import { $createImageNode, $isImageNode, ImageNode } from "../nodes/image-node";

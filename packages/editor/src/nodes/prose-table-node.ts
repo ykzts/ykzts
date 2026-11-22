@@ -1,8 +1,5 @@
-import {
-  $isScrollableTablesActive,
-  type SerializedTableNode,
-  TableNode,
-} from "@lexical/table";
+import type { SerializedTableNode } from "@lexical/table";
+import { $isScrollableTablesActive, TableNode } from "@lexical/table";
 import type {
   DOMExportOutput,
   EditorConfig,

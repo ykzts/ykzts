@@ -1,10 +1,10 @@
 import { getSiteOrigin } from "@ykzts/site-config";
 import { getOwnerProfile } from "@ykzts/supabase/auth";
 import { createServerClient } from "@ykzts/supabase/server";
+import type { PortableTextValue } from "@ykzts/utils/portable-text";
 import {
   extractFirstParagraph,
   isPortableTextValue,
-  type PortableTextValue,
 } from "@ykzts/utils/portable-text";
 import type { Metadata } from "next";
 import { draftMode } from "next/headers";

@@ -1,9 +1,9 @@
-import {
-  PortableText,
-  type PortableTextBlockComponent,
-  type PortableTextMarkComponentProps,
-  type PortableTextReactComponents,
+import type {
+  PortableTextBlockComponent,
+  PortableTextMarkComponentProps,
+  PortableTextReactComponents,
 } from "@portabletext/react";
+import { PortableText } from "@portabletext/react";
 import { proseContent } from "@ykzts/ui/lib/prose";
 import type {
   CodeBlock,

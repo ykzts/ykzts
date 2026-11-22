@@ -6,11 +6,8 @@ import {
 } from "@ykzts/supabase/queries";
 import { getPostUrl } from "@ykzts/utils/blog-urls";
 import { extractFirstParagraph } from "@ykzts/utils/portable-text";
-import {
-  buildWorkUrl,
-  getLlmsHeaderLines,
-  type ProfileForHeader,
-} from "@/lib/llms";
+import type { ProfileForHeader } from "@/lib/llms";
+import { buildWorkUrl, getLlmsHeaderLines } from "@/lib/llms";
 
 export async function GET() {
   const [works, posts, profile] = await Promise.all([

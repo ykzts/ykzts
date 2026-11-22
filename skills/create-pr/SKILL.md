@@ -44,17 +44,17 @@ git checkout -b <issue-number>/<short-description>
 
 ### Branch naming (aligns with Conventional Commits)
 
-| Prefix | Use |
-| --- | --- |
-| `feat/` | New features |
-| `fix/` | Bug fixes |
-| `docs/` | Documentation |
-| `refactor/` | Refactors |
-| `chore/` | Tooling, config, maintenance |
-| `ci/` | CI/CD |
-| `perf/` | Performance |
-| `test/` | Tests |
-| `style/` | Formatting-only / style |
+| Prefix      | Use                          |
+| ----------- | ---------------------------- |
+| `feat/`     | New features                 |
+| `fix/`      | Bug fixes                    |
+| `docs/`     | Documentation                |
+| `refactor/` | Refactors                    |
+| `chore/`    | Tooling, config, maintenance |
+| `ci/`       | CI/CD                        |
+| `perf/`     | Performance                  |
+| `test/`     | Tests                        |
+| `style/`    | Formatting-only / style      |
 
 Examples:
 
@@ -84,17 +84,17 @@ type(scope): subject
 
 ### Types
 
-| Type | Meaning |
-| --- | --- |
-| `feat` | New features |
-| `fix` | Bug fixes |
-| `docs` | User-facing documentation |
-| `chore` | Internal workflow, configuration, or maintenance |
-| `refactor` | Neither fix nor feature |
-| `test` | Adding or updating tests |
-| `style` | Formatting, missing semicolons, etc. |
-| `perf` | Performance improvements |
-| `ci` | CI/CD configuration |
+| Type       | Meaning                                          |
+| ---------- | ------------------------------------------------ |
+| `feat`     | New features                                     |
+| `fix`      | Bug fixes                                        |
+| `docs`     | User-facing documentation                        |
+| `chore`    | Internal workflow, configuration, or maintenance |
+| `refactor` | Neither fix nor feature                          |
+| `test`     | Adding or updating tests                         |
+| `style`    | Formatting, missing semicolons, etc.             |
+| `perf`     | Performance improvements                         |
+| `ci`       | CI/CD configuration                              |
 
 ### Scopes
 
