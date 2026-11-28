@@ -10,6 +10,12 @@
       groupName: 'supabase cli',
       groupSlug: 'supabase-cli',
       matchPackageNames: ['supabase', 'supabase/cli']
+    },
+    {
+      description: 'Update the zizmor CLI (PyPI) together with zizmor-action in GitHub Actions',
+      groupName: 'zizmor',
+      groupSlug: 'zizmor',
+      matchPackageNames: ['zizmor', 'zizmorcore/zizmor-action']
     }
   ]
 }
