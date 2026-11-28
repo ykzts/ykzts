@@ -49,8 +49,6 @@
   "files": {
     "includes": [
       "!.agents/**/*",
-      // Symlinks into .agents/skills; Biome resolves them by their logical
-      // path, so the .agents exclusion above does not cover them.
       "!.claude/skills/**/*",
       "!.devcontainer/devcontainer-lock.json",
       "!packages/ui/src/components/**/*.{ts,tsx}",
