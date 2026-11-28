@@ -31,8 +31,7 @@ Architecture overview: `docs/architecture.md`.
 Use **pnpm only** (not npm/yarn). Install from the **repository root**.
 
 ```bash
-node --version    # expect v24.x
-pnpm --version
+pnpm --version    # expect devEngines.packageManager.version
 docker info       # daemon must be running for Supabase
 gh auth status    # must be logged in for GitHub work
 ```
@@ -52,7 +51,8 @@ Run from the repository root:
 pnpm install
 ```
 
-`prepare` installs lefthook git hooks when possible.
+`prepare` installs lefthook git hooks when possible. pnpm also installs the
+Node.js from `devEngines.runtime`; `pnpm exec node --version` should print it.
 
 2. **Start local Supabase** (needed for admin, portfolio, blog, memo data paths)
 
