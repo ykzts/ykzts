@@ -116,8 +116,8 @@ Summary:
 
 ## Environment and Configuration
 
-- **Node.js**: Version 24
-- **Package Manager**: pnpm
+- **Node.js**: Version declared in `devEngines.runtime` of the root `package.json` (pnpm downloads it for scripts)
+- **Package Manager**: pnpm, version declared in `devEngines.packageManager` of the root `package.json`
 - **Editor**: VSCode configuration included
 - **Git**: Main branch, proper ignore files
 - **CI/CD**: GitHub Actions with Node.js workflow

@@ -21,8 +21,8 @@ Architecture overview: `docs/architecture.md`.
 
 | Requirement      | Notes                                                            |
 | ---------------- | ---------------------------------------------------------------- |
-| **Node.js**      | **24** (see `AGENTS.md` / project tooling)                       |
-| **pnpm**         | Via Corepack or install; repo `packageManager` pins the version  |
+| **Node.js**      | Root `devEngines.runtime` pins it; pnpm downloads it for scripts |
+| **pnpm**         | Root `devEngines.packageManager` pins it; pnpm switches to it    |
 | **Docker**       | Required for local Supabase                                      |
 | **jq**           | Required by `scripts/setup-env.sh`                               |
 | **Supabase CLI** | `supabase` on PATH, or `npx supabase`                            |
