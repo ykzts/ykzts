@@ -32,5 +32,5 @@
     "turbo": "2.11.13",
     "ultracite": "8.3.1"
   },
-  "packageManager": "pnpm@12.21.0"
+  "packageManager": "pnpm@12.23.0"
 }
