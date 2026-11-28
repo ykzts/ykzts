@@ -12,10 +12,6 @@ on:
 permissions:
   contents: read
 
-env:
-  # renovate: datasource=node-version depName=node
-  NODE_VERSION: 26.13.1
-
 jobs:
   build:
     runs-on: ubuntu-26.04
@@ -28,12 +24,9 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # v3.2.0
         with:
-          cache: pnpm
-          node-version: ${{ env.NODE_VERSION }}
-      - run: pnpm install
+          cache: true
       - run: pnpm typegen
       - run: pnpm typecheck
       - run: pnpm check

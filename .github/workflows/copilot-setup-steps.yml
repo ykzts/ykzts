@@ -28,18 +28,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
-
-      - name: Setup Node.js
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - name: Setup pnpm and Node.js, and install dependencies
+        uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # v3.2.0
         with:
-          cache: pnpm
-          # renovate: datasource=node-version depName=node
-          node-version: 26.13.1
-
-      - name: Install dependencies
-        run: pnpm install
+          cache: true
 
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@689adcfb80d947100a1eab127289b97d1fb07b13 # v3.2.0

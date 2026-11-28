@@ -45,4 +45,5 @@ jobs:
           # the Action always scans the full project regardless of this value.
           scope: changed
           project: "*"
-          node-version: "24"
+          # renovate: datasource=node-version depName=node
+          node-version: "26.13.1"
