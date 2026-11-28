@@ -241,8 +241,8 @@ catalogs:
       specifier: 31.0.1
       version: 31.0.1
     lucide-react:
-      specifier: 1.76.0
-      version: 1.76.0
+      specifier: 1.79.0
+      version: 1.79.0
     next:
       specifier: 16.4.6
       version: 16.4.6
@@ -358,7 +358,7 @@ importers:
         version: 9.0.0
       lucide-react:
         specifier: 'catalog:'
-        version: 1.76.0(@types/react@19.3.1)(react@19.3.1)
+        version: 1.79.0(@types/react@19.3.1)(react@19.3.1)
       next:
         specifier: 'catalog:'
         version: 16.4.6(@babel/core@7.29.13(supports-color@7.2.0))(@opentelemetry/api@1.10.0)(@playwright/test@1.65.1)(@types/node@24.19.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -455,7 +455,7 @@ importers:
         version: 6.0.0
       lucide-react:
         specifier: 'catalog:'
-        version: 1.76.0(@types/react@19.3.1)(react@19.3.1)
+        version: 1.79.0(@types/react@19.3.1)(react@19.3.1)
       next:
         specifier: 'catalog:'
         version: 16.4.6(@babel/core@7.29.13(supports-color@7.2.0))(@opentelemetry/api@1.10.0)(@playwright/test@1.65.1)(@types/node@24.19.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -604,7 +604,7 @@ importers:
         version: link:../../packages/utils
       lucide-react:
         specifier: 'catalog:'
-        version: 1.76.0(@types/react@19.3.1)(react@19.3.1)
+        version: 1.79.0(@types/react@19.3.1)(react@19.3.1)
       next:
         specifier: 'catalog:'
         version: 16.4.6(@babel/core@7.29.13(supports-color@7.2.0))(@opentelemetry/api@1.10.0)(@playwright/test@1.65.1)(@types/node@24.19.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -692,7 +692,7 @@ importers:
         version: 1.5.13(next@16.4.6(@babel/core@7.29.13(supports-color@7.2.0))(@opentelemetry/api@1.10.0)(@playwright/test@1.65.1)(@types/node@24.19.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)
       lucide-react:
         specifier: 'catalog:'
-        version: 1.76.0(@types/react@19.3.1)(react@19.3.1)
+        version: 1.79.0(@types/react@19.3.1)(react@19.3.1)
       next:
         specifier: 'catalog:'
         version: 16.4.6(@babel/core@7.29.13(supports-color@7.2.0))(@opentelemetry/api@1.10.0)(@playwright/test@1.65.1)(@types/node@24.19.2)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -840,7 +840,7 @@ importers:
         version: 0.53.0(typescript@7.0.2)
       lucide-react:
         specifier: 'catalog:'
-        version: 1.76.0(@types/react@19.3.1)(react@19.3.1)
+        version: 1.79.0(@types/react@19.3.1)(react@19.3.1)
       react:
         specifier: ^19.0.0
         version: 19.3.1
@@ -886,7 +886,7 @@ importers:
         version: link:../ui
       lucide-react:
         specifier: 'catalog:'
-        version: 1.76.0(@types/react@19.3.1)(react@19.3.1)
+        version: 1.79.0(@types/react@19.3.1)(react@19.3.1)
       next-themes:
         specifier: 'catalog:'
         version: 0.4.6(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -998,7 +998,7 @@ importers:
         version: 2.1.1
       lucide-react:
         specifier: 'catalog:'
-        version: 1.76.0(@types/react@19.3.1)(react@19.3.1)
+        version: 1.79.0(@types/react@19.3.1)(react@19.3.1)
       next-themes:
         specifier: 'catalog:'
         version: 0.4.6(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -5512,8 +5512,8 @@ packages:
     resolution: {integrity: sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==}
     engines: {node: '>=12'}
 
-  lucide-react@1.76.0:
-    resolution: {integrity: sha512-wRVHt2Xf64GXndB4rQOY9+3Wy9oJ59HDMYv6vwhT0hpSwUxQhG/RM9YijnOmvmIQ+VI/n+1V/FKd6gP4XL2aBQ==}
+  lucide-react@1.79.0:
+    resolution: {integrity: sha512-MDHKxzUobPRyQgt4hHO1z+pUQJKYMvenh8qw+ndWQE0Wg+Hbjli/ZrkZXBGmRBrMvvqDRjkmQj0Z5RbeL/ogNw==}
     peerDependencies:
       '@types/react': '*'
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -12065,7 +12065,7 @@ snapshots:
 
   lru-cache@7.18.3: {}
 
-  lucide-react@1.76.0(@types/react@19.3.1)(react@19.3.1):
+  lucide-react@1.79.0(@types/react@19.3.1)(react@19.3.1):
     dependencies:
       react: 19.3.1
     optionalDependencies:
